@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cepillo Eléctrico Recargable con 4 cabezales intercambiables. Limpieza profunda para baño y cocina. Envío gratis en el día.">
+  <title>Cepillo Eléctrico Recargable — Dam Vertex</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <style>
+    /* ── Cepillo theme ── */
+    :root { --accent: #3b82f6; }
+    body { background: #0f172a; }
+
+    /* Hero */
+    .hero {
+      background: #0f172a;
+      padding: clamp(48px,10vw,80px) clamp(20px,5vw,64px);
+    }
+    .hero__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero__img-frame {
+      aspect-ratio: 9/16;
+      max-width: 420px;
+      margin: 0 auto;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #1e293b;
+      border: 1px solid rgba(59,130,246,.2);
+    }
+    .hero__img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .hero__tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 0; }
+    .hero__tag {
+      font-size: 12px; font-weight: 600;
+      background: rgba(29,78,216,.25);
+      color: #3b82f6;
+      border: 1px solid rgba(59,130,246,.3);
+      border-radius: 4px;
+      padding: 5px 12px;
+      letter-spacing: .04em;
+    }
+    .hero__h { font-size: clamp(28px,5vw,46px); font-weight: 800; line-height: 1.12; margin: 0 0 16px; color: #fff; }
+    .hero__sub { font-size: clamp(15px,2.2vw,17px); color: #94a3b8; line-height: 1.6; margin: 0 0 8px; }
+
+    /* Problema */
+    .prob { background: #111; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); }
+    .prob__inner { max-width: 900px; margin: 0 auto; }
+    .prob__h { font-size: clamp(20px,3.5vw,28px); font-weight: 700; color: #fff; text-align: center; margin: 0 0 36px; }
+    .prob__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .prob__item { background: #1a1a1a; border-radius: 12px; padding: 24px 20px; border: 1px solid rgba(255,255,255,.08); }
+    .prob__num { font-size: 28px; font-weight: 800; color: rgba(255,255,255,.15); margin-bottom: 10px; line-height: 1; }
+    .prob__item p { font-size: 15px; color: #cfcfcf; line-height: 1.5; margin: 0; }
+
+    /* Transformación */
+    .transform { background: #0f172a; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); }
+    .transform__inner { display: grid; grid-template-columns: 1fr 40px 1fr; gap: 20px; align-items: start; max-width: 880px; margin: 0 auto; }
+    .t-label { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 16px; }
+    .t-label--neg { color: #f87171; }
+    .t-label--pos { color: #4ade80; }
+    .t-list { padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .t-list li { font-size: 14px; color: rgba(255,255,255,.68); padding-left: 18px; position: relative; line-height: 1.4; }
+    .t-list li::before { content: '–'; position: absolute; left: 0; }
+    .t-list--pos li { color: #e2e8f0; }
+    .t-list--pos li::before { content: '✓'; color: #4ade80; }
+    .t-vs { display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: rgba(255,255,255,.3); letter-spacing: .1em; }
+    .t-img { width: 100%; height: auto; display: block; border-radius: 12px; aspect-ratio: 9/16; object-fit: cover; object-position: center top; margin-bottom: 14px; border: 1px solid rgba(59,130,246,.15); }
+
+    /* Beneficios */
+    .benefits { background: #111; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); }
+    .benefits__grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 18px; max-width: 1000px; margin: 0 auto; }
+    .b-card { background: #1a1a1a; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 28px 22px; }
+    .b-icon { width: 36px; height: 36px; color: #1d4ed8; margin-bottom: 14px; }
+    .b-icon svg { width: 100%; height: 100%; }
+    .b-card strong { display: block; font-size: 15px; color: #fff; margin-bottom: 8px; }
+    .b-card p { font-size: 13px; color: rgba(255,255,255,.68); line-height: 1.65; margin: 0; }
+
+    /* FAQ */
+    .faq { background: #0f172a; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); }
+
+    /* Cierre */
+    .close-sec { background: #0f172a; padding: clamp(52px,10vw,88px) clamp(20px,5vw,64px); text-align: center; border-top: 1px solid rgba(255,255,255,.06); }
+    .close-sec__inner { max-width: 680px; margin: 0 auto; }
+    .close-pre { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.7); font-weight: 700; margin: 0 0 16px; }
+    .close-h { font-size: clamp(24px,4.5vw,38px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0 0 36px; }
+
+    @media (max-width: 700px) {
+      .hero__inner { grid-template-columns: 1fr; }
+      .prob__grid { grid-template-columns: 1fr; }
+      .transform__inner { grid-template-columns: 1fr; }
+      .t-vs { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav__logo">Dam<span>Vertex</span></div>
+  <a class="nav__cta" data-scroll-form href="#">Pedir ahora con envío gratis</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__img-frame">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0699/4126/4560/files/tiktok_cepillo1.png?v=1777066635"
+        alt="Cepillo Eléctrico Recargable"
+        class="hero__img"
+        loading="eager"
+        fetchpriority="high">
+    </div>
+    <div class="hero__text">
+      <p class="eyebrow">Limpieza profunda, esfuerzo mínimo</p>
+      <h1 class="hero__h">Dejá de limpiar a mano.<br>Hay una forma mejor.</h1>
+      <p class="hero__sub">Eléctrico. Recargable. Para el baño, la cocina, los rincones imposibles.</p>
+      <div class="price-block">
+        <span class="price-main">Gs. 159.000</span>
+        <span class="price-compare">Gs. 190.000</span>
+        <span class="price-badge">16% OFF</span>
+      </div>
+      <button class="btn btn-primary" data-scroll-form>Hacer mi pedido ahora →</button>
+      <div class="hero__tags">
+        <span class="hero__tag">Recargable</span>
+        <span class="hero__tag">4 Cabezales</span>
+        <span class="hero__tag">360°</span>
+      </div>
+      <div class="trust-mini">
+        <span class="green">✓ Envío GRATIS</span><span class="dot">·</span>
+        <span>Envío en el día</span><span class="dot">·</span>
+        <span>Central: al recibir</span><span class="dot">·</span>
+        <span>Interior: pago anticipado</span><span class="dot">·</span>
+        <span>Atención rápida</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Problema -->
+<section class="prob">
+  <div class="prob__inner">
+    <p class="sec-label" style="color:#1d4ed8">El problema de siempre</p>
+    <h2 class="prob__h">Limpiar a mano es esto:</h2>
+    <div class="prob__grid">
+      <div class="prob__item">
+        <div class="prob__num">01</div>
+        <p>Cansás los brazos antes de terminar</p>
+      </div>
+      <div class="prob__item">
+        <div class="prob__num">02</div>
+        <p>Los rincones nunca quedan del todo limpios</p>
+      </div>
+      <div class="prob__item">
+        <div class="prob__num">03</div>
+        <p>Tardás el doble por la mitad del resultado</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Transformación -->
+<section class="transform">
+  <div class="transform__inner">
+    <div>
+      <p class="t-label t-label--neg">A mano</p>
+      <ul class="t-list">
+        <li>Fuerza manual constante</li>
+        <li>Rincones sin alcance</li>
+        <li>Resultado incompleto</li>
+        <li>Te cansa antes de terminar</li>
+      </ul>
+    </div>
+    <div class="t-vs">VS</div>
+    <div>
+      <p class="t-label t-label--pos">Con el cepillo</p>
+      <img
+        src="https://cdn.shopify.com/s/files/1/0699/4126/4560/files/tiktok_cepillo2.png?v=1777066634"
+        alt="Cepillo eléctrico en uso"
+        class="t-img"
+        loading="lazy">
+      <ul class="t-list t-list--pos">
+        <li>Motor hace el trabajo</li>
+        <li>Accede a cada rincón</li>
+        <li>Limpieza real y pareja</li>
+        <li>Menos tiempo, más resultado</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Beneficios -->
+<section class="benefits">
+  <h2 class="sec-title">Por qué hace la diferencia</h2>
+  <div class="benefits__grid">
+    <div class="b-card">
+      <div class="b-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <strong>Velocidad que se nota</strong>
+      <p>El motor oscilante trabaja por vos. Lo que a mano lleva 20 minutos, con esto son 5.</p>
+    </div>
+    <div class="b-card">
+      <div class="b-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+      </div>
+      <strong>4 cabezales para todo</strong>
+      <p>Cambiás el cabezal según la superficie. Mismo aparato, distintas tareas.</p>
+    </div>
+    <div class="b-card">
+      <div class="b-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <strong>Recargable, sin cables</strong>
+      <p>Cargás una vez, usás varios días. Sin pilas, sin estar atado a un enchufe.</p>
+    </div>
+    <div class="b-card">
+      <div class="b-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <strong>Para baño y cocina</strong>
+      <p>Resistente al agua. Funciona en azulejos, juntas, bachas, superficies plásticas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <h2 class="sec-title">Lo que más preguntan</h2>
+  <div class="faq-wrap">
+    <details class="faq-item">
+      <summary class="faq-q">¿Funciona tanto en baño como en cocina?</summary>
+      <div class="faq-a">Sí. Los cabezales intercambiables están diseñados para distintas superficies. Podés usar el mismo aparato en ambos espacios sin problema.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Cuánto dura la carga?</summary>
+      <div class="faq-a">Suficiente para varios usos seguidos. La carga completa no lleva mucho tiempo y la batería aguanta bien el uso cotidiano.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Es difícil de usar o de limpiar?</summary>
+      <div class="faq-a">No. Se enciende con un botón, los cabezales se sacan en segundos y se lavan bajo el agua. Sin complicaciones.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Cuándo llega el pedido?</summary>
+      <div class="faq-a">En Central el envío es en el día. En el Interior coordinamos con vos después de confirmar el pedido — generalmente 1 a 2 días adicionales.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Cómo se paga?</summary>
+      <div class="faq-a">Si estás en Central, pagás cuando lo recibís. Si estás en el Interior, el pago es anticipado y coordinamos el envío una vez confirmado.</div>
+    </details>
+  </div>
+</section>
+
+<!-- Formulario (oculto — reemplazado por modal) -->
+<section class="form-section" id="form-section" style="display:none">
+  <div class="form-section__inner">
+    <h2 class="form-section__title">Hacé tu pedido</h2>
+    <p class="form-section__sub">Completá los datos y te contactamos por WhatsApp para coordinar la entrega.</p>
+
+    <form class="form" id="lead-form" novalidate>
+      <input type="hidden" name="product" value="cepillo">
+
+      <div class="form-group">
+        <label for="f-name">Nombre *</label>
+        <input type="text" id="f-name" name="name" placeholder="Tu nombre completo" autocomplete="name">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="f-phone">Teléfono *</label>
+        <input type="tel" id="f-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="f-city">Ciudad</label>
+        <input type="text" id="f-city" name="city" placeholder="Asunción, Fernando de la Mora..." autocomplete="address-level2">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="f-email">Email (opcional)</label>
+        <input type="email" id="f-email" name="email" placeholder="tu@email.com" autocomplete="email">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="form-submit-btn">
+          Confirmar pedido por WhatsApp →
+        </button>
+      </div>
+      <p class="form-note">Al enviar abriremos WhatsApp para coordinar tu pedido. Sin cargo adicional.</p>
+    </form>
+
+    <div class="form-success" id="form-success">
+      <h3>¡Listo!</h3>
+      <p>Abrimos WhatsApp para coordinar tu pedido. Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Cierre -->
+<section class="close-sec">
+  <div class="close-sec__inner">
+    <p class="close-pre">Lo tenés a un paso</p>
+    <h2 class="close-h">Menos esfuerzo.<br>Más limpio. Siempre.</h2>
+    <div class="close-trust">
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Envío GRATIS · Envío en el día</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Central: pagás al recibir · Interior: pago anticipado</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Atención rápida</span></div>
+    </div>
+    <button class="cta-ref" data-scroll-form>
+      <span class="cta-ref-arrow">↑</span>
+      <span>Hacer mi pedido ahora</span>
+    </button>
+  </div>
+</section>
+
+<!-- Modal Pedido -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-cepillo">
+  <div class="modal-box">
+    <p class="modal-urgency">⏳ Últimas unidades disponibles hoy</p>
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+    <h2 class="modal-title" id="modal-title-cepillo">Hacé tu pedido</h2>
+    <p class="modal-step">Estás a un paso de recibir tu pedido 🚚</p>
+    <p class="modal-subtitle">Completá tus datos y te contactamos al toque.</p>
+
+    <!-- Ofertas -->
+    <div class="modal-section">
+      <span class="modal-section-label">Elegí tu oferta</span>
+      <div class="offer-options">
+
+        <label class="offer-option selected">
+          <input type="radio" name="offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price" id="offer-price-1">—</span>
+          </div>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="2">
+          <div class="offer-badge">🔥 Más vendido</div>
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-2">—</span>
+              <span class="offer-price" id="offer-price-2">—</span>
+            </div>
+          </div>
+          <span class="offer-saving">Llevá 2 y ahorrá 25%</span>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="3">
+          <div class="offer-badge offer-badge--best">⭐ Mejor precio</div>
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-3">—</span>
+              <span class="offer-price" id="offer-price-3">—</span>
+            </div>
+          </div>
+          <span class="offer-saving">3 unidades con 35% OFF</span>
+        </label>
+
+      </div>
+    </div>
+    <p class="modal-price-warning">⚠️ Este precio puede cambiar en cualquier momento</p>
+
+    <!-- Formulario -->
+    <form class="modal-form" id="modal-form" novalidate>
+
+      <div class="form-group">
+        <label for="m-name">Nombre y apellido *</label>
+        <input type="text" id="m-name" name="name" placeholder="Tu nombre completo" autocomplete="name">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-phone">Teléfono (WhatsApp) *</label>
+        <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-city">Ciudad *</label>
+        <input type="text" id="m-city" name="city" placeholder="Asunción, Fernando de la Mora..." autocomplete="address-level2">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-ref">Referencia de dirección</label>
+        <input type="text" id="m-ref" name="referencia" placeholder="casa, portón negro, bodega">
+      </div>
+
+      <div class="form-group">
+        <label for="m-payment">Método de pago</label>
+        <select id="m-payment" name="payment">
+          <option value="">Seleccioná...</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Débito">Débito</option>
+        </select>
+      </div>
+
+      <label class="upsell-block">
+        <input type="checkbox" id="m-express" name="express">
+        <div class="upsell-content">
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
+        </div>
+      </label>
+
+      <label class="confirm-intent">
+        <input type="checkbox" id="m-confirm" name="confirm">
+        <span class="confirm-text">Voy a recibir y pagar el producto al momento de la entrega</span>
+      </label>
+
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="modal-submit-btn" disabled>
+          Hacer mi pedido por WhatsApp
+        </button>
+      </div>
+
+    </form>
+
+    <div class="form-success" id="modal-success">
+      <h3>¡Listo!</h3>
+      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
+      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
+      <div class="manual-wa">
+        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  &copy; 2025 Dam Vertex · <a href="/admin/" style="opacity:.4">Admin</a>
+</footer>
+
+<!-- Scripts -->
+<script src="/assets/js/tracking.js"></script>
+<script src="/assets/js/products.js"></script>
+<script>
+  const PRODUCT = {
+    name:  'Cepillo Eléctrico Recargable (4 Cabezales)',
+    slug:  'cepillo',
+    price: 159000,
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    DV.trackViewContent(PRODUCT);
+    DV.initForm(PRODUCT);
+  });
+</script>
+
+</body>
+</html>

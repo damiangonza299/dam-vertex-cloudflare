@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Reloj Blackout Minimal. Diseño puro en negro total. Casual y formal. Envío gratis en el día — Dam Vertex Paraguay.">
+  <title>Reloj Blackout Minimal — Dam Vertex</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <style>
+    /* ── Reloj theme (negro total) ── */
+    :root { --accent: rgba(255,255,255,.65); }
+    body { background: #000; }
+
+    /* Hero */
+    .hero { background: #000; padding: clamp(48px,10vw,80px) clamp(20px,5vw,64px); }
+    .hero__inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 56px; align-items: center;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .hero__media { max-width: 520px; margin: 0 auto; overflow: hidden; border-radius: 4px; }
+    .hero__img { width: 100%; height: auto; display: block; }
+    .hero__h { font-size: clamp(28px,5vw,50px); font-weight: 800; line-height: 1.1; margin: 0 0 20px; letter-spacing: -.01em; color: #fff; }
+    .hero__sub { font-size: clamp(15px,2vw,17px); color: rgba(255,255,255,.65); line-height: 1.6; margin: 0 0 8px; }
+
+    /* Problema */
+    .prob { background: #0a0a0a; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.08); }
+    .prob__inner { max-width: 860px; margin: 0 auto; }
+    .prob__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,.08); }
+    .prob__item { background: #0a0a0a; padding: 28px 24px; }
+    .prob-line { display: block; width: 24px; height: 2px; background: rgba(255,255,255,.14); margin-bottom: 16px; }
+    .prob__item p { font-size: 14px; color: #d1d5db; line-height: 1.6; margin: 0; }
+
+    /* Transformación */
+    .transform { background: #000; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.08); }
+    .transform__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; max-width: 1000px; margin: 0 auto; }
+    .t-overline { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.65); font-weight: 600; margin: 0 0 16px; }
+    .t-h { font-size: clamp(20px,3.5vw,30px); font-weight: 700; color: #fff; line-height: 1.2; margin: 0 0 16px; }
+    .t-body { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.75; margin: 0 0 24px; }
+    .t-list { display: flex; flex-direction: column; gap: 10px; }
+    .t-list li { font-size: 14px; color: #e2e2e2; display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
+    .t-check { color: rgba(255,255,255,.65); flex-shrink: 0; font-size: 13px; }
+    .t-img { width: 100%; border-radius: 4px; aspect-ratio: 1; object-fit: cover; filter: grayscale(20%) contrast(1.05); background: #111; }
+
+    /* Beneficios */
+    .benefits { background: #111; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.08); }
+    .benefits__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,.08); max-width: 900px; margin: 0 auto; }
+    .b-card { background: #111; padding: 32px 28px; }
+    .b-num { font-size: 11px; font-weight: 800; color: #fff; letter-spacing: .08em; margin-bottom: 16px; }
+    .b-card strong { display: block; font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 10px; letter-spacing: -.01em; }
+    .b-card p { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.65; margin: 0; }
+
+    /* FAQ */
+    .faq { background: #0a0a0a; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.08); }
+    .faq .faq-wrap { max-width: 600px; }
+
+    /* Cierre */
+    .close-sec { background: #000; padding: clamp(64px,12vw,100px) clamp(20px,5vw,64px); text-align: center; border-top: 1px solid rgba(255,255,255,.08); }
+    .close-sec__inner { max-width: 540px; margin: 0 auto; }
+    .close-quote { font-size: clamp(18px,3.5vw,26px); font-style: italic; color: rgba(255,255,255,.65); line-height: 1.4; margin: 0 0 32px; font-weight: 300; }
+    .close-divider { width: 32px; height: 1px; background: #222; margin: 0 auto 32px; }
+    .close-h { font-size: clamp(22px,4vw,34px); font-weight: 800; color: #fff; letter-spacing: -.01em; margin: 0 0 40px; }
+
+    .form-section { background: #0a0a0a; }
+
+    @media (max-width: 700px) {
+      .hero__inner { grid-template-columns: 1fr; }
+      .prob__grid { grid-template-columns: 1fr; }
+      .transform__inner { grid-template-columns: 1fr; gap: 32px; }
+      .benefits__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="theme-reloj">
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav__logo">Dam<span>Vertex</span></div>
+  <a class="nav__cta" data-scroll-form href="#">Hacer mi pedido ahora</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__media">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0699/4126/4560/files/reloj_negro_caracteristicas.png?v=1767849196"
+        alt="Reloj Blackout Minimal"
+        class="hero__img"
+        loading="eager"
+        fetchpriority="high">
+    </div>
+    <div class="hero__text">
+      <p class="eyebrow">Blackout Minimal</p>
+      <h1 class="hero__h">El accesorio que no grita.<br>Pero que todos notan.</h1>
+      <p class="hero__sub">Diseño puro. Negro total. Sin detalles innecesarios.</p>
+      <div class="price-block">
+        <span class="price-main">Gs. 189.000</span>
+        <span class="price-compare">Gs. 250.000</span>
+        <span class="price-badge">24% OFF</span>
+      </div>
+      <button class="btn btn-primary" data-scroll-form>Comprar ahora y recibir hoy →</button>
+      <div class="trust-mini">
+        <span class="green">✓ Envío GRATIS</span><span class="dot">·</span>
+        <span>Envío en el día</span><span class="dot">·</span>
+        <span>Central: al recibir</span><span class="dot">·</span>
+        <span>Interior: pago anticipado</span><span class="dot">·</span>
+        <span>Atención rápida</span>
+      </div>
+      <p class="scroll-hint">↓ Por qué importa</p>
+    </div>
+  </div>
+</section>
+
+<!-- Problema -->
+<section class="prob">
+  <div class="prob__inner">
+    <p class="sec-label">El problema con los relojes comunes</p>
+    <div class="prob__grid">
+      <div class="prob__item">
+        <span class="prob-line"></span>
+        <p>Todos parecen iguales — plateados, dorados, recargados</p>
+      </div>
+      <div class="prob__item">
+        <span class="prob-line"></span>
+        <p>Esfera con números, marcas, detalles que no suman</p>
+      </div>
+      <div class="prob__item">
+        <span class="prob-line"></span>
+        <p>Combinan con un look pero no con otro</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Transformación -->
+<section class="transform">
+  <div class="transform__inner">
+    <div class="t-text">
+      <p class="t-overline">La diferencia</p>
+      <h2 class="t-h">Un detalle que cambia el look completo.</h2>
+      <p class="t-body">
+        El Blackout no compite con lo que llevás puesto. Lo complementa.
+        Negro total, esfera limpia, sin adornos — funciona en cualquier contexto
+        porque no intenta destacarse. Y por eso destaca.
+      </p>
+      <ul class="t-list">
+        <li><span class="t-check">✓</span> Funciona casual o formal</li>
+        <li><span class="t-check">✓</span> No choca con ningún color</li>
+        <li><span class="t-check">✓</span> Se nota por lo que no tiene</li>
+      </ul>
+    </div>
+    <div>
+      <img
+        src="https://cdn.shopify.com/s/files/1/0699/4126/4560/files/reloj_negro_caracteristicas.png?v=1767849196"
+        alt="Reloj Blackout detalle"
+        class="t-img"
+        loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- Beneficios -->
+<section class="benefits">
+  <p class="sec-label" style="text-align:center;margin-bottom:32px">Lo que lo hace diferente</p>
+  <div class="benefits__grid">
+    <div class="b-card">
+      <div class="b-num">01</div>
+      <strong>Negro total</strong>
+      <p>Esfera, correa y caja en negro. Sin contraste, sin relleno. Puro.</p>
+    </div>
+    <div class="b-card">
+      <div class="b-num">02</div>
+      <strong>Minimalismo real</strong>
+      <p>No es moda. Es una actitud. La esfera no tiene lo que sobra.</p>
+    </div>
+    <div class="b-card">
+      <div class="b-num">03</div>
+      <strong>Versátil por diseño</strong>
+      <p>Un look deportivo, uno formal, uno casual — funciona en los tres.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <p class="sec-label" style="text-align:center">Preguntas</p>
+  <div class="faq-wrap">
+    <details class="faq-item">
+      <summary class="faq-q">¿Es para uso casual o también formal?</summary>
+      <div class="faq-a">Los dos. El diseño en negro total no choca con ningún outfit, lo que lo hace funcional tanto en una reunión como en el día a día.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Cómo es el material de la correa?</summary>
+      <div class="faq-a">La correa es de silicona negra, cómoda para uso prolongado. Si querés más detalles sobre el material exacto, consultanos antes de comprar.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Es resistente al agua o sudor?</summary>
+      <div class="faq-a">Soporta el uso cotidiano normal — sudor, salpicaduras. Para más especificaciones técnicas de resistencia, preguntá antes de comprar.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Cuándo llega el pedido?</summary>
+      <div class="faq-a">En Central el envío es en el día. En el Interior coordinamos con vos después de confirmar el pedido — generalmente 1 a 2 días adicionales.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Cómo se paga?</summary>
+      <div class="faq-a">Si estás en Central, pagás cuando lo recibís. Si estás en el Interior, el pago es anticipado y coordinamos el envío una vez confirmado.</div>
+    </details>
+  </div>
+</section>
+
+<!-- Formulario (oculto — reemplazado por modal) -->
+<section class="form-section" id="form-section" style="display:none">
+  <div class="form-section__inner">
+    <h2 class="form-section__title">Hacé tu pedido</h2>
+    <p class="form-section__sub">Completá los datos y te contactamos por WhatsApp para coordinar la entrega.</p>
+
+    <form class="form" id="lead-form" novalidate>
+      <input type="hidden" name="product" value="reloj">
+
+      <div class="form-group">
+        <label for="f-name">Nombre *</label>
+        <input type="text" id="f-name" name="name" placeholder="Tu nombre completo" autocomplete="name">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="f-phone">Teléfono *</label>
+        <input type="tel" id="f-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="f-city">Ciudad</label>
+        <input type="text" id="f-city" name="city" placeholder="Asunción, Fernando de la Mora..." autocomplete="address-level2">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="f-email">Email (opcional)</label>
+        <input type="email" id="f-email" name="email" placeholder="tu@email.com" autocomplete="email">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="form-submit-btn">
+          Confirmar pedido por WhatsApp →
+        </button>
+      </div>
+      <p class="form-note">Al enviar abriremos WhatsApp para coordinar tu pedido. Sin cargo adicional.</p>
+    </form>
+
+    <div class="form-success" id="form-success">
+      <h3>¡Listo!</h3>
+      <p>Abrimos WhatsApp para coordinar tu pedido. Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Cierre -->
+<section class="close-sec">
+  <div class="close-sec__inner">
+    <p class="close-quote">"Para el que se viste bien<br>sin hacer ruido."</p>
+    <div class="close-divider"></div>
+    <h2 class="close-h">El detalle que faltaba.</h2>
+    <div class="close-trust">
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Envío GRATIS · Envío en el día</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Central: pagás al recibir · Interior: pago anticipado</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Atención rápida</span></div>
+    </div>
+    <button class="cta-ref" data-scroll-form>
+      <span class="cta-ref-arrow">↑</span>
+      <span>Hacer mi pedido ahora</span>
+    </button>
+  </div>
+</section>
+
+<!-- Modal Pedido -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-reloj">
+  <div class="modal-box">
+    <p class="modal-urgency">⏳ Últimas unidades disponibles hoy</p>
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+    <h2 class="modal-title" id="modal-title-reloj">Hacé tu pedido</h2>
+    <p class="modal-step">Estás a un paso de recibir tu pedido 🚚</p>
+    <p class="modal-subtitle">Completá tus datos y te contactamos al toque.</p>
+
+    <!-- Ofertas -->
+    <div class="modal-section">
+      <span class="modal-section-label">Elegí tu oferta</span>
+      <div class="offer-options">
+
+        <label class="offer-option selected">
+          <input type="radio" name="offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price" id="offer-price-1">—</span>
+          </div>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="2">
+          <div class="offer-badge">🔥 Más vendido</div>
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-2">—</span>
+              <span class="offer-price" id="offer-price-2">—</span>
+            </div>
+          </div>
+          <span class="offer-saving">Llevá 2 y ahorrá 25%</span>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="3">
+          <div class="offer-badge offer-badge--best">⭐ Mejor precio</div>
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-3">—</span>
+              <span class="offer-price" id="offer-price-3">—</span>
+            </div>
+          </div>
+          <span class="offer-saving">3 unidades con 35% OFF</span>
+        </label>
+
+      </div>
+    </div>
+    <p class="modal-price-warning">⚠️ Este precio puede cambiar en cualquier momento</p>
+
+    <!-- Formulario -->
+    <form class="modal-form" id="modal-form" novalidate>
+
+      <div class="form-group">
+        <label for="m-name">Nombre y apellido *</label>
+        <input type="text" id="m-name" name="name" placeholder="Tu nombre completo" autocomplete="name">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-phone">Teléfono (WhatsApp) *</label>
+        <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-city">Ciudad *</label>
+        <input type="text" id="m-city" name="city" placeholder="Asunción, Fernando de la Mora..." autocomplete="address-level2">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-ref">Referencia de dirección</label>
+        <input type="text" id="m-ref" name="referencia" placeholder="casa, portón negro, bodega">
+      </div>
+
+      <div class="form-group">
+        <label for="m-payment">Método de pago</label>
+        <select id="m-payment" name="payment">
+          <option value="">Seleccioná...</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Débito">Débito</option>
+        </select>
+      </div>
+
+      <label class="upsell-block">
+        <input type="checkbox" id="m-express" name="express">
+        <div class="upsell-content">
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
+        </div>
+      </label>
+
+      <label class="confirm-intent">
+        <input type="checkbox" id="m-confirm" name="confirm">
+        <span class="confirm-text">Voy a recibir y pagar el producto al momento de la entrega</span>
+      </label>
+
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="modal-submit-btn" disabled>
+          Hacer mi pedido por WhatsApp
+        </button>
+      </div>
+
+    </form>
+
+    <div class="form-success" id="modal-success">
+      <h3>¡Listo!</h3>
+      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
+      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
+      <div class="manual-wa">
+        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  &copy; 2025 Dam Vertex · <a href="/admin/" style="opacity:.4">Admin</a>
+</footer>
+
+<!-- Scripts -->
+<script src="/assets/js/tracking.js"></script>
+<script src="/assets/js/products.js"></script>
+<script>
+  const PRODUCT = {
+    name:  'Reloj Blackout Minimal',
+    slug:  'reloj',
+    price: 189000,
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    DV.trackViewContent(PRODUCT);
+    DV.initForm(PRODUCT);
+  });
+</script>
+
+</body>
+</html>

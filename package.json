@@ -1,0 +1,15 @@
+{
+  "name": "dam-vertex-cloudflare",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev public --d1=DB",
+    "deploy": "wrangler pages deploy public",
+    "db:create": "wrangler d1 create dam-vertex-leads",
+    "db:migrate": "wrangler d1 execute dam-vertex-leads --file=schema.sql",
+    "db:migrate:remote": "wrangler d1 execute dam-vertex-leads --remote --file=schema.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^3.78.0"
+  }
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Dam Vertex</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body class="admin-page">
+
+<!-- Navbar admin -->
+<nav class="admin-nav">
+  <h1>Dam Vertex — Panel Admin</h1>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="admin-badge" id="admin-badge" style="display:none">● En línea</span>
+    <button id="logout-btn" style="font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;display:none">Salir</button>
+  </div>
+</nav>
+
+<!-- Login screen -->
+<div class="admin-login" id="login-screen">
+  <div class="admin-login__box">
+    <h2>Acceso Admin</h2>
+    <input
+      type="password"
+      id="login-password"
+      class="admin-login__input"
+      placeholder="Contraseña"
+      autocomplete="current-password">
+    <button id="login-btn" class="admin-login__btn">Entrar</button>
+    <div class="admin-login__err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- Panel screen -->
+<div id="panel-screen" style="display:none">
+  <div class="admin-content">
+
+    <!-- Stats -->
+    <div class="admin-stats">
+      <div class="admin-stat">
+        <div class="admin-stat__val" id="stat-total">—</div>
+        <div class="admin-stat__label">Total leads</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat__val" id="stat-pending" style="color:#fbbf24">—</div>
+        <div class="admin-stat__label">Pendientes</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat__val" id="stat-purchased" style="color:#4ade80">—</div>
+        <div class="admin-stat__label">Comprados</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="admin-filters">
+      <input
+        type="search"
+        id="search-input"
+        class="admin-search"
+        placeholder="Buscar nombre, teléfono, ciudad...">
+      <select id="filter-product" class="admin-filter-select">
+        <option value="">Todos los productos</option>
+        <option value="Cepillo Eléctrico Recargable (4 Cabezales)">Cepillo</option>
+        <option value="Lentes Anti Luz Azul Rojos">Lentes</option>
+        <option value="Reloj Blackout Minimal">Reloj</option>
+      </select>
+      <select id="filter-status" class="admin-filter-select">
+        <option value="">Todos los estados</option>
+        <option value="pending">Pendientes</option>
+        <option value="purchased">Comprados</option>
+        <option value="cancelled">Cancelados</option>
+      </select>
+      <button id="refresh-btn" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer">
+        ↻ Actualizar
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Ciudad</th>
+            <th>Producto</th>
+            <th>Valor</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="leads-tbody">
+          <tr>
+            <td colspan="9" style="text-align:center;padding:48px;color:var(--muted)">
+              Iniciá sesión para ver los leads
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script src="/assets/js/admin.js"></script>
+<script>
+  /* Mostrar badge y botón logout cuando el panel está visible */
+  const origShowPanel = window.showPanel;
+  document.addEventListener('DOMContentLoaded', () => {
+    const badge  = document.getElementById('admin-badge');
+    const logBtn = document.getElementById('logout-btn');
+    const obs    = new MutationObserver(() => {
+      const panel = document.getElementById('panel-screen');
+      if (panel && panel.style.display !== 'none') {
+        badge.style.display  = 'inline-block';
+        logBtn.style.display = 'inline-block';
+      }
+    });
+    obs.observe(document.getElementById('panel-screen'), { attributes: true });
+  });
+</script>
+</body>
+</html>

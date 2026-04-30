@@ -1,0 +1,8 @@
+name                  = "dam-vertex-cloudflare"
+compatibility_date    = "2024-09-23"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding       = "DB"
+database_name = "dam-vertex-leads"
+database_id = "53df5abe-f022-487d-a8c2-58e150f256e2"
