@@ -1,12 +1,50 @@
-﻿/* =========================================================
-   Dam Vertex â Admin Panel
+/* =========================================================
+   Dam Vertex — Admin Panel
    ========================================================= */
 
-let AUTH_TOKEN = sessionStorage.getItem('dv_admin_token') || '';
-let allLeads   = [];
+const IS_DELIVERY = new URLSearchParams(location.search).get('mode') === 'delivery';
 
-/* ââ Bootstrap ââ */
+/* ── Token persistence — 30 days ── */
+const TOKEN_KEY  = IS_DELIVERY ? 'dv_delivery_token' : 'dv_admin_token';
+const TOKEN_TS   = IS_DELIVERY ? 'dv_delivery_ts'    : 'dv_admin_ts';
+const MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+
+function loadToken() {
+  const ts = parseInt(localStorage.getItem(TOKEN_TS) || '0');
+  if (Date.now() - ts > MAX_AGE_MS) {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_TS);
+    return '';
+  }
+  return localStorage.getItem(TOKEN_KEY) || '';
+}
+
+function saveToken(t) {
+  localStorage.setItem(TOKEN_KEY, t);
+  localStorage.setItem(TOKEN_TS, String(Date.now()));
+}
+
+function clearToken() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(TOKEN_TS);
+}
+
+let AUTH_TOKEN       = loadToken();
+let allLeads         = [];
+let activeDateFilter = 'all';
+
+/* ── Bootstrap ── */
 document.addEventListener('DOMContentLoaded', () => {
+  if (IS_DELIVERY) {
+    const h1 = document.querySelector('.admin-nav h1');
+    if (h1) h1.textContent = 'DAM VERTEX — Modo Delivery';
+    const exportBtn = document.getElementById('export-csv-btn');
+    if (exportBtn) exportBtn.style.display = 'none';
+  }
+
+  const dp = document.getElementById('date-picker');
+  if (dp) dp.value = new Date().toLocaleDateString('sv-SE');
+
   if (AUTH_TOKEN) {
     showPanel();
     loadLeads();
@@ -15,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ââ Login ââ */
+/* ── Login ── */
 function showLogin() {
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('panel-screen').style.display  = 'none';
@@ -37,13 +75,13 @@ document.getElementById('login-btn')?.addEventListener('click', async () => {
 
   if (res.ok) {
     AUTH_TOKEN = pw;
-    sessionStorage.setItem('dv_admin_token', pw);
+    saveToken(pw);
     showPanel();
     const data = await res.json();
     renderLeads(data.leads || []);
   } else {
     err.classList.add('visible');
-    err.textContent = 'ContraseÃ±a incorrecta';
+    err.textContent = 'Contraseña incorrecta';
   }
 });
 
@@ -52,24 +90,24 @@ document.getElementById('login-password')?.addEventListener('keydown', e => {
 });
 
 document.getElementById('logout-btn')?.addEventListener('click', () => {
-  sessionStorage.removeItem('dv_admin_token');
+  clearToken();
   AUTH_TOKEN = '';
   location.reload();
 });
 
-/* ââ Load leads ââ */
+/* ── Load leads ── */
 async function loadLeads() {
   try {
     const res = await fetch('/api/admin-leads', {
       headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
     });
-    if (res.status === 401) { sessionStorage.removeItem('dv_admin_token'); location.reload(); return; }
+    if (res.status === 401) { clearToken(); location.reload(); return; }
     const data = await res.json();
     renderLeads(data.leads || []);
   } catch (_) {}
 }
 
-/* ââ Render ââ */
+/* ── Render ── */
 function renderLeads(leads) {
   allLeads = leads;
   updateStats(leads);
@@ -91,6 +129,9 @@ function applyFilters() {
   const product = document.getElementById('filter-product')?.value || '';
   const status  = document.getElementById('filter-status')?.value  || '';
 
+  const todayStr = new Date().toLocaleDateString('sv-SE');
+  const yestStr  = new Date(Date.now() - 86400000).toLocaleDateString('sv-SE');
+
   const filtered = allLeads.filter(l => {
     const matchQ = !q
       || l.name?.toLowerCase().includes(q)
@@ -98,10 +139,40 @@ function applyFilters() {
       || l.city?.toLowerCase().includes(q);
     const matchProd   = !product || l.product_name === product;
     const matchStatus = !status  || l.status === status;
-    return matchQ && matchProd && matchStatus;
+
+    let matchDate = true;
+    if (activeDateFilter !== 'all') {
+      const leadDate = l.created_at
+        ? new Date(l.created_at + 'Z').toLocaleDateString('sv-SE')
+        : '';
+      if (!leadDate) {
+        matchDate = false;
+      } else if (activeDateFilter === 'today') {
+        matchDate = leadDate === todayStr;
+      } else if (activeDateFilter === 'yesterday') {
+        matchDate = leadDate === yestStr;
+      } else {
+        matchDate = leadDate === activeDateFilter;
+      }
+    }
+
+    return matchQ && matchProd && matchStatus && matchDate;
   });
 
   renderTable(filtered);
+}
+
+function setDateFilter(val) {
+  activeDateFilter = val;
+  ['date-all', 'date-today', 'date-yesterday'].forEach(id => {
+    const key = id.slice(5); // remove 'date-' prefix
+    document.getElementById(id)?.classList.toggle('date-btn--active', val === key);
+  });
+  if (['all', 'today', 'yesterday'].includes(val)) {
+    const dp = document.getElementById('date-picker');
+    if (dp) dp.value = '';
+  }
+  applyFilters();
 }
 
 document.getElementById('search-input')?.addEventListener('input', applyFilters);
@@ -109,56 +180,118 @@ document.getElementById('filter-product')?.addEventListener('change', applyFilte
 document.getElementById('filter-status')?.addEventListener('change', applyFilters);
 document.getElementById('refresh-btn')?.addEventListener('click', loadLeads);
 document.getElementById('export-csv-btn')?.addEventListener('click', exportCSV);
+document.querySelector('.admin-table-wrap')?.addEventListener('scroll', closeMenus);
+document.getElementById('date-all')?.addEventListener('click', () => setDateFilter('all'));
+document.getElementById('date-today')?.addEventListener('click', () => setDateFilter('today'));
+document.getElementById('date-yesterday')?.addEventListener('click', () => setDateFilter('yesterday'));
+document.getElementById('date-picker')?.addEventListener('change', e => { setDateFilter(e.target.value || 'all'); });
+
+function abbrevProduct(name) {
+  if (!name) return '—';
+  if (name.includes('Cepillo')) return 'Cepillo';
+  if (name.includes('Lentes'))  return 'Lentes';
+  if (name.includes('Reloj'))   return 'Reloj';
+  return name.length > 10 ? name.slice(0, 10) + '...' : name;
+}
+
+function buildActions(l) {
+  const canConfirm = l.status !== 'purchased';
+
+  if (IS_DELIVERY) {
+    if (!canConfirm) return '<span class="act-done">&#10003;</span>';
+    return `<button class="btn-confirm btn-icon" onclick="confirmPurchase(${l.id})" title="Confirmar pago">&#10003;</button>`;
+  }
+
+  const confirmBtn = canConfirm
+    ? `<button class="btn-confirm btn-icon" onclick="confirmPurchase(${l.id})" title="Confirmar pago">&#10003;</button>`
+    : '<span class="act-done">&#10003;</span>';
+
+  const menuId = `menu-${l.id}`;
+  return `<div class="actions-cell">
+    ${confirmBtn}
+    <button class="btn-menu" onclick="toggleMenu(event,this,'${menuId}')">&#8942;</button>
+    <div class="action-menu" id="${menuId}">
+      <button onclick="cancelLead(${l.id});closeMenus()">Cancelar pedido</button>
+      <button class="danger" onclick="deleteLead(${l.id});closeMenus()">Eliminar</button>
+    </div>
+  </div>`;
+}
 
 function renderTable(leads) {
   const tbody = document.getElementById('leads-tbody');
   if (!tbody) return;
 
   if (!leads.length) {
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted)">Sin resultados</td></tr>';
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted)">Sin resultados</td></tr>`;
     return;
   }
 
+  const compact = window.innerWidth <= 700;
+
   tbody.innerHTML = leads.map((l, i) => `
     <tr data-id="${l.id}">
-      <td>${i + 1}</td>
-      <td>${esc(l.name)}</td>
-      <td>${esc(l.phone)}</td>
-      <td>${esc(l.city || 'â')}</td>
-      <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis">${esc(l.product_name)}</td>
-      <td>${fmt(l.value)}</td>
-      <td><span class="badge badge-${l.status}">${labelStatus(l.status)}</span></td>
-      <td>${fmtDate(l.created_at)}</td>
-      <td>
-        ${l.status === 'pending'
-          ? `<button class="btn-confirm" onclick="confirmPurchase(${l.id})">Confirmar</button>
-             <button class="btn-cancel"  onclick="cancelLead(${l.id})">Cancelar</button>`
-          : `<button class="btn-confirm btn-disabled" disabled>Confirmar</button>
-             <button class="btn-cancel btn-disabled"  disabled>Cancelar</button>`
-        }
-        <button class="btn-delete" onclick="deleteLead(${l.id})">Eliminar</button>
-      </td>
+      <td class="col-num">${i + 1}</td>
+      <td class="col-name" title="${esc(l.name)}">${esc(l.name)}</td>
+      <td class="col-phone">${esc(l.phone)}</td>
+      <td class="col-city" title="${esc(l.city || '')}">${esc(l.city || '—')}</td>
+      <td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))}</td>
+      <td class="col-val">${Number(l.value || 0).toLocaleString('es-PY')}</td>
+      <td class="col-status"><span class="badge badge-${l.status}">${labelStatus(l.status)}</span></td>
+      <td class="col-date">${fmtDateShort(l.created_at)}</td>
+      <td class="col-actions">${buildActions(l)}</td>
     </tr>
   `).join('');
 }
 
-/* ââ Confirm purchase ââ */
-async function confirmPurchase(id) {
-  if (!confirm(`Â¿Confirmar compra para lead #${id}? Esto enviarÃ¡ el evento Purchase a Meta.`)) return;
+/* ── Overflow menu ── */
+function toggleMenu(e, btn, menuId) {
+  e.stopPropagation();
+  const menu = document.getElementById(menuId);
+  if (!menu) return;
+  const wasOpen = menu.classList.contains('open');
+  closeMenus();
+  if (!wasOpen) {
+    const rect = btn.getBoundingClientRect();
+    menu.style.top   = (rect.bottom + window.scrollY + 4) + 'px';
+    menu.style.right = (window.innerWidth - rect.right) + 'px';
+    menu.classList.add('open');
+  }
+}
 
-  const row = document.querySelector(`tr[data-id="${id}"]`);
+function closeMenus() {
+  document.querySelectorAll('.action-menu.open').forEach(m => m.classList.remove('open'));
+}
+
+document.addEventListener('click', closeMenus);
+
+/* ── Confirm purchase ── */
+async function confirmPurchase(id) {
+  if (!confirm(`¿Confirmar compra para lead #${id}? Esto enviará el evento Purchase a Meta.`)) return;
+
+  const row  = document.querySelector(`tr[data-id="${id}"]`);
+  const lead = allLeads.find(l => l.id === id);
   if (row) row.style.opacity = '.5';
 
   try {
+    /* Si el lead estaba cancelado, restaurar a pending primero */
+    if (lead?.status === 'cancelled') {
+      const patch = await fetch('/api/admin-leads', {
+        method:  'PATCH',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+        body:    JSON.stringify({ id, status: 'pending' }),
+      });
+      if (!patch.ok) throw new Error('restore_failed');
+    }
+
     const res  = await fetch('/api/confirm-purchase', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
-      body: JSON.stringify({ id }),
+      body:    JSON.stringify({ id }),
     });
     const data = await res.json();
 
     if (res.ok && data.ok) {
-      alert(`â Compra confirmada para ${data.name}. Purchase enviado a Meta.`);
+      alert(`✓ Compra confirmada para ${data.name}.`);
       loadLeads();
     } else {
       alert('Error: ' + (data.error || 'desconocido'));
@@ -170,15 +303,15 @@ async function confirmPurchase(id) {
   }
 }
 
-/* ââ Cancel lead ââ */
+/* ── Cancel lead ── */
 async function cancelLead(id) {
-  if (!confirm(`Â¿Cancelar lead #${id}?`)) return;
+  if (!confirm(`¿Cancelar lead #${id}?`)) return;
 
   try {
     const res  = await fetch('/api/admin-leads', {
       method:  'PATCH',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
-      body: JSON.stringify({ id, status: 'cancelled' }),
+      body:    JSON.stringify({ id, status: 'cancelled' }),
     });
 
     if (res.ok) {
@@ -192,9 +325,10 @@ async function cancelLead(id) {
   }
 }
 
-/* ââ Delete lead ââ */
+/* ── Delete lead ── */
 async function deleteLead(id) {
-  if (!confirm(`Â¿Eliminar lead #${id} definitivamente? Esta acciÃ³n no se puede deshacer.`)) return;
+  if (!confirm(`¿Eliminar lead #${id}?`)) return;
+  if (!confirm(`Confirmar: ¿eliminar definitivamente #${id}? Esta acción no se puede deshacer.`)) return;
 
   try {
     const res  = await fetch(`/api/admin-leads?id=${id}`, {
@@ -213,7 +347,7 @@ async function deleteLead(id) {
   }
 }
 
-/* ââ Export CSV ââ */
+/* ── Export CSV ── */
 function normalizePhone(raw) {
   const digits = (raw || '').replace(/\D/g, '');
   let norm;
@@ -231,7 +365,7 @@ function exportCSV() {
   const header = 'phone,normalized_phone,first_name,last_name,city,product,value,status,created_at';
 
   const rows = leads.map(l => {
-    const parts    = (l.name || '').trim().split(/\s+/);
+    const parts     = (l.name || '').trim().split(/\s+/);
     const firstName = parts[0] || '';
     const lastName  = parts.slice(1).join(' ') || '';
     const normPhone = normalizePhone(l.phone);
@@ -249,7 +383,7 @@ function exportCSV() {
   });
 
   const csv  = [header, ...rows].join('\n');
-  const blob = new Blob(['ï»¿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href     = url;
@@ -260,10 +394,29 @@ function exportCSV() {
   URL.revokeObjectURL(url);
 }
 
-/* ââ Formatters ââ */
+/* ── Formatters ── */
+function fmtDateShort(s) {
+  if (!s) return '—';
+  const d      = new Date(s + 'Z');
+  const local  = d.toLocaleDateString('sv-SE');
+  const today  = new Date().toLocaleDateString('sv-SE');
+  const yest   = new Date(Date.now() - 86400000).toLocaleDateString('sv-SE');
+  if (local === today) return 'Hoy';
+  if (local === yest)  return 'Ayer';
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return d.getDate() + ' ' + months[d.getMonth()];
+}
+
+function fmtCompact(n) {
+  const v = Number(n || 0);
+  if (v >= 1000000) return (v / 1000000).toFixed(1).replace('.0', '') + 'M';
+  if (v >= 1000)    return Math.round(v / 1000) + 'k';
+  return String(v);
+}
 function fmt(n)    { return 'Gs. ' + Number(n || 0).toLocaleString('es-PY'); }
 function esc(s)    { return (s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-function fmtDate(s){ return s ? new Date(s + 'Z').toLocaleString('es-PY', { day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit' }) : 'â'; }
-function labelStatus(s) {
+function fmtDate(s){ return s ? new Date(s + 'Z').toLocaleString('es-PY', { day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit' }) : '—'; }
+function labelStatus(s, short = false) {
+  if (short) return { pending: 'Pend.', purchased: 'Pagado', cancelled: 'Canc.' }[s] || s;
   return { pending: 'Pendiente', purchased: 'Comprado', cancelled: 'Cancelado' }[s] || s;
 }

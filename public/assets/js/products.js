@@ -29,42 +29,42 @@ function normalizeParaguayPhone(raw) {
 
 function buildWAMsg(product, data, offerInfo) {
   const qtyLabel  = `${offerInfo.qty} unidad${offerInfo.qty > 1 ? 'es' : ''}`;
-  const express   = data.express ? ' + EnvÃ­o Express' : '';
+  const express   = data.express ? ' + Envío Express' : '';
   const colorLine = offerInfo.colors?.length
     ? `Colores: ${offerInfo.colors.join(' + ')}`
     : null;
   const lines = [
-    'Â¡Hola! Acabo de realizar un pedido en DAM VERTEX y quiero confirmar los detalles:',
+    '¡Hola! Acabo de realizar un pedido en DAM VERTEX y quiero confirmar los detalles:',
     '',
     `Nombre: ${data.name}`,
     `Producto: ${product.name} (${qtyLabel})${express}`,
     ...(colorLine ? [colorLine] : []),
     `Total: ${fmt(offerInfo.total)}`,
-    `DirecciÃ³n: ${data.referencia || 'No especificada'}`,
+    `Dirección: ${data.referencia || 'No especificada'}`,
     `Ciudad: ${data.city || 'No especificada'}`,
     `WhatsApp: ${data.phone}`,
-    `MÃ©todo de Pago: ${data.payment || 'No especificado'}`,
+    `Método de Pago: ${data.payment || 'No especificado'}`,
     '',
-    'Â¿Pueden ayudarme a coordinar el envÃ­o?',
+    '¿Pueden ayudarme a coordinar el envío?',
   ];
   return encodeURIComponent(lines.join('\n'));
 }
 
 function buildCustomOrderWAMsg(product, data, qty, total) {
   const lines = [
-    'Â¡Hola! Acabo de realizar un pedido en DAM VERTEX:',
+    '¡Hola! Acabo de realizar un pedido en DAM VERTEX:',
     '',
     `Nombre: ${data.name}`,
     `Producto: ${product.name}`,
     `Cantidad: ${qty} unidades`,
     `Total: ${fmt(total)}`,
     ...(!product.customNoVariants ? [`Colores/variantes: a coordinar por WhatsApp`] : []),
-    `DirecciÃ³n: ${data.referencia || 'No especificada'}`,
+    `Dirección: ${data.referencia || 'No especificada'}`,
     `Ciudad: ${data.city || 'No especificada'}`,
     `WhatsApp: ${data.phone}`,
-    `MÃ©todo de Pago: ${data.payment || 'No especificado'}`,
+    `Método de Pago: ${data.payment || 'No especificado'}`,
     '',
-    'Â¿Pueden confirmar el pedido?',
+    '¿Pueden confirmar el pedido?',
   ];
   return encodeURIComponent(lines.join('\n'));
 }
@@ -305,7 +305,7 @@ DV.initForm = function (product) {
       const phoneEl = document.getElementById('m-phone');
       const errEl   = phoneEl?.closest('.form-group')?.querySelector('.form-error-msg');
       if (errEl) {
-        errEl.textContent = 'RevisÃ¡ tu nÃºmero de WhatsApp. PodÃ©s continuar, pero un nÃºmero real ayuda a coordinar el pedido.';
+        errEl.textContent = 'Revisá tu número de WhatsApp. Podés continuar, pero un número real ayuda a coordinar el pedido.';
         errEl.classList.add('visible');
         errEl.style.color = '#f59e0b';
       }
@@ -448,15 +448,15 @@ function validateModalForm() {
   clearModalErrors();
 
   if (!nameEl?.value.trim()) {
-    showError(nameEl, 'IngresÃ¡ tu nombre'); ok = false;
+    showError(nameEl, 'Ingresá tu nombre'); ok = false;
   }
   if (!phone) {
-    showError(phoneEl, 'El telÃ©fono es obligatorio'); ok = false;
+    showError(phoneEl, 'El teléfono es obligatorio'); ok = false;
   } else if (!/^[0-9+\s\-]{6,16}$/.test(phone)) {
-    showError(phoneEl, 'TelÃ©fono invÃ¡lido'); ok = false;
+    showError(phoneEl, 'Teléfono inválido'); ok = false;
   }
   if (!cityEl?.value.trim()) {
-    showError(cityEl, 'IngresÃ¡ tu ciudad'); ok = false;
+    showError(cityEl, 'Ingresá tu ciudad'); ok = false;
   }
 
   return ok;

@@ -5,19 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Admin — Dam Vertex</title>
   <link rel="stylesheet" href="/assets/css/styles.css">
-  <style>
-    .btn-delete {
-      background: transparent;
-      border: 1px solid #ef4444;
-      color: #ef4444;
-      font-size: 12px;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 4px;
-    }
-    .btn-delete:hover { background: #ef4444; color: #fff; }
-  </style>
 </head>
 <body class="admin-page">
 
@@ -65,6 +52,14 @@
       </div>
     </div>
 
+    <!-- Date filters -->
+    <div class="admin-date-filters">
+      <button class="date-btn date-btn--active" id="date-all">Todas</button>
+      <button class="date-btn" id="date-today">Hoy</button>
+      <button class="date-btn" id="date-yesterday">Ayer</button>
+      <input type="date" id="date-picker" class="date-picker">
+    </div>
+
     <!-- Filters -->
     <div class="admin-filters">
       <input
@@ -97,23 +92,22 @@
       <table class="admin-table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Teléfono</th>
-            <th>Ciudad</th>
-            <th>Producto</th>
-            <th>Valor</th>
-            <th>Estado</th>
-            <th>Fecha</th>
-            <th>Acciones</th>
+            <th class="col-num">#</th>
+            <th class="col-name">Nombre</th>
+            <th class="col-phone">Teléfono</th>
+            <th class="col-city">Ciudad</th>
+            <th class="col-prod">Producto</th>
+            <th class="col-val">Total</th>
+            <th class="col-status">Estado</th>
+            <th class="col-date">Fecha</th>
+            <th class="col-actions">Acciones</th>
           </tr>
         </thead>
         <tbody id="leads-tbody">
           <tr>
             <td colspan="9" style="text-align:center;padding:48px;color:var(--muted)">
               Iniciá sesión para ver los leads
-            </td>
-          </tr>
+            </td></tr>
         </tbody>
       </table>
     </div>
