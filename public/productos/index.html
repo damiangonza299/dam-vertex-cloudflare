@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="description" content="Todos los productos Dam Vertex. Envío gratis en el día en Paraguay.">
   <title>Productos — Dam Vertex</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <script src="/assets/js/site-version.js"></script>
+  <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
 </head>
 <body>
 
@@ -62,7 +63,12 @@
   &copy; 2025 Dam Vertex Paraguay
 </footer>
 
-<script src="/assets/js/tracking.js"></script>
+<script>
+(function(){
+  var v = window.DAM_VERTEX_VERSION || '1';
+  document.write('<script src="/assets/js/tracking.js?v=' + v + '"><\/script>');
+})();
+</script>
 
 </body>
 </html>

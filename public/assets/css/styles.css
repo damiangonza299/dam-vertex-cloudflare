@@ -1,4 +1,4 @@
-/* =====================================================
+﻿/* =====================================================
    Dam Vertex — Global Stylesheet
    ===================================================== */
 
@@ -102,7 +102,8 @@ details summary::-webkit-details-marker { display: none; }
 .price-block {
   display: flex;
   align-items: baseline;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 8px 12px;
   margin: 24px 0;
 }
 .price-main {
@@ -307,7 +308,7 @@ details summary::-webkit-details-marker { display: none; }
   border: 1px solid rgba(255,255,255,.1);
   border-radius: var(--radius-sm);
   padding: 13px 16px;
-  font-size: 15px;
+  font-size: 16px;
   color: #fff;
   outline: none;
   transition: border-color .2s;
@@ -579,7 +580,7 @@ details summary::-webkit-details-marker { display: none; }
   border: 1px solid rgba(255,255,255,.1);
   border-radius: var(--radius-sm);
   padding: 10px 14px;
-  font-size: 14px;
+  font-size: 16px;
   color: #fff;
   outline: none;
   cursor: pointer;
@@ -664,7 +665,13 @@ details summary::-webkit-details-marker { display: none; }
 /* ── Responsive ── */
 @media (max-width: 700px) {
   .admin-stats { flex-direction: column; }
+  .admin-content { padding: 16px; }
   .admin-search { width: 100%; }
+  .admin-filters { flex-direction: column; }
+  .admin-filters > * { width: 100%; box-sizing: border-box; }
+  .admin-table td:last-child { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .btn-cancel { margin-left: 0; }
+  .btn-delete { margin-left: 0; }
 }
 
 /* =====================================================
@@ -696,7 +703,7 @@ details summary::-webkit-details-marker { display: none; }
   background: #141414;
   border: 1px solid rgba(255,255,255,.12);
   border-radius: 16px;
-  padding: 32px 28px 36px;
+  padding: 56px 28px 36px;
   width: 100%;
   max-width: 520px;
   margin: auto;
@@ -734,15 +741,15 @@ details summary::-webkit-details-marker { display: none; }
   font-size: 11px;
   color: rgba(255,200,60,.75);
   font-weight: 600;
-  margin-top: 10px;
-  margin-bottom: 2px;
+  margin: 14px 0 16px;
   letter-spacing: .01em;
 }
 
 .modal-close {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -863,7 +870,7 @@ details summary::-webkit-details-marker { display: none; }
   border: 1px solid rgba(255,255,255,.1);
   border-radius: var(--radius-sm);
   padding: 13px 40px 13px 16px;
-  font-size: 15px;
+  font-size: 16px;
   color: #fff;
   outline: none;
   transition: border-color .2s;
@@ -933,6 +940,7 @@ details summary::-webkit-details-marker { display: none; }
 }
 .confirm-intent.checked,
 .confirm-intent:has(input:checked) { border-color: var(--accent); }
+.confirm-intent.error             { border-color: var(--red); }
 .confirm-intent input[type="checkbox"] {
   width: 18px;
   height: 18px;
@@ -946,6 +954,16 @@ details summary::-webkit-details-marker { display: none; }
   color: rgba(255,255,255,.75);
   line-height: 1.45;
 }
+.confirm-error-msg {
+  margin-top: 6px;
+}
+
+/* Botón final — verde WhatsApp */
+#modal-submit-btn {
+  background: #25d366;
+  color: #fff;
+}
+#modal-submit-btn:hover { opacity: .9; }
 
 /* Modal form layout */
 .modal-form {
@@ -990,7 +1008,75 @@ details summary::-webkit-details-marker { display: none; }
 .theme-reloj .confirm-intent:has(input:checked) { border-color: rgba(255,255,255,.45); }
 
 @media (max-width: 500px) {
-  .modal-box { padding: 24px 16px 28px; }
+  .modal-box { padding: 52px 16px 28px; }
   .modal-title { font-size: 19px; }
   .offer-price { font-size: 15px; }
 }
+
+/* Delivery badges — hero trust block */
+.delivery-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 16px 0 0;
+}
+.db-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 6px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  color: #cbd5e1;
+}
+.db-badge.db-green {
+  color: #4ade80;
+  border-color: rgba(74,222,128,.25);
+  background: rgba(74,222,128,.08);
+}
+
+/* Variant selectors spacing */
+#variant-selectors .form-group + .form-group {
+  margin-top: 14px;
+}
+
+/* Quantity stepper */
+.qty-stepper {
+  display: flex;
+  align-items: center;
+}
+.qty-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background .15s;
+  line-height: 1;
+}
+.qty-btn:hover:not(:disabled) { background: rgba(255,255,255,.12); }
+.qty-btn:disabled { opacity: .35; cursor: not-allowed; }
+.qty-minus { border-radius: 6px 0 0 6px; border-right: none; }
+.qty-plus  { border-radius: 0 6px 6px 0; border-left: none; }
+.qty-val {
+  min-width: 52px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  background: #1a1a1a;
+  border-top: 1px solid rgba(255,255,255,.15);
+  border-bottom: 1px solid rgba(255,255,255,.15);
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* iOS zoom prevention — inputs < 16px trigger auto-zoom on Safari */
+input, select, textarea { font-size: 16px !important; }

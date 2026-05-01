@@ -55,7 +55,7 @@ export async function onRequestPost({ request, env }) {
         content_type:  'product',
         value:         lead.value || 0,
         currency:      lead.currency || 'PYG',
-        num_items:     1,
+        num_items:     lead.quantity || 1,
       },
     };
 
@@ -83,6 +83,59 @@ export async function onRequestPost({ request, env }) {
     await env.DB.prepare(
       `UPDATE leads SET status = 'purchased', purchased_at = datetime('now') WHERE id = ?`
     ).bind(id).run();
+
+    /* HighValuePurchase / VIPPurchase — server-side only, no browser counterpart */
+    const saleValue = lead.value || 0;
+    if (saleValue >= 300000 && pixelId && accessToken) {
+      const ts           = Math.floor(Date.now() / 1000);
+      const customEvents = [];
+
+      customEvents.push({
+        event_name:    'HighValuePurchase',
+        event_time:    ts,
+        event_id:      `hvp_${lead.id}_${ts}`,
+        action_source: 'website',
+        user_data,
+        custom_data: {
+          content_name: lead.product_name,
+          content_ids:  [slugify(lead.product_name)],
+          content_type: 'product',
+          value:        saleValue,
+          currency:     lead.currency || 'PYG',
+          num_items:    lead.quantity || 1,
+        },
+      });
+
+      if (saleValue >= 500000) {
+        customEvents.push({
+          event_name:    'VIPPurchase',
+          event_time:    ts,
+          event_id:      `vip_${lead.id}_${ts}`,
+          action_source: 'website',
+          user_data,
+          custom_data: {
+            content_name: lead.product_name,
+            content_ids:  [slugify(lead.product_name)],
+            content_type: 'product',
+            value:        saleValue,
+            currency:     lead.currency || 'PYG',
+            num_items:    lead.quantity || 1,
+          },
+        });
+      }
+
+      await fetch(
+        `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`,
+        {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({
+            data: customEvents,
+            ...(testCode && { test_event_code: testCode }),
+          }),
+        },
+      );
+    }
 
     return json({ ok: true, name: lead.name, event_id });
 

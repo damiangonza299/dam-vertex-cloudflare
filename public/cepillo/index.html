@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Cepillo Eléctrico Recargable con 4 cabezales intercambiables. Limpieza profunda para baño y cocina. Envío gratis en el día.">
   <title>Cepillo Eléctrico Recargable — Dam Vertex</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <script src="/assets/js/site-version.js"></script>
+  <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
   <style>
     /* ── Cepillo theme ── */
     :root { --accent: #3b82f6; }
@@ -14,7 +15,7 @@
     /* Hero */
     .hero {
       background: #0f172a;
-      padding: clamp(48px,10vw,80px) clamp(20px,5vw,64px);
+      padding: clamp(24px,6vw,56px) clamp(20px,5vw,64px);
     }
     .hero__inner {
       display: grid;
@@ -105,7 +106,7 @@
 
 <!-- Nav -->
 <nav class="nav">
-  <div class="nav__logo">Dam<span>Vertex</span></div>
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
   <a class="nav__cta" data-scroll-form href="#">Pedir ahora con envío gratis</a>
 </nav>
 
@@ -135,12 +136,11 @@
         <span class="hero__tag">4 Cabezales</span>
         <span class="hero__tag">360°</span>
       </div>
-      <div class="trust-mini">
-        <span class="green">✓ Envío GRATIS</span><span class="dot">·</span>
-        <span>Envío en el día</span><span class="dot">·</span>
-        <span>Central: al recibir</span><span class="dot">·</span>
-        <span>Interior: pago anticipado</span><span class="dot">·</span>
-        <span>Atención rápida</span>
+      <div class="delivery-badges">
+        <span class="db-badge db-green">🚚 Entrega en el día</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge">📦 Interior: pago anticipado</span>
       </div>
     </div>
   </div>
@@ -373,28 +373,65 @@
           <span class="offer-saving">3 unidades con 35% OFF</span>
         </label>
 
+        <label class="offer-option">
+          <input type="radio" name="offer" value="custom">
+          <div class="offer-content">
+            <span class="offer-qty">4+ unidades — 40% OFF</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-custom">—</span>
+              <span class="offer-price" id="offer-price-custom">—</span>
+            </div>
+          </div>
+        </label>
+
       </div>
     </div>
     <p class="modal-price-warning">⚠️ Este precio puede cambiar en cualquier momento</p>
+
+    <!-- Variantes de color (se rellena por JS según cantidad) -->
+    <div class="modal-section" id="variant-section" style="display:none">
+      <span class="modal-section-label">Elegí el color de cada unidad</span>
+      <div id="variant-selectors"></div>
+    </div>
+
+    <!-- Pedido personalizado (más de 3 unidades) -->
+    <div class="modal-section" id="custom-order-section" style="display:none">
+      <span class="modal-section-label">Más de 3 unidades con 40% OFF</span>
+      <p style="font-size:13px;color:var(--muted);margin:4px 0 14px">Elegí la cantidad y coordinamos colores por WhatsApp</p>
+      <div class="form-group">
+        <label>Cantidad</label>
+        <div class="qty-stepper">
+          <button type="button" class="qty-btn qty-minus" id="m-custom-qty-minus" aria-label="Disminuir cantidad" disabled>−</button>
+          <span class="qty-val" id="m-custom-qty-display">4</span>
+          <button type="button" class="qty-btn qty-plus" id="m-custom-qty-plus" aria-label="Aumentar cantidad">+</button>
+          <input type="hidden" id="m-custom-qty" value="4">
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <span id="custom-compare-display" style="font-size:13px;color:var(--muted);text-decoration:line-through">—</span>
+        <span id="custom-price-display" style="font-size:18px;font-weight:700;color:#fff">—</span>
+        <span style="font-size:11px;font-weight:700;color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);padding:2px 7px;border-radius:4px">40% OFF</span>
+      </div>
+    </div>
 
     <!-- Formulario -->
     <form class="modal-form" id="modal-form" novalidate>
 
       <div class="form-group">
-        <label for="m-name">Nombre y apellido *</label>
-        <input type="text" id="m-name" name="name" placeholder="Tu nombre completo" autocomplete="name">
+        <label for="m-name">Nombre y apellido</label>
+        <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
         <span class="form-error-msg"></span>
       </div>
 
       <div class="form-group">
-        <label for="m-phone">Teléfono (WhatsApp) *</label>
+        <label for="m-phone">Teléfono (WhatsApp)</label>
         <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
         <span class="form-error-msg"></span>
       </div>
 
       <div class="form-group">
-        <label for="m-city">Ciudad *</label>
-        <input type="text" id="m-city" name="city" placeholder="Asunción, Fernando de la Mora..." autocomplete="address-level2">
+        <label for="m-city">Ciudad</label>
+        <input type="text" id="m-city" name="city" placeholder="Asunción, Fernando, Villa Elisa..." autocomplete="address-level2">
         <span class="form-error-msg"></span>
       </div>
 
@@ -423,11 +460,12 @@
 
       <label class="confirm-intent">
         <input type="checkbox" id="m-confirm" name="confirm">
-        <span class="confirm-text">Voy a recibir y pagar el producto al momento de la entrega</span>
+        <span class="confirm-text">Confirmo que tengo intención real de comprar este producto</span>
       </label>
+      <span class="confirm-error-msg form-error-msg">Debes confirmar tu intención de compra para continuar</span>
 
       <div class="form-submit">
-        <button type="submit" class="btn btn-primary" id="modal-submit-btn" disabled>
+        <button type="submit" class="btn btn-primary" id="modal-submit-btn">
           Hacer mi pedido por WhatsApp
         </button>
       </div>
@@ -447,17 +485,26 @@
 </div>
 
 <footer class="footer">
-  &copy; 2025 Dam Vertex · <a href="/admin/" style="opacity:.4">Admin</a>
+  &copy; 2026 DAM VERTEX
 </footer>
 
 <!-- Scripts -->
-<script src="/assets/js/tracking.js"></script>
-<script src="/assets/js/products.js"></script>
+<script>
+(function(){
+  var v = window.DAM_VERTEX_VERSION || '1';
+  document.write('<script src="/assets/js/tracking.js?v=' + v + '"><\/script>');
+  document.write('<script src="/assets/js/products.js?v=' + v + '"><\/script>');
+})();
+</script>
 <script>
   const PRODUCT = {
     name:  'Cepillo Eléctrico Recargable (4 Cabezales)',
     slug:  'cepillo',
     price: 159000,
+    variants: {
+      type:    'color',
+      options: ['Negro', 'Blanco'],
+    },
   };
 
   document.addEventListener('DOMContentLoaded', () => {

@@ -6,7 +6,7 @@
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
-  'Access-Control-Allow-Methods': 'GET, PATCH, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, PATCH, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
@@ -44,6 +44,22 @@ export async function onRequestPatch({ request, env }) {
       'UPDATE leads SET status = ? WHERE id = ?'
     ).bind(status, id).run();
 
+    return json({ ok: true });
+  } catch (err) {
+    return json({ ok: false, error: err.message }, 500);
+  }
+}
+
+/* ── DELETE — eliminar lead ── */
+export async function onRequestDelete({ request, env }) {
+  if (!isAuthorized(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+
+  try {
+    const url = new URL(request.url);
+    const id  = url.searchParams.get('id');
+    if (!id) return json({ ok: false, error: 'id requerido' }, 400);
+
+    await env.DB.prepare('DELETE FROM leads WHERE id = ?').bind(parseInt(id)).run();
     return json({ ok: true });
   } catch (err) {
     return json({ ok: false, error: err.message }, 500);

@@ -29,10 +29,23 @@ function getCookie(name) {
   return (document.cookie.split(';').find(c => c.trim().startsWith(name + '=')) || '').split('=')[1] || '';
 }
 
+function getFbc() {
+  const existing = getCookie('_fbc');
+  if (existing && existing.startsWith('fb.1.')) return existing;
+
+  const fbclid = new URLSearchParams(location.search).get('fbclid');
+  if (!fbclid) return '';
+
+  const fbc     = `fb.1.${Math.floor(Date.now() / 1000)}.${fbclid}`;
+  const expires = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toUTCString();
+  document.cookie = `_fbc=${fbc}; path=/; expires=${expires}; SameSite=Lax`;
+  return fbc;
+}
+
 function getClientData() {
   return {
     fbp:        getCookie('_fbp'),
-    fbc:        getCookie('_fbc'),
+    fbc:        getFbc(),
     user_agent: navigator.userAgent,
     page_url:   location.href,
   };

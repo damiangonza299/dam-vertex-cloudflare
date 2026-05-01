@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Lentes anti luz azul rojos. Protegé tus ojos de noche, dormí mejor. Sin receta. Envío gratis en el día.">
   <title>Lentes Anti Luz Azul Rojos — Dam Vertex</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <script src="/assets/js/site-version.js"></script>
+  <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
   <style>
     /* ── Lentes theme (noche / violeta) ── */
     :root { --accent: #7c3aed; }
@@ -14,7 +15,7 @@
     /* Hero */
     .hero {
       background: linear-gradient(135deg, #07070f 0%, #130b2e 60%, #0d0d1a 100%);
-      padding: clamp(48px,10vw,80px) clamp(20px,5vw,64px);
+      padding: clamp(24px,6vw,56px) clamp(20px,5vw,64px);
     }
     .hero__inner {
       display: grid;
@@ -32,7 +33,7 @@
     }
     .hero__img {
       width: 100%; display: block;
-      aspect-ratio: 4/5;
+      aspect-ratio: 1/1;
       object-fit: cover;
       background: #12122a;
     }
@@ -83,7 +84,7 @@
     .t-list--pos li::before { content: '✓'; color: #4ade80; }
     .t-divider { display: flex; align-items: center; justify-content: center; padding-top: 2px; }
     .t-divider svg { width: 24px; height: 24px; color: #7c3aed; }
-    .t-img { width: 100%; border-radius: 12px; aspect-ratio: 1; object-fit: cover; margin-bottom: 14px; border: 1px solid rgba(124,58,237,.2); background: #12122a; }
+    .t-img { width: 100%; border-radius: 12px; height: auto; object-fit: contain; margin-bottom: 14px; border: 1px solid rgba(124,58,237,.2); background: #12122a; }
 
     /* Beneficios */
     .benefits {
@@ -122,7 +123,7 @@
     @media (max-width: 700px) {
       .hero__inner { grid-template-columns: 1fr; }
       .hero__img-frame { order: -1; }
-      .hero__img { aspect-ratio: 3/2; }
+      .hero__img { aspect-ratio: 1/1; }
       .transform__grid { grid-template-columns: 1fr; }
       .t-divider { display: none; }
     }
@@ -132,7 +133,7 @@
 
 <!-- Nav -->
 <nav class="nav">
-  <div class="nav__logo">Dam<span>Vertex</span></div>
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
   <a class="nav__cta" data-scroll-form href="#">Pedir ahora con envío gratis</a>
 </nav>
 
@@ -144,28 +145,36 @@
       <h1 class="hero__h">Ojos cansados a la noche.<br>Esto los cambia.</h1>
       <p class="hero__sub">Anti luz azul real. Sin receta. Sin cambiar tu rutina.</p>
       <div class="price-block">
-        <span class="price-main">Gs. 99.000</span>
-        <span class="price-badge">¡Disponibles!</span>
+        <span class="price-main">Gs. 165.000</span>
+        <span class="price-compare">Gs. 195.000</span>
+        <span class="price-badge">15% OFF</span>
       </div>
       <button class="btn btn-primary" data-scroll-form>Pedir ahora con envío gratis →</button>
-      <div class="trust-mini">
-        <span class="green">✓ Envío GRATIS</span><span class="dot">·</span>
-        <span>Envío en el día</span><span class="dot">·</span>
-        <span>Central: al recibir</span><span class="dot">·</span>
-        <span>Interior: pago anticipado</span><span class="dot">·</span>
-        <span>Atención rápida</span>
+      <div class="delivery-badges">
+        <span class="db-badge db-green">🚚 Entrega en el día</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge">📦 Interior: pago anticipado</span>
       </div>
       <p class="scroll-hint">↓ Por qué funcionan</p>
     </div>
     <div class="hero__img-frame">
-      <!-- Reemplazar con imagen real del producto -->
-      <img
-        src="/assets/img/lentes-placeholder.jpg"
-        alt="Lentes anti luz azul rojos"
+      <video
         class="hero__img"
-        loading="eager"
-        fetchpriority="high"
-        onerror="this.style.minHeight='400px';this.style.background='#12122a'">
+        controls
+        playsinline
+        preload="auto"
+        poster="/assets/img/anuncio%201%20-%20dolor%20-%201080.png"
+        onerror="this.style.display='none';document.getElementById('lentes-video-fallback').style.display='block'">
+        <source src="/assets/video/video-lentes-1080.mp4" type="video/mp4">
+      </video>
+      <img
+        id="lentes-video-fallback"
+        src="/assets/img/anuncio%201%20-%20dolor%20-%201080.png"
+        alt="Lentes Anti Luz Azul Rojos"
+        class="hero__img"
+        style="display:none"
+        loading="eager">
       <div class="hero__img-glow"></div>
     </div>
   </div>
@@ -208,8 +217,11 @@
     </div>
     <div>
       <p class="t-tag t-tag--pos">Con los lentes</p>
-      <img src="/assets/img/lentes-placeholder.jpg" alt="Lentes anti luz azul" class="t-img" loading="lazy"
-           onerror="this.style.background='#12122a';this.style.minHeight='180px'">
+      <img
+        src="/assets/img/ANUNCIO%203%20-%20ANTES%20vs%20DESPU%C3%89S%20-%201920.png"
+        alt="Antes vs después con lentes anti luz azul"
+        class="t-img"
+        loading="lazy">
       <ul class="t-list t-list--pos">
         <li>Filtro real sobre luz azul</li>
         <li>Transición tranquila al sueño</li>
@@ -389,28 +401,59 @@
           <span class="offer-saving">3 unidades con 35% OFF</span>
         </label>
 
+        <label class="offer-option">
+          <input type="radio" name="offer" value="custom">
+          <div class="offer-content">
+            <span class="offer-qty">4+ unidades — 40% OFF</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-custom">—</span>
+              <span class="offer-price" id="offer-price-custom">—</span>
+            </div>
+          </div>
+        </label>
+
       </div>
     </div>
     <p class="modal-price-warning">⚠️ Este precio puede cambiar en cualquier momento</p>
+
+    <!-- Pedido personalizado (más de 3 unidades) -->
+    <div class="modal-section" id="custom-order-section" style="display:none">
+      <span class="modal-section-label">Más de 3 unidades con 40% OFF</span>
+      <p style="font-size:13px;color:var(--muted);margin:4px 0 14px">Elegí la cantidad que necesitás</p>
+      <div class="form-group">
+        <label>Cantidad</label>
+        <div class="qty-stepper">
+          <button type="button" class="qty-btn qty-minus" id="m-custom-qty-minus" aria-label="Disminuir cantidad" disabled>−</button>
+          <span class="qty-val" id="m-custom-qty-display">4</span>
+          <button type="button" class="qty-btn qty-plus" id="m-custom-qty-plus" aria-label="Aumentar cantidad">+</button>
+          <input type="hidden" id="m-custom-qty" value="4">
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <span id="custom-compare-display" style="font-size:13px;color:var(--muted);text-decoration:line-through">—</span>
+        <span id="custom-price-display" style="font-size:18px;font-weight:700;color:#fff">—</span>
+        <span style="font-size:11px;font-weight:700;color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);padding:2px 7px;border-radius:4px">40% OFF</span>
+      </div>
+    </div>
 
     <!-- Formulario -->
     <form class="modal-form" id="modal-form" novalidate>
 
       <div class="form-group">
-        <label for="m-name">Nombre y apellido *</label>
-        <input type="text" id="m-name" name="name" placeholder="Tu nombre completo" autocomplete="name">
+        <label for="m-name">Nombre y apellido</label>
+        <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
         <span class="form-error-msg"></span>
       </div>
 
       <div class="form-group">
-        <label for="m-phone">Teléfono (WhatsApp) *</label>
+        <label for="m-phone">Teléfono (WhatsApp)</label>
         <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
         <span class="form-error-msg"></span>
       </div>
 
       <div class="form-group">
-        <label for="m-city">Ciudad *</label>
-        <input type="text" id="m-city" name="city" placeholder="Asunción, Fernando de la Mora..." autocomplete="address-level2">
+        <label for="m-city">Ciudad</label>
+        <input type="text" id="m-city" name="city" placeholder="Asunción, Fernando, Villa Elisa..." autocomplete="address-level2">
         <span class="form-error-msg"></span>
       </div>
 
@@ -439,11 +482,12 @@
 
       <label class="confirm-intent">
         <input type="checkbox" id="m-confirm" name="confirm">
-        <span class="confirm-text">Voy a recibir y pagar el producto al momento de la entrega</span>
+        <span class="confirm-text">Confirmo que tengo intención real de comprar este producto</span>
       </label>
+      <span class="confirm-error-msg form-error-msg">Debes confirmar tu intención de compra para continuar</span>
 
       <div class="form-submit">
-        <button type="submit" class="btn btn-primary" id="modal-submit-btn" disabled>
+        <button type="submit" class="btn btn-primary" id="modal-submit-btn">
           Hacer mi pedido por WhatsApp
         </button>
       </div>
@@ -463,17 +507,23 @@
 </div>
 
 <footer class="footer">
-  &copy; 2025 Dam Vertex · <a href="/admin/" style="opacity:.4">Admin</a>
+  &copy; 2026 DAM VERTEX
 </footer>
 
 <!-- Scripts -->
-<script src="/assets/js/tracking.js"></script>
-<script src="/assets/js/products.js"></script>
+<script>
+(function(){
+  var v = window.DAM_VERTEX_VERSION || '1';
+  document.write('<script src="/assets/js/tracking.js?v=' + v + '"><\/script>');
+  document.write('<script src="/assets/js/products.js?v=' + v + '"><\/script>');
+})();
+</script>
 <script>
   const PRODUCT = {
-    name:  'Lentes Anti Luz Azul Rojos',
-    slug:  'lentes',
-    price: 99000,
+    name:             'Lentes Anti Luz Azul Rojos',
+    slug:             'lentes',
+    price:            165000,
+    customNoVariants: true,
   };
 
   document.addEventListener('DOMContentLoaded', () => {
