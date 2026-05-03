@@ -80,10 +80,18 @@ async function checkProductStock(slug, qty, variant) {
 
     const p = data.product;
 
-    if (!p.active) return { ok: false, error: 'Producto no disponible' };
+if (!p.active) return { ok: false, error: 'Producto no disponible' };
 
-    if (variant && p.variants) {
-      const selectedVariants = Array.isArray(variant) ? variant : [variant];
+/* Combo 3: si no hay 3 unidades reales en stock total, mostrar mensaje total antes de validar colores */
+if (qty === 3 && Array.isArray(variant) && Number(p.stock_total) < 3) {
+  return {
+    ok: false,
+    error: `Solo nos quedan ${Number(p.stock_total)} unidades disponibles en stock.`
+  };
+}
+
+if (variant && p.variants) {
+  const selectedVariants = Array.isArray(variant) ? variant : [variant];
 
       const requestedByColor = {};
       selectedVariants.forEach(color => {
