@@ -42,13 +42,36 @@ if (IS_DELIVERY) {
   const exportBtn = document.getElementById('export-csv-btn');
   if (exportBtn) exportBtn.style.display = 'none';
 
-  const productsTab = document.querySelector('.admin-tab[data-tab="products"]');
-  if (productsTab) productsTab.style.display = 'none';
+  // 🔒 Bloquear edición en productos (solo visual)
+  const observer = new MutationObserver(() => {
+    const productInputs = document.querySelectorAll(
+      '[data-tab-content="products"] input, [data-tab-content="products"] select, [data-tab-content="products"] textarea'
+    );
 
-  const leadsTab = document.querySelector('.admin-tab[data-tab="leads"]');
-  if (leadsTab) leadsTab.style.display = 'none';
+    productInputs.forEach(el => {
+      el.disabled = true;
+    });
+
+    const productButtons = document.querySelectorAll(
+      '[data-tab-content="products"] button'
+    );
+
+    productButtons.forEach(btn => {
+      const text = btn.textContent.toLowerCase();
+
+      if (
+        text.includes('guardar') ||
+        text.includes('crear') ||
+        text.includes('editar') ||
+        text.includes('eliminar')
+      ) {
+        btn.style.display = 'none';
+      }
+    });
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
 }
-
   const dp = document.getElementById('date-picker');
   if (dp) dp.value = new Date().toLocaleDateString('sv-SE');
 
