@@ -398,15 +398,23 @@
     <div class="modal-section" id="custom-order-section" style="display:none">
       <span class="modal-section-label">Más de 3 unidades con 40% OFF</span>
       <p style="font-size:13px;color:var(--muted);margin:4px 0 14px">Elegí la cantidad y coordinamos colores por WhatsApp</p>
-      <div class="form-group">
-        <label>Cantidad</label>
-        <div class="qty-stepper">
-          <button type="button" class="qty-btn qty-minus" id="m-custom-qty-minus" aria-label="Disminuir cantidad" disabled>−</button>
-          <span class="qty-val" id="m-custom-qty-display">4</span>
-          <button type="button" class="qty-btn qty-plus" id="m-custom-qty-plus" aria-label="Aumentar cantidad">+</button>
-          <input type="hidden" id="m-custom-qty" value="4">
-        </div>
-      </div>
+<div class="form-group">
+  <label>Cantidad</label>
+  <div class="qty-stepper">
+    <button type="button" class="qty-btn qty-minus" id="m-custom-qty-minus" aria-label="Disminuir cantidad" disabled>−</button>
+    <span class="qty-val" id="m-custom-qty-display">4</span>
+    <button type="button" class="qty-btn qty-plus" id="m-custom-qty-plus" aria-label="Aumentar cantidad">+</button>
+    <input type="hidden" id="m-custom-qty" value="4">
+  </div>
+</div>
+
+<div class="form-group" id="custom-variant-section" style="display:none;margin-top:14px">
+    <label>¿Cuántos querés de cada color?</label>
+  <p style="font-size:12px;color:var(--muted);margin:4px 0 10px">
+    La suma debe coincidir con la cantidad elegida.
+  </p>
+  <div id="custom-variant-rows"></div>
+</div>
       <div style="margin-top:12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
         <span id="custom-compare-display" style="font-size:13px;color:var(--muted);text-decoration:line-through">—</span>
         <span id="custom-price-display" style="font-size:18px;font-weight:700;color:#fff">—</span>
@@ -453,7 +461,6 @@
           <option value="">Seleccioná...</option>
           <option value="Transferencia">Transferencia</option>
           <option value="Efectivo">Efectivo</option>
-          <option value="Débito">Débito</option>
         </select>
       </div>
 

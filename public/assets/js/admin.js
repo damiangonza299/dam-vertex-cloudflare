@@ -263,8 +263,8 @@ function renderTable(leads) {
       <td class="col-num">${i + 1}</td>
       <td class="col-name" title="${esc(l.name)}">${shortName(l.name)}</td>
       <td class="col-phone">${esc(l.phone)}</td>
-      <td class="col-city" title="${esc(l.city || '')}">${esc(l.city || '—')}</td>
-      <td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))}</td>
+<td class="col-city" title="${esc(l.city || '')}">${formatCity(l.city)}</td>
+<td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))} (${Number(l.quantity || 1)})</td>
       <td class="col-val">${Number(l.value || 0).toLocaleString('es-PY')}</td>
       <td class="col-status"><span class="badge badge-${l.status}">${labelStatus(l.status)}</span></td>
       <td class="col-date">${fmtDateShort(l.created_at)}</td>
@@ -449,6 +449,26 @@ function shortName(s) {
   const parts = (s || '').trim().split(/\s+/);
   if (parts.length <= 2) return esc(s);
   return esc(parts[0] + ' ' + parts[parts.length - 1]);
+}
+function formatCity(cityRaw) {
+  if (!cityRaw) return '—';
+
+  let city = String(cityRaw)
+    .toLowerCase()
+    .replace(/,/g, ' ')
+    .replace(/\bparaguay\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!city) return '—';
+
+  if (city.includes('pedro juan')) return 'PJC';
+  if (city.includes('san pedro')) return 'San Pedro';
+  if (city.includes('villarrica')) return 'Villarrica';
+
+  const first = city.split(' ')[0];
+
+  return first.charAt(0).toUpperCase() + first.slice(1);
 }
 function fmtDate(s){ return s ? new Date(s + 'Z').toLocaleString('es-PY', { day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit' }) : '—'; }
 function labelStatus(s, short = false) {

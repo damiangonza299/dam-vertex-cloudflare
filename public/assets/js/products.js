@@ -50,15 +50,19 @@ function buildWAMsg(product, data, offerInfo) {
   return encodeURIComponent(lines.join('\n'));
 }
 
-function buildCustomOrderWAMsg(product, data, qty, total) {
+function buildCustomOrderWAMsg(product, data, qty, total, colors) {
+  const colorLine = colors?.length
+    ? `Colores: ${colors.join(' + ')}`
+    : (!product.customNoVariants ? 'Colores/variantes: a coordinar por WhatsApp' : null);
+
   const lines = [
     '¡Hola! Acabo de realizar un pedido en DAM VERTEX:',
     '',
     `Nombre: ${data.name}`,
     `Producto: ${product.name}`,
     `Cantidad: ${qty} unidades`,
+    ...(colorLine ? [colorLine] : []),
     `Total: ${fmt(total)}`,
-    ...(!product.customNoVariants ? [`Colores/variantes: a coordinar por WhatsApp`] : []),
     `Dirección: ${data.referencia || 'No especificada'}`,
     `Ciudad: ${data.city || 'No especificada'}`,
     `WhatsApp: ${data.phone}`,
@@ -345,7 +349,65 @@ DV.initForm = function (product) {
     if (cd) cd.textContent = fmt(compare);
     if (pd) pd.textContent = fmt(final);
   }
+function renderCustomVariantQty(qty) {
+  const section = document.getElementById('custom-variant-section');
+  const rows    = document.getElementById('custom-variant-rows');
 
+  if (!section || !rows) return;
+
+  if (!product.variants || product.customNoVariants) {
+    section.style.display = 'none';
+    rows.innerHTML = '';
+    return;
+  }
+
+  section.style.display = 'block';
+
+  rows.innerHTML = product.variants.options.map(color => `
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px">
+      <span style="font-size:14px;color:#fff">${color}</span>
+      <input
+        type="number"
+        class="custom-variant-qty"
+        data-color="${color}"
+        min="0"
+        max="${qty}"
+        value="0"
+        inputmode="numeric"
+        style="width:90px;background:#111;border:1px solid var(--border);color:#fff;border-radius:8px;padding:10px;text-align:center">
+    </div>
+  `).join('');
+}
+
+function getCustomVariantColors(customQty) {
+  if (!product.variants || product.customNoVariants) {
+    return { ok: true, colors: null };
+  }
+
+  const inputs = [...document.querySelectorAll('.custom-variant-qty')];
+  const colors = [];
+  let total = 0;
+
+  inputs.forEach(input => {
+    const color = input.dataset.color;
+    const qty   = Math.max(0, parseInt(input.value || '0') || 0);
+
+    total += qty;
+
+    for (let i = 0; i < qty; i++) {
+      colors.push(color);
+    }
+  });
+
+  if (total !== customQty) {
+    return {
+      ok: false,
+      error: `Elegí ${customQty} unidades en total. Ahora seleccionaste ${total}.`
+    };
+  }
+
+  return { ok: true, colors };
+}
   function updateVariantSelectors() {
     const radio = document.querySelector('.offer-options input[name="offer"]:checked');
     const val   = radio?.value || '1';
@@ -363,13 +425,14 @@ DV.initForm = function (product) {
       function getQty() {
         return Math.max(4, parseInt(customQtyInput?.value || '4') || 4);
       }
-      function setQty(n) {
-        const v = Math.max(4, n);
-        if (customQtyInput) customQtyInput.value = v;
-        if (qtyDisplay)     qtyDisplay.textContent = v;
-        if (minusBtn)       minusBtn.disabled = v <= 4;
-        refreshCustomPrices(v);
-      }
+function setQty(n) {
+  const v = Math.max(4, n);
+  if (customQtyInput) customQtyInput.value = v;
+  if (qtyDisplay)     qtyDisplay.textContent = v;
+  if (minusBtn)       minusBtn.disabled = v <= 4;
+  refreshCustomPrices(v);
+  renderCustomVariantQty(v);
+}
 
       setQty(getQty());
 
@@ -381,8 +444,10 @@ DV.initForm = function (product) {
       return;
     }
 
-    if (customOrderSection) customOrderSection.style.display = 'none';
-    if (submitBtn)          submitBtn.textContent             = 'Hacer mi pedido por WhatsApp';
+if (customOrderSection) customOrderSection.style.display = 'none';
+const customVariantSection = document.getElementById('custom-variant-section');
+if (customVariantSection) customVariantSection.style.display = 'none';
+if (submitBtn)          submitBtn.textContent             = 'Hacer mi pedido por WhatsApp';
 
     const qty = parseInt(val) || 1;
     if (!product.variants || !variantSection || !variantSelectors) return;
@@ -453,10 +518,19 @@ DV.initForm = function (product) {
       const customComp = product.price * customQty;
       const customTotal = Math.round(customComp * 0.60);
 
-      /* Verificar stock */
-      const customStockCheck = await checkProductStock(product.slug, customQty, null);
-      if (!customStockCheck.ok) { showStockError(customStockCheck.error); return; }
-      clearStockError();
+/* Leer colores para 4+ si el producto tiene variantes */
+const customVariantResult = getCustomVariantColors(customQty);
+if (!customVariantResult.ok) {
+  showStockError(customVariantResult.error);
+  return;
+}
+
+const customColors = customVariantResult.colors;
+
+/* Verificar stock */
+const customStockCheck = await checkProductStock(product.slug, customQty, customColors);
+if (!customStockCheck.ok) { showStockError(customStockCheck.error); return; }
+clearStockError();
 
       submitBtn.disabled  = true;
       submitBtn.innerHTML = '<span class="spinner"></span>';
@@ -474,9 +548,10 @@ DV.initForm = function (product) {
             city:         commonData.city,
             value:        customTotal,
             currency:     'PYG',
-            quantity:     customQty,
-            fbp:          client.fbp || '',
-            fbc:          client.fbc || '',
+quantity:     customQty,
+variant:      customColors?.length ? JSON.stringify(customColors) : null,
+fbp:          client.fbp || '',
+fbc:          client.fbc || '',
             user_agent:   navigator.userAgent,
           }),
         });
@@ -496,7 +571,7 @@ DV.initForm = function (product) {
       DV.trackContact(product, capiLead);
       DV.trackQualifiedLead(customProduct, capiLead);
 
-      const msg = buildCustomOrderWAMsg(product, commonData, customQty, customTotal);
+const msg = buildCustomOrderWAMsg(product, commonData, customQty, customTotal, customColors);
       modalForm.style.display = 'none';
       success.classList.add('visible');
       setTimeout(() => { window.location.href = `https://wa.me/${WA_NUMBER}?text=${msg}`; }, 400);
@@ -550,7 +625,7 @@ clearStockError();
           value:        expressTotal,
           currency:     'PYG',
           quantity:     selectedQty,
-          variant:      primaryVariant || null,
+          variant:      colors.length ? JSON.stringify(colors) : null,
           fbp:          client.fbp || '',
           fbc:          client.fbc || '',
           user_agent:   navigator.userAgent,

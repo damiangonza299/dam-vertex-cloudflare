@@ -47,18 +47,30 @@ export async function onRequestPost({ request, env }) {
           : `Stock insuficiente — disponible: ${productRow.stock_total}`;
         return json({ ok: false, error: errMsg }, 409);
       }
-      if (lead.variant && productRow.variants_json) {
-        try {
-          const vars     = JSON.parse(productRow.variants_json);
-          const varStock = vars[lead.variant];
-          if (typeof varStock === 'number' && varStock < saleQty) {
-            const errMsg = varStock === 0
-              ? `Sin stock del color: ${lead.variant}`
-              : `Stock insuficiente para ${lead.variant} — disponible: ${varStock}`;
-            return json({ ok: false, error: errMsg }, 409);
-          }
-        } catch (_) {}
+const requestedVariants = parseLeadVariants(lead.variant);
+
+if (requestedVariants.length && productRow.variants_json) {
+  try {
+    const vars = JSON.parse(productRow.variants_json);
+
+    const requestedByColor = {};
+    requestedVariants.forEach(color => {
+      requestedByColor[color] = (requestedByColor[color] || 0) + 1;
+    });
+
+    for (const color in requestedByColor) {
+      const available = Number(vars[color]);
+      const requested = requestedByColor[color];
+
+      if (Number.isFinite(available) && available < requested) {
+        const errMsg = available === 0
+          ? `Sin stock del color: ${color}`
+          : `Stock insuficiente para ${color} — disponible: ${available}`;
+        return json({ ok: false, error: errMsg }, 409);
       }
+    }
+  } catch (_) {}
+}
     }
 
     /* Preparar user_data hasheado */
@@ -119,16 +131,27 @@ export async function onRequestPost({ request, env }) {
     if (productRow) {
       try {
         const newTotal = Math.max(0, productRow.stock_total - saleQty);
-        let newVarJson = productRow.variants_json;
-        if (lead.variant && productRow.variants_json) {
-          try {
-            const vars = JSON.parse(productRow.variants_json);
-            if (typeof vars[lead.variant] === 'number') {
-              vars[lead.variant] = Math.max(0, vars[lead.variant] - saleQty);
-              newVarJson = JSON.stringify(vars);
-            }
-          } catch (_) {}
-        }
+let newVarJson = productRow.variants_json;
+
+if (requestedVariants.length && productRow.variants_json) {
+  try {
+    const vars = JSON.parse(productRow.variants_json);
+
+    const requestedByColor = {};
+    requestedVariants.forEach(color => {
+      requestedByColor[color] = (requestedByColor[color] || 0) + 1;
+    });
+
+    for (const color in requestedByColor) {
+      const current = Number(vars[color]);
+      if (Number.isFinite(current)) {
+        vars[color] = Math.max(0, current - requestedByColor[color]);
+      }
+    }
+
+    newVarJson = JSON.stringify(vars);
+  } catch (_) {}
+}
         await env.DB.prepare(
           `UPDATE products SET stock_total = ?, variants_json = ?, updated_at = datetime('now') WHERE slug = ?`
         ).bind(newTotal, newVarJson, productSlug).run();
@@ -205,7 +228,17 @@ async function sha256(str) {
 function slugify(s) {
   return (s || '').toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 }
+function parseLeadVariants(value) {
+  if (!value) return [];
 
+  try {
+    const parsed = JSON.parse(value);
+    if (Array.isArray(parsed)) return parsed.filter(Boolean);
+    if (typeof parsed === 'string') return [parsed];
+  } catch (_) {}
+
+  return [value];
+}
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
