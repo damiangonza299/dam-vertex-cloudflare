@@ -52,6 +52,15 @@
       </div>
     </div>
 
+    <!-- Tab navigation -->
+    <div class="admin-tabs">
+      <button class="admin-tab admin-tab--active" data-tab="leads" onclick="switchAdminTab('leads')">Leads</button>
+      <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')">Productos</button>
+    </div>
+
+    <!-- Leads section -->
+    <div id="leads-section">
+
     <!-- Date filters -->
     <div class="admin-date-filters">
       <button class="date-btn date-btn--active" id="date-all">Todas</button>
@@ -111,6 +120,19 @@
         </tbody>
       </table>
     </div>
+
+    </div><!-- /leads-section -->
+
+    <!-- Products section -->
+    <div id="products-section" style="display:none">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
+        <button id="refresh-products-btn" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit">
+          ↻ Actualizar stock
+        </button>
+        <span style="font-size:12px;color:var(--muted)">Los cambios se guardan automáticamente al confirmar cada compra</span>
+      </div>
+      <div id="products-grid"></div>
+    </div><!-- /products-section -->
 
   </div>
 </div>

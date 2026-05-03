@@ -231,7 +231,7 @@ function renderTable(leads) {
   tbody.innerHTML = leads.map((l, i) => `
     <tr data-id="${l.id}">
       <td class="col-num">${i + 1}</td>
-      <td class="col-name" title="${esc(l.name)}">${esc(l.name)}</td>
+      <td class="col-name" title="${esc(l.name)}">${shortName(l.name)}</td>
       <td class="col-phone">${esc(l.phone)}</td>
       <td class="col-city" title="${esc(l.city || '')}">${esc(l.city || '—')}</td>
       <td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))}</td>
@@ -415,8 +415,219 @@ function fmtCompact(n) {
 }
 function fmt(n)    { return 'Gs. ' + Number(n || 0).toLocaleString('es-PY'); }
 function esc(s)    { return (s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function shortName(s) {
+  const parts = (s || '').trim().split(/\s+/);
+  if (parts.length <= 2) return esc(s);
+  return esc(parts[0] + ' ' + parts[parts.length - 1]);
+}
 function fmtDate(s){ return s ? new Date(s + 'Z').toLocaleString('es-PY', { day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit' }) : '—'; }
 function labelStatus(s, short = false) {
   if (short) return { pending: 'Pend.', purchased: 'Pagado', cancelled: 'Canc.' }[s] || s;
   return { pending: 'Pendiente', purchased: 'Comprado', cancelled: 'Cancelado' }[s] || s;
+}
+
+/* ── Admin tab navigation ── */
+function switchAdminTab(tab) {
+  document.querySelectorAll('.admin-tab').forEach(t => {
+    t.classList.toggle('admin-tab--active', t.dataset.tab === tab);
+  });
+  const leadsSection    = document.getElementById('leads-section');
+  const productsSection = document.getElementById('products-section');
+  if (tab === 'leads') {
+    if (leadsSection)    leadsSection.style.display    = '';
+    if (productsSection) productsSection.style.display = 'none';
+  } else {
+    if (leadsSection)    leadsSection.style.display    = 'none';
+    if (productsSection) productsSection.style.display = '';
+    loadProducts();
+  }
+}
+
+document.getElementById('refresh-products-btn')?.addEventListener('click', loadProducts);
+
+/* ── Products / Stock management ── */
+let allProducts = [];
+
+async function loadProducts() {
+  const grid = document.getElementById('products-grid');
+  if (grid) grid.innerHTML = '<p style="color:var(--muted);padding:20px 0">Cargando...</p>';
+  try {
+    const res = await fetch('/api/product-stock', {
+      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    });
+    const data = await res.json();
+    allProducts = data.products || [];
+    renderProducts();
+  } catch (_) {
+    if (grid) grid.innerHTML = '<p style="color:var(--red);padding:20px 0">Error al cargar productos</p>';
+  }
+}
+
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  if (!grid) return;
+
+  if (!allProducts.length) {
+    grid.innerHTML = '<p style="color:var(--muted);padding:20px 0">Sin productos configurados en la base de datos.<br>Ejecutá la migración: <code>wrangler d1 execute dam-vertex-leads --file=migrate.sql</code></p>';
+    return;
+  }
+
+  grid.innerHTML = allProducts.map(p => {
+    const stockBadge = p.stock_total === 0
+      ? '<span class="badge badge-cancelled">Agotado</span>'
+      : `<span class="badge badge-purchased">${p.stock_total} en stock</span>`;
+
+    const variantRows = p.variants
+      ? Object.entries(p.variants).map(([color, qty]) => `
+          <div class="stock-row">
+            <span class="stock-color">${esc(color)}</span>
+            ${IS_DELIVERY
+              ? `<span class="stock-qty">${qty}</span>`
+              : `<input type="number" class="stock-input" min="0" value="${qty > 0 ? qty : ''}" placeholder="0"
+                   data-slug="${esc(p.slug)}" data-variant="${esc(color)}"
+                   onchange="updateVariantStock(this)">`
+            }
+          </div>`).join('')
+      : '';
+
+    const activeToggle = IS_DELIVERY
+      ? `<span style="font-size:12px;color:var(--muted)">${p.active ? 'Activo' : 'Inactivo'}</span>`
+      : `<label class="stock-active-toggle">
+           <input type="checkbox" ${p.active ? 'checked' : ''}
+             onchange="toggleProductActive('${esc(p.slug)}', this.checked)">
+           <span>Producto activo</span>
+         </label>`;
+
+    return `
+      <div class="product-card" id="pc-${esc(p.slug)}">
+        <div class="product-card__header">
+          <span class="product-card__name">${esc(p.name)}</span>
+          ${stockBadge}
+        </div>
+        <div class="stock-row">
+          <span class="stock-label">Stock total</span>
+          ${IS_DELIVERY
+            ? `<span class="stock-qty">${p.stock_total}</span>`
+            : `<input type="number" class="stock-input" min="0" value="${p.stock_total > 0 ? p.stock_total : ''}" placeholder="0"
+                 data-slug="${esc(p.slug)}" data-field="total"
+                 onchange="updateTotalStock(this)">`
+          }
+        </div>
+        ${p.variants ? `
+          <div class="stock-variants">
+            <span class="stock-section-label">Por color</span>
+            ${variantRows}
+          </div>` : ''}
+        <div class="product-card__footer">
+          ${activeToggle}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function updateTotalStock(input) {
+  const slug  = input.dataset.slug;
+  const value = Math.max(0, parseInt(input.value) || 0);
+  input.value = value > 0 ? value : '';
+  const prod  = allProducts.find(p => p.slug === slug);
+  if (!prod) return;
+
+  input.style.borderColor = '#fbbf24';
+  try {
+    const res  = await fetch('/api/product-stock', {
+      method:  'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+      body:    JSON.stringify({
+        slug,
+        name:          prod.name,
+        stock_total:   value,
+        variants_json: prod.variants ? JSON.stringify(prod.variants) : null,
+        active:        prod.active,
+      }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      const i = allProducts.findIndex(p => p.slug === slug);
+      if (i >= 0) allProducts[i] = data.product;
+      updateProductBadge(slug, value);
+      input.style.borderColor = '#4ade80';
+      setTimeout(() => { input.style.borderColor = ''; }, 1200);
+    } else {
+      input.style.borderColor = '#f87171';
+    }
+  } catch (_) {
+    input.style.borderColor = '#f87171';
+  }
+}
+
+async function updateVariantStock(input) {
+  const slug    = input.dataset.slug;
+  const variant = input.dataset.variant;
+  const value   = Math.max(0, parseInt(input.value) || 0);
+  input.value   = value > 0 ? value : '';
+  const prod    = allProducts.find(p => p.slug === slug);
+  if (!prod || !prod.variants) return;
+
+  const newVariants  = { ...prod.variants, [variant]: value };
+  const newTotal     = Object.values(newVariants).reduce((s, v) => s + v, 0);
+
+  input.style.borderColor = '#fbbf24';
+  try {
+    const res  = await fetch('/api/product-stock', {
+      method:  'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+      body:    JSON.stringify({
+        slug,
+        name:          prod.name,
+        stock_total:   newTotal,
+        variants_json: JSON.stringify(newVariants),
+        active:        prod.active,
+      }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      const i = allProducts.findIndex(p => p.slug === slug);
+      if (i >= 0) allProducts[i] = data.product;
+      const totalInput = document.querySelector(`.stock-input[data-slug="${slug}"][data-field="total"]`);
+      if (totalInput) { totalInput.value = newTotal > 0 ? newTotal : ''; }
+      updateProductBadge(slug, newTotal);
+      input.style.borderColor = '#4ade80';
+      setTimeout(() => { input.style.borderColor = ''; }, 1200);
+    } else {
+      input.style.borderColor = '#f87171';
+    }
+  } catch (_) {
+    input.style.borderColor = '#f87171';
+  }
+}
+
+async function toggleProductActive(slug, active) {
+  const prod = allProducts.find(p => p.slug === slug);
+  if (!prod) return;
+  try {
+    const res  = await fetch('/api/product-stock', {
+      method:  'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+      body:    JSON.stringify({
+        slug,
+        name:          prod.name,
+        stock_total:   prod.stock_total,
+        variants_json: prod.variants ? JSON.stringify(prod.variants) : null,
+        active:        active ? 1 : 0,
+      }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      const i = allProducts.findIndex(p => p.slug === slug);
+      if (i >= 0) allProducts[i] = data.product;
+    }
+  } catch (_) {}
+}
+
+function updateProductBadge(slug, stockTotal) {
+  const card  = document.getElementById(`pc-${slug}`);
+  const badge = card?.querySelector('.product-card__header .badge');
+  if (!badge) return;
+  if (stockTotal === 0) { badge.className = 'badge badge-cancelled'; badge.textContent = 'Agotado'; }
+  else { badge.className = 'badge badge-purchased'; badge.textContent = `${stockTotal} en stock`; }
 }

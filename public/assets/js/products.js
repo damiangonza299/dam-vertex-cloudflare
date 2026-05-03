@@ -69,6 +69,48 @@ function buildCustomOrderWAMsg(product, data, qty, total) {
   return encodeURIComponent(lines.join('\n'));
 }
 
+/* ── Stock helpers ── */
+async function checkProductStock(slug, qty, variant) {
+  try {
+    const res = await fetch(`/api/product-stock?slug=${encodeURIComponent(slug)}`);
+    if (!res.ok) return { ok: true };
+    const data = await res.json();
+    if (!data.ok || !data.product) return { ok: true };
+    const p = data.product;
+    if (!p.active) return { ok: false, error: 'Producto no disponible' };
+    if (variant && p.variants) {
+      const varStock = p.variants[variant];
+      if (typeof varStock === 'number') {
+        if (varStock === 0) return { ok: false, error: 'El color seleccionado está agotado' };
+        if (varStock < qty) return { ok: false, error: 'No hay suficiente stock para ese color' };
+      }
+    }
+    if (p.stock_total === 0) return { ok: false, error: 'Producto agotado' };
+    if (p.stock_total < qty) return { ok: false, error: 'No hay suficiente stock disponible' };
+    return { ok: true };
+  } catch (_) {
+    return { ok: true };
+  }
+}
+
+function showStockError(msg) {
+  let el = document.getElementById('dv-stock-error');
+  if (!el) {
+    el = document.createElement('div');
+    el.id        = 'dv-stock-error';
+    el.className = 'modal-stock-error';
+    const form = document.getElementById('modal-form');
+    if (form) form.insertBefore(el, form.firstChild);
+  }
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function clearStockError() {
+  const el = document.getElementById('dv-stock-error');
+  if (el) el.style.display = 'none';
+}
+
 function openWhatsApp(product, data, offerInfo) {
   const msg = buildWAMsg(product, data, offerInfo);
   window.location.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
@@ -123,6 +165,38 @@ DV.initForm = function (product) {
   const upsellEl   = document.querySelector('.upsell-block');
 
   if (!overlay || !modalForm) return;
+  DV.initCityPicker();
+
+  /* Verificar stock al cargar — deshabilita CTAs si agotado */
+  fetch(`/api/product-stock?slug=${encodeURIComponent(product.slug)}`)
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (!data?.ok || !data.product) return;
+      const p = data.product;
+      if (!p.active || p.stock_total === 0) {
+        const label = !p.active ? 'Producto no disponible' : 'Agotado';
+        document.querySelectorAll('[data-scroll-form]').forEach(btn => {
+          btn.style.transition = 'none';
+          if (btn.tagName === 'A') {
+            btn.textContent = label;
+            btn.style.opacity = '.4';
+            btn.style.pointerEvents = 'none';
+            btn.style.cursor = 'not-allowed';
+            return;
+          }
+          /* Stop pulse on cta-ref arrow, update only text span */
+          const arrow = btn.querySelector('.cta-ref-arrow');
+          if (arrow) arrow.style.animation = 'none';
+          const textSpan = btn.querySelector('span:not(.cta-ref-arrow)');
+          if (textSpan && arrow) textSpan.textContent = label;
+          else btn.textContent = label;
+          btn.disabled = true;
+          btn.style.opacity = '.5';
+          btn.style.cursor = 'not-allowed';
+        });
+      }
+    })
+    .catch(() => {});
 
   const p1price   = product.price;
   const p2compare = product.price * 2;
@@ -329,12 +403,17 @@ DV.initForm = function (product) {
       const customComp = product.price * customQty;
       const customTotal = Math.round(customComp * 0.60);
 
+      /* Verificar stock */
+      const customStockCheck = await checkProductStock(product.slug, customQty, null);
+      if (!customStockCheck.ok) { showStockError(customStockCheck.error); return; }
+      clearStockError();
+
       submitBtn.disabled  = true;
       submitBtn.innerHTML = '<span class="spinner"></span>';
 
       try {
         const client = typeof getClientData === 'function' ? getClientData() : {};
-        await fetch('/api/leads', {
+        const res = await fetch('/api/leads', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({
@@ -351,7 +430,14 @@ DV.initForm = function (product) {
             user_agent:   navigator.userAgent,
           }),
         });
-      } catch (_) {}
+        if (!res.ok) throw new Error('lead_error');
+      } catch (err) {
+        if (err?.message !== 'lead_error') console.error('LEAD_SAVE_ERROR', err?.message);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Hacer mi pedido por WhatsApp';
+        showStockError('Error al registrar el pedido. Intentá de nuevo.');
+        return;
+      }
 
       /* Tracking con value y num_items correctos */
       const capiLead       = { ...commonData, phone: validPhone || '' };
@@ -383,6 +469,14 @@ DV.initForm = function (product) {
       if (colorEl) colors.push(colorEl.value);
     }
 
+    /* Variante principal — mismo color en todas las unidades, o nulo si mixto */
+    const primaryVariant = colors.length > 0 && colors.every(c => c === colors[0]) ? colors[0] : null;
+
+    /* Verificar stock */
+    const stockCheck = await checkProductStock(product.slug, selectedQty, primaryVariant);
+    if (!stockCheck.ok) { showStockError(stockCheck.error); return; }
+    clearStockError();
+
     const data = { ...commonData, express, product: product.slug };
     const offerInfo = { qty: selectedQty, total: expressTotal, colors: colors.length ? colors : null };
 
@@ -405,13 +499,17 @@ DV.initForm = function (product) {
           value:        expressTotal,
           currency:     'PYG',
           quantity:     selectedQty,
+          variant:      primaryVariant || null,
           fbp:          client.fbp || '',
           fbc:          client.fbc || '',
           user_agent:   navigator.userAgent,
         }),
       });
 
-      if (!res.ok) throw new Error('lead_error');
+      if (!res.ok) {
+        console.error('LEAD_SAVE_ERROR', res.status);
+        throw new Error('lead_error');
+      }
 
       /* 2â4 â Tracking (telÃ©fono normalizado o vacÃ­o para CAPI) */
       const capiLead = { ...data, phone: validPhone || '' };
@@ -426,16 +524,131 @@ DV.initForm = function (product) {
       /* 6 â Abrir WhatsApp con delay */
       setTimeout(() => openWhatsApp(product, data, offerInfo), 400);
 
-    } catch (_) {
-      const capiLead = { ...data, phone: validPhone || '' };
-      DV.trackInitiateCheckout(product, capiLead);
-      DV.trackContact(product, capiLead);
-      DV.trackQualifiedLead(product, capiLead);
-      modalForm.style.display = 'none';
-      success.classList.add('visible');
-      setTimeout(() => openWhatsApp(product, data, offerInfo), 400);
+    } catch (err) {
+      if (err?.message !== 'lead_error') console.error('LEAD_SAVE_ERROR', err?.message);
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Hacer mi pedido por WhatsApp';
+      showStockError('Error al registrar el pedido. Intentá de nuevo.');
     }
   });
+};
+
+/* ── City picker ── */
+DV.initCityPicker = function () {
+  const searchEl   = document.getElementById('m-city-search');
+  const dropdownEl = document.getElementById('m-city-dropdown');
+  const hiddenEl   = document.getElementById('m-city');
+  const manualWrap = document.getElementById('city-manual-wrap');
+  const manualEl   = document.getElementById('m-city-manual');
+  const groupEl    = document.getElementById('city-group');
+
+  if (!searchEl || !dropdownEl || !hiddenEl) return;
+  if (searchEl._dvInit) return;
+  searchEl._dvInit = true;
+
+  const CITIES = [
+    'Asunción','San Lorenzo','Luque','Fernando de la Mora','Capiatá',
+    'Lambaré','Mariano Roque Alonso','Limpio','Ñemby','Villa Elisa',
+    'Ciudad del Este','Encarnación',
+    'Altos','Areguá','Ayolas','Caacupé','Caaguazú','Caazapá','Cambyretá',
+    'Carapeguá','Concepción','Coronel Bogado','Coronel Oviedo','Curuguaty',
+    'Eusebio Ayala','Filadelfia','Fuerte Olimpo','Guarambaré','Hernandarias',
+    'Itá','Itauguá','J.A. Saldivar','Mariscal Estigarribia','Minga Guazú',
+    'Nueva Italia','Paraguarí','Pedro Juan Caballero','Pilar','Piribebuy',
+    'Presidente Franco','San Antonio','San Bernardino','San Juan Bautista',
+    'San Pedro del Ycuamandyyú','Santa Rita','Salto del Guairá','Tobatí',
+    'Vaquería','Villa Hayes','Villarrica','Ybycuí','Ypacaraí','Ypané',
+  ];
+  const STORAGE_KEY = 'dv_city';
+
+  function clearCityError() {
+    searchEl.classList.remove('error');
+    if (manualEl) manualEl.classList.remove('error');
+    const errEl = groupEl?.querySelector('.form-error-msg');
+    if (errEl) errEl.classList.remove('visible');
+  }
+
+  function closeDropdown() {
+    dropdownEl.innerHTML = '';
+    dropdownEl.style.display = 'none';
+  }
+
+  function renderDropdown(matches) {
+    dropdownEl.innerHTML = '';
+    matches.forEach(city => {
+      const el = document.createElement('div');
+      el.className = 'city-option';
+      el.textContent = city;
+      el.addEventListener('mousedown', e => { e.preventDefault(); selectCity(city); });
+      dropdownEl.appendChild(el);
+    });
+    const other = document.createElement('div');
+    other.className = 'city-option city-option--other';
+    other.textContent = 'Otra ciudad';
+    other.addEventListener('mousedown', e => { e.preventDefault(); selectOther(); });
+    dropdownEl.appendChild(other);
+    dropdownEl.style.display = 'block';
+  }
+
+  function selectCity(city) {
+    searchEl.value = city;
+    hiddenEl.value = city;
+    closeDropdown();
+    if (manualWrap) manualWrap.style.display = 'none';
+    if (manualEl)   manualEl.value = '';
+    clearCityError();
+    try { localStorage.setItem(STORAGE_KEY, city); } catch (_) {}
+  }
+
+  function selectOther() {
+    searchEl.value = 'Otra ciudad';
+    hiddenEl.value = '';
+    closeDropdown();
+    if (manualWrap) manualWrap.style.display = 'block';
+    setTimeout(() => manualEl?.focus(), 50);
+  }
+
+  searchEl.addEventListener('focus', () => {
+    const q = searchEl.value.trim().toLowerCase();
+    renderDropdown(q ? CITIES.filter(c => c.toLowerCase().includes(q)) : CITIES.slice(0, 12));
+  });
+
+  searchEl.addEventListener('input', () => {
+    clearCityError();
+    const q = searchEl.value.trim().toLowerCase();
+    if (!q) { closeDropdown(); hiddenEl.value = ''; return; }
+    renderDropdown(CITIES.filter(c => c.toLowerCase().includes(q)));
+    if (!CITIES.some(c => c.toLowerCase() === q)) hiddenEl.value = '';
+  });
+
+  searchEl.addEventListener('blur', () => {
+    setTimeout(closeDropdown, 200);
+  });
+
+  if (manualEl) {
+    manualEl.addEventListener('input', () => {
+      const v = manualEl.value.trim();
+      hiddenEl.value = v.length >= 2 ? v : '';
+      if (v.length >= 2) {
+        try { localStorage.setItem(STORAGE_KEY, v); } catch (_) {}
+      }
+      clearCityError();
+    });
+  }
+
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      if (CITIES.includes(saved)) {
+        selectCity(saved);
+      } else if (saved.length >= 2) {
+        searchEl.value = 'Otra ciudad';
+        hiddenEl.value = saved;
+        if (manualWrap) manualWrap.style.display = 'block';
+        if (manualEl)   manualEl.value = saved;
+      }
+    }
+  } catch (_) {}
 };
 
 function validateModalForm() {
@@ -444,19 +657,41 @@ function validateModalForm() {
   const cityEl  = document.getElementById('m-city');
   const phone   = phoneEl?.value.trim() || '';
   let ok = true;
+  let firstError = null;
 
   clearModalErrors();
 
   if (!nameEl?.value.trim()) {
     showError(nameEl, 'Ingresá tu nombre'); ok = false;
+    if (!firstError) firstError = nameEl;
   }
   if (!phone) {
     showError(phoneEl, 'El teléfono es obligatorio'); ok = false;
+    if (!firstError) firstError = phoneEl;
   } else if (!/^[0-9+\s\-]{6,16}$/.test(phone)) {
     showError(phoneEl, 'Teléfono inválido'); ok = false;
+    if (!firstError) firstError = phoneEl;
   }
-  if (!cityEl?.value.trim()) {
-    showError(cityEl, 'Ingresá tu ciudad'); ok = false;
+  const citySearchEl   = document.getElementById('m-city-search');
+  const cityManualWrap = document.getElementById('city-manual-wrap');
+  const cityManualEl   = document.getElementById('m-city-manual');
+  const isManualMode   = cityManualWrap && cityManualWrap.style.display !== 'none';
+
+  if (isManualMode) {
+    const v = cityManualEl?.value.trim() || '';
+    if (v.length < 2) {
+      showError(cityManualEl, v ? 'Escribí al menos 2 caracteres' : 'Escribí tu ciudad');
+      ok = false;
+      if (!firstError) firstError = cityManualEl;
+    }
+  } else if (!cityEl?.value) {
+    showError(citySearchEl, 'Seleccioná tu ciudad');
+    ok = false;
+    if (!firstError) firstError = citySearchEl;
+  }
+
+  if (!ok && firstError) {
+    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   return ok;

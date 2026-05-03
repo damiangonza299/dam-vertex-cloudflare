@@ -373,9 +373,16 @@
         <span class="form-error-msg"></span>
       </div>
 
-      <div class="form-group">
-        <label for="m-city">Ciudad</label>
-        <input type="text" id="m-city" name="city" placeholder="Asunción, Fernando, Villa Elisa..." autocomplete="address-level2">
+      <div class="form-group" id="city-group">
+        <label for="m-city-search">Ciudad</label>
+        <div class="city-picker-wrap">
+          <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
+          <div class="city-dropdown" id="m-city-dropdown"></div>
+        </div>
+        <input type="hidden" id="m-city" name="city">
+        <div class="city-manual-wrap" id="city-manual-wrap" style="display:none">
+          <input type="text" id="m-city-manual" class="city-manual-input" placeholder="Escribí tu ciudad" autocomplete="off">
+        </div>
         <span class="form-error-msg"></span>
       </div>
 

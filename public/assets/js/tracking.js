@@ -36,7 +36,7 @@ function getFbc() {
   const fbclid = new URLSearchParams(location.search).get('fbclid');
   if (!fbclid) return '';
 
-  const fbc     = `fb.1.${Math.floor(Date.now() / 1000)}.${fbclid}`;
+  const fbc     = `fb.1.${Date.now()}.${fbclid}`;
   const expires = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toUTCString();
   document.cookie = `_fbc=${fbc}; path=/; expires=${expires}; SameSite=Lax`;
   return fbc;

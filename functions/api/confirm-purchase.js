@@ -30,6 +30,37 @@ export async function onRequestPost({ request, env }) {
     if (lead.status === 'purchased') return json({ ok: false, error: 'Ya fue confirmado' }, 409);
     if (lead.status === 'cancelled') return json({ ok: false, error: 'Lead cancelado' }, 409);
 
+    /* Verificar stock — ANTES de enviar Purchase a Meta */
+    const saleQty     = lead.quantity || 1;
+    const productSlug = slugify(lead.product_name);
+    let productRow    = null;
+    try {
+      productRow = await env.DB.prepare(
+        'SELECT * FROM products WHERE slug = ?'
+      ).bind(productSlug).first();
+    } catch (_) {}
+
+    if (productRow) {
+      if (productRow.stock_total < saleQty) {
+        const errMsg = productRow.stock_total === 0
+          ? 'Sin stock disponible para este producto'
+          : `Stock insuficiente — disponible: ${productRow.stock_total}`;
+        return json({ ok: false, error: errMsg }, 409);
+      }
+      if (lead.variant && productRow.variants_json) {
+        try {
+          const vars     = JSON.parse(productRow.variants_json);
+          const varStock = vars[lead.variant];
+          if (typeof varStock === 'number' && varStock < saleQty) {
+            const errMsg = varStock === 0
+              ? `Sin stock del color: ${lead.variant}`
+              : `Stock insuficiente para ${lead.variant} — disponible: ${varStock}`;
+            return json({ ok: false, error: errMsg }, 409);
+          }
+        } catch (_) {}
+      }
+    }
+
     /* Preparar user_data hasheado */
     const user_data = {
       client_ip_address: lead.ip || '',
@@ -83,6 +114,26 @@ export async function onRequestPost({ request, env }) {
     await env.DB.prepare(
       `UPDATE leads SET status = 'purchased', purchased_at = datetime('now') WHERE id = ?`
     ).bind(id).run();
+
+    /* Descontar stock */
+    if (productRow) {
+      try {
+        const newTotal = Math.max(0, productRow.stock_total - saleQty);
+        let newVarJson = productRow.variants_json;
+        if (lead.variant && productRow.variants_json) {
+          try {
+            const vars = JSON.parse(productRow.variants_json);
+            if (typeof vars[lead.variant] === 'number') {
+              vars[lead.variant] = Math.max(0, vars[lead.variant] - saleQty);
+              newVarJson = JSON.stringify(vars);
+            }
+          } catch (_) {}
+        }
+        await env.DB.prepare(
+          `UPDATE products SET stock_total = ?, variants_json = ?, updated_at = datetime('now') WHERE slug = ?`
+        ).bind(newTotal, newVarJson, productSlug).run();
+      } catch (_) {}
+    }
 
     /* HighValuePurchase / VIPPurchase — server-side only, no browser counterpart */
     const saleValue = lead.value || 0;
