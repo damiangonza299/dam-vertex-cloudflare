@@ -35,12 +35,19 @@ let activeDateFilter = 'all';
 
 /* ── Bootstrap ── */
 document.addEventListener('DOMContentLoaded', () => {
-  if (IS_DELIVERY) {
-    const h1 = document.querySelector('.admin-nav h1');
-    if (h1) h1.textContent = 'DAM VERTEX — Modo Delivery';
-    const exportBtn = document.getElementById('export-csv-btn');
-    if (exportBtn) exportBtn.style.display = 'none';
-  }
+if (IS_DELIVERY) {
+  const h1 = document.querySelector('.admin-nav h1');
+  if (h1) h1.textContent = 'DAM VERTEX — Modo Delivery';
+
+  const exportBtn = document.getElementById('export-csv-btn');
+  if (exportBtn) exportBtn.style.display = 'none';
+
+  const productsTab = document.querySelector('.admin-tab[data-tab="products"]');
+  if (productsTab) productsTab.style.display = 'none';
+
+  const leadsTab = document.querySelector('.admin-tab[data-tab="leads"]');
+  if (leadsTab) leadsTab.style.display = 'none';
+}
 
   const dp = document.getElementById('date-picker');
   if (dp) dp.value = new Date().toLocaleDateString('sv-SE');

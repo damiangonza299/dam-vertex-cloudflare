@@ -85,9 +85,9 @@ async function checkProductStock(slug, qty, variant) {
         if (varStock < qty) return { ok: false, error: 'No hay suficiente stock para ese color' };
       }
     }
-    if (p.stock_total === 0) return { ok: false, error: 'Producto agotado' };
-    if (p.stock_total < qty) return { ok: false, error: 'No hay suficiente stock disponible' };
-    return { ok: true };
+if (p.stock_total === 0) return { ok: false, error: 'Producto agotado' };
+if (p.stock_total < qty) return { ok: false, error: `Solo quedan ${p.stock_total} unidades disponibles` };
+return { ok: true };
   } catch (_) {
     return { ok: true };
   }
