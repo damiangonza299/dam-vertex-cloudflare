@@ -74,20 +74,62 @@ async function checkProductStock(slug, qty, variant) {
   try {
     const res = await fetch(`/api/product-stock?slug=${encodeURIComponent(slug)}`);
     if (!res.ok) return { ok: true };
+
     const data = await res.json();
     if (!data.ok || !data.product) return { ok: true };
+
     const p = data.product;
+
     if (!p.active) return { ok: false, error: 'Producto no disponible' };
+
     if (variant && p.variants) {
-      const varStock = p.variants[variant];
-      if (typeof varStock === 'number') {
-        if (varStock === 0) return { ok: false, error: 'El color seleccionado está agotado' };
-        if (varStock < qty) return { ok: false, error: 'No hay suficiente stock para ese color' };
+      const selectedVariants = Array.isArray(variant) ? variant : [variant];
+
+      const requestedByColor = {};
+      selectedVariants.forEach(color => {
+        if (!color) return;
+        requestedByColor[color] = (requestedByColor[color] || 0) + 1;
+      });
+
+      for (const color in requestedByColor) {
+        const stock = Number(p.variants[color]);
+
+        if (Number.isFinite(stock) && stock === 0) {
+          return { ok: false, error: `El color ${color} está agotado.` };
+        }
+      }
+
+      for (const color in requestedByColor) {
+        const requested = requestedByColor[color];
+        const stock = Number(p.variants[color]);
+
+        if (Number.isFinite(stock) && requested > stock) {
+          const alternatives = [];
+
+          for (const altColor in p.variants) {
+            if (altColor === color) continue;
+
+            const altStock = Number(p.variants[altColor]);
+            if (Number.isFinite(altStock) && altStock > 0) {
+              alternatives.push(`${altStock} unidad${altStock === 1 ? '' : 'es'} en ${altColor}`);
+            }
+          }
+
+          let error = `Solo ${stock === 1 ? 'queda' : 'quedan'} ${stock} unidad${stock === 1 ? '' : 'es'} disponible${stock === 1 ? '' : 's'} en ${color}.`;
+
+          if (alternatives.length) {
+            error += ` Podés cambiar por ${alternatives.join(' y ')}.`;
+          }
+
+          return { ok: false, error };
+        }
       }
     }
-if (p.stock_total === 0) return { ok: false, error: 'Producto agotado' };
-if (p.stock_total < qty) return { ok: false, error: `Solo quedan ${p.stock_total} unidades disponibles` };
-return { ok: true };
+
+    if (p.stock_total === 0) return { ok: false, error: 'Producto agotado' };
+    if (p.stock_total < qty) return { ok: false, error: `Solo quedan ${p.stock_total} unidades disponibles` };
+
+    return { ok: true };
   } catch (_) {
     return { ok: true };
   }
@@ -469,13 +511,14 @@ DV.initForm = function (product) {
       if (colorEl) colors.push(colorEl.value);
     }
 
-    /* Variante principal — mismo color en todas las unidades, o nulo si mixto */
-    const primaryVariant = colors.length > 0 && colors.every(c => c === colors[0]) ? colors[0] : null;
+/* Variante principal — mismo color en todas las unidades, o nulo si mixto */
+const primaryVariant = colors.length > 0 && colors.every(c => c === colors[0]) ? colors[0] : null;
 
-    /* Verificar stock */
-    const stockCheck = await checkProductStock(product.slug, selectedQty, primaryVariant);
-    if (!stockCheck.ok) { showStockError(stockCheck.error); return; }
-    clearStockError();
+/* Verificar stock */
+const stockVariant = colors.length > 1 ? colors : primaryVariant;
+const stockCheck = await checkProductStock(product.slug, selectedQty, stockVariant);
+if (!stockCheck.ok) { showStockError(stockCheck.error); return; }
+clearStockError();
 
     const data = { ...commonData, express, product: product.slug };
     const offerInfo = { qty: selectedQty, total: expressTotal, colors: colors.length ? colors : null };

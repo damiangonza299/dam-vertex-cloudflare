@@ -1,1 +1,1 @@
-﻿window.DAM_VERTEX_VERSION = "28";
+﻿window.DAM_VERTEX_VERSION = "32";
