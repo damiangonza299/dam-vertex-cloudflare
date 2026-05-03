@@ -15,7 +15,7 @@ export async function onRequestOptions() {
 export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
-    const { product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, quantity } = body;
+    const { product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, quantity, variant } = body;
 
     if (!name || !phone || !product_name) {
       return json({ ok: false, error: 'Campos requeridos: name, phone, product_name' }, 400);
@@ -24,12 +24,7 @@ export async function onRequestPost({ request, env }) {
     const ip = request.headers.get('CF-Connecting-IP') || '';
     const ua = user_agent || request.headers.get('User-Agent') || '';
 
-    const stmt = env.DB.prepare(`
-      INSERT INTO leads (product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    const result = await stmt.bind(
+    const bindArgs = [
       product_name,
       name.trim(),
       phone.trim(),
@@ -42,7 +37,23 @@ export async function onRequestPost({ request, env }) {
       ua,
       ip,
       quantity || 1,
-    ).run();
+      variant  || null,
+    ];
+
+    let result;
+    try {
+      result = await env.DB.prepare(`
+        INSERT INTO leads (product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity, variant)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(...bindArgs).run();
+    } catch (insertErr) {
+      if (!insertErr.message?.includes('variant')) throw insertErr;
+      console.error('LEAD_SCHEMA: variant column missing, run migration');
+      result = await env.DB.prepare(`
+        INSERT INTO leads (product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(...bindArgs.slice(0, 12)).run();
+    }
 
     /* Telegram — awaited for diagnostics, wrapped so it never breaks lead save */
     console.log('Telegram env exists', !!env.TELEGRAM_BOT_TOKEN, !!env.TELEGRAM_CHAT_ID);
@@ -80,6 +91,7 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: true, lead_id: result.meta?.last_row_id });
 
   } catch (err) {
+    console.error('LEAD_SAVE_ERROR', err.message);
     return json({ ok: false, error: err.message }, 500);
   }
 }
