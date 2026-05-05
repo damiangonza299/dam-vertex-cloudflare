@@ -36,9 +36,11 @@ export async function onRequestPost({ request, env }) {
     let productRow    = null;
     try {
       productRow = await env.DB.prepare(
-        'SELECT * FROM products WHERE slug = ?'
-      ).bind(productSlug).first();
+        'SELECT * FROM products WHERE name = ?'
+      ).bind(lead.product_name).first();
     } catch (_) {}
+
+    let requestedVariants = parseLeadVariants(lead.variant);
 
     if (productRow) {
       if (productRow.stock_total < saleQty) {
@@ -47,7 +49,6 @@ export async function onRequestPost({ request, env }) {
           : `Stock insuficiente — disponible: ${productRow.stock_total}`;
         return json({ ok: false, error: errMsg }, 409);
       }
-const requestedVariants = parseLeadVariants(lead.variant);
 
 if (requestedVariants.length && productRow.variants_json) {
   try {
@@ -154,7 +155,7 @@ if (requestedVariants.length && productRow.variants_json) {
 }
         await env.DB.prepare(
           `UPDATE products SET stock_total = ?, variants_json = ?, updated_at = datetime('now') WHERE slug = ?`
-        ).bind(newTotal, newVarJson, productSlug).run();
+        ).bind(newTotal, newVarJson, productRow.slug).run();
       } catch (_) {}
     }
 

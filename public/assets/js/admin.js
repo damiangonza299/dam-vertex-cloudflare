@@ -190,6 +190,7 @@ function applyFilters() {
   });
 
   renderTable(filtered);
+  updateStats(filtered);
 }
 
 function setDateFilter(val) {
@@ -281,8 +282,12 @@ function toggleMenu(e, btn, menuId) {
   const wasOpen = menu.classList.contains('open');
   closeMenus();
   if (!wasOpen) {
-    const rect = btn.getBoundingClientRect();
-    menu.style.top   = (rect.bottom + window.scrollY + 4) + 'px';
+    const rect   = btn.getBoundingClientRect();
+    const MENU_H = 88;
+    const top    = (rect.bottom + MENU_H + 4 > window.innerHeight)
+      ? rect.top - MENU_H - 4
+      : rect.bottom + 4;
+    menu.style.top   = top + 'px';
     menu.style.right = (window.innerWidth - rect.right) + 'px';
     menu.classList.add('open');
   }
@@ -462,13 +467,55 @@ function formatCity(cityRaw) {
 
   if (!city) return '—';
 
-  if (city.includes('pedro juan')) return 'PJC';
-  if (city.includes('san pedro')) return 'San Pedro';
-  if (city.includes('villarrica')) return 'Villarrica';
+  const aliases = [
+    // Ciudades largas o nombres que ensucian mucho la tabla
+    { match: 'pedro juan caballero', label: 'PJC' },
+    { match: 'pedro juan', label: 'PJC' },
+    { match: 'fernando de la mora', label: 'Fdo. de la Mora' },
+    { match: 'presidente franco', label: 'Pte. Franco' },
+    { match: 'coronel oviedo', label: 'Cnel. Oviedo' },
+    { match: 'juan león mallorquín', label: 'J. L. Mallorquín' },
+    { match: 'juan leon mallorquin', label: 'J. L. Mallorquín' },
+    { match: 'san juan bautista', label: 'San Juan Bautista' },
+    { match: 'san pedro del ycuamandiyu', label: 'San Pedro' },
+    { match: 'san pedro de ycuamandiyu', label: 'San Pedro' },
+    { match: 'santa rosa del aguaray', label: 'Sta. Rosa Aguaray' },
+    { match: 'mariano roque alonso', label: 'M. R. Alonso' },
+    { match: 'mcal estigarribia', label: 'Mcal. Estigarribia' },
+    { match: 'mariscal estigarribia', label: 'Mcal. Estigarribia' },
+    { match: 'san ignacio guazu', label: 'San Ignacio' },
+    { match: 'san ignacio guazú', label: 'San Ignacio' },
+    { match: 'yby yau', label: 'Yby Yaú' },
+    { match: 'yby yaú', label: 'Yby Yaú' },
+    { match: 'bella vista norte', label: 'Bella Vista N.' },
+    { match: 'bella vista sur', label: 'Bella Vista S.' },
 
-  const first = city.split(' ')[0];
+    // Correcciones comunes, no abreviaciones agresivas
+    { match: 'villa elisa', label: 'Villa Elisa' },
+    { match: 'villalisa', label: 'Villa Elisa' },
+    { match: 'lambare', label: 'Lambaré' },
+    { match: 'capiata', label: 'Capiatá' },
+    { match: 'asuncion', label: 'Asunción' },
+    { match: 'caaguazu', label: 'Caaguazú' },
+  ];
 
-  return first.charAt(0).toUpperCase() + first.slice(1);
+  const found = aliases.find(item => city.includes(item.match));
+  if (found) return found.label;
+
+  // Si escribió algo tipo "Villarrica zona centro", deja solo ciudad base si es largo.
+  const noiseWords = ['zona', 'barrio', 'centro', 'km', 'ruta'];
+  const parts = city.split(' ').filter(Boolean);
+  const noiseIndex = parts.findIndex(w => noiseWords.includes(w));
+
+  if (noiseIndex > 0) {
+    city = parts.slice(0, noiseIndex).join(' ');
+  }
+
+  return city
+    .split(' ')
+    .filter(Boolean)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
 }
 function fmtDate(s){ return s ? new Date(s + 'Z').toLocaleString('es-PY', { day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit' }) : '—'; }
 function labelStatus(s, short = false) {
@@ -483,14 +530,12 @@ function switchAdminTab(tab) {
   });
   const leadsSection    = document.getElementById('leads-section');
   const productsSection = document.getElementById('products-section');
-  if (tab === 'leads') {
-    if (leadsSection)    leadsSection.style.display    = '';
-    if (productsSection) productsSection.style.display = 'none';
-  } else {
-    if (leadsSection)    leadsSection.style.display    = 'none';
-    if (productsSection) productsSection.style.display = '';
-    loadProducts();
-  }
+  const dashSection     = document.getElementById('dashboard-section');
+  leadsSection    && (leadsSection.style.display    = tab === 'leads'     ? '' : 'none');
+  productsSection && (productsSection.style.display = tab === 'products'  ? '' : 'none');
+  dashSection     && (dashSection.style.display     = tab === 'dashboard' ? '' : 'none');
+  if (tab === 'products')  loadProducts();
+  if (tab === 'dashboard') renderDashboard();
 }
 
 document.getElementById('refresh-products-btn')?.addEventListener('click', loadProducts);
@@ -680,4 +725,170 @@ function updateProductBadge(slug, stockTotal) {
   if (!badge) return;
   if (stockTotal === 0) { badge.className = 'badge badge-cancelled'; badge.textContent = 'Agotado'; }
   else { badge.className = 'badge badge-purchased'; badge.textContent = `${stockTotal} en stock`; }
+}
+
+/* =========================================================
+   Dashboard
+   ========================================================= */
+let dashPeriod  = 'today';
+let dashProduct = '';
+
+document.querySelectorAll('.dash-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    dashPeriod = btn.dataset.period;
+    document.querySelectorAll('.dash-btn').forEach(b => b.classList.toggle('dash-btn--active', b === btn));
+    renderDashboard();
+  });
+});
+
+document.querySelectorAll('.dash-prod').forEach(btn => {
+  btn.addEventListener('click', () => {
+    dashProduct = btn.dataset.prod;
+    document.querySelectorAll('.dash-prod').forEach(b => b.classList.toggle('dash-prod--active', b === btn));
+    renderDashboard();
+  });
+});
+
+function getDashLeads(applyPeriod) {
+  const todayStr = new Date().toLocaleDateString('sv-SE');
+  const yestStr  = new Date(Date.now() - 86400000).toLocaleDateString('sv-SE');
+  const now      = new Date();
+  return allLeads.filter(l => {
+    if (dashProduct && l.product_name !== dashProduct) return false;
+    if (!applyPeriod) return true;
+    const ld = l.created_at ? new Date(l.created_at + 'Z').toLocaleDateString('sv-SE') : '';
+    if (dashPeriod === 'today')     return ld === todayStr;
+    if (dashPeriod === 'yesterday') return ld === yestStr;
+    if (dashPeriod === '7d')    return ld >= new Date(Date.now() -  7 * 86400000).toLocaleDateString('sv-SE');
+    if (dashPeriod === '30d')   return ld >= new Date(Date.now() - 30 * 86400000).toLocaleDateString('sv-SE');
+    if (dashPeriod === 'month') {
+      const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      return ld.startsWith(ym);
+    }
+    return true;
+  });
+}
+
+function renderDashboard() {
+  const leads      = getDashLeads(true);
+  const chartLeads = getDashLeads(false);
+
+  const purchased = leads.filter(l => l.status === 'purchased');
+  const pending   = leads.filter(l => l.status === 'pending');
+  const cancelled = leads.filter(l => l.status === 'cancelled');
+
+  const revenue   = purchased.reduce((s, l) => s + (Number(l.value)    || 0), 0);
+  const units     = purchased.reduce((s, l) => s + (Number(l.quantity) || 1), 0);
+  const closeRate = leads.length > 0 ? (purchased.length / leads.length * 100) : 0;
+  const avgTicket = purchased.length > 0 ? Math.round(revenue / purchased.length) : 0;
+
+  const prodUnits = {};
+  purchased.forEach(l => {
+    const p = abbrevProduct(l.product_name);
+    prodUnits[p] = (prodUnits[p] || 0) + (Number(l.quantity) || 1);
+  });
+  const bestProd = Object.entries(prodUnits).sort((a, b) => b[1] - a[1])[0];
+
+  const kpiEl = document.getElementById('dash-kpis');
+  if (kpiEl) kpiEl.innerHTML = `
+    <div class="dash-kpi"><div class="dash-kpi__val dash-kpi__val--green">Gs.&nbsp;${revenue.toLocaleString('es-PY')}</div><div class="dash-kpi__label">Facturación confirmada</div></div>
+    <div class="dash-kpi"><div class="dash-kpi__val">${leads.length}</div><div class="dash-kpi__label">Leads generados</div></div>
+    <div class="dash-kpi"><div class="dash-kpi__val dash-kpi__val--green">${purchased.length}</div><div class="dash-kpi__label">Comprados</div></div>
+    <div class="dash-kpi"><div class="dash-kpi__val dash-kpi__val--yellow">${pending.length}</div><div class="dash-kpi__label">Pendientes</div></div>
+    <div class="dash-kpi"><div class="dash-kpi__val">${closeRate.toFixed(1)}%</div><div class="dash-kpi__label">Tasa de cierre</div></div>
+    <div class="dash-kpi"><div class="dash-kpi__val">Gs.&nbsp;${avgTicket.toLocaleString('es-PY')}</div><div class="dash-kpi__label">Ticket promedio</div></div>
+    <div class="dash-kpi"><div class="dash-kpi__val">${units}</div><div class="dash-kpi__label">Unidades vendidas</div></div>
+    <div class="dash-kpi"><div class="dash-kpi__val dash-kpi__val--accent">${bestProd ? bestProd[0] : '—'}</div><div class="dash-kpi__label">Producto más vendido</div></div>
+  `;
+
+  renderDayBars(chartLeads);
+  renderStatusBars(purchased.length, pending.length, cancelled.length);
+  renderProductRanking(leads);
+}
+
+function renderDayBars(leads) {
+  const el = document.getElementById('dash-bars-svg');
+  if (!el) return;
+  const DAYS = 30;
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const dayData = [];
+  for (let i = DAYS - 1; i >= 0; i--) {
+    const d       = new Date(Date.now() - i * 86400000);
+    const dateStr = d.toLocaleDateString('sv-SE');
+    const rev     = leads
+      .filter(l => l.status === 'purchased' && l.created_at
+        && new Date(l.created_at + 'Z').toLocaleDateString('sv-SE') === dateStr)
+      .reduce((s, l) => s + (Number(l.value) || 0), 0);
+    dayData.push({ rev, d });
+  }
+  const maxRev = Math.max(...dayData.map(d => d.rev), 1);
+  const W = 600, H = 110;
+  const slotW = (W - 20) / DAYS;
+  const barW  = Math.max(2, Math.floor(slotW) - 1);
+  let svg = '';
+  dayData.forEach((day, i) => {
+    const barH = day.rev > 0 ? Math.max(3, Math.round(day.rev / maxRev * (H - 22))) : 1;
+    const x    = 10 + i * slotW;
+    const y    = H - 18 - barH;
+    const fill = day.rev > 0 ? '#4ade80' : 'rgba(255,255,255,.06)';
+    svg += `<rect x="${x.toFixed(1)}" y="${y}" width="${barW}" height="${barH}" rx="2" fill="${fill}"/>`;
+    if (i === 0 || day.d.getDate() === 1 || i === DAYS - 1) {
+      svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - 1}" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.3)">${day.d.getDate()} ${months[day.d.getMonth()]}</text>`;
+    }
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;overflow:visible">${svg}</svg>`;
+}
+
+function renderStatusBars(purchased, pending, cancelled) {
+  const el = document.getElementById('dash-status-bars');
+  if (!el) return;
+  const total = purchased + pending + cancelled;
+  if (!total) {
+    el.innerHTML = '<p style="font-size:13px;color:rgba(255,255,255,.3);text-align:center;padding:24px 0">Sin datos para este período</p>';
+    return;
+  }
+  const pct = v => Math.round(v / total * 100);
+  const rows = [
+    ['Comprados',  purchased, '#4ade80'],
+    ['Pendientes', pending,   '#fbbf24'],
+    ...(cancelled ? [['Cancelados', cancelled, '#f87171']] : []),
+  ];
+  el.innerHTML = rows.map(([label, val, color]) => `
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:${color}">${label}</span>
+        <span style="color:rgba(255,255,255,.5)">${val} &middot; ${pct(val)}%</span>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden">
+        <div style="height:100%;width:${pct(val)}%;background:${color};border-radius:3px"></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderProductRanking(leads) {
+  const el = document.getElementById('dash-ranking');
+  if (!el) return;
+  const prodNames = ['Cepillo', 'Lentes', 'Reloj'];
+  const map = {};
+  leads.filter(l => l.status === 'purchased').forEach(l => {
+    const k = abbrevProduct(l.product_name);
+    if (!map[k]) map[k] = { units: 0, revenue: 0 };
+    map[k].units   += Number(l.quantity) || 1;
+    map[k].revenue += Number(l.value)    || 0;
+  });
+  const rows = prodNames
+    .map(n => ({ name: n, ...(map[n] || { units: 0, revenue: 0 }) }))
+    .sort((a, b) => b.units - a.units);
+  const maxU = Math.max(...rows.map(r => r.units), 1);
+  el.innerHTML = rows.map(r => `
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:#fff;font-weight:600">${r.name}</span>
+        <span style="color:rgba(255,255,255,.4)">${r.units} uds</span>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden">
+        <div style="height:100%;width:${Math.round(r.units / maxU * 100)}%;background:#3b82f6;border-radius:3px"></div>
+      </div>
+      <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:2px">Gs. ${r.revenue.toLocaleString('es-PY')}</div>
+    </div>`).join('');
 }

@@ -413,9 +413,22 @@ details summary::-webkit-details-marker { display: none; }
 .product-card:hover { border-color: rgba(255,255,255,.16); }
 .product-card__img {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 4/5;
   object-fit: cover;
+  object-position: center top;
   background: #1a1a1a;
+}
+.product-card__badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(74,222,128,.08);
+  color: #4ade80;
+  border: 1px solid rgba(74,222,128,.18);
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-bottom: 10px;
+  letter-spacing: .02em;
 }
 .product-card__body { padding: 20px; }
 .product-card__name {

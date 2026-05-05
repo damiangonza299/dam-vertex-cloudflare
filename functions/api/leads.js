@@ -59,7 +59,8 @@ export async function onRequestPost({ request, env }) {
     console.log('Telegram env exists', !!env.TELEGRAM_BOT_TOKEN, !!env.TELEGRAM_CHAT_ID);
     if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
       try {
-        const now  = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
+        const now         = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
+        const variantText = formatVariantForTelegram(variant);
         const text = [
           'Nuevo pedido DAM VERTEX',
           '',
@@ -68,6 +69,7 @@ export async function onRequestPost({ request, env }) {
           `Telefono: ${phone.trim()}`,
           `Ciudad: ${city?.trim() || '-'}`,
           `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
+          ...(variantText ? [`Variante: ${variantText}`] : []),
           `Cantidad: ${quantity || 1}`,
           `Fecha: ${now}`,
           `Estado: pending`,
@@ -94,6 +96,16 @@ export async function onRequestPost({ request, env }) {
     console.error('LEAD_SAVE_ERROR', err.message);
     return json({ ok: false, error: err.message }, 500);
   }
+}
+
+function formatVariantForTelegram(value) {
+  if (!value) return '';
+  try {
+    const parsed = JSON.parse(value);
+    if (Array.isArray(parsed)) return parsed.filter(Boolean).join(' + ');
+    if (typeof parsed === 'string') return parsed;
+  } catch (_) {}
+  return String(value);
 }
 
 function json(data, status = 200) {

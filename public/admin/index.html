@@ -5,6 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Admin — Dam Vertex</title>
   <link rel="stylesheet" href="/assets/css/styles.css">
+  <style>
+    /* ── Dashboard ── */
+    .dash-filters { margin-bottom:20px; }
+    .dash-period-row { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:6px; }
+    .dash-prod-row   { display:flex; flex-wrap:wrap; gap:4px; padding-top:6px; border-top:1px solid rgba(255,255,255,.05); }
+    .dash-btn, .dash-prod {
+      background:#1a1a1a; border:1px solid rgba(255,255,255,.1);
+      color:rgba(255,255,255,.5); font-size:12px; font-weight:600;
+      padding:5px 13px; border-radius:20px; cursor:pointer;
+      font-family:inherit; transition:all .15s; white-space:nowrap;
+    }
+    .dash-btn--active, .dash-prod--active {
+      background:rgba(59,130,246,.15); border-color:rgba(59,130,246,.4); color:#fff;
+    }
+    .dash-kpis {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:10px; margin-bottom:16px;
+    }
+    .dash-kpi {
+      background:#111; border:1px solid rgba(255,255,255,.06);
+      border-radius:10px; padding:14px;
+    }
+    .dash-kpi__val {
+      font-size:clamp(14px,2.5vw,20px); font-weight:700;
+      color:#fff; margin-bottom:3px; line-height:1.2; word-break:break-all;
+    }
+    .dash-kpi__val--green  { color:#4ade80; }
+    .dash-kpi__val--yellow { color:#fbbf24; }
+    .dash-kpi__val--accent { color:#60a5fa; }
+    .dash-kpi__label { font-size:9px; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.06em; }
+    .dash-charts { display:grid; grid-template-columns:2fr 1fr 1fr; gap:10px; }
+    .dash-card { background:#111; border:1px solid rgba(255,255,255,.06); border-radius:10px; padding:16px; min-width:0; }
+    .dash-card__title { font-size:9px; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.06em; margin-bottom:12px; }
+    @media (max-width:900px) {
+      .dash-kpis   { grid-template-columns:repeat(2,1fr); }
+      .dash-charts { grid-template-columns:1fr; }
+    }
+    @media (max-width:480px) {
+      .dash-kpis { gap:6px; }
+      .dash-kpi  { padding:10px 12px; }
+    }
+  </style>
 </head>
 <body class="admin-page">
 
@@ -53,9 +95,12 @@
     </div>
 
     <!-- Tab navigation -->
-    <div class="admin-tabs">
-      <button class="admin-tab admin-tab--active" data-tab="leads" onclick="switchAdminTab('leads')">Leads</button>
-      <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')">Productos</button>
+    <div class="admin-tabs" style="justify-content:space-between;align-items:flex-end">
+      <div style="display:flex;gap:2px">
+        <button class="admin-tab admin-tab--active" data-tab="leads" onclick="switchAdminTab('leads')">Leads</button>
+        <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')">Productos</button>
+      </div>
+      <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')" style="margin-bottom:0">Dashboard</button>
     </div>
 
     <!-- Leads section -->
@@ -133,6 +178,50 @@
       </div>
       <div id="products-grid"></div>
     </div><!-- /products-section -->
+
+    <!-- Dashboard section -->
+    <div id="dashboard-section" style="display:none">
+
+      <!-- Filtros período + producto -->
+      <div class="dash-filters">
+        <div class="dash-period-row">
+          <button class="dash-btn dash-btn--active" data-period="today">Hoy</button>
+          <button class="dash-btn" data-period="yesterday">Ayer</button>
+          <button class="dash-btn" data-period="7d">7 días</button>
+          <button class="dash-btn" data-period="30d">30 días</button>
+          <button class="dash-btn" data-period="month">Mes actual</button>
+          <button class="dash-btn" data-period="all">Todo</button>
+        </div>
+        <div class="dash-prod-row">
+          <button class="dash-prod dash-prod--active" data-prod="">Todos los productos</button>
+          <button class="dash-prod" data-prod="Cepillo Eléctrico Recargable (4 Cabezales)">Cepillo</button>
+          <button class="dash-prod" data-prod="Lentes Anti Luz Azul Rojos">Lentes</button>
+          <button class="dash-prod" data-prod="Reloj Blackout Minimal">Reloj</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="dash-kpis" id="dash-kpis">
+        <div class="dash-kpi"><div class="dash-kpi__val">—</div><div class="dash-kpi__label">Cargando...</div></div>
+      </div>
+
+      <!-- Gráficos -->
+      <div class="dash-charts">
+        <div class="dash-card">
+          <div class="dash-card__title">Facturación por día · últimos 30 días</div>
+          <div id="dash-bars-svg"></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card__title">Estado de pedidos</div>
+          <div id="dash-status-bars"></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card__title">Ranking de productos</div>
+          <div id="dash-ranking"></div>
+        </div>
+      </div>
+
+    </div><!-- /dashboard-section -->
 
   </div>
 </div>
