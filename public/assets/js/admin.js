@@ -730,7 +730,7 @@ function updateProductBadge(slug, stockTotal) {
 /* =========================================================
    Dashboard
    ========================================================= */
-let dashPeriod  = 'today';
+let dashPeriod  = 'all';
 let dashProduct = '';
 
 document.querySelectorAll('.dash-btn').forEach(btn => {

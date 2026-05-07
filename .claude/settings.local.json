@@ -4,7 +4,16 @@
       "Bash(node -e ' *)",
       "Bash(Get-ChildItem -Recurse -Force)",
       "Bash(Select-Object FullName)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(npx wrangler *)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Admin\\\\Desktop\\\\dam-vertex-cloudflare\" -Recurse -Force)",
+      "Bash(Sort-Object FullName)",
+      "Bash(ConvertTo-Csv -NoTypeInformation)",
+      "Bash(Out-String)",
+      "Bash(mkdir -p \"c:\\\\Users\\\\Admin\\\\Desktop\\\\dam-vertex-cloudflare\\\\public\\\\cadena\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public"
     ]
   }
 }

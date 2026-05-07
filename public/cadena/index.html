@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Cadena Apex. Acero inoxidable negro. Diseño geométrico minimalista. El accesorio que define tu estilo. Envío en el día — Dam Vertex Paraguay.">
+  <title>Cadena Apex — Dam Vertex</title>
+  <script src="/assets/js/site-version.js"></script>
+  <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
+  <style>
+    /* ── Cadena Apex theme (acero negro / plata) ── */
+    :root { --accent: #9ca3af; }
+    body { background: #000; }
+
+    /* — Placeholders de imagen — */
+    .img-ph {
+      background: #0c0c0c;
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .img-ph::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.018) 0%, transparent 55%);
+    }
+    .img-ph__icon {
+      width: 28px; height: 28px;
+      color: rgba(255,255,255,.1);
+    }
+    .img-ph__label {
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.13);
+      text-align: center;
+      line-height: 1.65;
+    }
+
+    /* — Overrides de tema — */
+    .theme-cadena .btn-primary {
+      background: #fff;
+      color: #000;
+      box-shadow: none;
+      font-weight: 700;
+    }
+    .theme-cadena .btn-primary:hover { background: #e8e8e8; }
+    .theme-cadena .eyebrow {
+      color: rgba(255,255,255,.38);
+      letter-spacing: .22em;
+      font-size: 11px;
+    }
+    .theme-cadena .nav__cta {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+    .theme-cadena .cta-ref {
+      border-color: rgba(255,255,255,.15);
+      color: rgba(255,255,255,.7);
+    }
+    .theme-cadena .cta-ref:hover { border-color: rgba(255,255,255,.35); color: #fff; }
+    .theme-cadena .ct-ok { color: rgba(255,255,255,.5); }
+
+    /* — NAV — */
+    /* usa estilos globales */
+
+    /* — HERO — */
+    .hero {
+      background: #000;
+      padding: clamp(24px,6vw,56px) clamp(20px,5vw,64px);
+    }
+    .hero__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero__media { max-width: 520px; margin: 0 auto; width: 100%; }
+    .hero__img { width: 100%; height: auto; display: block; border-radius: 8px; }
+    .hero__img-ph { aspect-ratio: 1; width: 100%; }
+
+    .hero__h {
+      font-size: clamp(30px,5.5vw,54px);
+      font-weight: 800;
+      line-height: 1.08;
+      margin: 0 0 18px;
+      letter-spacing: -.02em;
+      color: #fff;
+    }
+    .hero__sub {
+      font-size: clamp(14px,2vw,16px);
+      color: rgba(255,255,255,.52);
+      line-height: 1.7;
+      margin: 0 0 8px;
+    }
+
+    /* — SECCIÓN: EL EFECTO — */
+    .efecto {
+      background: #080808;
+      padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px);
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+    .efecto__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .efecto__img-main { aspect-ratio: 3/4; width: 100%; }
+
+    .e-overline {
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.28);
+      font-weight: 600;
+      margin: 0 0 20px;
+    }
+    .e-h {
+      font-size: clamp(22px,4vw,36px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.13;
+      margin: 0 0 20px;
+      letter-spacing: -.01em;
+    }
+    .e-body {
+      font-size: 15px;
+      color: rgba(255,255,255,.52);
+      line-height: 1.78;
+      margin: 0 0 28px;
+    }
+    .e-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .e-list li {
+      font-size: 14px;
+      color: #e2e2e2;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      line-height: 1.45;
+    }
+    .e-check {
+      color: rgba(255,255,255,.35);
+      flex-shrink: 0;
+      font-size: 13px;
+      margin-top: 1px;
+    }
+
+    /* — SECCIÓN: CONSTRUCCIÓN PREMIUM — */
+    .construccion {
+      background: #000;
+      padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px);
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+    .construccion__inner { max-width: 860px; margin: 0 auto; }
+    .c-overline {
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.28);
+      font-weight: 600;
+      margin: 0 0 12px;
+      text-align: center;
+    }
+    .c-h {
+      font-size: clamp(20px,3.5vw,30px);
+      font-weight: 800;
+      color: #fff;
+      text-align: center;
+      margin: 0 0 48px;
+      letter-spacing: -.01em;
+    }
+    .c-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 1px;
+      background: rgba(255,255,255,.05);
+    }
+    .c-item {
+      background: #000;
+      padding: 28px 26px;
+      display: flex;
+      gap: 18px;
+    }
+    .c-num {
+      font-size: 10px;
+      font-weight: 800;
+      color: rgba(255,255,255,.18);
+      letter-spacing: .1em;
+      flex-shrink: 0;
+      padding-top: 3px;
+      min-width: 20px;
+    }
+    .c-item__text strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      letter-spacing: -.005em;
+    }
+    .c-item__text p {
+      font-size: 13px;
+      color: rgba(255,255,255,.48);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* — SECCIÓN: EXCLUSIVIDAD PARAGUAY — */
+    .exclusividad {
+      background: #060606;
+      padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px);
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+    .exclusividad__inner {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .ex-pre {
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.28);
+      font-weight: 600;
+      margin: 0 0 18px;
+    }
+    .ex-h {
+      font-size: clamp(22px,4.5vw,38px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.13;
+      margin: 0 0 20px;
+      letter-spacing: -.01em;
+    }
+    .ex-body {
+      font-size: 15px;
+      color: rgba(255,255,255,.52);
+      line-height: 1.75;
+      margin: 0 0 36px;
+    }
+    .ex-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 4px;
+      padding: 14px 22px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.6);
+    }
+    .ex-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.45);
+      animation: ex-pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes ex-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .25; }
+    }
+
+    /* — SECCIÓN: ESTILO — */
+    .estilo {
+      background: #080808;
+      padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px);
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+    .estilo__inner { max-width: 900px; margin: 0 auto; }
+    .est-overline {
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.28);
+      font-weight: 600;
+      margin: 0 0 12px;
+    }
+    .est-h {
+      font-size: clamp(20px,3.5vw,30px);
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 40px;
+      letter-spacing: -.01em;
+    }
+    .est-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1px;
+      background: rgba(255,255,255,.05);
+    }
+    .est-item { background: #080808; }
+    .est-item__img { aspect-ratio: 3/4; width: 100%; }
+    .est-item__info { padding: 18px 18px 22px; }
+    .est-item__tag {
+      display: block;
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.25);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .est-item__label {
+      font-size: 14px;
+      color: #fff;
+      font-weight: 600;
+      margin: 0 0 5px;
+      display: block;
+    }
+    .est-item__desc {
+      font-size: 12px;
+      color: rgba(255,255,255,.42);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* — FAQ — */
+    .faq {
+      background: #000;
+      padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px);
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+    .faq .faq-wrap { max-width: 600px; }
+
+    /* — CIERRE — */
+    .close-sec {
+      background: #050505;
+      padding: clamp(64px,12vw,100px) clamp(20px,5vw,64px);
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+    .close-sec__inner { max-width: 540px; margin: 0 auto; }
+    .close-quote {
+      font-size: clamp(17px,3.5vw,25px);
+      font-style: italic;
+      color: rgba(255,255,255,.42);
+      line-height: 1.45;
+      margin: 0 0 32px;
+      font-weight: 300;
+    }
+    .close-divider {
+      width: 32px;
+      height: 1px;
+      background: rgba(255,255,255,.1);
+      margin: 0 auto 32px;
+    }
+    .close-h {
+      font-size: clamp(22px,4vw,34px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.01em;
+      margin: 0 0 40px;
+    }
+
+    /* — STICKY CTA MOBILE — */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      padding: 12px 20px;
+      background: rgba(0,0,0,.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      z-index: 90;
+      transform: translateY(100%);
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+    }
+    .sticky-cta.visible { transform: translateY(0); }
+    .sticky-cta__left { display: flex; flex-direction: column; gap: 1px; }
+    .sticky-cta__price { font-size: 16px; font-weight: 800; color: #fff; line-height: 1; }
+    .sticky-cta__note { font-size: 10px; color: rgba(255,255,255,.4); }
+    .sticky-cta .btn-primary {
+      padding: 12px 22px;
+      font-size: 14px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    @media (min-width: 701px) { .sticky-cta { display: none; } }
+
+    /* — RESPONSIVE — */
+    @media (max-width: 700px) {
+      .hero__inner { grid-template-columns: 1fr; gap: 28px; }
+      .hero__media { order: -1; max-width: 100%; }
+      .efecto__inner { grid-template-columns: 1fr; gap: 32px; }
+      .efecto__img-main { aspect-ratio: 4/3; }
+      .c-grid { grid-template-columns: 1fr; }
+      .est-grid { grid-template-columns: 1fr; gap: 1px; }
+      .est-item__img { aspect-ratio: 16/9; }
+    }
+  </style>
+</head>
+<body class="theme-cadena">
+
+<!-- Sticky CTA mobile -->
+<div class="sticky-cta" id="sticky-cta">
+  <div class="sticky-cta__left">
+    <span class="sticky-cta__price">Gs. 139.000</span>
+    <span class="sticky-cta__note">Envío gratis · Pago al recibir</span>
+  </div>
+  <button class="btn btn-primary sticky-cta__btn" data-scroll-form>Pedir ahora →</button>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <a class="nav__cta" data-scroll-form href="#">Pedir mi cadena ahora</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero-section">
+  <div class="hero__inner">
+    <div class="hero__media">
+      <!--
+        IMAGEN PRINCIPAL — reemplazar cuando tengas la foto del producto.
+        Descomenta el <img> y borra el <div class="img-ph">.
+      -->
+      <!-- <img src="/assets/img/cadena-apex-principal.jpg" alt="Cadena Apex" class="hero__img" loading="eager" fetchpriority="high"> -->
+      <div class="img-ph hero__img-ph">
+        <svg class="img-ph__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/><path d="M12 12v8M8 20h8"/>
+        </svg>
+        <span class="img-ph__label">Imagen principal<br>Cadena Apex</span>
+      </div>
+    </div>
+    <div class="hero__text">
+      <p class="eyebrow">CADENA APEX</p>
+      <h1 class="hero__h">No hace ruido.<br>Pero no pasa<br>desapercibida.</h1>
+      <p class="hero__sub">Acero inoxidable negro. Colgante geométrico. El accesorio que eleva cualquier look sin intentarlo.</p>
+      <div class="price-block">
+        <span class="price-main">Gs. 139.000</span>
+        <span class="price-compare">Gs. 185.000</span>
+        <span class="price-badge">25% OFF</span>
+      </div>
+      <button class="btn btn-primary" data-scroll-form>Quiero la mía ahora →</button>
+      <div class="delivery-badges">
+        <span class="db-badge db-green">🚚 Entrega en el día</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
+      </div>
+      <p class="scroll-hint">↓ Por qué marca la diferencia</p>
+    </div>
+  </div>
+</section>
+
+<!-- EL EFECTO: vende identidad / status -->
+<section class="efecto">
+  <div class="efecto__inner">
+    <div>
+      <!--
+        IMAGEN SECUNDARIA — reemplazar con foto de uso en persona.
+        Descomenta el <img> y borra el <div class="img-ph">.
+      -->
+      <!-- <img src="/assets/img/cadena-apex-uso.jpg" alt="Cadena Apex en uso" class="img-ph efecto__img-main" style="object-fit:cover;" loading="lazy"> -->
+      <div class="img-ph efecto__img-main">
+        <svg class="img-ph__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span class="img-ph__label">Imagen 2<br>Uso en persona</span>
+      </div>
+    </div>
+    <div class="efecto__text">
+      <p class="e-overline">El efecto</p>
+      <h2 class="e-h">El detalle que habla<br>antes que vos.</h2>
+      <p class="e-body">Hay accesorios que hacen ruido. Y hay accesorios que simplemente elevan. La Cadena Apex no necesita llamar la atención — el look lo hace por sí solo. El tipo que la lleva puesta ya sabe lo que hace.</p>
+      <ul class="e-list">
+        <li><span class="e-check">✓</span>Outfit casual — la sube de nivel de inmediato</li>
+        <li><span class="e-check">✓</span>Ropa oscura — la complementa sin competir</li>
+        <li><span class="e-check">✓</span>Con reloj — el combo que marca presencia</li>
+        <li><span class="e-check">✓</span>Sin explicación — se nota y ya</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONSTRUCCIÓN PREMIUM: materiales -->
+<section class="construccion">
+  <div class="construccion__inner">
+    <p class="c-overline">Materiales</p>
+    <h2 class="c-h">Construida para el uso diario real.<br>Diseñada para destacar.</h2>
+    <div class="c-grid">
+      <div class="c-item">
+        <span class="c-num">01</span>
+        <div class="c-item__text">
+          <strong>Cadena acero inoxidable</strong>
+          <p>Material sólido. No se oxida, no se mancha, no se deteriora con el uso diario ni el sudor.</p>
+        </div>
+      </div>
+      <div class="c-item">
+        <span class="c-num">02</span>
+        <div class="c-item__text">
+          <strong>Acabado negro mate</strong>
+          <p>Tratamiento de color profundo y uniforme. No brilla de más. Exactamente lo que tiene que ser.</p>
+        </div>
+      </div>
+      <div class="c-item">
+        <span class="c-num">03</span>
+        <div class="c-item__text">
+          <strong>Colgante geométrico</strong>
+          <p>Diseño de punta / flecha. Minimalista, agresivo, masculino. Sin detalles que sobren.</p>
+        </div>
+      </div>
+      <div class="c-item">
+        <span class="c-num">04</span>
+        <div class="c-item__text">
+          <strong>Ligera y cómoda todo el día</strong>
+          <p>Se lleva sin sentirla. El peso justo para que se mueva bien y no moleste.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXCLUSIVIDAD PARAGUAY -->
+<section class="exclusividad">
+  <div class="exclusividad__inner">
+    <p class="ex-pre">Disponibilidad en Paraguay</p>
+    <h2 class="ex-h">Este diseño no se<br>consigue en cualquier lado.</h2>
+    <p class="ex-body">Lo trajimos específicamente para Paraguay en cantidades muy limitadas. No es el tipo de pieza que encontrás en todos lados — y cuando se termina el stock, no hay reposición garantizada. Sin segunda vuelta.</p>
+    <div class="ex-badge">
+      <span class="ex-dot"></span>
+      <span>Stock limitado — aprox. 100 unidades disponibles</span>
+    </div>
+  </div>
+</section>
+
+<!-- ESTILO: cómo combina -->
+<section class="estilo">
+  <div class="estilo__inner">
+    <p class="est-overline">Versatilidad</p>
+    <h2 class="est-h">Funciona con todo<br>lo que ya usás.</h2>
+    <div class="est-grid">
+      <div class="est-item">
+        <!--
+          IMAGEN 3 — foto outfit urbano casual.
+          Descomenta el <img> y borra el <div class="img-ph">.
+        -->
+        <!-- <img src="/assets/img/cadena-apex-look1.jpg" alt="Look urbano casual" style="width:100%;aspect-ratio:3/4;object-fit:cover;" loading="lazy"> -->
+        <div class="img-ph est-item__img">
+          <svg class="img-ph__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          <span class="img-ph__label">Imagen 3<br>Outfit urbano</span>
+        </div>
+        <div class="est-item__info">
+          <span class="est-item__tag">Look 01</span>
+          <span class="est-item__label">Outfit urbano casual</span>
+          <p class="est-item__desc">Remera negra, jean oscuro. La cadena conecta el look entero.</p>
+        </div>
+      </div>
+      <div class="est-item">
+        <!--
+          IMAGEN 4 — foto con campera / musculosa.
+          Descomenta el <img> y borra el <div class="img-ph">.
+        -->
+        <!-- <img src="/assets/img/cadena-apex-look2.jpg" alt="Look campera" style="width:100%;aspect-ratio:3/4;object-fit:cover;" loading="lazy"> -->
+        <div class="img-ph est-item__img">
+          <svg class="img-ph__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          <span class="img-ph__label">Imagen 4<br>Con campera</span>
+        </div>
+        <div class="est-item__info">
+          <span class="est-item__tag">Look 02</span>
+          <span class="est-item__label">Campera + remera</span>
+          <p class="est-item__desc">El detalle que convierte un look simple en uno memorable.</p>
+        </div>
+      </div>
+      <div class="est-item">
+        <!--
+          IMAGEN 5 — foto con reloj.
+          Descomenta el <img> y borra el <div class="img-ph">.
+        -->
+        <!-- <img src="/assets/img/cadena-apex-look3.jpg" alt="Look con reloj" style="width:100%;aspect-ratio:3/4;object-fit:cover;" loading="lazy"> -->
+        <div class="img-ph est-item__img">
+          <svg class="img-ph__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          <span class="img-ph__label">Imagen 5<br>Con reloj</span>
+        </div>
+        <div class="est-item__info">
+          <span class="est-item__tag">Look 03</span>
+          <span class="est-item__label">Cadena + reloj negro</span>
+          <p class="est-item__desc">El combo que marca presencia sin esfuerzo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <p class="sec-label" style="text-align:center">Preguntas</p>
+  <div class="faq-wrap">
+    <details class="faq-item">
+      <summary class="faq-q">¿Se oxida o se pone fea con el uso diario?</summary>
+      <div class="faq-a">No. La cadena es de acero inoxidable, que resiste el sudor, la humedad y el uso prolongado. El acabado negro mantiene su aspecto con el uso normal del día a día.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Qué tan larga es la cadena?</summary>
+      <div class="faq-a">Tiene un largo estándar para uso masculino — queda cómoda sobre el pecho, ni muy larga ni muy corta. Si querés confirmar medidas antes de pedir, escribinos por WhatsApp y te respondemos al toque.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Se puede usar todo el día y con cualquier ropa?</summary>
+      <div class="faq-a">Sí. Es ligera, no molesta, y el diseño en negro mate funciona con prácticamente cualquier outfit — ropa oscura, casual o más formal. No choca con ningún color.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Cuándo llega el pedido?</summary>
+      <div class="faq-a">En Central el envío es en el día. En el Interior coordinamos con vos después de confirmar el pedido — generalmente 1 a 2 días adicionales.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Cómo se paga?</summary>
+      <div class="faq-a">Si estás en Central, pagás cuando lo recibís. Si estás en el Interior, el pago es anticipado y coordinamos el envío una vez confirmado.</div>
+    </details>
+  </div>
+</section>
+
+<!-- Formulario (oculto — reemplazado por modal) -->
+<section class="form-section" id="form-section" style="display:none">
+  <div class="form-section__inner">
+    <h2 class="form-section__title">Hacé tu pedido</h2>
+    <p class="form-section__sub">Completá los datos y te contactamos por WhatsApp.</p>
+    <form class="form" id="lead-form" novalidate>
+      <input type="hidden" name="product" value="cadena">
+      <div class="form-group">
+        <label for="f-name">Nombre *</label>
+        <input type="text" id="f-name" name="name" placeholder="Tu nombre completo" autocomplete="name">
+        <span class="form-error-msg"></span>
+      </div>
+      <div class="form-group">
+        <label for="f-phone">Teléfono *</label>
+        <input type="tel" id="f-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+      <div class="form-group">
+        <label for="f-city">Ciudad</label>
+        <input type="text" id="f-city" name="city" placeholder="Asunción, Fernando de la Mora..." autocomplete="address-level2">
+        <span class="form-error-msg"></span>
+      </div>
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="form-submit-btn">Confirmar pedido por WhatsApp →</button>
+      </div>
+    </form>
+    <div class="form-success" id="form-success">
+      <h3>¡Listo!</h3>
+      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Cierre -->
+<section class="close-sec">
+  <div class="close-sec__inner">
+    <p class="close-quote">"Para el que no necesita<br>explicar su estilo."</p>
+    <div class="close-divider"></div>
+    <h2 class="close-h">El detalle que faltaba.</h2>
+    <div class="close-trust">
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Envío GRATIS · Entrega en el día</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Central: pagás al recibir · Interior: pago anticipado - sin envío gratis</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Atención rápida por WhatsApp</span></div>
+    </div>
+    <button class="cta-ref" data-scroll-form>
+      <span class="cta-ref-arrow">↑</span>
+      <span>Quiero la mía ahora</span>
+    </button>
+  </div>
+</section>
+
+<!-- Modal Pedido (reutilizado del reloj — sin variantes) -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-cadena">
+  <div class="modal-box">
+    <p class="modal-urgency">⏳ Stock limitado — últimas unidades disponibles</p>
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+    <h2 class="modal-title" id="modal-title-cadena">Hacé tu pedido</h2>
+    <p class="modal-step">Estás a un paso de recibir tu cadena 🚚</p>
+    <p class="modal-subtitle">Completá tus datos y te contactamos al toque.</p>
+
+    <!-- Ofertas -->
+    <div class="modal-section">
+      <span class="modal-section-label">Elegí tu oferta</span>
+      <div class="offer-options">
+
+        <label class="offer-option selected">
+          <input type="radio" name="offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price" id="offer-price-1">—</span>
+          </div>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="2">
+          <div class="offer-badge">🔥 Más vendido</div>
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-2">—</span>
+              <span class="offer-price" id="offer-price-2">—</span>
+            </div>
+          </div>
+          <span class="offer-saving">Llevá 2 y ahorrá 25%</span>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="3">
+          <div class="offer-badge offer-badge--best">⭐ Mejor precio</div>
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-3">—</span>
+              <span class="offer-price" id="offer-price-3">—</span>
+            </div>
+          </div>
+          <span class="offer-saving">3 unidades con 35% OFF</span>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="custom">
+          <div class="offer-content">
+            <span class="offer-qty">4+ unidades — 40% OFF</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-custom">—</span>
+              <span class="offer-price" id="offer-price-custom">—</span>
+            </div>
+          </div>
+        </label>
+
+      </div>
+    </div>
+    <p class="modal-price-warning">⚠️ Este precio puede cambiar en cualquier momento</p>
+
+    <!-- Pedido personalizado (4+ unidades) -->
+    <div class="modal-section" id="custom-order-section" style="display:none">
+      <span class="modal-section-label">Más de 3 unidades con 40% OFF</span>
+      <p style="font-size:13px;color:var(--muted);margin:4px 0 14px">Elegí la cantidad y coordinamos por WhatsApp</p>
+      <div class="form-group">
+        <label>Cantidad</label>
+        <div class="qty-stepper">
+          <button type="button" class="qty-btn qty-minus" id="m-custom-qty-minus" aria-label="Disminuir cantidad" disabled>−</button>
+          <span class="qty-val" id="m-custom-qty-display">4</span>
+          <button type="button" class="qty-btn qty-plus" id="m-custom-qty-plus" aria-label="Aumentar cantidad">+</button>
+          <input type="hidden" id="m-custom-qty" value="4">
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <span id="custom-compare-display" style="font-size:13px;color:var(--muted);text-decoration:line-through">—</span>
+        <span id="custom-price-display" style="font-size:18px;font-weight:700;color:#fff">—</span>
+        <span style="font-size:11px;font-weight:700;color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);padding:2px 7px;border-radius:4px">40% OFF</span>
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <form class="modal-form" id="modal-form" novalidate>
+
+      <div class="form-group">
+        <label for="m-name">Nombre y apellido</label>
+        <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-phone">Teléfono (WhatsApp)</label>
+        <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group" id="city-group">
+        <label for="m-city-search">Ciudad</label>
+        <div class="city-picker-wrap">
+          <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
+          <div class="city-dropdown" id="m-city-dropdown"></div>
+        </div>
+        <input type="hidden" id="m-city" name="city">
+        <div class="city-manual-wrap" id="city-manual-wrap" style="display:none">
+          <input type="text" id="m-city-manual" class="city-manual-input" placeholder="Escribí tu ciudad" autocomplete="off">
+        </div>
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-ref">Referencia de dirección</label>
+        <input type="text" id="m-ref" name="referencia" placeholder="casa, portón negro, bodega">
+      </div>
+
+      <div class="form-group">
+        <label for="m-payment">Método de pago</label>
+        <select id="m-payment" name="payment">
+          <option value="">Seleccioná...</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Efectivo">Efectivo</option>
+        </select>
+      </div>
+
+      <label class="upsell-block">
+        <input type="checkbox" id="m-express" name="express">
+        <div class="upsell-content">
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
+        </div>
+      </label>
+
+      <label class="confirm-intent">
+        <input type="checkbox" id="m-confirm" name="confirm">
+        <span class="confirm-text">Confirmo que tengo intención real de comprar este producto</span>
+      </label>
+      <span class="confirm-error-msg form-error-msg">Debes confirmar tu intención de compra para continuar</span>
+
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="modal-submit-btn">
+          Hacer mi pedido por WhatsApp
+        </button>
+      </div>
+
+    </form>
+
+    <div class="form-success" id="modal-success">
+      <h3>¡Listo!</h3>
+      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
+      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
+      <div class="manual-wa">
+        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  &copy; 2026 DAM VERTEX
+</footer>
+
+<!-- Scripts -->
+<script>
+(function(){
+  var v = window.DAM_VERTEX_VERSION || '1';
+  document.write('<script src="/assets/js/tracking.js?v=' + v + '"><\/script>');
+  document.write('<script src="/assets/js/products.js?v=' + v + '"><\/script>');
+})();
+</script>
+<script>
+  const PRODUCT = {
+    name:             'Cadena Apex',
+    slug:             'cadena',
+    price:            139000,
+    customNoVariants: true,
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    DV.trackViewContent(PRODUCT);
+    DV.initForm(PRODUCT);
+
+    /* Sticky CTA — aparece al salir del hero */
+    const stickyCta = document.getElementById('sticky-cta');
+    const heroSec   = document.getElementById('hero-section');
+    if (stickyCta && heroSec && 'IntersectionObserver' in window) {
+      const obs = new IntersectionObserver(
+        ([entry]) => stickyCta.classList.toggle('visible', !entry.isIntersecting),
+        { threshold: 0 }
+      );
+      obs.observe(heroSec);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -31,16 +31,17 @@ export async function onRequestPost({ request, env }) {
     if (lead.status === 'cancelled') return json({ ok: false, error: 'Lead cancelado' }, 409);
 
     /* Verificar stock — ANTES de enviar Purchase a Meta */
-    const saleQty     = lead.quantity || 1;
-    const productSlug = slugify(lead.product_name);
-    let productRow    = null;
+    const saleQty = Number(lead.quantity) || 1;
+    let productRow = null;
     try {
       productRow = await env.DB.prepare(
         'SELECT * FROM products WHERE name = ?'
       ).bind(lead.product_name).first();
-    } catch (_) {}
+    } catch (err) {
+      console.error('STOCK_LOOKUP_ERROR', err.message);
+    }
 
-    let requestedVariants = parseLeadVariants(lead.variant);
+    const requestedVariants = parseLeadVariants(lead.variant);
 
     if (productRow) {
       if (productRow.stock_total < saleQty) {
@@ -50,28 +51,26 @@ export async function onRequestPost({ request, env }) {
         return json({ ok: false, error: errMsg }, 409);
       }
 
-if (requestedVariants.length && productRow.variants_json) {
-  try {
-    const vars = JSON.parse(productRow.variants_json);
+      if (requestedVariants.length && productRow.variants_json) {
+        let vars;
+        try { vars = JSON.parse(productRow.variants_json); } catch (_) { vars = {}; }
 
-    const requestedByColor = {};
-    requestedVariants.forEach(color => {
-      requestedByColor[color] = (requestedByColor[color] || 0) + 1;
-    });
+        const requestedByColor = {};
+        requestedVariants.forEach(color => {
+          requestedByColor[color] = (requestedByColor[color] || 0) + 1;
+        });
 
-    for (const color in requestedByColor) {
-      const available = Number(vars[color]);
-      const requested = requestedByColor[color];
-
-      if (Number.isFinite(available) && available < requested) {
-        const errMsg = available === 0
-          ? `Sin stock del color: ${color}`
-          : `Stock insuficiente para ${color} — disponible: ${available}`;
-        return json({ ok: false, error: errMsg }, 409);
+        for (const color of Object.keys(requestedByColor)) {
+          const available = Number(vars[color] ?? -1);
+          const requested = requestedByColor[color];
+          if (available < requested) {
+            const errMsg = available <= 0
+              ? `Sin stock del color: ${color}`
+              : `Stock insuficiente para ${color} — disponible: ${available}`;
+            return json({ ok: false, error: errMsg }, 409);
+          }
+        }
       }
-    }
-  } catch (_) {}
-}
     }
 
     /* Preparar user_data hasheado */
@@ -132,31 +131,35 @@ if (requestedVariants.length && productRow.variants_json) {
     if (productRow) {
       try {
         const newTotal = Math.max(0, productRow.stock_total - saleQty);
-let newVarJson = productRow.variants_json;
+        let newVarJson = productRow.variants_json;
 
-if (requestedVariants.length && productRow.variants_json) {
-  try {
-    const vars = JSON.parse(productRow.variants_json);
+        if (requestedVariants.length && productRow.variants_json) {
+          let vars;
+          try { vars = JSON.parse(productRow.variants_json); } catch (_) { vars = {}; }
 
-    const requestedByColor = {};
-    requestedVariants.forEach(color => {
-      requestedByColor[color] = (requestedByColor[color] || 0) + 1;
-    });
+          const requestedByColor = {};
+          requestedVariants.forEach(color => {
+            requestedByColor[color] = (requestedByColor[color] || 0) + 1;
+          });
 
-    for (const color in requestedByColor) {
-      const current = Number(vars[color]);
-      if (Number.isFinite(current)) {
-        vars[color] = Math.max(0, current - requestedByColor[color]);
-      }
-    }
+          for (const color of Object.keys(requestedByColor)) {
+            const current = Number(vars[color]);
+            if (Number.isFinite(current)) {
+              vars[color] = Math.max(0, current - requestedByColor[color]);
+            }
+          }
 
-    newVarJson = JSON.stringify(vars);
-  } catch (_) {}
-}
+          newVarJson = JSON.stringify(vars);
+        }
+
         await env.DB.prepare(
           `UPDATE products SET stock_total = ?, variants_json = ?, updated_at = datetime('now') WHERE slug = ?`
         ).bind(newTotal, newVarJson, productRow.slug).run();
-      } catch (_) {}
+
+        console.log(`STOCK_UPDATE OK: ${productRow.slug} total=${newTotal} variants=${newVarJson}`);
+      } catch (err) {
+        console.error('STOCK_UPDATE_ERROR', err.message);
+      }
     }
 
     /* HighValuePurchase / VIPPurchase — server-side only, no browser counterpart */
