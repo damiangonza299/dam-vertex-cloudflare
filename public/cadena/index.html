@@ -365,10 +365,12 @@
     .sticky-cta__price { font-size: 16px; font-weight: 800; color: #fff; line-height: 1; }
     .sticky-cta__note { font-size: 10px; color: rgba(255,255,255,.4); }
     .sticky-cta .btn-primary {
-      padding: 10px 14px;
+      padding: 9px 14px;
       font-size: 13px;
       white-space: nowrap;
       flex-shrink: 0;
+      width: auto;
+      max-width: none;
     }
     @media (min-width: 701px) { .sticky-cta { display: none; } }
 
@@ -376,7 +378,7 @@
     @media (max-width: 700px) {
       .hero__inner { grid-template-columns: 1fr; gap: 24px; }
       .hero__media { order: -1; max-width: 100%; }
-      .hero__img { aspect-ratio: 1; object-fit: cover; object-position: center 55%; height: auto; }
+      .hero__img { aspect-ratio: 1; object-fit: cover; object-position: center 80%; height: auto; }
       .efecto__inner { grid-template-columns: 1fr; gap: 32px; }
       .efecto__img-main { aspect-ratio: 4/5; }
       .c-grid { grid-template-columns: 1fr; }
