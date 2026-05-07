@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Admin — Dam Vertex</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <script src="/assets/js/site-version.js"></script>
+  <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
   <style>
     /* ── Dashboard ── */
     .dash-filters { margin-bottom:20px; }
@@ -226,7 +227,12 @@
   </div>
 </div>
 
-<script src="/assets/js/admin.js"></script>
+<script>
+(function(){
+  var v = window.DAM_VERTEX_VERSION || '1';
+  document.write('<script src="/assets/js/admin.js?v=' + v + '"><\/script>');
+})();
+</script>
 <script>
   /* Mostrar badge y botón logout cuando el panel está visible */
   const origShowPanel = window.showPanel;

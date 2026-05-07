@@ -1,88 +1,24 @@
-﻿<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="description" content="Dam Vertex — Productos premium con envío gratis en Paraguay. Cepillo eléctrico, lentes anti luz azul, reloj Blackout Minimal.">
-  <title>Dam Vertex — Tienda</title>
-  <script src="/assets/js/site-version.js"></script>
-  <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
-</head>
-<body>
 
-<nav class="nav">
-  <div class="nav__logo">Dam<span>Vertex</span></div>
-  <a class="nav__cta" href="/productos/">Ver productos</a>
-</nav>
+# ── HTML — nunca cachear (ni browser ni CDN edge)
+/*
+  Cache-Control: no-store
 
-<section class="home-hero">
-  <h1>Productos que<br>marcan la diferencia.</h1>
-  <p>Calidad real, precio justo, envío gratis en el día. Paraguay.</p>
-  <a href="/productos/" class="btn btn-primary" style="margin: 0 auto; display: inline-flex; width: auto; font-size: 16px">
-    Ver todos los productos →
-  </a>
-</section>
+# ── CSS versionado — cachear para siempre (el ?v= invalida automáticamente)
+/assets/css/*.css
+  Cache-Control: public, max-age=31536000
 
-<!-- Products preview -->
-<div class="products-grid">
+# ── JS versionado — cachear para siempre
+/assets/js/*.js
+  Cache-Control: public, max-age=31536000
 
-  <a href="/cepillo/" class="product-card" style="display:block;color:inherit">
-    <img
-      src="https://cdn.shopify.com/s/files/1/0699/4126/4560/files/tiktok_cepillo1.png?v=1777066635"
-      alt="Cepillo Eléctrico Recargable"
-      class="product-card__img"
-      loading="lazy">
-    <div class="product-card__body">
-      <div class="product-card__name">Cepillo Eléctrico Recargable</div>
-      <div class="product-card__price">
-        Gs. 159.000
-        <small>Gs. 190.000</small>
-      </div>
-      <span class="product-card__btn">Ver producto →</span>
-    </div>
-  </a>
+# ── site-version.js — NUNCA cachear (es la fuente del número de versión)
+# esta regla va DESPUÉS de /assets/js/*.js para sobreescribirla
+/assets/js/site-version.js
+  Cache-Control: no-store
 
-  <a href="/lentes/" class="product-card" style="display:block;color:inherit">
-    <div class="product-card__img" style="background:linear-gradient(135deg,#12122a,#1a0a3e);display:flex;align-items:center;justify-content:center">
-      <span style="font-size:48px">👓</span>
-    </div>
-    <div class="product-card__body">
-      <div class="product-card__name">Lentes Anti Luz Azul Rojos</div>
-      <div class="product-card__price">
-        Gs. 99.000
-      </div>
-      <span class="product-card__btn">Ver producto →</span>
-    </div>
-  </a>
+# ── Imágenes y video — cachear para siempre
+/assets/img/*
+  Cache-Control: public, max-age=31536000
 
-  <a href="/reloj/" class="product-card" style="display:block;color:inherit">
-    <img
-      src="https://cdn.shopify.com/s/files/1/0699/4126/4560/files/reloj_negro_caracteristicas.png?v=1767849196"
-      alt="Reloj Blackout Minimal"
-      class="product-card__img"
-      loading="lazy">
-    <div class="product-card__body">
-      <div class="product-card__name">Reloj Blackout Minimal</div>
-      <div class="product-card__price">
-        Gs. 189.000
-        <small>Gs. 250.000</small>
-      </div>
-      <span class="product-card__btn">Ver producto →</span>
-    </div>
-  </a>
-
-</div>
-
-<footer class="footer">
-  &copy; 2025 Dam Vertex Paraguay · <a href="/admin/" style="opacity:.35">Admin</a>
-</footer>
-
-<script>
-(function(){
-  var v = window.DAM_VERTEX_VERSION || '1';
-  document.write('<script src="/assets/js/tracking.js?v=' + v + '"><\/script>');
-})();
-</script>
-
-</body>
-</html>
+/assets/video/*
+  Cache-Control: public, max-age=31536000
