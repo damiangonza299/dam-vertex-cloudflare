@@ -12,38 +12,6 @@
     :root { --accent: #9ca3af; }
     body { background: #000; }
 
-    /* — Placeholders de imagen — */
-    .img-ph {
-      background: #0c0c0c;
-      border: 1px solid rgba(255,255,255,.06);
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-    .img-ph::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,.018) 0%, transparent 55%);
-    }
-    .img-ph__icon {
-      width: 28px; height: 28px;
-      color: rgba(255,255,255,.1);
-    }
-    .img-ph__label {
-      font-size: 10px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.13);
-      text-align: center;
-      line-height: 1.65;
-    }
-
     /* — Overrides de tema — */
     .theme-cadena .btn-primary {
       background: #fff;
@@ -87,7 +55,6 @@
     }
     .hero__media { max-width: 520px; margin: 0 auto; width: 100%; }
     .hero__img { width: 100%; height: auto; display: block; border-radius: 8px; }
-    .hero__img-ph { aspect-ratio: 1; width: 100%; }
 
     .hero__h {
       font-size: clamp(30px,5.5vw,54px);
@@ -118,7 +85,7 @@
       max-width: 1000px;
       margin: 0 auto;
     }
-    .efecto__img-main { aspect-ratio: 3/4; width: 100%; }
+    .efecto__img-main { aspect-ratio: 4/5; width: 100%; object-fit: cover; border-radius: 8px; }
 
     .e-overline {
       font-size: 10px;
@@ -313,7 +280,7 @@
       background: rgba(255,255,255,.05);
     }
     .est-item { background: #080808; }
-    .est-item__img { aspect-ratio: 3/4; width: 100%; }
+    .est-item__img { aspect-ratio: 4/5; width: 100%; object-fit: cover; }
     .est-item__info { padding: 18px 18px 22px; }
     .est-item__tag {
       display: block;
@@ -407,13 +374,14 @@
 
     /* — RESPONSIVE — */
     @media (max-width: 700px) {
-      .hero__inner { grid-template-columns: 1fr; gap: 28px; }
+      .hero__inner { grid-template-columns: 1fr; gap: 24px; }
       .hero__media { order: -1; max-width: 100%; }
+      .hero__img { aspect-ratio: 1; object-fit: cover; object-position: center 20%; height: auto; }
       .efecto__inner { grid-template-columns: 1fr; gap: 32px; }
-      .efecto__img-main { aspect-ratio: 4/3; }
+      .efecto__img-main { aspect-ratio: 4/5; }
       .c-grid { grid-template-columns: 1fr; }
       .est-grid { grid-template-columns: 1fr; gap: 1px; }
-      .est-item__img { aspect-ratio: 16/9; }
+      .est-item__img { aspect-ratio: 4/5; }
     }
   </style>
 </head>
@@ -438,17 +406,7 @@
 <section class="hero" id="hero-section">
   <div class="hero__inner">
     <div class="hero__media">
-      <!--
-        IMAGEN PRINCIPAL — reemplazar cuando tengas la foto del producto.
-        Descomenta el <img> y borra el <div class="img-ph">.
-      -->
-      <!-- <img src="/assets/img/cadena-apex-principal.jpg" alt="Cadena Apex" class="hero__img" loading="eager" fetchpriority="high"> -->
-      <div class="img-ph hero__img-ph">
-        <svg class="img-ph__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="8" r="4"/><path d="M12 12v8M8 20h8"/>
-        </svg>
-        <span class="img-ph__label">Imagen principal<br>Cadena Apex</span>
-      </div>
+      <img src="/assets/img/Cadena%20Apex%20perfil.png" alt="Cadena Apex — acero inoxidable negro" class="hero__img" loading="eager" fetchpriority="high">
     </div>
     <div class="hero__text">
       <p class="eyebrow">CADENA APEX</p>
@@ -475,17 +433,7 @@
 <section class="efecto">
   <div class="efecto__inner">
     <div>
-      <!--
-        IMAGEN SECUNDARIA — reemplazar con foto de uso en persona.
-        Descomenta el <img> y borra el <div class="img-ph">.
-      -->
-      <!-- <img src="/assets/img/cadena-apex-uso.jpg" alt="Cadena Apex en uso" class="img-ph efecto__img-main" style="object-fit:cover;" loading="lazy"> -->
-      <div class="img-ph efecto__img-main">
-        <svg class="img-ph__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
-        </svg>
-        <span class="img-ph__label">Imagen 2<br>Uso en persona</span>
-      </div>
+      <img src="/assets/img/Apex%20el%20efecto.png" alt="Cadena Apex — el efecto" class="efecto__img-main" loading="lazy">
     </div>
     <div class="efecto__text">
       <p class="e-overline">El efecto</p>
@@ -559,15 +507,7 @@
     <h2 class="est-h">Funciona con todo<br>lo que ya usás.</h2>
     <div class="est-grid">
       <div class="est-item">
-        <!--
-          IMAGEN 3 — foto outfit urbano casual.
-          Descomenta el <img> y borra el <div class="img-ph">.
-        -->
-        <!-- <img src="/assets/img/cadena-apex-look1.jpg" alt="Look urbano casual" style="width:100%;aspect-ratio:3/4;object-fit:cover;" loading="lazy"> -->
-        <div class="img-ph est-item__img">
-          <svg class="img-ph__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-          <span class="img-ph__label">Imagen 3<br>Outfit urbano</span>
-        </div>
+        <img src="/assets/img/apex%20Outfit%20urbano%20casual.png" alt="Outfit urbano casual con Cadena Apex" class="est-item__img" loading="lazy">
         <div class="est-item__info">
           <span class="est-item__tag">Look 01</span>
           <span class="est-item__label">Outfit urbano casual</span>
@@ -575,15 +515,7 @@
         </div>
       </div>
       <div class="est-item">
-        <!--
-          IMAGEN 4 — foto con campera / musculosa.
-          Descomenta el <img> y borra el <div class="img-ph">.
-        -->
-        <!-- <img src="/assets/img/cadena-apex-look2.jpg" alt="Look campera" style="width:100%;aspect-ratio:3/4;object-fit:cover;" loading="lazy"> -->
-        <div class="img-ph est-item__img">
-          <svg class="img-ph__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-          <span class="img-ph__label">Imagen 4<br>Con campera</span>
-        </div>
+        <img src="/assets/img/apex%20Campera%20%2B%20remera.png" alt="Campera + remera con Cadena Apex" class="est-item__img" loading="lazy">
         <div class="est-item__info">
           <span class="est-item__tag">Look 02</span>
           <span class="est-item__label">Campera + remera</span>
@@ -591,15 +523,7 @@
         </div>
       </div>
       <div class="est-item">
-        <!--
-          IMAGEN 5 — foto con reloj.
-          Descomenta el <img> y borra el <div class="img-ph">.
-        -->
-        <!-- <img src="/assets/img/cadena-apex-look3.jpg" alt="Look con reloj" style="width:100%;aspect-ratio:3/4;object-fit:cover;" loading="lazy"> -->
-        <div class="img-ph est-item__img">
-          <svg class="img-ph__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-          <span class="img-ph__label">Imagen 5<br>Con reloj</span>
-        </div>
+        <img src="/assets/img/apex%20Cadena%20%2B%20reloj%20negro.png" alt="Cadena Apex con reloj negro" class="est-item__img" loading="lazy">
         <div class="est-item__info">
           <span class="est-item__tag">Look 03</span>
           <span class="est-item__label">Cadena + reloj negro</span>
