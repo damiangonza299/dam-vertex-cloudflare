@@ -47,6 +47,18 @@
       .dash-kpis { gap:6px; }
       .dash-kpi  { padding:10px 12px; }
     }
+    /* ── Ads attribution table ── */
+    .ads-table th, .ads-table td { padding:8px 10px; font-size:13px; }
+    .ads-col-lead   { width:120px; }
+    .ads-col-prod   { width:80px; }
+    .ads-col-ad     { }
+    .ads-col-camp   { }
+    .ads-col-status { width:90px; }
+    .ads-ellipsis   { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px; }
+    @media (max-width:600px) {
+      .ads-col-lead { width:90px; }
+      .ads-ellipsis { max-width:130px; }
+    }
   </style>
 </head>
 <body class="admin-page">
@@ -96,13 +108,11 @@
     </div>
 
     <!-- Tab navigation -->
-    <div class="admin-tabs" style="justify-content:space-between;align-items:flex-end">
-      <div style="display:flex;gap:2px;flex-wrap:wrap">
-        <button class="admin-tab admin-tab--active" data-tab="leads" onclick="switchAdminTab('leads')">Leads</button>
-        <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')">Productos</button>
-        <button class="admin-tab" data-tab="ads" onclick="switchAdminTab('ads')">Anuncios</button>
-      </div>
-      <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')" style="margin-bottom:0">Dashboard</button>
+    <div class="admin-tabs">
+      <button class="admin-tab admin-tab--active" data-tab="leads" onclick="switchAdminTab('leads')">Leads</button>
+      <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')">Productos</button>
+      <button class="admin-tab" data-tab="ads" onclick="switchAdminTab('ads')">Anuncios</button>
+      <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')">Dashboard</button>
     </div>
 
     <!-- Leads section -->
@@ -228,6 +238,11 @@
     <!-- Ads attribution section -->
     <div id="ads-section" style="display:none">
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
+        <select id="ads-filter-attr" class="admin-filter-select" onchange="adsFilterChange()">
+          <option value="with" selected>Con atribución</option>
+          <option value="">Todos</option>
+          <option value="without">Sin atribución</option>
+        </select>
         <select id="ads-filter-status" class="admin-filter-select" onchange="adsFilterChange()">
           <option value="">Todos los estados</option>
           <option value="pending">Pendientes</option>
@@ -239,14 +254,14 @@
         </button>
       </div>
       <div class="admin-table-wrap">
-        <table class="admin-table">
+        <table class="admin-table ads-table">
           <thead>
             <tr>
-              <th>Lead</th>
-              <th>Producto</th>
-              <th>Anuncio</th>
-              <th>Campaña</th>
-              <th>Estado</th>
+              <th class="ads-col-lead">Lead</th>
+              <th class="ads-col-prod">Producto</th>
+              <th class="ads-col-ad">Anuncio</th>
+              <th class="ads-col-camp">Campaña</th>
+              <th class="ads-col-status">Estado</th>
             </tr>
           </thead>
           <tbody id="ads-tbody">
