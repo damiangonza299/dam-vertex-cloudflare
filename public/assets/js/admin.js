@@ -477,7 +477,7 @@ function formatCity(cityRaw) {
     { match: 'juan león mallorquín', label: 'J. L. Mallorquín' },
     { match: 'juan leon mallorquin', label: 'J. L. Mallorquín' },
     { match: 'san juan bautista', label: 'San Juan Bautista' },
-    { match: 'san pedro del ycuamandiyu', label: 'San Pedro' },
+    { match: 'San Pedro Del Ycuamandiyu', label: 'San Pedro' },
     { match: 'san pedro de ycuamandiyu', label: 'San Pedro' },
     { match: 'santa rosa del aguaray', label: 'Sta. Rosa Aguaray' },
     { match: 'mariano roque alonso', label: 'M. R. Alonso' },
