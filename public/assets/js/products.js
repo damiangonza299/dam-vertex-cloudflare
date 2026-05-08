@@ -537,10 +537,12 @@ clearStockError();
 
       try {
         const client = typeof getClientData === 'function' ? getClientData() : {};
+        const attr   = typeof DV.getAttribution === 'function' ? DV.getAttribution() : {};
         const res = await fetch('/api/leads', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({
+            ...attr,
             product_name: product.name,
             name:         commonData.name,
             phone:        validPhone || rawPhone,
@@ -613,10 +615,12 @@ clearStockError();
       const client = typeof getClientData === 'function' ? getClientData() : {};
 
       /* 1 â Guardar lead */
+      const attr   = typeof DV.getAttribution === 'function' ? DV.getAttribution() : {};
       const res = await fetch('/api/leads', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({
+          ...attr,
           product_name: product.name,
           name:         data.name,
           phone:        validPhone || rawPhone,

@@ -531,11 +531,14 @@ function switchAdminTab(tab) {
   const leadsSection    = document.getElementById('leads-section');
   const productsSection = document.getElementById('products-section');
   const dashSection     = document.getElementById('dashboard-section');
+  const adsSection      = document.getElementById('ads-section');
   leadsSection    && (leadsSection.style.display    = tab === 'leads'     ? '' : 'none');
   productsSection && (productsSection.style.display = tab === 'products'  ? '' : 'none');
   dashSection     && (dashSection.style.display     = tab === 'dashboard' ? '' : 'none');
+  adsSection      && (adsSection.style.display      = tab === 'ads'       ? '' : 'none');
   if (tab === 'products')  loadProducts();
   if (tab === 'dashboard') renderDashboard();
+  if (tab === 'ads')       renderAdsTable();
 }
 
 document.getElementById('refresh-products-btn')?.addEventListener('click', loadProducts);
@@ -863,6 +866,41 @@ function renderStatusBars(purchased, pending, cancelled) {
         <div style="height:100%;width:${pct(val)}%;background:${color};border-radius:3px"></div>
       </div>
     </div>`).join('');
+}
+
+/* =========================================================
+   Ads Attribution Tab
+   ========================================================= */
+let adsStatusFilter = '';
+
+function adsFilterChange() {
+  adsStatusFilter = document.getElementById('ads-filter-status')?.value || '';
+  renderAdsTable();
+}
+
+function renderAdsTable() {
+  const tbody = document.getElementById('ads-tbody');
+  if (!tbody) return;
+
+  let filtered = allLeads.slice();
+  if (adsStatusFilter) filtered = filtered.filter(l => l.status === adsStatusFilter);
+
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--muted)">Sin leads todavía</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(l => {
+    const adLabel       = l.ad_name       || l.ad_id       || l.utm_content  || '—';
+    const campaignLabel = l.campaign_name || l.campaign_id || l.utm_campaign  || '—';
+    return `<tr>
+      <td style="white-space:nowrap">${esc(shortName(l.name))}</td>
+      <td>${esc(abbrevProduct(l.product_name))}</td>
+      <td title="${esc(l.ad_name || l.ad_id || l.utm_content || '')}" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(adLabel)}</td>
+      <td title="${esc(l.campaign_name || l.campaign_id || l.utm_campaign || '')}" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(campaignLabel)}</td>
+      <td><span class="badge badge-${l.status}">${labelStatus(l.status)}</span></td>
+    </tr>`;
+  }).join('');
 }
 
 function renderProductRanking(leads) {

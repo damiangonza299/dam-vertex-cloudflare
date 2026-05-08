@@ -97,9 +97,10 @@
 
     <!-- Tab navigation -->
     <div class="admin-tabs" style="justify-content:space-between;align-items:flex-end">
-      <div style="display:flex;gap:2px">
+      <div style="display:flex;gap:2px;flex-wrap:wrap">
         <button class="admin-tab admin-tab--active" data-tab="leads" onclick="switchAdminTab('leads')">Leads</button>
         <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')">Productos</button>
+        <button class="admin-tab" data-tab="ads" onclick="switchAdminTab('ads')">Anuncios</button>
       </div>
       <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')" style="margin-bottom:0">Dashboard</button>
     </div>
@@ -223,6 +224,37 @@
       </div>
 
     </div><!-- /dashboard-section -->
+
+    <!-- Ads attribution section -->
+    <div id="ads-section" style="display:none">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
+        <select id="ads-filter-status" class="admin-filter-select" onchange="adsFilterChange()">
+          <option value="">Todos los estados</option>
+          <option value="pending">Pendientes</option>
+          <option value="purchased">Comprados</option>
+          <option value="cancelled">Cancelados</option>
+        </select>
+        <button onclick="loadLeads().then(() => renderAdsTable())" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit">
+          ↻ Actualizar
+        </button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Lead</th>
+              <th>Producto</th>
+              <th>Anuncio</th>
+              <th>Campaña</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="ads-tbody">
+            <tr><td colspan="5" style="text-align:center;padding:48px;color:var(--muted)">Iniciá sesión para ver los datos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /ads-section -->
 
   </div>
 </div>
