@@ -871,8 +871,18 @@ function renderStatusBars(purchased, pending, cancelled) {
 /* =========================================================
    Ads Attribution Tab
    ========================================================= */
-let adsStatusFilter = '';
-let adsAttrFilter   = 'with'; // default: solo leads con atribución
+let adsStatusFilter  = '';
+let adsAttrFilter    = 'with';
+let adsProductFilter = '';
+
+function formatProductShortName(name) {
+  if (!name) return '—';
+  if (name.includes('Cadena') || name.includes('Apex')) return 'Apex';
+  if (name.includes('Cepillo')) return 'Cepillo';
+  if (name.includes('Lentes'))  return 'Lentes';
+  if (name.includes('Reloj'))   return 'Reloj';
+  return name.length > 12 ? name.slice(0, 12) + '…' : name;
+}
 
 function hasAttribution(l) {
   return !!(l.ad_name || l.ad_id || l.utm_content ||
@@ -880,8 +890,9 @@ function hasAttribution(l) {
 }
 
 function adsFilterChange() {
-  adsStatusFilter = document.getElementById('ads-filter-status')?.value || '';
-  adsAttrFilter   = document.getElementById('ads-filter-attr')?.value ?? 'with';
+  adsStatusFilter  = document.getElementById('ads-filter-status')?.value || '';
+  adsAttrFilter    = document.getElementById('ads-filter-attr')?.value ?? 'with';
+  adsProductFilter = document.getElementById('ads-filter-prod')?.value  || '';
   renderAdsTable();
 }
 
@@ -890,15 +901,16 @@ function renderAdsTable() {
   if (!tbody) return;
 
   let filtered = allLeads.slice();
-  if (adsStatusFilter)         filtered = filtered.filter(l => l.status === adsStatusFilter);
+  if (adsStatusFilter)             filtered = filtered.filter(l => l.status === adsStatusFilter);
   if (adsAttrFilter === 'with')    filtered = filtered.filter(l =>  hasAttribution(l));
   if (adsAttrFilter === 'without') filtered = filtered.filter(l => !hasAttribution(l));
+  if (adsProductFilter)            filtered = filtered.filter(l => formatProductShortName(l.product_name) === adsProductFilter);
 
   if (!filtered.length) {
     const msg = adsAttrFilter === 'with'
       ? 'Todavía no hay pedidos con datos de anuncio. Probá entrando desde una URL con UTMs o desde un anuncio activo.'
       : 'Sin leads para los filtros seleccionados.';
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px 20px;color:var(--muted);line-height:1.6;font-size:13px">${msg}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:40px 20px;color:var(--muted);line-height:1.6;font-size:13px">${msg}</td></tr>`;
     return;
   }
 
@@ -906,11 +918,10 @@ function renderAdsTable() {
     const adLabel       = l.ad_name       || l.ad_id       || l.utm_content  || '—';
     const campaignLabel = l.campaign_name || l.campaign_id || l.utm_campaign  || '—';
     return `<tr>
-      <td class="ads-col-lead"><span class="ads-ellipsis" title="${esc(l.name)}">${esc(shortName(l.name))}</span></td>
-      <td class="ads-col-prod">${esc(abbrevProduct(l.product_name))}</td>
-      <td class="ads-col-ad"><span class="ads-ellipsis" title="${esc(l.ad_name || l.ad_id || l.utm_content || '')}">${esc(adLabel)}</span></td>
-      <td class="ads-col-camp"><span class="ads-ellipsis" title="${esc(l.campaign_name || l.campaign_id || l.utm_campaign || '')}">${esc(campaignLabel)}</span></td>
-      <td class="ads-col-status"><span class="badge badge-${l.status}">${labelStatus(l.status)}</span></td>
+      <td>${esc(shortName(l.name))}</td>
+      <td>${esc(formatProductShortName(l.product_name))}</td>
+      <td><span class="ads-ellipsis" title="${esc(l.ad_name || l.ad_id || l.utm_content || '')}">${esc(adLabel)}</span></td>
+      <td><span class="ads-ellipsis" title="${esc(l.campaign_name || l.campaign_id || l.utm_campaign || '')}">${esc(campaignLabel)}</span></td>
     </tr>`;
   }).join('');
 }
