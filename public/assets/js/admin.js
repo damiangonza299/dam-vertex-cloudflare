@@ -884,6 +884,38 @@ function formatProductShortName(name) {
   return name.length > 12 ? name.slice(0, 12) + '…' : name;
 }
 
+/*
+ * Para que Anuncio y Campaña muestren nombres reales, configurar en Meta Ads:
+ * URL parameters →
+ *   utm_source=meta
+ *   &utm_campaign={{campaign.name}}
+ *   &utm_content={{ad.name}}
+ *   &campaign_id={{campaign.id}}
+ *   &adset_id={{adset.id}}
+ *   &ad_id={{ad.id}}
+ *   &campaign_name={{campaign.name}}
+ *   &adset_name={{adset.name}}
+ *   &ad_name={{ad.name}}
+ */
+
+function isNumericId(v) {
+  return !!v && /^\d{6,}$/.test(String(v).trim());
+}
+
+function cleanAdLabel(l) {
+  if (l.ad_name && !isNumericId(l.ad_name))       return l.ad_name;
+  if (l.utm_content && !isNumericId(l.utm_content)) return l.utm_content;
+  if (l.ad_id)                                      return l.ad_id;
+  return '—';
+}
+
+function cleanCampaignLabel(l) {
+  if (l.campaign_name && !isNumericId(l.campaign_name)) return l.campaign_name;
+  if (l.utm_campaign  && !isNumericId(l.utm_campaign))  return l.utm_campaign;
+  if (l.campaign_id)                                     return l.campaign_id;
+  return '—';
+}
+
 function hasAttribution(l) {
   return !!(l.ad_name || l.ad_id || l.utm_content ||
             l.campaign_name || l.campaign_id || l.utm_campaign || l.fbclid);
@@ -915,13 +947,13 @@ function renderAdsTable() {
   }
 
   tbody.innerHTML = filtered.map(l => {
-    const adLabel       = l.ad_name       || l.ad_id       || l.utm_content  || '—';
-    const campaignLabel = l.campaign_name || l.campaign_id || l.utm_campaign  || '—';
+    const adLabel       = cleanAdLabel(l);
+    const campaignLabel = cleanCampaignLabel(l);
     return `<tr>
       <td>${esc(shortName(l.name))}</td>
       <td>${esc(formatProductShortName(l.product_name))}</td>
-      <td><span class="ads-ellipsis" title="${esc(l.ad_name || l.ad_id || l.utm_content || '')}">${esc(adLabel)}</span></td>
-      <td><span class="ads-ellipsis" title="${esc(l.campaign_name || l.campaign_id || l.utm_campaign || '')}">${esc(campaignLabel)}</span></td>
+      <td><span class="ads-ellipsis" title="${esc(adLabel)}">${esc(adLabel)}</span></td>
+      <td><span class="ads-ellipsis" title="${esc(campaignLabel)}">${esc(campaignLabel)}</span></td>
     </tr>`;
   }).join('');
 }
