@@ -115,7 +115,7 @@
   <div class="hero__inner">
     <div class="hero__img-frame">
       <img
-        src="https://cdn.shopify.com/s/files/1/0699/4126/4560/files/tiktok_cepillo1.png?v=1777066635"
+        src="/assets/img/cepillo%20blanco%201.png"
         alt="Cepillo Eléctrico Recargable"
         class="hero__img"
         loading="eager"
@@ -184,7 +184,7 @@
     <div>
       <p class="t-label t-label--pos">Con el cepillo</p>
       <img
-        src="https://cdn.shopify.com/s/files/1/0699/4126/4560/files/tiktok_cepillo2.png?v=1777066634"
+        src="/assets/img/cepillo%20blanco%202.png"
         alt="Cepillo eléctrico en uso"
         class="t-img"
         loading="lazy">
@@ -390,7 +390,7 @@
 
     <!-- Variantes de color (se rellena por JS según cantidad) -->
     <div class="modal-section" id="variant-section" style="display:none">
-      <span class="modal-section-label">Elegí el color de cada unidad</span>
+      <span class="modal-section-label" style="display:none">Elegí el color de cada unidad</span>
       <div id="variant-selectors"></div>
     </div>
 
@@ -517,13 +517,23 @@
     price: 159000,
     variants: {
       type:    'color',
-      options: ['Negro', 'Blanco'],
+      options: ['Blanco'],
     },
   };
 
   document.addEventListener('DOMContentLoaded', () => {
     DV.trackViewContent(PRODUCT);
     DV.initForm(PRODUCT);
+
+    /* Auto-fill Blanco qty in 4+ custom section (único color disponible) */
+    const customVariantRows = document.getElementById('custom-variant-rows');
+    if (customVariantRows) {
+      new MutationObserver(() => {
+        const qty   = parseInt(document.getElementById('m-custom-qty')?.value || '4');
+        const input = customVariantRows.querySelector('.custom-variant-qty[data-color="Blanco"]');
+        if (input) input.value = qty;
+      }).observe(customVariantRows, { childList: true, subtree: true });
+    }
   });
 </script>
 
