@@ -10,7 +10,11 @@
       "PowerShell(Get-ChildItem \"c:\\\\Users\\\\Admin\\\\Desktop\\\\dam-vertex-cloudflare\" | Where-Object { $_.PSIsContainer } | Select-Object -ExpandProperty Name)",
       "Bash(xxd)",
       "Bash(cd \"/c/Users/Admin/Desktop/dam-vertex-cloudflare\" && grep -n \"sticky-cta\\\\|Pedir ahora\\\\|Confirmar pedido\" public/cadena/index.html | head -10)",
-      "Read(//c/c/Users/Admin/Desktop/dam-vertex-cloudflare/public/cadena/**)"
+      "Read(//c/c/Users/Admin/Desktop/dam-vertex-cloudflare/public/cadena/**)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Admin\\\\Desktop\\\\dam-vertex-cloudflare\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Start-Sleep -Seconds 20)",
+      "Bash(Write-Host \"done\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\.claude\\projects\\c--Users-Admin-Desktop-dam-vertex-cloudflare\\memory"
