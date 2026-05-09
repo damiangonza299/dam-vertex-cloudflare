@@ -572,7 +572,6 @@ fbc:          client.fbc || '',
       const capiLead       = { ...commonData, phone: validPhone || '' };
       const customProduct  = { ...product, price: customTotal };
       DV.trackInitiateCheckout(customProduct, capiLead, customQty);
-      DV.trackContact(product, capiLead);
       DV.trackQualifiedLead(customProduct, capiLead);
 
 const msg = buildCustomOrderWAMsg(product, commonData, customQty, customTotal, customColors);
@@ -648,7 +647,6 @@ clearStockError();
       /* 2â4 â Tracking (telÃ©fono normalizado o vacÃ­o para CAPI) */
       const capiLead = { ...data, phone: validPhone || '' };
       DV.trackInitiateCheckout(product, capiLead, selectedQty);
-      DV.trackContact(product, capiLead);
       DV.trackQualifiedLead(product, capiLead);
 
       /* 5 â Mostrar Ã©xito */

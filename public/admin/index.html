@@ -135,6 +135,7 @@
         <option value="Cepillo Eléctrico Recargable (4 Cabezales)">Cepillo</option>
         <option value="Lentes Anti Luz Azul Rojos">Lentes</option>
         <option value="Reloj Blackout Minimal">Reloj</option>
+        <option value="Cadena Apex">Apex</option>
       </select>
       <select id="filter-status" class="admin-filter-select">
         <option value="">Todos los estados</option>
@@ -192,21 +193,20 @@
     <div id="dashboard-section" style="display:none">
 
       <!-- Filtros período + producto -->
-      <div class="dash-filters">
-        <div class="dash-period-row">
-          <button class="dash-btn" data-period="today">Hoy</button>
-          <button class="dash-btn" data-period="yesterday">Ayer</button>
-          <button class="dash-btn" data-period="7d">7 días</button>
-          <button class="dash-btn" data-period="30d">30 días</button>
-          <button class="dash-btn" data-period="month">Mes actual</button>
-          <button class="dash-btn dash-btn--active" data-period="all">Todo</button>
-        </div>
-        <div class="dash-prod-row">
-          <button class="dash-prod dash-prod--active" data-prod="">Todos los productos</button>
-          <button class="dash-prod" data-prod="Cepillo Eléctrico Recargable (4 Cabezales)">Cepillo</button>
-          <button class="dash-prod" data-prod="Lentes Anti Luz Azul Rojos">Lentes</button>
-          <button class="dash-prod" data-prod="Reloj Blackout Minimal">Reloj</button>
-        </div>
+      <div class="admin-date-filters" style="margin-bottom:8px">
+        <button class="date-btn date-btn--active" id="dash-date-all">Todos</button>
+        <button class="date-btn" id="dash-date-today">Hoy</button>
+        <button class="date-btn" id="dash-date-yesterday">Ayer</button>
+        <input type="date" id="dash-date-picker" class="date-picker">
+      </div>
+      <div class="admin-filters" style="margin-bottom:16px">
+        <select id="dash-prod-select" class="admin-filter-select">
+          <option value="">Todos los productos</option>
+          <option value="Cepillo Eléctrico Recargable (4 Cabezales)">Cepillo</option>
+          <option value="Lentes Anti Luz Azul Rojos">Lentes</option>
+          <option value="Reloj Blackout Minimal">Reloj</option>
+          <option value="Cadena Apex">Apex</option>
+        </select>
       </div>
 
       <!-- KPIs -->

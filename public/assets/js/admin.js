@@ -737,20 +737,34 @@ function updateProductBadge(slug, stockTotal) {
 let dashPeriod  = 'all';
 let dashProduct = '';
 
-document.querySelectorAll('.dash-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    dashPeriod = btn.dataset.period;
-    document.querySelectorAll('.dash-btn').forEach(b => b.classList.toggle('dash-btn--active', b === btn));
-    renderDashboard();
+function setDashPeriod(val) {
+  dashPeriod = val;
+  const map = { all: 'dash-date-all', today: 'dash-date-today', yesterday: 'dash-date-yesterday' };
+  Object.entries(map).forEach(([p, id]) => {
+    document.getElementById(id)?.classList.toggle('date-btn--active', p === val);
   });
+  if (val in map) {
+    const dp = document.getElementById('dash-date-picker');
+    if (dp) dp.value = '';
+  }
+  renderDashboard();
+}
+
+document.getElementById('dash-date-all')?.addEventListener('click',       () => setDashPeriod('all'));
+document.getElementById('dash-date-today')?.addEventListener('click',     () => setDashPeriod('today'));
+document.getElementById('dash-date-yesterday')?.addEventListener('click', () => setDashPeriod('yesterday'));
+document.getElementById('dash-date-picker')?.addEventListener('change', e => {
+  const val = e.target.value;
+  dashPeriod = val || 'all';
+  const map = { all: 'dash-date-all', today: 'dash-date-today', yesterday: 'dash-date-yesterday' };
+  Object.values(map).forEach(id => document.getElementById(id)?.classList.remove('date-btn--active'));
+  if (!val) document.getElementById('dash-date-all')?.classList.add('date-btn--active');
+  renderDashboard();
 });
 
-document.querySelectorAll('.dash-prod').forEach(btn => {
-  btn.addEventListener('click', () => {
-    dashProduct = btn.dataset.prod;
-    document.querySelectorAll('.dash-prod').forEach(b => b.classList.toggle('dash-prod--active', b === btn));
-    renderDashboard();
-  });
+document.getElementById('dash-prod-select')?.addEventListener('change', e => {
+  dashProduct = e.target.value;
+  renderDashboard();
 });
 
 function getDashLeads(applyPeriod) {
@@ -769,6 +783,7 @@ function getDashLeads(applyPeriod) {
       const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
       return ld.startsWith(ym);
     }
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dashPeriod)) return ld === dashPeriod;
     return true;
   });
 }

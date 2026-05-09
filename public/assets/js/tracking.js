@@ -132,21 +132,6 @@ DV.trackInitiateCheckout = function (product, lead, qty) {
   return event_id;
 };
 
-DV.trackContact = function (product, lead) {
-  const event_id = genEventId('ct', product.slug);
-  const client   = getClientData();
-
-  fbq('track', 'Contact', {}, { eventID: event_id });
-
-  sendCAPI({
-    event_name: 'Contact',
-    event_id,
-    product,
-    lead,
-    client,
-  });
-};
-
 /* ── Attribution capture (interno, no Meta) ── */
 (function () {
   const ATTR_KEY = 'dv_attr';
