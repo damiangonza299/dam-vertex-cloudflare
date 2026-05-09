@@ -20,6 +20,7 @@ export async function onRequestPost({ request, env }) {
       fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
       campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name,
       landing_path, referrer,
+      address, payment_method,
     } = body;
 
     if (!name || !phone || !product_name) {
@@ -58,6 +59,9 @@ export async function onRequestPost({ request, env }) {
       ad_name       || null,
       landing_path  || null,
       referrer      || null,
+      // delivery (indices 27-28)
+      address        || null,
+      payment_method || null,
     ];
 
     let result;
@@ -66,8 +70,9 @@ export async function onRequestPost({ request, env }) {
         INSERT INTO leads (
           product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity, variant,
           fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
-          campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer,
+          address, payment_method
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(...bindArgs).run();
     } catch (insertErr) {
       const msg = insertErr.message || '';

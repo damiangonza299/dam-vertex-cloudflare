@@ -112,7 +112,7 @@ export async function onRequestPost({ request, env }) {
         ...(testCode && { test_event_code: testCode }),
       };
 
-      await fetch(
+      const capiRes  = await fetch(
         `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`,
         {
           method:  'POST',
@@ -120,6 +120,12 @@ export async function onRequestPost({ request, env }) {
           body:    JSON.stringify(payload),
         },
       );
+      const capiBody = await capiRes.json().catch(() => ({}));
+      if (!capiRes.ok) {
+        console.error('PURCHASE_CAPI_FAILED lead_id=' + id, capiRes.status, JSON.stringify(capiBody));
+      } else {
+        console.log('PURCHASE_CAPI_OK lead_id=' + id, capiBody.events_received ?? '?');
+      }
     }
 
     /* Marcar como purchased */
@@ -158,7 +164,7 @@ export async function onRequestPost({ request, env }) {
 
         console.log(`STOCK_UPDATE OK: ${productRow.slug} total=${newTotal} variants=${newVarJson}`);
       } catch (err) {
-        console.error('STOCK_UPDATE_ERROR', err.message);
+        console.error('STOCK_UPDATE_FAILED lead_id=' + id, err.message);
       }
     }
 

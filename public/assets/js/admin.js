@@ -222,6 +222,7 @@ function abbrevProduct(name) {
   if (name.includes('Cepillo')) return 'Cepillo';
   if (name.includes('Lentes'))  return 'Lentes';
   if (name.includes('Reloj'))   return 'Reloj';
+  if (name.includes('Cadena') || name.includes('Apex')) return 'Apex';
   return name.length > 10 ? name.slice(0, 10) + '...' : name;
 }
 
@@ -961,7 +962,7 @@ function renderAdsTable() {
 function renderProductRanking(leads) {
   const el = document.getElementById('dash-ranking');
   if (!el) return;
-  const prodNames = ['Cepillo', 'Lentes', 'Reloj'];
+  const prodNames = ['Cepillo', 'Lentes', 'Reloj', 'Apex'];
   const map = {};
   leads.filter(l => l.status === 'purchased').forEach(l => {
     const k = abbrevProduct(l.product_name);

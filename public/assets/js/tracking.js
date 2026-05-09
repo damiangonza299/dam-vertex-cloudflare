@@ -108,7 +108,7 @@ DV.trackAddToCart = function (product) {
   return event_id;
 };
 
-DV.trackInitiateCheckout = function (product, lead) {
+DV.trackInitiateCheckout = function (product, lead, qty) {
   const event_id = genEventId('ic', product.slug);
   const client   = getClientData();
 
@@ -118,7 +118,7 @@ DV.trackInitiateCheckout = function (product, lead) {
     content_type:  'product',
     value:         product.price,
     currency:      'PYG',
-    num_items:     1,
+    num_items:     qty || 1,
   }, { eventID: event_id });
 
   sendCAPI({

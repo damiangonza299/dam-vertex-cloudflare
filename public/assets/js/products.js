@@ -554,7 +554,9 @@ quantity:     customQty,
 variant:      customColors?.length ? JSON.stringify(customColors) : null,
 fbp:          client.fbp || '',
 fbc:          client.fbc || '',
-            user_agent:   navigator.userAgent,
+            user_agent:     navigator.userAgent,
+            address:        commonData.referencia || null,
+            payment_method: commonData.payment    || null,
           }),
         });
         if (!res.ok) throw new Error('lead_error');
@@ -569,7 +571,7 @@ fbc:          client.fbc || '',
       /* Tracking con value y num_items correctos */
       const capiLead       = { ...commonData, phone: validPhone || '' };
       const customProduct  = { ...product, price: customTotal };
-      DV.trackInitiateCheckout(customProduct, capiLead);
+      DV.trackInitiateCheckout(customProduct, capiLead, customQty);
       DV.trackContact(product, capiLead);
       DV.trackQualifiedLead(customProduct, capiLead);
 
@@ -628,11 +630,13 @@ clearStockError();
           city:         data.city,
           value:        expressTotal,
           currency:     'PYG',
-          quantity:     selectedQty,
-          variant:      colors.length ? JSON.stringify(colors) : null,
-          fbp:          client.fbp || '',
-          fbc:          client.fbc || '',
-          user_agent:   navigator.userAgent,
+          quantity:       selectedQty,
+          variant:        colors.length ? JSON.stringify(colors) : null,
+          fbp:            client.fbp || '',
+          fbc:            client.fbc || '',
+          user_agent:     navigator.userAgent,
+          address:        data.referencia || null,
+          payment_method: data.payment    || null,
         }),
       });
 
@@ -643,7 +647,7 @@ clearStockError();
 
       /* 2â4 â Tracking (telÃ©fono normalizado o vacÃ­o para CAPI) */
       const capiLead = { ...data, phone: validPhone || '' };
-      DV.trackInitiateCheckout(product, capiLead);
+      DV.trackInitiateCheckout(product, capiLead, selectedQty);
       DV.trackContact(product, capiLead);
       DV.trackQualifiedLead(product, capiLead);
 
