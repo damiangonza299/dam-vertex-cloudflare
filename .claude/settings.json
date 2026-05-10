@@ -14,7 +14,8 @@
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Admin\\\\Desktop\\\\dam-vertex-cloudflare\" -Recurse -Directory)",
       "Bash(Select-Object -ExpandProperty FullName)",
       "Bash(Start-Sleep -Seconds 20)",
-      "Bash(Write-Host \"done\")"
+      "Bash(Write-Host \"done\")",
+      "Bash(git -C \"c:\\\\Users\\\\Admin\\\\Desktop\\\\dam-vertex-cloudflare\" diff --stat)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\.claude\\projects\\c--Users-Admin-Desktop-dam-vertex-cloudflare\\memory"
