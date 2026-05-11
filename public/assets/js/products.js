@@ -527,6 +527,11 @@ if (!customVariantResult.ok) {
 
 const customColors = customVariantResult.colors;
 
+/* Armar URL de WhatsApp antes del primer await — gesture context */
+const customWaUrl    = `https://wa.me/${WA_NUMBER}?text=${buildCustomOrderWAMsg(product, commonData, customQty, customTotal, customColors)}`;
+const customManualBtn = success?.querySelector('.btn-wa-manual');
+if (customManualBtn) customManualBtn.href = customWaUrl;
+
 /* Verificar stock */
 const customStockCheck = await checkProductStock(product.slug, customQty, customColors);
 if (!customStockCheck.ok) { showStockError(customStockCheck.error); return; }
@@ -574,10 +579,9 @@ fbc:          client.fbc || '',
       DV.trackInitiateCheckout(customProduct, capiLead, customQty);
       DV.trackQualifiedLead(customProduct, capiLead);
 
-const msg = buildCustomOrderWAMsg(product, commonData, customQty, customTotal, customColors);
       modalForm.style.display = 'none';
       success.classList.add('visible');
-      setTimeout(() => { window.location.href = `https://wa.me/${WA_NUMBER}?text=${msg}`; }, 400);
+      window.location.href = customWaUrl;
       return;
     }
 
@@ -600,14 +604,19 @@ const msg = buildCustomOrderWAMsg(product, commonData, customQty, customTotal, c
 /* Variante principal — mismo color en todas las unidades, o nulo si mixto */
 const primaryVariant = colors.length > 0 && colors.every(c => c === colors[0]) ? colors[0] : null;
 
+    const data = { ...commonData, express, product: product.slug };
+    const offerInfo = { qty: selectedQty, total: expressTotal, colors: colors.length ? colors : null };
+
+/* Armar URL de WhatsApp antes del primer await — gesture context */
+const waUrl    = `https://wa.me/${WA_NUMBER}?text=${buildWAMsg(product, data, offerInfo)}`;
+const manualBtn = success?.querySelector('.btn-wa-manual');
+if (manualBtn) manualBtn.href = waUrl;
+
 /* Verificar stock */
 const stockVariant = colors.length > 1 ? colors : primaryVariant;
 const stockCheck = await checkProductStock(product.slug, selectedQty, stockVariant);
 if (!stockCheck.ok) { showStockError(stockCheck.error); return; }
 clearStockError();
-
-    const data = { ...commonData, express, product: product.slug };
-    const offerInfo = { qty: selectedQty, total: expressTotal, colors: colors.length ? colors : null };
 
     submitBtn.disabled  = true;
     submitBtn.innerHTML = '<span class="spinner"></span>';
@@ -654,7 +663,7 @@ clearStockError();
       success.classList.add('visible');
 
       /* 6 â Abrir WhatsApp con delay */
-      setTimeout(() => openWhatsApp(product, data, offerInfo), 400);
+      window.location.href = waUrl;
 
     } catch (err) {
       if (err?.message !== 'lead_error') console.error('LEAD_SAVE_ERROR', err?.message);

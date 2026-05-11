@@ -42,6 +42,10 @@ if (IS_DELIVERY) {
   const exportBtn = document.getElementById('export-csv-btn');
   if (exportBtn) exportBtn.style.display = 'none';
 
+  document.querySelectorAll('[data-tab="ads"], [data-tab="dashboard"]').forEach(btn => {
+    btn.style.display = 'none';
+  });
+
   // 🔒 Bloquear edición en productos (solo visual)
   const observer = new MutationObserver(() => {
     const productInputs = document.querySelectorAll(
