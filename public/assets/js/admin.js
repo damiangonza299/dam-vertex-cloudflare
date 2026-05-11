@@ -230,6 +230,17 @@ function abbrevProduct(name) {
   return name.length > 10 ? name.slice(0, 10) + '...' : name;
 }
 
+function fmtVariant(v) {
+  if (!v) return '';
+  try {
+    const arr = JSON.parse(v);
+    if (Array.isArray(arr)) return arr.join(' + ');
+    return String(v);
+  } catch (_) {
+    return String(v);
+  }
+}
+
 function buildActions(l) {
   const canConfirm = l.status !== 'purchased';
 
@@ -270,7 +281,7 @@ function renderTable(leads) {
       <td class="col-name" title="${esc(l.name)}">${shortName(l.name)}</td>
       <td class="col-phone">${esc(l.phone)}</td>
 <td class="col-city" title="${esc(l.city || '')}">${formatCity(l.city)}</td>
-<td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))} (${Number(l.quantity || 1)})</td>
+<td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))} (${Number(l.quantity || 1)})${fmtVariant(l.variant) ? '<br><span style="font-size:10px;color:rgba(255,255,255,.45)">' + esc(fmtVariant(l.variant)) + '</span>' : ''}</td>
       <td class="col-val">${Number(l.value || 0).toLocaleString('es-PY')}</td>
       <td class="col-status"><span class="badge badge-${l.status}">${labelStatus(l.status)}</span></td>
       <td class="col-date">${fmtDateShort(l.created_at)}</td>

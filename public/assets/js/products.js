@@ -655,8 +655,9 @@ clearStockError();
 
       /* 2â4 â Tracking (telÃ©fono normalizado o vacÃ­o para CAPI) */
       const capiLead = { ...data, phone: validPhone || '' };
-      DV.trackInitiateCheckout(product, capiLead, selectedQty);
-      DV.trackQualifiedLead(product, capiLead);
+      const trackProduct = { ...product, price: expressTotal };
+      DV.trackInitiateCheckout(trackProduct, capiLead, selectedQty);
+      DV.trackQualifiedLead(trackProduct, capiLead);
 
       /* 5 â Mostrar Ã©xito */
       modalForm.style.display = 'none';
