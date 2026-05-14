@@ -4,10 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preload" as="image" href="/assets/img/Cadena%20Apex%20perfil.png" fetchpriority="high">
+  <link rel="preload" href="/assets/css/styles.css?v=48" as="style">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="preload" href="/assets/js/tracking.js?v=48" as="script">
+  <link rel="preload" href="/assets/js/products.js?v=48" as="script">
   <meta name="description" content="Cadena Apex. Acero inoxidable negro. Diseño geométrico minimalista. El accesorio que define tu estilo. Envío en el día — Dam Vertex Paraguay.">
   <title>Cadena Apex — Dam Vertex</title>
-  <script src="/assets/js/site-version.js"></script>
-  <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
+  <script>window.DAM_VERTEX_VERSION = "48";</script>
+  <link rel="stylesheet" href="/assets/css/styles.css?v=48">
   <style>
     /* ── Cadena Apex theme (acero negro / plata) ── */
     :root { --accent: #9ca3af; }
@@ -39,7 +44,11 @@
     .theme-cadena .ct-ok { color: rgba(255,255,255,.5); }
 
     /* — NAV — */
-    /* usa estilos globales */
+    .nav {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background: rgba(0,0,0,.96);
+    }
 
     /* — HERO — */
     .hero {
@@ -470,9 +479,7 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
       padding: 12px 20px;
-      background: rgba(0,0,0,.96);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: rgba(0,0,0,.97);
       border-top: 1px solid rgba(255,255,255,.08);
       display: flex;
       align-items: center;
@@ -952,13 +959,8 @@
 </footer>
 
 <!-- Scripts -->
-<script>
-(function(){
-  var v = window.DAM_VERTEX_VERSION || '1';
-  document.write('<script src="/assets/js/tracking.js?v=' + v + '"><\/script>');
-  document.write('<script src="/assets/js/products.js?v=' + v + '"><\/script>');
-})();
-</script>
+<script src="/assets/js/tracking.js?v=48"></script>
+<script src="/assets/js/products.js?v=48"></script>
 <script>
   const PRODUCT = {
     name:             'Cadena Apex',
