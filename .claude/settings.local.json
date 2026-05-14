@@ -12,7 +12,23 @@
       "Bash(Out-String)",
       "Bash(mkdir -p \"c:\\\\Users\\\\Admin\\\\Desktop\\\\dam-vertex-cloudflare\\\\public\\\\cadena\")",
       "Bash(powershell -Command ' *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "PowerShell(Get-Command node -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command npm -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command npx -ErrorAction SilentlyContinue)",
+      "PowerShell(winget --version 2>&1)",
+      "PowerShell(winget install OpenJS.NodeJS.LTS --accept-source-agreements --accept-package-agreements 2>&1)",
+      "PowerShell(Get-ChildItem \"$env:APPDATA\\\\xdg.config\\\\.wrangler\" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName)",
+      "PowerShell(Get-ChildItem \"$env:USERPROFILE\\\\.wrangler\" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName)",
+      "WebFetch(domain:damvertex.com)",
+      "WebFetch(domain:main.dam-vertex-cloudflare.pages.dev)",
+      "PowerShell(& \"C:\\\\Program Files\\\\nodejs\\\\npx.cmd\" wrangler pages deploy \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\public\" --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true 2>&1)",
+      "PowerShell(& \"C:\\\\Program Files\\\\nodejs\\\\npx.cmd\" wrangler pages deployment list --project-name=dam-vertex-cloudflare 2>&1)",
+      "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\public\\\\assets\\\\img\" | Select-Object Name, @{N='KB';E={[math]::Round\\($_.Length/1KB,1\\)}}, @{N='MB';E={[math]::Round\\($_.Length/1MB,2\\)}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\public\\\\assets\\\\video\" | Select-Object Name, @{N='MB';E={[math]::Round\\($_.Length/1MB,1\\)}})",
+      "Bash(\"C:\\\\Program Files\\\\nodejs\\\\npx.cmd\" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true)",
+      "Bash(dir \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" /B)",
+      "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\AI_SYSTEM\" -Recurse | Where-Object { -not $_.PSIsContainer } | ForEach-Object { $_.FullName.Replace\\(\"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\\", \"\"\\) })"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public"
