@@ -1,12 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Cepillo Eléctrico Recargable con 4 cabezales intercambiables. Limpieza profunda para baño y cocina. Envío gratis en el día.">
-  <title>Cepillo Eléctrico Recargable — Dam Vertex</title>
-  <script src="/assets/js/site-version.js"></script>
-  <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
+  <link rel="preload" as="image" href="/assets/img/cepillo%20blanco%201.png" fetchpriority="high">
+  <link rel="preload" href="/assets/css/styles.css?v=48" as="style">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="preload" href="/assets/js/tracking.js?v=48" as="script">
+  <link rel="preload" href="/assets/js/products.js?v=48" as="script">
+  <meta name="description" content="Cepillo sónico recargable con 40.000 vibraciones y 4 cabezales. Elimina hasta 100% más placa que un cepillo manual. Sentís la diferencia desde el primer uso. Entrega en el día — Dam Vertex Paraguay.">
+  <title>Cepillo Sónico Recargable — Limpieza Profunda — Dam Vertex</title>
+  <script>window.DAM_VERTEX_VERSION = "48";</script>
+  <link rel="stylesheet" href="/assets/css/styles.css?v=48">
   <style>
     /* ── Cepillo theme ── */
     :root { --accent: #3b82f6; }
@@ -85,6 +91,47 @@
     .b-card strong { display: block; font-size: 15px; color: #fff; margin-bottom: 8px; }
     .b-card p { font-size: 13px; color: rgba(255,255,255,.68); line-height: 1.65; margin: 0; }
 
+    /* Prueba Social */
+    .social-proof {
+      background: #0a0a0a;
+      padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px);
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .sp-inner { max-width: 900px; margin: 0 auto; }
+    .sp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .sp-card {
+      background: #141414;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .sp-stars { color: #fbbf24; font-size: 15px; line-height: 1; }
+    .sp-quote {
+      font-size: 14px;
+      color: rgba(255,255,255,.65);
+      line-height: 1.72;
+      font-style: italic;
+      flex: 1;
+      margin: 0;
+    }
+    .sp-author {
+      border-top: 1px solid rgba(255,255,255,.07);
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .sp-name { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.72); }
+    .sp-city { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .04em; }
+
     /* FAQ */
     .faq { background: #0f172a; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); }
 
@@ -94,17 +141,89 @@
     .close-pre { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.7); font-weight: 700; margin: 0 0 16px; }
     .close-h { font-size: clamp(24px,4.5vw,38px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0 0 36px; }
 
+    /* Social proof inline (hero) */
+    .spi {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 14px 0 0;
+    }
+    .spi-stars { color: #fbbf24; font-size: 14px; line-height: 1; }
+    .spi-text { font-size: 12px; color: rgba(255,255,255,.55); font-weight: 600; }
+
+    /* Stock hint */
+    .stock-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #f87171;
+      margin: 10px 0 0;
+    }
+    .stock-dot {
+      width: 7px;
+      height: 7px;
+      background: #f87171;
+      border-radius: 50%;
+      animation: pulse-dot 1.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(.8); }
+    }
+
+    /* Sticky CTA mobile */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      padding: 12px 20px;
+      background: rgba(15,23,42,.97);
+      border-top: 1px solid rgba(59,130,246,.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      z-index: 90;
+      transform: translateY(100%);
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+    }
+    .sticky-cta.visible { transform: translateY(0); }
+    .sticky-cta__left { display: flex; flex-direction: column; gap: 1px; }
+    .sticky-cta__price { font-size: 16px; font-weight: 800; color: #fff; line-height: 1; }
+    .sticky-cta__note { font-size: 10px; color: rgba(255,255,255,.4); }
+    .sticky-cta .btn-primary {
+      padding: 9px 14px;
+      font-size: 13px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      width: auto;
+      max-width: none;
+    }
+    @media (min-width: 701px) { .sticky-cta { display: none; } }
+
     @media (max-width: 700px) {
       .hero__inner { grid-template-columns: 1fr; }
       .prob__grid { grid-template-columns: 1fr; }
       .transform__inner { grid-template-columns: 1fr; }
       .t-vs { display: none; }
+      .sp-grid { grid-template-columns: 1fr; }
     }
     /* Solo Blanco disponible — ocultar bloque de selección por color en 4+ */
     #custom-variant-section { display: none !important; }
   </style>
 </head>
 <body>
+
+<!-- Sticky CTA mobile -->
+<div class="sticky-cta" id="sticky-cta">
+  <div class="sticky-cta__left">
+    <span class="sticky-cta__price">Gs. 159.000</span>
+    <span class="sticky-cta__note">Entrega hoy · Pago al recibir</span>
+  </div>
+  <button class="btn btn-primary sticky-cta__btn" data-scroll-form>Pedí por WhatsApp</button>
+</div>
 
 <!-- Nav -->
 <nav class="nav">
@@ -113,30 +232,36 @@
 </nav>
 
 <!-- Hero -->
-<section class="hero">
+<section class="hero" id="hero-section">
   <div class="hero__inner">
     <div class="hero__img-frame">
       <img
         src="/assets/img/cepillo%20blanco%201.png"
-        alt="Cepillo Eléctrico Recargable"
+        alt="Cepillo Sónico Eléctrico Recargable"
         class="hero__img"
         loading="eager"
         fetchpriority="high">
     </div>
     <div class="hero__text">
-      <p class="eyebrow">Limpieza profunda, esfuerzo mínimo</p>
-      <h1 class="hero__h">Dejá de limpiar a mano.<br>Hay una forma mejor.</h1>
-      <p class="hero__sub">Eléctrico. Recargable. Para el baño, la cocina, los rincones imposibles.</p>
+      <p class="eyebrow">Cepillo sónico recargable · IPX7</p>
+      <h1 class="hero__h">Así se siente tener los dientes realmente limpios.</h1>
+      <p class="hero__sub">40.000 vibraciones por minuto. Elimina hasta 100% más placa que un cepillo manual. Sentís la diferencia desde el primer uso.</p>
+      <div class="spi">
+        <span class="spi-stars">★★★★★</span>
+        <span class="spi-text">+180 pedidos entregados</span>
+      </div>
       <div class="price-block">
         <span class="price-main">Gs. 159.000</span>
         <span class="price-compare">Gs. 190.000</span>
         <span class="price-badge">16% OFF</span>
       </div>
       <button class="btn btn-primary" data-scroll-form>Hacer mi pedido ahora →</button>
+      <p class="stock-hint"><span class="stock-dot"></span>Stock limitado · últimas unidades disponibles hoy</p>
       <div class="hero__tags">
-        <span class="hero__tag">Recargable</span>
+        <span class="hero__tag">Sónico</span>
         <span class="hero__tag">4 Cabezales</span>
-        <span class="hero__tag">360°</span>
+        <span class="hero__tag">IPX7</span>
+        <span class="hero__tag">30 días batería</span>
       </div>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
@@ -152,19 +277,19 @@
 <section class="prob">
   <div class="prob__inner">
     <p class="sec-label" style="color:#1d4ed8">El problema de siempre</p>
-    <h2 class="prob__h">Limpiar a mano es esto:</h2>
+    <h2 class="prob__h">Con el cepillo de siempre, esto pasa:</h2>
     <div class="prob__grid">
       <div class="prob__item">
         <div class="prob__num">01</div>
-        <p>Cansás los brazos antes de terminar</p>
+        <p>La placa se acumula donde las cerdas no llegan — sin que lo notes</p>
       </div>
       <div class="prob__item">
         <div class="prob__num">02</div>
-        <p>Los rincones nunca quedan del todo limpios</p>
+        <p>El cepillo manual no tiene la frecuencia para limpiar a fondo</p>
       </div>
       <div class="prob__item">
         <div class="prob__num">03</div>
-        <p>Tardás el doble por la mitad del resultado</p>
+        <p>Tu dentista ve lo que el cepillo no pudo sacar. Siempre hay algo que quedó</p>
       </div>
     </div>
   </div>
@@ -174,27 +299,27 @@
 <section class="transform">
   <div class="transform__inner">
     <div>
-      <p class="t-label t-label--neg">A mano</p>
+      <p class="t-label t-label--neg">Cepillo manual</p>
       <ul class="t-list">
-        <li>Fuerza manual constante</li>
-        <li>Rincones sin alcance</li>
-        <li>Resultado incompleto</li>
-        <li>Te cansa antes de terminar</li>
+        <li>Las cerdas no llegan entre los dientes</li>
+        <li>Resultado incompleto en cada cepillado</li>
+        <li>Placa que vuelve rápido</li>
+        <li>Depende de tu técnica y presión</li>
       </ul>
     </div>
     <div class="t-vs">VS</div>
     <div>
-      <p class="t-label t-label--pos">Con el cepillo</p>
+      <p class="t-label t-label--pos">Cepillo eléctrico</p>
       <img
         src="/assets/img/cepillo%20blanco%202.png"
-        alt="Cepillo eléctrico en uso"
+        alt="Cepillo sónico en uso"
         class="t-img"
         loading="lazy">
       <ul class="t-list t-list--pos">
-        <li>Motor hace el trabajo</li>
-        <li>Accede a cada rincón</li>
-        <li>Limpieza real y pareja</li>
-        <li>Menos tiempo, más resultado</li>
+        <li>40.000 vibraciones llegan donde la mano no puede</li>
+        <li>Limpieza profunda y pareja en cada uso</li>
+        <li>Resultados visibles desde la primera semana</li>
+        <li>Temporizador de 2 min para limpieza completa</li>
       </ul>
     </div>
   </div>
@@ -208,29 +333,54 @@
       <div class="b-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 6v6l4 2"/></svg>
       </div>
-      <strong>Velocidad que se nota</strong>
-      <p>El motor oscilante trabaja por vos. Lo que a mano lleva 20 minutos, con esto son 5.</p>
+      <strong>40.000 Vibraciones</strong>
+      <p>La tecnología sónica elimina hasta 100% más placa que un cepillo manual. Cada uso, limpieza real.</p>
     </div>
     <div class="b-card">
       <div class="b-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
       </div>
-      <strong>4 cabezales para todo</strong>
-      <p>Cambiás el cabezal según la superficie. Mismo aparato, distintas tareas.</p>
+      <strong>4 Cabezales Incluidos</strong>
+      <p>Para toda la familia. Cambiás el cabezal y todos usan el mismo aparato. Sin comprar extra.</p>
     </div>
     <div class="b-card">
       <div class="b-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       </div>
-      <strong>Recargable, sin cables</strong>
-      <p>Cargás una vez, usás varios días. Sin pilas, sin estar atado a un enchufe.</p>
+      <strong>30 Días Sin Recargar</strong>
+      <p>Una carga dura un mes. Sin pilas, sin cables diarios. Siempre listo cuando lo necesitás.</p>
     </div>
     <div class="b-card">
       <div class="b-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
-      <strong>Para baño y cocina</strong>
-      <p>Resistente al agua. Funciona en azulejos, juntas, bachas, superficies plásticas.</p>
+      <strong>Impermeable IPX7</strong>
+      <p>Resistente al agua. Podés usarlo en la ducha sin preocupaciones. Diseñado para el uso diario.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Prueba Social -->
+<section class="social-proof">
+  <div class="sp-inner">
+    <p class="sec-label" style="text-align:center;color:#4ade80">Lo que dicen los que ya tienen el suyo</p>
+    <div class="sp-grid">
+      <div class="sp-card">
+        <div class="sp-stars">★★★★★</div>
+        <p class="sp-quote">"Desde el primer día noté la diferencia. Los dientes quedan con otra sensación, más limpios. No volvería al cepillo manual."</p>
+        <div class="sp-author">
+          <span class="sp-name">Carolina M.</span>
+          <span class="sp-city">Asunción</span>
+        </div>
+      </div>
+      <div class="sp-card">
+        <div class="sp-stars">★★★★★</div>
+        <p class="sp-quote">"Le compré uno a mi mamá y también quedó encantada. Los 4 cabezales son perfectos para toda la familia. Excelente producto."</p>
+        <div class="sp-author">
+          <span class="sp-name">Diego R.</span>
+          <span class="sp-city">Fernando de la Mora</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -240,16 +390,16 @@
   <h2 class="sec-title">Lo que más preguntan</h2>
   <div class="faq-wrap">
     <details class="faq-item">
-      <summary class="faq-q">¿Funciona tanto en baño como en cocina?</summary>
-      <div class="faq-a">Sí. Los cabezales intercambiables están diseñados para distintas superficies. Podés usar el mismo aparato en ambos espacios sin problema.</div>
+      <summary class="faq-q">¿Es muy distinto al cepillo normal?</summary>
+      <div class="faq-a">Sí. Las 40.000 vibraciones por minuto hacen lo que la mano no puede. El cepillo sónico llega a las zonas entre dientes y línea de la encía — donde el manual casi nunca limpia bien.</div>
     </details>
     <details class="faq-item">
       <summary class="faq-q">¿Cuánto dura la carga?</summary>
-      <div class="faq-a">Suficiente para varios usos seguidos. La carga completa no lleva mucho tiempo y la batería aguanta bien el uso cotidiano.</div>
+      <div class="faq-a">Hasta 30 días con una sola carga completa. Suficiente para todo un mes sin pensar en el cable.</div>
     </details>
     <details class="faq-item">
-      <summary class="faq-q">¿Es difícil de usar o de limpiar?</summary>
-      <div class="faq-a">No. Se enciende con un botón, los cabezales se sacan en segundos y se lavan bajo el agua. Sin complicaciones.</div>
+      <summary class="faq-q">¿Sirve si tengo las encías sensibles?</summary>
+      <div class="faq-a">Sí. El movimiento sónico es suave con las encías. No lastima. Al contrario, la estimulación regular mejora la salud gingival con el uso continuo.</div>
     </details>
     <details class="faq-item">
       <summary class="faq-q">¿Cuándo llega el pedido?</summary>
@@ -313,8 +463,8 @@
 <!-- Cierre -->
 <section class="close-sec">
   <div class="close-sec__inner">
-    <p class="close-pre">Lo tenés a un paso</p>
-    <h2 class="close-h">Menos esfuerzo.<br>Más limpio. Siempre.</h2>
+    <p class="close-pre">Un cepillo que notás desde el primer uso</p>
+    <h2 class="close-h">La diferencia entre<br>limpiar y limpiar bien.</h2>
     <div class="close-trust">
       <div class="ct-item"><span class="ct-ok">✓</span><span>Envío GRATIS · Envío en el día</span></div>
       <div class="ct-item"><span class="ct-ok">✓</span><span>Central: pagás al recibir · Interior: pago anticipado - sin envío gratis</span></div>
@@ -505,13 +655,8 @@
 </footer>
 
 <!-- Scripts -->
-<script>
-(function(){
-  var v = window.DAM_VERTEX_VERSION || '1';
-  document.write('<script src="/assets/js/tracking.js?v=' + v + '"><\/script>');
-  document.write('<script src="/assets/js/products.js?v=' + v + '"><\/script>');
-})();
-</script>
+<script src="/assets/js/tracking.js?v=48"></script>
+<script src="/assets/js/products.js?v=48"></script>
 <script>
   const PRODUCT = {
     name:  'Cepillo Eléctrico Recargable (4 Cabezales)',
@@ -535,6 +680,17 @@
         const input = customVariantRows.querySelector('.custom-variant-qty[data-color="Blanco"]');
         if (input) input.value = qty;
       }).observe(customVariantRows, { childList: true, subtree: true });
+    }
+
+    /* Sticky CTA — aparece al salir del hero */
+    const stickyCta = document.getElementById('sticky-cta');
+    const heroSec   = document.getElementById('hero-section');
+    if (stickyCta && heroSec && 'IntersectionObserver' in window) {
+      const obs = new IntersectionObserver(
+        ([entry]) => stickyCta.classList.toggle('visible', !entry.isIntersecting),
+        { threshold: 0 }
+      );
+      obs.observe(heroSec);
     }
   });
 </script>
