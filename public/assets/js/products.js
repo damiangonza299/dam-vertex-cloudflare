@@ -532,13 +532,18 @@ const customWaUrl    = `https://wa.me/${WA_NUMBER}?text=${buildCustomOrderWAMsg(
 const customManualBtn = success?.querySelector('.btn-wa-manual');
 if (customManualBtn) customManualBtn.href = customWaUrl;
 
-/* Verificar stock */
-const customStockCheck = await checkProductStock(product.slug, customQty, customColors);
-if (!customStockCheck.ok) { showStockError(customStockCheck.error); return; }
-clearStockError();
-
       submitBtn.disabled  = true;
       submitBtn.innerHTML = '<span class="spinner"></span>';
+
+/* Verificar stock */
+const customStockCheck = await checkProductStock(product.slug, customQty, customColors);
+if (!customStockCheck.ok) {
+  showStockError(customStockCheck.error);
+  submitBtn.disabled  = false;
+  submitBtn.innerHTML = 'Hacer mi pedido por WhatsApp';
+  return;
+}
+clearStockError();
 
       try {
         const client = typeof getClientData === 'function' ? getClientData() : {};
@@ -612,14 +617,19 @@ const waUrl    = `https://wa.me/${WA_NUMBER}?text=${buildWAMsg(product, data, of
 const manualBtn = success?.querySelector('.btn-wa-manual');
 if (manualBtn) manualBtn.href = waUrl;
 
+    submitBtn.disabled  = true;
+    submitBtn.innerHTML = '<span class="spinner"></span>';
+
 /* Verificar stock */
 const stockVariant = colors.length > 1 ? colors : primaryVariant;
 const stockCheck = await checkProductStock(product.slug, selectedQty, stockVariant);
-if (!stockCheck.ok) { showStockError(stockCheck.error); return; }
+if (!stockCheck.ok) {
+  showStockError(stockCheck.error);
+  submitBtn.disabled  = false;
+  submitBtn.innerHTML = 'Hacer mi pedido por WhatsApp';
+  return;
+}
 clearStockError();
-
-    submitBtn.disabled  = true;
-    submitBtn.innerHTML = '<span class="spinner"></span>';
 
     try {
       const client = typeof getClientData === 'function' ? getClientData() : {};
