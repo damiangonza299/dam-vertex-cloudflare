@@ -56,6 +56,18 @@
       .ads-ellipsis { max-width:100px; }
       #ads-section .admin-table { min-width:0; }
     }
+    /* ── Meta Ads Report ── */
+    .meta-q { display:inline-block; font-size:10px; font-weight:700; padding:3px 8px; border-radius:4px; letter-spacing:.03em; white-space:nowrap; }
+    .meta-q-COMPRADOR  { background:rgba(74,222,128,.15);  color:#4ade80; }
+    .meta-q-CURIOSOS   { background:rgba(251,191,36,.15);  color:#fbbf24; }
+    .meta-q-QUEMANDO   { background:rgba(248,113,113,.15); color:#f87171; }
+    .meta-q-OVERATRIB  { background:rgba(251,146,60,.15);  color:#fb923c; }
+    .meta-q-NEUTRAL    { background:rgba(255,255,255,.06); color:rgba(255,255,255,.35); }
+    .meta-alert { padding:10px 14px; border-radius:8px; font-size:12px; margin-bottom:6px; line-height:1.5; }
+    .meta-alert-ok     { background:rgba(74,222,128,.08);  border:1px solid rgba(74,222,128,.2);  color:#4ade80; }
+    .meta-alert-warn   { background:rgba(251,191,36,.08);  border:1px solid rgba(251,191,36,.2);  color:#fbbf24; }
+    .meta-alert-danger { background:rgba(248,113,113,.08); border:1px solid rgba(248,113,113,.2); color:#f87171; }
+    .meta-alert-info   { background:rgba(59,130,246,.08);  border:1px solid rgba(59,130,246,.2);  color:#60a5fa; }
   </style>
 </head>
 <body class="admin-page">
@@ -110,6 +122,7 @@
       <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')">Productos</button>
       <button class="admin-tab" data-tab="ads" onclick="switchAdminTab('ads')">Anuncios</button>
       <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')">Flow</button>
+      <button class="admin-tab" data-tab="meta" onclick="switchAdminTab('meta')">Meta Ads</button>
     </div>
 
     <!-- Leads section -->
@@ -270,6 +283,38 @@
         </table>
       </div>
     </div><!-- /ads-section -->
+
+    <!-- Meta Ads Report section -->
+    <div id="meta-section" style="display:none">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+        <button id="refresh-meta-btn" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit">
+          ↻ Actualizar
+        </button>
+        <span id="meta-period-label" style="font-size:12px;color:var(--muted)">—</span>
+      </div>
+      <div id="meta-alerts" style="margin-bottom:10px"></div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Campaña</th>
+              <th>Gasto</th>
+              <th>Leads</th>
+              <th>Comp.</th>
+              <th>Pend.</th>
+              <th>ROAS M</th>
+              <th>ROAS R</th>
+              <th>Δ</th>
+              <th>Calidad</th>
+            </tr>
+          </thead>
+          <tbody id="meta-tbody">
+            <tr><td colspan="9" style="text-align:center;padding:48px;color:var(--muted)">Iniciá sesión para ver los datos</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="meta-no-attr" style="display:none;margin-top:10px;font-size:12px;color:var(--muted)"></div>
+    </div><!-- /meta-section -->
 
   </div>
 </div>

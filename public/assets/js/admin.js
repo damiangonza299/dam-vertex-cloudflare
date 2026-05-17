@@ -42,7 +42,7 @@ if (IS_DELIVERY) {
   const exportBtn = document.getElementById('export-csv-btn');
   if (exportBtn) exportBtn.style.display = 'none';
 
-  document.querySelectorAll('[data-tab="ads"], [data-tab="dashboard"]').forEach(btn => {
+  document.querySelectorAll('[data-tab="ads"], [data-tab="dashboard"], [data-tab="meta"]').forEach(btn => {
     btn.style.display = 'none';
   });
 
@@ -548,13 +548,16 @@ function switchAdminTab(tab) {
   const productsSection = document.getElementById('products-section');
   const dashSection     = document.getElementById('dashboard-section');
   const adsSection      = document.getElementById('ads-section');
+  const metaSection     = document.getElementById('meta-section');
   leadsSection    && (leadsSection.style.display    = tab === 'leads'     ? '' : 'none');
   productsSection && (productsSection.style.display = tab === 'products'  ? '' : 'none');
   dashSection     && (dashSection.style.display     = tab === 'dashboard' ? '' : 'none');
   adsSection      && (adsSection.style.display      = tab === 'ads'       ? '' : 'none');
+  metaSection     && (metaSection.style.display     = tab === 'meta'      ? '' : 'none');
   if (tab === 'products')  loadProducts();
   if (tab === 'dashboard') renderDashboard();
   if (tab === 'ads')       renderAdsTable();
+  if (tab === 'meta')      loadMetaReport();
 }
 
 document.getElementById('refresh-products-btn')?.addEventListener('click', loadProducts);
@@ -985,6 +988,131 @@ function renderAdsTable() {
       <td>${esc(formatProductShortName(l.product_name))}</td>
       <td><span class="ads-ellipsis" title="${esc(adLabel)}">${esc(adLabel)}</span></td>
       <td><span class="ads-ellipsis" title="${esc(campaignLabel)}">${esc(campaignLabel)}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+/* =========================================================
+   Meta Ads Report
+   ========================================================= */
+
+document.getElementById('refresh-meta-btn')?.addEventListener('click', loadMetaReport);
+
+async function loadMetaReport() {
+  const tbody = document.getElementById('meta-tbody');
+  const label = document.getElementById('meta-period-label');
+  const alertsEl = document.getElementById('meta-alerts');
+  if (tbody) tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted)">Cargando...</td></tr>`;
+  if (label) label.textContent = 'Cargando...';
+  if (alertsEl) alertsEl.innerHTML = '';
+  try {
+    const res = await fetch('/api/meta/report', {
+      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    });
+    if (res.status === 401) { clearToken(); location.reload(); return; }
+    const data = await res.json();
+    if (data.ok) {
+      renderMetaReport(data);
+    } else {
+      if (tbody) tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--red)">${esc(data.error || 'Error al cargar el reporte')}</td></tr>`;
+      if (label) label.textContent = '—';
+    }
+  } catch (_) {
+    if (tbody) tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--red)">Error de red</td></tr>`;
+    if (label) label.textContent = '—';
+  }
+}
+
+function renderMetaReport(data) {
+  const tbody    = document.getElementById('meta-tbody');
+  const label    = document.getElementById('meta-period-label');
+  const alertsEl = document.getElementById('meta-alerts');
+  const noAttrEl = document.getElementById('meta-no-attr');
+  if (!tbody) return;
+
+  if (label) label.textContent = `${data.period.since} → ${data.period.until}`;
+
+  if (alertsEl) {
+    const ALERT_ICONS = { ok: '✓', warn: '⚠', danger: '✕', info: 'ℹ' };
+    alertsEl.innerHTML = (data.alerts || []).map(a =>
+      `<div class="meta-alert meta-alert-${a.level}">${ALERT_ICONS[a.level] || '·'} ${esc(a.msg)}</div>`
+    ).join('');
+  }
+
+  if (noAttrEl) {
+    if (data.no_attribution_leads > 0) {
+      noAttrEl.style.display = '';
+      noAttrEl.textContent   = `${data.no_attribution_leads} leads sin atribución de campaña en el período.`;
+    } else {
+      noAttrEl.style.display = 'none';
+    }
+  }
+
+  if (!data.rows?.length) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted)">Sin datos de campañas en el período.</td></tr>`;
+    return;
+  }
+
+  const QUALITY_CLASS = {
+    COMPRADOR:      'COMPRADOR',
+    CURIOSOS:       'CURIOSOS',
+    QUEMANDO:       'QUEMANDO',
+    META_OVERATRIB: 'OVERATRIB',
+    SIN_ATRIB:      'NEUTRAL',
+    NEUTRAL:        'NEUTRAL',
+  };
+  const QUALITY_LABEL = {
+    COMPRADOR:      'COMPRADOR',
+    CURIOSOS:       'CURIOSOS',
+    QUEMANDO:       'QUEMANDO',
+    META_OVERATRIB: 'SOBRE-ATRIB',
+    SIN_ATRIB:      'SIN ATRIB',
+    NEUTRAL:        'NEUTRAL',
+  };
+
+  tbody.innerHTML = data.rows.map(row => {
+    const m = row.meta;
+    const d = row.d1;
+
+    const spend = m
+      ? `<span style="white-space:nowrap">Gs.&nbsp;${Number(m.spend_raw).toLocaleString('es-PY')}</span>`
+      : '—';
+
+    const roasM = (m?.roas_meta !== null && m?.roas_meta !== undefined)
+      ? `${m.roas_meta}×` : '—';
+
+    const roasR = (row.roas_real !== null && row.roas_real !== undefined)
+      ? `<strong>${row.roas_real}×</strong>` : '—';
+
+    let delta = '—';
+    if (row.roas_delta !== null && row.roas_delta !== undefined) {
+      const sign  = row.roas_delta >= 0 ? '+' : '';
+      const color = row.roas_delta >= 0 ? '#4ade80' : '#f87171';
+      delta = `<span style="color:${color}">${sign}${row.roas_delta}</span>`;
+    }
+
+    const qClass = QUALITY_CLASS[row.quality] || 'NEUTRAL';
+    const qLabel = QUALITY_LABEL[row.quality] || row.quality;
+
+    const name = row.campaign_name;
+    const campCell = name.length > 22
+      ? `<span title="${esc(name)}">${esc(name.slice(0, 22))}…</span>`
+      : esc(name);
+
+    const ctrStr = m?.ctr
+      ? `<span style="display:block;font-size:10px;color:rgba(255,255,255,.35);margin-top:2px">${m.ctr}% CTR</span>`
+      : '';
+
+    return `<tr>
+      <td style="max-width:180px">${campCell}${ctrStr}</td>
+      <td>${spend}</td>
+      <td style="text-align:center">${d.total_leads}</td>
+      <td style="text-align:center;color:#4ade80;font-weight:600">${d.purchased}</td>
+      <td style="text-align:center;color:#fbbf24">${d.pending}</td>
+      <td style="text-align:center">${roasM}</td>
+      <td style="text-align:center">${roasR}</td>
+      <td style="text-align:center">${delta}</td>
+      <td><span class="meta-q meta-q-${qClass}">${qLabel}</span></td>
     </tr>`;
   }).join('');
 }
