@@ -74,6 +74,21 @@ Crear diversidad de formato, no solo de copy:
 
 ---
 
+## Interpretación de resultados — contexto Paraguay
+
+El funnel termina con **confirmación manual en WhatsApp**, no con checkout automático. Esto cambia cómo leer los datos:
+
+- **Pending no es fracaso.** Es el estado normal entre lead y compra confirmada.
+- **Un pending de 1–2 días es normal en Paraguay.** No cortar campaña por eso.
+- **Interior del país alarga el ciclo y reduce conversión** — no es señal del creativo.
+- **Meta sobre-atribuye** casi siempre. Validar compras contra D1, no contra el panel de Meta.
+- **Compras se marcan generalmente después de las 17:00 o de noche.** No evaluar ROAS a mitad del día.
+- **Fin de semana:** cierres se desplazan al lunes. No tomar decisiones de corte el sábado.
+
+Cuando evalúes un creativo: mirá el funnel completo (link clicks → landing views → add to cart → pedidos D1 → purchased D1), no solo las compras atribuidas por Meta.
+
+---
+
 ## Lo que hay que evitar
 
 - Microcambios en el mismo creativo (cambiar el color del botón no es test)

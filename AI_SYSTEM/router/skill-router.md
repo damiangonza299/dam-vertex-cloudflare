@@ -13,6 +13,15 @@ Lee este archivo primero. Luego carga solo 2 a 4 skills relevantes. No leas todo
 
 ---
 
+## Regla especial — Funnel Paraguay
+
+Cuando la tarea involucre análisis de leads, pedidos, pendientes, tasa de cierre, ROAS real, o comportamiento del funnel:
+- Leer la sección **"Funnel real Paraguay"** de `core/dam-vertex-core.md` antes de interpretar datos
+- No asumir pending = mal lead sin evaluar antigüedad, ciudad y día de la semana
+- Siempre cruzar métricas Meta con D1 real — Meta sobre-atribuye
+
+---
+
 ## Mapa de routing
 
 ### OFERTA / PRECIO / PROMESA / VALOR PERCIBIDO
