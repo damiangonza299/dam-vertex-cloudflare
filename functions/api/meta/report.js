@@ -54,9 +54,10 @@ export async function onRequestGet({ request, env }) {
 
   try {
     /* ── 1. Fetch en paralelo: Meta insights + D1 leads ── */
-    const [metaData, d1Data] = await Promise.all([
+    const [metaData, d1Data, campaignStatuses] = await Promise.all([
       fetchMetaInsights(adAccountId, marketingToken, since, until),
       fetchD1Leads(env.DB, since, until),
+      fetchCampaignStatuses(adAccountId, marketingToken),
     ]);
 
     /* ── 2. Indexar D1 por campaign_id ── */
@@ -83,7 +84,8 @@ export async function onRequestGet({ request, env }) {
         ?? d1ByCampaignName.get((meta.campaign_name || '').toLowerCase().trim())
         ?? null;
 
-      return buildRow(meta, d1);
+      const effectiveStatus = campaignStatuses.get(cid) ?? null;
+      return buildRow(meta, d1, effectiveStatus);
     });
 
     /* ── 5. Campañas con leads pero sin datos Meta (período sin gasto) ── */
@@ -111,6 +113,24 @@ export async function onRequestGet({ request, env }) {
 
   } catch (err) {
     return json({ ok: false, error: err.message }, 500);
+  }
+}
+
+/* ── Fetch campaign effective_status ── */
+async function fetchCampaignStatuses(adAccountId, token) {
+  try {
+    const url = new URL(`https://graph.facebook.com/${META_API_VERSION}/${adAccountId}/campaigns`);
+    url.searchParams.set('fields', 'id,effective_status');
+    url.searchParams.set('limit', '500');
+    url.searchParams.set('access_token', token);
+    const res  = await fetch(url.toString());
+    const data = await res.json();
+    if (!res.ok) return new Map();
+    const map = new Map();
+    for (const c of (data.data || [])) map.set(String(c.id), c.effective_status);
+    return map;
+  } catch (_) {
+    return new Map();
   }
 }
 
@@ -188,7 +208,7 @@ async function fetchUnattributedCount(DB, since, until) {
 }
 
 /* ── Construir una fila combinada ── */
-function buildRow(meta, d1) {
+function buildRow(meta, d1, effectiveStatus = null) {
   /* Métricas Meta */
   const spend_raw    = parseFloat(meta?.spend    || 0);
   const impressions  = parseInt(meta?.impressions || 0);
@@ -228,13 +248,14 @@ function buildRow(meta, d1) {
     quality,
     meta: meta ? {
       spend_raw,
-      spend_fmt:   spend_raw.toLocaleString('es-PY'),
+      spend_fmt:        spend_raw.toLocaleString('es-PY'),
       impressions,
       clicks,
-      ctr:         parseFloat(ctr.toFixed(2)),
-      cpc:         parseFloat(cpc.toFixed(0)),
-      cpm:         parseFloat(cpm.toFixed(0)),
+      ctr:              parseFloat(ctr.toFixed(2)),
+      cpc:              parseFloat(cpc.toFixed(0)),
+      cpm:              parseFloat(cpm.toFixed(0)),
       roas_meta,
+      effective_status: effectiveStatus,
     } : null,
     d1: {
       total_leads,

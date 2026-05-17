@@ -996,82 +996,144 @@ function renderAdsTable() {
    Meta Ads Report
    ========================================================= */
 
-let metaFilter       = 'active';
-let metaCachedData   = null;
-let metaCachedPeriod = null;
+let metaStatusFilter  = 'active'; // 'active' | 'all'
+let metaDateFilter    = '7d';     // '7d' | '30d' | 'range'
+let metaProductFilter = '';
+let metaCachedData    = null;
+let metaCachedKey     = null;
 
-function getMetaApiPeriod() {
-  if (metaFilter === '7d')  return '7d';
-  if (metaFilter === 'all') return 'all';
-  return '30d';
+function getMetaDates() {
+  const today = new Date().toISOString().split('T')[0];
+  if (metaDateFilter === 'range') {
+    const since = document.getElementById('meta-since-input')?.value || '';
+    const until = document.getElementById('meta-until-input')?.value || today;
+    return { since, until, valid: !!since };
+  }
+  const days  = metaDateFilter === '7d' ? 7 : 30;
+  const since = new Date(Date.now() - days * 86400000).toISOString().split('T')[0];
+  return { since, until: today, valid: true };
 }
 
+document.getElementById('meta-controls')?.addEventListener('click', e => {
+  const statusBtn = e.target.closest('[data-mstatus]');
+  const dateBtn   = e.target.closest('[data-mdate]');
+
+  if (statusBtn) {
+    metaStatusFilter = statusBtn.dataset.mstatus;
+    document.querySelectorAll('[data-mstatus]').forEach(b =>
+      b.classList.toggle('meta-filter-btn--active', b.dataset.mstatus === metaStatusFilter));
+    if (metaCachedData) renderMetaReport(metaCachedData);
+    return;
+  }
+
+  if (dateBtn) {
+    metaDateFilter = dateBtn.dataset.mdate;
+    document.querySelectorAll('[data-mdate]').forEach(b =>
+      b.classList.toggle('meta-filter-btn--active', b.dataset.mdate === metaDateFilter));
+    const rangeRow = document.getElementById('meta-range-row');
+    if (rangeRow) rangeRow.style.display = metaDateFilter === 'range' ? 'flex' : 'none';
+    if (metaDateFilter !== 'range') loadMetaReport();
+  }
+});
+
+document.getElementById('meta-prod-filter')?.addEventListener('change', e => {
+  metaProductFilter = e.target.value;
+  if (metaCachedData) renderMetaReport(metaCachedData);
+});
+
+document.getElementById('meta-range-apply')?.addEventListener('click', () => {
+  const { valid } = getMetaDates();
+  if (valid) loadMetaReport();
+});
+
 document.getElementById('refresh-meta-btn')?.addEventListener('click', () => {
-  metaCachedData   = null;
-  metaCachedPeriod = null;
+  metaCachedData = null;
+  metaCachedKey  = null;
   loadMetaReport();
 });
 
-document.getElementById('meta-filter-row')?.addEventListener('click', e => {
-  const btn = e.target.closest('[data-mfilter]');
-  if (!btn) return;
-  metaFilter = btn.dataset.mfilter;
-  document.querySelectorAll('[data-mfilter]').forEach(b => {
-    b.classList.toggle('meta-filter-btn--active', b.dataset.mfilter === metaFilter);
-  });
-  const newPeriod = getMetaApiPeriod();
-  if (metaCachedData && metaCachedPeriod === newPeriod) {
-    renderMetaReport(metaCachedData);
-  } else {
-    loadMetaReport();
-  }
+document.getElementById('meta-alerts-toggle')?.addEventListener('click', () => {
+  const alertsEl = document.getElementById('meta-alerts');
+  const btn      = document.getElementById('meta-alerts-toggle');
+  if (!alertsEl || !btn) return;
+  const open = alertsEl.style.display !== 'none';
+  alertsEl.style.display = open ? 'none' : '';
+  btn.classList.toggle('meta-filter-btn--active', !open);
 });
 
 async function loadMetaReport() {
   const tbody    = document.getElementById('meta-tbody');
-  const label    = document.getElementById('meta-period-label');
   const alertsEl = document.getElementById('meta-alerts');
   if (tbody) tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted)">Cargando...</td></tr>`;
-  if (label) label.textContent = 'Cargando...';
   if (alertsEl) alertsEl.innerHTML = '';
+
+  const { since, until, valid } = getMetaDates();
+  if (!valid) return;
+  const cacheKey = `${since}|${until}`;
+
+  if (metaCachedData && metaCachedKey === cacheKey) {
+    renderMetaReport(metaCachedData);
+    return;
+  }
+
   try {
-    const apiPeriod = getMetaApiPeriod();
-    const days      = apiPeriod === '7d' ? 7 : apiPeriod === 'all' ? 90 : 30;
-    const today     = new Date().toISOString().split('T')[0];
-    const since     = new Date(Date.now() - days * 86400000).toISOString().split('T')[0];
-    const res = await fetch(`/api/meta/report?since=${since}&until=${today}`, {
+    const res = await fetch(`/api/meta/report?since=${since}&until=${until}`, {
       headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
     });
     if (res.status === 401) { clearToken(); location.reload(); return; }
     const data = await res.json();
     if (data.ok) {
-      metaCachedPeriod = apiPeriod;
+      metaCachedKey  = cacheKey;
+      metaCachedData = data;
       renderMetaReport(data);
     } else {
       if (tbody) tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--red)">${esc(data.error || 'Error al cargar el reporte')}</td></tr>`;
-      if (label) label.textContent = '—';
     }
   } catch (_) {
     if (tbody) tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--red)">Error de red</td></tr>`;
-    if (label) label.textContent = '—';
   }
 }
 
 function renderMetaReport(data) {
-  metaCachedData = data;
-  const tbody    = document.getElementById('meta-tbody');
-  const label    = document.getElementById('meta-period-label');
-  const alertsEl = document.getElementById('meta-alerts');
-  const noAttrEl = document.getElementById('meta-no-attr');
+  const tbody     = document.getElementById('meta-tbody');
+  const alertsEl  = document.getElementById('meta-alerts');
+  const noAttrEl  = document.getElementById('meta-no-attr');
+  const toggleBtn = document.getElementById('meta-alerts-toggle');
   if (!tbody) return;
 
-  if (label) label.textContent = `${data.period.since} → ${data.period.until}`;
+  let rows   = (data.rows   || []).slice();
+  let alerts = (data.alerts || []).slice();
 
-  let rows   = data.rows   || [];
-  let alerts = data.alerts || [];
-  if (metaFilter === 'active') {
-    rows = rows.filter(r => r.meta !== null);
-    const visibleNames = new Set(rows.map(r => r.campaign_name));
+  /* ── Status filter ── */
+  if (metaStatusFilter === 'active') {
+    rows = rows.filter(r => {
+      if (r.meta === null) return false;
+      const es = r.meta.effective_status;
+      if (es != null) return es === 'ACTIVE';
+      return r.meta.spend_raw > 0; // fallback: no effective_status disponible
+    });
+  }
+
+  /* ── Product filter ── */
+  if (metaProductFilter) {
+    const pf = metaProductFilter.toLowerCase();
+    rows = rows.filter(r =>
+      (r.product_name || '').toLowerCase().includes(pf) ||
+      (r.campaign_name || '').toLowerCase().includes(pf)
+    );
+  }
+
+  /* ── Sort: campañas ACTIVE primero, luego por gasto ── */
+  rows.sort((a, b) => {
+    const aA = a.meta?.effective_status === 'ACTIVE' ? 0 : 1;
+    const bA = b.meta?.effective_status === 'ACTIVE' ? 0 : 1;
+    if (aA !== bA) return aA - bA;
+    return (b.meta?.spend_raw ?? 0) - (a.meta?.spend_raw ?? 0);
+  });
+
+  /* ── Alertas: filtrar por campañas visibles ── */
+  const visibleNames = new Set(rows.map(r => r.campaign_name));
+  if (metaStatusFilter === 'active' || metaProductFilter) {
     alerts = alerts.filter(a => Array.from(visibleNames).some(n => a.msg.startsWith(n)));
   }
 
@@ -1081,18 +1143,21 @@ function renderMetaReport(data) {
       `<div class="meta-alert meta-alert-${a.level}">${ALERT_ICONS[a.level] || '·'} ${esc(a.msg)}</div>`
     ).join('');
   }
+  if (toggleBtn) {
+    toggleBtn.textContent = alerts.length > 0 ? `Alertas (${alerts.length})` : 'Alertas';
+  }
 
   if (noAttrEl) {
     if (data.no_attribution_leads > 0) {
       noAttrEl.style.display = '';
-      noAttrEl.textContent   = `${data.no_attribution_leads} leads sin atribución de campaña en el período.`;
+      noAttrEl.textContent   = `${data.no_attribution_leads} leads sin atribución en el período.`;
     } else {
       noAttrEl.style.display = 'none';
     }
   }
 
   if (!rows.length) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted)">Sin datos de campañas en el período.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted)">Sin campañas para los filtros seleccionados.</td></tr>`;
     return;
   }
 

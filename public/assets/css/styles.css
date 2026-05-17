@@ -866,17 +866,17 @@ details summary::-webkit-details-marker { display: none; }
   .btn-menu { width: 22px; height: 24px; font-size: 16px; }
   .act-done { width: 24px; height: 24px; font-size: 12px; }
 
-  /* Tabs — una sola línea sin scroll horizontal */
-  .admin-tabs { scrollbar-width: none; }
-  .admin-tabs::-webkit-scrollbar { display: none; }
+  /* Tabs — short labels via data-sm */
   .admin-tab {
-    font-size: 11px;
-    padding: 9px 6px;
+    font-size: 0;
+    padding: 9px 4px;
     flex: 1;
     min-width: 0;
     text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  }
+  .admin-tab::after {
+    font-size: 11px;
+    content: attr(data-sm);
   }
 }
 
