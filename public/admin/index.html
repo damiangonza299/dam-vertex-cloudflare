@@ -47,8 +47,8 @@
       .dash-kpis { gap:6px; }
       .dash-kpi  { padding:10px 12px; }
     }
-    /* ── Admin tabs: una sola fila, sin scroll horizontal ── */
-    .admin-tabs { flex-wrap: nowrap; overflow-x: hidden; }
+    /* ── Admin tabs: una sola fila ── */
+    .admin-tabs { flex-wrap: nowrap; }
     /* ── Ads attribution ── */
     .ads-ellipsis { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px; }
     @media (max-width:700px) {
@@ -145,11 +145,11 @@
 
     <!-- Tab navigation -->
     <div class="admin-tabs">
-      <button class="admin-tab admin-tab--active" data-tab="leads" data-sm="Leads" onclick="switchAdminTab('leads')">Leads</button>
-      <button class="admin-tab" data-tab="products" data-sm="Prod." onclick="switchAdminTab('products')">Productos</button>
-      <button class="admin-tab" data-tab="ads" data-sm="Ads" onclick="switchAdminTab('ads')">Anuncios</button>
-      <button class="admin-tab" data-tab="dashboard" data-sm="Flow" onclick="switchAdminTab('dashboard')">Flow</button>
-      <button class="admin-tab" data-tab="meta" data-sm="Meta" onclick="switchAdminTab('meta')">Meta Ads</button>
+      <button class="admin-tab admin-tab--active" data-tab="leads" onclick="switchAdminTab('leads')">Leads</button>
+      <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')">Productos</button>
+      <button class="admin-tab" data-tab="ads" onclick="switchAdminTab('ads')">Anuncios</button>
+      <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')">Flow</button>
+      <button class="admin-tab" data-tab="meta" onclick="switchAdminTab('meta')">Meta Ads</button>
     </div>
 
     <!-- Leads section -->
@@ -317,20 +317,16 @@
       <div id="meta-controls" style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:8px">
         <button id="refresh-meta-btn" class="meta-filter-btn" style="padding:5px 10px">↻</button>
         <button class="meta-filter-btn meta-filter-btn--active" data-mstatus="active">Activas</button>
-        <button class="meta-filter-btn" data-mstatus="all">Todas</button>
-        <span style="display:inline-block;width:1px;height:14px;background:rgba(255,255,255,.12);align-self:center"></span>
         <button class="meta-filter-btn meta-filter-btn--active" data-mdate="7d">7d</button>
         <button class="meta-filter-btn" data-mdate="30d">30d</button>
-        <button class="meta-filter-btn" data-mdate="range">Rango</button>
-        <span style="display:inline-block;width:1px;height:14px;background:rgba(255,255,255,.12);align-self:center"></span>
         <select id="meta-prod-filter" class="meta-prod-select">
           <option value="">Todos</option>
-          <option value="Apex">Apex</option>
+          <option value="Apex">Cadena</option>
           <option value="Cepillo">Cepillo</option>
           <option value="Lentes">Lentes</option>
           <option value="Reloj">Reloj</option>
         </select>
-        <button id="meta-alerts-toggle" class="meta-filter-btn" style="margin-left:auto">Alertas</button>
+        <button id="meta-alerts-toggle" class="meta-filter-btn">Alertas</button>
       </div>
       <!-- Range inputs (hidden by default) -->
       <div id="meta-range-row" style="display:none;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px">

@@ -866,18 +866,6 @@ details summary::-webkit-details-marker { display: none; }
   .btn-menu { width: 22px; height: 24px; font-size: 16px; }
   .act-done { width: 24px; height: 24px; font-size: 12px; }
 
-  /* Tabs — short labels via data-sm */
-  .admin-tab {
-    font-size: 0;
-    padding: 9px 4px;
-    flex: 1;
-    min-width: 0;
-    text-align: center;
-  }
-  .admin-tab::after {
-    font-size: 11px;
-    content: attr(data-sm);
-  }
 }
 
 /* =====================================================
@@ -1366,6 +1354,20 @@ input, select, textarea { font-size: 16px !important; }
 .admin-tab--active {
   color: #fff;
   border-bottom-color: var(--accent);
+}
+
+/* Tabs mobile — override AFTER desktop base to win the cascade */
+@media (max-width: 700px) {
+  .admin-tabs { gap: 2px; }
+  .admin-tab {
+    font-size: 11px;
+    padding: 8px 3px;
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
 
 /* =====================================================
