@@ -105,10 +105,27 @@ export async function onRequestGet({ request, env }) {
       }
     }
 
-    /* ── 6. Ordenar por gasto descendente ── */
+    /* ── 6. Detectar productos compartidos entre campañas ──
+       Si un producto aparece en 2+ campañas del reporte, roas_real_product
+       no puede atribuirse a ninguna campaña individual (el numerador incluye
+       ventas de otras campañas). Se marca shared y se anula el ROAS. */
+    const productRowCount = new Map();
+    for (const r of rows) {
+      if (r.product_name) {
+        productRowCount.set(r.product_name, (productRowCount.get(r.product_name) ?? 0) + 1);
+      }
+    }
+    for (const r of rows) {
+      if (r.product_name && (productRowCount.get(r.product_name) ?? 0) > 1) {
+        r.product.shared   = true;
+        r.roas_real_product = null; /* no atribuible a esta campaña */
+      }
+    }
+
+    /* ── 7. Ordenar por gasto descendente ── */
     rows.sort((a, b) => (b.meta?.spend_raw ?? 0) - (a.meta?.spend_raw ?? 0));
 
-    /* ── 7. Alertas ── */
+    /* ── 8. Alertas ── */
     const alerts = buildAlerts(rows);
 
     return json({

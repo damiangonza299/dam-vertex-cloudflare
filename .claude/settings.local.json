@@ -38,7 +38,9 @@
       "Bash(node scripts/test-meta-api.mjs)",
       "Bash(git -C \"F:\\\\Desktop\\\\dam-vertex-cloudflare\" status --short)",
       "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff --name-only)",
-      "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff public/admin/index.html)"
+      "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff public/admin/index.html)",
+      "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff functions/api/meta/report.js)",
+      "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff public/assets/js/admin.js)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public"

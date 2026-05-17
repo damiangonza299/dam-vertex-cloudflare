@@ -1200,14 +1200,22 @@ function renderMetaReport(data) {
     const roasR = (row.roas_real !== null && row.roas_real !== undefined)
       ? `<strong>${row.roas_real}×</strong>` : '—';
 
+    /* ROAS prod.: solo válido cuando el producto tiene UNA sola campaña activa.
+       Si el producto es compartido entre campañas, roas_real_product = null (anulado en backend). */
     const roasProd = (row.roas_real_product !== null && row.roas_real_product !== undefined)
-      ? `${row.roas_real_product}×` : '—';
+      ? `<span style="color:rgba(255,255,255,.45)" title="ROAS sobre total del producto — válido porque es la única campaña">${row.roas_real_product}×</span>`
+      : (row.product?.shared
+          ? `<span style="color:rgba(255,255,255,.2)" title="Producto compartido entre campañas — ROAS no atribuible a esta campaña">—</span>`
+          : '—');
 
     /* Meta purchase count: lo que Ads Manager atribuye (puede diferir de Real atrib.) */
     const metaPurchases = m ? (m.purchase_count ?? 0) : '—';
 
-    /* Real prod.: compras reales del producto sin filtro de campaign_id */
-    const realProd = row.product?.purchased ?? 0;
+    /* Real prod.: total compras del producto — mismo número en todas las campañas del mismo producto */
+    const realProdTitle = row.product?.shared
+      ? 'Total del producto — compartido entre varias campañas, no atribuible a esta sola'
+      : 'Total compras reales del producto en el rango';
+    const realProd = `<span title="${realProdTitle}">${row.product?.purchased ?? 0}</span>`;
 
     const qClass = QUALITY_CLASS[row.quality] || 'NEUTRAL';
     const qLabel = QUALITY_LABEL[row.quality] || row.quality;

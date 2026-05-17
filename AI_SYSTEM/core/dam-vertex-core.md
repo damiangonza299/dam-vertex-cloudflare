@@ -140,6 +140,43 @@ SIEMPRE evaluar:
 
 ---
 
+## Reglas de interpretación del reporte Meta Ads
+
+El admin panel expone tres métricas de compras distintas. Nunca mezclarlas.
+
+### Prioridad de análisis por campaña (de más a menos confiable)
+
+1. **Real atrib.** (`d1.purchased`) — leads de D1 con `campaign_id` que están `purchased`. Fuente de verdad operativa. Usar para ROAS real y decisiones de pausa/escala.
+2. **Leads atribuidos** + costo por lead — complemento de Real atrib.
+3. **Meta purchases** — referencia de distribución de Ads Manager. Puede sobre-atribuir (view-through) o sub-atribuir (re-atribución multi-touch). Nunca como fuente de verdad.
+4. **Real prod.** — contexto del producto, no atribución de campaña. Ver regla abajo.
+5. **Sin atribución** — zona gris. No asignar a ninguna campaña específica.
+
+### Regla crítica — Real prod. y ROAS prod.
+
+**Real prod.** = total de compras reales del producto en el rango, con o sin `campaign_id`.
+
+- Si hay 2+ campañas del mismo producto, Real prod. es el **mismo número en todas las filas** del producto.
+- NO se interpreta como "esta campaña sola generó N ventas".
+- ES contexto: cuánto vendió el producto en total. La atribución está en Real atrib.
+
+**ROAS prod.** = revenue total del producto / gasto de esta campaña.
+
+- Solo tiene sentido si el producto tiene **una sola campaña activa** en el período.
+- Si hay 2+ campañas del mismo producto, el backend anula ROAS prod. (muestra —) porque el numerador incluye ventas que pertenecen a otras campañas.
+- NUNCA usar ROAS prod. como métrica de performance cuando hay múltiples campañas del mismo producto.
+
+### Ejemplo correcto con producto compartido
+
+Cadena Apex — 30 días:
+- Campaña A (vieja): Real atrib. = 3, Gasto = 200k → ROAS atrib. = calculado sobre sus 3 ventas
+- Campaña B (nueva): Real atrib. = 6, Gasto = 100k → ROAS atrib. = calculado sobre sus 6 ventas
+- Real prod. = 13 (total del producto) → mismo en ambas filas, es contexto
+- ROAS prod. = — en ambas filas (producto compartido, no atribuible)
+- Sin atribución = 4 ventas que no se pueden asignar a ninguna campaña
+
+---
+
 ## Proyectos relacionados (secundarios)
 
 - **DAM Finanzas:** app PWA de finanzas personales, Firebase + IndexedDB
