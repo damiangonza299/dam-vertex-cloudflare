@@ -30,7 +30,9 @@
       "Bash(dir \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" /B)",
       "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\AI_SYSTEM\" -Recurse | Where-Object { -not $_.PSIsContainer } | ForEach-Object { $_.FullName.Replace\\(\"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\\", \"\"\\) })",
       "Bash(Get-ChildItem \"F:\\\\Desktop\" -Directory)",
-      "Bash(Select-Object Name)"
+      "Bash(Select-Object Name)",
+      "Bash(find \"F:\\\\Desktop\" -name \"GEMINI.md\" 2>/dev/null; find \"C:\\\\Users\\\\DAM VERTEX\" -name \"GEMINI.md\" 2>/dev/null | head -20)",
+      "Read(//c/Users/DAM VERTEX/**)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public"
