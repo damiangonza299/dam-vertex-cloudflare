@@ -996,22 +996,56 @@ function renderAdsTable() {
    Meta Ads Report
    ========================================================= */
 
-document.getElementById('refresh-meta-btn')?.addEventListener('click', loadMetaReport);
+let metaFilter       = 'active';
+let metaCachedData   = null;
+let metaCachedPeriod = null;
+
+function getMetaApiPeriod() {
+  if (metaFilter === '7d')  return '7d';
+  if (metaFilter === 'all') return 'all';
+  return '30d';
+}
+
+document.getElementById('refresh-meta-btn')?.addEventListener('click', () => {
+  metaCachedData   = null;
+  metaCachedPeriod = null;
+  loadMetaReport();
+});
+
+document.getElementById('meta-filter-row')?.addEventListener('click', e => {
+  const btn = e.target.closest('[data-mfilter]');
+  if (!btn) return;
+  metaFilter = btn.dataset.mfilter;
+  document.querySelectorAll('[data-mfilter]').forEach(b => {
+    b.classList.toggle('meta-filter-btn--active', b.dataset.mfilter === metaFilter);
+  });
+  const newPeriod = getMetaApiPeriod();
+  if (metaCachedData && metaCachedPeriod === newPeriod) {
+    renderMetaReport(metaCachedData);
+  } else {
+    loadMetaReport();
+  }
+});
 
 async function loadMetaReport() {
-  const tbody = document.getElementById('meta-tbody');
-  const label = document.getElementById('meta-period-label');
+  const tbody    = document.getElementById('meta-tbody');
+  const label    = document.getElementById('meta-period-label');
   const alertsEl = document.getElementById('meta-alerts');
   if (tbody) tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted)">Cargando...</td></tr>`;
   if (label) label.textContent = 'Cargando...';
   if (alertsEl) alertsEl.innerHTML = '';
   try {
-    const res = await fetch('/api/meta/report', {
+    const apiPeriod = getMetaApiPeriod();
+    const days      = apiPeriod === '7d' ? 7 : apiPeriod === 'all' ? 90 : 30;
+    const today     = new Date().toISOString().split('T')[0];
+    const since     = new Date(Date.now() - days * 86400000).toISOString().split('T')[0];
+    const res = await fetch(`/api/meta/report?since=${since}&until=${today}`, {
       headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
     });
     if (res.status === 401) { clearToken(); location.reload(); return; }
     const data = await res.json();
     if (data.ok) {
+      metaCachedPeriod = apiPeriod;
       renderMetaReport(data);
     } else {
       if (tbody) tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--red)">${esc(data.error || 'Error al cargar el reporte')}</td></tr>`;
@@ -1024,6 +1058,7 @@ async function loadMetaReport() {
 }
 
 function renderMetaReport(data) {
+  metaCachedData = data;
   const tbody    = document.getElementById('meta-tbody');
   const label    = document.getElementById('meta-period-label');
   const alertsEl = document.getElementById('meta-alerts');
@@ -1032,9 +1067,17 @@ function renderMetaReport(data) {
 
   if (label) label.textContent = `${data.period.since} → ${data.period.until}`;
 
+  let rows   = data.rows   || [];
+  let alerts = data.alerts || [];
+  if (metaFilter === 'active') {
+    rows = rows.filter(r => r.meta !== null);
+    const visibleNames = new Set(rows.map(r => r.campaign_name));
+    alerts = alerts.filter(a => Array.from(visibleNames).some(n => a.msg.startsWith(n)));
+  }
+
   if (alertsEl) {
     const ALERT_ICONS = { ok: '✓', warn: '⚠', danger: '✕', info: 'ℹ' };
-    alertsEl.innerHTML = (data.alerts || []).map(a =>
+    alertsEl.innerHTML = alerts.map(a =>
       `<div class="meta-alert meta-alert-${a.level}">${ALERT_ICONS[a.level] || '·'} ${esc(a.msg)}</div>`
     ).join('');
   }
@@ -1048,7 +1091,7 @@ function renderMetaReport(data) {
     }
   }
 
-  if (!data.rows?.length) {
+  if (!rows.length) {
     tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted)">Sin datos de campañas en el período.</td></tr>`;
     return;
   }
@@ -1070,7 +1113,7 @@ function renderMetaReport(data) {
     NEUTRAL:        'NEUTRAL',
   };
 
-  tbody.innerHTML = data.rows.map(row => {
+  tbody.innerHTML = rows.map(row => {
     const m = row.meta;
     const d = row.d1;
 

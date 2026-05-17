@@ -68,6 +68,25 @@
     .meta-alert-warn   { background:rgba(251,191,36,.08);  border:1px solid rgba(251,191,36,.2);  color:#fbbf24; }
     .meta-alert-danger { background:rgba(248,113,113,.08); border:1px solid rgba(248,113,113,.2); color:#f87171; }
     .meta-alert-info   { background:rgba(59,130,246,.08);  border:1px solid rgba(59,130,246,.2);  color:#60a5fa; }
+    /* ── Meta filter pills ── */
+    .meta-filter-btn {
+      background:#1a1a1a; border:1px solid rgba(255,255,255,.1);
+      color:rgba(255,255,255,.5); font-size:12px; font-weight:600;
+      padding:5px 12px; border-radius:20px; cursor:pointer;
+      font-family:inherit; transition:all .15s; white-space:nowrap;
+    }
+    .meta-filter-btn--active {
+      background:rgba(59,130,246,.15); border-color:rgba(59,130,246,.4); color:#fff;
+    }
+    /* ── Meta table mobile: ocultar columnas secundarias en pantallas pequeñas ── */
+    @media (max-width:500px) {
+      #meta-section .admin-table th:nth-child(5),
+      #meta-section .admin-table td:nth-child(5),
+      #meta-section .admin-table th:nth-child(6),
+      #meta-section .admin-table td:nth-child(6),
+      #meta-section .admin-table th:nth-child(8),
+      #meta-section .admin-table td:nth-child(8) { display:none; }
+    }
   </style>
 </head>
 <body class="admin-page">
@@ -286,11 +305,17 @@
 
     <!-- Meta Ads Report section -->
     <div id="meta-section" style="display:none">
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
         <button id="refresh-meta-btn" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit">
           ↻ Actualizar
         </button>
         <span id="meta-period-label" style="font-size:12px;color:var(--muted)">—</span>
+      </div>
+      <div id="meta-filter-row" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+        <button class="meta-filter-btn meta-filter-btn--active" data-mfilter="active">Activas</button>
+        <button class="meta-filter-btn" data-mfilter="7d">7 días</button>
+        <button class="meta-filter-btn" data-mfilter="30d">30 días</button>
+        <button class="meta-filter-btn" data-mfilter="all">Todas</button>
       </div>
       <div id="meta-alerts" style="margin-bottom:10px"></div>
       <div class="admin-table-wrap">

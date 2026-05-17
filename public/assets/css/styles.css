@@ -865,6 +865,19 @@ details summary::-webkit-details-marker { display: none; }
   .btn-confirm.btn-icon { width: 24px; height: 24px; font-size: 13px; }
   .btn-menu { width: 22px; height: 24px; font-size: 16px; }
   .act-done { width: 24px; height: 24px; font-size: 12px; }
+
+  /* Tabs — una sola línea sin scroll horizontal */
+  .admin-tabs { scrollbar-width: none; }
+  .admin-tabs::-webkit-scrollbar { display: none; }
+  .admin-tab {
+    font-size: 11px;
+    padding: 9px 6px;
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 /* =====================================================
