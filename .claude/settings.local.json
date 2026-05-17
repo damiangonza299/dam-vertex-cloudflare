@@ -36,7 +36,8 @@
       "Bash(grep -v \"^meta$\")",
       "Bash(git -C \"F:\\\\Desktop\\\\dam-vertex-cloudflare\" diff --name-only HEAD)",
       "Bash(node scripts/test-meta-api.mjs)",
-      "Bash(git -C \"F:\\\\Desktop\\\\dam-vertex-cloudflare\" status --short)"
+      "Bash(git -C \"F:\\\\Desktop\\\\dam-vertex-cloudflare\" status --short)",
+      "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff --name-only)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public"

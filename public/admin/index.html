@@ -88,12 +88,14 @@
     }
     /* ── Meta table mobile: ocultar columnas secundarias en pantallas pequeñas ── */
     @media (max-width:500px) {
-      #meta-section .admin-table th:nth-child(5),
-      #meta-section .admin-table td:nth-child(5),
+      #meta-section .admin-table th:nth-child(4),
+      #meta-section .admin-table td:nth-child(4),
       #meta-section .admin-table th:nth-child(6),
       #meta-section .admin-table td:nth-child(6),
-      #meta-section .admin-table th:nth-child(8),
-      #meta-section .admin-table td:nth-child(8) { display:none; }
+      #meta-section .admin-table th:nth-child(7),
+      #meta-section .admin-table td:nth-child(7),
+      #meta-section .admin-table th:nth-child(9),
+      #meta-section .admin-table td:nth-child(9) { display:none; }
     }
   </style>
 </head>
@@ -337,6 +339,11 @@
       </div>
       <!-- Alerts (collapsed by default) -->
       <div id="meta-alerts" style="display:none;margin-bottom:10px"></div>
+      <div id="meta-legend" style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:8px;line-height:1.6">
+        <strong style="color:rgba(255,255,255,.5)">Meta</strong> = compras atribuidas por Ads Manager (click+view, ventana 7d/1d). &nbsp;
+        <strong style="color:rgba(255,255,255,.5)">Real atrib.</strong> = compras reales D1 con campaign_id. &nbsp;
+        <strong style="color:rgba(255,255,255,.5)">Real prod.</strong> = compras reales del producto en el rango, aunque no tengan campaign_id.
+      </div>
       <div class="admin-table-wrap">
         <table class="admin-table">
           <thead>
@@ -344,16 +351,17 @@
               <th>Campaña</th>
               <th>Gasto</th>
               <th>Leads</th>
-              <th>Comp.</th>
-              <th>Pend.</th>
+              <th title="Compras que Meta Ads Manager atribuye a esta campaña">Meta</th>
+              <th title="Compras reales D1 con campaign_id — fuente de verdad operativa">Real atrib.</th>
+              <th title="Compras reales del producto en el rango, con o sin campaign_id">Real prod.</th>
               <th>ROAS M</th>
               <th>ROAS R</th>
-              <th>Δ</th>
+              <th title="ROAS calculado sobre compras reales del producto (sin filtro de atribución)">ROAS prod.</th>
               <th>Calidad</th>
             </tr>
           </thead>
           <tbody id="meta-tbody">
-            <tr><td colspan="9" style="text-align:center;padding:48px;color:var(--muted)">Iniciá sesión para ver los datos</td></tr>
+            <tr><td colspan="10" style="text-align:center;padding:48px;color:var(--muted)">Iniciá sesión para ver los datos</td></tr>
           </tbody>
         </table>
       </div>

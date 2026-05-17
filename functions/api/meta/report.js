@@ -4,11 +4,15 @@
    GET /api/meta/report?since=YYYY-MM-DD&until=YYYY-MM-DD
    Auth: Bearer {ADMIN_PASSWORD}
 
-   Devuelve una fila por campaña con:
-   - métricas de Meta (spend, CTR, CPC, CPM, ROAS Meta)
-   - métricas reales de D1 (leads, comprados, revenue, tasa cierre)
-   - ROAS real calculado
-   - clasificación de calidad de campaña
+   Columnas del reporte:
+   - Meta: gasto, CPM, CTR, CPC, purchase_count atribuido por Meta, ROAS Meta
+   - D1 atribuido: leads, compras reales con campaign_id, revenue real atribuido, ROAS Real atribuido
+   - D1 producto: compras reales del producto en el rango (con o sin campaign_id), ROAS Real producto
+
+   DIFERENCIAS INTENCIONALES entre "Meta", "Real atrib." y "Real prod.":
+   - Meta purchase_count: lo que Meta Ads Manager atribuye (click+view-through, ventana 7d/1d)
+   - Real atrib.: leads de D1 con campaign_id en el rango que están purchased (fuente de verdad operativa)
+   - Real prod.: todas las compras reales del producto en el rango, incluyendo sin campaign_id
 
    NO toca: CAPI, Purchase, Pixel, admin-leads, leads.js, D1 writes.
    ========================================================= */
@@ -53,14 +57,16 @@ export async function onRequestGet({ request, env }) {
   }
 
   try {
-    /* ── 1. Fetch en paralelo: Meta insights + D1 leads ── */
-    const [metaData, d1Data, campaignStatuses] = await Promise.all([
+    /* ── 1. Fetch en paralelo: Meta insights + D1 ── */
+    const [metaData, d1Data, campaignStatuses, productPurchased, noAttrData] = await Promise.all([
       fetchMetaInsights(adAccountId, marketingToken, since, until),
       fetchD1Leads(env.DB, since, until),
       fetchCampaignStatuses(adAccountId, marketingToken),
+      fetchProductPurchased(env.DB, since, until),
+      fetchUnattributedCount(env.DB, since, until),
     ]);
 
-    /* ── 2. Indexar D1 por campaign_id ── */
+    /* ── 2. Indexar D1 por campaign_id y por nombre ── */
     const d1ByCampaignId   = new Map();
     const d1ByCampaignName = new Map();
 
@@ -72,28 +78,30 @@ export async function onRequestGet({ request, env }) {
       }
     }
 
-    /* ── 3. Contar leads sin atribución ── */
-    const noAttrCount = await fetchUnattributedCount(env.DB, since, until);
+    /* ── 3. Indexar compras reales por producto ── */
+    const productMap = new Map();
+    for (const p of productPurchased) {
+      if (p.product_name) productMap.set(p.product_name, p);
+    }
 
     /* ── 4. JOIN Meta + D1 ── */
     const rows = (metaData || []).map(meta => {
       const cid = String(meta.campaign_id || '');
-
-      /* Buscar primero por ID, luego por nombre */
-      const d1 = d1ByCampaignId.get(cid)
+      const d1  = d1ByCampaignId.get(cid)
         ?? d1ByCampaignName.get((meta.campaign_name || '').toLowerCase().trim())
         ?? null;
-
       const effectiveStatus = campaignStatuses.get(cid) ?? null;
-      return buildRow(meta, d1, effectiveStatus);
+      const productData     = d1 ? (productMap.get(d1.product_name) ?? null) : null;
+      return buildRow(meta, d1, effectiveStatus, productData);
     });
 
-    /* ── 5. Campañas con leads pero sin datos Meta (período sin gasto) ── */
+    /* ── 5. Campañas con leads en D1 pero sin datos Meta en el período ── */
     const metaIds = new Set((metaData || []).map(m => String(m.campaign_id || '')));
     for (const row of d1Data) {
       const cid = String(row.campaign_id || '');
       if (cid && !metaIds.has(cid)) {
-        rows.push(buildRow(null, row));
+        const productData = productMap.get(row.product_name) ?? null;
+        rows.push(buildRow(null, row, null, productData));
       }
     }
 
@@ -104,11 +112,15 @@ export async function onRequestGet({ request, env }) {
     const alerts = buildAlerts(rows);
 
     return json({
-      ok:      true,
-      period:  { since, until },
+      ok:     true,
+      period: { since, until },
       rows,
       alerts,
-      no_attribution_leads: noAttrCount,
+      /* Leads sin ninguna atribución de campaña */
+      no_attribution_leads:     noAttrData.leads_count,
+      /* Compras reales sin atribución (purchased pero sin campaign_id) */
+      unattributed_purchased:   noAttrData.purchased_count,
+      unattributed_revenue:     noAttrData.purchased_revenue,
     });
 
   } catch (err) {
@@ -164,9 +176,11 @@ async function fetchMetaInsights(adAccountId, token, since, until) {
   return data.data || [];
 }
 
-/* ── Fetch D1 leads agrupados por campaña ── */
+/* ── Fetch D1 leads agrupados por campaña (solo leads CON atribución) ── */
 async function fetchD1Leads(DB, since, until) {
-  /* D1 guarda fechas en UTC. Ajustar rango: desde inicio de 'since' hasta fin de 'until' */
+  /* Filtra por created_at: determina qué leads entraron en este período.
+     Purchased = leads de este período con campaign_id que están confirmed purchased.
+     NO usa purchased_at porque el análisis es "leads de esta campaña que convirtieron". */
   const { results } = await DB.prepare(`
     SELECT
       campaign_id,
@@ -189,52 +203,93 @@ async function fetchD1Leads(DB, since, until) {
   return results || [];
 }
 
-/* ── Contar leads sin ninguna atribución ── */
+/* ── Compras reales por producto (SIN filtro de atribución) ── */
+async function fetchProductPurchased(DB, since, until) {
+  /* Cuenta TODAS las compras reales del producto en el rango, aunque no tengan campaign_id.
+     Esto permite detectar compras que no se pueden asignar a ninguna campaña específica. */
+  try {
+    const { results } = await DB.prepare(`
+      SELECT
+        product_name,
+        COUNT(*)                AS product_purchased,
+        SUM(COALESCE(value, 0)) AS product_revenue
+      FROM leads
+      WHERE status = 'purchased'
+        AND created_at >= ?1
+        AND created_at < date(?2, '+1 day')
+      GROUP BY product_name
+    `).bind(since, until).all();
+    return results || [];
+  } catch {
+    return [];
+  }
+}
+
+/* ── Leads y compras sin ninguna atribución de campaña ── */
 async function fetchUnattributedCount(DB, since, until) {
   try {
     const row = await DB.prepare(`
-      SELECT COUNT(*) AS cnt FROM leads
+      SELECT
+        COUNT(*)                                                                      AS leads_count,
+        SUM(CASE WHEN status = 'purchased' THEN 1 ELSE 0 END)                        AS purchased_count,
+        SUM(CASE WHEN status = 'purchased' THEN COALESCE(value, 0) ELSE 0 END)       AS purchased_revenue
+      FROM leads
       WHERE created_at >= ?1
         AND created_at < date(?2, '+1 day')
-        AND campaign_id IS NULL
+        AND campaign_id   IS NULL
         AND campaign_name IS NULL
-        AND utm_campaign IS NULL
-        AND fbclid IS NULL
+        AND utm_campaign   IS NULL
+        AND fbclid         IS NULL
     `).bind(since, until).first();
-    return row?.cnt ?? 0;
+    return {
+      leads_count:       row?.leads_count       ?? 0,
+      purchased_count:   row?.purchased_count   ?? 0,
+      purchased_revenue: row?.purchased_revenue ?? 0,
+    };
   } catch {
-    return null;
+    return { leads_count: 0, purchased_count: 0, purchased_revenue: 0 };
   }
 }
 
 /* ── Construir una fila combinada ── */
-function buildRow(meta, d1, effectiveStatus = null) {
+function buildRow(meta, d1, effectiveStatus = null, productData = null) {
   /* Métricas Meta */
-  const spend_raw    = parseFloat(meta?.spend    || 0);
-  const impressions  = parseInt(meta?.impressions || 0);
-  const clicks       = parseInt(meta?.clicks      || 0);
-  const ctr          = parseFloat(meta?.ctr       || 0);
-  const cpc          = parseFloat(meta?.cpc       || 0);
-  const cpm          = parseFloat(meta?.cpm       || 0);
+  const spend_raw   = parseFloat(meta?.spend    || 0);
+  const impressions = parseInt(meta?.impressions || 0);
+  const clicks      = parseInt(meta?.clicks      || 0);
+  const ctr         = parseFloat(meta?.ctr       || 0);
+  const cpc         = parseFloat(meta?.cpc       || 0);
+  const cpm         = parseFloat(meta?.cpm       || 0);
 
+  /* Meta: cuántas compras atribuye Meta (desde actions) */
+  const meta_purchase_count = (meta?.actions || [])
+    .filter(a => a.action_type === 'purchase')
+    .reduce((s, a) => s + parseInt(a.value || 0), 0);
+
+  /* Meta: revenue atribuido por Meta (desde action_values) → para ROAS Meta */
   const meta_purchase_value = (meta?.action_values || [])
     .filter(a => a.action_type === 'purchase')
     .reduce((s, a) => s + parseFloat(a.value || 0), 0);
 
   const roas_meta = spend_raw > 0 ? parseFloat((meta_purchase_value / spend_raw).toFixed(2)) : null;
 
-  /* Métricas D1 */
-  const total_leads   = parseInt(d1?.total_leads   || 0);
-  const purchased     = parseInt(d1?.purchased     || 0);
-  const pending       = parseInt(d1?.pending       || 0);
-  const cancelled     = parseInt(d1?.cancelled     || 0);
-  const revenue_real  = parseFloat(d1?.revenue_real  || 0);
-  const avg_ticket    = d1?.avg_ticket ? parseFloat(d1.avg_ticket) : null;
+  /* Métricas D1 — leads CON campaign_id en el rango */
+  const total_leads  = parseInt(d1?.total_leads  || 0);
+  const purchased    = parseInt(d1?.purchased    || 0);
+  const pending      = parseInt(d1?.pending      || 0);
+  const cancelled    = parseInt(d1?.cancelled    || 0);
+  const revenue_real = parseFloat(d1?.revenue_real || 0);
+  const avg_ticket   = d1?.avg_ticket ? parseFloat(d1.avg_ticket) : null;
+
+  /* Métricas D1 — TODAS las compras del producto, con o sin campaign_id */
+  const product_purchased = parseInt(productData?.product_purchased || 0);
+  const product_revenue   = parseFloat(productData?.product_revenue  || 0);
 
   /* Métricas derivadas */
-  const close_rate = total_leads > 0 ? parseFloat((purchased / total_leads * 100).toFixed(1)) : null;
-  const roas_real  = spend_raw > 0   ? parseFloat((revenue_real / spend_raw).toFixed(2)) : null;
-  const roas_delta = (roas_meta !== null && roas_real !== null)
+  const close_rate        = total_leads > 0 ? parseFloat((purchased / total_leads * 100).toFixed(1)) : null;
+  const roas_real         = spend_raw > 0   ? parseFloat((revenue_real    / spend_raw).toFixed(2)) : null;
+  const roas_real_product = spend_raw > 0   ? parseFloat((product_revenue / spend_raw).toFixed(2)) : null;
+  const roas_delta        = (roas_meta !== null && roas_real !== null)
     ? parseFloat((roas_real - roas_meta).toFixed(2))
     : null;
 
@@ -254,20 +309,27 @@ function buildRow(meta, d1, effectiveStatus = null) {
       ctr:              parseFloat(ctr.toFixed(2)),
       cpc:              parseFloat(cpc.toFixed(0)),
       cpm:              parseFloat(cpm.toFixed(0)),
+      purchase_count:   meta_purchase_count,   /* compras que Meta atribuye */
       roas_meta,
       effective_status: effectiveStatus,
     } : null,
     d1: {
       total_leads,
-      purchased,
+      purchased,    /* compras reales con campaign_id (Real atrib.) */
       pending,
       cancelled,
       close_rate,
       revenue_real,
-      revenue_fmt: revenue_real.toLocaleString('es-PY'),
+      revenue_fmt:  revenue_real.toLocaleString('es-PY'),
       avg_ticket,
     },
+    product: {
+      purchased:    product_purchased,  /* compras reales del producto sin filtro de attribution */
+      revenue:      product_revenue,
+      revenue_fmt:  product_revenue.toLocaleString('es-PY'),
+    },
     roas_real,
+    roas_real_product,
     roas_delta,
   };
 }

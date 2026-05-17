@@ -1148,16 +1148,24 @@ function renderMetaReport(data) {
   }
 
   if (noAttrEl) {
-    if (data.no_attribution_leads > 0) {
+    const noAttrLeads     = data.no_attribution_leads    ?? 0;
+    const noAttrPurchased = data.unattributed_purchased  ?? 0;
+    if (noAttrLeads > 0 || noAttrPurchased > 0) {
       noAttrEl.style.display = '';
-      noAttrEl.textContent   = `${data.no_attribution_leads} leads sin atribución en el período.`;
+      let msg = `${noAttrLeads} leads sin atribución en el período`;
+      if (noAttrPurchased > 0) {
+        msg += ` — de ellos, ${noAttrPurchased} están comprados pero no se pueden asignar a ninguna campaña específica.`;
+      } else {
+        msg += '.';
+      }
+      noAttrEl.textContent = msg;
     } else {
       noAttrEl.style.display = 'none';
     }
   }
 
   if (!rows.length) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted)">Sin campañas para los filtros seleccionados.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--muted)">Sin campañas para los filtros seleccionados.</td></tr>`;
     return;
   }
 
@@ -1192,12 +1200,14 @@ function renderMetaReport(data) {
     const roasR = (row.roas_real !== null && row.roas_real !== undefined)
       ? `<strong>${row.roas_real}×</strong>` : '—';
 
-    let delta = '—';
-    if (row.roas_delta !== null && row.roas_delta !== undefined) {
-      const sign  = row.roas_delta >= 0 ? '+' : '';
-      const color = row.roas_delta >= 0 ? '#4ade80' : '#f87171';
-      delta = `<span style="color:${color}">${sign}${row.roas_delta}</span>`;
-    }
+    const roasProd = (row.roas_real_product !== null && row.roas_real_product !== undefined)
+      ? `${row.roas_real_product}×` : '—';
+
+    /* Meta purchase count: lo que Ads Manager atribuye (puede diferir de Real atrib.) */
+    const metaPurchases = m ? (m.purchase_count ?? 0) : '—';
+
+    /* Real prod.: compras reales del producto sin filtro de campaign_id */
+    const realProd = row.product?.purchased ?? 0;
 
     const qClass = QUALITY_CLASS[row.quality] || 'NEUTRAL';
     const qLabel = QUALITY_LABEL[row.quality] || row.quality;
@@ -1215,11 +1225,12 @@ function renderMetaReport(data) {
       <td style="max-width:180px">${campCell}${ctrStr}</td>
       <td>${spend}</td>
       <td style="text-align:center">${d.total_leads}</td>
+      <td style="text-align:center;color:#60a5fa">${metaPurchases}</td>
       <td style="text-align:center;color:#4ade80;font-weight:600">${d.purchased}</td>
-      <td style="text-align:center;color:#fbbf24">${d.pending}</td>
+      <td style="text-align:center;color:#a78bfa">${realProd}</td>
       <td style="text-align:center">${roasM}</td>
       <td style="text-align:center">${roasR}</td>
-      <td style="text-align:center">${delta}</td>
+      <td style="text-align:center">${roasProd}</td>
       <td><span class="meta-q meta-q-${qClass}">${qLabel}</span></td>
     </tr>`;
   }).join('');
