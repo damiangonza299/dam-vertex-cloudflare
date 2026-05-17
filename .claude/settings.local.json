@@ -32,7 +32,11 @@
       "Bash(Get-ChildItem \"F:\\\\Desktop\" -Directory)",
       "Bash(Select-Object Name)",
       "Bash(find \"F:\\\\Desktop\" -name \"GEMINI.md\" 2>/dev/null; find \"C:\\\\Users\\\\DAM VERTEX\" -name \"GEMINI.md\" 2>/dev/null | head -20)",
-      "Read(//c/Users/DAM VERTEX/**)"
+      "Read(//c/Users/DAM VERTEX/**)",
+      "Bash(grep -v \"^meta$\")",
+      "Bash(git -C \"F:\\\\Desktop\\\\dam-vertex-cloudflare\" diff --name-only HEAD)",
+      "Bash(node scripts/test-meta-api.mjs)",
+      "Bash(git -C \"F:\\\\Desktop\\\\dam-vertex-cloudflare\" status --short)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public"
