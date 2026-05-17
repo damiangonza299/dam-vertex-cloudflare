@@ -86,16 +86,11 @@
       font-family:inherit; outline:none; max-width:76px;
       -webkit-appearance:none; appearance:none;
     }
-    /* ── Meta table mobile: ocultar columnas secundarias en pantallas pequeñas ── */
+    /* ── Meta table mobile: tabla con scroll horizontal, solo se oculta ROAS M ── */
     @media (max-width:500px) {
-      #meta-section .admin-table th:nth-child(4),
-      #meta-section .admin-table td:nth-child(4),
-      #meta-section .admin-table th:nth-child(6),
-      #meta-section .admin-table td:nth-child(6),
+      #meta-section .admin-table { min-width:700px; }
       #meta-section .admin-table th:nth-child(7),
-      #meta-section .admin-table td:nth-child(7),
-      #meta-section .admin-table th:nth-child(9),
-      #meta-section .admin-table td:nth-child(9) { display:none; }
+      #meta-section .admin-table td:nth-child(7) { display:none; }
     }
   </style>
 </head>
@@ -339,11 +334,6 @@
       </div>
       <!-- Alerts (collapsed by default) -->
       <div id="meta-alerts" style="display:none;margin-bottom:10px"></div>
-      <div id="meta-legend" style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:8px;line-height:1.6">
-        <strong style="color:rgba(255,255,255,.5)">Meta</strong> = compras atribuidas por Ads Manager (click+view, ventana 7d/1d). &nbsp;
-        <strong style="color:rgba(255,255,255,.5)">Real atrib.</strong> = compras reales D1 con campaign_id. &nbsp;
-        <strong style="color:rgba(255,255,255,.5)">Real prod.</strong> = compras reales del producto en el rango, aunque no tengan campaign_id.
-      </div>
       <div class="admin-table-wrap">
         <table class="admin-table">
           <thead>
