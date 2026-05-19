@@ -1013,14 +1013,17 @@ details summary::-webkit-details-marker { display: none; }
   pointer-events: none;
 }
 .offer-badge {
-  font-size: 11px;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 10px;
   font-weight: 700;
   color: #fff;
   background: #e85d2b;
   border-radius: 4px;
-  padding: 2px 8px;
-  display: inline-block;
-  margin-bottom: 6px;
+  padding: 2px 7px;
+  line-height: 1.4;
+  pointer-events: none;
 }
 .offer-badge--best { background: #7c3aed; }
 .offer-content {

@@ -116,6 +116,7 @@ export async function onRequestPost({ request, env }) {
           `Nombre: ${name.trim()}`,
           `Telefono: ${phone.trim()}`,
           `Ciudad: ${city?.trim() || '-'}`,
+          ...(payment_method ? [`Metodo de pago: ${payment_method}`] : []),
           `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
           ...(variantText ? [`Variante: ${variantText}`] : []),
           `Cantidad: ${quantity || 1}`,

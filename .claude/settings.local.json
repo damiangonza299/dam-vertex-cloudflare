@@ -40,7 +40,13 @@
       "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff --name-only)",
       "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff public/admin/index.html)",
       "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff functions/api/meta/report.js)",
-      "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff public/assets/js/admin.js)"
+      "Bash(git -C \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" diff public/assets/js/admin.js)",
+      "PowerShell(Get-ChildItem -Path \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\\" -Recurse -File -Exclude \"node_modules\" | Where-Object { $_.Extension -in @\\('.js', '.ts', '.html', '.sql', '.json', '.css'\\) } | Select-Object FullName)",
+      "PowerShell(grep -E \"wrangler|package|schema|migrate\")",
+      "PowerShell(dir \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" | Where-Object { $_.Name -match \"wrangler|package|schema|migrate\" })",
+      "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\\" | Where-Object { $_.PSIsContainer })",
+      "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\functions\\\\\" | Where-Object { $_.PSIsContainer })",
+      "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\public\\\\\" | Where-Object { $_.PSIsContainer })"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public"

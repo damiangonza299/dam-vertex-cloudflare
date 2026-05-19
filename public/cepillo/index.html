@@ -212,6 +212,48 @@
     }
     /* Solo Blanco disponible — ocultar bloque de selección por color en 4+ */
     #custom-variant-section { display: none !important; }
+
+    /* Combos compactos fuera del modal — solo preselección visual, sin tracking */
+    .offer-preview { margin: 14px 0 18px; }
+    .offer-preview__label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,.4);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+    .offer-preview__pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .offer-pill {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 11px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s, color .15s;
+      white-space: nowrap;
+      line-height: 1.3;
+    }
+    .offer-pill:active { opacity: .8; }
+    .offer-pill--active {
+      border-color: #3b82f6;
+      background: rgba(59,130,246,.12);
+      color: #bfdbfe;
+    }
+    .offer-pill__save {
+      color: #4ade80;
+      font-size: 11px;
+      margin-left: 3px;
+    }
+    .offer-pill--active .offer-pill__save { color: #86efac; }
   </style>
 </head>
 <body>
@@ -255,6 +297,18 @@
         <span class="price-compare">Gs. 190.000</span>
         <span class="price-badge">16% OFF</span>
       </div>
+
+      <!-- Combos compactos — toque para preseleccionar, NO dispara tracking ni WA -->
+      <div class="offer-preview" id="offer-preview">
+        <span class="offer-preview__label">Elegí cuántos:</span>
+        <div class="offer-preview__pills">
+          <button type="button" class="offer-pill offer-pill--active" data-offer="1">1 unidad</button>
+          <button type="button" class="offer-pill" data-offer="2">2 uds. <span class="offer-pill__save">-25%</span></button>
+          <button type="button" class="offer-pill" data-offer="3">3 uds. <span class="offer-pill__save">-35%</span></button>
+          <button type="button" class="offer-pill" data-offer="custom">4+ uds. <span class="offer-pill__save">-40%</span></button>
+        </div>
+      </div>
+
       <button class="btn btn-primary" data-scroll-form>Hacer mi pedido ahora →</button>
       <p class="stock-hint"><span class="stock-dot"></span>Stock limitado · últimas unidades disponibles hoy</p>
       <div class="hero__tags">
@@ -501,7 +555,7 @@
 
         <label class="offer-option">
           <input type="radio" name="offer" value="2">
-          <div class="offer-badge">🔥 Más vendido</div>
+          <div class="offer-badge">🔥 Más elegido</div>
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
             <div class="offer-prices">
@@ -514,7 +568,7 @@
 
         <label class="offer-option">
           <input type="radio" name="offer" value="3">
-          <div class="offer-badge offer-badge--best">⭐ Mejor precio</div>
+          <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
             <div class="offer-prices">
@@ -632,7 +686,7 @@
 
       <div class="form-submit">
         <button type="submit" class="btn btn-primary" id="modal-submit-btn">
-          Hacer mi pedido por WhatsApp
+          Confirmar pedido por WhatsApp
         </button>
       </div>
 
@@ -668,9 +722,29 @@
     },
   };
 
+  /* preSelectOffer — solo modifica el radio y la clase visual.
+     No dispara tracking, no abre WhatsApp, no crea leads. */
+  function preSelectOffer(val) {
+    const radio = document.querySelector(`.offer-options input[name="offer"][value="${val}"]`);
+    if (!radio) return;
+    radio.checked = true;
+    document.querySelectorAll('.offer-option').forEach(opt => opt.classList.remove('selected'));
+    radio.closest('.offer-option')?.classList.add('selected');
+    radio.dispatchEvent(new Event('change'));
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     DV.trackViewContent(PRODUCT);
     DV.initForm(PRODUCT);
+
+    /* Pills de combos externos — preseleccionan en el modal, nada más */
+    document.querySelectorAll('.offer-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.offer-pill').forEach(p => p.classList.remove('offer-pill--active'));
+        pill.classList.add('offer-pill--active');
+        preSelectOffer(pill.dataset.offer);
+      });
+    });
 
     /* Auto-fill Blanco qty in 4+ custom section (único color disponible) */
     const customVariantRows = document.getElementById('custom-variant-rows');

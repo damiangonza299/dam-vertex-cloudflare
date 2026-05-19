@@ -415,7 +415,7 @@ function getCustomVariantColors(customQty) {
     if (val === 'custom') {
       if (variantSection)     variantSection.style.display     = 'none';
       if (customOrderSection) customOrderSection.style.display = 'block';
-      if (submitBtn)          submitBtn.textContent             = 'Hacer mi pedido por WhatsApp';
+      if (submitBtn)          submitBtn.textContent             = 'Confirmar pedido por WhatsApp';
 
       const customQtyInput = document.getElementById('m-custom-qty');
       const minusBtn       = document.getElementById('m-custom-qty-minus');
@@ -447,7 +447,7 @@ function setQty(n) {
 if (customOrderSection) customOrderSection.style.display = 'none';
 const customVariantSection = document.getElementById('custom-variant-section');
 if (customVariantSection) customVariantSection.style.display = 'none';
-if (submitBtn)          submitBtn.textContent             = 'Hacer mi pedido por WhatsApp';
+if (submitBtn)          submitBtn.textContent             = 'Confirmar pedido por WhatsApp';
 
     const qty = parseInt(val) || 1;
     if (!product.variants || !variantSection || !variantSelectors) return;
@@ -540,7 +540,7 @@ const customStockCheck = await checkProductStock(product.slug, customQty, custom
 if (!customStockCheck.ok) {
   showStockError(customStockCheck.error);
   submitBtn.disabled  = false;
-  submitBtn.innerHTML = 'Hacer mi pedido por WhatsApp';
+  submitBtn.innerHTML = 'Confirmar pedido por WhatsApp';
   return;
 }
 clearStockError();
@@ -573,7 +573,7 @@ fbc:          client.fbc || '',
       } catch (err) {
         if (err?.message !== 'lead_error') console.error('LEAD_SAVE_ERROR', err?.message);
         submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Hacer mi pedido por WhatsApp';
+        submitBtn.innerHTML = 'Confirmar pedido por WhatsApp';
         showStockError('Error al registrar el pedido. Intentá de nuevo.');
         return;
       }
@@ -626,7 +626,7 @@ const stockCheck = await checkProductStock(product.slug, selectedQty, stockVaria
 if (!stockCheck.ok) {
   showStockError(stockCheck.error);
   submitBtn.disabled  = false;
-  submitBtn.innerHTML = 'Hacer mi pedido por WhatsApp';
+  submitBtn.innerHTML = 'Confirmar pedido por WhatsApp';
   return;
 }
 clearStockError();
@@ -679,7 +679,7 @@ clearStockError();
     } catch (err) {
       if (err?.message !== 'lead_error') console.error('LEAD_SAVE_ERROR', err?.message);
       submitBtn.disabled = false;
-      submitBtn.innerHTML = 'Hacer mi pedido por WhatsApp';
+      submitBtn.innerHTML = 'Confirmar pedido por WhatsApp';
       showStockError('Error al registrar el pedido. Intentá de nuevo.');
     }
   });
