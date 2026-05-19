@@ -1,6 +1,6 @@
 -- Migration 10: Renombrar keys de variantes del reloj en D1
 -- Ejecutar ANTES de deployar los cambios de reloj/index.html
--- Los nuevos nombres en el frontend son: Negro Cobre (ex Dorado Negro), Plateado Sutil (ex Rosa Negro)
+-- Los nuevos nombres en el frontend son: Negro Cobre (ex Dorado Negro), Negro Dorado Sutil (ex Rosa Negro)
 --
 -- Ejecutar:
 --   wrangler d1 execute dam-vertex-leads --remote --file=migrate10.sql
@@ -10,7 +10,7 @@
 
 -- PASO 1: Renombrar keys manteniendo los valores de stock reales
 -- Preserva los valores actuales de Dorado Negro y Rosa Negro (lo que esté en D1)
--- y los reasigna a las nuevas keys Negro Cobre y Plateado Sutil.
+-- y los reasigna a las nuevas keys Negro Cobre y Negro Dorado Sutil.
 UPDATE products
 SET variants_json = json_set(
   json_set(
@@ -21,7 +21,7 @@ SET variants_json = json_set(
     '$."Negro Cobre"',
     COALESCE(json_extract(variants_json, '$."Dorado Negro"'), 10)
   ),
-  '$."Plateado Sutil"',
+  '$."Negro Dorado Sutil"',
   COALESCE(json_extract(variants_json, '$."Rosa Negro"'), 5)
 )
 WHERE slug = 'reloj'
@@ -31,7 +31,7 @@ WHERE slug = 'reloj'
 --   wrangler d1 execute dam-vertex-leads --remote --command "SELECT variants_json FROM products WHERE slug='reloj';"
 --
 -- El JSON resultante debe tener EXACTAMENTE estas keys en cualquier orden:
---   Negro Total, Negro Dorado, Negro Rosa, Negro Cobre, Plateado Sutil, Plateado Negro
+--   Negro Total, Negro Dorado, Negro Rosa, Negro Cobre, Negro Dorado Sutil, Plateado Negro
 --
 -- IMPORTANTE: Las keys del JSON deben coincidir EXACTAMENTE con PRODUCT.options en reloj/index.html.
 -- Si no coinciden, confirm-purchase rechazará pedidos con "Sin stock del color: X" (line 70).
