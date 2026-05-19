@@ -152,6 +152,19 @@
     .confirm-intent input[type="checkbox"] { accent-color: var(--green); }
     .theme-reloj .confirm-intent.checked,
     .theme-reloj .confirm-intent:has(input:checked) { border-color: var(--green); background: rgba(74,222,128,.06); }
+
+    /* Scroll hint — indicador de modelos debajo del hero */
+    .models-scroll-hint { background: #000; padding: 20px 20px 4px; text-align: center; }
+    .models-scroll-hint a {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,.4); text-decoration: none;
+      border: 1px solid rgba(255,255,255,.1); border-radius: 20px;
+      padding: 8px 18px; transition: color .2s, border-color .2s;
+    }
+    .models-scroll-hint a:hover { color: rgba(255,255,255,.72); border-color: rgba(255,255,255,.25); }
+    .models-scroll-hint__arrow { display: inline-block; animation: hint-bounce 1.8s ease-in-out infinite; }
+    @keyframes hint-bounce { 0%,100% { transform: translateY(0); } 55% { transform: translateY(4px); } }
   </style>
 </head>
 <body class="theme-reloj">
@@ -232,8 +245,13 @@
   </div>
 </section>
 
+<!-- Scroll hint — indicador de 6 modelos -->
+<div class="models-scroll-hint">
+  <a href="#section-modelos">6 modelos disponibles <span class="models-scroll-hint__arrow">↓</span></a>
+</div>
+
 <!-- Modelos -->
-<section class="modelos">
+<section class="modelos" id="section-modelos">
   <div class="modelos__inner">
     <div class="modelos__head">
       <p class="sec-label">Colección</p>
@@ -243,7 +261,7 @@
 
     <div class="modelos__grid">
 
-      <!-- A1 Negro Total — imagen real disponible (modelo: Negro Total) -->
+      <!-- 1 — Negro Total -->
       <div class="modelo-card">
         <div class="modelo-card__badge">Principal</div>
         <div class="modelo-card__img-wrap">
@@ -260,32 +278,14 @@
         </div>
       </div>
 
-      <!-- A3 Negro Rosa — placeholder: agregar /assets/img/reloj-a3-negro-rose.png -->
+      <!-- 2 — Negro Dorado -->
       <div class="modelo-card">
-        <div class="modelo-card__img-wrap" style="background:#0e0b0b">
-          <div class="modelo-card__ph">
-            <div class="modelo-card__ph-ring" style="border-color:rgba(220,130,110,.3)">
-              <div class="modelo-card__ph-inner" style="border-color:rgba(220,130,110,.18)"></div>
-            </div>
-            <span class="modelo-card__ph-file">reloj-a3-negro-rose.png</span>
-          </div>
-        </div>
-        <div class="modelo-card__body">
-          <div class="modelo-card__code">A3</div>
-          <div class="modelo-card__name">Negro Rosa</div>
-          <div class="modelo-card__stock">10 unidades</div>
-        </div>
-      </div>
-
-      <!-- A4 Negro Dorado — placeholder: agregar /assets/img/reloj-a4-negro-gold.png -->
-      <div class="modelo-card">
-        <div class="modelo-card__img-wrap" style="background:#0e0d09">
-          <div class="modelo-card__ph">
-            <div class="modelo-card__ph-ring" style="border-color:rgba(210,175,55,.35)">
-              <div class="modelo-card__ph-inner" style="border-color:rgba(210,175,55,.2)"></div>
-            </div>
-            <span class="modelo-card__ph-file">reloj-a4-negro-gold.png</span>
-          </div>
+        <div class="modelo-card__img-wrap">
+          <img
+            src="/assets/img/negro%20dorado.png"
+            alt="Reloj Blackout Negro Dorado"
+            class="modelo-card__img"
+            loading="lazy">
         </div>
         <div class="modelo-card__body">
           <div class="modelo-card__code">A4</div>
@@ -294,49 +294,62 @@
         </div>
       </div>
 
-      <!-- A8 Dorado Negro — placeholder: agregar /assets/img/reloj-a8-gold-black.png -->
+      <!-- 3 — Negro Rosa -->
       <div class="modelo-card">
-        <div class="modelo-card__img-wrap" style="background:#0d0c08">
-          <div class="modelo-card__ph">
-            <div class="modelo-card__ph-ring" style="border-color:rgba(210,175,55,.45)">
-              <div class="modelo-card__ph-inner" style="border-color:rgba(210,175,55,.25)"></div>
-            </div>
-            <span class="modelo-card__ph-file">reloj-a8-gold-black.png</span>
-          </div>
+        <div class="modelo-card__img-wrap">
+          <img
+            src="/assets/img/negro%20rosa.png"
+            alt="Reloj Blackout Negro Rosa"
+            class="modelo-card__img"
+            loading="lazy">
         </div>
         <div class="modelo-card__body">
-          <div class="modelo-card__code">A8</div>
-          <div class="modelo-card__name">Dorado Negro</div>
+          <div class="modelo-card__code">A3</div>
+          <div class="modelo-card__name">Negro Rosa</div>
           <div class="modelo-card__stock">10 unidades</div>
         </div>
       </div>
 
-      <!-- A7 Rosa Negro — placeholder: agregar /assets/img/reloj-a7-rose-black.png -->
+      <!-- 4 — Negro Cobre (ex Dorado Negro) -->
       <div class="modelo-card">
-        <div class="modelo-card__img-wrap" style="background:#0e0b0b">
-          <div class="modelo-card__ph">
-            <div class="modelo-card__ph-ring" style="border-color:rgba(220,130,110,.45)">
-              <div class="modelo-card__ph-inner" style="border-color:rgba(220,130,110,.25)"></div>
-            </div>
-            <span class="modelo-card__ph-file">reloj-a7-rose-black.png</span>
-          </div>
+        <div class="modelo-card__img-wrap">
+          <img
+            src="/assets/img/negro%20cobre.png"
+            alt="Reloj Blackout Negro Cobre"
+            class="modelo-card__img"
+            loading="lazy">
+        </div>
+        <div class="modelo-card__body">
+          <div class="modelo-card__code">A8</div>
+          <div class="modelo-card__name">Negro Cobre</div>
+          <div class="modelo-card__stock">10 unidades</div>
+        </div>
+      </div>
+
+      <!-- 5 — Plateado Sutil (ex Rosa Negro) -->
+      <div class="modelo-card">
+        <div class="modelo-card__img-wrap">
+          <img
+            src="/assets/img/plateado%20sutil.png"
+            alt="Reloj Blackout Plateado Sutil"
+            class="modelo-card__img"
+            loading="lazy">
         </div>
         <div class="modelo-card__body">
           <div class="modelo-card__code">A7</div>
-          <div class="modelo-card__name">Rosa Negro</div>
+          <div class="modelo-card__name">Plateado Sutil</div>
           <div class="modelo-card__stock modelo-card__stock--low">Solo 5 unidades ⚠</div>
         </div>
       </div>
 
-      <!-- A6 Plateado Negro — placeholder: agregar /assets/img/reloj-a6-silver-black.png -->
+      <!-- 6 — Plateado Negro -->
       <div class="modelo-card">
-        <div class="modelo-card__img-wrap" style="background:#0c0d0f">
-          <div class="modelo-card__ph">
-            <div class="modelo-card__ph-ring" style="border-color:rgba(180,195,220,.35)">
-              <div class="modelo-card__ph-inner" style="border-color:rgba(180,195,220,.18)"></div>
-            </div>
-            <span class="modelo-card__ph-file">reloj-a6-silver-black.png</span>
-          </div>
+        <div class="modelo-card__img-wrap">
+          <img
+            src="/assets/img/Plateado%20negro.png"
+            alt="Reloj Blackout Plateado Negro"
+            class="modelo-card__img"
+            loading="lazy">
         </div>
         <div class="modelo-card__body">
           <div class="modelo-card__code">A6</div>
@@ -729,10 +742,10 @@
       type: 'modelo',
       options: [
         'Negro Total',
-        'Negro Rosa',
         'Negro Dorado',
-        'Dorado Negro',
-        'Rosa Negro',
+        'Negro Rosa',
+        'Negro Cobre',
+        'Plateado Sutil',
         'Plateado Negro',
       ],
     },
