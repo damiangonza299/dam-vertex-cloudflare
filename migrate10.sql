@@ -1,28 +1,30 @@
--- Migration 10: Renombrar keys de variantes del reloj en D1
--- Ejecutar ANTES de deployar los cambios de reloj/index.html
--- Los nuevos nombres en el frontend son: Negro Cobre (ex Dorado Negro), Negro Dorado Sutil (ex Rosa Negro)
+-- Migration 10: Normalizar variants_json del reloj en D1
+-- Renombra keys viejas, elimina keys obsoletas y fija los valores exactos de stock.
 --
--- Ejecutar:
+-- Ejecutar ANTES de deployar:
 --   wrangler d1 execute dam-vertex-leads --remote --file=migrate10.sql
 --
 -- PASO 0: Verificar estado ACTUAL antes de ejecutar
 --   wrangler d1 execute dam-vertex-leads --remote --command "SELECT variants_json FROM products WHERE slug='reloj';"
 
--- PASO 1: Renombrar keys manteniendo los valores de stock reales
--- Preserva los valores actuales de Dorado Negro y Rosa Negro (lo que esté en D1)
--- y los reasigna a las nuevas keys Negro Cobre y Negro Dorado Sutil.
+-- PASO 1: Limpiar keys obsoletas y fijar el JSON completo con valores exactos.
+-- Elimina: "Dorado Negro", "Rosa Negro", "Plateado Sutil" (si existieran).
+-- Escribe: las 6 keys correctas con sus valores reales de stock.
 UPDATE products
 SET variants_json = json_set(
-  json_set(
+  json_remove(
     json_remove(
       json_remove(variants_json, '$."Dorado Negro"'),
       '$."Rosa Negro"'
     ),
-    '$."Negro Cobre"',
-    COALESCE(json_extract(variants_json, '$."Dorado Negro"'), 10)
+    '$."Plateado Sutil"'
   ),
-  '$."Negro Dorado Sutil"',
-  COALESCE(json_extract(variants_json, '$."Rosa Negro"'), 5)
+  '$."Negro Total"',        67,
+  '$."Negro Dorado"',       10,
+  '$."Negro Rosa"',          5,
+  '$."Plateado Negro"',      5,
+  '$."Negro Cobre"',        10,
+  '$."Negro Dorado Sutil"',  5
 )
 WHERE slug = 'reloj'
   AND variants_json IS NOT NULL;
@@ -30,8 +32,9 @@ WHERE slug = 'reloj'
 -- PASO 2: Verificar el resultado
 --   wrangler d1 execute dam-vertex-leads --remote --command "SELECT variants_json FROM products WHERE slug='reloj';"
 --
--- El JSON resultante debe tener EXACTAMENTE estas keys en cualquier orden:
---   Negro Total, Negro Dorado, Negro Rosa, Negro Cobre, Negro Dorado Sutil, Plateado Negro
+-- El JSON resultante debe ser exactamente:
+-- {"Negro Total":67,"Negro Dorado":10,"Negro Rosa":5,"Plateado Negro":5,"Negro Cobre":10,"Negro Dorado Sutil":5}
+-- (el orden de keys no importa para SQLite, solo importan los valores)
 --
--- IMPORTANTE: Las keys del JSON deben coincidir EXACTAMENTE con PRODUCT.options en reloj/index.html.
--- Si no coinciden, confirm-purchase rechazará pedidos con "Sin stock del color: X" (line 70).
+-- IMPORTANTE: Las keys deben coincidir EXACTAMENTE con PRODUCT.options en reloj/index.html.
+-- Si no coinciden, confirm-purchase rechazará pedidos con "Sin stock del color: X".
