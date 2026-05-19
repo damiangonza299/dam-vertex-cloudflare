@@ -83,6 +83,7 @@ DV.trackViewContent = function (product) {
     event_id,
     product,
     client,
+    num_items:   1,
   });
 };
 
@@ -103,6 +104,7 @@ DV.trackAddToCart = function (product) {
     event_id,
     product,
     client,
+    num_items:   1,
   });
 
   return event_id;
@@ -127,6 +129,7 @@ DV.trackInitiateCheckout = function (product, lead, qty) {
     product,
     lead,
     client,
+    num_items:   qty || 1,
   });
 
   return event_id;

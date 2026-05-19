@@ -15,7 +15,7 @@ export async function onRequestOptions() {
 export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
-    const { event_name, event_id, product, lead, client } = body;
+    const { event_name, event_id, product, lead, client, num_items } = body;
 
     const pixelId     = env.META_PIXEL_ID;
     const accessToken = env.META_ACCESS_TOKEN;
@@ -46,6 +46,7 @@ export async function onRequestPost({ request, env }) {
       custom_data.content_type  = 'product';
       custom_data.value         = product.price;
       custom_data.currency      = 'PYG';
+      if (num_items != null) custom_data.num_items = num_items;
     }
 
     const event = {

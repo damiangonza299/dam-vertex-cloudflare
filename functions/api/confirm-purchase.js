@@ -31,12 +31,18 @@ export async function onRequestPost({ request, env }) {
     if (lead.status === 'cancelled') return json({ ok: false, error: 'Lead cancelado' }, 409);
 
     /* Verificar stock — ANTES de enviar Purchase a Meta */
-    const saleQty = Number(lead.quantity) || 1;
+    const saleQty     = Number(lead.quantity) || 1;
+    const productSlug = lead.product_slug || getProductSlug(lead.product_name);
     let productRow = null;
     try {
       productRow = await env.DB.prepare(
-        'SELECT * FROM products WHERE name = ?'
-      ).bind(lead.product_name).first();
+        'SELECT * FROM products WHERE slug = ?'
+      ).bind(productSlug).first();
+      if (!productRow) {
+        productRow = await env.DB.prepare(
+          'SELECT * FROM products WHERE name = ?'
+        ).bind(lead.product_name).first();
+      }
     } catch (err) {
       console.error('STOCK_LOOKUP_ERROR', err.message);
     }
@@ -86,15 +92,20 @@ export async function onRequestPost({ request, env }) {
     /* Evento Purchase */
     const event_id = `pur_${lead.id}_${Math.floor(Date.now() / 1000)}_${Math.random().toString(36).slice(2, 6)}`;
 
+    const origin         = new URL(request.url).origin;
+    const landingPath    = (lead.landing_path || '').split('?')[0] || ('/' + productSlug);
+    const eventSourceUrl = origin + landingPath;
+
     const event = {
       event_name:       'Purchase',
       event_time:       Math.floor(Date.now() / 1000),
       event_id,
       action_source:    'website',
+      event_source_url: eventSourceUrl,
       user_data,
       custom_data: {
         content_name:  lead.product_name,
-        content_ids:   [slugify(lead.product_name)],
+        content_ids:   [productSlug],
         content_type:  'product',
         value:         lead.value || 0,
         currency:      lead.currency || 'PYG',
@@ -182,7 +193,7 @@ export async function onRequestPost({ request, env }) {
         user_data,
         custom_data: {
           content_name: lead.product_name,
-          content_ids:  [slugify(lead.product_name)],
+          content_ids:  [productSlug],
           content_type: 'product',
           value:        saleValue,
           currency:     lead.currency || 'PYG',
@@ -199,7 +210,7 @@ export async function onRequestPost({ request, env }) {
           user_data,
           custom_data: {
             content_name: lead.product_name,
-            content_ids:  [slugify(lead.product_name)],
+            content_ids:  [productSlug],
             content_type: 'product',
             value:        saleValue,
             currency:     lead.currency || 'PYG',
@@ -237,6 +248,15 @@ async function sha256(str) {
 
 function slugify(s) {
   return (s || '').toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+}
+function getProductSlug(name) {
+  const MAP = {
+    'Reloj Blackout Minimal':                     'reloj',
+    'Cepillo Eléctrico Recargable (4 Cabezales)': 'cepillo',
+    'Lentes Anti Luz Azul Rojos':                 'lentes',
+    'Cadena Apex':                                'cadena',
+  };
+  return MAP[name] || slugify(name);
 }
 function parseLeadVariants(value) {
   if (!value) return [];

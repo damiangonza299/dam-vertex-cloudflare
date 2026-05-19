@@ -284,10 +284,14 @@ DV.initForm = function (product) {
   }
 
   /* CTA buttons â abrir modal */
+  let _atcFired = false;
   document.querySelectorAll('[data-scroll-form]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      DV.trackAddToCart(product);
+      if (!_atcFired) {
+        DV.trackAddToCart(product);
+        _atcFired = true;
+      }
       openModal();
     });
   });
@@ -553,17 +557,18 @@ clearStockError();
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({
             ...attr,
-            product_name: product.name,
-            name:         commonData.name,
-            phone:        validPhone || rawPhone,
-            email:        '',
-            city:         commonData.city,
-            value:        customTotal,
-            currency:     'PYG',
-quantity:     customQty,
-variant:      customColors?.length ? JSON.stringify(customColors) : null,
-fbp:          client.fbp || '',
-fbc:          client.fbc || '',
+            product_name:   product.name,
+            product_slug:   product.slug,
+            name:           commonData.name,
+            phone:          validPhone || rawPhone,
+            email:          '',
+            city:           commonData.city,
+            value:          customTotal,
+            currency:       'PYG',
+            quantity:       customQty,
+            variant:        customColors?.length ? JSON.stringify(customColors) : null,
+            fbp:            client.fbp || '',
+            fbc:            client.fbc || '',
             user_agent:     navigator.userAgent,
             address:        commonData.referencia || null,
             payment_method: commonData.payment    || null,
@@ -641,13 +646,14 @@ clearStockError();
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({
           ...attr,
-          product_name: product.name,
-          name:         data.name,
-          phone:        validPhone || rawPhone,
-          email:        '',
-          city:         data.city,
-          value:        expressTotal,
-          currency:     'PYG',
+          product_name:   product.name,
+          product_slug:   product.slug,
+          name:           data.name,
+          phone:          validPhone || rawPhone,
+          email:          '',
+          city:           data.city,
+          value:          expressTotal,
+          currency:       'PYG',
           quantity:       selectedQty,
           variant:        colors.length ? JSON.stringify(colors) : null,
           fbp:            client.fbp || '',
