@@ -57,6 +57,50 @@ Usar cuando: planificás campañas, testeo de creativos, estructura de cuentas, 
 
 ---
 
+### PROTOCOLO OBLIGATORIO — Cuando el usuario pide analizar campañas Meta Ads
+
+Antes de responder cualquier análisis de campañas, seguir este protocolo en orden:
+
+**1. Confirmar fuente de datos**
+- ¿Se están usando datos reales de Meta API o solo el repo local?
+- Declarar explícitamente: "Estoy usando datos reales de Meta API" o "No tengo acceso a Meta API, solo puedo analizar el código/repo".
+
+**2. Consultar métricas profundas**
+- Endpoint preferido: `/api/meta/deep-insights` — devuelve inline_link_clicks, CTR link, funnel completo nombrado (landing_page_views, view_content, add_to_cart, initiate_checkout, purchases), costos por evento, video metrics.
+- Si no disponible: `/api/meta/insights?level=ad` — devuelve actions[] crudo, sin extracción nombrada.
+- Para creative body/hook/title: `/api/meta/ads?campaign_id=X` o `?status=ARCHIVED` para histórico.
+- Para campañas históricas (ARCHIVED): `/api/meta/deep-insights?status=ARCHIVED&since=YYYY-MM-DD&until=YYYY-MM-DD`
+
+**3. Cruzar con D1 si aplica**
+- Si hay leads en D1 para el período → usar `/api/meta/report` para cruzar atribución real.
+- Si son campañas históricas anteriores al sistema D1 → MODO HISTÓRICO META-ONLY (no inventar datos D1 que no existen).
+
+**4. Diferenciar tipo de campaña**
+- Campañas nuevas (con leads en D1): analizar con ROAS real + tasa de cierre + métricas Meta.
+- Campañas históricas (sin D1): analizar solo métricas Meta — CTR link, CPC link, CPM, frequency, funnel events, video retention si aplica.
+
+**5. Reglas de honestidad**
+- NO inventar datos faltantes.
+- NO asumir purchased/revenue si no hay datos D1 reales.
+- Si un endpoint no responde o requiere credenciales: proveer el curl exacto para que el usuario lo ejecute y pegue el resultado.
+- Declarar limitaciones explícitamente: "No encontré datos para X en el rango consultado."
+
+**6. Metricas a reportar siempre (cuando disponibles)**
+```
+campaign_name / campaign_id
+adset_name (si nivel adset o ad)
+ad_name / hook/copy (si nivel ad)
+spend | impressions | reach | frequency | cpm
+inline_link_clicks | ctr_link | cpc_link
+landing_page_views | view_content | add_to_cart | initiate_checkout | purchases
+cost_per_landing_page_view | cost_per_add_to_cart | cost_per_purchase
+purchase_value | roas_meta
+video: avg_time_watched_sec | plays | p25/p50/p75/p95 (si es video)
+D1: leads | purchased | pending | cancelled | close_rate | roas_real (si disponible)
+```
+
+---
+
 ### APLICACIONES / PWA / FIREBASE / CLOUDFLARE / INDEXEDDB
 - `app-architecture/pwa-cloudflare-firebase.md`
 - `app-architecture/performance-indexeddb.md`

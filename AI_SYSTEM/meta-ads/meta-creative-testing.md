@@ -89,6 +89,57 @@ Cuando evalúes un creativo: mirá el funnel completo (link clicks → landing v
 
 ---
 
+## Protocolo de análisis CloudCode — métricas a leer siempre
+
+Cuando se analiza el rendimiento de un creativo o campaña, CloudCode debe leer en este orden:
+
+### Funnel de métricas (de arriba hacia abajo)
+
+```
+Impresiones → Reach → Frequency → CPM
+    ↓
+Inline Link Clicks → CTR link → CPC link
+    ↓
+Landing Page Views → tasa LPV/click
+    ↓
+ViewContent → AddToCart → InitiateCheckout → Purchases
+    ↓
+Cost per Purchase → Purchase Value → ROAS Meta
+    ↓ (si hay D1)
+Leads D1 → Pending → Purchased → Close Rate → ROAS Real
+```
+
+### Para creativos tipo video — leer retención
+
+```
+Video Plays → P25 → P50 → P75 → P95 → Thruplay
+Avg time watched (segundos)
+```
+
+Un video que pierde el 80% antes de P25 → hook no funciona.
+Un video que retiene hasta P75+ → candidato a escalar.
+
+### Errores de interpretación comunes
+
+| Métrica confundida | Problema |
+|---|---|
+| CTR "all" vs CTR "link" | CTR all incluye clics en perfil/likes. CTR link (inline_link_click_ctr) es el real. |
+| ROAS Meta vs ROAS Real | ROAS Meta sobre-atribuye. ROAS Real = revenue D1 / spend. |
+| Clicks vs Landing Page Views | Los clicks salen de Meta. LPV depende de que la landing cargue. Gap = velocidad/carga. |
+| Purchases Meta vs Purchases D1 | Meta usa ventana 7d/1d y view-through. D1 es fuente de verdad. |
+
+### Endpoint a usar por tipo de análisis
+
+| Necesidad | Endpoint |
+|---|---|
+| Análisis profundo de métricas + funnel | `/api/meta/deep-insights` |
+| Análisis profundo con D1 cruzado | `/api/meta/report` |
+| Copies y hooks por anuncio | `/api/meta/ads?campaign_id=X` |
+| Copies históricos (ARCHIVED) | `/api/meta/ads?status=ARCHIVED` |
+| Campañas históricas (ARCHIVED) | `/api/meta/deep-insights?status=ARCHIVED&since=...` |
+
+---
+
 ## Lo que hay que evitar
 
 - Microcambios en el mismo creativo (cambiar el color del botón no es test)
