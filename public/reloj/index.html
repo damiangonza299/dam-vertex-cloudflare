@@ -114,6 +114,46 @@
     @media (max-width: 420px) {
       .modelos__grid { grid-template-columns: 1fr 1fr; }
     }
+
+    /* Fix precio hero: badge 24% OFF no baja de línea en mobile */
+    .hero .price-main  { font-size: clamp(22px, 5vw, 38px); }
+    .hero .price-block { gap: 5px 8px; margin: 18px 0; }
+
+    /* Prueba social inline hero */
+    .spi       { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; }
+    .spi-stars { color: #fbbf24; font-size: 14px; line-height: 1; }
+    .spi-text  { font-size: 12px; color: rgba(255,255,255,.5); font-weight: 600; }
+
+    /* Combos externos — mini cards 2×2, solo preselección visual */
+    .combo-preview { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 16px; }
+    .combo-preview-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      position: relative;
+      min-width: 0;
+    }
+    .combo-preview-card--active { border-color: rgba(255,255,255,.38); background: rgba(255,255,255,.05); }
+    .combo-preview-card:active  { opacity: .8; }
+    .cpv-qty   { display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.6); padding-right: 28px; }
+    .cpv-price { display: block; font-size: 15px; font-weight: 800; color: #fff; margin-top: 3px; }
+    .cpv-save  { display: block; font-size: 11px; color: #4ade80; margin-top: 2px; }
+    .cpv-badge {
+      position: absolute; top: 8px; right: 8px;
+      font-size: 9px; font-weight: 700;
+      color: #4ade80; background: rgba(74,222,128,.12);
+      border: 1px solid rgba(74,222,128,.25);
+      border-radius: 3px; padding: 2px 5px; line-height: 1.3;
+    }
+    .cpv-badge--best { color: #a78bfa; background: rgba(124,58,237,.12); border-color: rgba(124,58,237,.25); }
+
+    /* Badge modal: fila inferior junto a offer-saving */
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
+    .offer-foot .offer-saving { margin-top: 0; }
+    .offer-foot .offer-badge  { position: static; flex-shrink: 0; }
   </style>
 </head>
 <body class="theme-reloj">
@@ -143,6 +183,34 @@
         <span class="price-main">Gs. 189.000</span>
         <span class="price-compare">Gs. 250.000</span>
         <span class="price-badge">24% OFF</span>
+      </div>
+      <div class="spi">
+        <span class="spi-stars">★★★★★</span>
+        <span class="spi-text">Pedidos activos esta semana · Entrega en el día</span>
+      </div>
+      <!-- Combos externos — preselección visual, sin tracking ni eventos -->
+      <div class="combo-preview" id="combo-preview">
+        <div class="combo-preview-card combo-preview-card--active" data-offer="1">
+          <span class="cpv-qty">1 unidad</span>
+          <span class="cpv-price" id="cpv-price-1">—</span>
+        </div>
+        <div class="combo-preview-card" data-offer="2">
+          <span class="cpv-badge">-25%</span>
+          <span class="cpv-qty">2 unidades</span>
+          <span class="cpv-price" id="cpv-price-2">—</span>
+          <span class="cpv-save">Ahorrás</span>
+        </div>
+        <div class="combo-preview-card" data-offer="3">
+          <span class="cpv-badge cpv-badge--best">-35%</span>
+          <span class="cpv-qty">3 unidades</span>
+          <span class="cpv-price" id="cpv-price-3">—</span>
+          <span class="cpv-save">Mayor ahorro</span>
+        </div>
+        <div class="combo-preview-card" data-offer="custom">
+          <span class="cpv-badge">-40%</span>
+          <span class="cpv-qty">4+ unidades</span>
+          <span class="cpv-price" id="cpv-price-custom">—</span>
+        </div>
       </div>
       <button class="btn btn-primary" data-scroll-form>Elegir mi modelo →</button>
       <div class="delivery-badges">
@@ -478,7 +546,6 @@
 
         <label class="offer-option">
           <input type="radio" name="offer" value="2">
-          <div class="offer-badge">🔥 Más elegido</div>
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
             <div class="offer-prices">
@@ -486,12 +553,14 @@
               <span class="offer-price" id="offer-price-2">—</span>
             </div>
           </div>
-          <span class="offer-saving">Llevá 2 y ahorrá 25%</span>
+          <div class="offer-foot">
+            <span class="offer-saving">Llevá 2 y ahorrá 25%</span>
+            <div class="offer-badge">🔥 Más elegido</div>
+          </div>
         </label>
 
         <label class="offer-option">
           <input type="radio" name="offer" value="3">
-          <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
             <div class="offer-prices">
@@ -499,7 +568,10 @@
               <span class="offer-price" id="offer-price-3">—</span>
             </div>
           </div>
-          <span class="offer-saving">3 unidades con 35% OFF</span>
+          <div class="offer-foot">
+            <span class="offer-saving">3 unidades con 35% OFF</span>
+            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
+          </div>
         </label>
 
         <label class="offer-option">
@@ -657,9 +729,42 @@
     },
   };
 
+  function preSelectOffer(val) {
+    var radio = document.querySelector('.offer-options input[name="offer"][value="' + val + '"]');
+    if (!radio) return;
+    radio.checked = true;
+    document.querySelectorAll('.offer-option').forEach(function(opt) { opt.classList.remove('selected'); });
+    var parent = radio.closest('.offer-option');
+    if (parent) parent.classList.add('selected');
+    radio.dispatchEvent(new Event('change'));
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     DV.trackViewContent(PRODUCT);
     DV.initForm(PRODUCT);
+
+    /* Precios de combos externos */
+    (function() {
+      var p   = PRODUCT.price;
+      var fmt = function(n) { return 'Gs. ' + Math.round(n).toLocaleString('es-PY'); };
+      var e1  = document.getElementById('cpv-price-1');
+      var e2  = document.getElementById('cpv-price-2');
+      var e3  = document.getElementById('cpv-price-3');
+      var eC  = document.getElementById('cpv-price-custom');
+      if (e1) e1.textContent = fmt(p);
+      if (e2) e2.textContent = fmt(Math.round(p * 2 * 0.75));
+      if (e3) e3.textContent = fmt(Math.round(p * 3 * 0.65));
+      if (eC) eC.textContent = 'desde ' + fmt(Math.round(p * 4 * 0.60));
+    })();
+
+    /* Click en mini card → preselecciona combo en modal */
+    document.querySelectorAll('.combo-preview-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        document.querySelectorAll('.combo-preview-card').forEach(function(c) { c.classList.remove('combo-preview-card--active'); });
+        card.classList.add('combo-preview-card--active');
+        preSelectOffer(card.dataset.offer);
+      });
+    });
   });
 </script>
 
