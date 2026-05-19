@@ -146,6 +146,12 @@
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
     .offer-foot .offer-saving { margin-top: 0; }
     .offer-foot .offer-badge  { position: static; flex-shrink: 0; }
+
+    /* Confirm-intent — mismo estado visual que upsell-block (verde) */
+    .confirm-intent { transition: border-color .18s, background .18s; }
+    .confirm-intent input[type="checkbox"] { accent-color: var(--green); }
+    .theme-reloj .confirm-intent.checked,
+    .theme-reloj .confirm-intent:has(input:checked) { border-color: var(--green); background: rgba(74,222,128,.06); }
   </style>
 </head>
 <body class="theme-reloj">
