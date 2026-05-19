@@ -1006,8 +1006,8 @@
         <label for="m-payment">Método de pago</label>
         <select id="m-payment" name="payment">
           <option value="">Seleccioná...</option>
-          <option value="Efectivo">Efectivo (pago al recibir)</option>
           <option value="Transferencia">Transferencia</option>
+          <option value="Efectivo">Efectivo</option>
         </select>
       </div>
 
@@ -1019,7 +1019,11 @@
         </div>
       </label>
 
-      <input type="checkbox" id="m-confirm" name="confirm" checked style="display:none" aria-hidden="true">
+      <label class="confirm-intent">
+        <input type="checkbox" id="m-confirm" name="confirm">
+        <span class="confirm-text">Confirmo que tengo intención real de comprar este producto</span>
+      </label>
+      <span class="confirm-error-msg form-error-msg">Debes confirmar tu intención de compra para continuar</span>
 
       <div class="form-submit">
         <button type="submit" class="btn btn-primary" id="modal-submit-btn">
