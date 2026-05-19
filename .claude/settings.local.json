@@ -47,7 +47,8 @@
       "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\\" | Where-Object { $_.PSIsContainer })",
       "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\functions\\\\\" | Where-Object { $_.PSIsContainer })",
       "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\public\\\\\" | Where-Object { $_.PSIsContainer })",
-      "Bash(wrangler d1 *)"
+      "Bash(wrangler d1 *)",
+      "PowerShell(Rename-Item -Path \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\public\\\\assets\\\\img\\\\negro dorado sutil.png.png\" -NewName \"negro dorado sutil.png\" -ErrorAction Stop)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public"
