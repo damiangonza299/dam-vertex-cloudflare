@@ -184,7 +184,7 @@
     @keyframes hint-bounce { 0%,100% { transform: translateY(0); } 55% { transform: translateY(4px); } }
 
     /* Combo strip */
-    .combo-strip { background: #0d0d0d; border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06); padding: 24px clamp(20px,5vw,64px); }
+    .combo-strip { background: transparent; border: none; padding: 0 0 28px; }
     .combo-strip__inner { max-width: 700px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
     .combo-strip__text { display: flex; flex-direction: column; gap: 3px; }
     .combo-strip__label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.35); font-weight: 600; }
@@ -852,6 +852,14 @@
         </select>
       </div>
 
+      <label class="upsell-block" id="cm-express-block">
+        <input type="checkbox" id="cm-express">
+        <div class="upsell-content">
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
+        </div>
+      </label>
+
       <label class="confirm-intent" id="cm-confirm-block">
         <input type="checkbox" id="cm-confirm">
         <span class="confirm-text">Confirmo que tengo intención real de comprar este combo</span>
@@ -966,6 +974,7 @@
       var comboConfErr  = document.getElementById('cm-confirm-error');
       var comboStockEl  = document.getElementById('cm-stock-error');
       var comboWaManual = document.getElementById('cm-wa-manual');
+      var cmExpressEl   = document.getElementById('cm-express');
 
       if (!comboOverlay || !comboForm) return;
 
@@ -1001,6 +1010,13 @@
             if (comboConfBlk) comboConfBlk.classList.remove('error');
             if (comboConfErr) comboConfErr.classList.remove('visible');
           }
+        });
+      }
+
+      if (cmExpressEl) {
+        cmExpressEl.addEventListener('change', function() {
+          var blk = document.getElementById('cm-express-block');
+          if (blk) blk.classList.toggle('checked', cmExpressEl.checked);
         });
       }
 
@@ -1057,6 +1073,11 @@
 
         var validPhone = normalizeParaguayPhone(rawPhone);
 
+        var isExpress  = cmExpressEl ? cmExpressEl.checked : false;
+        var comboTotal = COMBO_PRICE + (isExpress ? 10000 : 0);
+        var totalFmt   = isExpress ? 'Gs. 259.000' : 'Gs. 249.000';
+        var tgPayment  = payment ? payment + (isExpress ? ' + Express' : '') : (isExpress ? 'Express' : null);
+
         /* Armar WA URL ANTES del primer await — preservar gesture context */
         var waLines = [
           '¡Hola! Acabo de realizar un pedido en DAM VERTEX y quiero confirmar los detalles:',
@@ -1065,14 +1086,17 @@
           'Producto: Combo Reloj + Cadena Apex',
           'Reloj: ' + variant,
           'Cadena Apex: 1 unidad incluida',
-          'Total: Gs. 249.000',
+        ];
+        if (isExpress) waLines.push('Envío express: Sí (+10.000 Gs)');
+        waLines.push(
+          'Total: ' + totalFmt,
           'Dirección: ' + (address || 'No especificada'),
           'Ciudad: ' + city,
           'WhatsApp: ' + rawPhone,
-          'Método de Pago: ' + (payment || 'No especificado'),
+          'Método de Pago: ' + (tgPayment || 'No especificado'),
           '',
-          '¿Pueden ayudarme a coordinar el envío?',
-        ];
+          '¿Pueden ayudarme a coordinar el envío?'
+        );
         var waUrl = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waLines.join('\n'));
         if (comboWaManual) comboWaManual.href = waUrl;
 
@@ -1091,7 +1115,7 @@
             phone:          validPhone || rawPhone,
             email:          '',
             city:           city,
-            value:          COMBO_PRICE,
+            value:          comboTotal,
             currency:       'PYG',
             quantity:       2,
             variant:        JSON.stringify([variant]),
@@ -1099,7 +1123,7 @@
             fbc:            client.fbc || '',
             user_agent:     navigator.userAgent,
             address:        address || null,
-            payment_method: payment || null,
+            payment_method: tgPayment || null,
           });
           var res = await fetch('/api/leads', {
             method:  'POST',
@@ -1120,7 +1144,7 @@
 
         /* Tracking InitiateCheckout */
         DV.trackInitiateCheckout(
-          { name: COMBO_NAME, slug: COMBO_SLUG, price: COMBO_PRICE },
+          { name: COMBO_NAME, slug: COMBO_SLUG, price: comboTotal },
           { name: name, phone: validPhone || '' },
           2
         );

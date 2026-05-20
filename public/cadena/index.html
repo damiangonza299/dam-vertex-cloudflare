@@ -557,6 +557,32 @@
     .confirm-intent input[type="checkbox"] { accent-color: var(--green); }
     .confirm-intent.checked,
     .confirm-intent:has(input:checked) { border-color: var(--green); background: rgba(74,222,128,.06); }
+
+    /* — SECCIÓN COMBO — */
+    .combo-sec { background: #000; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.05); }
+    .combo-sec__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; max-width: 1000px; margin: 0 auto; }
+    .combo-sec__img { aspect-ratio: 4/5; width: 100%; object-fit: cover; border-radius: 8px; }
+    .cs-overline { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.28); font-weight: 600; margin: 0 0 20px; }
+    .cs-h { font-size: clamp(22px,4vw,36px); font-weight: 800; color: #fff; line-height: 1.13; margin: 0 0 20px; letter-spacing: -.01em; }
+    .cs-body { font-size: 15px; color: rgba(255,255,255,.52); line-height: 1.78; margin: 0 0 28px; }
+    .cs-list { display: flex; flex-direction: column; gap: 12px; list-style: none; padding: 0; margin: 0; }
+    .cs-list li { font-size: 14px; color: #e2e2e2; display: flex; align-items: flex-start; gap: 12px; line-height: 1.45; }
+
+    /* — COMBO STRIP (limpio, sin caja) — */
+    .combo-strip { background: transparent; border: none; padding: 0 0 28px; }
+    .combo-strip__inner { max-width: 700px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .combo-strip__text { display: flex; flex-direction: column; gap: 3px; }
+    .combo-strip__label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.35); font-weight: 600; }
+    .combo-strip__title { font-size: 17px; font-weight: 700; color: #fff; }
+    .combo-strip__sub { font-size: 13px; color: rgba(255,255,255,.55); }
+    .combo-strip__sub strong { color: #fff; }
+    .combo-strip__btn { flex-shrink: 0; background: #fff; color: #000; border: none; border-radius: 8px; padding: 12px 22px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: opacity .18s; }
+    .combo-strip__btn:hover { opacity: .82; }
+    @media (max-width: 700px) { .combo-sec__inner { grid-template-columns: 1fr; gap: 32px; } }
+    @media (max-width: 520px) {
+      .combo-strip__inner { flex-direction: column; align-items: flex-start; }
+      .combo-strip__btn { width: 100%; text-align: center; padding: 13px 22px; }
+    }
   </style>
 </head>
 <body class="theme-cadena">
@@ -666,21 +692,32 @@
   </div>
 </div>
 
-<!-- EL EFECTO: vende identidad / status -->
-<section class="efecto">
-  <div class="efecto__inner">
+<!-- COMBO: Cadena Apex + Reloj Blackout -->
+<section class="combo-sec" id="combo-section">
+  <div class="combo-sec__inner">
     <div>
-      <img src="/assets/img/Apex%20el%20efecto.png" alt="Cadena Apex — el efecto" class="efecto__img-main" loading="lazy">
+      <img src="/assets/img/apex%20Cadena%20%2B%20reloj%20negro.png" alt="Cadena Apex + Reloj Blackout Minimal — combo" class="combo-sec__img" loading="lazy">
     </div>
-    <div class="efecto__text">
-      <p class="e-overline">El efecto</p>
-      <h2 class="e-h">Un solo detalle.<br>Todo el efecto.</h2>
-      <p class="e-body">Una sola pieza puede hacer que tu ropa básica se vea más completa. La Cadena Apex no llama la atención — el look lo hace por sí solo. El tipo que la lleva puesta ya sabe lo que hace.</p>
-      <ul class="e-list">
-        <li><span class="e-check">✓</span>Outfit casual — la sube de nivel de inmediato</li>
-        <li><span class="e-check">✓</span>Ropa oscura — la complementa sin competir</li>
-        <li><span class="e-check">✓</span>Con reloj — el combo que marca presencia</li>
-        <li><span class="e-check">✓</span>Sin explicación — se nota y ya</li>
+    <div>
+      <!-- Combo strip -->
+      <div class="combo-strip">
+        <div class="combo-strip__inner">
+          <div class="combo-strip__text">
+            <span class="combo-strip__label">Oferta especial</span>
+            <span class="combo-strip__title">Cadena Apex + Reloj Blackout</span>
+            <span class="combo-strip__sub">Llevá ambos por <strong>Gs. 249.000</strong></span>
+          </div>
+          <button class="combo-strip__btn" id="open-combo-modal">Ver combo →</button>
+        </div>
+      </div>
+      <p class="cs-overline">Combo</p>
+      <h2 class="cs-h">Cadena + reloj: el combo que completa el look.</h2>
+      <p class="cs-body">Dos detalles simples, un solo efecto: presencia sin exagerar. La Cadena Apex suma actitud y el Reloj Blackout termina el outfit con estilo limpio.</p>
+      <ul class="cs-list">
+        <li><span class="e-check">✓</span>Combo listo para uso diario o regalo</li>
+        <li><span class="e-check">✓</span>Elegís el modelo del reloj</li>
+        <li><span class="e-check">✓</span>Llevás ambos por Gs. 249.000</li>
+        <li><span class="e-check">✓</span>Envío rápido en zonas habilitadas</li>
       </ul>
     </div>
   </div>
@@ -800,6 +837,26 @@
           <p class="est-item__desc">El combo que marca presencia sin esfuerzo.</p>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- EL EFECTO: vende identidad / status -->
+<section class="efecto">
+  <div class="efecto__inner">
+    <div>
+      <img src="/assets/img/Apex%20el%20efecto.png" alt="Cadena Apex — el efecto" class="efecto__img-main" loading="lazy">
+    </div>
+    <div class="efecto__text">
+      <p class="e-overline">El efecto</p>
+      <h2 class="e-h">Un solo detalle.<br>Todo el efecto.</h2>
+      <p class="e-body">Una sola pieza puede hacer que tu ropa básica se vea más completa. La Cadena Apex no llama la atención — el look lo hace por sí solo. El tipo que la lleva puesta ya sabe lo que hace.</p>
+      <ul class="e-list">
+        <li><span class="e-check">✓</span>Outfit casual — la sube de nivel de inmediato</li>
+        <li><span class="e-check">✓</span>Ropa oscura — la complementa sin competir</li>
+        <li><span class="e-check">✓</span>Con reloj — el combo que marca presencia</li>
+        <li><span class="e-check">✓</span>Sin explicación — se nota y ya</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -1045,6 +1102,115 @@
   </div>
 </div>
 
+<!-- Modal Combo Cadena Apex + Reloj Blackout -->
+<div class="modal-overlay" id="combo-modal" role="dialog" aria-modal="true" aria-labelledby="combo-modal-title">
+  <div class="modal-box">
+    <p class="modal-urgency">⏳ Stock limitado</p>
+    <button class="modal-close" id="combo-modal-close" aria-label="Cerrar">✕</button>
+    <h2 class="modal-title" id="combo-modal-title">Combo Cadena Apex + Reloj Blackout</h2>
+    <p class="modal-step">1 Cadena Apex + 1 Reloj Blackout — todo en un pedido</p>
+    <p class="modal-subtitle">La Cadena ya viene incluida. El reloj es modelo Negro Total.</p>
+
+    <!-- Precio combo -->
+    <div style="margin:16px 0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <span style="font-size:clamp(22px,5vw,30px);font-weight:800;color:#fff">Gs. 249.000</span>
+      <span class="price-compare" style="font-size:13px">Gs. 318.000</span>
+      <span class="price-badge">22% OFF</span>
+    </div>
+
+    <!-- Cadena incluida (fija) -->
+    <div class="modal-section">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid rgba(74,222,128,.3);border-radius:8px;background:rgba(74,222,128,.05)">
+        <span style="color:#4ade80;font-size:16px;flex-shrink:0">✓</span>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:#fff">Cadena Apex seleccionada</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.45)">1 unidad · incluida en el combo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reloj incluido (fijo: Negro Total) -->
+    <div class="modal-section">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:#111">
+        <span style="color:#aaa;font-size:14px;flex-shrink:0">■</span>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:#fff">Reloj incluido: Negro Total</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.45)">Modelo fijo · incluido en el combo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario combo -->
+    <form class="modal-form" id="combo-form" novalidate>
+
+      <div class="form-group">
+        <label for="cm-name">Nombre y apellido</label>
+        <input type="text" id="cm-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="cm-phone">Teléfono (WhatsApp)</label>
+        <input type="tel" id="cm-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="cm-city">Ciudad</label>
+        <input type="text" id="cm-city" name="city" placeholder="Ej: Asunción, Luque, San Lorenzo..." autocomplete="off">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="cm-ref">Referencia de dirección</label>
+        <input type="text" id="cm-ref" name="referencia" placeholder="casa, portón negro, bodega">
+      </div>
+
+      <div class="form-group">
+        <label for="cm-payment">Método de pago</label>
+        <select id="cm-payment" name="payment">
+          <option value="">Seleccioná...</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Efectivo">Efectivo</option>
+        </select>
+      </div>
+
+      <label class="upsell-block" id="cm-express-block">
+        <input type="checkbox" id="cm-express">
+        <div class="upsell-content">
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
+        </div>
+      </label>
+
+      <label class="confirm-intent" id="cm-confirm-block">
+        <input type="checkbox" id="cm-confirm">
+        <span class="confirm-text">Confirmo que tengo intención real de comprar este combo</span>
+      </label>
+      <span class="form-error-msg" id="cm-confirm-error">Debes confirmar tu intención de compra para continuar</span>
+
+      <div id="cm-stock-error" style="display:none;color:#f87171;font-size:13px;margin:10px 0;padding:10px;background:rgba(248,113,113,.08);border-radius:6px;border:1px solid rgba(248,113,113,.2)"></div>
+
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="combo-submit-btn">
+          Pedir combo por WhatsApp
+        </button>
+      </div>
+
+    </form>
+
+    <div class="form-success" id="combo-success">
+      <h3>¡Listo!</h3>
+      <p>Abrimos WhatsApp para coordinar tu pedido del combo.</p>
+      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
+      <div class="manual-wa">
+        <a href="https://wa.me/595993471550" class="btn-wa-manual" id="cm-wa-manual">Abrir WhatsApp manualmente →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <footer class="footer">
   &copy; 2026 DAM VERTEX
 </footer>
@@ -1109,6 +1275,203 @@
         preSelectOffer(card.dataset.offer);
       });
     });
+
+    /* ── Combo Cadena Apex + Reloj Blackout ── */
+    (function() {
+      var COMBO_PRICE = 249000;
+      var COMBO_SLUG  = 'combo-reloj-cadena';
+      var COMBO_NAME  = 'Combo Reloj Blackout Minimal + Cadena Apex';
+      var COMBO_WA    = '595993471550';
+
+      var comboOverlay  = document.getElementById('combo-modal');
+      var comboForm     = document.getElementById('combo-form');
+      var comboSuccess  = document.getElementById('combo-success');
+      var comboSubmit   = document.getElementById('combo-submit-btn');
+      var comboClose    = document.getElementById('combo-modal-close');
+      var comboOpenBtn  = document.getElementById('open-combo-modal');
+      var comboConfirm  = document.getElementById('cm-confirm');
+      var comboConfBlk  = document.getElementById('cm-confirm-block');
+      var comboConfErr  = document.getElementById('cm-confirm-error');
+      var comboStockEl  = document.getElementById('cm-stock-error');
+      var comboWaManual = document.getElementById('cm-wa-manual');
+      var cmExpressEl   = document.getElementById('cm-express');
+
+      if (!comboOverlay || !comboForm) return;
+
+      var _comboAtcFired = false;
+
+      function openComboModal() {
+        comboOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        if (!_comboAtcFired) {
+          DV.trackAddToCart({ name: COMBO_NAME, slug: COMBO_SLUG, price: COMBO_PRICE });
+          _comboAtcFired = true;
+        }
+      }
+
+      function closeComboModal() {
+        comboOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      if (comboOpenBtn) comboOpenBtn.addEventListener('click', openComboModal);
+      if (comboClose)   comboClose.addEventListener('click', closeComboModal);
+      comboOverlay.addEventListener('click', function(e) {
+        if (e.target === comboOverlay) closeComboModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && comboOverlay.classList.contains('active')) closeComboModal();
+      });
+
+      if (comboConfirm) {
+        comboConfirm.addEventListener('change', function() {
+          if (comboConfBlk) comboConfBlk.classList.toggle('checked', comboConfirm.checked);
+          if (comboConfirm.checked) {
+            if (comboConfBlk) comboConfBlk.classList.remove('error');
+            if (comboConfErr) comboConfErr.classList.remove('visible');
+          }
+        });
+      }
+
+      if (cmExpressEl) {
+        cmExpressEl.addEventListener('change', function() {
+          var blk = document.getElementById('cm-express-block');
+          if (blk) blk.classList.toggle('checked', cmExpressEl.checked);
+        });
+      }
+
+      comboForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!comboConfirm || !comboConfirm.checked) {
+          if (comboConfBlk) comboConfBlk.classList.add('error');
+          if (comboConfErr) comboConfErr.classList.add('visible');
+          return;
+        }
+
+        var nameEl    = document.getElementById('cm-name');
+        var phoneEl   = document.getElementById('cm-phone');
+        var cityEl    = document.getElementById('cm-city');
+
+        var name     = nameEl    ? nameEl.value.trim()    : '';
+        var rawPhone = phoneEl   ? phoneEl.value.trim()   : '';
+        var city     = cityEl    ? cityEl.value.trim()    : '';
+        var variant  = 'Negro Total';
+        var address  = (document.getElementById('cm-ref')     || {}).value || '';
+        var payment  = (document.getElementById('cm-payment') || {}).value || '';
+        address = address.trim();
+
+        [nameEl, phoneEl, cityEl].forEach(function(el) {
+          if (!el) return;
+          el.classList.remove('error');
+          var errEl = el.closest('.form-group') && el.closest('.form-group').querySelector('.form-error-msg');
+          if (errEl) errEl.classList.remove('visible');
+        });
+
+        var hasError   = false;
+        var firstError = null;
+        function markErr(el, msg) {
+          if (!el) return;
+          el.classList.add('error');
+          var errEl = el.closest('.form-group') && el.closest('.form-group').querySelector('.form-error-msg');
+          if (errEl) { errEl.textContent = msg; errEl.classList.add('visible'); }
+          if (!firstError) firstError = el;
+          hasError = true;
+        }
+
+        if (!name)                                        markErr(nameEl,  'Ingresá tu nombre');
+        if (!rawPhone)                                    markErr(phoneEl, 'El teléfono es obligatorio');
+        else if (!/^[0-9+\s\-]{6,16}$/.test(rawPhone))  markErr(phoneEl, 'Teléfono inválido');
+        if (!city || city.length < 2)                    markErr(cityEl,  'Ingresá tu ciudad');
+
+        if (hasError) {
+          if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
+        var validPhone = typeof normalizeParaguayPhone === 'function' ? normalizeParaguayPhone(rawPhone) : rawPhone;
+
+        var isExpress  = cmExpressEl ? cmExpressEl.checked : false;
+        var comboTotal = COMBO_PRICE + (isExpress ? 10000 : 0);
+        var totalFmt   = isExpress ? 'Gs. 259.000' : 'Gs. 249.000';
+        var tgPayment  = payment ? payment + (isExpress ? ' + Express' : '') : (isExpress ? 'Express' : null);
+
+        /* Armar WA URL ANTES del primer await — preservar gesture context */
+        var waLines = [
+          '¡Hola! Acabo de realizar un pedido en DAM VERTEX y quiero confirmar los detalles:',
+          '',
+          'Nombre: ' + name,
+          'Producto: Combo Reloj + Cadena Apex',
+          'Reloj: ' + variant,
+          'Cadena Apex: 1 unidad incluida',
+        ];
+        if (isExpress) waLines.push('Envío express: Sí (+10.000 Gs)');
+        waLines.push(
+          'Total: ' + totalFmt,
+          'Dirección: ' + (address || 'No especificada'),
+          'Ciudad: ' + city,
+          'WhatsApp: ' + rawPhone,
+          'Método de Pago: ' + (tgPayment || 'No especificado'),
+          '',
+          '¿Pueden ayudarme a coordinar el envío?'
+        );
+        var waUrl = 'https://wa.me/' + COMBO_WA + '?text=' + encodeURIComponent(waLines.join('\n'));
+        if (comboWaManual) comboWaManual.href = waUrl;
+
+        comboSubmit.disabled = true;
+        comboSubmit.innerHTML = '<span class="spinner"></span>';
+        if (comboStockEl) comboStockEl.style.display = 'none';
+
+        /* Guardar lead */
+        try {
+          var client = typeof getClientData === 'function' ? getClientData() : {};
+          var attr   = typeof DV.getAttribution === 'function' ? DV.getAttribution() : {};
+          var payload = Object.assign({}, attr, {
+            product_name:   COMBO_NAME,
+            product_slug:   COMBO_SLUG,
+            name:           name,
+            phone:          validPhone || rawPhone,
+            email:          '',
+            city:           city,
+            value:          comboTotal,
+            currency:       'PYG',
+            quantity:       2,
+            variant:        JSON.stringify([variant]),
+            fbp:            client.fbp || '',
+            fbc:            client.fbc || '',
+            user_agent:     navigator.userAgent,
+            address:        address || null,
+            payment_method: tgPayment || null,
+          });
+          var res = await fetch('/api/leads', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(payload),
+          });
+          if (!res.ok) throw new Error('lead_error');
+        } catch (err) {
+          if (err && err.message !== 'lead_error') console.error('COMBO_LEAD_ERROR', err.message);
+          comboSubmit.disabled = false;
+          comboSubmit.innerHTML = 'Pedir combo por WhatsApp';
+          if (comboStockEl) {
+            comboStockEl.textContent = 'Error al registrar el pedido. Intentá de nuevo.';
+            comboStockEl.style.display = 'block';
+          }
+          return;
+        }
+
+        /* Tracking InitiateCheckout */
+        DV.trackInitiateCheckout(
+          { name: COMBO_NAME, slug: COMBO_SLUG, price: comboTotal },
+          { name: name, phone: validPhone || '' },
+          2
+        );
+
+        comboForm.style.display = 'none';
+        comboSuccess.classList.add('visible');
+        window.location.href = waUrl;
+      });
+    })();
   });
 </script>
 
