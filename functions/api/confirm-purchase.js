@@ -33,47 +33,82 @@ export async function onRequestPost({ request, env }) {
     /* Verificar stock — ANTES de enviar Purchase a Meta */
     const saleQty     = Number(lead.quantity) || 1;
     const productSlug = lead.product_slug || getProductSlug(lead.product_name);
-    let productRow = null;
-    try {
-      productRow = await env.DB.prepare(
-        'SELECT * FROM products WHERE slug = ?'
-      ).bind(productSlug).first();
-      if (!productRow) {
-        productRow = await env.DB.prepare(
-          'SELECT * FROM products WHERE name = ?'
-        ).bind(lead.product_name).first();
-      }
-    } catch (err) {
-      console.error('STOCK_LOOKUP_ERROR', err.message);
-    }
-
+    const isCombo     = productSlug === 'combo-reloj-cadena';
     const requestedVariants = parseLeadVariants(lead.variant);
 
-    if (productRow) {
-      if (productRow.stock_total < saleQty) {
-        const errMsg = productRow.stock_total === 0
-          ? 'Sin stock disponible para este producto'
-          : `Stock insuficiente — disponible: ${productRow.stock_total}`;
-        return json({ ok: false, error: errMsg }, 409);
+    let productRow     = null;
+    let comboRelojRow  = null;
+    let comboCadenaRow = null;
+
+    if (isCombo) {
+      /* Combo: verificar stock de reloj Y cadena por separado */
+      try {
+        [comboRelojRow, comboCadenaRow] = await Promise.all([
+          env.DB.prepare('SELECT * FROM products WHERE slug = ?').bind('reloj').first(),
+          env.DB.prepare('SELECT * FROM products WHERE slug = ?').bind('cadena').first(),
+        ]);
+      } catch (err) {
+        console.error('COMBO_STOCK_LOOKUP_ERROR', err.message);
       }
 
-      if (requestedVariants.length && productRow.variants_json) {
+      if (!comboRelojRow) return json({ ok: false, error: 'Producto reloj no encontrado' }, 409);
+      if (Number(comboRelojRow.stock_total) < 1)
+        return json({ ok: false, error: 'Sin stock del reloj' }, 409);
+
+      if (requestedVariants.length && comboRelojRow.variants_json) {
         let vars;
-        try { vars = JSON.parse(productRow.variants_json); } catch (_) { vars = {}; }
-
-        const requestedByColor = {};
-        requestedVariants.forEach(color => {
-          requestedByColor[color] = (requestedByColor[color] || 0) + 1;
-        });
-
-        for (const color of Object.keys(requestedByColor)) {
+        try { vars = JSON.parse(comboRelojRow.variants_json); } catch (_) { vars = {}; }
+        for (const color of requestedVariants) {
           const available = Number(vars[color] ?? -1);
-          const requested = requestedByColor[color];
-          if (available < requested) {
-            const errMsg = available <= 0
-              ? `Sin stock del color: ${color}`
-              : `Stock insuficiente para ${color} — disponible: ${available}`;
-            return json({ ok: false, error: errMsg }, 409);
+          if (available === 0) return json({ ok: false, error: `Sin stock del modelo: ${color}` }, 409);
+          if (available < 0)  return json({ ok: false, error: `Modelo no encontrado: ${color}` }, 409);
+        }
+      }
+
+      if (!comboCadenaRow) return json({ ok: false, error: 'Cadena Apex no encontrada' }, 409);
+      if (Number(comboCadenaRow.stock_total) < 1)
+        return json({ ok: false, error: 'Sin stock de Cadena Apex' }, 409);
+
+    } else {
+      try {
+        productRow = await env.DB.prepare(
+          'SELECT * FROM products WHERE slug = ?'
+        ).bind(productSlug).first();
+        if (!productRow) {
+          productRow = await env.DB.prepare(
+            'SELECT * FROM products WHERE name = ?'
+          ).bind(lead.product_name).first();
+        }
+      } catch (err) {
+        console.error('STOCK_LOOKUP_ERROR', err.message);
+      }
+
+      if (productRow) {
+        if (productRow.stock_total < saleQty) {
+          const errMsg = productRow.stock_total === 0
+            ? 'Sin stock disponible para este producto'
+            : `Stock insuficiente — disponible: ${productRow.stock_total}`;
+          return json({ ok: false, error: errMsg }, 409);
+        }
+
+        if (requestedVariants.length && productRow.variants_json) {
+          let vars;
+          try { vars = JSON.parse(productRow.variants_json); } catch (_) { vars = {}; }
+
+          const requestedByColor = {};
+          requestedVariants.forEach(color => {
+            requestedByColor[color] = (requestedByColor[color] || 0) + 1;
+          });
+
+          for (const color of Object.keys(requestedByColor)) {
+            const available = Number(vars[color] ?? -1);
+            const requested = requestedByColor[color];
+            if (available < requested) {
+              const errMsg = available <= 0
+                ? `Sin stock del color: ${color}`
+                : `Stock insuficiente para ${color} — disponible: ${available}`;
+              return json({ ok: false, error: errMsg }, 409);
+            }
           }
         }
       }
@@ -105,11 +140,11 @@ export async function onRequestPost({ request, env }) {
       user_data,
       custom_data: {
         content_name:  lead.product_name,
-        content_ids:   [productSlug],
+        content_ids:   isCombo ? ['reloj', 'cadena'] : [productSlug],
         content_type:  'product',
         value:         lead.value || 0,
         currency:      lead.currency || 'PYG',
-        num_items:     lead.quantity || 1,
+        num_items:     isCombo ? 2 : (lead.quantity || 1),
       },
     };
 
@@ -145,7 +180,39 @@ export async function onRequestPost({ request, env }) {
     ).bind(id).run();
 
     /* Descontar stock */
-    if (productRow) {
+    if (isCombo) {
+      /* Combo: descontar reloj (variante seleccionada) + cadena (total) en batch */
+      try {
+        const relojModel    = requestedVariants[0] || null;
+        const newRelojTotal = Math.max(0, (comboRelojRow?.stock_total || 0) - 1);
+        let   newRelojVarJson = comboRelojRow?.variants_json || null;
+
+        if (relojModel && comboRelojRow?.variants_json) {
+          let vars;
+          try { vars = JSON.parse(comboRelojRow.variants_json); } catch (_) { vars = {}; }
+          if (Number.isFinite(Number(vars[relojModel]))) {
+            vars[relojModel] = Math.max(0, Number(vars[relojModel]) - 1);
+          }
+          newRelojVarJson = JSON.stringify(vars);
+        }
+
+        const newCadenaTotal = Math.max(0, (comboCadenaRow?.stock_total || 0) - 1);
+
+        await env.DB.batch([
+          env.DB.prepare(
+            `UPDATE products SET stock_total = ?, variants_json = ?, updated_at = datetime('now') WHERE slug = 'reloj'`
+          ).bind(newRelojTotal, newRelojVarJson),
+          env.DB.prepare(
+            `UPDATE products SET stock_total = ?, updated_at = datetime('now') WHERE slug = 'cadena'`
+          ).bind(newCadenaTotal),
+        ]);
+
+        console.log(`COMBO_STOCK_OK lead_id=${id}: reloj total=${newRelojTotal} model=${relojModel} cadena total=${newCadenaTotal}`);
+      } catch (err) {
+        console.error('COMBO_STOCK_UPDATE_FAILED lead_id=' + id, err.message);
+      }
+
+    } else if (productRow) {
       try {
         const newTotal = Math.max(0, productRow.stock_total - saleQty);
         let newVarJson = productRow.variants_json;
@@ -193,11 +260,11 @@ export async function onRequestPost({ request, env }) {
         user_data,
         custom_data: {
           content_name: lead.product_name,
-          content_ids:  [productSlug],
+          content_ids:  isCombo ? ['reloj', 'cadena'] : [productSlug],
           content_type: 'product',
           value:        saleValue,
           currency:     lead.currency || 'PYG',
-          num_items:    lead.quantity || 1,
+          num_items:    isCombo ? 2 : (lead.quantity || 1),
         },
       });
 
@@ -210,11 +277,11 @@ export async function onRequestPost({ request, env }) {
           user_data,
           custom_data: {
             content_name: lead.product_name,
-            content_ids:  [productSlug],
+            content_ids:  isCombo ? ['reloj', 'cadena'] : [productSlug],
             content_type: 'product',
             value:        saleValue,
             currency:     lead.currency || 'PYG',
-            num_items:    lead.quantity || 1,
+            num_items:    isCombo ? 2 : (lead.quantity || 1),
           },
         });
       }
@@ -251,10 +318,11 @@ function slugify(s) {
 }
 function getProductSlug(name) {
   const MAP = {
-    'Reloj Blackout Minimal':                     'reloj',
-    'Cepillo Eléctrico Recargable (4 Cabezales)': 'cepillo',
-    'Lentes Anti Luz Azul Rojos':                 'lentes',
-    'Cadena Apex':                                'cadena',
+    'Reloj Blackout Minimal':                       'reloj',
+    'Cepillo Eléctrico Recargable (4 Cabezales)':   'cepillo',
+    'Lentes Anti Luz Azul Rojos':                   'lentes',
+    'Cadena Apex':                                  'cadena',
+    'Combo Reloj Blackout Minimal + Cadena Apex':   'combo-reloj-cadena',
   };
   return MAP[name] || slugify(name);
 }

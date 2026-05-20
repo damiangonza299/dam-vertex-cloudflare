@@ -78,7 +78,18 @@ export async function onRequestPost({ request, env }) {
       `).bind(...bindArgs).run();
     } catch (insertErr) {
       const msg = insertErr.message || '';
-      if (msg.includes('no column named') || msg.includes('fbclid') || msg.includes('utm_') || msg.includes('campaign_id') || msg.includes('landing_path')) {
+      if (msg.includes('product_slug')) {
+        // product_slug column not yet added (run migrate9.sql) — save WITH attribution, without product_slug
+        console.error('LEAD_SCHEMA: product_slug column missing, run migrate9.sql');
+        result = await env.DB.prepare(`
+          INSERT INTO leads (
+            product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity, variant,
+            fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+            campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer,
+            address, payment_method
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).bind(...bindArgs.slice(0, 29)).run();
+      } else if (msg.includes('no column named') || msg.includes('fbclid') || msg.includes('utm_') || msg.includes('campaign_id') || msg.includes('landing_path')) {
         // Attribution columns not yet migrated — fallback to base insert
         console.error('LEAD_SCHEMA: attribution columns missing, run migrate7.sql');
         try {
