@@ -18,6 +18,63 @@ Antes de cualquier tarea:
 
 ---
 
+## META_ANALYSIS_MODE=STRICT — Análisis de campañas Meta Ads
+
+**Reglas completas:** `AI_SYSTEM/meta-ads/meta-strict-mode.md`
+
+**Activación:** automática cuando el usuario menciona Meta Ads, campañas, anuncios, ROAS, CTR, CPM, CPC, presupuesto, delivery, compras o escalado.
+
+### Paso 1 — ABORTAR si no hay endpoints reales
+
+Si CloudCode NO puede consultar endpoints reales en esta sesión:
+
+```
+ABORTAR. Responder: "NO puedo hacer análisis real porque no consulté
+endpoints actuales."
+```
+
+Mínimo obligatorio: `/api/meta/campaigns` + `/api/meta/deep-insights`
+
+### Paso 2 — Invalidar contexto viejo
+
+Al iniciar análisis: descartar toda campaña, estado ON/OFF, presupuesto y métrica de sesiones anteriores. Fuente única válida: endpoints consultados ahora.
+
+### Paso 3 — Acceso directo Meta API (sin servidor, siempre disponible)
+
+```bash
+# Leer META_MARKETING_TOKEN y META_AD_ACCOUNT_ID de .dev.vars — luego:
+
+# Campañas actuales
+curl -s "https://graph.facebook.com/v21.0/act_992345752726304/campaigns?fields=id,name,status,effective_status,daily_budget,start_time&access_token=TOKEN_DE_DEV_VARS"
+
+# Métricas profundas (ajustar fechas)
+curl -s "https://graph.facebook.com/v21.0/act_992345752726304/insights?fields=campaign_id,campaign_name,spend,impressions,reach,frequency,inline_link_clicks,inline_link_click_ctr,cost_per_inline_link_click,actions,action_values,cost_per_action_type&time_range={\"since\":\"YYYY-MM-DD\",\"until\":\"YYYY-MM-DD\"}&level=campaign&access_token=TOKEN_DE_DEV_VARS"
+
+# Copies/hooks (si se necesitan creativos)
+curl -s "https://graph.facebook.com/v21.0/act_992345752726304/ads?fields=id,name,status,campaign_id,creative{body,title}&access_token=TOKEN_DE_DEV_VARS"
+```
+
+Dev server local `:8788` — auth: `Bearer PONER_PASSWORD_AQUI` (ADMIN_PASSWORD del `.dev.vars`)
+
+Limitación: `/api/meta/report` falla localmente (`D1_ERROR: no such table: leads`). Solo funciona en producción o con `--remote`.
+
+### PROHIBIDO — nunca sin verificación real
+
+- Recomendar apagar o pausar campañas sin verificar `effective_status` actual
+- Recomendar subir presupuesto sin ver spend real del período
+- Dar CTR, CPM, ROAS sin consultar datos reales
+- Mezclar campañas históricas con campañas actuales
+- Inventar o estimar métricas faltantes
+- Asumir estado basándose en conversaciones anteriores
+
+### Lectura parcial — no leer GEMINI.md completo si no aplica
+
+Tarea Meta Ads → leer SOLO secciones Meta + core. No leer landing, CSS, Firebase, PWA, WhatsApp flows, stock, diseño.
+
+Tarea landing/código → no leer reglas Meta si no aplican.
+
+---
+
 ## Prioridades del proyecto
 
 - Conversión de la landing
@@ -59,6 +116,7 @@ Este repositorio incluye un sistema de memoria operativa para AI en `/AI_SYSTEM/
     peep-laja-cro.md
     mobile-first-conversion.md
   /meta-ads
+    meta-strict-mode.md       ← LEER PRIMERO en tareas Meta Ads
     meta-creative-testing.md
     andrew-foxwell-meta-ads.md
     ezra-firestone-ecommerce.md

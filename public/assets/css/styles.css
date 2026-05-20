@@ -442,6 +442,7 @@ details summary::-webkit-details-marker { display: none; }
   padding: 2px 8px;
   margin-bottom: 10px;
   letter-spacing: .02em;
+  white-space: nowrap;
 }
 .product-card__body { padding: 13px 15px 15px; }
 .product-card__name {
@@ -486,10 +487,10 @@ details summary::-webkit-details-marker { display: none; }
     padding: 8px 14px 48px;
   }
   .product-card__body { padding: 10px 11px 12px; }
-  .product-card__badge { font-size: 9px; padding: 2px 6px; margin-bottom: 5px; }
+  .product-card__badge { font-size: 8px; padding: 1px 4px; margin-bottom: 5px; white-space: nowrap; max-width: 100%; overflow: hidden; }
   .product-card__name { font-size: 12px; margin-bottom: 4px; }
-  .product-card__price { font-size: 14px; margin-bottom: 8px; }
-  .product-card__price small { font-size: 11px; margin-left: 4px; }
+  .product-card__price { font-size: 13px; margin-bottom: 8px; display: flex; align-items: baseline; flex-wrap: nowrap; gap: 3px; }
+  .product-card__price small { font-size: 10px; margin-left: 0; white-space: nowrap; }
   .product-card__btn { font-size: 11px; padding: 8px 10px; }
 }
 

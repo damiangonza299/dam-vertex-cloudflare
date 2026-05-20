@@ -126,7 +126,8 @@ export async function onRequestGet({ request, env }) {
     /* Filtros opcionales */
     const filtering = [];
     if (campaignId) {
-      filtering.push({ field: 'campaign_id', operator: 'IN', value: [campaignId] });
+      /* Meta API v21 deprecó "campaign_id" como campo de filtro — usar "campaign.id" */
+      filtering.push({ field: 'campaign.id', operator: 'IN', value: [campaignId] });
     }
     if (statusFilter) {
       filtering.push({ field: 'effective_status', operator: 'IN', value: [statusFilter] });

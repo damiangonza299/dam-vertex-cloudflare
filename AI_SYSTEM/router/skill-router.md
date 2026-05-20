@@ -49,43 +49,50 @@ Usar cuando: modificás o revisás la landing, el flujo de compra, CTAs, jerarqu
 ---
 
 ### META ADS / CREATIVOS / TESTEO / ESCALADO
+- `meta-ads/meta-strict-mode.md` ← **LEER SIEMPRE PRIMERO en tareas Meta**
 - `meta-ads/meta-creative-testing.md`
 - `meta-ads/andrew-foxwell-meta-ads.md`
 - `meta-ads/ezra-firestone-ecommerce.md`
 
 Usar cuando: planificás campañas, testeo de creativos, estructura de cuentas, presupuesto, análisis de resultados o escalado.
 
+**Keywords de activación META_ANALYSIS_MODE=STRICT:**
+```
+Meta Ads | campañas | anuncios | ROAS | CTR | CPM | CPC
+presupuesto | delivery | compras | escalado | pausar | activar
+resultados | métricas | creativos | leads Meta | atribución
+```
+
 ---
 
-### PROTOCOLO OBLIGATORIO — Cuando el usuario pide analizar campañas Meta Ads
+### PROTOCOLO OBLIGATORIO — META_ANALYSIS_MODE=STRICT
 
-Antes de responder cualquier análisis de campañas, seguir este protocolo en orden:
+**Reglas completas en:** `AI_SYSTEM/meta-ads/meta-strict-mode.md`
 
-**1. Confirmar fuente de datos**
-- ¿Se están usando datos reales de Meta API o solo el repo local?
-- Declarar explícitamente: "Estoy usando datos reales de Meta API" o "No tengo acceso a Meta API, solo puedo analizar el código/repo".
+Flujo mínimo antes de cualquier análisis:
 
-**2. Consultar métricas profundas**
-- Endpoint preferido: `/api/meta/deep-insights` — devuelve inline_link_clicks, CTR link, funnel completo nombrado (landing_page_views, view_content, add_to_cart, initiate_checkout, purchases), costos por evento, video metrics.
-- Si no disponible: `/api/meta/insights?level=ad` — devuelve actions[] crudo, sin extracción nombrada.
-- Para creative body/hook/title: `/api/meta/ads?campaign_id=X` o `?status=ARCHIVED` para histórico.
-- Para campañas históricas (ARCHIVED): `/api/meta/deep-insights?status=ARCHIVED&since=YYYY-MM-DD&until=YYYY-MM-DD`
+```
+1. Activar META_ANALYSIS_MODE=STRICT
+2. INVALIDAR todo contexto de campañas de sesiones anteriores
+3. Leer .dev.vars → obtener META_MARKETING_TOKEN real
+4. GET /campaigns → estados actuales reales (ACTIVE/PAUSED)
+5. GET /deep-insights?since=X&until=Y → métricas del período real
+6. GET /ads?campaign_id=X → copies/hooks (si aplica)
+7. GET /report → D1 cruzado (solo producción o --remote)
+8. Confirmar validación explícita antes de recomendar
+9. Analizar SOLO con datos de endpoints consultados en esta sesión
+```
 
-**3. Cruzar con D1 si aplica**
-- Si hay leads en D1 para el período → usar `/api/meta/report` para cruzar atribución real.
-- Si son campañas históricas anteriores al sistema D1 → MODO HISTÓRICO META-ONLY (no inventar datos D1 que no existen).
+**ABORTAR si no hay acceso a endpoints:**
+```
+"NO puedo hacer análisis real porque no consulté endpoints actuales."
+```
 
-**4. Diferenciar tipo de campaña**
-- Campañas nuevas (con leads en D1): analizar con ROAS real + tasa de cierre + métricas Meta.
-- Campañas históricas (sin D1): analizar solo métricas Meta — CTR link, CPC link, CPM, frequency, funnel events, video retention si aplica.
+**Diferenciar tipo de campaña:**
+- Campañas con leads en D1 → `/api/meta/report` para ROAS real + tasa de cierre
+- Campañas históricas sin D1 → MODO HISTÓRICO META-ONLY (no inventar datos D1)
 
-**5. Reglas de honestidad**
-- NO inventar datos faltantes.
-- NO asumir purchased/revenue si no hay datos D1 reales.
-- Si un endpoint no responde o requiere credenciales: proveer el curl exacto para que el usuario lo ejecute y pegue el resultado.
-- Declarar limitaciones explícitamente: "No encontré datos para X en el rango consultado."
-
-**6. Metricas a reportar siempre (cuando disponibles)**
+**Métricas mínimas a reportar cuando disponibles:**
 ```
 campaign_name / campaign_id
 adset_name (si nivel adset o ad)
