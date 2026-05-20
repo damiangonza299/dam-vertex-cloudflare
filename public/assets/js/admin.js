@@ -223,6 +223,7 @@ document.getElementById('date-picker')?.addEventListener('change', e => { setDat
 
 function abbrevProduct(name) {
   if (!name) return '—';
+  if (name.includes('Combo') && name.includes('Reloj')) return 'Combo Reloj';
   if (name.includes('Cepillo')) return 'Cepillo';
   if (name.includes('Lentes'))  return 'Lentes';
   if (name.includes('Reloj'))   return 'Reloj';
@@ -239,6 +240,14 @@ function fmtVariant(v) {
   } catch (_) {
     return String(v);
   }
+}
+
+function fmtVariantCell(l) {
+  const vt = fmtVariant(l.variant);
+  if (!vt) return '';
+  const isCombo = l.product_slug === 'combo-reloj-cadena' || (l.product_name || '').includes('Combo Reloj');
+  const display = isCombo ? vt + ' + Cadena Apex' : vt;
+  return '<br><span style="font-size:10px;color:rgba(255,255,255,.45)">' + esc(display) + '</span>';
 }
 
 function buildActions(l) {
@@ -281,7 +290,7 @@ function renderTable(leads) {
       <td class="col-name" title="${esc(l.name)}">${shortName(l.name)}</td>
       <td class="col-phone">${esc(l.phone)}</td>
 <td class="col-city" title="${esc(l.city || '')}">${formatCity(l.city)}</td>
-<td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))} (${Number(l.quantity || 1)})${fmtVariant(l.variant) ? '<br><span style="font-size:10px;color:rgba(255,255,255,.45)">' + esc(fmtVariant(l.variant)) + '</span>' : ''}</td>
+<td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))} (${Number(l.quantity || 1)})${fmtVariantCell(l)}</td>
       <td class="col-val">${Number(l.value || 0).toLocaleString('es-PY')}</td>
       <td class="col-status"><span class="badge badge-${l.status}">${labelStatus(l.status)}</span></td>
       <td class="col-date">${fmtDateShort(l.created_at)}</td>
@@ -911,6 +920,7 @@ let adsProductFilter = '';
 
 function formatProductShortName(name) {
   if (!name) return '—';
+  if (name.includes('Combo') && name.includes('Reloj')) return 'Reloj + Cadena Apex';
   if (name.includes('Cadena') || name.includes('Apex')) return 'Apex';
   if (name.includes('Cepillo')) return 'Cepillo';
   if (name.includes('Lentes'))  return 'Lentes';

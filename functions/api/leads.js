@@ -122,16 +122,20 @@ export async function onRequestPost({ request, env }) {
       try {
         const now         = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
         const variantText = formatVariantForTelegram(variant);
+        const isComboTg   = product_slug === 'combo-reloj-cadena' || (product_name || '').includes('Combo Reloj');
+        const tgProductName = (isComboTg && variantText)
+          ? 'Combo Reloj ' + variantText + ' + Cadena Apex'
+          : product_name;
         const text = [
           'Nuevo pedido DAM VERTEX',
           '',
-          `Producto: ${product_name}`,
+          `Producto: ${tgProductName}`,
           `Nombre: ${name.trim()}`,
           `Telefono: ${phone.trim()}`,
           `Ciudad: ${city?.trim() || '-'}`,
           ...(payment_method ? [`Metodo de pago: ${payment_method}`] : []),
           `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
-          ...(variantText ? [`Variante: ${variantText}`] : []),
+          ...(!isComboTg && variantText ? [`Variante: ${variantText}`] : []),
           `Cantidad: ${quantity || 1}`,
           `Fecha: ${now}`,
           `Estado: pending`,
