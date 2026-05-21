@@ -182,13 +182,16 @@ DV.trackQualifiedLead = function (product, lead) {
     currency:     'PYG',
   }, { eventID: event_id });
 
-  sendCAPI({
-    event_name: 'QualifiedLead',
-    event_id,
-    product,
-    lead,
-    client,
-  });
+  /* keepalive: true garantiza que el fetch CAPI complete aunque
+     la página navegue a WhatsApp inmediatamente (desktop/Android). */
+  try {
+    fetch('/api/meta-event', {
+      method:    'POST',
+      headers:   { 'Content-Type': 'application/json' },
+      body:      JSON.stringify({ event_name: 'QualifiedLead', event_id, product, lead, client }),
+      keepalive: true,
+    });
+  } catch (_) {}
 };
 
 /* ââ Modal ââ */
@@ -220,6 +223,10 @@ DV.initForm = function (product) {
 
   if (!overlay || !modalForm) return;
   DV.initCityPicker();
+
+  /* Guard anti-doble-disparo: QualifiedLead se dispara como máximo
+     una vez por page load, y solo cuando el lead ya fue creado en D1. */
+  let _qlFired = false;
 
   /* Verificar stock al cargar — deshabilita CTAs si agotado */
   fetch(`/api/product-stock?slug=${encodeURIComponent(product.slug)}`)
@@ -587,7 +594,10 @@ clearStockError();
       const capiLead       = { ...commonData, phone: validPhone || '' };
       const customProduct  = { ...product, price: customTotal };
       DV.trackInitiateCheckout(customProduct, capiLead, customQty);
-      DV.trackQualifiedLead(customProduct, capiLead);
+      if (!_qlFired) {
+        _qlFired = true;
+        DV.trackQualifiedLead(customProduct, capiLead);
+      }
 
       modalForm.style.display = 'none';
       success.classList.add('visible');
@@ -673,7 +683,10 @@ clearStockError();
       const capiLead = { ...data, phone: validPhone || '' };
       const trackProduct = { ...product, price: expressTotal };
       DV.trackInitiateCheckout(trackProduct, capiLead, selectedQty);
-      DV.trackQualifiedLead(trackProduct, capiLead);
+      if (!_qlFired) {
+        _qlFired = true;
+        DV.trackQualifiedLead(trackProduct, capiLead);
+      }
 
       /* 5 â Mostrar Ã©xito */
       modalForm.style.display = 'none';

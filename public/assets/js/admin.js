@@ -1272,12 +1272,7 @@ function capiStatusStyle(s) {
 
 function buildSourceBadges(l) {
   if (!l.source_type) return '';
-  const src  = `<br><span style="display:inline-block;margin-top:3px;font-size:10px;padding:2px 7px;border-radius:3px;background:rgba(74,222,128,.12);color:#4ade80;font-weight:700">${labelSource(l.source_type)}</span>`;
-  const capi = l.capi_status
-    ? `<br><span style="display:inline-block;margin-top:2px;font-size:9px;padding:1px 6px;border-radius:3px;${capiStatusStyle(l.capi_status)}">${l.capi_status.toUpperCase()}</span>`
-    : '';
-  const stock = buildStockBadge(l);
-  return src + capi + stock;
+  return `<br><span style="display:inline-block;margin-top:3px;font-size:10px;padding:2px 7px;border-radius:3px;background:rgba(74,222,128,.12);color:#4ade80;font-weight:700">${labelSource(l.source_type)}</span>`;
 }
 
 function buildStockBadge(l) {
