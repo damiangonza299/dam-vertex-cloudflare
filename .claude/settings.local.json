@@ -75,10 +75,18 @@
       "Bash(curl -s -G https://graph.facebook.com/v21.0/120249177037560274/ads --data-urlencode 'fields=id,name,status,creative{body,title}' --data-urlencode access_token=EAAaLwCExeiQBRTEuV07NFleZBRt8rGO6ZAtZCzAjQEmdThFXPbVWtZAhlVM7BdnNXxTUffu7aIHWEIasTTOv1xcGVEahcDK0e7SnZC4ZAmlO6HVtJsDAdXyk82HXyQTub9qSCAtTUrC3VK5ZBpyNAg5CedpBXrlurni899Kpn3srtgnyjh98rK4RrSJThHjBUwO2vEj9is7)",
       "Bash(curl -s -G https://graph.facebook.com/v21.0/120249171582080274/insights --data-urlencode fields=ad_id,ad_name,spend,impressions,inline_link_clicks,inline_link_click_ctr,cost_per_inline_link_click,actions,action_values --data-urlencode 'time_range={\"since\":\"2026-05-20\",\"until\":\"2026-05-20\"}' --data-urlencode level=ad --data-urlencode access_token=EAAaLwCExeiQBRTEuV07NFleZBRt8rGO6ZAtZCzAjQEmdThFXPbVWtZAhlVM7BdnNXxTUffu7aIHWEIasTTOv1xcGVEahcDK0e7SnZC4ZAmlO6HVtJsDAdXyk82HXyQTub9qSCAtTUrC3VK5ZBpyNAg5CedpBXrlurni899Kpn3srtgnyjh98rK4RrSJThHjBUwO2vEj9is7)",
       "Bash(curl -s -G https://graph.facebook.com/v21.0/120249174967110274/insights --data-urlencode fields=ad_id,ad_name,spend,impressions,inline_link_clicks,inline_link_click_ctr,cost_per_inline_link_click,actions,action_values --data-urlencode 'time_range={\"since\":\"2026-05-20\",\"until\":\"2026-05-20\"}' --data-urlencode level=ad --data-urlencode access_token=EAAaLwCExeiQBRTEuV07NFleZBRt8rGO6ZAtZCzAjQEmdThFXPbVWtZAhlVM7BdnNXxTUffu7aIHWEIasTTOv1xcGVEahcDK0e7SnZC4ZAmlO6HVtJsDAdXyk82HXyQTub9qSCAtTUrC3VK5ZBpyNAg5CedpBXrlurni899Kpn3srtgnyjh98rK4RrSJThHjBUwO2vEj9is7)",
-      "Bash(curl -s -G https://graph.facebook.com/v21.0/120249177037560274/insights --data-urlencode fields=ad_id,ad_name,spend,impressions,inline_link_clicks,inline_link_click_ctr,cost_per_inline_link_click,actions,action_values --data-urlencode 'time_range={\"since\":\"2026-05-20\",\"until\":\"2026-05-20\"}' --data-urlencode level=ad --data-urlencode access_token=EAAaLwCExeiQBRTEuV07NFleZBRt8rGO6ZAtZCzAjQEmdThFXPbVWtZAhlVM7BdnNXxTUffu7aIHWEIasTTOv1xcGVEahcDK0e7SnZC4ZAmlO6HVtJsDAdXyk82HXyQTub9qSCAtTUrC3VK5ZBpyNAg5CedpBXrlurni899Kpn3srtgnyjh98rK4RrSJThHjBUwO2vEj9is7)"
+      "Bash(curl -s -G https://graph.facebook.com/v21.0/120249177037560274/insights --data-urlencode fields=ad_id,ad_name,spend,impressions,inline_link_clicks,inline_link_click_ctr,cost_per_inline_link_click,actions,action_values --data-urlencode 'time_range={\"since\":\"2026-05-20\",\"until\":\"2026-05-20\"}' --data-urlencode level=ad --data-urlencode access_token=EAAaLwCExeiQBRTEuV07NFleZBRt8rGO6ZAtZCzAjQEmdThFXPbVWtZAhlVM7BdnNXxTUffu7aIHWEIasTTOv1xcGVEahcDK0e7SnZC4ZAmlO6HVtJsDAdXyk82HXyQTub9qSCAtTUrC3VK5ZBpyNAg5CedpBXrlurni899Kpn3srtgnyjh98rK4RrSJThHjBUwO2vEj9is7)",
+      "Bash(curl -s -H \"Authorization: Bearer damian299\" \"https://dam-vertex-cloudflare.pages.dev/api/admin-leads\")",
+      "Bash(curl -s -H \"Authorization: Bearer damian299\" \"https://dam-vertex-cloudflare.pages.dev/api/meta/report?since=2026-05-01&until=2026-05-21\")",
+      "Bash(curl -s -H \"Authorization: Bearer damian299\" \"https://dam-vertex-cloudflare.pages.dev/api/meta/campaigns\")",
+      "Bash(curl -s -H \"Authorization: Bearer damian299\" \"https://dam-vertex-cloudflare.pages.dev/api/meta/ads\")",
+      "Bash(curl -s -H \"Authorization: Bearer damian299\" \"https://dam-vertex-cloudflare.pages.dev/api/admin-leads\" -o \"F:/Desktop/dam-vertex-cloudflare/leads_raw.json\")",
+      "Bash(del \"F:\\\\Desktop\\\\dam-vertex-cloudflare\\\\leads_raw.json\")",
+      "Bash(rm \"F:/Desktop/dam-vertex-cloudflare/leads_raw.json\")"
     ],
     "additionalDirectories": [
-      "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public"
+      "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public",
+      "F:\\Desktop\\dam-vertex-cloudflare"
     ]
   }
 }
