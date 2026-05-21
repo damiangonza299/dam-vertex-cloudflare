@@ -421,15 +421,19 @@
       </div>
 
       <!-- Variante / Cantidad -->
-      <div class="msf-grid-2-3">
-        <div>
-          <label class="msf-label">Variante</label>
-          <input id="msf-variant" type="text" placeholder="ej: Negro Total" class="msf-input" autocomplete="off">
-        </div>
-        <div>
-          <label class="msf-label">Cantidad</label>
-          <input id="msf-quantity" type="number" min="1" value="1" class="msf-input">
-        </div>
+      <!-- Selector de variantes (productos con variantes) -->
+      <div id="msf-variant-section" style="margin-bottom:10px;display:none">
+        <label class="msf-label">Variantes y cantidades</label>
+        <div id="msf-variant-rows"></div>
+        <button type="button" id="msf-add-variant-row" onclick="msfAddVariantRow()"
+          style="margin-top:6px;background:none;border:1px dashed rgba(255,255,255,.15);color:rgba(255,255,255,.4);font-size:12px;padding:5px 14px;border-radius:6px;cursor:pointer;font-family:inherit;width:100%">
+          + Agregar variante
+        </button>
+      </div>
+      <!-- Cantidad simple (sin variantes) -->
+      <div id="msf-qty-section" style="margin-bottom:10px">
+        <label class="msf-label">Cantidad</label>
+        <input id="msf-quantity" type="number" min="1" value="1" class="msf-input">
       </div>
 
       <!-- Valor / Pago -->

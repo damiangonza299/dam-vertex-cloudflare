@@ -224,6 +224,7 @@ document.getElementById('date-yesterday')?.addEventListener('click', () => setDa
 document.getElementById('date-picker')?.addEventListener('change', e => { setDateFilter(e.target.value || 'all'); });
 document.getElementById('manual-sale-btn')?.addEventListener('click', openManualSaleModal);
 document.getElementById('manual-sale-modal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeManualSaleModal(); });
+document.getElementById('msf-product')?.addEventListener('change', msfOnProductChange);
 
 function abbrevProduct(name) {
   if (!name) return '—';
@@ -1300,10 +1301,19 @@ const MANUAL_PRODUCTS = [
   { slug: 'combo-reloj-cadena', name: 'Combo Reloj Blackout Minimal + Cadena Apex' },
 ];
 
+let msfVariantNames = [];
+
 function openManualSaleModal() {
   const modal = document.getElementById('manual-sale-modal');
   if (!modal) return;
   document.getElementById('msf-form')?.reset();
+  msfVariantNames = [];
+  const rowsEl = document.getElementById('msf-variant-rows');
+  if (rowsEl) rowsEl.innerHTML = '';
+  const varSection = document.getElementById('msf-variant-section');
+  if (varSection) varSection.style.display = 'none';
+  const qtySection = document.getElementById('msf-qty-section');
+  if (qtySection) qtySection.style.display = 'block';
   const attrBody = document.getElementById('msf-attr-body');
   if (attrBody) attrBody.style.display = 'none';
   const errEl = document.getElementById('msf-error');
@@ -1329,6 +1339,98 @@ function showMsfError(msg) {
   errEl.style.display = 'block';
 }
 
+async function msfOnProductChange() {
+  const slug       = document.getElementById('msf-product')?.value || '';
+  const varSection = document.getElementById('msf-variant-section');
+  const qtySection = document.getElementById('msf-qty-section');
+  const rowsEl     = document.getElementById('msf-variant-rows');
+  const addBtn     = document.getElementById('msf-add-variant-row');
+  if (!varSection || !qtySection || !rowsEl) return;
+
+  rowsEl.innerHTML = '';
+  msfVariantNames  = [];
+
+  if (!slug) {
+    varSection.style.display = 'none';
+    qtySection.style.display = 'block';
+    return;
+  }
+
+  const fetchSlug = slug === 'combo-reloj-cadena' ? 'reloj' : slug;
+  try {
+    const res  = await fetch(`/api/product-stock?slug=${encodeURIComponent(fetchSlug)}`);
+    const data = await res.json();
+    const vars = data.product?.variants;
+    if (vars && typeof vars === 'object' && !Array.isArray(vars)) {
+      msfVariantNames = Object.keys(vars);
+    }
+  } catch (_) {}
+
+  const isCombo = slug === 'combo-reloj-cadena';
+
+  if (msfVariantNames.length) {
+    varSection.style.display = 'block';
+    qtySection.style.display = 'none';
+    rowsEl.innerHTML = msfBuildVariantRowHTML(msfVariantNames, isCombo);
+    if (addBtn) addBtn.style.display = isCombo ? 'none' : 'block';
+  } else {
+    varSection.style.display = 'none';
+    qtySection.style.display = 'block';
+    if (addBtn) addBtn.style.display = 'block';
+  }
+}
+
+function msfBuildVariantRowHTML(names, isCombo) {
+  const opts = names.map(n => `<option value="${n}">${n}</option>`).join('');
+  const removeBtn = isCombo ? '' :
+    `<button type="button" onclick="msfRemoveVariantRow(this)" title="Quitar" ` +
+    `style="background:none;border:1px solid rgba(248,113,113,.3);color:#f87171;` +
+    `border-radius:6px;cursor:pointer;font-size:18px;line-height:1;padding:0;` +
+    `height:36px;width:32px;font-family:inherit;flex-shrink:0">×</button>`;
+  return `<div class="msf-variant-row" style="display:flex;gap:6px;margin-bottom:6px;align-items:center">` +
+    `<select class="msf-input msf-variant-select" style="flex:1;height:36px;padding:6px 10px">` +
+    `<option value="">Seleccioná color…</option>${opts}</select>` +
+    `<input type="number" class="msf-variant-qty msf-input" min="1" value="1" ` +
+    `style="width:64px;text-align:center;flex-shrink:0"${isCombo ? ' readonly' : ''}>${removeBtn}</div>`;
+}
+
+function msfAddVariantRow() {
+  const rowsEl = document.getElementById('msf-variant-rows');
+  if (!rowsEl || !msfVariantNames.length) return;
+  rowsEl.insertAdjacentHTML('beforeend', msfBuildVariantRowHTML(msfVariantNames, false));
+}
+
+function msfRemoveVariantRow(btn) {
+  const rowsEl = document.getElementById('msf-variant-rows');
+  if (rowsEl && rowsEl.querySelectorAll('.msf-variant-row').length <= 1) return;
+  btn.closest('.msf-variant-row')?.remove();
+}
+
+function msfGetVariantData() {
+  const varSection  = document.getElementById('msf-variant-section');
+  const hasVariants = varSection && varSection.style.display !== 'none';
+
+  if (!hasVariants) {
+    return { variant: undefined, quantity: parseInt(document.getElementById('msf-quantity')?.value) || 1 };
+  }
+
+  const rows = document.querySelectorAll('#msf-variant-rows .msf-variant-row');
+  const list = [];
+  let totalQty = 0;
+  rows.forEach(row => {
+    const color = row.querySelector('.msf-variant-select')?.value || '';
+    const qty   = Math.max(1, parseInt(row.querySelector('.msf-variant-qty')?.value) || 1);
+    if (color) {
+      for (let i = 0; i < qty; i++) list.push(color);
+      totalQty += qty;
+    }
+  });
+  return {
+    variant:  list.length ? JSON.stringify(list) : undefined,
+    quantity: totalQty || 1,
+  };
+}
+
 async function submitManualSale(sendCapi, force) {
   const errEl = document.getElementById('msf-error');
   if (errEl) { errEl.style.display = 'none'; }
@@ -1336,8 +1438,7 @@ async function submitManualSale(sendCapi, force) {
   const name          = document.getElementById('msf-name')?.value.trim();
   const phone         = document.getElementById('msf-phone')?.value.trim();
   const productSlug   = document.getElementById('msf-product')?.value;
-  const variant       = document.getElementById('msf-variant')?.value.trim();
-  const quantity      = parseInt(document.getElementById('msf-quantity')?.value) || 1;
+  const { variant, quantity } = msfGetVariantData();
   const value         = parseFloat(document.getElementById('msf-value')?.value);
   const paymentMethod = document.getElementById('msf-payment')?.value;
   const city          = document.getElementById('msf-city')?.value.trim();
@@ -1359,6 +1460,7 @@ async function submitManualSale(sendCapi, force) {
   if (!paymentMethod)                    return showMsfError('Método de pago requerido');
   if (!sourceType)                       return showMsfError('Fuente requerida');
   if (sendCapi && !confirmed)            return showMsfError('Confirmá que la compra fue real y pagada para enviar a Meta');
+  if (msfVariantNames.length && !variant) return showMsfError('Seleccioná al menos una variante');
 
   const productObj   = MANUAL_PRODUCTS.find(p => p.slug === productSlug);
   const product_name = productObj ? productObj.name : productSlug;
