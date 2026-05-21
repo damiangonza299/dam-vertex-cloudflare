@@ -248,41 +248,7 @@ export async function onRequestPost({ request, env }) {
       ).bind(capiStatus, capiEventId, capiError, saleId).run();
     } catch (_) {}
 
-    /* ── Notificación Telegram ── */
-    if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
-      try {
-        const now = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
-        const srcLabel = {
-          manual_whatsapp: 'WhatsApp directo',
-          meta_ads_manual: 'Meta Ads manual',
-          referido:        'Referido',
-          otro:            'Otro',
-        }[source_type] || source_type;
-
-        const text = [
-          'Venta Manual — DAM VERTEX',
-          '',
-          `Fuente: ${srcLabel}`,
-          `Producto: ${product_name.trim()}`,
-          `Nombre: ${name.trim()}`,
-          `Telefono: ${phoneFinal}`,
-          `Ciudad: ${city?.trim() || '-'}`,
-          `Metodo de pago: ${payment_method.trim()}`,
-          `Total: Gs. ${saleValue.toLocaleString('es-PY')}`,
-          `Cantidad: ${saleQty}`,
-          `Stock: ${stockDeducted ? 'Descontado' : (deduct_stock ? 'ERROR — NO descontado' : 'No aplica')}`,
-          `CAPI: ${capiStatus}`,
-          ...(capiEventId ? [`Event ID: ${capiEventId}`] : []),
-          `Fecha: ${now}`,
-        ].join('\n');
-
-        await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text }),
-        });
-      } catch (_) {}
-    }
+    /* Ventas manuales: no enviar Telegram. El registro queda en admin/D1. */
 
     return json({
       ok:             true,
