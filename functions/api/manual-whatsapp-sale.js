@@ -207,6 +207,7 @@ export async function onRequestPost({ request, env }) {
 
       /* Si el descuento falló: retornar advertencia sin enviar CAPI */
       if (!stockDeducted) {
+        try { await env.DB.prepare(`UPDATE leads SET capi_status = 'skipped' WHERE id = ?`).bind(saleId).run(); } catch (_) {}
         return json({
           ok:          true,
           sale_id:     saleId,
@@ -218,7 +219,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     /* ── Enviar Purchase CAPI (solo si send_capi y confirmed) ── */
-    let capiStatus  = 'pending';
+    let capiStatus  = send_capi ? 'pending' : 'skipped';
     let capiEventId = null;
     let capiError   = null;
 
