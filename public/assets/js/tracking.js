@@ -135,32 +135,69 @@ DV.trackInitiateCheckout = function (product, lead, qty) {
   return event_id;
 };
 
-/* ── Attribution capture (interno, no Meta) ── */
+/* ── Attribution capture — localStorage con TTL 7 días + smart merge ── */
 (function () {
   const ATTR_KEY = 'dv_attr';
+  const ATTR_TTL = 7 * 24 * 60 * 60 * 1000;
   const params   = new URLSearchParams(location.search);
   const FIELDS   = [
     'fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
     'campaign_id', 'adset_id', 'ad_id', 'campaign_name', 'adset_name', 'ad_name',
   ];
+
+  function saveAttr(data) {
+    try { localStorage.setItem(ATTR_KEY, JSON.stringify({ ...data, _ts: Date.now() })); } catch (_) {}
+  }
+
+  function loadAttr() {
+    try {
+      const raw = localStorage.getItem(ATTR_KEY);
+      if (!raw) return null;
+      const obj = JSON.parse(raw);
+      if (obj._ts && Date.now() - obj._ts > ATTR_TTL) { localStorage.removeItem(ATTR_KEY); return null; }
+      const copy = Object.assign({}, obj);
+      delete copy._ts;
+      return copy;
+    } catch (_) { return null; }
+  }
+
+  /* Migración única: sessionStorage → localStorage para usuarios con datos previos */
+  try {
+    const old = sessionStorage.getItem(ATTR_KEY);
+    if (old && !localStorage.getItem(ATTR_KEY)) {
+      saveAttr(JSON.parse(old));
+      sessionStorage.removeItem(ATTR_KEY);
+    }
+  } catch (_) {}
+
   const hasTracking = FIELDS.some(f => params.get(f));
 
   try {
     if (hasTracking) {
-      const attr = { landing_path: location.pathname + location.search, referrer: document.referrer || '' };
-      FIELDS.forEach(f => { const v = params.get(f); if (v) attr[f] = v; });
-      sessionStorage.setItem(ATTR_KEY, JSON.stringify(attr));
-    } else if (!sessionStorage.getItem(ATTR_KEY)) {
-      sessionStorage.setItem(ATTR_KEY, JSON.stringify({
-        landing_path: location.pathname,
-        referrer:     document.referrer || '',
-      }));
+      const incoming = { landing_path: location.pathname + location.search, referrer: document.referrer || '' };
+      FIELDS.forEach(f => { const v = params.get(f); if (v) incoming[f] = v; });
+
+      /* Smart merge: incoming sobreescribe solo los campos que trae.
+         Los campos del existing que NO llegaron (ej. campaign_id de click previo)
+         se preservan — evita perder attribution cuando el usuario regresa sin UTMs. */
+      const existing = loadAttr() || {};
+      const merged   = Object.assign({}, existing);
+      Object.keys(incoming).forEach(function(k) { if (incoming[k]) merged[k] = incoming[k]; });
+      saveAttr(merged);
+    } else if (!loadAttr()) {
+      saveAttr({ landing_path: location.pathname, referrer: document.referrer || '' });
     }
   } catch (_) {}
 })();
 
 function getAttribution() {
-  try { return JSON.parse(sessionStorage.getItem('dv_attr') || 'null') || {}; } catch (_) { return {}; }
+  try {
+    const raw = localStorage.getItem('dv_attr');
+    if (!raw) return {};
+    const obj = JSON.parse(raw);
+    delete obj._ts;
+    return obj;
+  } catch (_) { return {}; }
 }
 
 DV.getAttribution = getAttribution;

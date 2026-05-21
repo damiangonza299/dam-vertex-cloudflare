@@ -82,7 +82,9 @@
       "Bash(curl -s -H \"Authorization: Bearer damian299\" \"https://dam-vertex-cloudflare.pages.dev/api/meta/ads\")",
       "Bash(curl -s -H \"Authorization: Bearer damian299\" \"https://dam-vertex-cloudflare.pages.dev/api/admin-leads\" -o \"F:/Desktop/dam-vertex-cloudflare/leads_raw.json\")",
       "Bash(del \"F:\\\\Desktop\\\\dam-vertex-cloudflare\\\\leads_raw.json\")",
-      "Bash(rm \"F:/Desktop/dam-vertex-cloudflare/leads_raw.json\")"
+      "Bash(rm \"F:/Desktop/dam-vertex-cloudflare/leads_raw.json\")",
+      "Bash(curl -s -X POST \"https://dam-vertex-cloudflare.pages.dev/api/leads\" -H \"Content-Type: application/json\" -d \"{\\\\\"product_name\\\\\":\\\\\"TEST ATTRIBUTION FIX\\\\\",\\\\\"product_slug\\\\\":\\\\\"test\\\\\",\\\\\"name\\\\\":\\\\\"Test Attr\\\\\",\\\\\"phone\\\\\":\\\\\"595981000000\\\\\",\\\\\"city\\\\\":\\\\\"Asuncion\\\\\",\\\\\"value\\\\\":199000,\\\\\"currency\\\\\":\\\\\"PYG\\\\\",\\\\\"campaign_id\\\\\":\\\\\"120249171582080274\\\\\",\\\\\"ad_id\\\\\":\\\\\"120249172902490274\\\\\",\\\\\"adset_id\\\\\":\\\\\"120249171582090274\\\\\",\\\\\"utm_source\\\\\":\\\\\"meta\\\\\",\\\\\"utm_campaign\\\\\":\\\\\"RELOJ | RAREZA | BROAD | TEST 1\\\\\",\\\\\"utm_content\\\\\":\\\\\"RAREZA | SHOPPING\\\\\",\\\\\"campaign_name\\\\\":\\\\\"RELOJ | RAREZA | BROAD | TEST 1\\\\\",\\\\\"ad_name\\\\\":\\\\\"RAREZA | SHOPPING\\\\\",\\\\\"landing_path\\\\\":\\\\\"/reloj/?campaign_id=120249171582080274&utm_source=meta\\\\\"}\")",
+      "Bash(curl -s -X DELETE -H \"Authorization: Bearer damian299\" \"https://dam-vertex-cloudflare.pages.dev/api/admin-leads?id=163\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\Desktop\\dam-vertex-cloudflare\\public",

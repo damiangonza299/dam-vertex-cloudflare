@@ -73,8 +73,11 @@ export async function onRequestGet({ request, env }) {
     for (const row of d1Data) {
       if (row.campaign_id) {
         d1ByCampaignId.set(String(row.campaign_id), row);
-      } else if (row.campaign_name) {
-        d1ByCampaignName.set(row.campaign_name.toLowerCase().trim(), row);
+      } else {
+        /* Fallback por nombre: campaign_name o utm_campaign (leads viejos donde
+           campaign_name es NULL pero utm_campaign tiene el nombre de la campaña) */
+        const nameKey = (row.campaign_name || row.utm_campaign || '').toLowerCase().trim();
+        if (nameKey) d1ByCampaignName.set(nameKey, row);
       }
     }
 

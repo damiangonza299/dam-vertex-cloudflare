@@ -64,6 +64,9 @@ export async function onRequestPost({ request, env }) {
       payment_method || null,
       // slug (index 29)
       product_slug   || null,
+      // attribution quality (indices 30-31)
+      getParaguayDate(),
+      getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source, utm_campaign }),
     ];
 
     let result;
@@ -73,12 +76,24 @@ export async function onRequestPost({ request, env }) {
           product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity, variant,
           fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
           campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer,
-          address, payment_method, product_slug
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          address, payment_method, product_slug,
+          operational_date_py, attribution_confidence
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(...bindArgs).run();
     } catch (insertErr) {
       const msg = insertErr.message || '';
-      if (msg.includes('product_slug')) {
+      if (msg.includes('operational_date_py') || msg.includes('attribution_confidence')) {
+        // Attribution quality columns not yet added (run migrate13.sql) — retry without them
+        console.error('LEAD_SCHEMA: run migrate13.sql for attribution_confidence/operational_date_py');
+        result = await env.DB.prepare(`
+          INSERT INTO leads (
+            product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity, variant,
+            fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+            campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer,
+            address, payment_method, product_slug
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).bind(...bindArgs.slice(0, 30)).run();
+      } else if (msg.includes('product_slug')) {
         // product_slug column not yet added (run migrate9.sql) — save WITH attribution, without product_slug
         console.error('LEAD_SCHEMA: product_slug column missing, run migrate9.sql');
         result = await env.DB.prepare(`
@@ -172,6 +187,25 @@ function formatVariantForTelegram(value) {
     if (typeof parsed === 'string') return parsed;
   } catch (_) {}
   return String(value);
+}
+
+function getParaguayDate() {
+  try {
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Asuncion',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+    }).format(new Date());
+  } catch (_) {
+    return new Date(Date.now() - 4 * 3600 * 1000).toISOString().split('T')[0];
+  }
+}
+
+function getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source, utm_campaign }) {
+  if (campaign_id && ad_id)             return 'high';
+  if (campaign_id)                      return 'medium';
+  if (fbclid || (fbc && fbc.startsWith('fb.1.'))) return 'fbc_only';
+  if (utm_source || utm_campaign)       return 'utm_only';
+  return 'none';
 }
 
 function json(data, status = 200) {
