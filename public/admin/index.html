@@ -92,6 +92,23 @@
       #meta-section .admin-table th:nth-child(7),
       #meta-section .admin-table td:nth-child(7) { display:none; }
     }
+    /* ── Modal venta manual ── */
+    #manual-sale-modal .msf-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+    #manual-sale-modal .msf-grid-2-3 { display:grid; grid-template-columns:2fr 1fr; gap:10px; margin-bottom:10px; }
+    #manual-sale-modal label.msf-label { display:block; font-size:11px; color:var(--muted); margin-bottom:4px; }
+    #manual-sale-modal .msf-input {
+      width:100%; box-sizing:border-box;
+      background:#1a1a1a; border:1px solid var(--border); border-radius:var(--radius-sm);
+      color:#fff; padding:10px 12px; font-size:13px; font-family:inherit; outline:none;
+    }
+    #manual-sale-modal .msf-input:focus { border-color:rgba(59,130,246,.5); }
+    #manual-sale-modal .msf-textarea { resize:vertical; min-height:60px; }
+    #manual-sale-modal #msf-attr-body { display:none; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+    @media (max-width:480px) {
+      #manual-sale-modal .msf-grid-2,
+      #manual-sale-modal .msf-grid-2-3,
+      #manual-sale-modal #msf-attr-body { grid-template-columns:1fr; }
+    }
   </style>
 </head>
 <body class="admin-page">
@@ -185,6 +202,9 @@
       </button>
       <button id="export-csv-btn" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer">
         ↓ Exportar CSV
+      </button>
+      <button id="manual-sale-btn" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;font-size:13px;font-weight:600;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer">
+        + Venta WA
       </button>
     </div>
 
@@ -358,6 +378,171 @@
       <div id="meta-no-attr" style="display:none;margin-top:10px;font-size:12px;color:var(--muted)"></div>
     </div><!-- /meta-section -->
 
+  </div>
+</div>
+
+<!-- Modal: Venta Manual WhatsApp -->
+<div id="manual-sale-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.75);align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto">
+  <div style="background:#111;border:1px solid rgba(255,255,255,.1);border-radius:14px;width:100%;max-width:520px;padding:24px;margin:auto">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h3 style="margin:0;font-size:16px;color:#fff">+ Venta manual WhatsApp</h3>
+      <button onclick="closeManualSaleModal()" style="background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;padding:0 4px">×</button>
+    </div>
+
+    <form id="msf-form" onsubmit="return false">
+
+      <!-- Error -->
+      <div id="msf-error" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px"></div>
+
+      <!-- Nombre / Teléfono -->
+      <div class="msf-grid-2">
+        <div>
+          <label class="msf-label">Nombre *</label>
+          <input id="msf-name" type="text" placeholder="Nombre cliente" class="msf-input" autocomplete="off">
+        </div>
+        <div>
+          <label class="msf-label">Teléfono *</label>
+          <input id="msf-phone" type="tel" placeholder="0981 234567" class="msf-input" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Producto -->
+      <div style="margin-bottom:10px">
+        <label class="msf-label">Producto *</label>
+        <select id="msf-product" class="msf-input" style="height:40px;padding:8px 12px">
+          <option value="">Seleccionar producto...</option>
+          <option value="cepillo">Cepillo Eléctrico (4 Cabezales)</option>
+          <option value="lentes">Lentes Anti Luz Azul Rojos</option>
+          <option value="reloj">Reloj Blackout Minimal</option>
+          <option value="cadena">Cadena Apex</option>
+          <option value="combo-reloj-cadena">Combo Reloj + Cadena Apex</option>
+        </select>
+      </div>
+
+      <!-- Variante / Cantidad -->
+      <div class="msf-grid-2-3">
+        <div>
+          <label class="msf-label">Variante</label>
+          <input id="msf-variant" type="text" placeholder="ej: Negro Total" class="msf-input" autocomplete="off">
+        </div>
+        <div>
+          <label class="msf-label">Cantidad</label>
+          <input id="msf-quantity" type="number" min="1" value="1" class="msf-input">
+        </div>
+      </div>
+
+      <!-- Valor / Pago -->
+      <div class="msf-grid-2">
+        <div>
+          <label class="msf-label">Valor total pagado (Gs.) *</label>
+          <input id="msf-value" type="number" min="1" placeholder="ej: 400000" class="msf-input">
+        </div>
+        <div>
+          <label class="msf-label">Método de pago *</label>
+          <select id="msf-payment" class="msf-input" style="height:40px;padding:8px 12px">
+            <option value="">Seleccionar...</option>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="Billetera virtual">Billetera virtual</option>
+            <option value="Pago al recibir">Pago al recibir</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Ciudad / Fuente -->
+      <div class="msf-grid-2">
+        <div>
+          <label class="msf-label">Ciudad / Zona</label>
+          <input id="msf-city" type="text" placeholder="ej: Asunción" class="msf-input" autocomplete="off">
+        </div>
+        <div>
+          <label class="msf-label">Fuente *</label>
+          <select id="msf-source" class="msf-input" style="height:40px;padding:8px 12px">
+            <option value="">Seleccionar...</option>
+            <option value="manual_whatsapp">WhatsApp directo</option>
+            <option value="meta_ads_manual">Meta Ads manual</option>
+            <option value="referido">Referido</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Observación -->
+      <div style="margin-bottom:14px">
+        <label class="msf-label">Observación</label>
+        <textarea id="msf-observation" placeholder="Nota interna (opcional)" rows="2" class="msf-input msf-textarea"></textarea>
+      </div>
+
+      <!-- Atribución manual (colapsable) -->
+      <div style="margin-bottom:14px">
+        <button type="button" onclick="toggleMsfAttr()"
+          style="width:100%;text-align:left;background:none;border:1px solid rgba(255,255,255,.1);color:var(--muted);font-size:12px;padding:7px 14px;border-radius:20px;cursor:pointer;font-family:inherit">
+          ▸ Datos de anuncio / atribución manual (opcional)
+        </button>
+        <div id="msf-attr-body">
+          <div>
+            <label class="msf-label" style="margin-top:8px">Campaign ID</label>
+            <input id="msf-campaign-id" type="text" class="msf-input" autocomplete="off">
+          </div>
+          <div>
+            <label class="msf-label" style="margin-top:8px">Campaign Name</label>
+            <input id="msf-campaign-name" type="text" class="msf-input" autocomplete="off">
+          </div>
+          <div>
+            <label class="msf-label">Adset ID</label>
+            <input id="msf-adset-id" type="text" class="msf-input" autocomplete="off">
+          </div>
+          <div>
+            <label class="msf-label">Adset Name</label>
+            <input id="msf-adset-name" type="text" class="msf-input" autocomplete="off">
+          </div>
+          <div>
+            <label class="msf-label">Ad ID</label>
+            <input id="msf-ad-id" type="text" class="msf-input" autocomplete="off">
+          </div>
+          <div>
+            <label class="msf-label">Ad Name</label>
+            <input id="msf-ad-name" type="text" class="msf-input" autocomplete="off">
+          </div>
+        </div>
+      </div>
+
+      <!-- Descuento de stock -->
+      <div style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:12px 14px;margin-bottom:10px">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;line-height:1.5;color:rgba(255,255,255,.8)">
+          <input id="msf-deduct-stock" type="checkbox" checked style="margin-top:3px;width:16px;height:16px;accent-color:#60a5fa;flex-shrink:0">
+          <span>Descontar stock ahora</span>
+        </label>
+        <p style="font-size:11px;color:rgba(255,255,255,.35);margin:6px 0 0 26px">Usá esto solo si esta venta todavía no fue descontada del inventario.</p>
+      </div>
+
+      <!-- Confirmación obligatoria -->
+      <div style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:12px 14px;margin-bottom:18px">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;line-height:1.5;color:rgba(255,255,255,.8)">
+          <input id="msf-confirmed" type="checkbox" style="margin-top:3px;width:16px;height:16px;accent-color:#fbbf24;flex-shrink:0">
+          <span>Confirmo que esta compra fue real y ya fue pagada. No registrar consultas ni leads.</span>
+        </label>
+      </div>
+
+      <!-- Botones -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="msf-btn-capi" type="button" onclick="submitManualSale(true, false)"
+          style="flex:1;min-width:160px;background:#3b82f6;border:none;color:#fff;font-size:13px;font-weight:600;padding:12px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit">
+          Guardar + Enviar CAPI
+        </button>
+        <button id="msf-btn-save" type="button" onclick="submitManualSale(false, false)"
+          style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:12px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit">
+          Solo guardar
+        </button>
+        <button type="button" onclick="closeManualSaleModal()"
+          style="background:none;border:none;color:var(--muted);font-size:13px;padding:12px;cursor:pointer;font-family:inherit">
+          Cancelar
+        </button>
+      </div>
+
+    </form>
   </div>
 </div>
 

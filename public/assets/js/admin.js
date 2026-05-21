@@ -41,6 +41,8 @@ if (IS_DELIVERY) {
 
   const exportBtn = document.getElementById('export-csv-btn');
   if (exportBtn) exportBtn.style.display = 'none';
+  const manualSaleBtn = document.getElementById('manual-sale-btn');
+  if (manualSaleBtn) manualSaleBtn.style.display = 'none';
 
   document.querySelectorAll('[data-tab="ads"], [data-tab="dashboard"], [data-tab="meta"]').forEach(btn => {
     btn.style.display = 'none';
@@ -220,6 +222,8 @@ document.getElementById('date-all')?.addEventListener('click', () => setDateFilt
 document.getElementById('date-today')?.addEventListener('click', () => setDateFilter('today'));
 document.getElementById('date-yesterday')?.addEventListener('click', () => setDateFilter('yesterday'));
 document.getElementById('date-picker')?.addEventListener('change', e => { setDateFilter(e.target.value || 'all'); });
+document.getElementById('manual-sale-btn')?.addEventListener('click', openManualSaleModal);
+document.getElementById('manual-sale-modal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeManualSaleModal(); });
 
 function abbrevProduct(name) {
   if (!name) return '—';
@@ -292,7 +296,7 @@ function renderTable(leads) {
 <td class="col-city" title="${esc(l.city || '')}">${formatCity(l.city)}</td>
 <td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))} (${Number(l.quantity || 1)})${fmtVariantCell(l)}</td>
       <td class="col-val">${Number(l.value || 0).toLocaleString('es-PY')}</td>
-      <td class="col-status"><span class="badge badge-${l.status}">${labelStatus(l.status)}</span></td>
+      <td class="col-status"><span class="badge badge-${l.status}">${labelStatus(l.status)}</span>${buildSourceBadges(l)}</td>
       <td class="col-date">${fmtDateShort(l.created_at)}</td>
       <td class="col-actions">${buildActions(l)}</td>
     </tr>
@@ -1252,6 +1256,179 @@ function renderMetaReport(data) {
       <td><span class="meta-q meta-q-${qClass}">${qLabel}</span></td>
     </tr>`;
   }).join('');
+}
+
+/* ── Source/CAPI badge helpers ── */
+function labelSource(s) {
+  return { manual_whatsapp: 'Manual WA', meta_ads_manual: 'Manual Ads', referido: 'Referido', otro: 'Otro' }[s] || s;
+}
+
+function capiStatusStyle(s) {
+  if (s === 'sent')  return 'background:rgba(74,222,128,.12);color:#4ade80';
+  if (s === 'error') return 'background:rgba(248,113,113,.12);color:#f87171';
+  return 'background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)';
+}
+
+function buildSourceBadges(l) {
+  if (!l.source_type) return '';
+  const src  = `<br><span style="display:inline-block;margin-top:3px;font-size:10px;padding:2px 7px;border-radius:3px;background:rgba(74,222,128,.12);color:#4ade80;font-weight:700">${labelSource(l.source_type)}</span>`;
+  const capi = l.capi_status
+    ? `<br><span style="display:inline-block;margin-top:2px;font-size:9px;padding:1px 6px;border-radius:3px;${capiStatusStyle(l.capi_status)}">${l.capi_status.toUpperCase()}</span>`
+    : '';
+  const stock = buildStockBadge(l);
+  return src + capi + stock;
+}
+
+function buildStockBadge(l) {
+  if (!l.source_type) return '';
+  if (l.stock_error)
+    return `<br><span style="display:inline-block;margin-top:2px;font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(248,113,113,.12);color:#f87171">STOCK ERR</span>`;
+  if (l.stock_deducted)
+    return `<br><span style="display:inline-block;margin-top:2px;font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(74,222,128,.08);color:rgba(74,222,128,.7)">Stock ↓</span>`;
+  return `<br><span style="display:inline-block;margin-top:2px;font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.3)">Sin deducir</span>`;
+}
+
+/* =========================================================
+   Venta Manual WhatsApp — Modal
+   ========================================================= */
+
+const MANUAL_PRODUCTS = [
+  { slug: 'cepillo',            name: 'Cepillo Eléctrico Recargable (4 Cabezales)' },
+  { slug: 'lentes',             name: 'Lentes Anti Luz Azul Rojos' },
+  { slug: 'reloj',              name: 'Reloj Blackout Minimal' },
+  { slug: 'cadena',             name: 'Cadena Apex' },
+  { slug: 'combo-reloj-cadena', name: 'Combo Reloj Blackout Minimal + Cadena Apex' },
+];
+
+function openManualSaleModal() {
+  const modal = document.getElementById('manual-sale-modal');
+  if (!modal) return;
+  document.getElementById('msf-form')?.reset();
+  const attrBody = document.getElementById('msf-attr-body');
+  if (attrBody) attrBody.style.display = 'none';
+  const errEl = document.getElementById('msf-error');
+  if (errEl) { errEl.textContent = ''; errEl.style.display = 'none'; }
+  modal.style.display = 'flex';
+}
+
+function closeManualSaleModal() {
+  const modal = document.getElementById('manual-sale-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function toggleMsfAttr() {
+  const body = document.getElementById('msf-attr-body');
+  if (!body) return;
+  body.style.display = body.style.display === 'none' ? 'grid' : 'none';
+}
+
+function showMsfError(msg) {
+  const errEl = document.getElementById('msf-error');
+  if (!errEl) return;
+  errEl.textContent = msg;
+  errEl.style.display = 'block';
+}
+
+async function submitManualSale(sendCapi, force) {
+  const errEl = document.getElementById('msf-error');
+  if (errEl) { errEl.style.display = 'none'; }
+
+  const name          = document.getElementById('msf-name')?.value.trim();
+  const phone         = document.getElementById('msf-phone')?.value.trim();
+  const productSlug   = document.getElementById('msf-product')?.value;
+  const variant       = document.getElementById('msf-variant')?.value.trim();
+  const quantity      = parseInt(document.getElementById('msf-quantity')?.value) || 1;
+  const value         = parseFloat(document.getElementById('msf-value')?.value);
+  const paymentMethod = document.getElementById('msf-payment')?.value;
+  const city          = document.getElementById('msf-city')?.value.trim();
+  const sourceType    = document.getElementById('msf-source')?.value;
+  const observation   = document.getElementById('msf-observation')?.value.trim();
+  const confirmed     = document.getElementById('msf-confirmed')?.checked;
+  const deductStock   = document.getElementById('msf-deduct-stock')?.checked ?? true;
+  const campaignId    = document.getElementById('msf-campaign-id')?.value.trim();
+  const campaignName  = document.getElementById('msf-campaign-name')?.value.trim();
+  const adsetId       = document.getElementById('msf-adset-id')?.value.trim();
+  const adsetName     = document.getElementById('msf-adset-name')?.value.trim();
+  const adId          = document.getElementById('msf-ad-id')?.value.trim();
+  const adName        = document.getElementById('msf-ad-name')?.value.trim();
+
+  if (!name)                             return showMsfError('Nombre requerido');
+  if (!phone)                            return showMsfError('Teléfono requerido');
+  if (!productSlug)                      return showMsfError('Seleccioná un producto');
+  if (!value || isNaN(value) || value <= 0) return showMsfError('Valor total inválido');
+  if (!paymentMethod)                    return showMsfError('Método de pago requerido');
+  if (!sourceType)                       return showMsfError('Fuente requerida');
+  if (sendCapi && !confirmed)            return showMsfError('Confirmá que la compra fue real y pagada para enviar a Meta');
+
+  const productObj   = MANUAL_PRODUCTS.find(p => p.slug === productSlug);
+  const product_name = productObj ? productObj.name : productSlug;
+
+  const btnId = sendCapi ? 'msf-btn-capi' : 'msf-btn-save';
+  const btn   = document.getElementById(btnId);
+  if (btn) { btn.disabled = true; btn.textContent = 'Guardando...'; }
+
+  try {
+    const res = await fetch('/api/manual-whatsapp-sale', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+      body: JSON.stringify({
+        name, phone, product_name, product_slug: productSlug,
+        value, payment_method: paymentMethod,
+        source_type: sourceType, confirmed, send_capi: sendCapi,
+        force: !!force, deduct_stock: deductStock,
+        quantity, variant: variant || undefined,
+        city: city || undefined, observation: observation || undefined,
+        campaign_id:   campaignId   || undefined,
+        campaign_name: campaignName || undefined,
+        adset_id:      adsetId      || undefined,
+        adset_name:    adsetName    || undefined,
+        ad_id:         adId         || undefined,
+        ad_name:       adName       || undefined,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!data.ok && data.duplicate_warning) {
+      const ids = (data.duplicate_ids || []).join(', ');
+      const proceed = confirm(
+        `Posible duplicado detectado.\n\nLead(s) #${ids} ya registrados con el mismo teléfono, producto y valor en las últimas 2 horas.\n\n¿Querés guardar igual?`
+      );
+      if (proceed) submitManualSale(sendCapi, true);
+      return;
+    }
+
+    if (!data.ok) {
+      showMsfError(data.error || 'Error desconocido');
+      return;
+    }
+
+    let msg = `Venta #${data.sale_id} registrada.`;
+    if (data.stock_deducted) {
+      msg += '\nStock descontado correctamente.';
+    } else if (data.stock_error) {
+      msg += `\nStock NO descontado: ${data.stock_error}`;
+    }
+    if (sendCapi) {
+      if (data.capi_status === 'sent') {
+        msg += '\nPurchase enviado a Meta correctamente.';
+      } else if (data.capi_status !== 'skipped') {
+        msg += `\nCAPI: ${data.capi_status}`;
+        if (data.capi_error) msg += `\n${data.capi_error.slice(0, 120)}`;
+      }
+    }
+    alert(msg);
+    closeManualSaleModal();
+    loadLeads();
+
+  } catch (_) {
+    showMsfError('Error de red — verificá la conexión');
+  } finally {
+    if (btn) {
+      btn.disabled    = false;
+      btn.textContent = sendCapi ? 'Guardar + Enviar CAPI' : 'Solo guardar';
+    }
+  }
 }
 
 function renderProductRanking(leads) {
