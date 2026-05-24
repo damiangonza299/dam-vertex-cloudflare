@@ -124,13 +124,93 @@ Usar siempre antes de modificar cualquier archivo de código en producción.
 
 ---
 
+### SKILLS MODULARES DE MARKETING — `skills/`
+
+Skills operativos de agencia para tareas de marketing, publicidad y conversión.
+**Router maestro:** `skills/router.md` — leer para routing completo, inputs esperados y combinaciones.
+Cargar según intención del usuario. Máximo 3 skills de esta categoría por tarea.
+
+**Compatibilidad DAM Vertex:** funnel manual Meta → WhatsApp → cierre humano.
+NO Shopify. NO ecommerce USA. Source of truth = D1 + purchased manual.
+
+**Skills CRÍTICAS (prioridad máxima):**
+`brief-creative-ad` · `copia-ad` · `campana-facebook-ads` · `guion-ad-tiktok`
+`reporte-desempeno-ad` · `creador-bundles` · `estrategia-retargeting` · `pagina-ventas`
+
+#### Routing por Intención
+
+**SI usuario pide: anuncios / ad copy / creativos / Facebook Ads**
+→ `skills/copia-ad.md` + `skills/brief-creative-ad.md` + `skills/campana-facebook-ads.md`
+
+**SI usuario pide: TikTok ads / guión video / UGC**
+→ `skills/guion-ad-tiktok.md`
+
+**SI usuario pide: podcast ad / sponsorship / host-read**
+→ `skills/guion-ad-podcast.md`
+
+**SI usuario pide: bundles / agrupar productos / aumentar AOV**
+→ `skills/creador-bundles.md`
+
+**SI usuario pide: retargeting / remarketing / visitantes que no compraron**
+→ `skills/estrategia-retargeting.md`
+
+**SI usuario pide: descuentos / promos / ventas / precio promocional**
+→ `skills/estrategia-descuentos.md`
+
+**SI usuario pide: landing / página de ventas / sales page / conversión**
+→ `skills/pagina-ventas.md`
+
+**SI usuario pide: tripwire / oferta bajo-ticket / convertir leads en compradores**
+→ `skills/oferta-tripwire.md`
+
+**SI usuario pide: performance report / análisis campañas / ROAS report**
+→ `skills/reporte-desempeno-ad.md`
+
+**SI usuario pide: lookalike / audiencia similar / escalar con nuevos clientes**
+→ `skills/plan-audiencia-similar.md`
+
+**SI usuario pide: venta cruzada / cross-sell / vender a clientes existentes**
+→ `skills/estrategia-venta-cruzada.md`
+
+**SI usuario pide: presupuesto de ads / cuánto gastar / calculadora CPA**
+→ `skills/calculadora-gasto-ad.md`
+
+#### Lista Completa de Skills Modulares
+
+| Skill | Archivo | Cuándo Cargar |
+|---|---|---|
+| Brief Creative Ad | `skills/brief-creative-ad.md` | Producción de creatives, dirección visual |
+| Calculadora Gasto Ad | `skills/calculadora-gasto-ad.md` | Presupuesto, CPA objetivo, proyecciones |
+| Campaña Facebook Ads | `skills/campana-facebook-ads.md` | Estructura de campaña Meta completa |
+| Copia de Ad | `skills/copia-ad.md` | Escribir copy para cualquier plataforma |
+| Creador Bundles | `skills/creador-bundles.md` | Crear bundles, aumentar AOV |
+| Estrategia Descuentos | `skills/estrategia-descuentos.md` | Promos, ventas, pricing con margen |
+| Estrategia Retargeting | `skills/estrategia-retargeting.md` | Retargetear visitantes, segmentación funnel |
+| Estrategia Venta Cruzada | `skills/estrategia-venta-cruzada.md` | Cross-sell a clientes existentes |
+| Guión Ad Podcast | `skills/guion-ad-podcast.md` | Scripts host-read, sponsorships |
+| Guión Ad TikTok | `skills/guion-ad-tiktok.md` | Scripts video nativo, UGC, Spark Ads |
+| Oferta Tripwire | `skills/oferta-tripwire.md` | Bajo-ticket, convertir leads en compradores |
+| Página de Ventas | `skills/pagina-ventas.md` | Sales page largo formato, conversión |
+| Plan Audiencia Similar | `skills/plan-audiencia-similar.md` | Lookalike strategy, escalar con nuevos clientes |
+| Reporte Desempeño Ad | `skills/reporte-desempeno-ad.md` | Análisis ROAS, reporting estructurado |
+
+---
+
 ## Ejemplo de routing por tarea
 
 | Tarea | Skills a cargar |
 |---|---|
 | Reescribir hero de la landing | `core`, `copywriting/paraguay-hooks.md`, `landing-cro/peep-laja-cro.md` |
-| Armar nueva campaña Meta | `core`, `meta-ads/meta-creative-testing.md`, `copywriting/eugene-schwartz-awareness.md` |
+| Armar nueva campaña Meta | `core`, `skills/campana-facebook-ads.md`, `skills/copia-ad.md` |
 | Revisar oferta y precio | `core`, `sales/hormozi-offers.md`, `sales/dan-kennedy-direct-response.md` |
 | Fix de bug en admin/tracking | `core`, `execution/cloudcode-execution-rules.md` |
 | Mejorar performance IndexedDB | `app-architecture/performance-indexeddb.md`, `execution/cloudcode-execution-rules.md` |
 | Configurar push notifications | `app-architecture/push-notifications.md`, `app-architecture/pwa-cloudflare-firebase.md` |
+| Escribir guión TikTok ad | `skills/guion-ad-tiktok.md`, `copywriting/paraguay-hooks.md` |
+| Diseñar estrategia retargeting | `skills/estrategia-retargeting.md`, `core` |
+| Crear bundles de productos | `skills/creador-bundles.md`, `sales/hormozi-offers.md` |
+| Planificar descuento o promo | `skills/estrategia-descuentos.md` |
+| Escribir sales page | `skills/pagina-ventas.md`, `copywriting/eugene-schwartz-awareness.md` |
+| Análisis de performance ads | `skills/reporte-desempeno-ad.md`, `meta-ads/meta-strict-mode.md` |
+| Escalar con lookalike | `skills/plan-audiencia-similar.md`, `core` |
+| Calcular presupuesto ads | `skills/calculadora-gasto-ad.md` |

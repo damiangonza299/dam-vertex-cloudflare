@@ -171,6 +171,49 @@ export async function onRequestPost({ request, env }) {
       }
     }
 
+    /* CAPI QualifiedLead — una vez por insert D1 exitoso, fuente de verdad = backend */
+    if (env.META_PIXEL_ID && env.META_ACCESS_TOKEN) {
+      try {
+        const ts  = Math.floor(Date.now() / 1000);
+        const rnd = Math.random().toString(36).slice(2, 6);
+        const qlId = `ql_${product_slug || 'lead'}_${ts}_${rnd}`;
+        const ud = {};
+        if (ip) ud.client_ip_address = ip;
+        if (ua) ud.client_user_agent = ua;
+        if (fbp) ud.fbp = fbp;
+        if (fbc) ud.fbc = fbc;
+        if (phone) {
+          const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(phone.trim().replace(/\D/g, '')));
+          ud.ph = [[...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('')];
+        }
+        await fetch(
+          `https://graph.facebook.com/v20.0/${env.META_PIXEL_ID}/events?access_token=${env.META_ACCESS_TOKEN}`,
+          {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              data: [{
+                event_name:       'QualifiedLead',
+                event_id:         qlId,
+                event_time:       ts,
+                action_source:    'website',
+                event_source_url: landing_path ? `https://damvertex.com${landing_path}` : 'https://damvertex.com',
+                user_data:        ud,
+                custom_data: {
+                  content_name: product_name || '',
+                  content_ids:  [product_slug || ''],
+                  content_type: 'product',
+                  value:        value  || 0,
+                  currency:     currency || 'PYG',
+                },
+              }],
+              ...(env.META_TEST_EVENT_CODE && { test_event_code: env.META_TEST_EVENT_CODE }),
+            }),
+          },
+        );
+      } catch (_) {}
+    }
+
     return json({ ok: true, lead_id: result.meta?.last_row_id });
 
   } catch (err) {
@@ -190,14 +233,10 @@ function formatVariantForTelegram(value) {
 }
 
 function getParaguayDate() {
-  try {
-    return new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'America/Asuncion',
-      year: 'numeric', month: '2-digit', day: '2-digit',
-    }).format(new Date());
-  } catch (_) {
-    return new Date(Date.now() - 4 * 3600 * 1000).toISOString().split('T')[0];
-  }
+  // Paraguay = UTC-4 permanente (PRT). No usar America/Asuncion — ICU de Cloudflare Workers
+  // puede calcular DST incorrectamente para Paraguay en ciertos períodos, causando UTC-3
+  // en lugar de UTC-4 para leads creados entre 23:00-23:59 PY (03:00-03:59 UTC siguiente día).
+  return new Date(Date.now() - 4 * 3600 * 1000).toISOString().split('T')[0];
 }
 
 function getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source, utm_campaign }) {
