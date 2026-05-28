@@ -714,8 +714,30 @@
         <span class="form-error-msg"></span>
       </div>
 
+      <!-- Ubicación exacta (Google Places) -->
+      <div class="form-group" id="location-group">
+        <label for="m-location">Ubicación exacta</label>
+        <input type="text" id="m-location" name="location_search" placeholder="Ej: Biggie San Lorenzo, Shopping Mariscal..." autocomplete="off">
+        <div id="m-location-map" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden">
+          <div id="m-location-map-canvas" style="height:160px;border-radius:8px;"></div>
+          <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;padding:4px 0 2px;margin:0">Arrastrá el pin para ajustar la ubicación exacta</p>
+        </div>
+        <span class="form-error-msg"></span>
+      </div>
+      <input type="hidden" id="m-loc-address"  name="location_address">
+      <input type="hidden" id="m-loc-city"     name="location_city">
+      <input type="hidden" id="m-loc-lat"      name="location_lat">
+      <input type="hidden" id="m-loc-lng"      name="location_lng">
+      <input type="hidden" id="m-loc-maps-url" name="location_maps_url">
+      <input type="hidden" id="m-loc-place-id" name="location_place_id">
+
+      <div class="form-group">
+        <label for="m-ref">Referencia adicional</label>
+        <input type="text" id="m-ref" name="referencia" placeholder="piso, portón negro, referencia extra">
+      </div>
+
       <div class="form-group" id="city-group">
-        <label for="m-city-search">Ciudad</label>
+        <label for="m-city-search" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
         <div class="city-picker-wrap">
           <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
           <div class="city-dropdown" id="m-city-dropdown"></div>
@@ -725,11 +747,6 @@
           <input type="text" id="m-city-manual" class="city-manual-input" placeholder="Escribí tu ciudad" autocomplete="off">
         </div>
         <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="m-ref">Referencia de dirección</label>
-        <input type="text" id="m-ref" name="referencia" placeholder="casa, portón negro, bodega">
       </div>
 
       <div class="form-group">
@@ -832,15 +849,32 @@
         <span class="form-error-msg"></span>
       </div>
 
-      <div class="form-group">
-        <label for="cm-city">Ciudad</label>
-        <input type="text" id="cm-city" name="city" placeholder="Ej: Asunción, Luque, San Lorenzo..." autocomplete="off">
+      <!-- Ubicación exacta (Google Places) — combo -->
+      <div class="form-group" id="cm-location-group">
+        <label for="cm-location">Ubicación exacta</label>
+        <input type="text" id="cm-location" name="cm_location_search" placeholder="Ej: Biggie San Lorenzo, Shopping Mariscal..." autocomplete="off">
+        <div id="cm-location-map" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden">
+          <div id="cm-location-map-canvas" style="height:160px;border-radius:8px;"></div>
+          <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;padding:4px 0 2px;margin:0">Arrastrá el pin para ajustar la ubicación exacta</p>
+        </div>
         <span class="form-error-msg"></span>
+      </div>
+      <input type="hidden" id="cm-loc-address"  name="cm_location_address">
+      <input type="hidden" id="cm-loc-city"     name="cm_location_city">
+      <input type="hidden" id="cm-loc-lat"      name="cm_location_lat">
+      <input type="hidden" id="cm-loc-lng"      name="cm_location_lng">
+      <input type="hidden" id="cm-loc-maps-url" name="cm_location_maps_url">
+      <input type="hidden" id="cm-loc-place-id" name="cm_location_place_id">
+
+      <div class="form-group">
+        <label for="cm-ref">Referencia adicional</label>
+        <input type="text" id="cm-ref" name="referencia" placeholder="piso, portón negro, referencia extra">
       </div>
 
       <div class="form-group">
-        <label for="cm-ref">Referencia de dirección</label>
-        <input type="text" id="cm-ref" name="referencia" placeholder="casa, portón negro, bodega">
+        <label for="cm-city" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
+        <input type="text" id="cm-city" name="city" placeholder="Ej: Asunción, Luque, San Lorenzo..." autocomplete="off">
+        <span class="form-error-msg"></span>
       </div>
 
       <div class="form-group">
@@ -894,10 +928,15 @@
 
 <!-- Scripts -->
 <script>
+/* Configurar API key de Google Maps aquí (restringida por dominio en Google Cloud Console) */
+window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
+</script>
+<script>
 (function(){
   var v = window.DAM_VERTEX_VERSION || '1';
   document.write('<script src="/assets/js/tracking.js?v=' + v + '"><\/script>');
   document.write('<script src="/assets/js/products.js?v=' + v + '"><\/script>');
+  document.write('<script src="/assets/js/location-picker.js?v=' + v + '"><\/script>');
 })();
 </script>
 <script>
@@ -978,7 +1017,8 @@
 
       if (!comboOverlay || !comboForm) return;
 
-      var _comboAtcFired = false;
+      var _comboAtcFired  = false;
+      var _comboLocInit  = false;
 
       function openComboModal() {
         comboOverlay.classList.add('active');
@@ -986,6 +1026,10 @@
         if (!_comboAtcFired) {
           DV.trackAddToCart({ name: COMBO_NAME, slug: COMBO_SLUG, price: COMBO_PRICE });
           _comboAtcFired = true;
+        }
+        if (!_comboLocInit && typeof DV.initLocationPicker === 'function') {
+          _comboLocInit = true;
+          DV.initLocationPicker('cm', window.DV_MAPS_KEY || '');
         }
       }
 
@@ -1042,6 +1086,16 @@
         var payment  = (document.getElementById('cm-payment') || {}).value || '';
         address = address.trim();
 
+        /* Location picker fields */
+        var cmLocCity    = (document.getElementById('cm-loc-city')     || {}).value || '';
+        var cmLocAddress = (document.getElementById('cm-loc-address')  || {}).value || '';
+        var cmLocLat     = parseFloat((document.getElementById('cm-loc-lat') || {}).value || '') || null;
+        var cmLocLng     = parseFloat((document.getElementById('cm-loc-lng') || {}).value || '') || null;
+        var cmLocMapsUrl = (document.getElementById('cm-loc-maps-url') || {}).value || '';
+        var cmLocPlaceId = (document.getElementById('cm-loc-place-id') || {}).value || '';
+        /* Si se detectó ciudad automáticamente, usarla */
+        if (cmLocCity && !city) city = cmLocCity;
+
         /* Clear errors */
         [nameEl, phoneEl, cityEl].forEach(function(el) {
           if (!el) return;
@@ -1088,10 +1142,11 @@
           'Cadena Apex: 1 unidad incluida',
         ];
         if (isExpress) waLines.push('Envío express: Sí (+10.000 Gs)');
+        waLines.push('Total: ' + totalFmt);
+        waLines.push('Dirección: ' + (address || 'No especificada'));
+        waLines.push('Ciudad: ' + (city || 'No especificada'));
+        if (cmLocMapsUrl) waLines.push('Ubicación exacta: ' + cmLocMapsUrl);
         waLines.push(
-          'Total: ' + totalFmt,
-          'Dirección: ' + (address || 'No especificada'),
-          'Ciudad: ' + city,
           'WhatsApp: ' + rawPhone,
           'Método de Pago: ' + (tgPayment || 'No especificado'),
           '',
@@ -1109,21 +1164,27 @@
           var client = typeof getClientData === 'function' ? getClientData() : {};
           var attr   = typeof DV.getAttribution === 'function' ? DV.getAttribution() : {};
           var payload = Object.assign({}, attr, {
-            product_name:   COMBO_NAME,
-            product_slug:   COMBO_SLUG,
-            name:           name,
-            phone:          validPhone || rawPhone,
-            email:          '',
-            city:           city,
-            value:          comboTotal,
-            currency:       'PYG',
-            quantity:       2,
-            variant:        JSON.stringify([variant]),
-            fbp:            client.fbp || '',
-            fbc:            client.fbc || '',
-            user_agent:     navigator.userAgent,
-            address:        address || null,
-            payment_method: tgPayment || null,
+            product_name:      COMBO_NAME,
+            product_slug:      COMBO_SLUG,
+            name:              name,
+            phone:             validPhone || rawPhone,
+            email:             '',
+            city:              city,
+            value:             comboTotal,
+            currency:          'PYG',
+            quantity:          2,
+            variant:           JSON.stringify([variant]),
+            fbp:               client.fbp || '',
+            fbc:               client.fbc || '',
+            user_agent:        navigator.userAgent,
+            address:           address || null,
+            payment_method:    tgPayment || null,
+            location_address:  cmLocAddress  || null,
+            location_city:     cmLocCity     || null,
+            location_lat:      cmLocLat      || null,
+            location_lng:      cmLocLng      || null,
+            location_maps_url: cmLocMapsUrl  || null,
+            location_place_id: cmLocPlaceId  || null,
           });
           var res = await fetch('/api/leads', {
             method:  'POST',

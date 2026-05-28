@@ -21,7 +21,11 @@ export async function onRequestPost({ request, env }) {
       campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name,
       landing_path, referrer,
       address, payment_method,
+      location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
     } = body;
+
+    /* Si el picker detectó ciudad automáticamente, usarla como city efectiva */
+    const effectiveCity = location_city?.trim() || city?.trim() || null;
 
     if (!name || !phone || !product_name) {
       return json({ ok: false, error: 'Campos requeridos: name, phone, product_name' }, 400);
@@ -30,12 +34,15 @@ export async function onRequestPost({ request, env }) {
     const ip = request.headers.get('CF-Connecting-IP') || '';
     const ua = user_agent || request.headers.get('User-Agent') || '';
 
+    const locLat = location_lat != null ? Number(location_lat) || null : null;
+    const locLng = location_lng != null ? Number(location_lng) || null : null;
+
     const bindArgs = [
       product_name,
       name.trim(),
       phone.trim(),
       email?.trim() || null,
-      city?.trim()  || null,
+      effectiveCity,
       value    || null,
       currency || 'PYG',
       fbp      || null,
@@ -67,6 +74,13 @@ export async function onRequestPost({ request, env }) {
       // attribution quality (indices 30-31)
       getParaguayDate(),
       getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source, utm_campaign }),
+      // location picker (indices 32-37)
+      location_address?.trim() || null,
+      location_city?.trim()    || null,
+      locLat,
+      locLng,
+      location_maps_url?.trim()  || null,
+      location_place_id?.trim()  || null,
     ];
 
     let result;
@@ -77,12 +91,25 @@ export async function onRequestPost({ request, env }) {
           fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
           campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer,
           address, payment_method, product_slug,
-          operational_date_py, attribution_confidence
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          operational_date_py, attribution_confidence,
+          location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(...bindArgs).run();
     } catch (insertErr) {
       const msg = insertErr.message || '';
-      if (msg.includes('operational_date_py') || msg.includes('attribution_confidence')) {
+      if (msg.includes('location_address') || msg.includes('location_city') || msg.includes('location_lat') || msg.includes('location_lng') || msg.includes('location_maps_url') || msg.includes('location_place_id')) {
+        // location columns not yet migrated (run migrate14.sql) — retry without them
+        console.error('LEAD_SCHEMA: run migrate14.sql for location columns');
+        result = await env.DB.prepare(`
+          INSERT INTO leads (
+            product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity, variant,
+            fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+            campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer,
+            address, payment_method, product_slug,
+            operational_date_py, attribution_confidence
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).bind(...bindArgs.slice(0, 32)).run();
+      } else if (msg.includes('operational_date_py') || msg.includes('attribution_confidence')) {
         // Attribution quality columns not yet added (run migrate13.sql) — retry without them
         console.error('LEAD_SCHEMA: run migrate13.sql for attribution_confidence/operational_date_py');
         result = await env.DB.prepare(`
@@ -141,13 +168,16 @@ export async function onRequestPost({ request, env }) {
         const tgProductName = (isComboTg && variantText)
           ? 'Combo Reloj ' + variantText + ' + Cadena Apex'
           : product_name;
+        const tgCity = (location_city?.trim() || city?.trim() || '-');
         const text = [
           'Nuevo pedido DAM VERTEX',
           '',
           `Producto: ${tgProductName}`,
           `Nombre: ${name.trim()}`,
           `Telefono: ${phone.trim()}`,
-          `Ciudad: ${city?.trim() || '-'}`,
+          `Ciudad: ${tgCity}`,
+          ...(address ? [`Referencia: ${address}`] : []),
+          ...(location_maps_url ? [`Ubicacion: ${location_maps_url}`] : []),
           ...(payment_method ? [`Metodo de pago: ${payment_method}`] : []),
           `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
           ...(!isComboTg && variantText ? [`Variante: ${variantText}`] : []),

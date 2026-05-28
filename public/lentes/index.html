@@ -451,8 +451,30 @@
         <span class="form-error-msg"></span>
       </div>
 
+      <!-- Ubicación exacta (Google Places) -->
+      <div class="form-group" id="location-group">
+        <label for="m-location">Ubicación exacta</label>
+        <input type="text" id="m-location" name="location_search" placeholder="Ej: Biggie San Lorenzo, Shopping Mariscal..." autocomplete="off">
+        <div id="m-location-map" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden">
+          <div id="m-location-map-canvas" style="height:160px;border-radius:8px;"></div>
+          <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;padding:4px 0 2px;margin:0">Arrastrá el pin para ajustar la ubicación exacta</p>
+        </div>
+        <span class="form-error-msg"></span>
+      </div>
+      <input type="hidden" id="m-loc-address"  name="location_address">
+      <input type="hidden" id="m-loc-city"     name="location_city">
+      <input type="hidden" id="m-loc-lat"      name="location_lat">
+      <input type="hidden" id="m-loc-lng"      name="location_lng">
+      <input type="hidden" id="m-loc-maps-url" name="location_maps_url">
+      <input type="hidden" id="m-loc-place-id" name="location_place_id">
+
+      <div class="form-group">
+        <label for="m-ref">Referencia adicional</label>
+        <input type="text" id="m-ref" name="referencia" placeholder="piso, portón negro, referencia extra">
+      </div>
+
       <div class="form-group" id="city-group">
-        <label for="m-city-search">Ciudad</label>
+        <label for="m-city-search" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
         <div class="city-picker-wrap">
           <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
           <div class="city-dropdown" id="m-city-dropdown"></div>
@@ -462,11 +484,6 @@
           <input type="text" id="m-city-manual" class="city-manual-input" placeholder="Escribí tu ciudad" autocomplete="off">
         </div>
         <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="m-ref">Referencia de dirección</label>
-        <input type="text" id="m-ref" name="referencia" placeholder="casa, portón negro, bodega">
       </div>
 
       <div class="form-group">
@@ -517,11 +534,13 @@
 </footer>
 
 <!-- Scripts -->
+<script>window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';</script>
 <script>
 (function(){
   var v = window.DAM_VERTEX_VERSION || '1';
   document.write('<script src="/assets/js/tracking.js?v=' + v + '"><\/script>');
   document.write('<script src="/assets/js/products.js?v=' + v + '"><\/script>');
+  document.write('<script src="/assets/js/location-picker.js?v=' + v + '"><\/script>');
 })();
 </script>
 <script>
