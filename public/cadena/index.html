@@ -1049,6 +1049,7 @@
           <div id="m-location-map-canvas" style="height:160px;border-radius:8px;"></div>
           <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;padding:4px 0 2px;margin:0">Arrastrá el pin para ajustar la ubicación exacta</p>
         </div>
+        <div style="margin-top:6px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(255,255,255,.28);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
         <span class="form-error-msg"></span>
       </div>
       <input type="hidden" id="m-loc-address"  name="location_address">
@@ -1058,12 +1059,12 @@
       <input type="hidden" id="m-loc-maps-url" name="location_maps_url">
       <input type="hidden" id="m-loc-place-id" name="location_place_id">
 
-      <div class="form-group">
+      <div class="form-group" id="m-ref-group" style="display:none">
         <label for="m-ref">Referencia adicional</label>
         <input type="text" id="m-ref" name="referencia" placeholder="piso, portón negro, referencia extra">
       </div>
 
-      <div class="form-group" id="city-group">
+      <div class="form-group" id="city-group" style="display:none">
         <label for="m-city-search" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
         <div class="city-picker-wrap">
           <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
@@ -1180,6 +1181,7 @@
           <div id="cm-location-map-canvas" style="height:160px;border-radius:8px;"></div>
           <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;padding:4px 0 2px;margin:0">Arrastrá el pin para ajustar la ubicación exacta</p>
         </div>
+        <div style="margin-top:6px"><button type="button" onclick="document.getElementById('cm-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(255,255,255,.28);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
         <span class="form-error-msg"></span>
       </div>
       <input type="hidden" id="cm-loc-address"  name="cm_location_address">
@@ -1189,12 +1191,12 @@
       <input type="hidden" id="cm-loc-maps-url" name="cm_location_maps_url">
       <input type="hidden" id="cm-loc-place-id" name="cm_location_place_id">
 
-      <div class="form-group">
+      <div class="form-group" id="cm-ref-group" style="display:none">
         <label for="cm-ref">Referencia adicional</label>
         <input type="text" id="cm-ref" name="referencia" placeholder="piso, portón negro, referencia extra">
       </div>
 
-      <div class="form-group">
+      <div class="form-group" style="display:none">
         <label for="cm-city" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
         <input type="text" id="cm-city" name="city" placeholder="Ej: Asunción, Luque, San Lorenzo..." autocomplete="off">
         <span class="form-error-msg"></span>
@@ -1431,7 +1433,6 @@
         if (!name)                                        markErr(nameEl,  'Ingresá tu nombre');
         if (!rawPhone)                                    markErr(phoneEl, 'El teléfono es obligatorio');
         else if (!/^[0-9+\s\-]{6,16}$/.test(rawPhone))  markErr(phoneEl, 'Teléfono inválido');
-        if (!city || city.length < 2)                    markErr(cityEl,  'Ingresá tu ciudad');
 
         if (hasError) {
           if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });

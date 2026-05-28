@@ -832,22 +832,25 @@ function validateModalForm() {
     showError(phoneEl, 'Teléfono inválido'); ok = false;
     if (!firstError) firstError = phoneEl;
   }
-  const citySearchEl   = document.getElementById('m-city-search');
-  const cityManualWrap = document.getElementById('city-manual-wrap');
-  const cityManualEl   = document.getElementById('m-city-manual');
-  const isManualMode   = cityManualWrap && cityManualWrap.style.display !== 'none';
+  const cityGroup = document.getElementById('city-group');
+  if (!cityGroup || cityGroup.style.display !== 'none') {
+    const citySearchEl   = document.getElementById('m-city-search');
+    const cityManualWrap = document.getElementById('city-manual-wrap');
+    const cityManualEl   = document.getElementById('m-city-manual');
+    const isManualMode   = cityManualWrap && cityManualWrap.style.display !== 'none';
 
-  if (isManualMode) {
-    const v = cityManualEl?.value.trim() || '';
-    if (v.length < 2) {
-      showError(cityManualEl, v ? 'Escribí al menos 2 caracteres' : 'Escribí tu ciudad');
+    if (isManualMode) {
+      const v = cityManualEl?.value.trim() || '';
+      if (v.length < 2) {
+        showError(cityManualEl, v ? 'Escribí al menos 2 caracteres' : 'Escribí tu ciudad');
+        ok = false;
+        if (!firstError) firstError = cityManualEl;
+      }
+    } else if (!cityEl?.value) {
+      showError(citySearchEl, 'Seleccioná tu ciudad');
       ok = false;
-      if (!firstError) firstError = cityManualEl;
+      if (!firstError) firstError = citySearchEl;
     }
-  } else if (!cityEl?.value) {
-    showError(citySearchEl, 'Seleccioná tu ciudad');
-    ok = false;
-    if (!firstError) firstError = citySearchEl;
   }
 
   if (!ok && firstError) {
