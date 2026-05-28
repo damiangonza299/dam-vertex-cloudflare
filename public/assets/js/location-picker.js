@@ -27,7 +27,8 @@ window.DV = window.DV || {};
       '.pac-item-query{font-size:13px;color:#fff}' +
       '.pac-secondary-text{font-size:11px;color:rgba(255,255,255,.45)}' +
       '.pac-matched{font-weight:700;color:#fff}' +
-      '.pac-icon{filter:invert(1) brightness(.55)}';
+      '.pac-icon{filter:invert(1) brightness(.55)}' +
+      '[id$="-location-map-canvas"]{touch-action:none}';
     document.head.appendChild(s);
   })();
 
@@ -67,17 +68,6 @@ window.DV = window.DV || {};
     }
     return '';
   }
-
-  var DARK_STYLES = [
-    { elementType: 'geometry',                stylers: [{ color: '#1c1c1c' }] },
-    { elementType: 'labels.text.fill',        stylers: [{ color: '#888' }] },
-    { elementType: 'labels.text.stroke',      stylers: [{ color: '#111' }] },
-    { featureType: 'road',  elementType: 'geometry',         stylers: [{ color: '#2a2a2a' }] },
-    { featureType: 'road',  elementType: 'labels.text.fill', stylers: [{ color: '#666' }] },
-    { featureType: 'water', elementType: 'geometry',         stylers: [{ color: '#0d0d0d' }] },
-    { featureType: 'poi',   elementType: 'geometry',         stylers: [{ color: '#1a1a1a' }] },
-    { featureType: 'poi',   elementType: 'labels.text.fill', stylers: [{ color: '#555' }] },
-  ];
 
   DV.initLocationPicker = function (prefix, mapsKey) {
     var p = prefix || 'm';
@@ -148,8 +138,7 @@ window.DV = window.DV || {};
           zoom:             zoom,
           disableDefaultUI: true,
           zoomControl:      true,
-          gestureHandling:  'cooperative',
-          styles:           DARK_STYLES,
+          gestureHandling:  'greedy',
         });
 
         _marker = new google.maps.Marker({
