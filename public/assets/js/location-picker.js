@@ -157,8 +157,8 @@ window.DV = window.DV || {};
       var el = document.createElement('div');
       el.style.cssText =
         'display:none;margin-top:8px;padding:9px 14px;border-radius:8px;' +
-        'background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);' +
-        'font-size:12px;color:#fecaca;line-height:1.5;text-align:center;';
+        'background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);' +
+        'font-size:12px;color:#fcd34d;line-height:1.5;text-align:center;';
       mapDiv.parentNode.insertBefore(el, mapDiv.nextSibling);
       return el;
     }
@@ -262,7 +262,7 @@ window.DV = window.DV || {};
           _geocoder.geocode({ location: { lat: newLat, lng: newLng } }, function (results, status) {
 
             if (status !== 'OK' || !results || !results.length) {
-              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin rojo para una entrega rápida.');
+              showNotice('📍 Aviso: Si escribiste una ciudad arriba, el pin rojo debe estar en esa misma ciudad.');
               return;
             }
 
@@ -290,13 +290,13 @@ window.DV = window.DV || {};
               var base = inputEl._dvSelectedCity || '';
               if (base && newCity !== base) {
                 /* Ciudad cambió respecto a la seleccionada — avisar */
-                showNotice('Detectamos que el pin está en ' + newCity + '. Usaremos esa ubicación para la entrega.');
+                showNotice('📍 Aviso: Si escribiste una ciudad arriba, el pin rojo debe estar en esa misma ciudad.');
               } else {
                 /* Misma ciudad o sin baseline — sin aviso */
                 hideNotice();
               }
             } else {
-              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin rojo para una entrega rápida.');
+              showNotice('📍 Aviso: Si escribiste una ciudad arriba, el pin rojo debe estar en esa misma ciudad.');
             }
           });
         });
