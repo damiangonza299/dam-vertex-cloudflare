@@ -10,8 +10,8 @@ window.DV = window.DV || {};
 (function () {
   'use strict';
 
-  var DEFAULT_CENTER = { lat: -25.30066, lng: -57.63591 };
-  var DEFAULT_ZOOM   = 12;
+  var DEFAULT_CENTER = { lat: -25.3397, lng: -57.5088 };
+  var DEFAULT_ZOOM   = 10;
 
   var _mapsLoaded    = false;
   var _mapsLoading   = false;

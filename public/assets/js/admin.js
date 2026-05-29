@@ -489,6 +489,7 @@ function formatCity(cityRaw) {
   if (!cityRaw) return '—';
 
   let city = String(cityRaw)
+    .replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '')
     .toLowerCase()
     .replace(/,/g, ' ')
     .replace(/\bparaguay\b/g, '')
