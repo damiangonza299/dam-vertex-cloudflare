@@ -10,7 +10,7 @@ window.DV = window.DV || {};
 (function () {
   'use strict';
 
-  console.log('[DV-LOC VERSION] 20260529 drag-city-fix v51 loaded');
+  console.log('[DV-LOC VERSION] 20260529 overlay-lock v52 loaded');
 
   var DEFAULT_CENTER = { lat: -25.3397, lng: -57.5088 };
   var DEFAULT_ZOOM   = 10;
@@ -96,6 +96,60 @@ window.DV = window.DV || {};
     var _map      = null;
     var _marker   = null;
     var _geocoder = null;
+    var _overlay  = null;
+
+    /* Overlay que bloquea el mapa hasta que el usuario seleccione una ubicación en Places */
+    function buildOverlay() {
+      if (!mapDiv) return null;
+      var ov = document.createElement('div');
+      ov.style.cssText =
+        'position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;' +
+        'align-items:center;justify-content:center;background:rgba(0,0,0,0.60);' +
+        'border-radius:inherit;pointer-events:all;cursor:default;text-align:center;' +
+        'padding:20px;box-sizing:border-box;user-select:none;';
+      ov.innerHTML =
+        '<svg style="margin-bottom:10px;opacity:.85" width="32" height="32" fill="none" stroke="#fff" stroke-width="1.8" viewBox="0 0 24 24">' +
+          '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>' +
+        '</svg>' +
+        '<p style="color:#fff;font-size:14px;font-weight:700;margin:0 0 6px;line-height:1.4;text-shadow:0 1px 4px rgba(0,0,0,.6)">' +
+          'Primero buscá tu ciudad o referencia.' +
+        '</p>' +
+        '<p style="color:rgba(255,255,255,.8);font-size:12px;margin:0;line-height:1.5">' +
+          'Luego ajustá el pin si hace falta.' +
+        '</p>';
+      /* Bloquear toda interacción con el mapa subyacente */
+      ['click', 'mousedown', 'touchstart', 'wheel', 'touchmove'].forEach(function (ev) {
+        ov.addEventListener(ev, function (e) {
+          e.stopPropagation();
+          if (ev !== 'click') e.preventDefault && e.preventDefault();
+        }, { passive: false });
+      });
+      return ov;
+    }
+
+    function lockMap() {
+      if (_marker) _marker.setDraggable(false);
+      if (_map) _map.setOptions({ gestureHandling: 'none', draggable: false, scrollwheel: false });
+      if (mapDiv && !_overlay) {
+        _overlay = buildOverlay();
+        if (_overlay) {
+          mapDiv.style.position = 'relative';
+          mapDiv.appendChild(_overlay);
+        }
+      }
+      inputEl._dvMapUnlocked   = false;
+      inputEl._dvPlaceSelected = false;
+    }
+
+    function unlockMap() {
+      if (_marker) _marker.setDraggable(true);
+      if (_map) _map.setOptions({ gestureHandling: 'greedy', draggable: true, scrollwheel: true });
+      if (_overlay && _overlay.parentNode) {
+        _overlay.parentNode.removeChild(_overlay);
+        _overlay = null;
+      }
+      inputEl._dvMapUnlocked = true;
+    }
 
     function fillFields(lat, lng, addr, city, pid) {
       var mapsUrl = 'https://www.google.com/maps?q=' + lat + ',' + lng;
@@ -110,7 +164,8 @@ window.DV = window.DV || {};
         if (citySearchEl) citySearchEl.value = city;
         if (manualWrapEl) manualWrapEl.style.display = 'none';
       }
-      inputEl._dvLocConfirmed = true;
+      inputEl._dvLocConfirmed  = true;
+      inputEl._dvPlaceSelected = true;
       var grp = inputEl.closest && inputEl.closest('.form-group');
       if (grp) {
         var errEl = grp.querySelector('.form-error-msg');
@@ -119,7 +174,6 @@ window.DV = window.DV || {};
       }
     }
 
-    /* Limpiar campos — el mapa queda visible, marker vuelve al centro default */
     function clearFields() {
       if (addrEl)    addrEl.value    = '';
       if (locCityEl) locCityEl.value = '';
@@ -127,12 +181,13 @@ window.DV = window.DV || {};
       if (lngEl)     lngEl.value     = '';
       if (mapsUrlEl) mapsUrlEl.value = '';
       if (placeIdEl) placeIdEl.value = '';
-      inputEl._dvLocConfirmed = false;
+      inputEl._dvLocConfirmed  = false;
+      inputEl._dvPlaceSelected = false;
+      lockMap();
       if (_marker) _marker.setPosition(DEFAULT_CENTER);
       if (_map)    { _map.setCenter(DEFAULT_CENTER); _map.setZoom(DEFAULT_ZOOM); }
     }
 
-    /* Construye o actualiza el mapa. Primera llamada: center=DEFAULT_CENTER */
     function buildMap(center, zoom) {
       if (!mapCanvas) return;
       if (mapDiv) mapDiv.style.display = 'block';
@@ -143,96 +198,78 @@ window.DV = window.DV || {};
           zoom:             zoom,
           disableDefaultUI: true,
           zoomControl:      true,
-          gestureHandling:  'greedy',
+          gestureHandling:  'none',
+          draggable:        false,
+          scrollwheel:      false,
         });
 
         _marker = new google.maps.Marker({
           position:  center,
           map:       _map,
-          draggable: true,
+          draggable: false,
           title:     'Mové para ajustar tu ubicación exacta',
         });
 
         _geocoder = new google.maps.Geocoder();
 
-        /* Reverse geocoding al soltar el pin */
+        /* Overlay inicial — mapa bloqueado hasta selección en Places */
+        if (mapDiv) {
+          mapDiv.style.position = 'relative';
+          _overlay = buildOverlay();
+          if (_overlay) mapDiv.appendChild(_overlay);
+        }
+
+        /* dragend — solo activo después del unlock; preserva ciudad de Places si geocoder falla */
         _marker.addListener('dragend', function () {
+          if (!inputEl._dvMapUnlocked) return;
+
           var pos    = _marker.getPosition();
           var newLat = pos.lat();
           var newLng = pos.lng();
 
-          /* Lat/lng/maps_url se graban de inmediato (sync) */
           if (latEl)     latEl.value     = newLat;
           if (lngEl)     lngEl.value     = newLng;
           if (mapsUrlEl) mapsUrlEl.value = 'https://www.google.com/maps?q=' + newLat + ',' + newLng;
 
-          /* NO confirmar hasta que geocoder responda — evita submit con city vacío */
-          inputEl._dvLocConfirmed    = false;
+          /* No limpiar ciudad — preservar la de place_changed como baseline */
           inputEl._dvGeocoderPending = true;
-
-          /* Limpiar ciudad previa — evita contaminación durante geocoding */
-          if (locCityEl)    locCityEl.value    = '';
-          if (cityHiddenEl) cityHiddenEl.value = '';
-          if (citySearchEl) citySearchEl.value = '';
 
           console.log('[DV-LOC] dragend lat:', newLat, 'lng:', newLng);
 
-          /* Geocoding inverso — confirma y escribe ciudad cuando responde */
           _geocoder.geocode({ location: { lat: newLat, lng: newLng } }, function (results, status) {
             console.log('[DV-LOC] geocoder status:', status, '| results:', results ? results.length : 0);
-
-            /* Confirmar siempre — lat/lng son válidos independientemente del geocoder */
-            inputEl._dvLocConfirmed    = true;
             inputEl._dvGeocoderPending = false;
 
-            /* Limpiar error "Detectando..." si se estaba mostrando */
-            var grp2 = inputEl.closest && inputEl.closest('.form-group');
-            if (grp2) {
-              var errEl2 = grp2.querySelector('.form-error-msg');
-              if (errEl2) errEl2.classList.remove('visible');
-              inputEl.classList.remove('error');
-            }
-
             if (status !== 'OK' || !results || !results.length) {
-              console.log('[DV-LOC] geocoder falló — sin ciudad, lat/lng confirmados');
+              console.log('[DV-LOC] geocoder falló — manteniendo ciudad de place_changed');
               return;
-            }
-
-            if (results[0] && results[0].address_components) {
-              console.log('[DV-LOC] components[0..4]:', results[0].address_components.slice(0, 5).map(function (c) {
-                return c.long_name + '[' + (c.types || []).join(',') + ']';
-              }));
             }
 
             var addr = results[0].formatted_address || '';
             var pid  = results[0].place_id || '';
-
-            /* Buscar ciudad en TODOS los results — results[0] suele ser plus_code sin locality */
             var city = '';
             for (var ri = 0; ri < results.length && !city; ri++) {
               city = extractCity(results[ri].address_components || []);
             }
-            console.log('[DV-LOC] city encontrada:', city || '(ninguna)');
+            console.log('[DV-LOC] dragend city geocoder:', city || '(ninguna — preservando original)');
 
             if (addr) {
               if (addrEl)  addrEl.value  = addr;
               if (inputEl) inputEl.value = addr;
             }
+            /* Solo actualizar ciudad si geocoder devuelve una */
             if (city) {
               if (locCityEl)    locCityEl.value    = city;
               if (cityHiddenEl) cityHiddenEl.value = city;
               if (citySearchEl) citySearchEl.value = city;
-              if (manualWrapEl) manualWrapEl.style.display = 'none';
             }
             if (pid && placeIdEl) placeIdEl.value = pid;
 
             console.log('[DV-LOC] locCityEl final:', locCityEl ? locCityEl.value : 'null');
-            console.log('[DV-LOC] cityHiddenEl final:', cityHiddenEl ? cityHiddenEl.value : 'null');
           });
         });
 
-        /* ResizeObserver: redibuja automáticamente cuando el modal se hace visible
-           (el canvas pasa de dimensiones 0 a dimensiones reales) */
+        /* ResizeObserver: redibuja automáticamente cuando el modal se hace visible */
         if (typeof ResizeObserver !== 'undefined') {
           new ResizeObserver(function () {
             if (_map) {
@@ -269,6 +306,8 @@ window.DV = window.DV || {};
       var city = extractCity(place.address_components || []);
       fillFields(lat, lng, addr, city, pid);
       buildMap({ lat: lat, lng: lng }, 16);
+      unlockMap();
+      console.log('[DV-LOC] place_changed — ciudad:', city, '| mapa desbloqueado');
     }
 
     if (!mapsKey) {
@@ -276,12 +315,10 @@ window.DV = window.DV || {};
       return;
     }
 
-    /* Carga INMEDIATA — no lazy. El mapa aparece al abrir el modal. */
+    /* Carga INMEDIATA — el mapa aparece al abrir el modal, bloqueado con overlay */
     loadMapsApi(mapsKey, function () {
-      /* Mostrar mapa en centro default de Paraguay */
       buildMap(DEFAULT_CENTER, DEFAULT_ZOOM);
 
-      /* Autocomplete con boundary Paraguay */
       var bounds = new google.maps.LatLngBounds(
         new google.maps.LatLng(-27.59, -62.64),
         new google.maps.LatLng(-19.28, -54.24)
@@ -295,15 +332,14 @@ window.DV = window.DV || {};
       ac.addListener('place_changed', function () { onPlaceSelected(ac); });
     });
 
-    /* Si el usuario borra el campo → mapa queda pero marker vuelve al default */
+    /* Si el usuario borra el campo → re-bloquear mapa */
     inputEl.addEventListener('input', function () {
       if (!inputEl.value.trim()) clearFields();
     });
   };
 
   /* Garantiza que location_city esté resuelto antes del submit.
-     Llama al geocoder si lat/lng existen y city está vacío.
-     Retorna Promise — usar con await antes de leer los campos. */
+     Retorna Promise — disponible como safety net si se necesita. */
   DV.ensureLocationCity = function (prefix) {
     return new Promise(function (resolve) {
       var p         = prefix || 'm';

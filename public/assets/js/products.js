@@ -493,9 +493,6 @@ if (submitBtn)          submitBtn.textContent             = 'Confirmar pedido po
     const selectedRadio = document.querySelector('.offer-options input[name="offer"]:checked');
     const selectedVal   = selectedRadio?.value || '1';
 
-    /* Garantizar ciudad antes de leer commonData — evita race condition con geocoder */
-    if (DV.ensureLocationCity) await DV.ensureLocationCity('m');
-
     const commonData = {
       name:       document.getElementById('m-name')?.value.trim() || '',
       phone:      rawPhone,
@@ -842,12 +839,10 @@ function validateModalForm() {
   }
   const locInputEl = document.getElementById('m-location');
   const locLat     = document.getElementById('m-loc-lat')?.value || '';
+  const locCity    = document.getElementById('m-loc-city')?.value || '';
   const locMapsUrl = document.getElementById('m-loc-maps-url')?.value || '';
-  if (!locLat || !locMapsUrl || !locInputEl?._dvLocConfirmed) {
-    const locMsg = (locLat && locMapsUrl && locInputEl?._dvGeocoderPending)
-      ? 'Detectando tu ubicación, esperá un momento...'
-      : 'Seleccioná o mové el pin para marcar tu ubicación exacta.';
-    showError(locInputEl, locMsg);
+  if (!locInputEl?._dvPlaceSelected || !locLat || !locCity || !locMapsUrl) {
+    showError(locInputEl, 'Buscá y seleccioná tu ubicación exacta antes de continuar.');
     ok = false;
     if (!firstError) firstError = locInputEl;
   }

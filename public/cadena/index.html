@@ -1407,10 +1407,6 @@
         var payment  = paymentEl ? paymentEl.value : '';
         address = address.trim();
 
-        /* Garantizar ciudad antes de leer campos — evita race condition con geocoder */
-        if (window.DV && DV.ensureLocationCity) await DV.ensureLocationCity('cm');
-        console.log('[DV-LOC SUBMIT combo-cadena]', { locLat: (document.getElementById('cm-loc-lat')||{}).value, locCity: (document.getElementById('cm-loc-city')||{}).value, confirmed: (document.getElementById('cm-location')||{})._dvLocConfirmed });
-
         var cmLocCity    = (document.getElementById('cm-loc-city')     || {}).value || '';
         var cmLocAddress = (document.getElementById('cm-loc-address')  || {}).value || '';
         var cmLocLat     = parseFloat((document.getElementById('cm-loc-lat') || {}).value || '') || null;
@@ -1442,10 +1438,8 @@
         if (!rawPhone)                                    markErr(phoneEl, 'El teléfono es obligatorio');
         else if (!/^[0-9+\s\-]{6,16}$/.test(rawPhone))  markErr(phoneEl, 'Teléfono inválido');
         if (!payment)                                     markErr(paymentEl, 'Seleccioná un método de pago.');
-        if (!cmLocMapsUrl || !cmLocLat || !(cmLocInputEl && cmLocInputEl._dvLocConfirmed))
-          markErr(cmLocInputEl, (cmLocLat && cmLocMapsUrl && cmLocInputEl && cmLocInputEl._dvGeocoderPending)
-            ? 'Detectando tu ubicación, esperá un momento...'
-            : 'Seleccioná o mové el pin para marcar tu ubicación exacta.');
+        if (!cmLocCity || !cmLocMapsUrl || !cmLocLat || !(cmLocInputEl && cmLocInputEl._dvPlaceSelected))
+          markErr(cmLocInputEl, 'Buscá y seleccioná tu ubicación exacta antes de continuar.');
 
         if (hasError) {
           if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
