@@ -1126,7 +1126,9 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
         else if (!/^[0-9+\s\-]{6,16}$/.test(rawPhone))  markErr(phoneEl, 'Teléfono inválido');
         if (!payment)                                     markErr(paymentEl, 'Seleccioná un método de pago.');
         if (!cmLocMapsUrl || !cmLocLat || !(cmLocInputEl && cmLocInputEl._dvLocConfirmed))
-          markErr(cmLocInputEl, 'Seleccioná o mové el pin para marcar tu ubicación exacta.');
+          markErr(cmLocInputEl, (cmLocLat && cmLocMapsUrl && cmLocInputEl && cmLocInputEl._dvGeocoderPending)
+            ? 'Detectando tu ubicación, esperá un momento...'
+            : 'Seleccioná o mové el pin para marcar tu ubicación exacta.');
 
         if (hasError) {
           if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });

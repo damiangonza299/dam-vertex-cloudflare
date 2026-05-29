@@ -158,42 +158,74 @@ window.DV = window.DV || {};
           var pos    = _marker.getPosition();
           var newLat = pos.lat();
           var newLng = pos.lng();
-          /* Confirmar posición inmediatamente — válido aunque geocoder falle */
+
+          /* Lat/lng/maps_url se graban de inmediato (sync) */
           if (latEl)     latEl.value     = newLat;
           if (lngEl)     lngEl.value     = newLng;
           if (mapsUrlEl) mapsUrlEl.value = 'https://www.google.com/maps?q=' + newLat + ',' + newLng;
-          inputEl._dvLocConfirmed = true;
-          var grp2 = inputEl.closest && inputEl.closest('.form-group');
-          if (grp2) {
-            var errEl2 = grp2.querySelector('.form-error-msg');
-            if (errEl2) errEl2.classList.remove('visible');
-            inputEl.classList.remove('error');
-          }
-          /* Limpiar ciudad previa antes de geocoding — evita contaminación */
+
+          /* NO confirmar hasta que geocoder responda — evita submit con city vacío */
+          inputEl._dvLocConfirmed    = false;
+          inputEl._dvGeocoderPending = true;
+
+          /* Limpiar ciudad previa — evita contaminación durante geocoding */
           if (locCityEl)    locCityEl.value    = '';
           if (cityHiddenEl) cityHiddenEl.value = '';
           if (citySearchEl) citySearchEl.value = '';
-          /* Geocoding inverso — itera TODOS los results hasta encontrar ciudad */
+
+          console.log('[DV-LOC] dragend lat:', newLat, 'lng:', newLng);
+
+          /* Geocoding inverso — confirma y escribe ciudad cuando responde */
           _geocoder.geocode({ location: { lat: newLat, lng: newLng } }, function (results, status) {
-            if (status !== 'OK' || !results || !results.length) return;
+            console.log('[DV-LOC] geocoder status:', status, '| results:', results ? results.length : 0);
+
+            /* Confirmar siempre — lat/lng son válidos independientemente del geocoder */
+            inputEl._dvLocConfirmed    = true;
+            inputEl._dvGeocoderPending = false;
+
+            /* Limpiar error "Detectando..." si se estaba mostrando */
+            var grp2 = inputEl.closest && inputEl.closest('.form-group');
+            if (grp2) {
+              var errEl2 = grp2.querySelector('.form-error-msg');
+              if (errEl2) errEl2.classList.remove('visible');
+              inputEl.classList.remove('error');
+            }
+
+            if (status !== 'OK' || !results || !results.length) {
+              console.log('[DV-LOC] geocoder falló — sin ciudad, lat/lng confirmados');
+              return;
+            }
+
+            if (results[0] && results[0].address_components) {
+              console.log('[DV-LOC] components[0..4]:', results[0].address_components.slice(0, 5).map(function (c) {
+                return c.long_name + '[' + (c.types || []).join(',') + ']';
+              }));
+            }
+
             var addr = results[0].formatted_address || '';
             var pid  = results[0].place_id || '';
-            /* Buscar ciudad válida en todos los results (results[0] puede ser plus_code sin locality) */
+
+            /* Buscar ciudad en TODOS los results — results[0] suele ser plus_code sin locality */
             var city = '';
             for (var ri = 0; ri < results.length && !city; ri++) {
               city = extractCity(results[ri].address_components || []);
             }
-            /* Fallback final si ningún result tiene ciudad reconocida */
-            if (!city) city = 'No detectada';
+            console.log('[DV-LOC] city encontrada:', city || '(ninguna)');
+
             if (addr) {
               if (addrEl)  addrEl.value  = addr;
               if (inputEl) inputEl.value = addr;
             }
-            if (locCityEl)    locCityEl.value    = city;
-            if (cityHiddenEl) cityHiddenEl.value = city;
-            if (citySearchEl) citySearchEl.value = city;
-            if (manualWrapEl) manualWrapEl.style.display = 'none';
-            if (placeIdEl) placeIdEl.value = pid;
+            if (city) {
+              if (locCityEl)    locCityEl.value    = city;
+              if (cityHiddenEl) cityHiddenEl.value = city;
+              if (citySearchEl) citySearchEl.value = city;
+              if (manualWrapEl) manualWrapEl.style.display = 'none';
+            }
+            if (pid && placeIdEl) placeIdEl.value = pid;
+
+            console.log('[DV-LOC] locCityEl final:', locCityEl ? locCityEl.value : 'null');
+            console.log('[DV-LOC] cityHiddenEl final:', cityHiddenEl ? cityHiddenEl.value : 'null');
           });
         });
 

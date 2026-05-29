@@ -841,7 +841,10 @@ function validateModalForm() {
   const locLat     = document.getElementById('m-loc-lat')?.value || '';
   const locMapsUrl = document.getElementById('m-loc-maps-url')?.value || '';
   if (!locLat || !locMapsUrl || !locInputEl?._dvLocConfirmed) {
-    showError(locInputEl, 'Seleccioná o mové el pin para marcar tu ubicación exacta.');
+    const locMsg = (locLat && locMapsUrl && locInputEl?._dvGeocoderPending)
+      ? 'Detectando tu ubicación, esperá un momento...'
+      : 'Seleccioná o mové el pin para marcar tu ubicación exacta.';
+    showError(locInputEl, locMsg);
     ok = false;
     if (!firstError) firstError = locInputEl;
   }
