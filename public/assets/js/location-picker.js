@@ -10,7 +10,7 @@ window.DV = window.DV || {};
 (function () {
   'use strict';
 
-  console.log('[DV-LOC VERSION] 20260529 city-guard v54 loaded');
+  console.log('[DV-LOC VERSION] 20260529 city-guard v55 loaded');
 
   var DEFAULT_CENTER = { lat: -25.3397, lng: -57.5088 };
   var DEFAULT_ZOOM   = 10;
@@ -188,7 +188,6 @@ window.DV = window.DV || {};
         if (citySearchEl) citySearchEl.value = city;
         if (manualWrapEl) manualWrapEl.style.display = 'none';
       }
-      inputEl._dvLocConfirmed  = true;
       inputEl._dvPlaceSelected = true;
       inputEl._dvSelectedCity  = city;  /* ciudad baseline — nunca se borra */
       hideNotice();
@@ -207,7 +206,6 @@ window.DV = window.DV || {};
       if (lngEl)     lngEl.value     = '';
       if (mapsUrlEl) mapsUrlEl.value = '';
       if (placeIdEl) placeIdEl.value = '';
-      inputEl._dvLocConfirmed  = false;
       inputEl._dvPlaceSelected = false;
       inputEl._dvSelectedCity  = '';
       hideNotice();
@@ -261,30 +259,20 @@ window.DV = window.DV || {};
           if (lngEl)     lngEl.value     = newLng;
           if (mapsUrlEl) mapsUrlEl.value = 'https://www.google.com/maps?q=' + newLat + ',' + newLng;
 
-          inputEl._dvGeocoderPending = true;
-          console.log('[DV-LOC] dragend lat:', newLat, 'lng:', newLng, '| ciudad base:', inputEl._dvSelectedCity);
-
           _geocoder.geocode({ location: { lat: newLat, lng: newLng } }, function (results, status) {
-            console.log('[DV-LOC] geocoder status:', status, '| results:', results ? results.length : 0);
-            inputEl._dvGeocoderPending = false;
 
-            /* ── Geocoder falló completamente ── */
             if (status !== 'OK' || !results || !results.length) {
-              console.log('[DV-LOC] geocoder falló — usando ciudad base:', inputEl._dvSelectedCity);
-              /* Ciudad queda intacta (la de place_changed). Solo mostrar aviso suave. */
-              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin.');
+              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin rojo para una entrega rápida y segura.');
               return;
             }
 
             var addr = results[0].formatted_address || '';
             var pid  = results[0].place_id || '';
 
-            /* Buscar ciudad en todos los results */
             var newCity = '';
             for (var ri = 0; ri < results.length && !newCity; ri++) {
               newCity = extractCity(results[ri].address_components || []);
             }
-            console.log('[DV-LOC] dragend newCity:', newCity || '(no detectada)');
 
             /* Actualizar dirección visible siempre */
             if (addr) {
@@ -308,13 +296,8 @@ window.DV = window.DV || {};
                 hideNotice();
               }
             } else {
-              /* Geocoder OK pero sin locality/ciudad en los results.
-                 Preservar ciudad de place_changed — NO dejar vacío. */
-              console.log('[DV-LOC] sin ciudad en geocoder — preservando:', inputEl._dvSelectedCity);
-              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin.');
+              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin rojo para una entrega rápida y segura.');
             }
-
-            console.log('[DV-LOC] locCityEl final:', locCityEl ? locCityEl.value : 'null');
           });
         });
 
@@ -357,7 +340,6 @@ window.DV = window.DV || {};
       fillFields(lat, lng, addr, city, pid);
       buildMap({ lat: lat, lng: lng }, 16);
       unlockMap();
-      console.log('[DV-LOC] place_changed — ciudad:', city, '| mapa desbloqueado');
     }
 
     if (!mapsKey) {
@@ -385,54 +367,6 @@ window.DV = window.DV || {};
     /* Si el usuario borra el campo → re-bloquear mapa */
     inputEl.addEventListener('input', function () {
       if (!inputEl.value.trim()) clearFields();
-    });
-  };
-
-  /* Garantiza que location_city esté resuelto antes del submit.
-     Retorna Promise — disponible como safety net si se necesita. */
-  DV.ensureLocationCity = function (prefix) {
-    return new Promise(function (resolve) {
-      var p         = prefix || 'm';
-      var latEl     = document.getElementById(p + '-loc-lat');
-      var lngEl     = document.getElementById(p + '-loc-lng');
-      var locCityEl = document.getElementById(p + '-loc-city');
-
-      var lat = parseFloat((latEl && latEl.value) || '') || null;
-      var lng = parseFloat((lngEl && lngEl.value) || '') || null;
-
-      if (!lat || !lng) { console.log('[DV-LOC] ensureLocationCity: sin lat/lng'); resolve(); return; }
-
-      if (locCityEl && locCityEl.value.trim()) {
-        console.log('[DV-LOC] ensureLocationCity: city ya existe:', locCityEl.value);
-        resolve();
-        return;
-      }
-
-      if (!window.google || !window.google.maps) { console.log('[DV-LOC] ensureLocationCity: Maps API no disponible'); resolve(); return; }
-
-      console.log('[DV-LOC] ensureLocationCity: geocodificando', lat, lng);
-      var geocoder = new window.google.maps.Geocoder();
-      geocoder.geocode({ location: { lat: lat, lng: lng } }, function (results, status) {
-        console.log('[DV-LOC] ensureLocationCity geocoder:', status, results ? results.length : 0);
-
-        if (status === 'OK' && results && results.length) {
-          var city = '';
-          for (var ri = 0; ri < results.length && !city; ri++) {
-            city = extractCity(results[ri].address_components || []);
-          }
-          console.log('[DV-LOC] ensureLocationCity city encontrada:', city || '(ninguna)');
-
-          if (city) {
-            var cityHiddenEl = document.getElementById(p === 'm' ? 'm-city' : 'cm-city');
-            var citySearchEl = document.getElementById(p === 'm' ? 'm-city-search' : null);
-            if (locCityEl)    locCityEl.value    = city;
-            if (cityHiddenEl) cityHiddenEl.value = city;
-            if (citySearchEl) citySearchEl.value = city;
-            console.log('[DV-LOC] ensureLocationCity escribió:', city);
-          }
-        }
-        resolve();
-      });
     });
   };
 
