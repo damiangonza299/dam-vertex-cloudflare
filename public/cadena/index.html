@@ -1413,9 +1413,10 @@
         var cmLocLng     = parseFloat((document.getElementById('cm-loc-lng') || {}).value || '') || null;
         var cmLocMapsUrl = (document.getElementById('cm-loc-maps-url') || {}).value || '';
         var cmLocPlaceId = (document.getElementById('cm-loc-place-id') || {}).value || '';
+        var cmLocInputEl = document.getElementById('cm-location');
         if (cmLocCity && !city) city = cmLocCity;
 
-        [nameEl, phoneEl, cityEl, paymentEl].forEach(function(el) {
+        [nameEl, phoneEl, cityEl, paymentEl, cmLocInputEl].forEach(function(el) {
           if (!el) return;
           el.classList.remove('error');
           var errEl = el.closest('.form-group') && el.closest('.form-group').querySelector('.form-error-msg');
@@ -1437,6 +1438,8 @@
         if (!rawPhone)                                    markErr(phoneEl, 'El teléfono es obligatorio');
         else if (!/^[0-9+\s\-]{6,16}$/.test(rawPhone))  markErr(phoneEl, 'Teléfono inválido');
         if (!payment)                                     markErr(paymentEl, 'Seleccioná un método de pago.');
+        if (!cmLocMapsUrl || !cmLocLat || !(cmLocInputEl && cmLocInputEl._dvLocConfirmed))
+          markErr(cmLocInputEl, 'Seleccioná o mové el pin para marcar tu ubicación exacta.');
 
         if (hasError) {
           if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });

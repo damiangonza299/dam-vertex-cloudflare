@@ -59,7 +59,7 @@ window.DV = window.DV || {};
   }
 
   function extractCity(components) {
-    var priority = ['locality', 'sublocality_level_1', 'sublocality', 'administrative_area_level_2'];
+    var priority = ['locality', 'sublocality_level_1', 'sublocality', 'administrative_area_level_2', 'administrative_area_level_3', 'neighborhood'];
     for (var t = 0; t < priority.length; t++) {
       for (var i = 0; i < components.length; i++) {
         if (components[i].types && components[i].types.indexOf(priority[t]) !== -1) {
@@ -108,6 +108,7 @@ window.DV = window.DV || {};
         if (citySearchEl) citySearchEl.value = city;
         if (manualWrapEl) manualWrapEl.style.display = 'none';
       }
+      inputEl._dvLocConfirmed = true;
       var grp = inputEl.closest && inputEl.closest('.form-group');
       if (grp) {
         var errEl = grp.querySelector('.form-error-msg');
@@ -124,6 +125,7 @@ window.DV = window.DV || {};
       if (lngEl)     lngEl.value     = '';
       if (mapsUrlEl) mapsUrlEl.value = '';
       if (placeIdEl) placeIdEl.value = '';
+      inputEl._dvLocConfirmed = false;
       if (_marker) _marker.setPosition(DEFAULT_CENTER);
       if (_map)    { _map.setCenter(DEFAULT_CENTER); _map.setZoom(DEFAULT_ZOOM); }
     }
@@ -156,19 +158,34 @@ window.DV = window.DV || {};
           var pos    = _marker.getPosition();
           var newLat = pos.lat();
           var newLng = pos.lng();
-          var currentAddr = addrEl ? addrEl.value : inputEl.value;
-          var currentCity = locCityEl ? locCityEl.value : '';
+          /* Confirmar posición inmediatamente — válido aunque geocoder falle */
+          if (latEl)     latEl.value     = newLat;
+          if (lngEl)     lngEl.value     = newLng;
+          if (mapsUrlEl) mapsUrlEl.value = 'https://www.google.com/maps?q=' + newLat + ',' + newLng;
+          inputEl._dvLocConfirmed = true;
+          var grp2 = inputEl.closest && inputEl.closest('.form-group');
+          if (grp2) {
+            var errEl2 = grp2.querySelector('.form-error-msg');
+            if (errEl2) errEl2.classList.remove('visible');
+            inputEl.classList.remove('error');
+          }
+          /* Geocoding inverso — best effort, sin contaminar ciudad previa si falla */
           _geocoder.geocode({ location: { lat: newLat, lng: newLng } }, function (results, status) {
-            var addr = currentAddr;
-            var city = currentCity;
-            var pid  = '';
-            if (status === 'OK' && results[0]) {
-              addr = results[0].formatted_address || addr;
-              city = extractCity(results[0].address_components || []) || city;
-              pid  = results[0].place_id || '';
-              inputEl.value = addr;
+            if (status !== 'OK' || !results[0]) return;
+            var addr = results[0].formatted_address || '';
+            var city = extractCity(results[0].address_components || []);
+            var pid  = results[0].place_id || '';
+            if (addr) {
+              if (addrEl)  addrEl.value  = addr;
+              if (inputEl) inputEl.value = addr;
             }
-            fillFields(newLat, newLng, addr, city, pid);
+            if (city) {
+              if (locCityEl)    locCityEl.value    = city;
+              if (cityHiddenEl) cityHiddenEl.value = city;
+              if (citySearchEl) citySearchEl.value = city;
+              if (manualWrapEl) manualWrapEl.style.display = 'none';
+            }
+            if (placeIdEl) placeIdEl.value = pid;
           });
         });
 

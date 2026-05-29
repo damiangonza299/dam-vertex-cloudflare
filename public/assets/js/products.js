@@ -837,6 +837,14 @@ function validateModalForm() {
     showError(paymentEl, 'Seleccioná un método de pago.'); ok = false;
     if (!firstError) firstError = paymentEl;
   }
+  const locInputEl = document.getElementById('m-location');
+  const locLat     = document.getElementById('m-loc-lat')?.value || '';
+  const locMapsUrl = document.getElementById('m-loc-maps-url')?.value || '';
+  if (!locLat || !locMapsUrl || !locInputEl?._dvLocConfirmed) {
+    showError(locInputEl, 'Seleccioná o mové el pin para marcar tu ubicación exacta.');
+    ok = false;
+    if (!firstError) firstError = locInputEl;
+  }
   const cityGroup = document.getElementById('city-group');
   if (!cityGroup || cityGroup.style.display !== 'none') {
     const citySearchEl   = document.getElementById('m-city-search');
