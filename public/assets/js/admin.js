@@ -294,7 +294,7 @@ function renderTable(leads) {
       <td class="col-num">${i + 1}</td>
       <td class="col-name" title="${esc(l.name)}">${shortName(l.name)}</td>
       <td class="col-phone">${esc(l.phone)}</td>
-<td class="col-city" title="${esc(l.location_city || l.city || '')}">${formatCity(l.location_city || l.city)}${l.location_maps_url ? ` <a href="${esc(l.location_maps_url)}" target="_blank" rel="noopener" style="font-size:10px;color:rgba(255,255,255,.35);text-decoration:none;white-space:nowrap" title="Ver ubicación exacta">📍</a>` : ''}</td>
+<td class="col-city" title="${esc(l.location_city || l.city || '')}">${formatCity(l.location_city || l.city)}</td>
 <td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))} (${Number(l.quantity || 1)})${fmtVariantCell(l)}</td>
       <td class="col-val">${Number(l.value || 0).toLocaleString('es-PY')}</td>
       <td class="col-status"><span class="badge badge-${l.status}">${labelStatus(l.status)}</span>${buildSourceBadges(l)}</td>

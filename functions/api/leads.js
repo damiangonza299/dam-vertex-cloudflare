@@ -168,17 +168,17 @@ export async function onRequestPost({ request, env }) {
         const tgProductName = (isComboTg && variantText)
           ? 'Combo Reloj ' + variantText + ' + Cadena Apex'
           : product_name;
-        const tgCity = (location_city?.trim() || city?.trim() || '-');
+        const tgCity = (location_city?.trim() || city?.trim() || '');
         const text = [
           'Nuevo pedido DAM VERTEX',
           '',
           `Producto: ${tgProductName}`,
           `Nombre: ${name.trim()}`,
           `Telefono: ${phone.trim()}`,
-          `Ciudad: ${tgCity}`,
-          ...(address ? [`Referencia: ${address}`] : []),
-          ...(location_maps_url ? [`Ubicacion: ${location_maps_url}`] : []),
           ...(payment_method ? [`Metodo de pago: ${payment_method}`] : []),
+          ...(location_maps_url ? [`Ubicacion: ${location_maps_url}`] : []),
+          ...(address ? [`Referencia: ${address}`] : []),
+          ...(tgCity ? [`Ciudad: ${tgCity}`] : []),
           `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
           ...(!isComboTg && variantText ? [`Variante: ${variantText}`] : []),
           `Cantidad: ${quantity || 1}`,
