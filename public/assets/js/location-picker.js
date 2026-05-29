@@ -10,7 +10,7 @@ window.DV = window.DV || {};
 (function () {
   'use strict';
 
-  console.log('[DV-LOC VERSION] 20260529 city-guard v53 loaded');
+  console.log('[DV-LOC VERSION] 20260529 city-guard v54 loaded');
 
   var DEFAULT_CENTER = { lat: -25.3397, lng: -57.5088 };
   var DEFAULT_ZOOM   = 10;
@@ -157,8 +157,8 @@ window.DV = window.DV || {};
       var el = document.createElement('div');
       el.style.cssText =
         'display:none;margin-top:8px;padding:9px 14px;border-radius:8px;' +
-        'background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.13);' +
-        'font-size:12px;color:rgba(255,255,255,0.82);line-height:1.5;text-align:center;';
+        'background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);' +
+        'font-size:12px;color:#fecaca;line-height:1.5;text-align:center;';
       mapDiv.parentNode.insertBefore(el, mapDiv.nextSibling);
       return el;
     }
@@ -272,7 +272,7 @@ window.DV = window.DV || {};
             if (status !== 'OK' || !results || !results.length) {
               console.log('[DV-LOC] geocoder falló — usando ciudad base:', inputEl._dvSelectedCity);
               /* Ciudad queda intacta (la de place_changed). Solo mostrar aviso suave. */
-              showNotice('Usaremos la ciudad seleccionada y el pin exacto para la entrega.');
+              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin.');
               return;
             }
 
@@ -311,7 +311,7 @@ window.DV = window.DV || {};
               /* Geocoder OK pero sin locality/ciudad en los results.
                  Preservar ciudad de place_changed — NO dejar vacío. */
               console.log('[DV-LOC] sin ciudad en geocoder — preservando:', inputEl._dvSelectedCity);
-              showNotice('Usaremos la ciudad seleccionada y el pin exacto para la entrega.');
+              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin.');
             }
 
             console.log('[DV-LOC] locCityEl final:', locCityEl ? locCityEl.value : 'null');
