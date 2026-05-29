@@ -262,7 +262,7 @@ window.DV = window.DV || {};
           _geocoder.geocode({ location: { lat: newLat, lng: newLng } }, function (results, status) {
 
             if (status !== 'OK' || !results || !results.length) {
-              showNotice('Asegurate de que, si escribiste una ciudad arriba, el pin rojo esté en esa misma ciudad.');
+              showNotice('Asegurate de que, si escribiste una ciudad arriba, el pin rojo debe estar en esa misma ciudad exacta.');
               return;
             }
 
@@ -290,13 +290,13 @@ window.DV = window.DV || {};
               var base = inputEl._dvSelectedCity || '';
               if (base && newCity !== base) {
                 /* Ciudad cambió respecto a la seleccionada — avisar */
-                showNotice('Asegurate de que, si escribiste una ciudad arriba, el pin rojo esté en esa misma ciudad.');
+                showNotice('Asegurate de que, si escribiste una ciudad arriba, el pin rojo debe estar en esa misma ciudad exacta.');
               } else {
                 /* Misma ciudad o sin baseline — sin aviso */
                 hideNotice();
               }
             } else {
-              showNotice('Asegurate de que, si escribiste una ciudad arriba, el pin rojo esté en esa misma ciudad.');
+              showNotice('Asegurate de que, si escribiste una ciudad arriba, el pin rojo debe estar en esa misma ciudad exacta.');
             }
           });
         });
