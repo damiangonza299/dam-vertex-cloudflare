@@ -59,7 +59,7 @@ window.DV = window.DV || {};
   }
 
   function extractCity(components) {
-    var priority = ['locality', 'sublocality_level_1', 'sublocality', 'administrative_area_level_2', 'administrative_area_level_3', 'neighborhood'];
+    var priority = ['locality', 'postal_town', 'administrative_area_level_3', 'administrative_area_level_2', 'sublocality_level_1', 'sublocality', 'neighborhood'];
     for (var t = 0; t < priority.length; t++) {
       for (var i = 0; i < components.length; i++) {
         if (components[i].types && components[i].types.indexOf(priority[t]) !== -1) {
@@ -169,22 +169,30 @@ window.DV = window.DV || {};
             if (errEl2) errEl2.classList.remove('visible');
             inputEl.classList.remove('error');
           }
-          /* Geocoding inverso — best effort, sin contaminar ciudad previa si falla */
+          /* Limpiar ciudad previa antes de geocoding — evita contaminación */
+          if (locCityEl)    locCityEl.value    = '';
+          if (cityHiddenEl) cityHiddenEl.value = '';
+          if (citySearchEl) citySearchEl.value = '';
+          /* Geocoding inverso — itera TODOS los results hasta encontrar ciudad */
           _geocoder.geocode({ location: { lat: newLat, lng: newLng } }, function (results, status) {
-            if (status !== 'OK' || !results[0]) return;
+            if (status !== 'OK' || !results || !results.length) return;
             var addr = results[0].formatted_address || '';
-            var city = extractCity(results[0].address_components || []);
             var pid  = results[0].place_id || '';
+            /* Buscar ciudad válida en todos los results (results[0] puede ser plus_code sin locality) */
+            var city = '';
+            for (var ri = 0; ri < results.length && !city; ri++) {
+              city = extractCity(results[ri].address_components || []);
+            }
+            /* Fallback final si ningún result tiene ciudad reconocida */
+            if (!city) city = 'No detectada';
             if (addr) {
               if (addrEl)  addrEl.value  = addr;
               if (inputEl) inputEl.value = addr;
             }
-            if (city) {
-              if (locCityEl)    locCityEl.value    = city;
-              if (cityHiddenEl) cityHiddenEl.value = city;
-              if (citySearchEl) citySearchEl.value = city;
-              if (manualWrapEl) manualWrapEl.style.display = 'none';
-            }
+            if (locCityEl)    locCityEl.value    = city;
+            if (cityHiddenEl) cityHiddenEl.value = city;
+            if (citySearchEl) citySearchEl.value = city;
+            if (manualWrapEl) manualWrapEl.style.display = 'none';
             if (placeIdEl) placeIdEl.value = pid;
           });
         });
