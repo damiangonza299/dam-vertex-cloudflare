@@ -812,10 +812,11 @@ DV.initCityPicker = function () {
 };
 
 function validateModalForm() {
-  const nameEl  = document.getElementById('m-name');
-  const phoneEl = document.getElementById('m-phone');
-  const cityEl  = document.getElementById('m-city');
-  const phone   = phoneEl?.value.trim() || '';
+  const nameEl    = document.getElementById('m-name');
+  const phoneEl   = document.getElementById('m-phone');
+  const cityEl    = document.getElementById('m-city');
+  const paymentEl = document.getElementById('m-payment');
+  const phone     = phoneEl?.value.trim() || '';
   let ok = true;
   let firstError = null;
 
@@ -831,6 +832,10 @@ function validateModalForm() {
   } else if (!/^[0-9+\s\-]{6,16}$/.test(phone)) {
     showError(phoneEl, 'Teléfono inválido'); ok = false;
     if (!firstError) firstError = phoneEl;
+  }
+  if (!paymentEl?.value) {
+    showError(paymentEl, 'Seleccioná un método de pago.'); ok = false;
+    if (!firstError) firstError = paymentEl;
   }
   const cityGroup = document.getElementById('city-group');
   if (!cityGroup || cityGroup.style.display !== 'none') {

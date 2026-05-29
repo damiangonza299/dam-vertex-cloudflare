@@ -722,7 +722,7 @@
           <div id="m-location-map-canvas" style="height:220px;border-radius:8px;"></div>
           <p style="font-size:12px;font-weight:500;color:#86efac;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:6px;text-align:center;padding:6px 10px;margin:6px 0 0">📍 Mové el pin hasta el lugar exacto de entrega.</p>
         </div>
-        <div style="margin-top:6px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(255,255,255,.28);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
+        <div style="margin-top:2px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(255,255,255,.28);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
         <span class="form-error-msg"></span>
       </div>
       <input type="hidden" id="m-loc-address"  name="location_address">
@@ -732,7 +732,7 @@
       <input type="hidden" id="m-loc-maps-url" name="location_maps_url">
       <input type="hidden" id="m-loc-place-id" name="location_place_id">
 
-      <div class="form-group" id="m-ref-group" style="display:none;margin-top:6px">
+      <div class="form-group" id="m-ref-group" style="display:none;margin-top:-4px">
         <label for="m-ref">Referencia adicional</label>
         <input type="text" id="m-ref" name="referencia" placeholder="piso, portón negro, referencia extra" style="margin-top:6px">
       </div>
@@ -757,6 +757,7 @@
           <option value="Transferencia">Transferencia</option>
           <option value="Efectivo">Efectivo</option>
         </select>
+        <span class="form-error-msg"></span>
       </div>
 
       <label class="upsell-block">
@@ -858,7 +859,7 @@
           <div id="cm-location-map-canvas" style="height:220px;border-radius:8px;"></div>
           <p style="font-size:12px;font-weight:500;color:#86efac;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:6px;text-align:center;padding:6px 10px;margin:6px 0 0">📍 Mové el pin hasta el lugar exacto de entrega.</p>
         </div>
-        <div style="margin-top:6px"><button type="button" onclick="document.getElementById('cm-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(255,255,255,.28);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
+        <div style="margin-top:2px"><button type="button" onclick="document.getElementById('cm-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(255,255,255,.28);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
         <span class="form-error-msg"></span>
       </div>
       <input type="hidden" id="cm-loc-address"  name="cm_location_address">
@@ -868,7 +869,7 @@
       <input type="hidden" id="cm-loc-maps-url" name="cm_location_maps_url">
       <input type="hidden" id="cm-loc-place-id" name="cm_location_place_id">
 
-      <div class="form-group" id="cm-ref-group" style="display:none;margin-top:6px">
+      <div class="form-group" id="cm-ref-group" style="display:none;margin-top:-4px">
         <label for="cm-ref">Referencia adicional</label>
         <input type="text" id="cm-ref" name="referencia" placeholder="piso, portón negro, referencia extra" style="margin-top:6px">
       </div>
@@ -886,6 +887,7 @@
           <option value="Transferencia">Transferencia</option>
           <option value="Efectivo">Efectivo</option>
         </select>
+        <span class="form-error-msg"></span>
       </div>
 
       <label class="upsell-block" id="cm-express-block">
@@ -1078,6 +1080,7 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
         var nameEl    = document.getElementById('cm-name');
         var phoneEl   = document.getElementById('cm-phone');
         var cityEl    = document.getElementById('cm-city');
+        var paymentEl = document.getElementById('cm-payment');
         var variantEl = document.getElementById('cm-variant');
 
         var name     = nameEl  ? nameEl.value.trim()  : '';
@@ -1085,7 +1088,7 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
         var city     = cityEl  ? cityEl.value.trim()   : '';
         var variant  = variantEl ? variantEl.value : 'Negro Total';
         var address  = (document.getElementById('cm-ref')     || {}).value || '';
-        var payment  = (document.getElementById('cm-payment') || {}).value || '';
+        var payment  = paymentEl ? paymentEl.value : '';
         address = address.trim();
 
         /* Location picker fields */
@@ -1099,7 +1102,7 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
         if (cmLocCity && !city) city = cmLocCity;
 
         /* Clear errors */
-        [nameEl, phoneEl, cityEl].forEach(function(el) {
+        [nameEl, phoneEl, cityEl, paymentEl].forEach(function(el) {
           if (!el) return;
           el.classList.remove('error');
           var errEl = el.closest('.form-group') && el.closest('.form-group').querySelector('.form-error-msg');
@@ -1120,6 +1123,7 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
         if (!name)                                        markErr(nameEl,  'Ingresá tu nombre');
         if (!rawPhone)                                    markErr(phoneEl, 'El teléfono es obligatorio');
         else if (!/^[0-9+\s\-]{6,16}$/.test(rawPhone))  markErr(phoneEl, 'Teléfono inválido');
+        if (!payment)                                     markErr(paymentEl, 'Seleccioná un método de pago.');
 
         if (hasError) {
           if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });

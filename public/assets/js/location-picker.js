@@ -28,7 +28,8 @@ window.DV = window.DV || {};
       '.pac-secondary-text{font-size:11px;color:rgba(255,255,255,.45)}' +
       '.pac-matched{font-weight:700;color:#fff}' +
       '.pac-icon{filter:invert(1) brightness(.55)}' +
-      '[id$="-location-map-canvas"]{touch-action:none}';
+      '[id$="-location-map-canvas"]{touch-action:none}' +
+      '.gm-style-cc{display:none!important}';
     document.head.appendChild(s);
   })();
 
