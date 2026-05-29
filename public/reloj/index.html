@@ -1091,6 +1091,10 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
         var payment  = paymentEl ? paymentEl.value : '';
         address = address.trim();
 
+        /* Garantizar ciudad antes de leer campos — evita race condition con geocoder */
+        if (window.DV && DV.ensureLocationCity) await DV.ensureLocationCity('cm');
+        console.log('[DV-LOC SUBMIT combo-reloj]', { locLat: (document.getElementById('cm-loc-lat')||{}).value, locCity: (document.getElementById('cm-loc-city')||{}).value, confirmed: (document.getElementById('cm-location')||{})._dvLocConfirmed });
+
         /* Location picker fields */
         var cmLocCity    = (document.getElementById('cm-loc-city')     || {}).value || '';
         var cmLocAddress = (document.getElementById('cm-loc-address')  || {}).value || '';

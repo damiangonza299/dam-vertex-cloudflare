@@ -10,6 +10,8 @@ window.DV = window.DV || {};
 (function () {
   'use strict';
 
+  console.log('[DV-LOC VERSION] 20260529 drag-city-fix v51 loaded');
+
   var DEFAULT_CENTER = { lat: -25.3397, lng: -57.5088 };
   var DEFAULT_ZOOM   = 10;
 
@@ -296,6 +298,55 @@ window.DV = window.DV || {};
     /* Si el usuario borra el campo → mapa queda pero marker vuelve al default */
     inputEl.addEventListener('input', function () {
       if (!inputEl.value.trim()) clearFields();
+    });
+  };
+
+  /* Garantiza que location_city esté resuelto antes del submit.
+     Llama al geocoder si lat/lng existen y city está vacío.
+     Retorna Promise — usar con await antes de leer los campos. */
+  DV.ensureLocationCity = function (prefix) {
+    return new Promise(function (resolve) {
+      var p         = prefix || 'm';
+      var latEl     = document.getElementById(p + '-loc-lat');
+      var lngEl     = document.getElementById(p + '-loc-lng');
+      var locCityEl = document.getElementById(p + '-loc-city');
+
+      var lat = parseFloat((latEl && latEl.value) || '') || null;
+      var lng = parseFloat((lngEl && lngEl.value) || '') || null;
+
+      if (!lat || !lng) { console.log('[DV-LOC] ensureLocationCity: sin lat/lng'); resolve(); return; }
+
+      if (locCityEl && locCityEl.value.trim()) {
+        console.log('[DV-LOC] ensureLocationCity: city ya existe:', locCityEl.value);
+        resolve();
+        return;
+      }
+
+      if (!window.google || !window.google.maps) { console.log('[DV-LOC] ensureLocationCity: Maps API no disponible'); resolve(); return; }
+
+      console.log('[DV-LOC] ensureLocationCity: geocodificando', lat, lng);
+      var geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode({ location: { lat: lat, lng: lng } }, function (results, status) {
+        console.log('[DV-LOC] ensureLocationCity geocoder:', status, results ? results.length : 0);
+
+        if (status === 'OK' && results && results.length) {
+          var city = '';
+          for (var ri = 0; ri < results.length && !city; ri++) {
+            city = extractCity(results[ri].address_components || []);
+          }
+          console.log('[DV-LOC] ensureLocationCity city encontrada:', city || '(ninguna)');
+
+          if (city) {
+            var cityHiddenEl = document.getElementById(p === 'm' ? 'm-city' : 'cm-city');
+            var citySearchEl = document.getElementById(p === 'm' ? 'm-city-search' : null);
+            if (locCityEl)    locCityEl.value    = city;
+            if (cityHiddenEl) cityHiddenEl.value = city;
+            if (citySearchEl) citySearchEl.value = city;
+            console.log('[DV-LOC] ensureLocationCity escribió:', city);
+          }
+        }
+        resolve();
+      });
     });
   };
 

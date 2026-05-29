@@ -493,6 +493,9 @@ if (submitBtn)          submitBtn.textContent             = 'Confirmar pedido po
     const selectedRadio = document.querySelector('.offer-options input[name="offer"]:checked');
     const selectedVal   = selectedRadio?.value || '1';
 
+    /* Garantizar ciudad antes de leer commonData — evita race condition con geocoder */
+    if (DV.ensureLocationCity) await DV.ensureLocationCity('m');
+
     const commonData = {
       name:       document.getElementById('m-name')?.value.trim() || '',
       phone:      rawPhone,
