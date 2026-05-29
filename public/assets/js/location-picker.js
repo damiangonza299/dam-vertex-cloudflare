@@ -10,7 +10,7 @@ window.DV = window.DV || {};
 (function () {
   'use strict';
 
-  console.log('[DV-LOC VERSION] 20260529 overlay-lock v52 loaded');
+  console.log('[DV-LOC VERSION] 20260529 city-guard v53 loaded');
 
   var DEFAULT_CENTER = { lat: -25.3397, lng: -57.5088 };
   var DEFAULT_ZOOM   = 10;
@@ -97,8 +97,9 @@ window.DV = window.DV || {};
     var _marker   = null;
     var _geocoder = null;
     var _overlay  = null;
+    var _noticeEl = null;
 
-    /* Overlay que bloquea el mapa hasta que el usuario seleccione una ubicación en Places */
+    /* ── OVERLAY (bloquea mapa hasta place_changed) ──────────────────── */
     function buildOverlay() {
       if (!mapDiv) return null;
       var ov = document.createElement('div');
@@ -117,7 +118,6 @@ window.DV = window.DV || {};
         '<p style="color:rgba(255,255,255,.8);font-size:12px;margin:0;line-height:1.5">' +
           'Luego ajustá el pin si hace falta.' +
         '</p>';
-      /* Bloquear toda interacción con el mapa subyacente */
       ['click', 'mousedown', 'touchstart', 'wheel', 'touchmove'].forEach(function (ev) {
         ov.addEventListener(ev, function (e) {
           e.stopPropagation();
@@ -151,6 +151,30 @@ window.DV = window.DV || {};
       inputEl._dvMapUnlocked = true;
     }
 
+    /* ── AVISO debajo del mapa ───────────────────────────────────────── */
+    function buildNotice() {
+      if (!mapDiv || !mapDiv.parentNode) return null;
+      var el = document.createElement('div');
+      el.style.cssText =
+        'display:none;margin-top:8px;padding:9px 14px;border-radius:8px;' +
+        'background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.13);' +
+        'font-size:12px;color:rgba(255,255,255,0.82);line-height:1.5;text-align:center;';
+      mapDiv.parentNode.insertBefore(el, mapDiv.nextSibling);
+      return el;
+    }
+
+    function showNotice(msg) {
+      if (!_noticeEl) _noticeEl = buildNotice();
+      if (!_noticeEl) return;
+      _noticeEl.textContent = msg;
+      _noticeEl.style.display = 'block';
+    }
+
+    function hideNotice() {
+      if (_noticeEl) _noticeEl.style.display = 'none';
+    }
+
+    /* ── FILL / CLEAR ────────────────────────────────────────────────── */
     function fillFields(lat, lng, addr, city, pid) {
       var mapsUrl = 'https://www.google.com/maps?q=' + lat + ',' + lng;
       if (addrEl)    addrEl.value    = addr;
@@ -166,6 +190,8 @@ window.DV = window.DV || {};
       }
       inputEl._dvLocConfirmed  = true;
       inputEl._dvPlaceSelected = true;
+      inputEl._dvSelectedCity  = city;  /* ciudad baseline — nunca se borra */
+      hideNotice();
       var grp = inputEl.closest && inputEl.closest('.form-group');
       if (grp) {
         var errEl = grp.querySelector('.form-error-msg');
@@ -183,11 +209,14 @@ window.DV = window.DV || {};
       if (placeIdEl) placeIdEl.value = '';
       inputEl._dvLocConfirmed  = false;
       inputEl._dvPlaceSelected = false;
+      inputEl._dvSelectedCity  = '';
+      hideNotice();
       lockMap();
       if (_marker) _marker.setPosition(DEFAULT_CENTER);
       if (_map)    { _map.setCenter(DEFAULT_CENTER); _map.setZoom(DEFAULT_ZOOM); }
     }
 
+    /* ── MAPA ────────────────────────────────────────────────────────── */
     function buildMap(center, zoom) {
       if (!mapCanvas) return;
       if (mapDiv) mapDiv.style.display = 'block';
@@ -212,14 +241,14 @@ window.DV = window.DV || {};
 
         _geocoder = new google.maps.Geocoder();
 
-        /* Overlay inicial — mapa bloqueado hasta selección en Places */
+        /* Overlay inicial */
         if (mapDiv) {
           mapDiv.style.position = 'relative';
           _overlay = buildOverlay();
           if (_overlay) mapDiv.appendChild(_overlay);
         }
 
-        /* dragend — solo activo después del unlock; preserva ciudad de Places si geocoder falla */
+        /* dragend — solo activo tras unlock */
         _marker.addListener('dragend', function () {
           if (!inputEl._dvMapUnlocked) return;
 
@@ -227,43 +256,63 @@ window.DV = window.DV || {};
           var newLat = pos.lat();
           var newLng = pos.lng();
 
+          /* Siempre actualizar lat/lng/maps_url con la posición real del pin */
           if (latEl)     latEl.value     = newLat;
           if (lngEl)     lngEl.value     = newLng;
           if (mapsUrlEl) mapsUrlEl.value = 'https://www.google.com/maps?q=' + newLat + ',' + newLng;
 
-          /* No limpiar ciudad — preservar la de place_changed como baseline */
           inputEl._dvGeocoderPending = true;
-
-          console.log('[DV-LOC] dragend lat:', newLat, 'lng:', newLng);
+          console.log('[DV-LOC] dragend lat:', newLat, 'lng:', newLng, '| ciudad base:', inputEl._dvSelectedCity);
 
           _geocoder.geocode({ location: { lat: newLat, lng: newLng } }, function (results, status) {
             console.log('[DV-LOC] geocoder status:', status, '| results:', results ? results.length : 0);
             inputEl._dvGeocoderPending = false;
 
+            /* ── Geocoder falló completamente ── */
             if (status !== 'OK' || !results || !results.length) {
-              console.log('[DV-LOC] geocoder falló — manteniendo ciudad de place_changed');
+              console.log('[DV-LOC] geocoder falló — usando ciudad base:', inputEl._dvSelectedCity);
+              /* Ciudad queda intacta (la de place_changed). Solo mostrar aviso suave. */
+              showNotice('Usaremos la ciudad seleccionada y el pin exacto para la entrega.');
               return;
             }
 
             var addr = results[0].formatted_address || '';
             var pid  = results[0].place_id || '';
-            var city = '';
-            for (var ri = 0; ri < results.length && !city; ri++) {
-              city = extractCity(results[ri].address_components || []);
-            }
-            console.log('[DV-LOC] dragend city geocoder:', city || '(ninguna — preservando original)');
 
+            /* Buscar ciudad en todos los results */
+            var newCity = '';
+            for (var ri = 0; ri < results.length && !newCity; ri++) {
+              newCity = extractCity(results[ri].address_components || []);
+            }
+            console.log('[DV-LOC] dragend newCity:', newCity || '(no detectada)');
+
+            /* Actualizar dirección visible siempre */
             if (addr) {
               if (addrEl)  addrEl.value  = addr;
               if (inputEl) inputEl.value = addr;
             }
-            /* Solo actualizar ciudad si geocoder devuelve una */
-            if (city) {
-              if (locCityEl)    locCityEl.value    = city;
-              if (cityHiddenEl) cityHiddenEl.value = city;
-              if (citySearchEl) citySearchEl.value = city;
-            }
             if (pid && placeIdEl) placeIdEl.value = pid;
+
+            if (newCity) {
+              /* Geocoder detectó ciudad — actualizar */
+              if (locCityEl)    locCityEl.value    = newCity;
+              if (cityHiddenEl) cityHiddenEl.value = newCity;
+              if (citySearchEl) citySearchEl.value = newCity;
+
+              var base = inputEl._dvSelectedCity || '';
+              if (base && newCity !== base) {
+                /* Ciudad cambió respecto a la seleccionada — avisar */
+                showNotice('Detectamos que el pin está en ' + newCity + '. Usaremos esa ubicación para la entrega.');
+              } else {
+                /* Misma ciudad o sin baseline — sin aviso */
+                hideNotice();
+              }
+            } else {
+              /* Geocoder OK pero sin locality/ciudad en los results.
+                 Preservar ciudad de place_changed — NO dejar vacío. */
+              console.log('[DV-LOC] sin ciudad en geocoder — preservando:', inputEl._dvSelectedCity);
+              showNotice('Usaremos la ciudad seleccionada y el pin exacto para la entrega.');
+            }
 
             console.log('[DV-LOC] locCityEl final:', locCityEl ? locCityEl.value : 'null');
           });
@@ -293,6 +342,7 @@ window.DV = window.DV || {};
       }, 150);
     }
 
+    /* ── PLACE SELECTED ──────────────────────────────────────────────── */
     function onPlaceSelected(ac) {
       var place = ac.getPlace();
       if (!place || !place.geometry || !place.geometry.location) {
