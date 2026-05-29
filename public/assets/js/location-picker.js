@@ -262,7 +262,7 @@ window.DV = window.DV || {};
           _geocoder.geocode({ location: { lat: newLat, lng: newLng } }, function (results, status) {
 
             if (status !== 'OK' || !results || !results.length) {
-              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin rojo para una entrega rápida y segura.');
+              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin rojo para una entrega rápida.');
               return;
             }
 
@@ -296,7 +296,7 @@ window.DV = window.DV || {};
                 hideNotice();
               }
             } else {
-              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin rojo para una entrega rápida y segura.');
+              showNotice('Revisá que la ciudad que buscaste coincida con el lugar exacto del pin rojo para una entrega rápida.');
             }
           });
         });
