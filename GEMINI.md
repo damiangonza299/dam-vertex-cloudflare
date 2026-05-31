@@ -74,6 +74,22 @@ Tarea Meta Ads → leer SOLO secciones Meta + core. No leer landing, CSS, Fireba
 
 Tarea landing/código → no leer reglas Meta si no aplican.
 
+### Strict Mode — Reglas Ampliadas
+
+Cuando el Strict Mode está activo, estas reglas son obligatorias:
+
+1. **Leer datos reales antes de recomendar** — no recomendar sobre hipótesis o memoria de sesión anterior
+2. **Diferenciar hipótesis de conclusión** — marcar `[HIPÓTESIS]` vs `[CONCLUSIÓN]` explícitamente
+3. **Separar creatividad, métrica y decisión** — no mezclar análisis de creativo con análisis de ROAS en la misma conclusión
+4. **No optimizar por CTR/CPC si no hay compras o señales fuertes** — CTR sin conversión es vanidad
+5. **Priorizar caja real, compras reales y cierre real por WhatsApp** — el KPI final es revenue, no métricas intermedias
+6. **Purchase es manual** — no existe Purchase automático; se marca a mano en admin panel después de la entrega
+7. **QualifiedLead ocurre cuando el pedido entra al Admin Panel** — no antes, no con el submit del form
+8. **No mezclar InitiateCheckout con QualifiedLead** — son eventos distintos que miden etapas distintas del funnel
+9. **No tocar tracking** — nunca modificar Pixel, CAPI, Purchase, InitiateCheckout sin pedido explícito confirmado
+
+**Reglas completas en:** `AI_SYSTEM/meta-ads/meta-strict-mode.md` — sección Regla 6
+
 ---
 
 ## SKILLS_MODULARES_MODE — Routing Inteligente de Marketing
@@ -136,6 +152,32 @@ Estas 8 skills tienen prioridad máxima. Si la tarea las involucra, cargar antes
 6. `creador-bundles` — aumentar AOV en funnel
 7. `estrategia-retargeting` — recuperar leads calientes
 8. `pagina-ventas` — landing de conversión
+
+### Skills de Referencia Externa — Capa 2 (Meta Ads / Marketing)
+
+Estas 3 skills instaladas en Claude actúan como marco de referencia complementario para Meta Ads y marketing.
+**No reemplazan las skills operativas DAM Vertex** — las enriquecen con marcos creativos, estratégicos y psicológicos.
+
+| Skill | Referencia principal para |
+|---|---|
+| `ad-creative` | Generación de anuncios, variaciones creativas, copies, hooks, headlines, textos primarios, ángulos visuales, conceptos UGC, POV, demo, review, antes/después y creatividad orientada a conversión |
+| `ads` | Estrategia publicitaria, lectura de métricas (CPA, CTR, CPC, ROAS, frecuencia, gasto), diagnóstico de campañas, escalado, pausado, presupuesto y decisiones de optimización |
+| `marketing-psychology` | Persuasión, deseo, dolor, urgencia, objeciones, transformación, identidad, rareza, estatus, prueba social y gatillos psicológicos de compra |
+
+**Regla de prioridad — cualquier trabajo Meta Ads:**
+
+1. Contexto real del proyecto DAM Vertex (`core/dam-vertex-core.md`)
+2. Strict Mode activo (`meta-ads/meta-strict-mode.md`)
+3. Skills externas como marco: `ad-creative` + `ads` + `marketing-psychology`
+4. Datos reales disponibles (Meta API + D1)
+5. No inventar conclusiones si no hay datos
+6. No basarse en teoría si existen métricas reales
+
+**Regla de no conflicto:**
+
+- Las skills externas aportan marcos creativos y psicológicos; los datos reales y las decisiones operativas siguen siendo del sistema DAM Vertex
+- Si una recomendación de skill externa contradice una regla crítica DAM Vertex → la regla DAM Vertex tiene prioridad
+- No mezclar lógica genérica de skills externas con el funnel Paraguay (no Shopify, no checkout automático, no ROAS Meta como source of truth)
 
 ---
 
@@ -207,6 +249,11 @@ Este repositorio incluye un sistema de memoria operativa para AI en `/AI_SYSTEM/
     plan-audiencia-similar.md
     reporte-desempeno-ad.md ← CRÍTICA
   SKILL_AUDIT.md            ← auditoría completa del sistema
+
+# SKILLS DE REFERENCIA EXTERNA (instaladas en Claude, no en /AI_SYSTEM)
+  ad-creative               ← creativos, hooks, ángulos visuales, copies
+  ads                       ← estrategia publicitaria, métricas, escalado
+  marketing-psychology      ← persuasión, psicología de conversión
 ```
 
 ### Propósito

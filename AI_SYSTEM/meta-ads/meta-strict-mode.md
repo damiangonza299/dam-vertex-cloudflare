@@ -176,3 +176,75 @@ ADMIN_PASSWORD en `.dev.vars` es placeholder (`PONER_PASSWORD_AQUI`). Solo funci
 9. Analizar con datos reales únicamente
 10. Recomendar solo sobre lo verificado
 ```
+
+---
+
+## Regla 6 — Strict Mode Ampliado
+
+### 6.1 — Separación de capas de análisis
+
+No mezclar en la misma conclusión:
+- **Creatividad** — qué anunciar, cómo comunicar, qué creativo probar
+- **Métrica** — CTR, CPC, ROAS, frecuencia, spend
+- **Decisión** — pausar, escalar, cambiar creativo, ajustar presupuesto
+
+Cada capa requiere datos distintos. Una observación de creativo no implica automáticamente una decisión de escalado.
+
+### 6.2 — Hipótesis vs conclusión
+
+Marcar explícitamente:
+- `[HIPÓTESIS]` — observación sin datos suficientes que la confirmen
+- `[CONCLUSIÓN]` — recomendación respaldada por datos reales consultados en esta sesión
+
+No presentar hipótesis como conclusiones.
+
+### 6.3 — Reglas operativas del funnel DAM Vertex
+
+**NUNCA:**
+- Optimizar únicamente por CTR o CPC sin verificar si hay compras o señales de conversión reales
+- Usar Meta purchases como fuente de verdad para decisiones de presupuesto o pausa
+
+**SIEMPRE:**
+- Priorizar caja real: revenue de `purchased` en D1 / gasto Meta = ROAS real
+- Priorizar compras confirmadas por WhatsApp y marcadas manualmente en admin panel
+- Priorizar tasa de cierre real del funnel completo
+
+### 6.4 — Definiciones críticas del sistema (no confundir)
+
+| Concepto | Definición correcta |
+|---|---|
+| **Purchase** | Se marca manualmente en admin panel después de la entrega. No existe Purchase automático en este sistema. |
+| **QualifiedLead** | Ocurre cuando el pedido entra al Admin Panel (form submit → D1 write → visible en admin). |
+| **InitiateCheckout** | Evento de Meta Pixel que dispara cuando el usuario inicia el checkout. Distinto de QualifiedLead. |
+| **ROAS real** | `d1.purchased revenue` / `gasto Meta`. No el ROAS que reporta Meta Ads Manager. |
+
+**NO mezclar** InitiateCheckout con QualifiedLead — son eventos distintos que miden etapas distintas del funnel.
+
+### 6.5 — Tracking es intocable
+
+CloudCode **NUNCA** debe:
+- Modificar `tracking.js`
+- Modificar Meta Pixel (`fbq` calls)
+- Modificar CAPI
+- Modificar el evento Purchase
+- Modificar InitiateCheckout
+- Modificar QualifiedLead
+
+Salvo pedido explícito, verificado y confirmado por el usuario.
+
+### 6.6 — Skills de referencia externa (Capa 2)
+
+Cuando Strict Mode está activo, aplicar como marco de referencia complementario:
+
+| Skill | Rol |
+|---|---|
+| `ad-creative` | Generación creativa: hooks, ángulos, copies, UGC, POV, demo, review, antes/después |
+| `ads` | Estrategia publicitaria: diagnóstico de métricas, CPA/CTR/ROAS, escalado, presupuesto |
+| `marketing-psychology` | Persuasión: dolor, deseo, urgencia, objeciones, identidad, prueba social, gatillos de compra |
+
+**Jerarquía obligatoria:**
+1. Contexto real DAM Vertex + datos reales
+2. Strict Mode (esta regla)
+3. Skills externas como marco complementario
+
+Nunca aplicar recomendación de skill externa si contradice datos reales o reglas críticas del proyecto.

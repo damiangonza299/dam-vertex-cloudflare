@@ -1393,6 +1393,7 @@
         if (!comboConfirm || !comboConfirm.checked) {
           if (comboConfBlk) comboConfBlk.classList.add('error');
           if (comboConfErr) comboConfErr.classList.add('visible');
+          if (comboConfBlk) comboConfBlk.scrollIntoView({ behavior: 'smooth', block: 'center' });
           return;
         }
 

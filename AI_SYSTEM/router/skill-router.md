@@ -108,6 +108,33 @@ D1: leads | purchased | pending | cancelled | close_rate | roas_real (si disponi
 
 ---
 
+### SKILLS DE REFERENCIA EXTERNA — Capa 2 (Meta Ads / Marketing)
+
+Skills instaladas en Claude como marco de referencia para Meta Ads y marketing.
+Se aplican **sobre** las skills operativas DAM Vertex, no en lugar de ellas.
+Activar en tareas de generación creativa avanzada, análisis de estrategia o psicología de conversión.
+
+| Skill Externa | Área | Cuándo Usar |
+|---|---|---|
+| `ad-creative` | Creativos, hooks, copy | Generar anuncios, variaciones, conceptos UGC, POV, demo, review, antes/después, ángulos visuales |
+| `ads` | Estrategia, métricas | Diagnóstico de campañas, lectura de CPA/CTR/CPC/ROAS/frecuencia/gasto, escalado, pausado, presupuesto |
+| `marketing-psychology` | Persuasión | Dolor, deseo, urgencia, objeciones, identidad, rareza, estatus, prueba social, gatillos de compra |
+
+**Regla de prioridad para trabajo Meta Ads:**
+1. Contexto real DAM Vertex (`core/dam-vertex-core.md`)
+2. Strict Mode (`meta-ads/meta-strict-mode.md`)
+3. Skills externas: `ad-creative` + `ads` + `marketing-psychology` como marco complementario
+4. Datos reales Meta API + D1
+5. No inventar conclusiones si no hay datos
+6. No basarse en teoría si existen métricas reales
+
+**Regla de no conflicto:**
+- Si una recomendación de skill externa contradice una regla crítica de DAM Vertex → la regla DAM Vertex tiene prioridad
+- No mezclar lógica genérica de skills externas con el funnel Paraguay (no Shopify, no checkout automático, no ROAS Meta como source of truth)
+- No tocar tracking, Purchase, QualifiedLead, InitiateCheckout, Meta Pixel, CAPI bajo ningún marco externo
+
+---
+
 ### APLICACIONES / PWA / FIREBASE / CLOUDFLARE / INDEXEDDB
 - `app-architecture/pwa-cloudflare-firebase.md`
 - `app-architecture/performance-indexeddb.md`

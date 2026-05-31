@@ -4,6 +4,15 @@
 
 const WA_NUMBER = '595993471550';
 
+const VARIANT_DISPLAY_NAMES = {
+  'Negro Total':        'Negro Total',
+  'Negro Dorado':       'Dorado',
+  'Negro Rosa':         'Rosa',
+  'Negro Cobre':        'Cobre',
+  'Negro Dorado Sutil': 'Dorado Sutil',
+  'Plateado Negro':     'Plateado',
+};
+
 /* iOS zoom prevention on focus */
 document.addEventListener('focusin', function (e) {
   if (window.innerWidth < 768) {
@@ -31,7 +40,7 @@ function buildWAMsg(product, data, offerInfo) {
   const qtyLabel  = `${offerInfo.qty} unidad${offerInfo.qty > 1 ? 'es' : ''}`;
   const express   = data.express ? ' + Envío Express' : '';
   const colorLine = offerInfo.colors?.length
-    ? `Colores: ${offerInfo.colors.join(' + ')}`
+    ? `Colores: ${offerInfo.colors.map(c => VARIANT_DISPLAY_NAMES[c] || c).join(' + ')}`
     : null;
   const lines = [
     '¡Hola! Acabo de realizar un pedido en DAM VERTEX y quiero confirmar los detalles:',
@@ -53,7 +62,7 @@ function buildWAMsg(product, data, offerInfo) {
 
 function buildCustomOrderWAMsg(product, data, qty, total, colors) {
   const colorLine = colors?.length
-    ? `Colores: ${colors.join(' + ')}`
+    ? `Colores: ${colors.map(c => VARIANT_DISPLAY_NAMES[c] || c).join(' + ')}`
     : (!product.customNoVariants ? 'Colores/variantes: a coordinar por WhatsApp' : null);
 
   const lines = [
@@ -452,7 +461,7 @@ if (submitBtn)          submitBtn.textContent             = 'Confirmar pedido po
       group.innerHTML = `
         <label for="m-color-${i}">${qty === 1 ? 'Color' : `Unidad ${i}`}</label>
         <select id="m-color-${i}" name="color-${i}" class="admin-filter-select" style="width:100%">
-          ${product.variants.options.map(o => `<option value="${o}">${o}</option>`).join('')}
+          ${product.variants.options.map(o => `<option value="${o}">${VARIANT_DISPLAY_NAMES[o] || o}</option>`).join('')}
         </select>
       `;
       variantSelectors.appendChild(group);
@@ -470,9 +479,11 @@ if (submitBtn)          submitBtn.textContent             = 'Confirmar pedido po
   modalForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!confirmCb?.checked) {
-      document.querySelector('.confirm-intent')?.classList.add('error');
+      const confirmBlock = document.querySelector('.confirm-intent');
+      confirmBlock?.classList.add('error');
       const msg = document.querySelector('.confirm-error-msg');
       if (msg) msg.classList.add('visible');
+      confirmBlock?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
     if (!validateModalForm()) return;
@@ -535,6 +546,7 @@ if (customManualBtn) customManualBtn.href = customWaUrl;
 const customStockCheck = await checkProductStock(product.slug, customQty, customColors);
 if (!customStockCheck.ok) {
   showStockError(customStockCheck.error);
+  document.getElementById('dv-stock-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   submitBtn.disabled  = false;
   submitBtn.innerHTML = 'Confirmar pedido por WhatsApp';
   return;
@@ -627,6 +639,7 @@ const stockVariant = colors.length > 1 ? colors : primaryVariant;
 const stockCheck = await checkProductStock(product.slug, selectedQty, stockVariant);
 if (!stockCheck.ok) {
   showStockError(stockCheck.error);
+  document.getElementById('dv-stock-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   submitBtn.disabled  = false;
   submitBtn.innerHTML = 'Confirmar pedido por WhatsApp';
   return;
