@@ -37,7 +37,7 @@ export async function onRequestGet({ request, env }) {
   try {
     const [
       volumeR, scrollR, sectionR, ctaClickR,
-      modalOpenR, formSubmitR, errorR, leadR, revenueR,
+      modalOpenR, formSubmitR, errorR, leadR, revenueR, landingsR,
     ] = await env.DB.batch([
 
       /* 1 — Volume */
@@ -84,6 +84,11 @@ export async function onRequestGet({ request, env }) {
       env.DB.prepare(
         "SELECT COUNT(DISTINCT CASE WHEN l.status='purchased' THEN be.session_id END) AS purchased_sessions, COALESCE(SUM(CASE WHEN l.status='purchased' THEN CAST(l.value AS REAL) ELSE 0 END),0) AS revenue FROM behavior_events be JOIN leads l ON l.session_id = be.session_id WHERE be.landing LIKE ? AND be.ts >= ?"
       ).bind(landingFilter, since),
+
+      /* 10 — Distinct landings (for dynamic selector) */
+      env.DB.prepare(
+        'SELECT DISTINCT landing FROM behavior_events ORDER BY landing'
+      ),
     ]);
 
     /* ── Volume ── */
@@ -136,6 +141,14 @@ export async function onRequestGet({ request, env }) {
     const purchasedSessions  = revenueR.results[0]?.purchased_sessions  || 0;
     const totalRevenue       = revenueR.results[0]?.revenue             || 0;
 
+    /* ── Distinct landing slugs (for dynamic selector) ── */
+    const slugSet = new Set();
+    (landingsR.results || []).forEach(r => {
+      const slug = (r.landing || '').split('?')[0].split('/').filter(Boolean)[0];
+      if (slug) slugSet.add(slug);
+    });
+    const landings = Array.from(slugSet).sort();
+
     /* ── Errors ── */
     const errorMap = {};
     (errorR.results || []).forEach(r => { errorMap[r.event_type] = r.cnt; });
@@ -147,6 +160,7 @@ export async function onRequestGet({ request, env }) {
       ok: true,
       period,
       landing,
+      landings,
       volume: { sessions, events, low_volume: sessions < 30 },
       attention: { scroll_funnel: scrollFunnel, sections },
       conversion: { cta_funnel: ctaFunnel, form_submits: formSubmits },

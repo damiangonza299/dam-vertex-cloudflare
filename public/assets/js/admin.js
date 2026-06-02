@@ -582,6 +582,21 @@ function switchAdminTab(tab) {
 let insyncPeriod  = '24h';
 let insyncLanding = 'all';
 
+const LANDING_LABEL = { cepillo: 'Cepillo', reloj: 'Reloj', lentes: 'Lentes', cadena: 'Cadena' };
+
+function populateLandingSelect(slugs) {
+  const selectEl = document.getElementById('insync-landing-select');
+  if (!selectEl || !slugs.length) return;
+  const current = insyncLanding;
+  selectEl.innerHTML = '<option value="all">Todas</option>' +
+    slugs.map(s => {
+      const label    = LANDING_LABEL[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+      const selected = s === current ? ' selected' : '';
+      return `<option value="${esc(s)}"${selected}>${esc(label)}</option>`;
+    }).join('');
+  if (current === 'all') selectEl.value = 'all';
+}
+
 async function loadInsyncReport() {
   if (!AUTH_TOKEN) return;
   const tbody1   = document.getElementById('insync-cta-tbody');
@@ -599,6 +614,8 @@ async function loadInsyncReport() {
     });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || 'error');
+
+    if (data.landings?.length) populateLandingSelect(data.landings);
 
     /* Volume */
     const s = data.volume?.sessions || 0;
