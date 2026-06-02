@@ -564,16 +564,138 @@ function switchAdminTab(tab) {
   const dashSection     = document.getElementById('dashboard-section');
   const adsSection      = document.getElementById('ads-section');
   const metaSection     = document.getElementById('meta-section');
+  const insyncSection   = document.getElementById('insync-section');
   leadsSection    && (leadsSection.style.display    = tab === 'leads'     ? '' : 'none');
   productsSection && (productsSection.style.display = tab === 'products'  ? '' : 'none');
   dashSection     && (dashSection.style.display     = tab === 'dashboard' ? '' : 'none');
   adsSection      && (adsSection.style.display      = tab === 'ads'       ? '' : 'none');
   metaSection     && (metaSection.style.display     = tab === 'meta'      ? '' : 'none');
+  insyncSection   && (insyncSection.style.display   = tab === 'insync'    ? '' : 'none');
   if (tab === 'products')  loadProducts();
   if (tab === 'dashboard') renderDashboard();
   if (tab === 'ads')       renderAdsTable();
   if (tab === 'meta')      loadMetaReport();
+  if (tab === 'insync')    loadInsyncReport();
 }
+
+/* ── DAM inSync Report ── */
+let insyncPeriod  = '24h';
+let insyncLanding = 'all';
+
+async function loadInsyncReport() {
+  if (!AUTH_TOKEN) return;
+  const tbody1   = document.getElementById('insync-cta-tbody');
+  const tbody2   = document.getElementById('insync-sections-tbody');
+  const lowVol   = document.getElementById('insync-low-volume');
+  const insights = document.getElementById('insync-insights-list');
+
+  const loading = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">Cargando…</td></tr>';
+  if (tbody1) tbody1.innerHTML = loading.replace('5', '4');
+  if (tbody2) tbody2.innerHTML = loading;
+
+  try {
+    const res  = await fetch(`/api/insync-report?period=${insyncPeriod}&landing=${insyncLanding}`, {
+      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'error');
+
+    /* Volume */
+    const s = data.volume?.sessions || 0;
+    setText('ikpi-sessions',    s);
+    setText('ikpi-scroll50',    (data.attention?.scroll_funnel?.p50 || 0) + '%');
+    setText('ikpi-scroll75',    (data.attention?.scroll_funnel?.p75 || 0) + '%');
+    if (lowVol) lowVol.style.display = data.volume?.low_volume ? '' : 'none';
+
+    /* Atención — top section */
+    const topSec = (data.attention?.sections || []).filter(s => !s.low_volume && s.attention_score != null).sort((a, b) => b.attention_score - a.attention_score)[0];
+    setText('ikpi-top-section', topSec ? topSec.name : '—');
+
+    /* Conversión */
+    const totalClicks = (data.conversion?.cta_funnel || []).reduce((acc, c) => acc + (c.clicks || 0), 0);
+    const totalModals = (data.conversion?.cta_funnel || []).reduce((acc, c) => acc + (c.modal_opens || 0), 0);
+    const topCta      = (data.conversion?.cta_funnel || [])[0];
+    setText('ikpi-cta-clicks',   totalClicks);
+    setText('ikpi-modal-rate',   totalClicks ? Math.round(totalModals / totalClicks * 100) + '%' : '—');
+    setText('ikpi-form-submits', data.conversion?.form_submits || 0);
+    setText('ikpi-top-cta',      topCta ? topCta.cta_type : '—');
+
+    /* Revenue */
+    const rev = data.revenue || {};
+    setText('ikpi-attributed-leads', rev.attributed_leads || 0);
+    setText('ikpi-purchased',        rev.purchased_sessions || 0);
+    setText('ikpi-revenue',          rev.total_revenue_gs ? 'Gs. ' + Number(rev.total_revenue_gs).toLocaleString('es-PY') : (rev.low_volume ? '[insuf.]' : '—'));
+    setText('ikpi-stock-errors',     data.errors?.stock_error || 0);
+
+    /* CTA funnel table */
+    if (tbody1) {
+      const rows = data.conversion?.cta_funnel || [];
+      tbody1.innerHTML = rows.length
+        ? rows.map(r => `<tr>
+            <td><strong>${esc(r.cta_type)}</strong></td>
+            <td>${r.clicks}</td>
+            <td>${r.modal_opens}</td>
+            <td>${r.modal_open_rate}%</td>
+          </tr>`).join('')
+        : '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--muted)">Sin datos en este período</td></tr>';
+    }
+
+    /* Sections table */
+    if (tbody2) {
+      const rows = data.attention?.sections || [];
+      tbody2.innerHTML = rows.length
+        ? rows.map(r => {
+            const score = r.attention_score != null
+              ? `<span class="insync-score ${r.attention_score >= 60 ? 'insync-score-high' : r.attention_score >= 35 ? 'insync-score-med' : 'insync-score-low'}">${r.attention_score}</span>`
+              : `<span class="insync-score insync-score-null">[insuf.]</span>`;
+            return `<tr>
+              <td>${esc(r.name)}</td>
+              <td>${r.views}</td>
+              <td>${r.avg_time_s ? r.avg_time_s + 's' : '—'}</td>
+              <td>${r.reach_pct}%</td>
+              <td>${score}</td>
+            </tr>`;
+          }).join('')
+        : '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">Sin datos de secciones</td></tr>';
+    }
+
+    /* Insights */
+    if (insights) {
+      const ins = data.insights || [];
+      insights.innerHTML = ins.length
+        ? ins.map(i => `<div class="insync-insight insync-insight-${i.type}"><strong>[${i.type}]</strong> ${esc(i.text)}</div>`).join('')
+        : '<div style="color:rgba(255,255,255,.3);font-size:12px">Sin insights disponibles para este período.</div>';
+    }
+
+  } catch (err) {
+    const errRow = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--red)">Error: ${err.message}</td></tr>`;
+    if (tbody1) tbody1.innerHTML = errRow.replace('5', '4');
+    if (tbody2) tbody2.innerHTML = errRow;
+  }
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  /* inSync period buttons */
+  document.querySelectorAll('[data-iperiod]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      insyncPeriod = btn.dataset.iperiod;
+      document.querySelectorAll('[data-iperiod]').forEach(b => b.classList.toggle('insync-period-btn--active', b === btn));
+      loadInsyncReport();
+    });
+  });
+
+  /* inSync landing select */
+  const landingSel = document.getElementById('insync-landing-select');
+  if (landingSel) landingSel.addEventListener('change', () => { insyncLanding = landingSel.value; loadInsyncReport(); });
+
+  /* inSync refresh */
+  document.getElementById('insync-refresh-btn')?.addEventListener('click', loadInsyncReport);
+});
 
 document.getElementById('refresh-products-btn')?.addEventListener('click', loadProducts);
 

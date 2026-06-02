@@ -46,7 +46,14 @@
       "Bash(grep -v \"wrangler\\\\|WARNING\\\\|update\\\\|install\\\\|After\\\\|Run \\\\`\\\\|prevent\\\\|version\\\\|open an issue\\\\|bug\\\\|Logs were\\\\|-------\")",
       "Bash(git -C \"f:/Desktop/dam-vertex-cloudflare\" diff --name-only)",
       "Bash(curl -s \"https://damvertex.com/api/meta/report?since=2026-05-07&until=2026-05-22\" -H \"Authorization: Bearer PONER_PASSWORD_AQUI\")",
-      "Bash(xargs wc -l)"
+      "Bash(xargs wc -l)",
+      "Bash(ls \"f:\\\\Desktop\\\\\" 2>&1 | head -40)",
+      "Read(//f//**)",
+      "Bash(ls /mnt/f/Desktop/ 2>&1)",
+      "Read(//mnt/f/**)",
+      "Bash(findstr /i \"wrangler toml migrate\")",
+      "Bash(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\functions\\\\api\\\\\" | Select-Object Name)",
+      "PowerShell(Get-ChildItem \"f:\\\\Desktop\\\\dam-vertex-cloudflare\" | Where-Object { $_.Name -match 'wrangler|toml|migrate' } | Select-Object Name)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\.claude\\projects\\c--Users-Admin-Desktop-dam-vertex-cloudflare\\memory"

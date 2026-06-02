@@ -49,6 +49,29 @@
     }
     /* ── Admin tabs: una sola fila ── */
     .admin-tabs { flex-wrap: nowrap; }
+    /* ── DAM inSync period filter buttons ── */
+    .insync-period-btn {
+      background:#1a1a1a; border:1px solid rgba(255,255,255,.1);
+      color:rgba(255,255,255,.5); font-size:12px; font-weight:600;
+      padding:5px 12px; border-radius:20px; cursor:pointer;
+      font-family:inherit; transition:all .15s; white-space:nowrap;
+    }
+    .insync-period-btn--active {
+      background:rgba(59,130,246,.15); border-color:rgba(59,130,246,.4); color:#fff;
+    }
+    .insync-kpi { background:#111; border:1px solid rgba(255,255,255,.06); border-radius:10px; padding:12px 14px; }
+    .insync-kpi__val { font-size:clamp(13px,2vw,18px); font-weight:700; color:#fff; margin-bottom:3px; line-height:1.2; }
+    .insync-kpi__label { font-size:9px; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.06em; }
+    .insync-score { display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; }
+    .insync-score-high   { background:rgba(74,222,128,.15);  color:#4ade80; }
+    .insync-score-med    { background:rgba(251,191,36,.15);  color:#fbbf24; }
+    .insync-score-low    { background:rgba(248,113,113,.15); color:#f87171; }
+    .insync-score-null   { background:rgba(255,255,255,.06); color:rgba(255,255,255,.3); }
+    .insync-insight { padding:10px 14px; border-radius:8px; font-size:12px; margin-bottom:6px; line-height:1.5; }
+    .insync-insight-CONCLUSION { background:rgba(74,222,128,.08);  border:1px solid rgba(74,222,128,.2);  color:#4ade80; }
+    .insync-insight-HIPOTESIS  { background:rgba(251,191,36,.08);  border:1px solid rgba(251,191,36,.2);  color:#fbbf24; }
+    .insync-insight-VOLUMEN    { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); color:rgba(255,255,255,.4); }
+    @media (max-width:700px) { #insync-kpis-attn, #insync-kpis-conv, #insync-kpis-rev { grid-template-columns:repeat(2,1fr); } }
     /* ── Ads attribution ── */
     .ads-ellipsis { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px; }
     @media (max-width:700px) {
@@ -164,6 +187,7 @@
       <button class="admin-tab" data-tab="ads" onclick="switchAdminTab('ads')">Anuncios</button>
       <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')">Flow</button>
       <button class="admin-tab" data-tab="meta" onclick="switchAdminTab('meta')">Meta Ads</button>
+      <button class="admin-tab" data-tab="insync" onclick="switchAdminTab('insync')">inSync</button>
     </div>
 
     <!-- Leads section -->
@@ -377,6 +401,84 @@
       </div>
       <div id="meta-no-attr" style="display:none;margin-top:10px;font-size:12px;color:var(--muted)"></div>
     </div><!-- /meta-section -->
+
+    <!-- DAM inSync section -->
+    <div id="insync-section" style="display:none">
+
+      <!-- Controls row -->
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:16px">
+        <button id="insync-refresh-btn" class="insync-period-btn" style="padding:5px 10px">↻</button>
+        <button class="insync-period-btn insync-period-btn--active" data-iperiod="24h">24h</button>
+        <button class="insync-period-btn" data-iperiod="48h">48h</button>
+        <button class="insync-period-btn" data-iperiod="7d">7d</button>
+        <select id="insync-landing-select" class="meta-prod-select" style="max-width:110px">
+          <option value="all">Todas</option>
+          <option value="cepillo">Cepillo</option>
+          <option value="reloj">Reloj</option>
+          <option value="lentes">Lentes</option>
+          <option value="cadena">Cadena</option>
+        </select>
+      </div>
+
+      <!-- Volume warning -->
+      <div id="insync-low-volume" style="display:none;padding:10px 14px;border-radius:8px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);color:#fbbf24;font-size:12px;margin-bottom:12px">
+        Volumen insuficiente. Se necesitan al menos 30 sesiones para generar hipótesis.
+      </div>
+
+      <!-- Atención KPIs -->
+      <div style="margin-bottom:6px;font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em">Atención</div>
+      <div id="insync-kpis-attn" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-sessions">—</div><div class="insync-kpi__label">Sesiones</div></div>
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-scroll50">—</div><div class="insync-kpi__label">Scroll P50</div></div>
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-scroll75">—</div><div class="insync-kpi__label">Scroll P75</div></div>
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-top-section">—</div><div class="insync-kpi__label">Top sección</div></div>
+      </div>
+
+      <!-- Conversión KPIs -->
+      <div style="margin-bottom:6px;font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em">Conversión</div>
+      <div id="insync-kpis-conv" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-cta-clicks">—</div><div class="insync-kpi__label">CTA Clicks</div></div>
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-modal-rate">—</div><div class="insync-kpi__label">Modal open rate</div></div>
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-form-submits">—</div><div class="insync-kpi__label">Form submits</div></div>
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-top-cta">—</div><div class="insync-kpi__label">Top CTA</div></div>
+      </div>
+
+      <!-- Revenue KPIs -->
+      <div style="margin-bottom:6px;font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em">Revenue</div>
+      <div id="insync-kpis-rev" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-attributed-leads">—</div><div class="insync-kpi__label">Leads atribuidos</div></div>
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-purchased">—</div><div class="insync-kpi__label">Compras atribuidas</div></div>
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-revenue">—</div><div class="insync-kpi__label">Revenue período</div></div>
+        <div class="insync-kpi"><div class="insync-kpi__val" id="ikpi-stock-errors">—</div><div class="insync-kpi__label">Errores stock</div></div>
+      </div>
+
+      <!-- CTA funnel -->
+      <div style="margin-bottom:6px;font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em">Funnel CTA</div>
+      <div class="admin-table-wrap" style="margin-bottom:16px">
+        <table class="admin-table">
+          <thead><tr><th>CTA</th><th>Clicks</th><th>Modal Opens</th><th>Open Rate</th></tr></thead>
+          <tbody id="insync-cta-tbody">
+            <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--muted)">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sections -->
+      <div style="margin-bottom:6px;font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em">Secciones</div>
+      <div class="admin-table-wrap" style="margin-bottom:16px">
+        <table class="admin-table">
+          <thead><tr><th>Sección</th><th>Vistas</th><th>Tiempo prom.</th><th>Alcance</th><th>A-Score</th></tr></thead>
+          <tbody id="insync-sections-tbody">
+            <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Insights -->
+      <div style="margin-bottom:6px;font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em">Insights</div>
+      <div id="insync-insights-list" style="font-size:12px;color:rgba(255,255,255,.5)">—</div>
+
+    </div><!-- /insync-section -->
 
   </div>
 </div>

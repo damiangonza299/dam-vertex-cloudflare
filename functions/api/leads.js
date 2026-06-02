@@ -22,6 +22,7 @@ export async function onRequestPost({ request, env }) {
       landing_path, referrer,
       address, payment_method,
       location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
+      session_id,
     } = body;
 
     /* Si el picker detectó ciudad automáticamente, usarla como city efectiva */
@@ -81,6 +82,8 @@ export async function onRequestPost({ request, env }) {
       locLng,
       location_maps_url?.trim()  || null,
       location_place_id?.trim()  || null,
+      // session_id for DAM inSync revenue attribution (index 38)
+      session_id?.trim() || null,
     ];
 
     let result;
@@ -92,12 +95,26 @@ export async function onRequestPost({ request, env }) {
           campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer,
           address, payment_method, product_slug,
           operational_date_py, attribution_confidence,
-          location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
+          session_id
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(...bindArgs).run();
     } catch (insertErr) {
       const msg = insertErr.message || '';
-      if (msg.includes('location_address') || msg.includes('location_city') || msg.includes('location_lat') || msg.includes('location_lng') || msg.includes('location_maps_url') || msg.includes('location_place_id')) {
+      if (msg.includes('session_id')) {
+        // session_id column not yet migrated (run migrate17.sql) — retry without it
+        console.error('LEAD_SCHEMA: run migrate17.sql for session_id column');
+        result = await env.DB.prepare(`
+          INSERT INTO leads (
+            product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity, variant,
+            fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+            campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer,
+            address, payment_method, product_slug,
+            operational_date_py, attribution_confidence,
+            location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).bind(...bindArgs.slice(0, 38)).run();
+      } else if (msg.includes('location_address') || msg.includes('location_city') || msg.includes('location_lat') || msg.includes('location_lng') || msg.includes('location_maps_url') || msg.includes('location_place_id')) {
         // location columns not yet migrated (run migrate14.sql) — retry without them
         console.error('LEAD_SCHEMA: run migrate14.sql for location columns');
         result = await env.DB.prepare(`

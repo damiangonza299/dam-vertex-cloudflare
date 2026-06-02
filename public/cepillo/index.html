@@ -264,13 +264,13 @@
     <span class="sticky-cta__price">Gs. 159.000</span>
     <span class="sticky-cta__note">Entrega hoy · Pago al recibir</span>
   </div>
-  <button class="btn btn-primary sticky-cta__btn" data-scroll-form>Pedí por WhatsApp</button>
+  <button class="btn btn-primary sticky-cta__btn" data-scroll-form data-insync-cta="sticky">Pedí por WhatsApp</button>
 </div>
 
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form href="#">Pedir ahora con envío gratis</a>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">Pedir ahora con envío gratis</a>
 </nav>
 
 <!-- Hero -->
@@ -309,7 +309,7 @@
         </div>
       </div>
 
-      <button class="btn btn-primary" data-scroll-form>Hacer mi pedido ahora →</button>
+      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">Hacer mi pedido ahora →</button>
       <p class="stock-hint"><span class="stock-dot"></span>Stock limitado · últimas unidades disponibles hoy</p>
       <div class="hero__tags">
         <span class="hero__tag">Sónico</span>
@@ -524,7 +524,7 @@
       <div class="ct-item"><span class="ct-ok">✓</span><span>Central: pagás al recibir · Interior: pago anticipado - sin envío gratis</span></div>
       <div class="ct-item"><span class="ct-ok">✓</span><span>Atención rápida</span></div>
     </div>
-    <button class="cta-ref" data-scroll-form>
+    <button class="cta-ref" data-scroll-form data-insync-cta="cierre">
       <span class="cta-ref-arrow">↑</span>
       <span>Hacer mi pedido ahora</span>
     </button>
@@ -711,6 +711,7 @@
 <!-- Scripts -->
 <script src="/assets/js/tracking.js?v=48"></script>
 <script src="/assets/js/products.js?v=48"></script>
+<script defer src="/assets/js/insync.js?v=1"></script>
 <script>
   const PRODUCT = {
     name:  'Cepillo Eléctrico Recargable (4 Cabezales)',

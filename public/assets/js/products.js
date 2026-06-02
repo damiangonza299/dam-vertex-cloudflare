@@ -582,6 +582,7 @@ clearStockError();
             location_lng:      commonData.location_lng      || null,
             location_maps_url: commonData.location_maps_url || null,
             location_place_id: commonData.location_place_id || null,
+            session_id:        window.DV_INSYNC_SESSION     || null,
           }),
         });
         if (!res.ok) throw new Error('lead_error');
@@ -677,6 +678,7 @@ clearStockError();
           location_lng:      data.location_lng      || null,
           location_maps_url: data.location_maps_url || null,
           location_place_id: data.location_place_id || null,
+          session_id:        window.DV_INSYNC_SESSION || null,
         }),
       });
 
