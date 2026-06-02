@@ -552,6 +552,7 @@ if (!customStockCheck.ok) {
   return;
 }
 clearStockError();
+if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, null, { qty: customQty, value: customTotal });
 
       try {
         const client = typeof getClientData === 'function' ? getClientData() : {};
@@ -601,6 +602,7 @@ clearStockError();
 
       modalForm.style.display = 'none';
       success.classList.add('visible');
+      if (window.DV_INSYNC) { window.DV_INSYNC.push('whatsapp_click', null, null, null); window.DV_INSYNC.flush(); }
       window.location.href = customWaUrl;
       return;
     }
@@ -646,6 +648,7 @@ if (!stockCheck.ok) {
   return;
 }
 clearStockError();
+if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, null, { qty: selectedQty, value: expressTotal });
 
     try {
       const client = typeof getClientData === 'function' ? getClientData() : {};
@@ -697,6 +700,7 @@ clearStockError();
       success.classList.add('visible');
 
       /* 6 â Abrir WhatsApp con delay */
+      if (window.DV_INSYNC) { window.DV_INSYNC.push('whatsapp_click', null, null, null); window.DV_INSYNC.flush(); }
       window.location.href = waUrl;
 
     } catch (err) {

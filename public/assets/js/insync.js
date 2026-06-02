@@ -31,6 +31,9 @@
   /* Expose for products.js to include in lead POST */
   window.DV_INSYNC_SESSION = SID;
 
+  /* Expose push/flush for products.js to emit DAM Intelligence events */
+  window.DV_INSYNC = { push: push, flush: flush };
+
   /* ── Event queue ── */
   var Q       = [];
   var timer   = null;
