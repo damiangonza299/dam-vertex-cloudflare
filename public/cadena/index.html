@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="preload" as="image" href="/assets/img/Cadena%20Apex%20perfil.png" fetchpriority="high">
   <link rel="preload" href="/assets/css/styles.css?v=55" as="style">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
@@ -667,7 +667,7 @@
         <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
       </div>
       <p style="font-size:12px;color:rgba(255,255,255,.38);margin:10px 0 0;letter-spacing:.01em;">Precio de lanzamiento — stock inicial limitado.</p>
-      <p class="scroll-hint">↓ Por qué marca la diferencia</p>
+      <p class="scroll-hint">↓ Mirá el antes y después</p>
     </div>
   </div>
 </section>
@@ -768,7 +768,7 @@
   <div class="social-proof__inner">
     <p class="sp-overline">Clientes verificados</p>
     <h2 class="sp-h">Lo que dicen los que ya la tienen.</h2>
-    <p class="sp-volume">Más de 50 pedidos entregados en Gran Asunción.</p>
+    <p class="sp-volume">Más de 50 pedidos entregados. Clientes reales en todo Gran Asunción.</p>
     <div class="sp-grid">
       <div class="sp-card">
         <p class="sp-quote">"Me llegó el mismo día que lo pedí. La cadena es sólida, no se ve barata para nada. La uso todos los días y sigue exactamente igual."</p>
@@ -850,9 +850,9 @@
       <img src="/assets/img/Apex%20el%20efecto.png" alt="Cadena Apex — el efecto" class="efecto__img-main" loading="lazy">
     </div>
     <div class="efecto__text">
-      <p class="e-overline">El efecto</p>
+      <p class="e-overline">Antes y después</p>
       <h2 class="e-h">Un solo detalle.<br>Todo el efecto.</h2>
-      <p class="e-body">Una sola pieza puede hacer que tu ropa básica se vea más completa. La Cadena Apex no llama la atención — el look lo hace por sí solo. El tipo que la lleva puesta ya sabe lo que hace.</p>
+      <p class="e-body">Antes: ropa básica que le falta algo — como si estuviera incompleta. Con la Cadena Apex: mismo outfit, otro nivel. Una sola pieza y el look se termina solo. El tipo que la lleva ya sabe lo que hace.</p>
       <ul class="e-list">
         <li><span class="e-check">✓</span>Outfit casual — la sube de nivel de inmediato</li>
         <li><span class="e-check">✓</span>Ropa oscura — la complementa sin competir</li>
@@ -928,15 +928,15 @@
   <div class="close-sec__inner">
     <p class="close-quote">"Para el que no necesita<br>explicar su estilo."</p>
     <div class="close-divider"></div>
-    <h2 class="close-h">El detalle que faltaba.</h2>
+    <h2 class="close-h">La pieza que le faltaba<br>al look.</h2>
     <div class="close-trust">
       <div class="ct-item"><span class="ct-ok">✓</span><span>Envío GRATIS · Entrega en el día</span></div>
       <div class="ct-item"><span class="ct-ok">✓</span><span>Central: pagás al recibir · Interior: pago anticipado - sin envío gratis</span></div>
       <div class="ct-item"><span class="ct-ok">✓</span><span>Atención rápida por WhatsApp</span></div>
     </div>
-    <p style="font-size:15px;color:rgba(255,255,255,.58);margin:0 0 24px;line-height:1.6;">Si querés una cadena negra, simple y masculina, esta es la opción directa.</p>
+    <p style="font-size:15px;color:rgba(255,255,255,.58);margin:0 0 24px;line-height:1.6;">Si querés una cadena negra, simple y masculina — esta es la opción. Stock limitado, sin segunda vuelta.</p>
     <button class="btn btn-primary" data-scroll-form data-insync-cta="oferta">
-      Pedir Cadena Apex por WhatsApp
+      Quiero la mía — pedir por WhatsApp →
     </button>
   </div>
 </section>
@@ -1324,7 +1324,6 @@
       var COMBO_PRICE = 249000;
       var COMBO_SLUG  = 'combo-reloj-cadena';
       var COMBO_NAME  = 'Combo Reloj Blackout Minimal + Cadena Apex';
-      var COMBO_WA    = '595993471550';
 
       var comboOverlay  = document.getElementById('combo-modal');
       var comboForm     = document.getElementById('combo-form');
@@ -1474,12 +1473,25 @@
         if (cmLocMapsUrl) waLines.push('Ubicación exacta: ' + cmLocMapsUrl);
         if (address) waLines.push('Referencia: ' + address);
         waLines.push('', '¿Pueden ayudarme a coordinar el envío?');
-        var waUrl = 'https://wa.me/' + COMBO_WA + '?text=' + encodeURIComponent(waLines.join('\n'));
+        var waUrl = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waLines.join('\n'));
         if (comboWaManual) comboWaManual.href = waUrl;
 
         comboSubmit.disabled = true;
         comboSubmit.innerHTML = '<span class="spinner"></span>';
         if (comboStockEl) comboStockEl.style.display = 'none';
+
+        /* Verificar stock del modelo de reloj seleccionado */
+        var comboRelojStock = await checkProductStock('reloj', 1, variant);
+        if (!comboRelojStock.ok) {
+          if (comboStockEl) {
+            comboStockEl.textContent = comboRelojStock.error;
+            comboStockEl.style.display = 'block';
+            comboStockEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          comboSubmit.disabled = false;
+          comboSubmit.innerHTML = 'Pedir combo por WhatsApp';
+          return;
+        }
 
         /* Guardar lead */
         try {
