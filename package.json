@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "wrangler pages dev public --d1=DB",
-    "deploy": "wrangler pages deploy public",
+    "deploy": "wrangler pages deploy public --project-name dam-vertex-cloudflare --branch dam-vertex-cloudflare",
     "db:create": "wrangler d1 create dam-vertex-leads",
     "db:migrate": "wrangler d1 execute dam-vertex-leads --file=schema.sql",
     "db:migrate:remote": "wrangler d1 execute dam-vertex-leads --remote --file=schema.sql"
