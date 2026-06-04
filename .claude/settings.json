@@ -149,11 +149,19 @@
       "Bash(curl -s \"https://damvertex.com/api/delivery-shipping?date=2026-06-04\" -H \"Authorization: Bearer test-invalid\")",
       "Bash(curl -s \"https://damvertex.com/api/admin-leads-count?date=2026-06-04\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://damvertex.com/api/delivery-shipping?date=2026-06-04\" -H \"Authorization: Bearer test-invalid\")",
-      "Bash(curl -s -w \"\\\\nHTTP:%{http_code}\" \"https://main.dam-vertex-cloudflare.pages.dev/api/delivery-shipping?date=2026-06-04\" -H \"Authorization: Bearer test-invalid\")"
+      "Bash(curl -s -w \"\\\\nHTTP:%{http_code}\" \"https://main.dam-vertex-cloudflare.pages.dev/api/delivery-shipping?date=2026-06-04\" -H \"Authorization: Bearer test-invalid\")",
+      "PowerShell(& \"C:\\\\Program Files\\\\nodejs\\\\npx.cmd\" wrangler pages deploy \"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\public\" --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true)",
+      "PowerShell(Invoke-WebRequest -Uri \"https://24cf6579.dam-vertex-cloudflare.pages.dev/assets/js/site-version.js\" -UseBasicParsing)",
+      "PowerShell(Invoke-WebRequest -Uri \"https://24cf6579.dam-vertex-cloudflare.pages.dev/api/delivery-shipping?date=2026-06-04\" -UseBasicParsing)",
+      "PowerShell(& \"C:\\\\Program Files\\\\nodejs\\\\npx.cmd\" wrangler d1 execute dam-vertex-leads --remote --file=\"f:\\\\Desktop\\\\dam-vertex-cloudflare\\\\migrate21.sql\" 2>&1)",
+      "PowerShell(Invoke-WebRequest -Uri \"https://main.dam-vertex-cloudflare.pages.dev/assets/js/site-version.js\" -UseBasicParsing)",
+      "PowerShell(Invoke-WebRequest -Uri \"https://38ac5544.dam-vertex-cloudflare.pages.dev/assets/js/site-version.js\" -UseBasicParsing)",
+      "PowerShell($headers = @{ 'Authorization' = 'Bearer ' + \\(& \"C:\\\\Program Files\\\\nodejs\\\\npx.cmd\" wrangler secret list --project-name dam-vertex-cloudflare 2>$null\\); 'Content-Type' = 'application/json' }; Invoke-WebRequest -Uri \"https://38ac5544.dam-vertex-cloudflare.pages.dev/api/delivery-shipping?date=2026-06-04\" -Headers @{ 'Authorization' = 'Bearer test' } -UseBasicParsing | Select-Object StatusCode, Content)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\.claude\\projects\\c--Users-Admin-Desktop-dam-vertex-cloudflare\\memory",
-      "F:\\Desktop\\Dam Finanzas\\functions"
+      "F:\\Desktop\\Dam Finanzas\\functions",
+      "F:\\Desktop\\Dam Finanzas\\deploy"
     ]
   }
 }
