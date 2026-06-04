@@ -35,6 +35,40 @@ export async function onRequestPost({ request, env }) {
     const ip = request.headers.get('CF-Connecting-IP') || '';
     const ua = user_agent || request.headers.get('User-Agent') || '';
 
+    /* ── Block check — multi-signal blacklist ── */
+    try {
+      const bPhone   = phone?.trim()        || '';
+      const bUa      = ua                   || '';
+      const bFbp     = fbp                  || '';
+      const bFbc     = fbc                  || '';
+      const bSession = session_id?.trim()   || '';
+
+      const conditions = [];
+      const params     = [];
+
+      if (bPhone)                { conditions.push('phone = ?');                        params.push(bPhone); }
+      if (ip)                    { conditions.push('ip = ?');                           params.push(ip); }
+      if (bUa && ip)             { conditions.push('(user_agent = ? AND ip = ?)');      params.push(bUa, ip); }
+      if (bFbp)                  { conditions.push('fbp = ?');                          params.push(bFbp); }
+      if (bFbc)                  { conditions.push('fbc = ?');                          params.push(bFbc); }
+      if (bSession)              { conditions.push('session_id = ?');                   params.push(bSession); }
+
+      if (conditions.length > 0) {
+        const sql   = `SELECT id FROM blocked_customers WHERE active = 1 AND (${conditions.join(' OR ')}) LIMIT 1`;
+        const match = await env.DB.prepare(sql).bind(...params).first();
+        if (match) {
+          return json({
+            ok:      false,
+            blocked: true,
+            error:   'No podemos procesar nuevos pedidos desde este dispositivo en este momento. Si creés que se trata de un error, contactanos por WhatsApp.',
+          }, 403);
+        }
+      }
+    } catch (blockErr) {
+      console.error('BLOCK_CHECK_SKIP:', blockErr.message);
+    }
+    /* ── /Block check ── */
+
     const locLat = location_lat != null ? Number(location_lat) || null : null;
     const locLng = location_lng != null ? Number(location_lng) || null : null;
 

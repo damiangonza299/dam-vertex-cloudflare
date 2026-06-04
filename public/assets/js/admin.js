@@ -44,7 +44,7 @@ if (IS_DELIVERY) {
   const manualSaleBtn = document.getElementById('manual-sale-btn');
   if (manualSaleBtn) manualSaleBtn.style.display = 'none';
 
-  document.querySelectorAll('[data-tab="ads"], [data-tab="dashboard"], [data-tab="meta"]').forEach(btn => {
+  document.querySelectorAll('[data-tab="ads"], [data-tab="dashboard"], [data-tab="meta"], [data-tab="blocked"], [data-tab="insync"]').forEach(btn => {
     btn.style.display = 'none';
   });
 
@@ -273,6 +273,7 @@ function buildActions(l) {
     <button class="btn-menu" onclick="toggleMenu(event,this,'${menuId}')">&#8942;</button>
     <div class="action-menu" id="${menuId}">
       <button onclick="cancelLead(${l.id});closeMenus()">Cancelar pedido</button>
+      <button onclick="blockCustomer(${l.id});closeMenus()">Bloquear cliente</button>
       <button class="danger" onclick="deleteLead(${l.id});closeMenus()">Eliminar</button>
     </div>
   </div>`;
@@ -313,7 +314,7 @@ function toggleMenu(e, btn, menuId) {
   closeMenus();
   if (!wasOpen) {
     const rect   = btn.getBoundingClientRect();
-    const MENU_H = 88;
+    const MENU_H = 132;
     const top    = (rect.bottom + MENU_H + 4 > window.innerHeight)
       ? rect.top - MENU_H - 4
       : rect.bottom + 4;
@@ -565,17 +566,20 @@ function switchAdminTab(tab) {
   const adsSection      = document.getElementById('ads-section');
   const metaSection     = document.getElementById('meta-section');
   const insyncSection   = document.getElementById('insync-section');
+  const blockedSection  = document.getElementById('blocked-section');
   leadsSection    && (leadsSection.style.display    = tab === 'leads'     ? '' : 'none');
   productsSection && (productsSection.style.display = tab === 'products'  ? '' : 'none');
   dashSection     && (dashSection.style.display     = tab === 'dashboard' ? '' : 'none');
   adsSection      && (adsSection.style.display      = tab === 'ads'       ? '' : 'none');
   metaSection     && (metaSection.style.display     = tab === 'meta'      ? '' : 'none');
   insyncSection   && (insyncSection.style.display   = tab === 'insync'    ? '' : 'none');
+  blockedSection  && (blockedSection.style.display  = tab === 'blocked'   ? '' : 'none');
   if (tab === 'products')  loadProducts();
   if (tab === 'dashboard') renderDashboard();
   if (tab === 'ads')       renderAdsTable();
   if (tab === 'meta')      loadMetaReport();
   if (tab === 'insync')    loadInsyncReport();
+  if (tab === 'blocked')   loadBlockedCustomers();
 }
 
 /* ── DAM inSync Report ── */
@@ -1695,3 +1699,150 @@ function renderProductRanking(leads) {
       <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:2px">Gs. ${r.revenue.toLocaleString('es-PY')}</div>
     </div>`).join('');
 }
+
+/* =========================================================
+   Clientes Bloqueados
+   ========================================================= */
+
+let _pendingBlockLeadId = null;
+
+/* Abre el modal de motivo de bloqueo */
+function blockCustomer(id) {
+  const lead = allLeads.find(l => l.id === id);
+  if (!lead) return;
+  _pendingBlockLeadId = id;
+
+  const nameEl  = document.getElementById('block-modal-name');
+  const phoneEl = document.getElementById('block-modal-phone');
+  if (nameEl)  nameEl.textContent  = lead.name  || '—';
+  if (phoneEl) phoneEl.textContent = lead.phone || '—';
+
+  const reasonSel = document.getElementById('block-reason-select');
+  const notesEl   = document.getElementById('block-notes');
+  if (reasonSel) reasonSel.value = '';
+  if (notesEl)   notesEl.value   = '';
+
+  const errEl = document.getElementById('block-modal-err');
+  if (errEl) errEl.style.display = 'none';
+
+  const modal = document.getElementById('block-customer-modal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeBlockModal() {
+  _pendingBlockLeadId = null;
+  const modal = document.getElementById('block-customer-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function confirmBlock() {
+  const id      = _pendingBlockLeadId;
+  const reason  = document.getElementById('block-reason-select')?.value  || '';
+  const notes   = document.getElementById('block-notes')?.value?.trim()  || '';
+  const errEl   = document.getElementById('block-modal-err');
+  const btn     = document.getElementById('block-confirm-btn');
+
+  if (!reason) {
+    if (errEl) { errEl.textContent = 'Seleccioná un motivo.'; errEl.style.display = 'block'; }
+    return;
+  }
+  if (errEl) errEl.style.display = 'none';
+  if (btn) btn.disabled = true;
+
+  try {
+    const res  = await fetch('/api/blocked-customers', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+      body:    JSON.stringify({ lead_id: id, reason, notes }),
+    });
+    const data = await res.json();
+
+    if (res.ok && data.ok) {
+      closeBlockModal();
+      alert('Cliente bloqueado. No podrá enviar nuevos pedidos desde ese teléfono/dispositivo.');
+    } else {
+      if (errEl) { errEl.textContent = 'Error: ' + (data.error || 'desconocido'); errEl.style.display = 'block'; }
+    }
+  } catch (_) {
+    if (errEl) { errEl.textContent = 'Error de red.'; errEl.style.display = 'block'; }
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+/* Cargar y renderizar la lista de bloqueados */
+async function loadBlockedCustomers() {
+  const tbody = document.getElementById('blocked-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">Cargando…</td></tr>';
+
+  try {
+    const res  = await fetch('/api/blocked-customers', {
+      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'error');
+    renderBlockedCustomers(data.blocks || []);
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--red)">Error: ${esc(err.message)}</td></tr>`;
+  }
+}
+
+function renderBlockedCustomers(blocks) {
+  const tbody = document.getElementById('blocked-tbody');
+  if (!tbody) return;
+
+  if (!blocks.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted)">Sin clientes bloqueados</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = blocks.map(b => {
+    const statusBadge = b.active
+      ? '<span class="badge badge-cancelled">Bloqueado</span>'
+      : '<span class="badge" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.35)">Desbloqueado</span>';
+
+    const unblockBtn = b.active
+      ? `<button onclick="unblockCustomer(${b.id})"
+           style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit">
+           Desbloquear
+         </button>`
+      : '';
+
+    return `<tr>
+      <td>${esc(b.name || '—')}</td>
+      <td>${esc(b.phone || '—')}</td>
+      <td style="font-size:11px;color:rgba(255,255,255,.45)">${esc(b.reason || '—')}</td>
+      <td>${statusBadge}</td>
+      <td style="font-size:11px;color:rgba(255,255,255,.35)">${fmtDateShort(b.created_at)}</td>
+      <td>${unblockBtn}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function unblockCustomer(blockId) {
+  if (!confirm('¿Desbloquear a este cliente? Podrá volver a enviar pedidos.')) return;
+
+  try {
+    const res  = await fetch(`/api/blocked-customers?id=${blockId}`, {
+      method:  'DELETE',
+      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    });
+    const data = await res.json();
+
+    if (res.ok && data.ok) {
+      loadBlockedCustomers();
+    } else {
+      alert('Error al desbloquear: ' + (data.error || res.status));
+    }
+  } catch (_) {
+    alert('Error de red');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('block-customer-modal')?.addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeBlockModal();
+  });
+  document.getElementById('block-refresh-btn')?.addEventListener('click', loadBlockedCustomers);
+});

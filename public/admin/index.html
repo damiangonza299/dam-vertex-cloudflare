@@ -188,6 +188,7 @@
       <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')">Flow</button>
       <button class="admin-tab" data-tab="meta" onclick="switchAdminTab('meta')">Meta Ads</button>
       <button class="admin-tab" data-tab="insync" onclick="switchAdminTab('insync')">inSync</button>
+      <button class="admin-tab" data-tab="blocked" onclick="switchAdminTab('blocked')" style="color:#f87171">Block</button>
     </div>
 
     <!-- Leads section -->
@@ -476,6 +477,86 @@
       <div id="insync-insights-list" style="font-size:12px;color:rgba(255,255,255,.5)">—</div>
 
     </div><!-- /insync-section -->
+
+    <!-- Clientes Bloqueados section -->
+    <div id="blocked-section" style="display:none">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
+        <button id="block-refresh-btn" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit">
+          ↻ Actualizar
+        </button>
+        <span style="font-size:12px;color:var(--muted)">Solo bloqueos manuales desde el panel. Para bloquear, usá el menú ⋮ en un lead.</span>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Motivo</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="blocked-tbody">
+            <tr><td colspan="6" style="text-align:center;padding:48px;color:var(--muted)">Iniciá sesión para ver los bloqueados</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /blocked-section -->
+
+  </div>
+</div>
+
+<!-- Modal: Bloquear cliente -->
+<div id="block-customer-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.75);align-items:center;justify-content:center;padding:16px;overflow-y:auto">
+  <div style="background:#111;border:1px solid rgba(248,113,113,.2);border-radius:14px;width:100%;max-width:420px;padding:24px;margin:auto">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 style="margin:0;font-size:15px;color:#f87171">Bloquear cliente</h3>
+      <button onclick="closeBlockModal()" style="background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;padding:0 4px">×</button>
+    </div>
+
+    <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:13px">
+      <div style="color:rgba(255,255,255,.5);font-size:11px;margin-bottom:4px">Cliente</div>
+      <div id="block-modal-name" style="font-weight:600;color:#fff;margin-bottom:2px">—</div>
+      <div id="block-modal-phone" style="color:rgba(255,255,255,.5);font-size:12px">—</div>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:6px">Motivo del bloqueo *</label>
+      <select id="block-reason-select" style="width:100%;background:#1a1a1a;border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:10px 12px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box">
+        <option value="">Seleccioná un motivo...</option>
+        <option value="Pedido falso">Pedido falso</option>
+        <option value="No recibió / no respondió">No recibió / no respondió</option>
+        <option value="Múltiples pedidos falsos">Múltiples pedidos falsos</option>
+        <option value="Abuso del sistema">Abuso del sistema</option>
+        <option value="Otro">Otro</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:16px">
+      <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:6px">Notas internas (opcional)</label>
+      <textarea id="block-notes" rows="2" placeholder="Observaciones adicionales..."
+        style="width:100%;background:#1a1a1a;border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:10px 12px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;resize:vertical"></textarea>
+    </div>
+
+    <div id="block-modal-err" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:12px"></div>
+
+    <div style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:10px 12px;margin-bottom:16px;font-size:12px;color:rgba(255,255,255,.6);line-height:1.5">
+      El lead original <strong>no se elimina ni cancela</strong>. Solo se bloquea que vuelva a pedir desde ese teléfono o dispositivo.
+    </div>
+
+    <div style="display:flex;gap:8px">
+      <button id="block-confirm-btn" type="button" onclick="confirmBlock()"
+        style="flex:1;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.4);color:#f87171;font-size:13px;font-weight:600;padding:11px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit">
+        Confirmar bloqueo
+      </button>
+      <button type="button" onclick="closeBlockModal()"
+        style="background:none;border:none;color:var(--muted);font-size:13px;padding:11px;cursor:pointer;font-family:inherit">
+        Cancelar
+      </button>
+    </div>
 
   </div>
 </div>
