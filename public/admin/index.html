@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Admin — Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=57"></script>
+  <script src="/assets/js/site-version.js?v=58"></script>
   <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
   <style>
     /* ── Dashboard ── */
@@ -187,8 +187,8 @@
       <button class="admin-tab" data-tab="ads" onclick="switchAdminTab('ads')">Anuncios</button>
       <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')">Flow</button>
       <button class="admin-tab" data-tab="meta" onclick="switchAdminTab('meta')">Meta</button>
-      <button class="admin-tab" data-tab="insync" onclick="switchAdminTab('insync')">inSync</button>
-      <button class="admin-tab" data-tab="shipping" onclick="switchAdminTab('shipping')" style="display:none;color:#60a5fa">Envíos</button>
+      <button class="admin-tab" data-tab="insync" onclick="switchAdminTab('insync')">Sync</button>
+      <button class="admin-tab" data-tab="shipping" onclick="switchAdminTab('shipping')" style="color:#60a5fa">Envíos</button>
       <button class="admin-tab" data-tab="blocked" onclick="switchAdminTab('blocked')" style="color:#f87171">Block</button>
     </div>
 
@@ -540,7 +540,7 @@
               oninput="updateShippingPerSale()">
           </div>
           <div>
-            <label style="display:block;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">Encomienda (Gs.)</label>
+            <label style="display:block;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">Encom. / Bolt (Gs.)</label>
             <input type="number" id="shipping-encomienda-input" min="0" step="1000" placeholder="0"
               style="width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:15px;padding:10px 14px;font-family:inherit;box-sizing:border-box"
               oninput="updateShippingPerSale()">
@@ -563,22 +563,8 @@
       <!-- Historial -->
       <div style="max-width:640px">
         <h4 style="font-size:12px;font-weight:600;color:rgba(255,255,255,.4);margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em">Historial</h4>
-        <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:12px">
-            <thead>
-              <tr style="color:rgba(255,255,255,.35);text-align:left">
-                <th style="padding:5px 8px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.06)">Fecha</th>
-                <th style="padding:5px 8px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.06);text-align:right">Delivery</th>
-                <th style="padding:5px 8px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.06);text-align:right">Encomienda</th>
-                <th style="padding:5px 8px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.06);text-align:right">Total</th>
-                <th style="padding:5px 8px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.06);text-align:right">Comp.</th>
-                <th style="padding:5px 8px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.06);text-align:right">C/venta</th>
-              </tr>
-            </thead>
-            <tbody id="shipping-history-tbody">
-              <tr><td colspan="6" style="padding:14px 8px;color:rgba(255,255,255,.25);text-align:center;font-size:11px">Cargando…</td></tr>
-            </tbody>
-          </table>
+        <div id="shipping-history-list">
+          <p style="padding:14px 8px;color:rgba(255,255,255,.25);text-align:center;font-size:11px;margin:0">Cargando…</p>
         </div>
       </div>
     </div><!-- /shipping-section -->

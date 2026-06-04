@@ -83,6 +83,8 @@ if (IS_DELIVERY) {
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
+} else {
+  initShippingPanel();
 }
   const dp = document.getElementById('date-picker');
   if (dp) dp.value = new Date().toLocaleDateString('sv-SE');
@@ -477,6 +479,19 @@ function fmtDateShort(s) {
   if (local === yest)  return 'Ayer';
   const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   return d.getDate() + ' ' + months[d.getMonth()];
+}
+
+function fmtShipDate(s) {
+  if (!s) return '—';
+  const today = getParaguayDateLocal();
+  const yest  = new Date(Date.now() - 4 * 3600 * 1000 - 86400000).toISOString().slice(0, 10);
+  if (s === today) return 'Hoy';
+  if (s === yest)  return 'Ayer';
+  const parts  = s.split('-');
+  const m = parseInt(parts[1], 10);
+  const d = parseInt(parts[2], 10);
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return d + ' ' + months[m - 1];
 }
 
 function fmtCompact(n) {
@@ -1861,6 +1876,7 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================================= */
 
 let shippingDate = getParaguayDateLocal();
+let _shippingRows = {};
 
 function getParaguayDateLocal() {
   return new Date(Date.now() - 4 * 3600 * 1000).toISOString().slice(0, 10);
@@ -1954,23 +1970,41 @@ function updateShippingPerSale() {
 }
 
 function renderShippingHistory(rows) {
-  const tbody = document.getElementById('shipping-history-tbody');
-  if (!tbody) return;
+  _shippingRows = {};
+  const container = document.getElementById('shipping-history-list');
+  if (!container) return;
   if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="padding:14px 8px;color:rgba(255,255,255,.25);text-align:center;font-size:11px">Sin historial</td></tr>';
+    container.innerHTML = '<p style="padding:14px 8px;color:rgba(255,255,255,.25);text-align:center;font-size:11px;margin:0">Sin historial</p>';
     return;
   }
   const fmt = n => Number(n || 0).toLocaleString('es-PY');
-  tbody.innerHTML = rows.map(r => `
-    <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
-      <td style="padding:7px 8px;color:#fff">${r.date || '—'}</td>
-      <td style="padding:7px 8px;color:rgba(255,255,255,.65);text-align:right">${r.delivery_amount > 0 ? 'Gs. ' + fmt(r.delivery_amount) : '—'}</td>
-      <td style="padding:7px 8px;color:rgba(255,255,255,.65);text-align:right">${r.encomienda_amount > 0 ? 'Gs. ' + fmt(r.encomienda_amount) : '—'}</td>
-      <td style="padding:7px 8px;color:#60a5fa;font-weight:600;text-align:right">Gs. ${fmt(r.total_shipping)}</td>
-      <td style="padding:7px 8px;color:rgba(255,255,255,.65);text-align:right">${r.purchased_count || 0}</td>
-      <td style="padding:7px 8px;color:rgba(255,255,255,.65);text-align:right">${r.per_sale > 0 ? 'Gs. ' + fmt(r.per_sale) : '—'}</td>
-    </tr>
-  `).join('');
+  rows.forEach(r => { _shippingRows[r.date] = r; });
+  container.innerHTML = rows.map(r => {
+    const label = fmtShipDate(r.date);
+    return `
+    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px 14px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:13px;font-weight:700;color:#fff">${label}</span>
+        <span style="font-size:14px;font-weight:700;color:#60a5fa">Gs. ${fmt(r.total_shipping)}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:10px">
+        <span>Delivery: ${r.delivery_amount > 0 ? 'Gs. ' + fmt(r.delivery_amount) : '—'}</span>
+        <span>Comprados: ${r.purchased_count || 0}</span>
+        <span>Encom./Bolt: ${r.encomienda_amount > 0 ? 'Gs. ' + fmt(r.encomienda_amount) : '—'}</span>
+        <span>C/venta: ${r.per_sale > 0 ? 'Gs. ' + fmt(r.per_sale) : '—'}</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="editShippingRow('${r.date}')"
+          style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);font-size:11px;padding:6px 10px;border-radius:6px;cursor:pointer;font-family:inherit">
+          Editar
+        </button>
+        <button onclick="deleteShippingRow('${r.date}')"
+          style="flex:1;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:#f87171;font-size:11px;padding:6px 10px;border-radius:6px;cursor:pointer;font-family:inherit">
+          Eliminar
+        </button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 async function applyShipping() {
@@ -2017,5 +2051,47 @@ async function applyShipping() {
     if (statusEl) { statusEl.style.color = '#f87171'; statusEl.textContent = 'Error de red. Verificá la conexión.'; }
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = 'Aplicar a reportes'; }
+  }
+}
+
+function editShippingRow(date) {
+  const r = _shippingRows[date];
+  if (!r) return;
+  shippingDate = r.date;
+  const di       = document.getElementById('shipping-delivery-input');
+  const ei       = document.getElementById('shipping-encomienda-input');
+  const todayStr = getParaguayDateLocal();
+  const yestStr  = new Date(Date.now() - 4 * 3600 * 1000 - 86400000).toISOString().slice(0, 10);
+  if (di) di.value = r.delivery_amount   > 0 ? r.delivery_amount   : '';
+  if (ei) ei.value = r.encomienda_amount > 0 ? r.encomienda_amount : '';
+  document.getElementById('ship-date-today')?.classList.toggle('date-btn--active', r.date === todayStr);
+  document.getElementById('ship-date-yesterday')?.classList.toggle('date-btn--active', r.date === yestStr);
+  const dp = document.getElementById('ship-date-picker');
+  if (dp) dp.value = (r.date !== todayStr && r.date !== yestStr) ? r.date : '';
+  updateShippingPerSale();
+  document.getElementById('shipping-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function deleteShippingRow(date) {
+  const label     = fmtShipDate(date);
+  const confirmed = confirm(`¿Eliminar costos de envío del ${label} (${date}) de todos los reportes en Dam Finanzas?`);
+  if (!confirmed) return;
+  const statusEl = document.getElementById('shipping-status');
+  if (statusEl) { statusEl.style.color = ''; statusEl.textContent = 'Eliminando…'; }
+  try {
+    const res = await fetch('/api/delivery-shipping', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+      body:    JSON.stringify({ date, deliveryAmount: 0, encomiendaAmount: 0 }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      if (statusEl) { statusEl.style.color = '#4ade80'; statusEl.textContent = `✓ Costos de ${label} eliminados de Dam Finanzas.`; }
+      loadShippingStats();
+    } else {
+      if (statusEl) { statusEl.style.color = '#f87171'; statusEl.textContent = 'Error: ' + (data.error || 'desconocido'); }
+    }
+  } catch (_) {
+    if (statusEl) { statusEl.style.color = '#f87171'; statusEl.textContent = 'Error de red.'; }
   }
 }
