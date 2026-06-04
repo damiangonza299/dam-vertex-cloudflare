@@ -300,7 +300,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     }
 
     const damNotifyPromise = notifyDamFinanzasSale(
-      { lead, productSlug, saleQty, isCombo, requestedVariants, productRow },
+      { lead, productSlug, saleQty, isCombo, requestedVariants, productRow, comboRelojRow, comboCadenaRow },
       env
     ).catch(e => console.warn('DAM_FINANZAS_NOTIFY_FAILED', String(lead.id), e?.message));
 
@@ -366,43 +366,64 @@ function resolveVariantId(metaJson, variantName) {
   } catch (_) { return null; }
 }
 
-async function notifyDamFinanzasSale({ lead, productSlug, saleQty, isCombo, requestedVariants, productRow }, env) {
-  if (isCombo) {
-    console.warn('DAM_FINANZAS_SKIP_COMBO', String(lead.id));
-    return;
-  }
-
+async function notifyDamFinanzasSale(
+  { lead, productSlug, saleQty, isCombo, requestedVariants, productRow, comboRelojRow, comboCadenaRow },
+  env
+) {
   const secret = env.DAM_FINANZAS_WEBHOOK_SECRET || '';
   if (!secret) return;
 
-  // One webhook per variant-unit; all share adminOrderId so they land in the same card
+  const adminOrderId    = String(lead.id);
+  const operationalDate = getParaguayDate();
+  const totalValue      = Number(lead.value || 0);
+  const endpoint        = 'https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onAdminSale';
+  const headers         = { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret };
+
+  async function sendItem(pl) {
+    const r = await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify(pl) });
+    console.log('DAM_FINANZAS_NOTIFY', pl.adminOrderId, `item${pl.itemIndex}`, pl.variantName ?? pl.productSlug, r.status);
+  }
+
+  if (isCombo) {
+    // Combo reloj + cadena: 1 card en DAM Finanzas con 2 items (misma adminOrderId)
+    const relojVariant = requestedVariants[0] || null;
+    const relojPrice   = Math.round(totalValue / 2);
+    await sendItem({
+      sourceSystem: 'DAM_VERTEX', adminOrderId, productSlug: 'reloj',
+      productName: 'Reloj Blackout Minimal',
+      variantName: relojVariant,
+      variantId:   resolveVariantId(comboRelojRow?.variants_meta_json, relojVariant),
+      quantity: 1, salePrice: relojPrice, itemIndex: 0,
+      purchasedAt: new Date().toISOString(), operationalDate,
+    });
+    await sendItem({
+      sourceSystem: 'DAM_VERTEX', adminOrderId, productSlug: 'cadena',
+      productName: 'Cadena Apex',
+      variantName: null, variantId: null,
+      quantity: 1, salePrice: totalValue - relojPrice, itemIndex: 1,
+      purchasedAt: new Date().toISOString(), operationalDate,
+    });
+    return;
+  }
+
+  // Producto normal: 1 webhook por variante distinta
+  // Si hay una sola variante con qty > 1, mandamos quantity real (no qty=1)
   const variantsToSend = requestedVariants.length > 0 ? requestedVariants : [null];
-  const pricePerItem   = Math.round(Number(lead.value || 0) / variantsToSend.length);
+  const unitPrice      = Math.round(totalValue / saleQty);
 
   for (let i = 0; i < variantsToSend.length; i++) {
-    const vn = variantsToSend[i];
-    const payload = {
-      sourceSystem:    'DAM_VERTEX',
-      adminOrderId:    String(lead.id),
-      productSlug,
+    const vn  = variantsToSend[i];
+    const qty = variantsToSend.length === 1 ? saleQty : 1; // multi-unit single-variant
+    await sendItem({
+      sourceSystem: 'DAM_VERTEX', adminOrderId, productSlug,
       productName:     lead.product_name,
       variantName:     vn,
       variantId:       resolveVariantId(productRow?.variants_meta_json, vn),
-      quantity:        1,
-      salePrice:       pricePerItem,
+      quantity:        qty,
+      salePrice:       unitPrice,
       itemIndex:       i,
       purchasedAt:     new Date().toISOString(),
-      operationalDate: getParaguayDate(),
-    };
-
-    const res = await fetch(
-      'https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onAdminSale',
-      {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret },
-        body:    JSON.stringify(payload),
-      }
-    );
-    console.log('DAM_FINANZAS_NOTIFY', payload.adminOrderId, `item${i}`, vn, res.status);
+      operationalDate,
+    });
   }
 }

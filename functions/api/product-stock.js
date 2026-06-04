@@ -82,14 +82,22 @@ function parseProduct(row) {
   if (row.variants_json) {
     try { variants = JSON.parse(row.variants_json); } catch (_) {}
   }
+  let variants_meta = null;
+  if (row.variants_meta_json) {
+    try { variants_meta = JSON.parse(row.variants_meta_json); } catch (_) {}
+  }
   return {
-    id:          row.id,
-    slug:        row.slug,
-    name:        row.name,
-    stock_total: row.stock_total,
-    variants:    variants,
-    active:      row.active,
-    updated_at:  row.updated_at,
+    id:            row.id,
+    slug:          row.slug,
+    name:          row.name,
+    stock_total:   row.stock_total,
+    variants:      variants,
+    variants_meta: variants_meta,
+    unit_cost:     row.unit_cost     || 0,
+    default_price: row.default_price || 0,
+    min_stock:     row.min_stock     || 0,
+    active:        row.active,
+    updated_at:    row.updated_at,
   };
 }
 

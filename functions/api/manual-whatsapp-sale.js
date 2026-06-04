@@ -252,9 +252,11 @@ export async function onRequestPost({ request, env }) {
 
     /* ── Notificar DAM Finanzas (fire-and-forget) ── */
     const stockSlugFinal = product_slug || slugify(product_name.trim());
+    const isManualCombo  = stockSlugFinal === 'combo-reloj-cadena';
     notifyDamFinanzas({
       saleId, product_name, stockSlugFinal,
       value: saleValue, variant: variant || null, saleQty,
+      isCombo: isManualCombo,
     }, env).catch(e => console.warn('DAM_FINANZAS_MANUAL_NOTIFY_FAILED', saleId, e?.message));
 
     return json({
@@ -552,36 +554,53 @@ function getParaguayDate() {
   return new Date(Date.now() - 4 * 3_600_000).toISOString().slice(0, 10);
 }
 
-async function notifyDamFinanzas({ saleId, product_name, stockSlugFinal, value, variant, saleQty }, env) {
+async function notifyDamFinanzas({ saleId, product_name, stockSlugFinal, value, variant, saleQty, isCombo }, env) {
   const secret = env.DAM_FINANZAS_WEBHOOK_SECRET || '';
   if (!secret) return;
 
-  const rawVariants = variant ? (Array.isArray(variant) ? variant : [variant]) : [];
+  const adminOrderId    = `manual-wa-${saleId}`;
+  const operationalDate = getParaguayDate();
+  const totalValue      = Number(value);
+  const endpoint        = 'https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onAdminSale';
+  const headers         = { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret };
+
+  async function sendItem(pl) {
+    const r = await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify(pl) });
+    console.log('DAM_FINANZAS_MANUAL_NOTIFY', saleId, `item${pl.itemIndex}`, pl.variantName ?? pl.productSlug, r.status);
+  }
+
+  if (isCombo) {
+    // Combo reloj + cadena: 1 card con 2 items
+    const rawVariants  = variant ? (Array.isArray(variant) ? variant : [variant]) : [];
+    const relojVariant = rawVariants[0] || null;
+    const relojPrice   = Math.round(totalValue / 2);
+    await sendItem({
+      sourceSystem: 'DAM_VERTEX', adminOrderId, productSlug: 'reloj',
+      productName: 'Reloj Blackout Minimal', variantName: relojVariant, variantId: null,
+      quantity: 1, salePrice: relojPrice, itemIndex: 0,
+      purchasedAt: new Date().toISOString(), operationalDate,
+    });
+    await sendItem({
+      sourceSystem: 'DAM_VERTEX', adminOrderId, productSlug: 'cadena',
+      productName: 'Cadena Apex', variantName: null, variantId: null,
+      quantity: 1, salePrice: totalValue - relojPrice, itemIndex: 1,
+      purchasedAt: new Date().toISOString(), operationalDate,
+    });
+    return;
+  }
+
+  // Producto normal: 1 webhook por variante distinta
+  const rawVariants    = variant ? (Array.isArray(variant) ? variant : [variant]) : [];
   const variantsToSend = rawVariants.length > 0 ? rawVariants : [null];
-  const pricePerItem   = Math.round(value / variantsToSend.length);
+  const unitPrice      = Math.round(totalValue / saleQty);
 
   for (let i = 0; i < variantsToSend.length; i++) {
-    const payload = {
-      sourceSystem:    'DAM_VERTEX',
-      adminOrderId:    `manual-wa-${saleId}`,
-      productSlug:     stockSlugFinal,
-      productName:     product_name,
-      variantName:     variantsToSend[i],
-      quantity:        1,
-      salePrice:       pricePerItem,
-      itemIndex:       i,
-      purchasedAt:     new Date().toISOString(),
-      operationalDate: getParaguayDate(),
-    };
-
-    const res = await fetch(
-      'https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onAdminSale',
-      {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret },
-        body:    JSON.stringify(payload),
-      }
-    );
-    console.log('DAM_FINANZAS_MANUAL_NOTIFY', saleId, `item${i}`, variantsToSend[i], res.status);
+    const qty = variantsToSend.length === 1 ? saleQty : 1; // multi-unit single-variant
+    await sendItem({
+      sourceSystem: 'DAM_VERTEX', adminOrderId, productSlug: stockSlugFinal,
+      productName: product_name, variantName: variantsToSend[i], variantId: null,
+      quantity: qty, salePrice: unitPrice, itemIndex: i,
+      purchasedAt: new Date().toISOString(), operationalDate,
+    });
   }
 }
