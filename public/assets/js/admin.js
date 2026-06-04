@@ -48,6 +48,12 @@ if (IS_DELIVERY) {
     btn.style.display = 'none';
   });
 
+  /* Mostrar tab Envíos en modo delivery */
+  const shippingTabBtn = document.querySelector('[data-tab="shipping"]');
+  if (shippingTabBtn) shippingTabBtn.style.display = '';
+
+  initShippingPanel();
+
   // 🔒 Bloquear edición en productos (solo visual)
   const observer = new MutationObserver(() => {
     const productInputs = document.querySelectorAll(
@@ -565,8 +571,9 @@ function switchAdminTab(tab) {
   const dashSection     = document.getElementById('dashboard-section');
   const adsSection      = document.getElementById('ads-section');
   const metaSection     = document.getElementById('meta-section');
-  const insyncSection   = document.getElementById('insync-section');
-  const blockedSection  = document.getElementById('blocked-section');
+  const insyncSection    = document.getElementById('insync-section');
+  const blockedSection   = document.getElementById('blocked-section');
+  const shippingSection  = document.getElementById('shipping-section');
   leadsSection    && (leadsSection.style.display    = tab === 'leads'     ? '' : 'none');
   productsSection && (productsSection.style.display = tab === 'products'  ? '' : 'none');
   dashSection     && (dashSection.style.display     = tab === 'dashboard' ? '' : 'none');
@@ -574,12 +581,14 @@ function switchAdminTab(tab) {
   metaSection     && (metaSection.style.display     = tab === 'meta'      ? '' : 'none');
   insyncSection   && (insyncSection.style.display   = tab === 'insync'    ? '' : 'none');
   blockedSection  && (blockedSection.style.display  = tab === 'blocked'   ? '' : 'none');
+  shippingSection && (shippingSection.style.display = tab === 'shipping'  ? '' : 'none');
   if (tab === 'products')  loadProducts();
   if (tab === 'dashboard') renderDashboard();
   if (tab === 'ads')       renderAdsTable();
   if (tab === 'meta')      loadMetaReport();
   if (tab === 'insync')    loadInsyncReport();
   if (tab === 'blocked')   loadBlockedCustomers();
+  if (tab === 'shipping')  loadShippingStats();
 }
 
 /* ── DAM inSync Report ── */
@@ -1846,3 +1855,130 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('block-refresh-btn')?.addEventListener('click', loadBlockedCustomers);
 });
+
+/* =========================================================
+   Delivery — Panel de distribución de envíos
+   ========================================================= */
+
+let shippingDate = getParaguayDateLocal();
+
+function getParaguayDateLocal() {
+  return new Date(Date.now() - 4 * 3600 * 1000).toISOString().slice(0, 10);
+}
+
+function initShippingPanel() {
+  shippingDate = getParaguayDateLocal();
+  const todayStr = shippingDate;
+  const yestStr  = new Date(Date.now() - 4 * 3600 * 1000 - 86400000).toISOString().slice(0, 10);
+
+  document.getElementById('ship-date-today')?.addEventListener('click', () => {
+    shippingDate = todayStr;
+    document.getElementById('ship-date-today')?.classList.add('date-btn--active');
+    document.getElementById('ship-date-yesterday')?.classList.remove('date-btn--active');
+    const dp = document.getElementById('ship-date-picker');
+    if (dp) dp.value = '';
+    loadShippingStats();
+  });
+
+  document.getElementById('ship-date-yesterday')?.addEventListener('click', () => {
+    shippingDate = yestStr;
+    document.getElementById('ship-date-yesterday')?.classList.add('date-btn--active');
+    document.getElementById('ship-date-today')?.classList.remove('date-btn--active');
+    const dp = document.getElementById('ship-date-picker');
+    if (dp) dp.value = '';
+    loadShippingStats();
+  });
+
+  document.getElementById('ship-date-picker')?.addEventListener('change', e => {
+    if (e.target.value) {
+      shippingDate = e.target.value;
+      document.getElementById('ship-date-today')?.classList.remove('date-btn--active');
+      document.getElementById('ship-date-yesterday')?.classList.remove('date-btn--active');
+      loadShippingStats();
+    }
+  });
+}
+
+async function loadShippingStats() {
+  const countEl = document.getElementById('shipping-purchased-count');
+  const statusEl = document.getElementById('shipping-status');
+  if (countEl) countEl.textContent = '…';
+  if (statusEl) { statusEl.style.color = ''; statusEl.textContent = ''; }
+
+  try {
+    const res  = await fetch(`/api/delivery-shipping?date=${shippingDate}`, {
+      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    });
+    const data = await res.json();
+    if (data.ok) {
+      if (countEl) countEl.textContent = data.purchasedCount;
+      updateShippingPerSale();
+    } else {
+      if (countEl) countEl.textContent = '?';
+    }
+  } catch (_) {
+    if (countEl) countEl.textContent = '?';
+  }
+}
+
+function updateShippingPerSale() {
+  const countEl    = document.getElementById('shipping-purchased-count');
+  const perSaleEl  = document.getElementById('shipping-per-sale');
+  const totalInput = document.getElementById('shipping-total-input');
+  if (!perSaleEl || !countEl || !totalInput) return;
+
+  const count   = parseInt(countEl.textContent) || 0;
+  const total   = parseFloat(totalInput.value)   || 0;
+  const perSale = count > 0 ? Math.round(total / count) : 0;
+
+  perSaleEl.textContent = count > 0 && total > 0
+    ? 'Gs. ' + perSale.toLocaleString('es-PY')
+    : '—';
+}
+
+async function applyShipping() {
+  const totalInput = document.getElementById('shipping-total-input');
+  const statusEl   = document.getElementById('shipping-status');
+  const btn        = document.getElementById('shipping-apply-btn');
+
+  const total = parseFloat(totalInput?.value);
+  if (isNaN(total) || total < 0) {
+    if (statusEl) { statusEl.style.color = '#f87171'; statusEl.textContent = 'Ingresá un total válido (0 para limpiar).'; }
+    return;
+  }
+
+  const totalFmt = total.toLocaleString('es-PY');
+  const confirmed = confirm(
+    total === 0
+      ? `¿Eliminar costos de envío de todos los reportes del ${shippingDate}?`
+      : `¿Distribuir Gs. ${totalFmt} entre las ventas del ${shippingDate}?`
+  );
+  if (!confirmed) return;
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Aplicando…'; }
+  if (statusEl) { statusEl.style.color = ''; statusEl.textContent = ''; }
+
+  try {
+    const res  = await fetch('/api/delivery-shipping', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+      body:    JSON.stringify({ date: shippingDate, totalShipping: total }),
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      const df    = data.damFinanzas || {};
+      const count = df.count || 0;
+      const msg   = count > 0
+        ? `✓ Gs. ${totalFmt} distribuidos entre ${count} reportes en DAM Finanzas (Gs. ${(df.perSale || 0).toLocaleString('es-PY')} c/u).`
+        : `✓ Sin reportes en DAM Finanzas para ${shippingDate} (${data.purchasedCount || 0} compra(s) en DAM Vertex).`;
+      if (statusEl) { statusEl.style.color = '#4ade80'; statusEl.textContent = msg; }
+    } else {
+      if (statusEl) { statusEl.style.color = '#f87171'; statusEl.textContent = 'Error: ' + (data.error || 'desconocido'); }
+    }
+  } catch (_) {
+    if (statusEl) { statusEl.style.color = '#f87171'; statusEl.textContent = 'Error de red. Verificá la conexión.'; }
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Aplicar a reportes'; }
+  }
+}

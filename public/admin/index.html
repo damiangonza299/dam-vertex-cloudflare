@@ -188,6 +188,7 @@
       <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')">Flow</button>
       <button class="admin-tab" data-tab="meta" onclick="switchAdminTab('meta')">Meta</button>
       <button class="admin-tab" data-tab="insync" onclick="switchAdminTab('insync')">inSync</button>
+      <button class="admin-tab" data-tab="shipping" onclick="switchAdminTab('shipping')" style="display:none;color:#60a5fa">Envíos</button>
       <button class="admin-tab" data-tab="blocked" onclick="switchAdminTab('blocked')" style="color:#f87171">Block</button>
     </div>
 
@@ -504,6 +505,47 @@
         </table>
       </div>
     </div><!-- /blocked-section -->
+
+    <!-- Delivery: Distribución de envíos -->
+    <div id="shipping-section" style="display:none">
+      <div style="margin-bottom:18px">
+        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 6px">Total de envíos del día</h3>
+        <p style="font-size:13px;color:rgba(255,255,255,.5);margin:0">Colocá el total cobrado o pagado por envíos. El sistema lo distribuirá entre las ventas compradas del día.</p>
+      </div>
+
+      <div class="admin-date-filters" style="margin-bottom:16px">
+        <button class="date-btn date-btn--active" id="ship-date-today">Hoy</button>
+        <button class="date-btn" id="ship-date-yesterday">Ayer</button>
+        <input type="date" id="ship-date-picker" class="date-picker">
+      </div>
+
+      <div style="background:#111;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:20px;max-width:480px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+          <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:12px;text-align:center">
+            <div id="shipping-purchased-count" style="font-size:22px;font-weight:700;color:#4ade80">—</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.05em;margin-top:4px">Comprados</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:12px;text-align:center">
+            <div id="shipping-per-sale" style="font-size:22px;font-weight:700;color:#60a5fa">—</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.05em;margin-top:4px">Costo por venta</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">Total de envíos (Gs.)</label>
+          <input type="number" id="shipping-total-input" min="0" step="1000" placeholder="0"
+            style="width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-size:15px;padding:10px 14px;font-family:inherit;box-sizing:border-box"
+            oninput="updateShippingPerSale()">
+        </div>
+
+        <div id="shipping-status" style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:12px;min-height:16px"></div>
+
+        <button id="shipping-apply-btn" onclick="applyShipping()"
+          style="width:100%;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);color:#4ade80;font-size:14px;font-weight:600;padding:12px;border-radius:8px;cursor:pointer;font-family:inherit">
+          Aplicar a reportes
+        </button>
+      </div>
+    </div><!-- /shipping-section -->
 
   </div>
 </div>

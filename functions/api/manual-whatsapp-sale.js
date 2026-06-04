@@ -25,7 +25,7 @@ export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   /* ── Auth ── */
   const auth  = request.headers.get('Authorization') || '';
   const token = auth.replace('Bearer ', '').trim();
@@ -250,14 +250,15 @@ export async function onRequestPost({ request, env }) {
 
     /* Ventas manuales: no enviar Telegram. El registro queda en admin/D1. */
 
-    /* ── Notificar DAM Finanzas (fire-and-forget) ── */
-    const stockSlugFinal = product_slug || slugify(product_name.trim());
-    const isManualCombo  = stockSlugFinal === 'combo-reloj-cadena';
-    notifyDamFinanzas({
+    /* ── Notificar DAM Finanzas (waitUntil — garantiza que el fetch completa antes que CF cierre el contexto) ── */
+    const stockSlugFinal  = product_slug || slugify(product_name.trim());
+    const isManualCombo   = stockSlugFinal === 'combo-reloj-cadena';
+    const dfNotifyPromise = notifyDamFinanzas({
       saleId, product_name, stockSlugFinal,
       value: saleValue, variant: variant || null, saleQty,
       isCombo: isManualCombo,
     }, env).catch(e => console.warn('DAM_FINANZAS_MANUAL_NOTIFY_FAILED', saleId, e?.message));
+    if (typeof waitUntil === 'function') waitUntil(dfNotifyPromise);
 
     return json({
       ok:             true,

@@ -12,7 +12,7 @@ export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   try {
     const body = await request.json();
     const {
@@ -294,6 +294,33 @@ export async function onRequestPost({ request, env }) {
         );
       } catch (_) {}
     }
+
+    /* ── Notificar DAM Finanzas: actualizar shopifyOrdersTotal (Pedidos del día) ── */
+    const leadDate = getParaguayDate();
+    const leadsCountPromise = (async () => {
+      try {
+        const startUTC = new Date(`${leadDate}T04:00:00.000Z`);
+        const endUTC   = new Date(startUTC.getTime() + 24 * 60 * 60 * 1000);
+        const cntRow   = await env.DB.prepare(
+          `SELECT COUNT(*) AS count FROM leads WHERE created_at >= ? AND created_at < ?`
+        ).bind(
+          startUTC.toISOString().replace('T', ' ').slice(0, 19),
+          endUTC.toISOString().replace('T', ' ').slice(0, 19)
+        ).first();
+        const leadsCount = Number(cntRow?.count || 0);
+        const secret = env.DAM_FINANZAS_WEBHOOK_SECRET || '';
+        if (!secret) return;
+        await fetch('https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onLeadsCountUpdate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret },
+          body: JSON.stringify({ date: leadDate, leadsCount }),
+        });
+        console.log('LEADS_COUNT_UPDATE', leadDate, leadsCount);
+      } catch (cntErr) {
+        console.warn('LEADS_COUNT_UPDATE_FAILED', cntErr?.message);
+      }
+    })();
+    if (typeof waitUntil === 'function') waitUntil(leadsCountPromise);
 
     return json({ ok: true, lead_id: result.meta?.last_row_id });
 
