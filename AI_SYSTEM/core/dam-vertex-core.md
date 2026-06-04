@@ -192,48 +192,81 @@ Cuando se confirma una compra en DAM Vertex (`confirm-purchase.js` o `manual-wha
 - `DAM_FINANZAS_WEBHOOK_SECRET` = secret compartido con DAM Finanzas functions/.env
 
 ### Reglas de reportes
-- **1 pedido comprado = 1 card/reporte** en DAM Finanzas
-- Report ID = `r:admin-sale:{adminOrderId}` (estable, nunca cambia)
+- **1 pedido = 1 card** — Report ID = `r:admin-sale:{adminOrderId}` (estable, nunca date-grouped)
 - Pedido con múltiples variantes → 1 card con múltiples items (mismo adminOrderId, distinto itemIndex)
-- Anti-duplicado: no procesa el mismo (adminOrderId + itemIndex) dos veces
-- Combos (reloj+cadena) → actualmente ignorados (DAM_FINANZAS_SKIP_COMBO)
+- Anti-duplicado: dedup key = `adminOrderId:itemIndex`; el mismo par nunca se procesa dos veces
+- Combo reloj+cadena → 1 card con item0=reloj, item1=cadena (precio split 50/50)
+- adminOrderId de venta manual WA: `manual-wa-{saleId}`
+
+### Reglas de precio y cantidad
+- `salePrice` en el payload = **precio unitario** (no total)
+- `quantity` = unidades reales de esa variante (puede ser > 1 si se pide qty > 1 de la misma variante)
+- Si orden tiene 2 variantes distintas: 2 webhooks con `quantity: 1` cada uno
+- Si orden tiene qty=2 de misma variante: 1 webhook con `quantity: 2`
+- Total revenue en DAM Finanzas: `qty × price` por item
 
 ### Mapeo de variantes (solo reloj)
-DAM Vertex → DAM Finanzas (definido en `VERTEX_VARIANT_MAP` en index.js):
-- "Negro Total" → "Negro"
-- "Negro Rosa" → "Rosa"
-- "Negro Dorado" → "Dorado"
-- "Plateado Negro" → "Plateado"
-- "Negro Cobre" → "Cobre"
-- "Negro Dorado Sutil" → "Dorado Sutil"
+DAM Vertex → DAM Finanzas (definido en `VERTEX_VARIANT_MAP` en `functions/index.js` de DAM Finanzas):
+| DAM Vertex | DAM Finanzas |
+|---|---|
+| Negro Total | Negro |
+| Negro Rosa | Rosa |
+| Negro Dorado | Dorado |
+| Plateado Negro | Plateado |
+| Negro Cobre | Cobre |
+| Negro Dorado Sutil | Dorado Sutil |
 
 Para nuevos productos: los nombres de variante se usan tal cual (sin mapping).
 
+### Endpoint de prueba sin Meta (test-dam-finanzas.js)
+```
+POST https://damvertex.com/api/test-dam-finanzas
+Authorization: Bearer {ADMIN_PASSWORD}
+{
+  "adminOrderId": "TEST_...",
+  "productSlug": "reloj",
+  "productName": "Reloj Blackout Minimal",
+  "variantName": "Negro Total",
+  "quantity": 1,
+  "salePrice": 189000,
+  "itemIndex": 0,
+  "operationalDate": "YYYY-MM-DD"
+}
+```
+NO toca D1, NO toca stock DAM Vertex, NO envía Meta. Solo reenvía a onAdminSale.
+
 ### Flujo para agregar un nuevo producto
-1. Crear producto en D1 con `slug` estable: `wrangler d1 execute ... UPDATE/INSERT products`
-2. Crear `variants_json` con los nombres de variante (ej: `{"Talla S": 10, "Talla M": 5}`)
-3. Actualizar `product-stock.js` `parseProduct()` si se necesita exponer campos nuevos
-4. Agregar `unitCost`/`defaultPrice` al D1 schema si se necesita (requiere migración SQL)
-5. Llamar al endpoint `importProductFromVertex` en DAM Finanzas:
+1. Crear slug estable en D1: `wrangler d1 execute dam-vertex-leads --remote --command "INSERT OR IGNORE INTO products..."`
+2. Definir `variants_json` (nombres de variante → stock inicial)
+3. Definir `variants_meta_json` (nombres de variante → variantId estables)
+4. Definir `unit_cost`, `default_price`, `min_stock` en D1 (ya en schema desde migrate20)
+5. Importar a DAM Finanzas (lee de `/api/product-stock?slug=...`):
    ```
    POST https://us-central1-dam-finanzas-cf863.cloudfunctions.net/importProductFromVertex
    x-dam-vertex-secret: <secret>
    { "productSlug": "nuevo-slug" }
    ```
-   → Crea el producto en Firestore con `adminProductSlug`, stock y variantes. Luego completar `unitCost` y `defaultPrice` manualmente.
-6. Si el nuevo producto necesita mapping de variantes (nombres distintos entre sistemas), agregar entrada en `VERTEX_VARIANT_MAP` en `functions/index.js` de DAM Finanzas.
-7. Asegurar que `confirm-purchase.js` y `manual-whatsapp-sale.js` envíen webhooks correctamente (productSlug debe coincidir).
+   → Crea producto en Firestore. Si `unit_cost`/`default_price` están en D1, se importan automáticamente.
+6. Si los nombres de variante son distintos entre sistemas: agregar mapping en `VERTEX_VARIANT_MAP` (DAM Finanzas `functions/index.js`).
+7. `confirm-purchase.js` y `manual-whatsapp-sale.js` usan el `productSlug` de D1 — debe coincidir exactamente.
+8. Para combos: detectar `productSlug === 'combo-reloj-cadena'` → 2 webhooks (item0=reloj, item1=cadena).
+
+### Cadena Apex en DAM Finanzas
+- Producto ID: `3071d5cd-96fd-4b64-8ea3-769458efc9fc`
+- `adminProductSlug = 'cadena'` (vinculado en sesión 2026-06-04)
+- Sin variantes — stock total
 
 ### Pedidos del día en DAM Finanzas
-- Se alimenta desde `GET https://damvertex.com/api/admin-leads-count?date=YYYY-MM-DD`
-- Muestra LEADS (no compras) — cualquier lead creado ese día cuenta
-- En DAM Finanzas, el bloque "Pedidos Generados" del home muestra este número para vistas de día individual
+- Dato: `GET https://damvertex.com/api/admin-leads-count?date=YYYY-MM-DD`
+- Muestra LEADS (no compras) — cualquier lead creado ese día en Paraguay (UTC-4)
+- Solo aplica a vistas de día individual (no rango)
+- Cache por fecha en `_vtxLeadCounts` (session scope) — evita flicker en re-renders
 
 ### Qué NO tocar
 - Meta CAPI (Purchase, QualifiedLead, InitiateCheckout) — solo agregar webhook DESPUÉS de éxito
 - tracking.js, Pixel, fbp/fbc
 - WhatsApp flow visual
-- D1 schema sin migración SQL explícita
+- D1 schema sin migración SQL explícita (usar migrate##.sql)
 - stock de DAM Vertex (solo lectura para DAM Finanzas)
 
 ---
