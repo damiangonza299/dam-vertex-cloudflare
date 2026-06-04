@@ -12,7 +12,7 @@ export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   /* Auth */
   const auth = request.headers.get('Authorization') || '';
   const token = auth.replace('Bearer ', '').trim();
@@ -299,6 +299,14 @@ export async function onRequestPost({ request, env }) {
       );
     }
 
+    const damNotifyPromise = notifyDamFinanzasSale(
+      { lead, productSlug, saleQty, isCombo, requestedVariants, productRow },
+      env
+    ).catch(e => console.warn('DAM_FINANZAS_NOTIFY_FAILED', String(lead.id), e?.message));
+
+    if (typeof waitUntil === 'function') {
+      waitUntil(damNotifyPromise);
+    }
     return json({ ok: true, name: lead.name, event_id });
 
   } catch (err) {
@@ -342,4 +350,52 @@ function json(data, status = 200) {
     status,
     headers: { 'Content-Type': 'application/json', ...CORS },
   });
+}
+
+/* ── DAM Finanzas webhook helpers ── */
+
+function getParaguayDate() {
+  return new Date(Date.now() - 4 * 3_600_000).toISOString().slice(0, 10);
+}
+
+function resolveVariantId(metaJson, variantName) {
+  if (!metaJson || !variantName) return null;
+  try {
+    const meta = JSON.parse(metaJson);
+    return meta[variantName]?.variantId || null;
+  } catch (_) { return null; }
+}
+
+async function notifyDamFinanzasSale({ lead, productSlug, saleQty, isCombo, requestedVariants, productRow }, env) {
+  if (isCombo) {
+    console.warn('DAM_FINANZAS_SKIP_COMBO', String(lead.id));
+    return;
+  }
+
+  const secret = env.DAM_FINANZAS_WEBHOOK_SECRET || '';
+  if (!secret) return;
+
+  const variantName = requestedVariants[0] || null;
+  const payload = {
+    sourceSystem:    'DAM_VERTEX',
+    adminOrderId:    String(lead.id),
+    productSlug,
+    productName:     lead.product_name,
+    variantName,
+    variantId:       resolveVariantId(productRow?.variants_meta_json, variantName),
+    quantity:        saleQty,
+    salePrice:       Number(lead.value || 0),
+    purchasedAt:     new Date().toISOString(),
+    operationalDate: getParaguayDate(),
+  };
+
+  const res = await fetch(
+    'https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onAdminSale',
+    {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret },
+      body:    JSON.stringify(payload),
+    }
+  );
+  console.log('DAM_FINANZAS_NOTIFY', payload.adminOrderId, res.status);
 }
