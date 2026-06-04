@@ -126,7 +126,8 @@
       "Bash(curl -s -w '\\\\n\\\\nHTTP_STATUS:%{http_code}' -X DELETE http://127.0.0.1:8788/api/blocked-customers?id=1 -H 'Authorization: Bearer PONER_PASSWORD_AQUI')",
       "Bash(grep -v \"wrangler\\\\|WARNING\\\\|update\\\\|prevent\\\\|install\\\\|After\\\\|Run \\\\`npm\\\\|⛅\\\\|---\\\\|▲\\\\|\\\\[43\\\\|local development\")",
       "Bash(curl -s -w \"\\\\nHTTP:%{http_code}\" https://main.dam-vertex-cloudflare.pages.dev/api/blocked-customers)",
-      "Bash(curl -s -w '\\\\nHTTP:%{http_code}' -X POST https://main.dam-vertex-cloudflare.pages.dev/api/leads -H 'Content-Type: application/json' -d '{\"name\":\"Test Verificacion\",\"phone\":\"0991000001\",\"product_name\":\"Reloj Apex Negro\",\"product_slug\":\"reloj-apex\",\"value\":250000,\"currency\":\"PYG\",\"city\":\"TestCity\"}')"
+      "Bash(curl -s -w '\\\\nHTTP:%{http_code}' -X POST https://main.dam-vertex-cloudflare.pages.dev/api/leads -H 'Content-Type: application/json' -d '{\"name\":\"Test Verificacion\",\"phone\":\"0991000001\",\"product_name\":\"Reloj Apex Negro\",\"product_slug\":\"reloj-apex\",\"value\":250000,\"currency\":\"PYG\",\"city\":\"TestCity\"}')",
+      "Bash(awk '{print $5, $9}')"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\.claude\\projects\\c--Users-Admin-Desktop-dam-vertex-cloudflare\\memory"

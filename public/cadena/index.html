@@ -1533,6 +1533,7 @@
           if (comboStockEl) {
             comboStockEl.textContent = 'Error al registrar el pedido. Intentá de nuevo.';
             comboStockEl.style.display = 'block';
+            comboStockEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
           return;
         }
