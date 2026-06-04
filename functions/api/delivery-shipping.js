@@ -1,7 +1,7 @@
 /* =========================================================
    /api/delivery-shipping
-   GET  ?date=YYYY-MM-DD         → count de ventas compradas ese día (Paraguay)
-   POST { date, totalShipping }  → envía al DAM Finanzas para distribuir entre reportes
+   GET  ?date=YYYY-MM-DD         → count de ventas compradas + historial reciente
+   POST { date, deliveryAmount, encomiendaAmount }  → distribuye en DAM Finanzas
    ========================================================= */
 
 const CORS = {
@@ -14,7 +14,7 @@ export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
 }
 
-/* ── GET: cuántas ventas compradas hubo ese día Paraguay ── */
+/* ── GET: cuántas ventas compradas hubo ese día + historial reciente ── */
 export async function onRequestGet({ request, env }) {
   const auth  = request.headers.get('Authorization') || '';
   const token = auth.replace('Bearer ', '').trim();
@@ -34,8 +34,24 @@ export async function onRequestGet({ request, env }) {
     const row = await env.DB.prepare(
       `SELECT COUNT(*) AS count FROM leads WHERE status = 'purchased' AND purchased_at >= ? AND purchased_at < ?`
     ).bind(startUTC, endUTC).first();
+    const purchasedCount = Number(row?.count || 0);
 
-    return json({ ok: true, date, purchasedCount: Number(row?.count || 0) });
+    /* Historial: entrada del día solicitado + últimas 10 entradas */
+    let history       = null;
+    let recentHistory = [];
+    try {
+      const histRow = await env.DB.prepare(
+        `SELECT * FROM shipping_history WHERE date = ?`
+      ).bind(date).first();
+      if (histRow) history = histRow;
+
+      const recent = await env.DB.prepare(
+        `SELECT * FROM shipping_history ORDER BY date DESC LIMIT 10`
+      ).all();
+      recentHistory = recent?.results || [];
+    } catch (_) { /* tabla puede no existir aún */ }
+
+    return json({ ok: true, date, purchasedCount, history, recentHistory });
   } catch (err) {
     return json({ ok: false, error: err.message }, 500);
   }
@@ -51,14 +67,15 @@ export async function onRequestPost({ request, env }) {
 
   try {
     const body = await request.json();
-    const { date, totalShipping } = body;
+    const { date, deliveryAmount, encomiendaAmount } = body;
 
     if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
       return json({ ok: false, error: 'date requerida (YYYY-MM-DD)' }, 400);
     }
-    if (typeof totalShipping !== 'number' || totalShipping < 0) {
-      return json({ ok: false, error: 'totalShipping debe ser número >= 0' }, 400);
-    }
+
+    const delivery   = Math.max(0, Math.round(Number(deliveryAmount)   || 0));
+    const encomienda = Math.max(0, Math.round(Number(encomiendaAmount) || 0));
+    const total      = delivery + encomienda;
 
     /* Contar ventas compradas en D1 para ese día Paraguay */
     const { startUTC, endUTC } = paraguayDayBounds(date);
@@ -77,7 +94,7 @@ export async function onRequestPost({ request, env }) {
     const dfRes = await fetch(endpoint, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret },
-      body:    JSON.stringify({ date, totalShipping }),
+      body:    JSON.stringify({ date, totalShipping: total, deliveryAmount: delivery, encomiendaAmount: encomienda }),
     });
     const dfBody = await dfRes.json().catch(() => ({}));
 
@@ -86,13 +103,28 @@ export async function onRequestPost({ request, env }) {
       return json({ ok: false, error: 'Error en DAM Finanzas', detail: dfBody }, 502);
     }
 
-    console.log('SHIPPING_DISTRIBUTE_OK', date, totalShipping, 'purchasedD1=', purchasedCount);
+    /* Guardar historial en D1 */
+    const dfCount   = dfBody.count || 0;
+    const dfPerSale = dfBody.perSale || (dfCount > 0 ? Math.floor(total / dfCount) : 0);
+    try {
+      await env.DB.prepare(`
+        INSERT OR REPLACE INTO shipping_history
+          (date, delivery_amount, encomienda_amount, total_shipping, purchased_count, per_sale, dam_finanzas_count, applied_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))
+      `).bind(date, delivery, encomienda, total, purchasedCount, dfPerSale, dfCount).run();
+    } catch (histErr) {
+      console.warn('SHIPPING_HISTORY_SAVE_FAILED', histErr?.message);
+    }
+
+    console.log('SHIPPING_DISTRIBUTE_OK', date, `delivery=${delivery}`, `encomienda=${encomienda}`, `total=${total}`, `purchasedD1=${purchasedCount}`);
     return json({
       ok:              true,
       date,
-      totalShipping,
+      deliveryAmount:  delivery,
+      encomiendaAmount: encomienda,
+      totalShipping:   total,
       purchasedCount,
-      perSaleShipping: purchasedCount > 0 ? Math.round(totalShipping / purchasedCount) : 0,
+      perSaleShipping: purchasedCount > 0 ? Math.round(total / purchasedCount) : 0,
       damFinanzas:     dfBody,
     });
 

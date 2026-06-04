@@ -1900,9 +1900,9 @@ function initShippingPanel() {
 }
 
 async function loadShippingStats() {
-  const countEl = document.getElementById('shipping-purchased-count');
+  const countEl  = document.getElementById('shipping-purchased-count');
   const statusEl = document.getElementById('shipping-status');
-  if (countEl) countEl.textContent = '…';
+  if (countEl)  countEl.textContent = '…';
   if (statusEl) { statusEl.style.color = ''; statusEl.textContent = ''; }
 
   try {
@@ -1912,7 +1912,23 @@ async function loadShippingStats() {
     const data = await res.json();
     if (data.ok) {
       if (countEl) countEl.textContent = data.purchasedCount;
+
+      /* Pre-cargar inputs con historial del día si existe */
+      if (data.history) {
+        const h  = data.history;
+        const di = document.getElementById('shipping-delivery-input');
+        const ei = document.getElementById('shipping-encomienda-input');
+        if (di) di.value = h.delivery_amount   > 0 ? h.delivery_amount   : '';
+        if (ei) ei.value = h.encomienda_amount  > 0 ? h.encomienda_amount : '';
+      } else {
+        const di = document.getElementById('shipping-delivery-input');
+        const ei = document.getElementById('shipping-encomienda-input');
+        if (di) di.value = '';
+        if (ei) ei.value = '';
+      }
+
       updateShippingPerSale();
+      renderShippingHistory(data.recentHistory || []);
     } else {
       if (countEl) countEl.textContent = '?';
     }
@@ -1922,36 +1938,56 @@ async function loadShippingStats() {
 }
 
 function updateShippingPerSale() {
-  const countEl    = document.getElementById('shipping-purchased-count');
-  const perSaleEl  = document.getElementById('shipping-per-sale');
-  const totalInput = document.getElementById('shipping-total-input');
-  if (!perSaleEl || !countEl || !totalInput) return;
+  const countEl     = document.getElementById('shipping-purchased-count');
+  const perSaleEl   = document.getElementById('shipping-per-sale');
+  const totalDisplay = document.getElementById('shipping-total-display');
+  const delivery    = parseFloat(document.getElementById('shipping-delivery-input')?.value)   || 0;
+  const encomienda  = parseFloat(document.getElementById('shipping-encomienda-input')?.value) || 0;
+  const total       = delivery + encomienda;
+  const count       = parseInt(countEl?.textContent) || 0;
+  const perSale     = count > 0 && total > 0 ? Math.round(total / count) : 0;
 
-  const count   = parseInt(countEl.textContent) || 0;
-  const total   = parseFloat(totalInput.value)   || 0;
-  const perSale = count > 0 ? Math.round(total / count) : 0;
-
-  perSaleEl.textContent = count > 0 && total > 0
+  if (totalDisplay) totalDisplay.textContent = 'Gs. ' + total.toLocaleString('es-PY');
+  if (perSaleEl) perSaleEl.textContent = count > 0 && total > 0
     ? 'Gs. ' + perSale.toLocaleString('es-PY')
     : '—';
 }
 
-async function applyShipping() {
-  const totalInput = document.getElementById('shipping-total-input');
-  const statusEl   = document.getElementById('shipping-status');
-  const btn        = document.getElementById('shipping-apply-btn');
-
-  const total = parseFloat(totalInput?.value);
-  if (isNaN(total) || total < 0) {
-    if (statusEl) { statusEl.style.color = '#f87171'; statusEl.textContent = 'Ingresá un total válido (0 para limpiar).'; }
+function renderShippingHistory(rows) {
+  const tbody = document.getElementById('shipping-history-tbody');
+  if (!tbody) return;
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="padding:14px 8px;color:rgba(255,255,255,.25);text-align:center;font-size:11px">Sin historial</td></tr>';
     return;
   }
+  const fmt = n => Number(n || 0).toLocaleString('es-PY');
+  tbody.innerHTML = rows.map(r => `
+    <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+      <td style="padding:7px 8px;color:#fff">${r.date || '—'}</td>
+      <td style="padding:7px 8px;color:rgba(255,255,255,.65);text-align:right">${r.delivery_amount > 0 ? 'Gs. ' + fmt(r.delivery_amount) : '—'}</td>
+      <td style="padding:7px 8px;color:rgba(255,255,255,.65);text-align:right">${r.encomienda_amount > 0 ? 'Gs. ' + fmt(r.encomienda_amount) : '—'}</td>
+      <td style="padding:7px 8px;color:#60a5fa;font-weight:600;text-align:right">Gs. ${fmt(r.total_shipping)}</td>
+      <td style="padding:7px 8px;color:rgba(255,255,255,.65);text-align:right">${r.purchased_count || 0}</td>
+      <td style="padding:7px 8px;color:rgba(255,255,255,.65);text-align:right">${r.per_sale > 0 ? 'Gs. ' + fmt(r.per_sale) : '—'}</td>
+    </tr>
+  `).join('');
+}
 
-  const totalFmt = total.toLocaleString('es-PY');
+async function applyShipping() {
+  const statusEl   = document.getElementById('shipping-status');
+  const btn        = document.getElementById('shipping-apply-btn');
+  const delivery   = Math.max(0, parseFloat(document.getElementById('shipping-delivery-input')?.value)   || 0);
+  const encomienda = Math.max(0, parseFloat(document.getElementById('shipping-encomienda-input')?.value) || 0);
+  const total      = delivery + encomienda;
+
+  const totalFmt     = total.toLocaleString('es-PY');
+  const deliveryFmt  = delivery.toLocaleString('es-PY');
+  const encomiendaFmt = encomienda.toLocaleString('es-PY');
+
   const confirmed = confirm(
     total === 0
       ? `¿Eliminar costos de envío de todos los reportes del ${shippingDate}?`
-      : `¿Distribuir Gs. ${totalFmt} entre las ventas del ${shippingDate}?`
+      : `¿Distribuir Gs. ${totalFmt} entre las ventas del ${shippingDate}?\n\nDelivery: Gs. ${deliveryFmt}\nEncomienda: Gs. ${encomiendaFmt}`
   );
   if (!confirmed) return;
 
@@ -1959,10 +1995,10 @@ async function applyShipping() {
   if (statusEl) { statusEl.style.color = ''; statusEl.textContent = ''; }
 
   try {
-    const res  = await fetch('/api/delivery-shipping', {
+    const res = await fetch('/api/delivery-shipping', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
-      body:    JSON.stringify({ date: shippingDate, totalShipping: total }),
+      body:    JSON.stringify({ date: shippingDate, deliveryAmount: delivery, encomiendaAmount: encomienda }),
     });
     const data = await res.json();
 
@@ -1970,9 +2006,10 @@ async function applyShipping() {
       const df    = data.damFinanzas || {};
       const count = df.count || 0;
       const msg   = count > 0
-        ? `✓ Gs. ${totalFmt} distribuidos entre ${count} reportes en DAM Finanzas (Gs. ${(df.perSale || 0).toLocaleString('es-PY')} c/u).`
-        : `✓ Sin reportes en DAM Finanzas para ${shippingDate} (${data.purchasedCount || 0} compra(s) en DAM Vertex).`;
+        ? `✓ Gs. ${totalFmt} distribuidos entre ${count} reportes en Dam Finanzas (Gs. ${(df.perSale || 0).toLocaleString('es-PY')} c/u).`
+        : `✓ Sin reportes en Dam Finanzas para ${shippingDate} (${data.purchasedCount || 0} compra(s) en DAM Vertex).`;
       if (statusEl) { statusEl.style.color = '#4ade80'; statusEl.textContent = msg; }
+      loadShippingStats();
     } else {
       if (statusEl) { statusEl.style.color = '#f87171'; statusEl.textContent = 'Error: ' + (data.error || 'desconocido'); }
     }
