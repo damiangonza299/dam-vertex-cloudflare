@@ -127,7 +127,19 @@
       "Bash(grep -v \"wrangler\\\\|WARNING\\\\|update\\\\|prevent\\\\|install\\\\|After\\\\|Run \\\\`npm\\\\|⛅\\\\|---\\\\|▲\\\\|\\\\[43\\\\|local development\")",
       "Bash(curl -s -w \"\\\\nHTTP:%{http_code}\" https://main.dam-vertex-cloudflare.pages.dev/api/blocked-customers)",
       "Bash(curl -s -w '\\\\nHTTP:%{http_code}' -X POST https://main.dam-vertex-cloudflare.pages.dev/api/leads -H 'Content-Type: application/json' -d '{\"name\":\"Test Verificacion\",\"phone\":\"0991000001\",\"product_name\":\"Reloj Apex Negro\",\"product_slug\":\"reloj-apex\",\"value\":250000,\"currency\":\"PYG\",\"city\":\"TestCity\"}')",
-      "Bash(awk '{print $5, $9}')"
+      "Bash(awk '{print $5, $9}')",
+      "Bash(npx -v)",
+      "Bash(npx @squoosh/cli --help)",
+      "Bash(npx @squoosh/cli --webp '{\"quality\":82}' -d . 'reloj black caracteristicas.png' 'negro dorado.png' 'negro rosa.png' 'negro cobre.png' 'negro dorado sutil.png' 'Plateado negro.png')",
+      "Bash(cwebp -version)",
+      "Bash(ffmpeg -version)",
+      "Bash(magick -version)",
+      "Bash(convert -version)",
+      "Bash(node -e \"const s = require\\('sharp'\\); console.log\\(s.versions\\);\")",
+      "PowerShell(Get-Command cwebp -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command ffmpeg -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command magick -ErrorAction SilentlyContinue)",
+      "Bash(awk '{printf \"%7d KB  %s\\\\n\", $5/1024, $9}')"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\.claude\\projects\\c--Users-Admin-Desktop-dam-vertex-cloudflare\\memory"
