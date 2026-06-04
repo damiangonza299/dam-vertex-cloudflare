@@ -177,6 +177,67 @@ Cadena Apex — 30 días:
 
 ---
 
+## Integración DAM Vertex → DAM Finanzas
+
+### Qué hace
+Cuando se confirma una compra en DAM Vertex (`confirm-purchase.js` o `manual-whatsapp-sale.js`), se envía un webhook a DAM Finanzas que crea automáticamente un reporte de venta individual y descuenta inventario en Firestore.
+
+### Archivos clave
+- `functions/api/confirm-purchase.js` → `notifyDamFinanzasSale()` al final (fire-and-forget via waitUntil)
+- `functions/api/manual-whatsapp-sale.js` → `notifyDamFinanzas()` al final (fire-and-forget)
+- `functions/api/admin-leads-count.js` → GET /api/admin-leads-count?date=YYYY-MM-DD (contador de leads del día, Paraguay UTC-4)
+- DAM Finanzas `functions/index.js` → `onAdminSale` recibe webhooks, `processAdminSalePayload` crea reportes
+
+### Env vars requeridas (Cloudflare Pages production)
+- `DAM_FINANZAS_WEBHOOK_SECRET` = secret compartido con DAM Finanzas functions/.env
+
+### Reglas de reportes
+- **1 pedido comprado = 1 card/reporte** en DAM Finanzas
+- Report ID = `r:admin-sale:{adminOrderId}` (estable, nunca cambia)
+- Pedido con múltiples variantes → 1 card con múltiples items (mismo adminOrderId, distinto itemIndex)
+- Anti-duplicado: no procesa el mismo (adminOrderId + itemIndex) dos veces
+- Combos (reloj+cadena) → actualmente ignorados (DAM_FINANZAS_SKIP_COMBO)
+
+### Mapeo de variantes (solo reloj)
+DAM Vertex → DAM Finanzas (definido en `VERTEX_VARIANT_MAP` en index.js):
+- "Negro Total" → "Negro"
+- "Negro Rosa" → "Rosa"
+- "Negro Dorado" → "Dorado"
+- "Plateado Negro" → "Plateado"
+- "Negro Cobre" → "Cobre"
+- "Negro Dorado Sutil" → "Dorado Sutil"
+
+Para nuevos productos: los nombres de variante se usan tal cual (sin mapping).
+
+### Flujo para agregar un nuevo producto
+1. Crear producto en D1 con `slug` estable: `wrangler d1 execute ... UPDATE/INSERT products`
+2. Crear `variants_json` con los nombres de variante (ej: `{"Talla S": 10, "Talla M": 5}`)
+3. Actualizar `product-stock.js` `parseProduct()` si se necesita exponer campos nuevos
+4. Agregar `unitCost`/`defaultPrice` al D1 schema si se necesita (requiere migración SQL)
+5. Llamar al endpoint `importProductFromVertex` en DAM Finanzas:
+   ```
+   POST https://us-central1-dam-finanzas-cf863.cloudfunctions.net/importProductFromVertex
+   x-dam-vertex-secret: <secret>
+   { "productSlug": "nuevo-slug" }
+   ```
+   → Crea el producto en Firestore con `adminProductSlug`, stock y variantes. Luego completar `unitCost` y `defaultPrice` manualmente.
+6. Si el nuevo producto necesita mapping de variantes (nombres distintos entre sistemas), agregar entrada en `VERTEX_VARIANT_MAP` en `functions/index.js` de DAM Finanzas.
+7. Asegurar que `confirm-purchase.js` y `manual-whatsapp-sale.js` envíen webhooks correctamente (productSlug debe coincidir).
+
+### Pedidos del día en DAM Finanzas
+- Se alimenta desde `GET https://damvertex.com/api/admin-leads-count?date=YYYY-MM-DD`
+- Muestra LEADS (no compras) — cualquier lead creado ese día cuenta
+- En DAM Finanzas, el bloque "Pedidos Generados" del home muestra este número para vistas de día individual
+
+### Qué NO tocar
+- Meta CAPI (Purchase, QualifiedLead, InitiateCheckout) — solo agregar webhook DESPUÉS de éxito
+- tracking.js, Pixel, fbp/fbc
+- WhatsApp flow visual
+- D1 schema sin migración SQL explícita
+- stock de DAM Vertex (solo lectura para DAM Finanzas)
+
+---
+
 ## Proyectos relacionados (secundarios)
 
 - **DAM Finanzas:** app PWA de finanzas personales, Firebase + IndexedDB

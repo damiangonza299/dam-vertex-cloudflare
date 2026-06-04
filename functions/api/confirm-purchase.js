@@ -375,27 +375,34 @@ async function notifyDamFinanzasSale({ lead, productSlug, saleQty, isCombo, requ
   const secret = env.DAM_FINANZAS_WEBHOOK_SECRET || '';
   if (!secret) return;
 
-  const variantName = requestedVariants[0] || null;
-  const payload = {
-    sourceSystem:    'DAM_VERTEX',
-    adminOrderId:    String(lead.id),
-    productSlug,
-    productName:     lead.product_name,
-    variantName,
-    variantId:       resolveVariantId(productRow?.variants_meta_json, variantName),
-    quantity:        saleQty,
-    salePrice:       Number(lead.value || 0),
-    purchasedAt:     new Date().toISOString(),
-    operationalDate: getParaguayDate(),
-  };
+  // One webhook per variant-unit; all share adminOrderId so they land in the same card
+  const variantsToSend = requestedVariants.length > 0 ? requestedVariants : [null];
+  const pricePerItem   = Math.round(Number(lead.value || 0) / variantsToSend.length);
 
-  const res = await fetch(
-    'https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onAdminSale',
-    {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret },
-      body:    JSON.stringify(payload),
-    }
-  );
-  console.log('DAM_FINANZAS_NOTIFY', payload.adminOrderId, res.status);
+  for (let i = 0; i < variantsToSend.length; i++) {
+    const vn = variantsToSend[i];
+    const payload = {
+      sourceSystem:    'DAM_VERTEX',
+      adminOrderId:    String(lead.id),
+      productSlug,
+      productName:     lead.product_name,
+      variantName:     vn,
+      variantId:       resolveVariantId(productRow?.variants_meta_json, vn),
+      quantity:        1,
+      salePrice:       pricePerItem,
+      itemIndex:       i,
+      purchasedAt:     new Date().toISOString(),
+      operationalDate: getParaguayDate(),
+    };
+
+    const res = await fetch(
+      'https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onAdminSale',
+      {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret },
+        body:    JSON.stringify(payload),
+      }
+    );
+    console.log('DAM_FINANZAS_NOTIFY', payload.adminOrderId, `item${i}`, vn, res.status);
+  }
 }

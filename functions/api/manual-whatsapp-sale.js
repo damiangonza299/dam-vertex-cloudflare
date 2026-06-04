@@ -250,6 +250,13 @@ export async function onRequestPost({ request, env }) {
 
     /* Ventas manuales: no enviar Telegram. El registro queda en admin/D1. */
 
+    /* ── Notificar DAM Finanzas (fire-and-forget) ── */
+    const stockSlugFinal = product_slug || slugify(product_name.trim());
+    notifyDamFinanzas({
+      saleId, product_name, stockSlugFinal,
+      value: saleValue, variant: variant || null, saleQty,
+    }, env).catch(e => console.warn('DAM_FINANZAS_MANUAL_NOTIFY_FAILED', saleId, e?.message));
+
     return json({
       ok:             true,
       sale_id:        saleId,
@@ -538,4 +545,43 @@ function json(data, status = 200) {
     status,
     headers: { 'Content-Type': 'application/json', ...CORS },
   });
+}
+
+/* ── DAM Finanzas webhook (fire-and-forget) ── */
+function getParaguayDate() {
+  return new Date(Date.now() - 4 * 3_600_000).toISOString().slice(0, 10);
+}
+
+async function notifyDamFinanzas({ saleId, product_name, stockSlugFinal, value, variant, saleQty }, env) {
+  const secret = env.DAM_FINANZAS_WEBHOOK_SECRET || '';
+  if (!secret) return;
+
+  const rawVariants = variant ? (Array.isArray(variant) ? variant : [variant]) : [];
+  const variantsToSend = rawVariants.length > 0 ? rawVariants : [null];
+  const pricePerItem   = Math.round(value / variantsToSend.length);
+
+  for (let i = 0; i < variantsToSend.length; i++) {
+    const payload = {
+      sourceSystem:    'DAM_VERTEX',
+      adminOrderId:    `manual-wa-${saleId}`,
+      productSlug:     stockSlugFinal,
+      productName:     product_name,
+      variantName:     variantsToSend[i],
+      quantity:        1,
+      salePrice:       pricePerItem,
+      itemIndex:       i,
+      purchasedAt:     new Date().toISOString(),
+      operationalDate: getParaguayDate(),
+    };
+
+    const res = await fetch(
+      'https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onAdminSale',
+      {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret },
+        body:    JSON.stringify(payload),
+      }
+    );
+    console.log('DAM_FINANZAS_MANUAL_NOTIFY', saleId, `item${i}`, variantsToSend[i], res.status);
+  }
 }
