@@ -173,7 +173,15 @@
       "PowerShell(Get-ChildItem \"$env:USERPROFILE\\\\.config\" -Force | Select-Object Name)",
       "PowerShell(Get-ChildItem \"$env:USERPROFILE\\\\.config\\\\configstore\" | Select-Object Name)",
       "PowerShell($env:CLOUDFLARE_API_TOKEN; $env:CF_API_TOKEN; $env:CLOUDFLARE_ZONE_ID; [System.Environment]::GetEnvironmentVariable\\(\"CLOUDFLARE_API_TOKEN\", \"User\"\\); [System.Environment]::GetEnvironmentVariable\\(\"CF_API_TOKEN\", \"User\"\\))",
-      "PowerShell(Get-ChildItem \"$env:LOCALAPPDATA\\\\wrangler\" -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName | head -10; Get-ChildItem \"$env:USERPROFILE\\\\AppData\\\\Roaming\\\\wrangler\" -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName)"
+      "PowerShell(Get-ChildItem \"$env:LOCALAPPDATA\\\\wrangler\" -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName | head -10; Get-ChildItem \"$env:USERPROFILE\\\\AppData\\\\Roaming\\\\wrangler\" -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName)",
+      "Bash(curl -s -X GET https://api.cloudflare.com/client/v4/zones?name=damvertex.com -H 'Authorization: Bearer cfoat_dt7dvKHhgHG3fj2aiA33aflSZUa-pjvYS46p3jIvojg.IPyoQE_Z3aOpDpOlGf9a4f1_emq214227r50t4_uAig' -H 'Content-Type: application/json')",
+      "Bash(curl -s -X POST https://api.cloudflare.com/client/v4/zones/40b30fdc1936083c15b343ae9ba6c235/purge_cache -H 'Authorization: Bearer cfoat_dt7dvKHhgHG3fj2aiA33aflSZUa-pjvYS46p3jIvojg.IPyoQE_Z3aOpDpOlGf9a4f1_emq214227r50t4_uAig' -H 'Content-Type: application/json' --data '{\"files\":[\"https://damvertex.com/assets/js/site-version.js\"]}')",
+      "Bash(npx firebase *)",
+      "Bash(curl -s -I \"https://damvertex.com/assets/js/site-version.js\")",
+      "Bash(curl -s \"https://3c4c9baf.dam-vertex-cloudflare.pages.dev/assets/js/site-version.js\")",
+      "Bash(curl -s -I \"https://3c4c9baf.dam-vertex-cloudflare.pages.dev/assets/js/site-version.js\")",
+      "Bash(curl -s https://api.cloudflare.com/client/v4/zones/40b30fdc1936083c15b343ae9ba6c235/pagerules?status=active -H 'Authorization: Bearer cfoat_dt7dvKHhgHG3fj2aiA33aflSZUa-pjvYS46p3jIvojg.IPyoQE_Z3aOpDpOlGf9a4f1_emq214227r50t4_uAig')",
+      "Bash(curl -s https://api.cloudflare.com/client/v4/accounts/c6ecd92192c5bfdc551af39ee2e9c2d6/pages/projects/dam-vertex-cloudflare -H 'Authorization: Bearer cfoat_dt7dvKHhgHG3fj2aiA33aflSZUa-pjvYS46p3jIvojg.IPyoQE_Z3aOpDpOlGf9a4f1_emq214227r50t4_uAig')"
     ],
     "additionalDirectories": [
       "c:\\Users\\Admin\\.claude\\projects\\c--Users-Admin-Desktop-dam-vertex-cloudflare\\memory",
