@@ -139,10 +139,21 @@
       "PowerShell(Get-Command cwebp -ErrorAction SilentlyContinue)",
       "PowerShell(Get-Command ffmpeg -ErrorAction SilentlyContinue)",
       "PowerShell(Get-Command magick -ErrorAction SilentlyContinue)",
-      "Bash(awk '{printf \"%7d KB  %s\\\\n\", $5/1024, $9}')"
+      "Bash(awk '{printf \"%7d KB  %s\\\\n\", $5/1024, $9}')",
+      "Bash(grep -v \"//\\\\|innerHTML\\\\|textContent\\\\|dataset\\\\|html\\\\|div\\\\|span\\\\|btn\\\\|button\\\\|modal\\\\|nav\\\\|input\")",
+      "Bash(firebase deploy *)",
+      "Bash(npx firebase-tools *)",
+      "Bash(curl -s -X POST \"https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onLeadsCountUpdate\" -H \"Content-Type: application/json\" -H \"x-dam-vertex-secret: dcdc8386970968a99ce9480dbd3cbfb70bb5394edec55db417bbc504ffcc633c\" -d \"{\\\\\"date\\\\\":\\\\\"2026-06-04\\\\\",\\\\\"leadsCount\\\\\":5}\")",
+      "Bash(curl -s -X POST \"https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onShippingDistribute\" -H \"Content-Type: application/json\" -H \"x-dam-vertex-secret: dcdc8386970968a99ce9480dbd3cbfb70bb5394edec55db417bbc504ffcc633c\" -d \"{\\\\\"date\\\\\":\\\\\"2026-06-04\\\\\",\\\\\"totalShipping\\\\\":100000}\")",
+      "Bash(curl -s -X POST \"https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onShippingDistribute\" -H \"Content-Type: application/json\" -H \"x-dam-vertex-secret: dcdc8386970968a99ce9480dbd3cbfb70bb5394edec55db417bbc504ffcc633c\" -d \"{\\\\\"date\\\\\":\\\\\"2026-06-04\\\\\",\\\\\"totalShipping\\\\\":0}\")",
+      "Bash(curl -s \"https://damvertex.com/api/delivery-shipping?date=2026-06-04\" -H \"Authorization: Bearer test-invalid\")",
+      "Bash(curl -s \"https://damvertex.com/api/admin-leads-count?date=2026-06-04\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://damvertex.com/api/delivery-shipping?date=2026-06-04\" -H \"Authorization: Bearer test-invalid\")",
+      "Bash(curl -s -w \"\\\\nHTTP:%{http_code}\" \"https://main.dam-vertex-cloudflare.pages.dev/api/delivery-shipping?date=2026-06-04\" -H \"Authorization: Bearer test-invalid\")"
     ],
     "additionalDirectories": [
-      "c:\\Users\\Admin\\.claude\\projects\\c--Users-Admin-Desktop-dam-vertex-cloudflare\\memory"
+      "c:\\Users\\Admin\\.claude\\projects\\c--Users-Admin-Desktop-dam-vertex-cloudflare\\memory",
+      "F:\\Desktop\\Dam Finanzas\\functions"
     ]
   }
 }
