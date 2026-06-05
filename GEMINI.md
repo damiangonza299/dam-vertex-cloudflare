@@ -59,6 +59,19 @@ Dev server local `:8788` — auth: `Bearer PONER_PASSWORD_AQUI` (ADMIN_PASSWORD 
 
 Limitación: `/api/meta/report` falla localmente (`D1_ERROR: no such table: leads`). Solo funciona en producción o con `--remote`.
 
+### CHECKLIST PRE-CAMPAÑA — Obligatorio antes de crear o modificar campañas
+
+Antes de cualquier creación o modificación de campaña, ejecutar en orden:
+
+1. Analizar campañas históricas (performance, ROAS, estructura).
+2. Analizar ROAS real (D1 `purchased_manual` / gasto Meta — NO Meta Purchase).
+3. Analizar Purchase real (ventas confirmadas en admin panel, no pixel).
+4. Analizar QualifiedLead real (leads que entraron al Admin Panel).
+5. Proponer cambios concretos con justificación en datos reales.
+6. Esperar aprobación explícita del usuario antes de ejecutar.
+
+**Nunca ejecutar cambios basados únicamente en métricas de Meta sin contrastar con datos reales de DAM Vertex.**
+
 ### PROHIBIDO — nunca sin verificación real
 
 - Recomendar apagar o pausar campañas sin verificar `effective_status` actual
@@ -178,6 +191,63 @@ Estas 3 skills instaladas en Claude actúan como marco de referencia complementa
 - Las skills externas aportan marcos creativos y psicológicos; los datos reales y las decisiones operativas siguen siendo del sistema DAM Vertex
 - Si una recomendación de skill externa contradice una regla crítica DAM Vertex → la regla DAM Vertex tiene prioridad
 - No mezclar lógica genérica de skills externas con el funnel Paraguay (no Shopify, no checkout automático, no ROAS Meta como source of truth)
+
+---
+
+## Integración DAM Vertex + DAM Finanzas — Regla Operativa
+
+**Regla principal:** Cada producto nuevo en DAM Vertex requiere su contraparte en DAM Finanzas. No se crea una landing sin crear el producto en inventario financiero.
+
+**Checklist completo:** `AI_SYSTEM/execution/new-product-checklist.md` — leer obligatoriamente cuando el usuario pida agregar un nuevo producto.
+
+### Datos que siempre pedir antes de crear un producto
+
+Nombre público · Slug · Precio venta · Costo unitario · Stock inicial · Stock mínimo alerta · ¿Variantes? (nombre/stock/precio/costo por variante) · Combos (1u/2u/3u) · Landing · Flujo WhatsApp · Tipo de pago
+
+### Flujo de venta DAM Vertex → DAM Finanzas
+
+```
+Admin Panel → lead comprado
+→ onAdminSale webhook
+→ DAM Finanzas: crea reporte, descuenta stock, actualiza Pedidos del día
+→ notificación push "Venta confirmada"
+```
+
+### Fecha operativa — regla crítica
+
+Nunca `new Date().toISOString().slice(0,10)` (UTC). Siempre:
+```javascript
+new Intl.DateTimeFormat("en-CA", { timeZone: "America/Asuncion" }).format(new Date())
+```
+
+### Publicidad del día — documento Firestore
+
+`syncMetaDailyAds` escribe en `users/{uid}/reports/rds:YYYY-MM-DD`.
+Campos OBLIGATORIOS para que la UI lo reconozca:
+- `kind: "day_summary"` — sin esto `state.reportSummaries` ignora el documento
+- `date: "YYYY-MM-DD"` — para `getDaySummaryByDate()`
+- `adsTotal: NUMBER` — en PYG (cuenta ya en guaraníes, no multiplicar)
+- `_metaCurrency: "PYG"`
+
+### Deploy correcto DAM Vertex (Cloudflare Pages)
+
+```
+& "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true
+```
+
+Sin `--branch=dam-vertex-cloudflare` → deploy va a preview (main), no a producción.
+
+### Deploy correcto DAM Finanzas (Firebase Functions)
+
+```
+npx firebase deploy --only functions
+```
+
+`.env` se bundlea en deploy. Contiene `META_MARKETING_TOKEN`, `META_AD_ACCOUNT_ID`, `META_AD_ACCOUNT_CURRENCY=PYG`.
+
+### Account ID Meta confirmado
+
+`act_992345752726304` — cuenta en PYG. No multiplicar spend por tasa USD.
 
 ---
 
