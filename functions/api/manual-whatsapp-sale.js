@@ -551,8 +551,13 @@ function json(data, status = 200) {
 }
 
 /* ── DAM Finanzas webhook (fire-and-forget) ── */
-function getParaguayDate() {
-  return new Date(Date.now() - 4 * 3_600_000).toISOString().slice(0, 10);
+function getParaguayDateString(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Asuncion',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(date);
+  const p = Object.fromEntries(parts.filter(x => x.type !== 'literal').map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
 }
 
 async function notifyDamFinanzas({ saleId, product_name, stockSlugFinal, value, variant, saleQty, isCombo }, env) {
@@ -560,7 +565,7 @@ async function notifyDamFinanzas({ saleId, product_name, stockSlugFinal, value, 
   if (!secret) return;
 
   const adminOrderId    = `manual-wa-${saleId}`;
-  const operationalDate = getParaguayDate();
+  const operationalDate = getParaguayDateString();
   const totalValue      = Number(value);
   const endpoint        = 'https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onAdminSale';
   const headers         = { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret };

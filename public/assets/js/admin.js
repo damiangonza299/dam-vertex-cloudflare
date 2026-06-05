@@ -488,7 +488,7 @@ function fmtDateShort(s) {
 function fmtShipDate(s) {
   if (!s) return '—';
   const today = getParaguayDateLocal();
-  const yest  = new Date(Date.now() - 4 * 3600 * 1000 - 86400000).toISOString().slice(0, 10);
+  const yest  = getParaguayDateLocal(new Date(Date.now() - 86400000));
   if (s === today) return 'Hoy';
   if (s === yest)  return 'Ayer';
   const parts  = s.split('-');
@@ -1883,15 +1883,20 @@ let shippingDate    = getParaguayDateLocal();
 let shippingShowAll = false;
 let _shippingRows   = {};
 
-function getParaguayDateLocal() {
-  return new Date(Date.now() - 4 * 3600 * 1000).toISOString().slice(0, 10);
+function getParaguayDateLocal(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Asuncion',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(date);
+  const p = Object.fromEntries(parts.filter(x => x.type !== 'literal').map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
 }
 
 function initShippingPanel() {
   shippingDate    = getParaguayDateLocal();
   shippingShowAll = false;
   const todayStr  = shippingDate;
-  const yestStr   = new Date(Date.now() - 4 * 3600 * 1000 - 86400000).toISOString().slice(0, 10);
+  const yestStr   = getParaguayDateLocal(new Date(Date.now() - 86400000));
 
   document.getElementById('ship-date-all')?.addEventListener('click', () => {
     shippingShowAll = true;
@@ -2091,7 +2096,7 @@ function editShippingRow(date) {
   const di       = document.getElementById('shipping-delivery-input');
   const ei       = document.getElementById('shipping-encomienda-input');
   const todayStr = getParaguayDateLocal();
-  const yestStr  = new Date(Date.now() - 4 * 3600 * 1000 - 86400000).toISOString().slice(0, 10);
+  const yestStr  = getParaguayDateLocal(new Date(Date.now() - 86400000));
   if (di) di.value = r.delivery_amount   > 0 ? r.delivery_amount   : '';
   if (ei) ei.value = r.encomienda_amount > 0 ? r.encomienda_amount : '';
   document.getElementById('ship-date-today')?.classList.toggle('date-btn--active', r.date === todayStr);

@@ -107,7 +107,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       // slug (index 29)
       product_slug   || null,
       // attribution quality (indices 30-31)
-      getParaguayDate(),
+      getParaguayDateString(),
       getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source, utm_campaign }),
       // location picker (indices 32-37)
       location_address?.trim() || null,
@@ -296,10 +296,10 @@ export async function onRequestPost({ request, env, waitUntil }) {
     }
 
     /* ── Notificar DAM Finanzas: actualizar shopifyOrdersTotal (Pedidos del día) ── */
-    const leadDate = getParaguayDate();
+    const leadDate = getParaguayDateString();
     const leadsCountPromise = (async () => {
       try {
-        const startUTC = new Date(`${leadDate}T04:00:00.000Z`);
+        const startUTC = getParaguayDayStartUTC(leadDate);
         const endUTC   = new Date(startUTC.getTime() + 24 * 60 * 60 * 1000);
         const cntRow   = await env.DB.prepare(
           `SELECT COUNT(*) AS count FROM leads WHERE created_at >= ? AND created_at < ?`
@@ -340,11 +340,31 @@ function formatVariantForTelegram(value) {
   return String(value);
 }
 
-function getParaguayDate() {
-  // Paraguay = UTC-4 permanente (PRT). No usar America/Asuncion — ICU de Cloudflare Workers
-  // puede calcular DST incorrectamente para Paraguay en ciertos períodos, causando UTC-3
-  // en lugar de UTC-4 para leads creados entre 23:00-23:59 PY (03:00-03:59 UTC siguiente día).
-  return new Date(Date.now() - 4 * 3600 * 1000).toISOString().split('T')[0];
+function getParaguayDateString(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Asuncion',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(date);
+  const p = Object.fromEntries(parts.filter(x => x.type !== 'literal').map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+
+function getParaguayDayStartUTC(dateStr) {
+  // Finds the UTC timestamp of midnight (00:00) Paraguay time for dateStr.
+  // Handles both PYT (UTC-4, winter) and PYST (UTC-3, summer DST).
+  for (const h of [3, 4]) {
+    const candidate = new Date(`${dateStr}T0${h}:00:00.000Z`);
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Asuncion',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false,
+    }).formatToParts(candidate);
+    const pp = Object.fromEntries(parts.filter(x => x.type !== 'literal').map(x => [x.type, x.value]));
+    if (`${pp.year}-${pp.month}-${pp.day}` === dateStr && pp.hour === '00' && pp.minute === '00') {
+      return candidate;
+    }
+  }
+  return new Date(`${dateStr}T04:00:00.000Z`);
 }
 
 function getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source, utm_campaign }) {

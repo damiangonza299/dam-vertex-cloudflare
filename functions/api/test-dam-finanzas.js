@@ -45,7 +45,7 @@ export async function onRequestPost({ request, env }) {
     quantity:        Number(quantity)  || 1,
     salePrice:       Number(salePrice) || 0,
     itemIndex:       Number(itemIndex) || 0,
-    operationalDate: operationalDate   || getParaguayDate(),
+    operationalDate: operationalDate   || getParaguayDateString(),
     purchasedAt:     new Date().toISOString(),
   };
 
@@ -62,8 +62,13 @@ export async function onRequestPost({ request, env }) {
   return json({ ok: res.ok, httpStatus: res.status, damFinanzas: resBody, sentPayload: payload });
 }
 
-function getParaguayDate() {
-  return new Date(Date.now() - 4 * 3_600_000).toISOString().slice(0, 10);
+function getParaguayDateString(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Asuncion',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(date);
+  const p = Object.fromEntries(parts.filter(x => x.type !== 'literal').map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
 }
 
 function json(data, status = 200) {
