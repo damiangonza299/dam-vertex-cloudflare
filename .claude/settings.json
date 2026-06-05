@@ -8,7 +8,20 @@
       "Edit(**)",
       "Glob(**)",
       "Grep(**)",
-      "WebFetch(*)"
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "TodoWrite(*)",
+      "TodoRead(*)",
+      "NotebookEdit(*)",
+      "Monitor(*)",
+      "TaskOutput(*)",
+      "TaskStop(*)",
+      "ScheduleWakeup(*)",
+      "PushNotification(*)",
+      "CronList(*)",
+      "EnterPlanMode(*)",
+      "ExitPlanMode(*)",
+      "ToolSearch(*)"
     ],
     "deny": [
       "Bash(rm -rf *)",
