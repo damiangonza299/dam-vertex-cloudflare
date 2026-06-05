@@ -534,6 +534,7 @@ function formatCity(cityRaw) {
     { match: 'pedro juan', label: 'PJC' },
     { match: 'ciudad del este', label: 'CDE' },
     { match: 'fernando de la mora', label: 'FDO. de la Mora' },
+    { match: 'angel toledo', label: 'FDO. de la Mora' },
     { match: 'presidente franco', label: 'Pte. Franco' },
     { match: 'coronel oviedo', label: 'Cnel. Oviedo' },
     { match: 'juan león mallorquín', label: 'J. L. Mallorquín' },
