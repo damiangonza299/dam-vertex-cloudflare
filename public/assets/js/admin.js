@@ -52,6 +52,10 @@ if (IS_DELIVERY) {
   const shippingTabBtn = document.querySelector('[data-tab="shipping"]');
   if (shippingTabBtn) shippingTabBtn.style.display = '';
 
+  /* Ocultar botón Envíos del filtro de fecha (solo para admin normal) */
+  const shippingQuickBtn = document.getElementById('date-shipping-btn');
+  if (shippingQuickBtn) shippingQuickBtn.style.display = 'none';
+
   initShippingPanel();
 
   // 🔒 Bloquear edición en productos (solo visual)
@@ -1944,7 +1948,7 @@ async function loadShippingStats() {
       }
 
       updateShippingPerSale();
-      renderShippingHistory(data.recentHistory || []);
+      renderShippingHistory((data.recentHistory || []).filter(r => r.date === shippingDate));
     } else {
       if (countEl) countEl.textContent = '?';
     }

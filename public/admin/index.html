@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Admin — Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=58"></script>
+  <script src="/assets/js/site-version.js?v=59"></script>
   <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
   <style>
     /* ── Dashboard ── */
@@ -48,7 +48,8 @@
       .dash-kpi  { padding:10px 12px; }
     }
     /* ── Admin tabs: una sola fila ── */
-    .admin-tabs { flex-wrap: nowrap; }
+    .admin-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    .admin-tabs::-webkit-scrollbar { display: none; }
     /* ── DAM inSync period filter buttons ── */
     .insync-period-btn {
       background:#1a1a1a; border:1px solid rgba(255,255,255,.1);
@@ -132,6 +133,8 @@
       #manual-sale-modal .msf-grid-2-3,
       #manual-sale-modal #msf-attr-body { grid-template-columns:1fr; }
     }
+    /* ── Shipping section — no horizontal overflow ── */
+    #shipping-section { overflow-x: hidden; }
   </style>
 </head>
 <body class="admin-page">
@@ -188,7 +191,7 @@
       <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')">Flow</button>
       <button class="admin-tab" data-tab="meta" onclick="switchAdminTab('meta')">Meta</button>
       <button class="admin-tab" data-tab="insync" onclick="switchAdminTab('insync')">Sync</button>
-      <button class="admin-tab" data-tab="shipping" onclick="switchAdminTab('shipping')" style="color:#60a5fa">Envíos</button>
+      <button class="admin-tab" data-tab="shipping" onclick="switchAdminTab('shipping')" style="display:none;color:#60a5fa">Envíos</button>
       <button class="admin-tab" data-tab="blocked" onclick="switchAdminTab('blocked')" style="color:#f87171">Block</button>
     </div>
 
@@ -200,6 +203,7 @@
       <button class="date-btn date-btn--active" id="date-all">Todas</button>
       <button class="date-btn" id="date-today">Hoy</button>
       <button class="date-btn" id="date-yesterday">Ayer</button>
+      <button class="date-btn" id="date-shipping-btn" onclick="switchAdminTab('shipping')" style="color:#60a5fa">Envíos</button>
       <input type="date" id="date-picker" class="date-picker">
     </div>
 
