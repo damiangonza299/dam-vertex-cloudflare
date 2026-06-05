@@ -524,28 +524,47 @@ function formatCity(cityRaw) {
 
   if (!city) return '—';
 
+  // Strip prefijo "LIT NNN " (referencias de ruta/zona, no nombre de ciudad)
+  city = city.replace(/^lit\s+\d+\s*/, '').trim();
+  if (!city) return '—';
+
   const aliases = [
     // Ciudades largas o nombres que ensucian mucho la tabla
     { match: 'pedro juan caballero', label: 'PJC' },
     { match: 'pedro juan', label: 'PJC' },
-    { match: 'fernando de la mora', label: 'Fdo. de la Mora' },
+    { match: 'ciudad del este', label: 'CDE' },
+    { match: 'fernando de la mora', label: 'FDO. de la Mora' },
     { match: 'presidente franco', label: 'Pte. Franco' },
     { match: 'coronel oviedo', label: 'Cnel. Oviedo' },
     { match: 'juan león mallorquín', label: 'J. L. Mallorquín' },
     { match: 'juan leon mallorquin', label: 'J. L. Mallorquín' },
+    { match: 'j. augusto saldivar', label: 'J.A. Saldívar' },
+    { match: 'j. augusto saldívar', label: 'J.A. Saldívar' },
+    { match: 'j augusto saldivar', label: 'J.A. Saldívar' },
+    { match: 'j augusto saldívar', label: 'J.A. Saldívar' },
+    { match: 'juan augusto saldivar', label: 'J.A. Saldívar' },
+    { match: 'juan augusto saldívar', label: 'J.A. Saldívar' },
+    { match: 'tomas romero pereira', label: 'ATRP' },
+    { match: 'tomás romero pereira', label: 'ATRP' },
     { match: 'san juan bautista', label: 'San Juan Bautista' },
     { match: 'San Pedro Del Ycuamandiyu', label: 'San Pedro' },
     { match: 'san pedro de ycuamandiyu', label: 'San Pedro' },
     { match: 'santa rosa del aguaray', label: 'Sta. Rosa Aguaray' },
+    { match: 'santa rosa misiones', label: 'Santa Rosa' },
+    { match: 'santa rosa del misiones', label: 'Santa Rosa' },
     { match: 'mariano roque alonso', label: 'M. R. Alonso' },
     { match: 'mcal estigarribia', label: 'Mcal. Estigarribia' },
     { match: 'mariscal estigarribia', label: 'Mcal. Estigarribia' },
+    { match: 'san ignacio misiones', label: 'San Ignacio' },
     { match: 'san ignacio guazu', label: 'San Ignacio' },
     { match: 'san ignacio guazú', label: 'San Ignacio' },
     { match: 'yby yau', label: 'Yby Yaú' },
     { match: 'yby yaú', label: 'Yby Yaú' },
     { match: 'bella vista norte', label: 'Bella Vista N.' },
     { match: 'bella vista sur', label: 'Bella Vista S.' },
+    { match: 'melgarejo independencia', label: 'Melgarejo-Inde.' },
+    { match: 'carlos jovellanos', label: 'Carlos-Jove.' },
+    { match: 'carslos jovellanos', label: 'Carlos-Jove.' },
 
     // Correcciones comunes, no abreviaciones agresivas
     { match: 'villa elisa', label: 'Villa Elisa' },
@@ -553,6 +572,7 @@ function formatCity(cityRaw) {
     { match: 'lambare', label: 'Lambaré' },
     { match: 'capiata', label: 'Capiatá' },
     { match: 'asuncion', label: 'Asunción' },
+    { match: 'plaza italia', label: 'Asunción' },
     { match: 'caaguazu', label: 'Caaguazú' },
   ];
 
@@ -614,21 +634,6 @@ function switchAdminTab(tab) {
 let insyncPeriod  = '24h';
 let insyncLanding = 'all';
 
-const LANDING_LABEL = { cepillo: 'Cepillo', reloj: 'Reloj', lentes: 'Lentes', cadena: 'Cadena' };
-
-function populateLandingSelect(slugs) {
-  const selectEl = document.getElementById('insync-landing-select');
-  if (!selectEl || !slugs.length) return;
-  const current = insyncLanding;
-  selectEl.innerHTML = '<option value="all">Todas</option>' +
-    slugs.map(s => {
-      const label    = LANDING_LABEL[s] || (s.charAt(0).toUpperCase() + s.slice(1));
-      const selected = s === current ? ' selected' : '';
-      return `<option value="${esc(s)}"${selected}>${esc(label)}</option>`;
-    }).join('');
-  if (current === 'all') selectEl.value = 'all';
-}
-
 async function loadInsyncReport() {
   if (!AUTH_TOKEN) return;
   const tbody1   = document.getElementById('insync-cta-tbody');
@@ -647,7 +652,6 @@ async function loadInsyncReport() {
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || 'error');
 
-    if (data.landings?.length) populateLandingSelect(data.landings);
 
     /* Volume */
     const s = data.volume?.sessions || 0;
@@ -738,9 +742,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* inSync landing select */
-  const landingSel = document.getElementById('insync-landing-select');
-  if (landingSel) landingSel.addEventListener('change', () => { insyncLanding = landingSel.value; loadInsyncReport(); });
+  /* inSync landing buttons */
+  document.querySelectorAll('[data-ilanding]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      insyncLanding = btn.dataset.ilanding;
+      document.querySelectorAll('[data-ilanding]').forEach(b => b.classList.toggle('insync-period-btn--active', b === btn));
+      loadInsyncReport();
+    });
+  });
 
   /* inSync refresh */
   document.getElementById('insync-refresh-btn')?.addEventListener('click', loadInsyncReport);

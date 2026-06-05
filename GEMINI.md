@@ -194,6 +194,52 @@ Estas 3 skills instaladas en Claude actúan como marco de referencia complementa
 
 ---
 
+## FUENTE DE VERDAD DEL SISTEMA
+
+### DAM Vertex — Responsable de
+
+Leads · Pedidos · Admin Panel · Delivery Panel · Inventario comercial · WhatsApp · Telegram · Meta Ads · Pixel · CAPI · Purchase manual · QualifiedLead · Gestión operativa
+
+### Dam Finanzas — Responsable de
+
+Reportes financieros · Ganancia real · Publicidad del día · CPA promedio · Distribución de publicidad · Distribución de envíos · Inventario financiero · Costos · Utilidad por card · Resúmenes diarios · Resúmenes mensuales
+
+### Regla de separación de responsabilidades
+
+DAM Vertex **nunca** debe recalcular: Ganancia · Utilidad · CPA · Publicidad distribuida · Envíos distribuidos.
+
+DAM Vertex solo envía datos. Dam Finanzas realiza los cálculos.
+
+### Checklist producto nuevo — 11 puntos obligatorios
+
+No se considera terminado hasta verificar:
+
+1. Existe en Admin Panel.
+2. Existe en venta manual WhatsApp.
+3. Existe en inventario DAM Vertex.
+4. Existe en inventario Dam Finanzas.
+5. Existe en el mapeo producto/variante.
+6. Existe en webhook hacia Dam Finanzas.
+7. Existe en reportes financieros.
+8. Existe en descuentos de stock.
+9. Existe en combos.
+10. Existe en landing y modal.
+11. Landing completamente instrumentada para InSync (todas las secciones visibles tienen `id` único).
+
+### Regla de cambios en lógica financiera
+
+Antes de modificar lógica financiera:
+
+1. Buscar cómo funciona actualmente.
+2. Verificar si ya existe cálculo en Dam Finanzas.
+3. Reutilizar la lógica existente.
+4. No reescribir cálculos que ya funcionaban.
+5. No duplicar lógica financiera entre sistemas.
+
+Si un dato ya existe en Dam Finanzas: NO recalcularlo en DAM Vertex. Enviar únicamente la información necesaria.
+
+---
+
 ## Integración DAM Vertex + DAM Finanzas — Regla Operativa
 
 **Regla principal:** Cada producto nuevo en DAM Vertex requiere su contraparte en DAM Finanzas. No se crea una landing sin crear el producto en inventario financiero.
@@ -251,6 +297,30 @@ npx firebase deploy --only functions
 
 ---
 
+---
+
+## INSTRUMENTACIÓN InSync — Regla obligatoria en nuevas landings
+
+**Regla completa:** `AI_SYSTEM/execution/landing-insync-instrumentation.md`
+
+Toda landing nueva debe tener IDs únicos en todas sus secciones visibles **antes del primer deploy**.
+
+InSync usa `section[id]` para medir `section_view`, `section_time` y atribución de CTAs. Sin ID, esa sección es invisible para el análisis CRO.
+
+```html
+<!-- CORRECTO -->
+<section class="hero" id="section-hero">
+<section class="faq" id="section-faq">
+<section class="close-sec" id="section-cierre">
+
+<!-- PROHIBIDO — sección sin ID -->
+<section class="beneficios">
+```
+
+**PROHIBIDO hacer deploy de una landing nueva sin completar la instrumentación de secciones.**
+
+---
+
 ## Prioridades del proyecto
 
 - Conversión de la landing
@@ -302,6 +372,8 @@ Este repositorio incluye un sistema de memoria operativa para AI en `/AI_SYSTEM/
     push-notifications.md
   /execution
     cloudcode-execution-rules.md
+    new-product-checklist.md       ← leer al crear producto nuevo
+    landing-insync-instrumentation.md ← leer al crear landing nueva
   /skills                   ← SKILLS MODULARES DE MARKETING
     router.md               ← ÍNDICE MAESTRO — leer para routing
     brief-creative-ad.md    ← CRÍTICA

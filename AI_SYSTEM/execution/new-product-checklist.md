@@ -32,7 +32,7 @@ No inventar. Preguntar si no se especificaron:
 
 Agregar el producto en TODOS los lugares donde el sistema espera productos:
 
-- [ ] Landing pública (imágenes en WebP — convertir si se recibe JPG/PNG)
+- [ ] Landing pública (imágenes en WebP — convertir si se recibe JPG/PNG) **→ ver Paso 1B**
 - [ ] Landing vELOZ si aplica
 - [ ] Modal de compra
 - [ ] Combos del modal (preselección desde landing)
@@ -47,6 +47,26 @@ Agregar el producto en TODOS los lugares donde el sistema espera productos:
 - [ ] Documentación interna
 
 Si el reloj aparece en 10 lugares, el nuevo producto debe aparecer en esos mismos 10 lugares.
+
+---
+
+## Paso 1B — Instrumentación InSync (obligatorio antes del primer deploy)
+
+**Regla completa:** `AI_SYSTEM/execution/landing-insync-instrumentation.md`
+
+Toda sección visual de la landing debe tener un `id` único. Sin ID, InSync no puede registrar `section_view` ni `section_time` para esa sección.
+
+Verificar antes de deploy:
+
+- [ ] Hero tiene `id="section-hero"`
+- [ ] Cada sección de contenido principal tiene ID descriptivo
+- [ ] FAQ tiene `id="section-faq"`
+- [ ] Cierre / CTA final tiene `id="section-cierre"`
+- [ ] No existe ningún `<section class="...">` sin `id` (salvo secciones ocultas con `display:none`)
+
+**PROHIBIDO hacer deploy de una landing nueva sin completar este paso.**
+
+---
 
 ### Combos obligatorios en landing y modal
 
@@ -156,6 +176,7 @@ Campos requeridos para que la UI lo reconozca:
 - [ ] Combo preselecciona
 - [ ] Variante correcta
 - [ ] Precio correcto
+- [ ] Todas las secciones visibles tienen `id` (verificar con DevTools o grep `<section class=` sin `id=`)
 
 ### B. Admin Panel
 - [ ] Producto aparece en selector
