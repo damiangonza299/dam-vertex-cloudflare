@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Admin — Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=59"></script>
+  <script src="/assets/js/site-version.js?v=60"></script>
   <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
   <style>
     /* ── Dashboard ── */
@@ -518,6 +518,7 @@
       </div>
 
       <div class="admin-date-filters" style="margin-bottom:16px">
+        <button class="date-btn" id="ship-date-all">Todos</button>
         <button class="date-btn date-btn--active" id="ship-date-today">Hoy</button>
         <button class="date-btn" id="ship-date-yesterday">Ayer</button>
         <input type="date" id="ship-date-picker" class="date-picker">
@@ -566,7 +567,7 @@
 
       <!-- Historial -->
       <div style="max-width:640px">
-        <h4 style="font-size:12px;font-weight:600;color:rgba(255,255,255,.4);margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em">Historial</h4>
+        <h4 id="shipping-history-title" style="font-size:12px;font-weight:600;color:rgba(255,255,255,.4);margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em">Historial</h4>
         <div id="shipping-history-list">
           <p style="padding:14px 8px;color:rgba(255,255,255,.25);text-align:center;font-size:11px;margin:0">Cargando…</p>
         </div>

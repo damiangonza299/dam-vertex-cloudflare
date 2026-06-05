@@ -1879,31 +1879,47 @@ document.addEventListener('DOMContentLoaded', () => {
    Delivery — Panel de distribución de envíos
    ========================================================= */
 
-let shippingDate = getParaguayDateLocal();
-let _shippingRows = {};
+let shippingDate    = getParaguayDateLocal();
+let shippingShowAll = false;
+let _shippingRows   = {};
 
 function getParaguayDateLocal() {
   return new Date(Date.now() - 4 * 3600 * 1000).toISOString().slice(0, 10);
 }
 
 function initShippingPanel() {
-  shippingDate = getParaguayDateLocal();
-  const todayStr = shippingDate;
-  const yestStr  = new Date(Date.now() - 4 * 3600 * 1000 - 86400000).toISOString().slice(0, 10);
+  shippingDate    = getParaguayDateLocal();
+  shippingShowAll = false;
+  const todayStr  = shippingDate;
+  const yestStr   = new Date(Date.now() - 4 * 3600 * 1000 - 86400000).toISOString().slice(0, 10);
 
-  document.getElementById('ship-date-today')?.addEventListener('click', () => {
-    shippingDate = todayStr;
-    document.getElementById('ship-date-today')?.classList.add('date-btn--active');
+  document.getElementById('ship-date-all')?.addEventListener('click', () => {
+    shippingShowAll = true;
+    document.getElementById('ship-date-all')?.classList.add('date-btn--active');
+    document.getElementById('ship-date-today')?.classList.remove('date-btn--active');
     document.getElementById('ship-date-yesterday')?.classList.remove('date-btn--active');
     const dp = document.getElementById('ship-date-picker');
     if (dp) dp.value = '';
     loadShippingStats();
   });
 
+  document.getElementById('ship-date-today')?.addEventListener('click', () => {
+    shippingShowAll = false;
+    shippingDate    = todayStr;
+    document.getElementById('ship-date-today')?.classList.add('date-btn--active');
+    document.getElementById('ship-date-yesterday')?.classList.remove('date-btn--active');
+    document.getElementById('ship-date-all')?.classList.remove('date-btn--active');
+    const dp = document.getElementById('ship-date-picker');
+    if (dp) dp.value = '';
+    loadShippingStats();
+  });
+
   document.getElementById('ship-date-yesterday')?.addEventListener('click', () => {
-    shippingDate = yestStr;
+    shippingShowAll = false;
+    shippingDate    = yestStr;
     document.getElementById('ship-date-yesterday')?.classList.add('date-btn--active');
     document.getElementById('ship-date-today')?.classList.remove('date-btn--active');
+    document.getElementById('ship-date-all')?.classList.remove('date-btn--active');
     const dp = document.getElementById('ship-date-picker');
     if (dp) dp.value = '';
     loadShippingStats();
@@ -1911,9 +1927,11 @@ function initShippingPanel() {
 
   document.getElementById('ship-date-picker')?.addEventListener('change', e => {
     if (e.target.value) {
-      shippingDate = e.target.value;
+      shippingShowAll = false;
+      shippingDate    = e.target.value;
       document.getElementById('ship-date-today')?.classList.remove('date-btn--active');
       document.getElementById('ship-date-yesterday')?.classList.remove('date-btn--active');
+      document.getElementById('ship-date-all')?.classList.remove('date-btn--active');
       loadShippingStats();
     }
   });
@@ -1948,7 +1966,11 @@ async function loadShippingStats() {
       }
 
       updateShippingPerSale();
-      renderShippingHistory((data.recentHistory || []).filter(r => r.date === shippingDate));
+      renderShippingHistory(
+        shippingShowAll
+          ? (data.recentHistory || [])
+          : (data.recentHistory || []).filter(r => r.date === shippingDate)
+      );
     } else {
       if (countEl) countEl.textContent = '?';
     }
@@ -1977,6 +1999,8 @@ function renderShippingHistory(rows) {
   _shippingRows = {};
   const container = document.getElementById('shipping-history-list');
   if (!container) return;
+  const titleEl = document.getElementById('shipping-history-title');
+  if (titleEl) titleEl.textContent = shippingShowAll ? 'Historial reciente' : 'Historial';
   if (!rows.length) {
     container.innerHTML = '<p style="padding:14px 8px;color:rgba(255,255,255,.25);text-align:center;font-size:11px;margin:0">Sin historial</p>';
     return;
@@ -2061,6 +2085,8 @@ async function applyShipping() {
 function editShippingRow(date) {
   const r = _shippingRows[date];
   if (!r) return;
+  shippingShowAll = false;
+  document.getElementById('ship-date-all')?.classList.remove('date-btn--active');
   shippingDate = r.date;
   const di       = document.getElementById('shipping-delivery-input');
   const ei       = document.getElementById('shipping-encomienda-input');
