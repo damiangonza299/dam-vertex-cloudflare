@@ -1,14 +1,20 @@
 /* =========================================================
-   BQE Scorer — módulo compartido
+   BQE Scorer — módulo compartido v2
    Importado por: run-bqe.js, confirm-purchase.js, manual-whatsapp-sale.js
    NO es una ruta de Cloudflare Pages (prefijo _).
+
+   v2 — Buyer Evolution:
+     - Nuevos buyer_type: reincidente, lento, muy_tardio, baja_calidad
+     - Prioridad: reincidente > vip > alto_valor > rapido > lento > muy_tardio > baja_calidad > normal
+     - prevPurchases: detecta comprador reincidente (+25 score)
+     - normalizePhone: exportada para comparación consistente
    ========================================================= */
 
 export const STALE_DAYS     = 5;
 export const FAST_BUYER_H   = 24;
 export const HIGH_VALUE_PYG = 200000;
 export const VIP_PYG        = 300000;
-export const SCORE_VERSION  = 'v1';
+export const SCORE_VERSION  = 'v2';
 
 const GRAN_ASUNCION = [
   'asunción','asuncion','luque','lambaré','lambare',
@@ -16,7 +22,11 @@ const GRAN_ASUNCION = [
   'mariano roque alonso','ñemby','nemby','villa elisa','limpio',
 ];
 
-export function scoreLeadBQE(lead, behaviorMap, nowMs) {
+export function normalizePhone(phone) {
+  return (phone || '').replace(/[\s\-\+\(\)\.]/g, '');
+}
+
+export function scoreLeadBQE(lead, behaviorMap, nowMs, prevPurchases = 0) {
   const status      = lead.status || 'pending';
   const value       = Number(lead.value || 0);
   const productSlug = lead.product_slug || slugify(lead.product_name || '');
@@ -43,6 +53,11 @@ export function scoreLeadBQE(lead, behaviorMap, nowMs) {
   if (status === 'purchased') {
     score += 50;
     reasons.push('compra confirmada +50');
+
+    if (prevPurchases > 0) {
+      score += 25;
+      reasons.push(`reincidente (${prevPurchases + 1}ª compra) +25`);
+    }
 
     if (isFastBuyer) {
       score += 15;
@@ -135,19 +150,31 @@ export function scoreLeadBQE(lead, behaviorMap, nowMs) {
   let statusSnapshot = status;
   if (status === 'pending' && isDeadLead) statusSnapshot = 'stale';
 
-  const quality_label = scoreToLabel(score);
+  const finalScore  = Math.max(-100, Math.min(100, score));
+  const quality_label = scoreToLabel(finalScore);
 
-  let buyer_type = 'normal';
-  if (status === 'blocked')        buyer_type = 'bloqueado';
-  else if (status === 'cancelled') buyer_type = 'cancelado';
-  else if (isDeadLead)             buyer_type = 'vencido';
-  else if (status === 'purchased') {
-    if (isFastBuyer)               buyer_type = 'rapido';
-    else if (isVIP)                buyer_type = 'vip';
-    else if (isCombo)              buyer_type = 'combo';
-    else if (isHighValue)          buyer_type = 'alto_valor';
-    else if (timeToBuyH !== null && timeToBuyH > 120) buyer_type = 'tardio';
-    else                           buyer_type = 'normal';
+  // Buyer type — prioridad: reincidente > vip > alto_valor > rapido > lento > muy_tardio > baja_calidad > normal
+  let buyer_type;
+
+  if (status === 'blocked') {
+    buyer_type = 'bloqueado';
+  } else if (status === 'cancelled') {
+    buyer_type = 'cancelado';
+  } else if (isDeadLead) {
+    buyer_type = 'vencido';
+  } else if (status === 'purchased') {
+    const isBajaCalidad =
+      (finalScore < 50) ||
+      (timeToBuyH !== null && timeToBuyH > 120 && !isVIP && !isHighValue && attrConf === 'none');
+
+    if      (prevPurchases > 0)                                               buyer_type = 'reincidente';
+    else if (isVIP)                                                           buyer_type = 'vip';
+    else if (isHighValue)                                                     buyer_type = 'alto_valor';
+    else if (isFastBuyer)                                                     buyer_type = 'rapido';
+    else if (timeToBuyH !== null && timeToBuyH >= 48 && timeToBuyH < 120)    buyer_type = 'lento';
+    else if (timeToBuyH !== null && timeToBuyH >= 120)                        buyer_type = 'muy_tardio';
+    else if (isBajaCalidad)                                                   buyer_type = 'baja_calidad';
+    else                                                                      buyer_type = 'normal';
   } else {
     buyer_type = leadAgeH < 24 ? 'fresco' : 'pendiente';
   }
@@ -155,7 +182,7 @@ export function scoreLeadBQE(lead, behaviorMap, nowMs) {
   return {
     product_slug:       productSlug,
     status_snapshot:    statusSnapshot,
-    quality_score:      Math.max(-100, Math.min(100, score)),
+    quality_score:      finalScore,
     quality_label,
     buyer_type,
     time_to_purchase_h: timeToBuyH !== null ? Math.round(timeToBuyH * 10) / 10 : null,
@@ -186,12 +213,22 @@ export function slugify(s) {
 /* =========================================================
    autoScorePurchase — Clasificación automática post-compra
    Se llama vía waitUntil: no bloquea la respuesta al admin.
-   Funciona para confirm-purchase y manual-whatsapp-sale.
    ========================================================= */
 export async function autoScorePurchase(leadId, DB) {
   try {
     const lead = await DB.prepare('SELECT * FROM leads WHERE id = ?').bind(leadId).first();
     if (!lead || lead.status !== 'purchased') return;
+
+    // Detectar comprador reincidente (mismo teléfono, otras compras confirmadas)
+    let prevPurchases = 0;
+    if (lead.phone) {
+      try {
+        const prev = await DB.prepare(
+          'SELECT COUNT(*) AS cnt FROM leads WHERE status = ? AND phone = ? AND id != ?'
+        ).bind('purchased', lead.phone, lead.id).first();
+        prevPurchases = Number(prev?.cnt || 0);
+      } catch (_) {}
+    }
 
     const behaviorMap = new Map();
     if (lead.session_id) {
@@ -203,9 +240,9 @@ export async function autoScorePurchase(leadId, DB) {
                      WHEN event_type = 'scroll_75' THEN 75
                      WHEN event_type = 'scroll_50' THEN 50
                      WHEN event_type = 'scroll_25' THEN 25
-                     ELSE 0 END) AS scroll_depth,
+                     ELSE 0 END)                          AS scroll_depth,
             COUNT(CASE WHEN event_type = 'cta_click' THEN 1 END) AS cta_clicks,
-            COUNT(DISTINCT section) AS section_count
+            COUNT(DISTINCT section)                       AS section_count
           FROM behavior_events
           WHERE session_id = ?
           GROUP BY session_id
@@ -215,7 +252,7 @@ export async function autoScorePurchase(leadId, DB) {
     }
 
     const now    = Date.now();
-    const scored = scoreLeadBQE(lead, behaviorMap, now);
+    const scored = scoreLeadBQE(lead, behaviorMap, now, prevPurchases);
     const beh    = behaviorMap.get(lead.session_id) || null;
 
     await DB.prepare(`
@@ -265,17 +302,17 @@ export async function autoScorePurchase(leadId, DB) {
         updated_at         = datetime('now')
     `).bind(
       lead.id,
-      lead.session_id         || null,
-      lead.phone              || null,
+      lead.session_id             || null,
+      lead.phone                  || null,
       scored.product_slug,
-      lead.product_name       || null,
+      lead.product_name           || null,
       lead.location_city || lead.city || null,
-      lead.campaign_id        || null,
-      lead.adset_id           || null,
-      lead.ad_id              || null,
-      lead.campaign_name      || null,
-      lead.adset_name         || null,
-      lead.ad_name            || null,
+      lead.campaign_id            || null,
+      lead.adset_id               || null,
+      lead.ad_id                  || null,
+      lead.campaign_name          || null,
+      lead.adset_name             || null,
+      lead.ad_name                || null,
       lead.attribution_confidence || null,
       scored.status_snapshot,
       scored.quality_score,
@@ -283,23 +320,23 @@ export async function autoScorePurchase(leadId, DB) {
       scored.buyer_type,
       scored.time_to_purchase_h,
       scored.lead_age_h,
-      lead.value              || 0,
-      scored.is_combo         ? 1 : 0,
-      scored.is_vip           ? 1 : 0,
-      scored.is_fast_buyer    ? 1 : 0,
-      scored.is_high_value    ? 1 : 0,
-      scored.is_dead_lead     ? 1 : 0,
+      lead.value                  || 0,
+      scored.is_combo             ? 1 : 0,
+      scored.is_vip               ? 1 : 0,
+      scored.is_fast_buyer        ? 1 : 0,
+      scored.is_high_value        ? 1 : 0,
+      scored.is_dead_lead         ? 1 : 0,
       lead.status === 'cancelled' ? 1 : 0,
       lead.status === 'blocked'   ? 1 : 0,
-      beh                     ? 1 : 0,
-      beh?.scroll_depth       || null,
-      beh?.cta_clicks         || 0,
-      beh?.section_count      || 0,
+      beh                         ? 1 : 0,
+      beh?.scroll_depth           || null,
+      beh?.cta_clicks             || 0,
+      beh?.section_count          || 0,
       scored.reason,
       SCORE_VERSION,
     ).run();
 
-    console.log(`BQE_AUTO buyer_type=${scored.buyer_type} score=${scored.quality_score} lead_id=${leadId}`);
+    console.log(`BQE_AUTO buyer_type=${scored.buyer_type} score=${scored.quality_score} lead_id=${leadId}${prevPurchases > 0 ? ' [REINCIDENTE]' : ''}`);
   } catch (err) {
     console.error(`BQE_AUTO_ERROR lead_id=${leadId}`, err.message);
   }

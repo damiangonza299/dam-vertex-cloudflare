@@ -15,8 +15,7 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-const STALE_DAYS    = 5;
-const SCORE_VERSION = 'v1';
+import { VIP_PYG, HIGH_VALUE_PYG, STALE_DAYS, SCORE_VERSION, scoreToLabel, slugify } from './_bqe-scorer.js';
 
 export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
@@ -156,9 +155,9 @@ export async function onRequestPost({ request, env }) {
         leadAgeH,
         value,
         productSlug === 'combo-reloj-cadena' ? 1 : 0,
-        value >= 500000 ? 1 : 0,
+        value >= VIP_PYG        ? 1 : 0,
         0,
-        value >= 300000 ? 1 : 0,
+        value >= HIGH_VALUE_PYG ? 1 : 0,
         1,
         0,
         0,
@@ -182,20 +181,6 @@ export async function onRequestPost({ request, env }) {
     console.error('STALE_SCANNER_ERROR', err.message);
     return json({ ok: false, error: err.message }, 500);
   }
-}
-
-function scoreToLabel(score) {
-  if (score <= 0)  return 'basura';
-  if (score <= 20) return 'muy_baja';
-  if (score <= 40) return 'baja';
-  if (score <= 60) return 'normal';
-  if (score <= 75) return 'bueno';
-  if (score <= 85) return 'muy_bueno';
-  return 'excelente';
-}
-
-function slugify(s) {
-  return (s || '').toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
 }
 
 function json(data, status = 200) {

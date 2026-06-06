@@ -12,7 +12,7 @@
      {}                      → procesa todos los leads sin procesar o actualizables
    ========================================================= */
 
-import { scoreLeadBQE, scoreToLabel, slugify, STALE_DAYS, SCORE_VERSION } from './_bqe-scorer.js';
+import { scoreLeadBQE, scoreToLabel, slugify, normalizePhone, STALE_DAYS, SCORE_VERSION } from './_bqe-scorer.js';
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -62,6 +62,19 @@ export async function onRequestPost({ request, env }) {
       return json({ ok: true, processed: 0, message: 'No hay leads pendientes de procesar.' });
     }
 
+    // Batch: conteo de compras previas por teléfono (para detectar reincidentes)
+    const purchaseCountMap = new Map();
+    try {
+      const { results: phoneCounts } = await env.DB.prepare(
+        `SELECT phone, COUNT(*) AS cnt FROM leads WHERE status = 'purchased' AND phone IS NOT NULL GROUP BY phone`
+      ).all();
+      (phoneCounts || []).forEach(r => {
+        if (r.phone) purchaseCountMap.set(normalizePhone(r.phone), Number(r.cnt));
+      });
+    } catch (e) {
+      console.warn('BQE_PHONE_COUNT_WARN', e.message);
+    }
+
     // Obtener session_ids para cruzar con behavior_events
     const sessionIds = leads.map(l => l.session_id).filter(Boolean);
     let behaviorMap = new Map();
@@ -96,7 +109,13 @@ export async function onRequestPost({ request, env }) {
 
     for (const lead of leads) {
       try {
-        const scored = scoreLeadBQE(lead, behaviorMap, now);
+        const normPhone    = normalizePhone(lead.phone || '');
+        const totalForPhone = normPhone ? (purchaseCountMap.get(normPhone) || 0) : 0;
+        const prevPurchases = lead.status === 'purchased'
+          ? Math.max(0, totalForPhone - 1)
+          : 0;
+
+        const scored = scoreLeadBQE(lead, behaviorMap, now, prevPurchases);
         const beh    = behaviorMap.get(lead.session_id) || null;
 
         stmts.push(env.DB.prepare(`

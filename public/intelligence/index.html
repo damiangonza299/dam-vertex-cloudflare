@@ -146,6 +146,24 @@ tr:hover td{background:var(--bg3)}
 .loading{color:var(--muted);font-size:13px;padding:20px 0;text-align:center}
 .error-msg{color:var(--red);font-size:12px;padding:12px;background:rgba(248,113,113,.1);border-radius:6px;margin-bottom:16px}
 
+/* Alert cards */
+.alert-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:16px;margin-bottom:10px;border-left:3px solid var(--border2)
+}
+.alert-card.alta{border-left-color:var(--red)}
+.alert-card.media{border-left-color:var(--yellow)}
+.alert-card.info{border-left-color:var(--blue)}
+.alert-titulo{font-size:14px;font-weight:600;margin-bottom:6px}
+.alert-explicacion{font-size:12px;color:var(--dim);margin-bottom:8px}
+.alert-evidencia{
+  font-size:11px;color:var(--muted);background:var(--bg3);
+  padding:6px 10px;border-radius:6px;margin-bottom:8px;font-family:monospace
+}
+.alert-accion{font-size:12px;color:var(--blue)}
+.alert-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.alert-empty{color:var(--muted);text-align:center;padding:40px 0;font-size:13px}
+
 /* Sync section */
 .sync-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .sync-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px}
@@ -256,6 +274,7 @@ tr:hover td{background:var(--bg3)}
   <button class="tab" onclick="switchTab('leads')">Leads</button>
   <button class="tab" onclick="switchTab('creativos')">Creativos</button>
   <button class="tab" onclick="switchTab('campanas')">Campañas</button>
+  <button class="tab" onclick="switchTab('alertas')">Alertas <span id="alert-badge" style="display:none;background:var(--red);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px"></span></button>
   <button class="tab" onclick="switchTab('recomendaciones')">Recomendaciones</button>
   <button class="tab" onclick="switchTab('landings')">Landings</button>
   <button class="tab" onclick="switchTab('sync')">Sync</button>
@@ -338,6 +357,13 @@ tr:hover td{background:var(--bg3)}
     </div>
   </div>
 
+  <!-- ALERTAS -->
+  <div class="section" id="sec-alertas">
+    <div class="section-title">Alertas Automáticas — Dam Intelligence</div>
+    <div class="section-sub">Detectadas en tiempo real desde D1. Ninguna alerta ejecuta acciones automáticas.</div>
+    <div id="alerts-container"><div class="loading">Cargando...</div></div>
+  </div>
+
   <!-- RECOMENDACIONES -->
   <div class="section" id="sec-recomendaciones">
     <div class="section-title">Recomendaciones — Dam Intelligence</div>
@@ -418,8 +444,8 @@ function getUntil() { return document.getElementById('date-until').value; }
 /* ── Tab switching ── */
 const tabMap = {
   resumen:'sec-resumen', compradores:'sec-compradores', leads:'sec-leads',
-  creativos:'sec-creativos', campanas:'sec-campanas', recomendaciones:'sec-recomendaciones',
-  landings:'sec-landings', sync:'sec-sync'
+  creativos:'sec-creativos', campanas:'sec-campanas', alertas:'sec-alertas',
+  recomendaciones:'sec-recomendaciones', landings:'sec-landings', sync:'sec-sync'
 };
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach((t,i) => {
@@ -430,13 +456,14 @@ function switchTab(name) {
     document.getElementById(id).classList.toggle('active', k===name);
   });
   if (name === 'creativos' && !DATA.creativos) loadCreatives('ad');
-  if (name === 'sync' && !DATA.sync) loadSync();
-  if (name === 'landings' && !DATA.landings) loadSync();
+  if (name === 'alertas'   && !DATA.alerts)    loadAlerts();
+  if (name === 'sync'      && !DATA.sync)      loadSync();
+  if (name === 'landings'  && !DATA.landings)  loadSync();
 }
 
 /* ── Load all ── */
 async function loadAll() {
-  await Promise.all([loadBuyerQuality(), loadRecommendations(), loadCreatives('ad')]);
+  await Promise.all([loadBuyerQuality(), loadRecommendations(), loadCreatives('ad'), loadAlerts()]);
   loadSync();
 }
 
@@ -497,13 +524,15 @@ function renderResumen(d) {
 function renderBuyers(d) {
   // Buyers cards
   const breakdown = (d.breakdown||[]).filter(r=>r.status_snapshot==='purchased');
-  let fastB=0,vipB=0,comboB=0,hvB=0;
-  breakdown.forEach(r=>{ fastB+=r.fast_buyers||0; vipB+=r.vip_buyers||0; comboB+=r.combo_buyers||0; hvB+=r.high_value_buyers||0; });
+  let fastB=0,vipB=0,hvB=0,reinB=0;
+  breakdown.forEach(r=>{ fastB+=r.fast_buyers||0; vipB+=r.vip_buyers||0; hvB+=r.high_value_buyers||0; });
+  // Contar reincidentes desde top_buyers
+  (d.top_buyers||[]).forEach(b=>{ if(b.buyer_type==='reincidente') reinB++; });
   document.getElementById('buyer-cards').innerHTML = `
+    <div class="card purple"><div class="card-val">${reinB}</div><div class="card-label">Reincidentes</div><div class="card-sub">2+ compras</div></div>
     <div class="card green"><div class="card-val">${fastB}</div><div class="card-label">Compradores Rápidos</div><div class="card-sub">&lt;24h</div></div>
-    <div class="card purple"><div class="card-val">${vipB}</div><div class="card-label">VIP</div><div class="card-sub">≥ Gs. 500.000</div></div>
-    <div class="card blue"><div class="card-val">${hvB}</div><div class="card-label">Alto Valor</div><div class="card-sub">≥ Gs. 300.000</div></div>
-    <div class="card yellow"><div class="card-val">${comboB}</div><div class="card-label">Combos</div></div>
+    <div class="card cyan"><div class="card-val">${vipB}</div><div class="card-label">VIP</div><div class="card-sub">≥ Gs. 300.000</div></div>
+    <div class="card blue"><div class="card-val">${hvB}</div><div class="card-label">Alto Valor</div><div class="card-sub">≥ Gs. 200.000</div></div>
   `;
   // Table
   const buyers = (d.top_buyers||[]);
@@ -809,6 +838,75 @@ function renderLandings(d) {
   `).join('');
 }
 
+/* ── Alertas ── */
+async function loadAlerts() {
+  document.getElementById('alerts-container').innerHTML = '<div class="loading">Analizando...</div>';
+  try {
+    const d = await apiFetch('/api/intelligence/alerts');
+    DATA.alerts = d;
+    renderAlerts(d);
+  } catch(e) {
+    document.getElementById('alerts-container').innerHTML = `<div class="error-msg">${e.message}</div>`;
+  }
+}
+
+function renderAlerts(d) {
+  const alerts   = d.alerts || [];
+  const badge    = document.getElementById('alert-badge');
+  const altaCount = alerts.filter(a => a.severidad === 'alta').length;
+
+  if (altaCount > 0) {
+    badge.style.display = 'inline';
+    badge.textContent   = altaCount;
+  } else {
+    badge.style.display = 'none';
+  }
+
+  if (!alerts.length) {
+    document.getElementById('alerts-container').innerHTML =
+      '<div class="alert-empty">Sin alertas activas en este momento. El sistema está operando dentro de parámetros normales.</div>';
+    return;
+  }
+
+  const tipoLabel = {
+    creative_dead:     'Creativo Muerto',
+    creative_scalable: 'Creativo Escalable',
+    winning_city:      'Ciudad Ganadora',
+    buyer_type_increase: 'Compradores Premium',
+    garbage_risk:      'Tráfico Basura',
+  };
+
+  document.getElementById('alerts-container').innerHTML = alerts.map(a => `
+    <div class="alert-card ${a.severidad}">
+      <div class="alert-header">
+        <div class="alert-titulo">${a.titulo}</div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <span class="badge ${sevBadge(a.severidad)}">${a.severidad.toUpperCase()}</span>
+          <span class="badge gray">${tipoLabel[a.tipo] || a.tipo}</span>
+          ${a.requiere_aprobacion ? '<span class="badge yellow">Aprobación requerida</span>' : ''}
+        </div>
+      </div>
+      <div class="alert-explicacion">${a.explicacion}</div>
+      <div class="alert-evidencia">${evidenciaStr(a.evidencia)}</div>
+      <div class="alert-accion">→ ${a.accion_sugerida}</div>
+    </div>
+  `).join('');
+}
+
+function sevBadge(s) {
+  if (s === 'alta')  return 'red';
+  if (s === 'media') return 'yellow';
+  return 'blue';
+}
+
+function evidenciaStr(ev) {
+  if (!ev) return '';
+  return Object.entries(ev)
+    .filter(([k]) => !['ad_id','ad_name','city','buyer_type'].includes(k))
+    .map(([k, v]) => `${k}: ${v}`)
+    .join('  ·  ');
+}
+
 /* ── BQE / Stale buttons ── */
 async function runBQE() {
   const btn = document.getElementById('bqe-btn');
@@ -848,18 +946,24 @@ function scoreColor(s) {
 }
 
 function buyerTypeLabel(t) {
-  const m={rapido:'Rápido',combo:'Combo',vip:'VIP',alto_valor:'Alto Valor',normal:'Normal',
-           tardio:'Tardío',vencido:'Vencido',cancelado:'Cancelado',bloqueado:'Bloqueado',
-           fresco:'Fresco',pendiente:'Pendiente'};
-  return m[t]||t||'—';
+  const m = {
+    reincidente: 'Reincidente', rapido: 'Rápido', vip: 'VIP',
+    alto_valor: 'Alto Valor',   lento: 'Lento',   muy_tardio: 'Muy Tardío',
+    baja_calidad: 'Baja Calidad', normal: 'Normal', combo: 'Combo',
+    vencido: 'Vencido', cancelado: 'Cancelado', bloqueado: 'Bloqueado',
+    fresco: 'Fresco',   pendiente: 'Pendiente',
+  };
+  return m[t] || t || '—';
 }
 
 function buyerTypeBadge(t) {
-  if(['rapido','vip'].includes(t)) return 'green';
-  if(['combo','alto_valor'].includes(t)) return 'blue';
-  if(t==='normal') return 'gray';
-  if(t==='tardio') return 'yellow';
-  if(['vencido','cancelado','bloqueado'].includes(t)) return 'red';
+  if (t === 'reincidente')               return 'purple';
+  if (['rapido', 'vip'].includes(t))     return 'green';
+  if (['alto_valor'].includes(t))        return 'blue';
+  if (t === 'lento')                     return 'yellow';
+  if (['muy_tardio', 'baja_calidad'].includes(t)) return 'yellow';
+  if (t === 'normal')                    return 'gray';
+  if (['vencido', 'cancelado', 'bloqueado'].includes(t)) return 'red';
   return 'gray';
 }
 
