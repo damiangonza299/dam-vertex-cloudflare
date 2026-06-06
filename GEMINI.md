@@ -194,11 +194,52 @@ Estas 3 skills instaladas en Claude actúan como marco de referencia complementa
 
 ---
 
+## DAM INTELLIGENCE — Regla Permanente
+
+Sistema: `public/intelligence/` + `functions/api/intelligence/`
+Panel: `/intelligence/` (módulo separado del Admin Panel)
+Motor: BQE (Buyer Quality Engine) — scoring 0-100 por lead/comprador
+Tabla nueva: `lead_quality` (D1, aditiva, no modifica leads)
+
+**Fuentes de verdad — orden de prioridad:**
+1. D1 `leads` — Purchase real confirmado en Admin Panel
+2. D1 `lead_quality` — Puntaje de calidad calculado por el BQE
+3. D1 `behavior_events` — Comportamiento InSync (session_id como puente)
+4. Meta Ads API — Distribución y métricas publicitarias (no fuente de verdad de compras)
+
+**Regla fundamental:**
+DAM Vertex NO optimiza por métricas de Meta Ads solamente.
+DAM Vertex optimiza por: Purchase real · Puntaje del Comprador · Revenue real · Calidad del lead · Calidad del creativo · Comportamiento InSync.
+
+Meta Ads es el canal de distribución.
+D1 es la fuente de verdad operativa.
+Admin Panel es la fuente de acciones.
+Dam Intelligence es la capa de inteligencia que cruza las tres.
+El agente de Meta Ads solo debe actuar DESPUÉS de leer D1 + lead_quality.
+NUNCA tomar decisión de presupuesto basada solo en Ads Manager.
+
+**Botón Admin Panel:** `INTEL` → abre `/intelligence/` (reemplazó a `Sync`)
+**InSync dentro de Dam Intelligence:** tab `Sync` reutiliza `/api/insync-report`
+**Eventos CAPI nuevos agregados:** `FastBuyer` (compra <24h), `ComboBuyer` (compra combo)
+**Eventos negativos:** NO enviados a Meta todavía. Uso interno en lead_quality.
+
+**Endpoints nuevos:**
+- `POST /api/intelligence/run-bqe` — Motor de scoring
+- `POST /api/intelligence/stale-scanner` — Detector de leads vencidos
+- `GET  /api/intelligence/buyer-quality` — Consulta de compradores
+- `GET  /api/intelligence/creative-quality` — Calidad de creativos
+- `GET  /api/intelligence/recommendations` — Recomendaciones sin ejecutar
+
+**Ventana de maduración:** 5 días pending sin compra = lead vencido.
+**Score:** Compra confirmada +50 base. Rápido +15. VIP +15. Interior vencido -40 base.
+
+---
+
 ## FUENTE DE VERDAD DEL SISTEMA
 
 ### DAM Vertex — Responsable de
 
-Leads · Pedidos · Admin Panel · Delivery Panel · Inventario comercial · WhatsApp · Telegram · Meta Ads · Pixel · CAPI · Purchase manual · QualifiedLead · Gestión operativa
+Leads · Pedidos · Admin Panel · Delivery Panel · Inventario comercial · WhatsApp · Telegram · Meta Ads · Pixel · CAPI · Purchase manual · QualifiedLead · Gestión operativa · **Dam Intelligence**
 
 ### Dam Finanzas — Responsable de
 

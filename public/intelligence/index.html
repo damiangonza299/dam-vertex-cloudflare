@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dam Intelligence</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0f;color:#e2e8f0;min-height:100vh;font-size:14px}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a28;--bg4:#22223a;
+  --border:#2a2a3e;--border2:#3a3a55;
+  --text:#e2e8f0;--muted:#64748b;--dim:#94a3b8;
+  --green:#4ade80;--red:#f87171;--yellow:#fbbf24;--blue:#60a5fa;--purple:#c084fc;--cyan:#22d3ee;
+  --accent:#6366f1;--accent2:#8b5cf6;
+}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;font-family:inherit}
+
+/* Header */
+.header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;background:var(--bg2);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100
+}
+.header-brand{display:flex;align-items:center;gap:12px}
+.header-logo{
+  width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700
+}
+.header-title{font-size:18px;font-weight:700;letter-spacing:-0.3px}
+.header-sub{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.header-actions{display:flex;gap:8px;align-items:center}
+.header-btn{
+  padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;
+  background:var(--bg3);color:var(--text);border:1px solid var(--border2);
+  transition:all .15s
+}
+.header-btn:hover{background:var(--bg4);border-color:var(--accent)}
+.header-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.header-btn.primary:hover{background:var(--accent2)}
+
+/* Dates */
+.date-bar{
+  display:flex;align-items:center;gap:8px;padding:10px 24px;
+  background:var(--bg2);border-bottom:1px solid var(--border)
+}
+.date-bar input{
+  background:var(--bg3);border:1px solid var(--border2);color:var(--text);
+  padding:5px 10px;border-radius:6px;font-size:12px;font-family:inherit
+}
+.date-bar label{font-size:12px;color:var(--muted)}
+.date-bar select{
+  background:var(--bg3);border:1px solid var(--border2);color:var(--text);
+  padding:5px 10px;border-radius:6px;font-size:12px;font-family:inherit
+}
+
+/* Tabs */
+.tabs{
+  display:flex;gap:2px;padding:12px 24px 0;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  overflow-x:auto
+}
+.tab{
+  padding:8px 16px;border-radius:7px 7px 0 0;font-size:12px;font-weight:600;
+  background:transparent;color:var(--muted);border:none;
+  white-space:nowrap;transition:all .15s;letter-spacing:.3px
+}
+.tab:hover{color:var(--text);background:var(--bg3)}
+.tab.active{color:var(--text);background:var(--bg);border:1px solid var(--border);border-bottom:1px solid var(--bg)}
+
+/* Main */
+.main{padding:24px;max-width:1400px;margin:0 auto}
+.section{display:none}
+.section.active{display:block}
+
+/* Cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:24px}
+.card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:16px;transition:border-color .15s
+}
+.card:hover{border-color:var(--border2)}
+.card-val{font-size:28px;font-weight:700;line-height:1;margin-bottom:4px}
+.card-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.card-sub{font-size:11px;color:var(--dim);margin-top:4px}
+
+/* Colores de card */
+.card.green .card-val{color:var(--green)}
+.card.red .card-val{color:var(--red)}
+.card.yellow .card-val{color:var(--yellow)}
+.card.blue .card-val{color:var(--blue)}
+.card.purple .card-val{color:var(--purple)}
+.card.cyan .card-val{color:var(--cyan)}
+
+/* Tables */
+.table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;background:var(--bg2)}
+th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+
+/* Badge */
+.badge{
+  display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px
+}
+.badge.green{background:rgba(74,222,128,.15);color:var(--green)}
+.badge.red{background:rgba(248,113,113,.15);color:var(--red)}
+.badge.yellow{background:rgba(251,191,36,.15);color:var(--yellow)}
+.badge.blue{background:rgba(96,165,250,.15);color:var(--blue)}
+.badge.purple{background:rgba(192,132,252,.15);color:var(--purple)}
+.badge.gray{background:rgba(100,116,139,.15);color:var(--muted)}
+
+/* Recomendaciones */
+.rec-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:16px;margin-bottom:10px;border-left:3px solid var(--border2)
+}
+.rec-card.problema{border-left-color:var(--red)}
+.rec-card.atencion{border-left-color:var(--yellow)}
+.rec-card.oportunidad{border-left-color:var(--green)}
+.rec-card.info{border-left-color:var(--blue)}
+.rec-card.alerta{border-left-color:var(--purple)}
+.rec-titulo{font-size:14px;font-weight:600;margin-bottom:6px}
+.rec-explicacion{font-size:12px;color:var(--dim);margin-bottom:8px}
+.rec-evidencia{
+  font-size:11px;color:var(--muted);background:var(--bg3);
+  padding:6px 10px;border-radius:6px;margin-bottom:8px;font-family:monospace
+}
+.rec-accion{font-size:12px;color:var(--blue);margin-bottom:4px}
+.rec-riesgo{font-size:11px;color:var(--muted)}
+.rec-meta{display:flex;gap:8px;margin-top:8px}
+
+/* Scores */
+.score-bar{display:flex;align-items:center;gap:8px}
+.score-track{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.score-fill{height:100%;border-radius:2px;transition:width .3s}
+
+/* Section titles */
+.section-title{font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text)}
+.section-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
+
+/* Loading */
+.loading{color:var(--muted);font-size:13px;padding:20px 0;text-align:center}
+.error-msg{color:var(--red);font-size:12px;padding:12px;background:rgba(248,113,113,.1);border-radius:6px;margin-bottom:16px}
+
+/* Sync section */
+.sync-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.sync-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px}
+.sync-card-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.funnel-bar{margin-bottom:8px}
+.funnel-label{font-size:11px;color:var(--dim);margin-bottom:3px;display:flex;justify-content:space-between}
+.funnel-track{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.funnel-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+/* Responsive */
+@media(max-width:768px){
+  .header{padding:12px 16px}
+  .main{padding:16px}
+  .sync-grid{grid-template-columns:1fr}
+  .tabs{padding:8px 16px 0}
+  .date-bar{flex-wrap:wrap}
+}
+
+/* Auth */
+.auth-overlay{
+  position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;
+  justify-content:center;z-index:999
+}
+.auth-box{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:14px;
+  padding:40px;width:340px;text-align:center
+}
+.auth-logo{
+  width:48px;height:48px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:700;margin:0 auto 20px;color:#fff
+}
+.auth-title{font-size:20px;font-weight:700;margin-bottom:6px}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.auth-input{
+  width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);
+  padding:12px 16px;border-radius:8px;font-size:14px;font-family:inherit;margin-bottom:12px
+}
+.auth-input:focus{outline:none;border-color:var(--accent)}
+.auth-btn{
+  width:100%;padding:12px;border-radius:8px;background:var(--accent);color:#fff;
+  font-size:14px;font-weight:600;border:none;cursor:pointer;transition:background .15s
+}
+.auth-btn:hover{background:var(--accent2)}
+.auth-error{color:var(--red);font-size:12px;margin-top:8px}
+
+/* Spinner */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- Auth Overlay -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-logo">D</div>
+    <div class="auth-title">Dam Intelligence</div>
+    <div class="auth-sub">Ingresá la contraseña de acceso</div>
+    <input class="auth-input" type="password" id="auth-input" placeholder="Contraseña" autofocus>
+    <button class="auth-btn" onclick="doAuth()">Ingresar</button>
+    <div class="auth-error" id="auth-error"></div>
+  </div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">D</div>
+    <div>
+      <div class="header-title">Dam Intelligence</div>
+      <div class="header-sub">Motor de inteligencia — DAM Vertex</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="header-btn" onclick="runBQE()" id="bqe-btn">Procesar Leads</button>
+    <button class="header-btn" onclick="runStale()" id="stale-btn">Detectar Vencidos</button>
+    <button class="header-btn primary" onclick="loadAll()">Actualizar</button>
+    <a href="/admin/" class="header-btn">Admin Panel</a>
+  </div>
+</div>
+
+<!-- Date bar -->
+<div class="date-bar">
+  <label>Desde</label>
+  <input type="date" id="date-since" value="">
+  <label>Hasta</label>
+  <input type="date" id="date-until" value="">
+  <select id="sync-period">
+    <option value="24h">InSync: 24h</option>
+    <option value="48h">InSync: 48h</option>
+    <option value="7d" selected>InSync: 7 días</option>
+    <option value="30d">InSync: 30 días</option>
+  </select>
+  <select id="sync-landing">
+    <option value="all">Todas las landings</option>
+    <option value="reloj">Reloj</option>
+    <option value="cadena">Cadena</option>
+    <option value="cepillo">Cepillo</option>
+    <option value="lentes">Lentes</option>
+  </select>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('resumen')">Resumen</button>
+  <button class="tab" onclick="switchTab('compradores')">Compradores</button>
+  <button class="tab" onclick="switchTab('leads')">Leads</button>
+  <button class="tab" onclick="switchTab('creativos')">Creativos</button>
+  <button class="tab" onclick="switchTab('campanas')">Campañas</button>
+  <button class="tab" onclick="switchTab('recomendaciones')">Recomendaciones</button>
+  <button class="tab" onclick="switchTab('landings')">Landings</button>
+  <button class="tab" onclick="switchTab('sync')">Sync</button>
+</div>
+
+<div class="main">
+
+  <!-- RESUMEN -->
+  <div class="section active" id="sec-resumen">
+    <div class="cards" id="resumen-cards">
+      <div class="loading">Cargando...</div>
+    </div>
+    <div id="resumen-recs"></div>
+  </div>
+
+  <!-- COMPRADORES -->
+  <div class="section" id="sec-compradores">
+    <div class="section-title">Calidad de Compradores</div>
+    <div class="cards" id="buyer-cards"><div class="loading">Cargando...</div></div>
+    <div class="table-wrap" id="buyer-table-wrap">
+      <table id="buyer-table">
+        <thead><tr>
+          <th>Lead</th><th>Producto</th><th>Ciudad</th><th>Puntaje</th>
+          <th>Tipo</th><th>Valor</th><th>Tiempo</th><th>Atribución</th>
+        </tr></thead>
+        <tbody id="buyer-tbody"><tr><td colspan="8" class="loading">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LEADS -->
+  <div class="section" id="sec-leads">
+    <div class="section-title">Estado de Leads</div>
+    <div class="cards" id="leads-cards"><div class="loading">Cargando...</div></div>
+    <div class="section-title" style="margin-top:20px">Leads Vencidos</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Lead ID</th><th>Producto</th><th>Ciudad</th><th>Campaña</th>
+          <th>Días vencido</th><th>Valor</th><th>Puntaje</th>
+        </tr></thead>
+        <tbody id="stale-tbody"><tr><td colspan="7" class="loading">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CREATIVOS -->
+  <div class="section" id="sec-creativos">
+    <div class="section-title">Motor de Calidad de Creativos</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button class="header-btn" onclick="loadCreatives('ad')">Por Anuncio</button>
+      <button class="header-btn" onclick="loadCreatives('adset')">Por Conjunto</button>
+      <button class="header-btn" onclick="loadCreatives('campaign')">Por Campaña</button>
+    </div>
+    <div id="creative-error"></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Nombre</th><th>Clasificación</th><th>Leads</th><th>Compras</th>
+          <th>Vencidos</th><th>Revenue</th><th>Tasa Compra</th>
+          <th>Tasa Vencidos</th><th>P. Comprador</th><th>P. Basura</th>
+        </tr></thead>
+        <tbody id="creative-tbody"><tr><td colspan="10" class="loading">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CAMPAÑAS -->
+  <div class="section" id="sec-campanas">
+    <div class="section-title">Campañas — Calidad Real</div>
+    <div id="campaign-error"></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Campaña</th><th>Leads</th><th>Compras</th><th>Cancelados</th>
+          <th>Vencidos</th><th>Revenue</th><th>Tasa Compra</th><th>Clasificación</th>
+        </tr></thead>
+        <tbody id="campaign-tbody"><tr><td colspan="8" class="loading">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RECOMENDACIONES -->
+  <div class="section" id="sec-recomendaciones">
+    <div class="section-title">Recomendaciones — Dam Intelligence</div>
+    <div class="section-sub">Ninguna recomendación ejecuta acciones automáticas. Solo información para decisiones.</div>
+    <div id="recs-container"><div class="loading">Cargando...</div></div>
+  </div>
+
+  <!-- LANDINGS -->
+  <div class="section" id="sec-landings">
+    <div class="section-title">Rendimiento de Landings</div>
+    <div class="cards" id="landing-cards"><div class="loading">Cargando...</div></div>
+    <div id="landing-insights"></div>
+  </div>
+
+  <!-- SYNC -->
+  <div class="section" id="sec-sync">
+    <div class="section-title">InSync — Comportamiento en Landings</div>
+    <div class="sync-grid" id="sync-grid">
+      <div class="loading">Cargando...</div>
+    </div>
+    <div class="section-title">Secciones más vistas</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Sección</th><th>Vistas</th><th>Tiempo prom.</th>
+          <th>Alcance</th><th>Score Atención</th>
+        </tr></thead>
+        <tbody id="sync-sections-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+/* ── Estado global ── */
+let TOKEN = localStorage.getItem('dam_intel_token') || '';
+let DATA  = {};
+
+/* ── Auth ── */
+document.getElementById('auth-input').addEventListener('keydown', e => { if(e.key==='Enter') doAuth(); });
+
+async function doAuth() {
+  const pw = document.getElementById('auth-input').value.trim();
+  if (!pw) return;
+  // Verificar con un endpoint real
+  const r = await fetch('/api/intelligence/buyer-quality?limit=1', {
+    headers: { Authorization: 'Bearer ' + pw }
+  }).catch(() => ({ ok: false }));
+  if (r.status === 200 || r.ok) {
+    TOKEN = pw;
+    localStorage.setItem('dam_intel_token', pw);
+    document.getElementById('auth-overlay').style.display = 'none';
+    initDates();
+    loadAll();
+  } else {
+    document.getElementById('auth-error').textContent = 'Contraseña incorrecta.';
+  }
+}
+
+if (TOKEN) {
+  document.getElementById('auth-overlay').style.display = 'none';
+  initDates();
+  loadAll();
+}
+
+/* ── Fechas ── */
+function initDates() {
+  const today = new Date();
+  const ago14 = new Date(today - 14*86400000);
+  document.getElementById('date-until').value = fmtDate(today);
+  document.getElementById('date-since').value = fmtDate(ago14);
+}
+function fmtDate(d) { return d.toISOString().split('T')[0]; }
+function getSince() { return document.getElementById('date-since').value; }
+function getUntil() { return document.getElementById('date-until').value; }
+
+/* ── Tab switching ── */
+const tabMap = {
+  resumen:'sec-resumen', compradores:'sec-compradores', leads:'sec-leads',
+  creativos:'sec-creativos', campanas:'sec-campanas', recomendaciones:'sec-recomendaciones',
+  landings:'sec-landings', sync:'sec-sync'
+};
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const keys = Object.keys(tabMap);
+    t.classList.toggle('active', keys[i] === name);
+  });
+  Object.entries(tabMap).forEach(([k,id]) => {
+    document.getElementById(id).classList.toggle('active', k===name);
+  });
+  if (name === 'creativos' && !DATA.creativos) loadCreatives('ad');
+  if (name === 'sync' && !DATA.sync) loadSync();
+  if (name === 'landings' && !DATA.landings) loadSync();
+}
+
+/* ── Load all ── */
+async function loadAll() {
+  await Promise.all([loadBuyerQuality(), loadRecommendations(), loadCreatives('ad')]);
+  loadSync();
+}
+
+/* ── Fetch helper ── */
+async function apiFetch(path) {
+  const r = await fetch(path, { headers: { Authorization: 'Bearer ' + TOKEN } });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+/* ── Buyer Quality ── */
+async function loadBuyerQuality() {
+  try {
+    const d = await apiFetch(`/api/intelligence/buyer-quality?since=${getSince()}&until=${getUntil()}`);
+    DATA.buyer = d;
+    renderResumen(d);
+    renderBuyers(d);
+    renderLeads(d);
+    renderCampaigns(d);
+  } catch(e) {
+    document.getElementById('resumen-cards').innerHTML = `<div class="error-msg">${e.message}</div>`;
+  }
+}
+
+function renderResumen(d) {
+  const s = d.summary || {};
+  const gs = n => (n||0).toLocaleString('es-PY');
+  document.getElementById('resumen-cards').innerHTML = `
+    <div class="card green">
+      <div class="card-val">${s.total_purchased||0}</div>
+      <div class="card-label">Compradores</div>
+      <div class="card-sub">Tasa: ${s.purchase_rate||0}%</div>
+    </div>
+    <div class="card blue">
+      <div class="card-val">${s.total_leads||0}</div>
+      <div class="card-label">Leads totales</div>
+    </div>
+    <div class="card red">
+      <div class="card-val">${s.stale_leads||0}</div>
+      <div class="card-label">Leads vencidos</div>
+      <div class="card-sub">Prom. ${Math.round((s.stale_avg_age_h||0)/24)}d</div>
+    </div>
+    <div class="card yellow">
+      <div class="card-val">${s.cancelled_leads||0}</div>
+      <div class="card-label">Cancelados</div>
+    </div>
+    <div class="card purple">
+      <div class="card-val">Gs. ${gs(s.total_revenue)}</div>
+      <div class="card-label">Revenue real</div>
+    </div>
+    <div class="card cyan">
+      <div class="card-val">${s.avg_buyer_score||0}</div>
+      <div class="card-label">Puntaje promedio</div>
+    </div>
+  `;
+}
+
+function renderBuyers(d) {
+  // Buyers cards
+  const breakdown = (d.breakdown||[]).filter(r=>r.status_snapshot==='purchased');
+  let fastB=0,vipB=0,comboB=0,hvB=0;
+  breakdown.forEach(r=>{ fastB+=r.fast_buyers||0; vipB+=r.vip_buyers||0; comboB+=r.combo_buyers||0; hvB+=r.high_value_buyers||0; });
+  document.getElementById('buyer-cards').innerHTML = `
+    <div class="card green"><div class="card-val">${fastB}</div><div class="card-label">Compradores Rápidos</div><div class="card-sub">&lt;24h</div></div>
+    <div class="card purple"><div class="card-val">${vipB}</div><div class="card-label">VIP</div><div class="card-sub">≥ Gs. 500.000</div></div>
+    <div class="card blue"><div class="card-val">${hvB}</div><div class="card-label">Alto Valor</div><div class="card-sub">≥ Gs. 300.000</div></div>
+    <div class="card yellow"><div class="card-val">${comboB}</div><div class="card-label">Combos</div></div>
+  `;
+  // Table
+  const buyers = (d.top_buyers||[]);
+  if (!buyers.length) {
+    document.getElementById('buyer-tbody').innerHTML = '<tr><td colspan="8" style="color:var(--muted);text-align:center">Sin datos en el período.</td></tr>';
+    return;
+  }
+  document.getElementById('buyer-tbody').innerHTML = buyers.map(b => `
+    <tr>
+      <td>${b.lead_id}</td>
+      <td>${b.product_slug||'—'}</td>
+      <td>${b.city||'—'}</td>
+      <td>
+        <div class="score-bar">
+          <span style="color:${scoreColor(b.quality_score)};font-weight:700">${b.quality_score}</span>
+          <div class="score-track"><div class="score-fill" style="width:${Math.max(0,b.quality_score)}%;background:${scoreColor(b.quality_score)}"></div></div>
+        </div>
+      </td>
+      <td><span class="badge ${buyerTypeBadge(b.buyer_type)}">${buyerTypeLabel(b.buyer_type)}</span></td>
+      <td style="color:var(--green)">Gs. ${(b.total_value||0).toLocaleString('es-PY')}</td>
+      <td>${b.time_to_purchase_h!=null ? Math.round(b.time_to_purchase_h)+'h' : '—'}</td>
+      <td><span class="badge ${attrBadge(b.attribution_confidence)}">${b.attribution_confidence||'—'}</span></td>
+    </tr>
+  `).join('');
+}
+
+function renderLeads(d) {
+  const s = d.summary || {};
+  document.getElementById('leads-cards').innerHTML = `
+    <div class="card red"><div class="card-val">${s.stale_leads||0}</div><div class="card-label">Leads Vencidos</div></div>
+    <div class="card yellow"><div class="card-val">${s.cancelled_leads||0}</div><div class="card-label">Cancelados</div></div>
+    <div class="card blue"><div class="card-val">${(s.total_leads||0)-(s.total_purchased||0)-(s.cancelled_leads||0)}</div><div class="card-label">Pendientes</div></div>
+  `;
+  // Stale leads table
+  const staleRows = (d.top_buyers||[]).filter(b=>b.is_dead_lead===1||b.status_snapshot==='stale');
+  if (!staleRows.length) {
+    // Load dedicated stale data
+    apiFetch(`/api/intelligence/buyer-quality?since=${getSince()}&until=${getUntil()}&buyer_type=vencido`).then(sd=>{
+      renderStaleTable(sd.top_buyers||[]);
+    }).catch(()=>{
+      document.getElementById('stale-tbody').innerHTML = '<tr><td colspan="7" style="color:var(--muted);text-align:center">Sin leads vencidos registrados.</td></tr>';
+    });
+  } else {
+    renderStaleTable(staleRows);
+  }
+}
+
+function renderStaleTable(rows) {
+  if (!rows.length) {
+    document.getElementById('stale-tbody').innerHTML = '<tr><td colspan="7" style="color:var(--muted);text-align:center">Sin leads vencidos en el período.</td></tr>';
+    return;
+  }
+  document.getElementById('stale-tbody').innerHTML = rows.slice(0,50).map(r=>`
+    <tr>
+      <td>${r.lead_id}</td>
+      <td>${r.product_slug||'—'}</td>
+      <td>${r.city||'—'}</td>
+      <td style="color:var(--muted);font-size:11px">${(r.campaign_name||'').slice(0,30)||'—'}</td>
+      <td style="color:var(--red)">${r.lead_age_h!=null?Math.floor(r.lead_age_h/24)+'d':'—'}</td>
+      <td>Gs. ${(r.total_value||0).toLocaleString('es-PY')}</td>
+      <td style="color:var(--red)">${r.quality_score}</td>
+    </tr>
+  `).join('');
+}
+
+function renderCampaigns(d) {
+  // Build from breakdown
+  const breakdown = d.breakdown||[];
+  // Group by campaign (we don't have campaigns from buyer-quality, use recommendations data)
+  apiFetch(`/api/intelligence/recommendations?since=${getSince()}&until=${getUntil()}`).then(rd=>{
+    DATA.recs = rd;
+    renderRecommendations(rd);
+    renderResumenRecs(rd);
+    renderCampaignTable(rd);
+  }).catch(e=>{
+    document.getElementById('campaign-tbody').innerHTML = `<tr><td colspan="8" class="error-msg">${e.message}</td></tr>`;
+  });
+}
+
+function renderCampaignTable(rd) {
+  const tbody = document.getElementById('campaign-tbody');
+  if (!rd?.global) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted)">Sin datos.</td></tr>'; return; }
+  // Extract campaign data from recommendations
+  const campRecs = (rd.recommendations||[]).filter(r=>r.datos?.campaign_id);
+  if (!campRecs.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--muted)">Ejecutar "Procesar Leads" para generar análisis de campañas.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = campRecs.slice(0,20).map(r=>`
+    <tr>
+      <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis">${r.datos.campaign_name||r.datos.campaign_id}</td>
+      <td>${r.datos.total_leads||'—'}</td>
+      <td style="color:var(--green)">${r.datos.purchased||'—'}</td>
+      <td style="color:var(--yellow)">${r.datos.cancelled||'—'}</td>
+      <td style="color:var(--red)">${r.datos.dead_leads||'—'}</td>
+      <td>Gs. ${(r.datos.revenue||0).toLocaleString('es-PY')}</td>
+      <td>${r.datos.purchase_rate||'—'}%</td>
+      <td><span class="badge ${tipoToBadge(r.tipo)}">${r.titulo.split(':')[0]}</span></td>
+    </tr>
+  `).join('');
+}
+
+/* ── Recomendaciones ── */
+async function loadRecommendations() {
+  try {
+    const rd = await apiFetch(`/api/intelligence/recommendations?since=${getSince()}&until=${getUntil()}`);
+    DATA.recs = rd;
+    renderRecommendations(rd);
+    renderResumenRecs(rd);
+  } catch(e) {
+    document.getElementById('recs-container').innerHTML = `<div class="error-msg">${e.message}</div>`;
+  }
+}
+
+function renderResumenRecs(rd) {
+  const top = (rd.recommendations||[]).slice(0,3);
+  if (!top.length) { document.getElementById('resumen-recs').innerHTML=''; return; }
+  document.getElementById('resumen-recs').innerHTML = `
+    <div class="section-title" style="margin-top:8px">Alertas principales</div>
+    ${top.map(r=>`<div class="rec-card ${r.tipo}">
+      <div class="rec-titulo">${r.titulo}</div>
+      <div class="rec-evidencia">${r.evidencia}</div>
+      <div class="rec-accion">${r.accion_sugerida}</div>
+    </div>`).join('')}
+  `;
+}
+
+function renderRecommendations(rd) {
+  const recs = rd.recommendations||[];
+  if (!recs.length) {
+    document.getElementById('recs-container').innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px">Sin recomendaciones en el período. Ejecutá "Procesar Leads" primero.</div>';
+    return;
+  }
+  document.getElementById('recs-container').innerHTML = recs.map(r=>`
+    <div class="rec-card ${r.tipo}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div class="rec-titulo">${r.titulo}</div>
+        <div style="display:flex;gap:6px">
+          <span class="badge ${tipoToBadge(r.tipo)}">${tipoLabel(r.tipo)}</span>
+          ${r.requiere_aprobacion ? '<span class="badge yellow">Requiere aprobación</span>' : '<span class="badge gray">Informativo</span>'}
+        </div>
+      </div>
+      <div class="rec-explicacion">${r.explicacion}</div>
+      <div class="rec-evidencia">${r.evidencia}</div>
+      <div class="rec-accion">→ ${r.accion_sugerida}</div>
+      <div class="rec-riesgo">Riesgo: ${r.riesgo}</div>
+    </div>
+  `).join('');
+}
+
+/* ── Creativos ── */
+async function loadCreatives(level) {
+  document.getElementById('creative-tbody').innerHTML = '<tr><td colspan="10" class="loading"><span class="spinner"></span> Cargando...</td></tr>';
+  document.getElementById('creative-error').innerHTML = '';
+  try {
+    const d = await apiFetch(`/api/intelligence/creative-quality?since=${getSince()}&until=${getUntil()}&level=${level}`);
+    DATA.creativos = d;
+    const rows = d.rows||[];
+    if (!rows.length) {
+      document.getElementById('creative-tbody').innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--muted)">Sin datos en el período. Ejecutar "Procesar Leads" primero.</td></tr>';
+      return;
+    }
+    document.getElementById('creative-tbody').innerHTML = rows.map(r=>`
+      <tr>
+        <td style="max-width:200px">
+          <div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.name||r.key}</div>
+          <div style="font-size:11px;color:var(--muted)">${r.campaign_name||''}</div>
+        </td>
+        <td><span class="badge ${classifBadge(r.classification)}">${r.classification_label}</span></td>
+        <td>${r.d1.total_leads}</td>
+        <td style="color:var(--green);font-weight:600">${r.d1.purchased}</td>
+        <td style="color:var(--red)">${r.d1.dead_leads}</td>
+        <td style="color:var(--green)">Gs. ${(r.d1.revenue_real||0).toLocaleString('es-PY')}</td>
+        <td>${r.metrics.purchase_rate}%</td>
+        <td style="color:${r.metrics.dead_lead_rate>50?'var(--red)':'var(--muted)'}">${r.metrics.dead_lead_rate}%</td>
+        <td>
+          <div class="score-bar">
+            <span style="font-weight:700;color:${scoreColor(r.metrics.buyer_score)}">${r.metrics.buyer_score}</span>
+          </div>
+        </td>
+        <td style="color:${r.metrics.garbage_score>60?'var(--red)':'var(--muted)'}">${r.metrics.garbage_score}</td>
+      </tr>
+    `).join('');
+  } catch(e) {
+    document.getElementById('creative-error').innerHTML = `<div class="error-msg">${e.message}</div>`;
+    document.getElementById('creative-tbody').innerHTML = '';
+  }
+}
+
+/* ── Sync / Landings ── */
+async function loadSync() {
+  const period  = document.getElementById('sync-period').value;
+  const landing = document.getElementById('sync-landing').value;
+  try {
+    const d = await apiFetch(`/api/insync-report?period=${period}&landing=${landing}`);
+    DATA.sync = d;
+    renderSync(d);
+    renderLandings(d);
+  } catch(e) {
+    console.warn('Sync load error', e.message);
+  }
+}
+
+function renderSync(d) {
+  const vol = d.volume||{};
+  const sf  = d.attention?.scroll_funnel||{};
+  const rev = d.revenue||{};
+  const errs = d.errors||{};
+
+  document.getElementById('sync-grid').innerHTML = `
+    <div class="sync-card">
+      <div class="sync-card-title">Volumen</div>
+      <div class="card-val" style="color:var(--blue)">${vol.sessions||0}</div>
+      <div class="card-sub" style="margin-bottom:12px">sesiones · ${vol.events||0} eventos</div>
+      <div style="margin-top:8px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Revenue atribuido</div>
+        <div style="font-size:18px;font-weight:700;color:var(--green)">Gs. ${(rev.total_revenue_gs||0).toLocaleString('es-PY')}</div>
+        <div style="font-size:11px;color:var(--muted)">${rev.purchased_sessions||0} sesiones con compra</div>
+      </div>
+    </div>
+    <div class="sync-card">
+      <div class="sync-card-title">Funnel de Scroll</div>
+      ${['p25','p50','p75','p90'].map((p,i)=>`
+        <div class="funnel-bar">
+          <div class="funnel-label"><span>${[25,50,75,90][i]}%</span><span style="color:var(--blue)">${sf[p]||0}%</span></div>
+          <div class="funnel-track"><div class="funnel-fill" style="width:${sf[p]||0}%"></div></div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="sync-card">
+      <div class="sync-card-title">Conversión</div>
+      <div style="font-size:13px;color:var(--dim);margin-bottom:8px">${d.conversion?.form_submits||0} envíos de formulario</div>
+      ${(d.conversion?.cta_funnel||[]).slice(0,5).map(c=>`
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border)">
+          <span>${c.cta_type||'—'}</span>
+          <span style="color:var(--blue)">${c.clicks} clicks</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="sync-card">
+      <div class="sync-card-title">Errores</div>
+      <div style="display:flex;gap:16px;margin-bottom:12px">
+        <div><div style="font-size:20px;font-weight:700;color:var(--red)">${errs.stock_error||0}</div><div style="font-size:11px;color:var(--muted)">Sin stock</div></div>
+        <div><div style="font-size:20px;font-weight:700;color:var(--yellow)">${errs.modal_error||0}</div><div style="font-size:11px;color:var(--muted)">Error modal</div></div>
+      </div>
+      ${(d.attention?.insights||[]).map(i=>`
+        <div style="font-size:11px;padding:6px 8px;background:var(--bg3);border-radius:6px;margin-bottom:4px">
+          <span style="color:${i.type==='CONCLUSION'?'var(--green)':i.type==='HIPOTESIS'?'var(--yellow)':'var(--muted)'}">[${i.type}]</span> ${i.text}
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  // Sections table
+  const sections = d.attention?.sections||[];
+  document.getElementById('sync-sections-tbody').innerHTML = sections.length
+    ? sections.map(s=>`
+        <tr>
+          <td style="font-weight:500">${s.name}</td>
+          <td>${s.views}</td>
+          <td>${s.avg_time_s}s</td>
+          <td>${s.reach_pct}%</td>
+          <td>${s.attention_score!=null?s.attention_score:'—'}</td>
+        </tr>
+      `).join('')
+    : '<tr><td colspan="5" style="text-align:center;color:var(--muted)">Sin datos de secciones.</td></tr>';
+}
+
+function renderLandings(d) {
+  const vol = d.volume||{};
+  const rev = d.revenue||{};
+  const landings = d.landings||[];
+  const sf  = d.attention?.scroll_funnel||{};
+  document.getElementById('landing-cards').innerHTML = `
+    <div class="card blue">
+      <div class="card-val">${vol.sessions||0}</div>
+      <div class="card-label">Sesiones</div>
+    </div>
+    <div class="card green">
+      <div class="card-val">${rev.attributed_leads||0}</div>
+      <div class="card-label">Leads atribuidos</div>
+    </div>
+    <div class="card purple">
+      <div class="card-val">${rev.purchased_sessions||0}</div>
+      <div class="card-label">Sesiones con compra</div>
+    </div>
+    <div class="card cyan">
+      <div class="card-val">Gs. ${(rev.total_revenue_gs||0).toLocaleString('es-PY')}</div>
+      <div class="card-label">Revenue atribuido</div>
+    </div>
+    <div class="card yellow">
+      <div class="card-val">${sf.p75||0}%</div>
+      <div class="card-label">Scroll hasta 75%</div>
+    </div>
+  `;
+
+  document.getElementById('landing-insights').innerHTML = (d.attention?.insights||[]).map(i=>`
+    <div class="rec-card info" style="margin-bottom:8px">
+      <span style="color:${i.type==='CONCLUSION'?'var(--green)':i.type==='HIPOTESIS'?'var(--yellow)':'var(--muted)'}">
+        [${i.type}]
+      </span> ${i.text}
+    </div>
+  `).join('');
+}
+
+/* ── BQE / Stale buttons ── */
+async function runBQE() {
+  const btn = document.getElementById('bqe-btn');
+  btn.disabled=true; btn.textContent='Procesando...';
+  try {
+    const d = await fetch('/api/intelligence/run-bqe',{
+      method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+TOKEN},
+      body:'{}'
+    }).then(r=>r.json());
+    btn.textContent = d.ok ? `Procesados: ${d.processed}` : 'Error';
+    if (d.ok) { await loadBuyerQuality(); await loadRecommendations(); }
+  } catch(e) { btn.textContent='Error'; }
+  setTimeout(()=>{ btn.disabled=false; btn.textContent='Procesar Leads'; }, 3000);
+}
+
+async function runStale() {
+  const btn = document.getElementById('stale-btn');
+  btn.disabled=true; btn.textContent='Escaneando...';
+  try {
+    const d = await fetch('/api/intelligence/stale-scanner',{
+      method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+TOKEN},
+      body:'{}'
+    }).then(r=>r.json());
+    btn.textContent = d.ok ? `Vencidos: ${d.marked_stale}` : 'Error';
+    if (d.ok) { await loadBuyerQuality(); }
+  } catch(e) { btn.textContent='Error'; }
+  setTimeout(()=>{ btn.disabled=false; btn.textContent='Detectar Vencidos'; }, 3000);
+}
+
+/* ── Helpers de presentación ── */
+function scoreColor(s) {
+  if (s >= 76) return 'var(--green)';
+  if (s >= 61) return 'var(--cyan)';
+  if (s >= 41) return 'var(--blue)';
+  if (s >= 21) return 'var(--yellow)';
+  return 'var(--red)';
+}
+
+function buyerTypeLabel(t) {
+  const m={rapido:'Rápido',combo:'Combo',vip:'VIP',alto_valor:'Alto Valor',normal:'Normal',
+           tardio:'Tardío',vencido:'Vencido',cancelado:'Cancelado',bloqueado:'Bloqueado',
+           fresco:'Fresco',pendiente:'Pendiente'};
+  return m[t]||t||'—';
+}
+
+function buyerTypeBadge(t) {
+  if(['rapido','vip'].includes(t)) return 'green';
+  if(['combo','alto_valor'].includes(t)) return 'blue';
+  if(t==='normal') return 'gray';
+  if(t==='tardio') return 'yellow';
+  if(['vencido','cancelado','bloqueado'].includes(t)) return 'red';
+  return 'gray';
+}
+
+function attrBadge(a) {
+  if(a==='high') return 'green';
+  if(a==='medium') return 'blue';
+  return 'gray';
+}
+
+function classifBadge(c) {
+  if(c==='ganador') return 'green';
+  if(c==='prometedor') return 'blue';
+  if(c==='basura'||c==='para_pausar') return 'red';
+  if(c==='observar') return 'yellow';
+  return 'gray';
+}
+
+function tipoToBadge(t) {
+  if(t==='problema') return 'red';
+  if(t==='atencion') return 'yellow';
+  if(t==='oportunidad') return 'green';
+  if(t==='alerta') return 'purple';
+  return 'blue';
+}
+
+function tipoLabel(t) {
+  return {problema:'Problema',atencion:'Atención',oportunidad:'Oportunidad',info:'Info',alerta:'Alerta'}[t]||t;
+}
+
+// Listeners para actualizar al cambiar fechas
+document.getElementById('date-since').addEventListener('change', loadAll);
+document.getElementById('date-until').addEventListener('change', loadAll);
+document.getElementById('sync-period').addEventListener('change', loadSync);
+document.getElementById('sync-landing').addEventListener('change', loadSync);
+</script>
+</body>
+</html>

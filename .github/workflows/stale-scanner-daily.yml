@@ -1,0 +1,52 @@
+name: Stale Lead Scanner — Daily
+
+# Corre todos los días a las 08:00 UTC = 04:00 AM Paraguay (PYT, UTC-4)
+# En horario de verano Paraguay (PYST, UTC-3): 05:00 AM — sigue siendo madrugada.
+#
+# Llama a POST /api/intelligence/stale-scanner para clasificar leads
+# con más de 5 días pending como "stale/vencido" en lead_quality.
+#
+# NO modifica leads.status.
+# NO envía eventos a Meta Ads / Pixel / CAPI.
+# NO toca Purchase ni QualifiedLead.
+# Solo escribe en lead_quality.
+#
+# Requiere: secret ADMIN_PASSWORD en GitHub → Settings → Secrets → Actions
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  scan-stale-leads:
+    name: Clasificar leads vencidos
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: POST /api/intelligence/stale-scanner
+        run: |
+          HTTP=$(curl -s \
+            -o /tmp/scan_result.json \
+            -w "%{http_code}" \
+            -X POST \
+            -H "Authorization: Bearer ${{ secrets.ADMIN_PASSWORD }}" \
+            -H "Content-Type: application/json" \
+            https://dam-vertex-cloudflare.pages.dev/api/intelligence/stale-scanner)
+
+          echo "HTTP Status: $HTTP"
+          echo "Response:"
+          cat /tmp/scan_result.json
+
+          if [ "$HTTP" != "200" ]; then
+            echo "ERROR: stale-scanner returned $HTTP"
+            exit 1
+          fi
+
+      - name: Verificar resultado
+        run: |
+          MARKED=$(cat /tmp/scan_result.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('marked_stale', 0))")
+          SCANNED=$(cat /tmp/scan_result.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('scanned', 0))")
+          echo "Leads escaneados: $SCANNED"
+          echo "Leads marcados como vencidos: $MARKED"

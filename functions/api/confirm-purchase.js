@@ -2,6 +2,8 @@
    /api/confirm-purchase — Confirmar compra real (solo admin)
    ========================================================= */
 
+import { autoScorePurchase } from './intelligence/_bqe-scorer.js';
+
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -299,13 +301,82 @@ export async function onRequestPost({ request, env, waitUntil }) {
       );
     }
 
+    /* FastBuyer / ComboBuyer — eventos CAPI positivos adicionales, no modifican Purchase */
+    if (pixelId && accessToken && lead.created_at) {
+      try {
+        const purchasedAtMs = Date.now();
+        const createdAtMs   = new Date(lead.created_at).getTime();
+        const timeToH       = (purchasedAtMs - createdAtMs) / 3600000;
+        const extraEvents   = [];
+        const tsExtra       = Math.floor(purchasedAtMs / 1000);
+
+        if (timeToH < 24) {
+          extraEvents.push({
+            event_name:    'FastBuyer',
+            event_time:    tsExtra,
+            event_id:      `fb_${lead.id}_${tsExtra}`,
+            action_source: 'website',
+            event_source_url: eventSourceUrl,
+            user_data,
+            custom_data: {
+              content_name: lead.product_name,
+              content_ids:  isCombo ? ['reloj', 'cadena'] : [productSlug],
+              content_type: 'product',
+              value:        saleValue,
+              currency:     lead.currency || 'PYG',
+              time_to_purchase_h: Math.round(timeToH * 10) / 10,
+            },
+          });
+        }
+
+        if (isCombo) {
+          extraEvents.push({
+            event_name:    'ComboBuyer',
+            event_time:    tsExtra,
+            event_id:      `cb_${lead.id}_${tsExtra}`,
+            action_source: 'website',
+            event_source_url: eventSourceUrl,
+            user_data,
+            custom_data: {
+              content_name: lead.product_name,
+              content_ids:  ['reloj', 'cadena'],
+              content_type: 'product',
+              value:        saleValue,
+              currency:     lead.currency || 'PYG',
+            },
+          });
+        }
+
+        if (extraEvents.length > 0) {
+          await fetch(
+            `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`,
+            {
+              method:  'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body:    JSON.stringify({
+                data: extraEvents,
+                ...(testCode && { test_event_code: testCode }),
+              }),
+            },
+          ).then(r => r.json())
+            .then(b => console.log('EXTRA_EVENTS_OK lead_id=' + id, extraEvents.map(e=>e.event_name).join(','), b.events_received ?? '?'))
+            .catch(e => console.warn('EXTRA_EVENTS_WARN lead_id=' + id, e.message));
+        }
+      } catch (extraErr) {
+        console.warn('EXTRA_EVENTS_SKIP lead_id=' + id, extraErr.message);
+      }
+    }
+
     const damNotifyPromise = notifyDamFinanzasSale(
       { lead, productSlug, saleQty, isCombo, requestedVariants, productRow, comboRelojRow, comboCadenaRow },
       env
     ).catch(e => console.warn('DAM_FINANZAS_NOTIFY_FAILED', String(lead.id), e?.message));
 
     if (typeof waitUntil === 'function') {
-      waitUntil(damNotifyPromise);
+      waitUntil(Promise.all([
+        damNotifyPromise,
+        autoScorePurchase(id, env.DB),
+      ]));
     }
     return json({ ok: true, name: lead.name, event_id });
 

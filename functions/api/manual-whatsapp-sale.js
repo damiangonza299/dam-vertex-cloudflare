@@ -1,3 +1,5 @@
+import { autoScorePurchase } from './intelligence/_bqe-scorer.js';
+
 /* =========================================================
    /api/manual-whatsapp-sale — Registrar venta manual (admin)
    POST → crear venta + enviar Purchase CAPI opcionalmente
@@ -258,7 +260,12 @@ export async function onRequestPost({ request, env, waitUntil }) {
       value: saleValue, variant: variant || null, saleQty,
       isCombo: isManualCombo,
     }, env).catch(e => console.warn('DAM_FINANZAS_MANUAL_NOTIFY_FAILED', saleId, e?.message));
-    if (typeof waitUntil === 'function') waitUntil(dfNotifyPromise);
+    if (typeof waitUntil === 'function') {
+      waitUntil(Promise.all([
+        dfNotifyPromise,
+        autoScorePurchase(saleId, env.DB),
+      ]));
+    }
 
     return json({
       ok:             true,
