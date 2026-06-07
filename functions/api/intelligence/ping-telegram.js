@@ -34,6 +34,8 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: 'TELEGRAM_INTELLIGENCE_CHAT_ID no configurado' }, 500);
   }
 
+  const chatId = env.TELEGRAM_INTELLIGENCE_CHAT_ID.replace(/^﻿/, '').trim();
+
   const text = `🚀 DAM INTELLIGENCE ONLINE\n\nPrueba de conectividad exitosa.`;
 
   try {
@@ -51,7 +53,7 @@ export async function onRequestPost({ request, env }) {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({
-          chat_id:                  env.TELEGRAM_INTELLIGENCE_CHAT_ID,
+          chat_id:                  chatId,
           text,
           disable_web_page_preview: true,
         }),
@@ -66,7 +68,7 @@ export async function onRequestPost({ request, env }) {
         error: `Telegram respondió HTTP ${res.status}`,
         telegram_error: tgResult,
         bot_username:   botUsername,
-        chat_id:        env.TELEGRAM_INTELLIGENCE_CHAT_ID,
+        chat_id:        chatId,
         hint:           botUsername
           ? `Agrega @${botUsername} al grupo DAM INTELLIGENCE con el chat_id indicado`
           : 'Verifica que TELEGRAM_BOT_TOKEN sea válido',
@@ -76,7 +78,7 @@ export async function onRequestPost({ request, env }) {
     return json({
       ok:           true,
       message:      'Mensaje de prueba enviado al grupo DAM INTELLIGENCE',
-      chat_id:      env.TELEGRAM_INTELLIGENCE_CHAT_ID,
+      chat_id:      chatId,
       message_id:   tgResult.result?.message_id,
       bot_username: botUsername,
     });

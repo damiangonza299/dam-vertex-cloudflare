@@ -46,6 +46,8 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: 'TELEGRAM_INTELLIGENCE_CHAT_ID no configurado' }, 500);
   }
 
+  const chatId = env.TELEGRAM_INTELLIGENCE_CHAT_ID.replace(/^﻿/, '').trim();
+
   const url   = new URL(request.url);
   const force = url.searchParams.get('force') === 'true';
   const source = force ? 'manual-force' : (url.searchParams.get('source') || 'cron');
@@ -96,7 +98,7 @@ export async function onRequestPost({ request, env }) {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({
-              chat_id:              env.TELEGRAM_INTELLIGENCE_CHAT_ID,
+              chat_id:              chatId,
               text,
               disable_web_page_preview: true,
             }),
