@@ -4,6 +4,62 @@ Leer antes de modificar cualquier archivo de código en este repositorio.
 
 ---
 
+## REGLA CRÍTICA DE DEPLOY — DAM VERTEX
+
+> **Incidente 2026-06:** `wrangler pages deploy .` (raíz) subió estáticos bajo `/public/reloj/`, `/public/cadena/` etc. Landings en 404 en producción. `node_modules` incluido. **Este error no puede repetirse.**
+
+### Único comando correcto de producción
+
+```powershell
+& "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true
+```
+
+### PROHIBIDO — si se intenta usar, bloquear y corregir
+
+- `wrangler pages deploy .` — deploya desde raíz, rompe todas las rutas estáticas
+- `wrangler pages deploy` — sin directorio explícito usa raíz
+- `npx wrangler pages deploy .` — ídem
+- Deploy sin `--branch=dam-vertex-cloudflare` → va a preview, no producción
+- Deploy sin verificar `pages_build_output_dir = "public"` en `wrangler.toml`
+
+### Checklist pre-deploy (10 puntos obligatorios)
+
+1. Leer `wrangler.toml` — confirmar `pages_build_output_dir = "public"`
+2. Confirmar directorio a deployar: `public/` (no `.` ni raíz del repo)
+3. Confirmar `--branch=dam-vertex-cloudflare`
+4. Confirmar branch de producción correcto (no main → preview)
+5. Confirmar que `.dev.vars`, `node_modules/`, archivos internos no se suben
+6. Confirmar que el Functions bundle se genera correctamente
+7. Confirmar que no hay cambios críticos sin commit
+8. Confirmar que rutas críticas responderán 200 (no hay renames/moves de archivos)
+9. Confirmar que no se está deployando a preview por error
+10. Post-deploy: probar las 8 rutas críticas antes de declarar éxito
+
+### Rutas críticas — verificar 200 post-deploy
+
+```
+https://damvertex.com                          → 200
+https://damvertex.com/reloj/                   → 200
+https://damvertex.com/cadena/                  → 200
+https://damvertex.com/admin/                   → 200
+https://damvertex.com/intelligence/            → 200
+/api/admin-leads                               → 200
+/api/intelligence/alerts                       → 200
+/api/intelligence/ping-telegram                → 200
+```
+
+**Si alguna falla → NO declarar deploy exitoso. Detenerse y corregir.**
+
+### Script de deploy seguro
+
+```powershell
+.\scripts\deploy-production.ps1
+```
+
+Verifica `wrangler.toml`, ejecuta el deploy correcto, prueba rutas automáticamente.
+
+---
+
 ## Antes de tocar código
 
 1. **Leer los archivos reales** — no asumir estructura, nombres de funciones o rutas

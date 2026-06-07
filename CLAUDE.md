@@ -91,13 +91,46 @@ Nunca `new Date().toISOString()`. Siempre:
 new Intl.DateTimeFormat("en-CA", { timeZone: "America/Asuncion" }).format(new Date())
 ```
 
-### Deploy DAM Vertex (Cloudflare Pages)
+## REGLA CRÍTICA DE DEPLOY — DAM VERTEX
 
-```
+> **Incidente 2026-06:** `wrangler pages deploy .` (raíz) subió estáticos bajo `/public/reloj/`, `/public/cadena/` etc. Landings en 404 en producción. `node_modules` incluido en el upload.
+
+### Único comando correcto — producción
+
+```powershell
 & "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true
 ```
 
-Sin `--branch=dam-vertex-cloudflare` → va a preview, no a producción.
+### PROHIBIDO usar
+
+- `wrangler pages deploy .` — deploya desde raíz, rompe todas las rutas
+- `wrangler pages deploy` — sin directorio explícito usa raíz
+- `npx wrangler pages deploy .` — ídem
+- Deploy sin `--branch=dam-vertex-cloudflare` → va a preview, no producción
+- Deploy sin verificar `pages_build_output_dir = "public"` en wrangler.toml
+
+### Checklist pre-deploy
+
+1. Leer `wrangler.toml` — confirmar `pages_build_output_dir = "public"`
+2. Confirmar directorio a deployar: `public/` (no `.` ni raíz)
+3. Confirmar `--branch=dam-vertex-cloudflare`
+4. Confirmar que `.dev.vars`, `node_modules/`, archivos internos no se suben
+5. Confirmar que el Functions bundle se genera correctamente
+
+### Rutas críticas — verificar 200 post-deploy
+
+`/` · `/reloj/` · `/cadena/` · `/admin/` · `/intelligence/`
+`/api/admin-leads` · `/api/intelligence/alerts` · `/api/intelligence/ping-telegram`
+
+**Si alguna falla → NO declarar deploy exitoso. Detenerse y corregir.**
+
+### Script de deploy seguro
+
+```powershell
+.\scripts\deploy-production.ps1
+```
+
+Verifica wrangler.toml, ejecuta deploy correcto, prueba rutas automáticamente.
 
 ### Account ID Meta
 

@@ -326,13 +326,33 @@ Campos OBLIGATORIOS para que la UI lo reconozca:
 - `adsTotal: NUMBER` — en PYG (cuenta ya en guaraníes, no multiplicar)
 - `_metaCurrency: "PYG"`
 
-### Deploy correcto DAM Vertex (Cloudflare Pages)
+### REGLA CRÍTICA DE DEPLOY — DAM VERTEX
 
-```
+> **Incidente 2026-06:** `wrangler pages deploy .` (raíz) subió estáticos bajo `/public/reloj/`, `/public/cadena/` etc. Landings en 404 en producción.
+
+**Único comando correcto — producción:**
+
+```powershell
 & "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true
 ```
 
-Sin `--branch=dam-vertex-cloudflare` → deploy va a preview (main), no a producción.
+**PROHIBIDO:**
+- `wrangler pages deploy .` — rompe todas las rutas
+- Deploy sin `--branch=dam-vertex-cloudflare` → va a preview, no producción
+- Deploy sin verificar `pages_build_output_dir = "public"` en wrangler.toml
+
+**Checklist pre-deploy:**
+1. Leer `wrangler.toml` — confirmar `pages_build_output_dir = "public"`
+2. Confirmar directorio a deployar: `public/` (no `.` ni raíz del repo)
+3. Confirmar `--branch=dam-vertex-cloudflare`
+4. Confirmar que `.dev.vars`, `node_modules/`, archivos internos no se suben
+
+**Rutas críticas — verificar 200 post-deploy:**
+`/` · `/reloj/` · `/cadena/` · `/admin/` · `/intelligence/` · `/api/admin-leads` · `/api/intelligence/alerts`
+
+**Si alguna falla → NO declarar deploy exitoso. Detenerse y corregir.**
+
+**Script de deploy seguro:** `.\scripts\deploy-production.ps1`
 
 ### Deploy correcto DAM Finanzas (Firebase Functions)
 
