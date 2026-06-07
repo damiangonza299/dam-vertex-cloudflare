@@ -37,6 +37,14 @@ export async function onRequestPost({ request, env }) {
   const text = `🚀 DAM INTELLIGENCE ONLINE\n\nPrueba de conectividad exitosa.`;
 
   try {
+    // Obtener username del bot para diagnóstico
+    let botUsername = null;
+    try {
+      const meRes = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/getMe`);
+      const meData = await meRes.json();
+      botUsername = meData.result?.username || null;
+    } catch (_) {}
+
     const res = await fetch(
       `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`,
       {
@@ -57,14 +65,20 @@ export async function onRequestPost({ request, env }) {
         ok:    false,
         error: `Telegram respondió HTTP ${res.status}`,
         telegram_error: tgResult,
+        bot_username:   botUsername,
+        chat_id:        env.TELEGRAM_INTELLIGENCE_CHAT_ID,
+        hint:           botUsername
+          ? `Agrega @${botUsername} al grupo DAM INTELLIGENCE con el chat_id indicado`
+          : 'Verifica que TELEGRAM_BOT_TOKEN sea válido',
       }, 502);
     }
 
     return json({
-      ok:         true,
-      message:    'Mensaje de prueba enviado al grupo DAM INTELLIGENCE',
-      chat_id:    env.TELEGRAM_INTELLIGENCE_CHAT_ID,
-      message_id: tgResult.result?.message_id,
+      ok:           true,
+      message:      'Mensaje de prueba enviado al grupo DAM INTELLIGENCE',
+      chat_id:      env.TELEGRAM_INTELLIGENCE_CHAT_ID,
+      message_id:   tgResult.result?.message_id,
+      bot_username: botUsername,
     });
 
   } catch (err) {
