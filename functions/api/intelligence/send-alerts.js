@@ -46,7 +46,37 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: 'TELEGRAM_INTELLIGENCE_CHAT_ID no configurado' }, 500);
   }
 
+  const url   = new URL(request.url);
+  const force = url.searchParams.get('force') === 'true';
+  const source = force ? 'manual-force' : (url.searchParams.get('source') || 'cron');
+
   try {
+    // Tabla de log para deduplicación (crea si no existe)
+    await env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS intelligence_run_log (
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
+        run_at      TEXT    NOT NULL,
+        alerts_sent INTEGER DEFAULT 0,
+        source      TEXT    DEFAULT 'cron'
+      )
+    `).run();
+
+    // Protección contra duplicados: omitir si ya se ejecutó en las últimas 6 h
+    if (!force) {
+      const since6h = new Date(Date.now() - 6 * 3600000).toISOString();
+      const last = await env.DB.prepare(
+        `SELECT run_at FROM intelligence_run_log WHERE run_at >= ? ORDER BY run_at DESC LIMIT 1`
+      ).bind(since6h).first();
+      if (last) {
+        return json({
+          ok:       true,
+          skipped:  true,
+          message:  `Ya se ejecutó a las ${last.run_at}. Usar ?force=true para forzar.`,
+          last_run: last.run_at,
+        });
+      }
+    }
+
     const { alerts, generated_at } = await generateAlerts(env.DB);
 
     if (alerts.length === 0) {
@@ -87,12 +117,18 @@ export async function onRequestPost({ request, env }) {
       }
     }
 
+    // Registrar ejecución para deduplicación
+    await env.DB.prepare(
+      `INSERT INTO intelligence_run_log (run_at, alerts_sent, source) VALUES (?, ?, ?)`
+    ).bind(new Date().toISOString(), sent, source).run().catch(() => {});
+
     return json({
       ok:           true,
       sent,
       failed,
       total_alerts: alerts.length,
       generated_at,
+      source,
       ...(errors.length > 0 && { errors }),
     });
 
