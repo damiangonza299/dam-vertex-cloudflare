@@ -22,7 +22,7 @@ export async function onRequestOptions() {
 
 export async function onRequestGet({ request, env }) {
   const token = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim();
-  if (!env.ADMIN_PASSWORD || token !== env.ADMIN_PASSWORD) {
+  if (!env.ADMIN_PASSWORD || token !== env.ADMIN_PASSWORD.trim()) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

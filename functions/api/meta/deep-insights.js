@@ -43,7 +43,7 @@ export async function onRequestOptions() {
 export async function onRequestGet({ request, env }) {
   const auth = request.headers.get('Authorization') || '';
   const token = auth.replace('Bearer ', '').trim();
-  if (!token || token !== env.ADMIN_PASSWORD) {
+  if (!token || token !== env.ADMIN_PASSWORD.trim()) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

@@ -28,7 +28,7 @@ export async function onRequestGet({ request, env }) {
   /* Auth interna — reutiliza ADMIN_PASSWORD existente */
   const auth = request.headers.get('Authorization') || '';
   const token = auth.replace('Bearer ', '').trim();
-  if (!token || token !== env.ADMIN_PASSWORD) {
+  if (!token || token !== env.ADMIN_PASSWORD.trim()) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 
