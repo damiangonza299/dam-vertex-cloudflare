@@ -97,7 +97,7 @@ export async function onRequestDelete({ request, env }) {
 function isAuthorized(request, env) {
   const auth  = request.headers.get('Authorization') || '';
   const token = auth.replace('Bearer ', '').trim();
-  return token && token === env.ADMIN_PASSWORD;
+  return token && token === env.ADMIN_PASSWORD.trim();
 }
 
 function json(data, status = 200) {
