@@ -23,6 +23,10 @@ jobs:
     name: Clasificar leads vencidos
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      # VS Code YAML linter no puede leer GitHub Secrets y marca falso positivo.
+      # Mover a env del job resuelve la advertencia y mantiene el comportamiento identico.
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
 
     steps:
       - name: POST /api/intelligence/stale-scanner
@@ -31,7 +35,7 @@ jobs:
             -o /tmp/scan_result.json \
             -w "%{http_code}" \
             -X POST \
-            -H "Authorization: Bearer ${{ secrets.ADMIN_PASSWORD }}" \
+            -H "Authorization: Bearer $ADMIN_PASSWORD" \
             -H "Content-Type: application/json" \
             https://dam-vertex-cloudflare.pages.dev/api/intelligence/stale-scanner)
 
