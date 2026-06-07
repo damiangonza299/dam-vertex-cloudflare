@@ -36,7 +36,13 @@ export async function onRequestPost({ request, env }) {
     if (client?.fbp) user_data.fbp = client.fbp;
     if (client?.fbc) user_data.fbc = client.fbc;
     if (lead?.email) user_data.em  = [await sha256(lead.email)];
-    if (lead?.phone) user_data.ph  = [await sha256(lead.phone)];
+
+    const phME = normPhone(lead?.phone);
+    if (phME) {
+      const phHash = await sha256(phME);
+      user_data.ph          = [phHash];
+      user_data.external_id = [phHash];
+    }
 
     /* Build custom_data */
     const custom_data = {};
@@ -82,6 +88,14 @@ export async function onRequestPost({ request, env }) {
 }
 
 /* ── Helpers ── */
+function normPhone(raw) {
+  const d = (raw || '').replace(/\D/g, '');
+  if (!d) return '';
+  if (d.startsWith('595')) return d.slice(0, 12);
+  if (d.startsWith('0'))   return '595' + d.slice(1);
+  return '595' + d;
+}
+
 async function sha256(str) {
   if (!str) return null;
   const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.trim().toLowerCase()));

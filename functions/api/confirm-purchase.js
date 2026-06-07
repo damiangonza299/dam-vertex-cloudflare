@@ -124,7 +124,22 @@ export async function onRequestPost({ request, env, waitUntil }) {
     if (lead.fbp)   user_data.fbp = lead.fbp;
     if (lead.fbc)   user_data.fbc = lead.fbc;
     if (lead.email) user_data.em  = [await sha256(lead.email)];
-    if (lead.phone) user_data.ph  = [await sha256(lead.phone)];
+
+    const phCP = normalizePhone(lead.phone);
+    if (phCP) {
+      const phHash = await sha256(phCP);
+      user_data.ph          = [phHash];
+      user_data.external_id = [phHash];
+    }
+
+    const namePartsCP = (lead.name || '').trim().split(/\s+/);
+    if (namePartsCP[0])           user_data.fn = [await sha256(normalizeForMeta(namePartsCP[0]))];
+    if (namePartsCP.length > 1)   user_data.ln = [await sha256(normalizeForMeta(namePartsCP.slice(1).join(' ')))];
+
+    const cityCP = normalizeForMeta(lead.location_city || lead.city || '');
+    if (cityCP) user_data.ct = [await sha256(cityCP)];
+
+    user_data.country = [await sha256('py')];
 
     /* Evento Purchase */
     const event_id = `pur_${lead.id}_${Math.floor(Date.now() / 1000)}_${Math.random().toString(36).slice(2, 6)}`;
@@ -390,6 +405,22 @@ async function sha256(str) {
   if (!str) return null;
   const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.trim().toLowerCase()));
   return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function normalizePhone(raw) {
+  const d = (raw || '').replace(/\D/g, '');
+  if (!d) return '';
+  if (d.startsWith('595')) return d.slice(0, 12);
+  if (d.startsWith('0'))   return '595' + d.slice(1);
+  return '595' + d;
+}
+
+function normalizeForMeta(s) {
+  return (s || '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim();
 }
 
 function slugify(s) {

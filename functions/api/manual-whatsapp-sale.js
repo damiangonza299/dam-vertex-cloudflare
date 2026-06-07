@@ -293,7 +293,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
    Se hashean ph, fn, ln con SHA256 normalizados.
    ========================================================= */
 async function sendPurchaseCapi({
-  saleId, name, phone, product_name, product_slug,
+  saleId, name, phone, city, product_name, product_slug,
   value, quantity, source_type, env,
 }) {
   const pixelId     = env.META_PIXEL_ID;
@@ -313,8 +313,11 @@ async function sendPurchaseCapi({
   /* Teléfono Paraguay: 595XXXXXXXXX → SHA256 */
   if (phone) {
     const phoneNorm = normalizePhone(phone);
-    const phoneHash = phoneNorm || phone.replace(/\D/g, '');
-    if (phoneHash) user_data.ph = [await sha256(phoneHash)];
+    if (phoneNorm) {
+      const phHash = await sha256(phoneNorm);
+      user_data.ph          = [phHash];
+      user_data.external_id = [phHash];
+    }
   }
 
   /* Nombre → fn (first name) + ln (last name) */
@@ -325,6 +328,13 @@ async function sendPurchaseCapi({
   if (nameParts.length > 1) {
     user_data.ln = [await sha256(normalizeForMeta(nameParts.slice(1).join(' ')))];
   }
+
+  /* Ciudad */
+  const cityMW = (city || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  if (cityMW) user_data.ct = [await sha256(cityMW)];
+
+  /* País */
+  user_data.country = [await sha256('py')];
 
   /* action_source: business_messaging para WhatsApp, other para el resto */
   const action_source = source_type === 'manual_whatsapp' ? 'business_messaging' : 'other';

@@ -263,10 +263,24 @@ export async function onRequestPost({ request, env, waitUntil }) {
         if (ua) ud.client_user_agent = ua;
         if (fbp) ud.fbp = fbp;
         if (fbc) ud.fbc = fbc;
-        if (phone) {
-          const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(phone.trim().replace(/\D/g, '')));
-          ud.ph = [[...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('')];
+
+        const phQL = normalizePhoneQL(phone?.trim());
+        if (phQL) {
+          const phHash = await sha256QL(phQL);
+          ud.ph          = [phHash];
+          ud.external_id = [phHash];
         }
+
+        const namePartsQL = (name || '').trim().split(/\s+/);
+        if (namePartsQL[0])           ud.fn = [await sha256QL(normForMetaQL(namePartsQL[0]))];
+        if (namePartsQL.length > 1)   ud.ln = [await sha256QL(normForMetaQL(namePartsQL.slice(1).join(' ')))];
+
+        if (email?.trim()) ud.em = [await sha256QL(email.trim().toLowerCase())];
+
+        const cityQL = normForMetaQL(effectiveCity || '');
+        if (cityQL) ud.ct = [await sha256QL(cityQL)];
+
+        ud.country = [await sha256QL('py')];
         await fetch(
           `https://graph.facebook.com/v20.0/${env.META_PIXEL_ID}/events?access_token=${env.META_ACCESS_TOKEN}`,
           {
@@ -373,6 +387,29 @@ function getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source,
   if (fbclid || (fbc && fbc.startsWith('fb.1.'))) return 'fbc_only';
   if (utm_source || utm_campaign)       return 'utm_only';
   return 'none';
+}
+
+/* ── CAPI helpers (QualifiedLead) ── */
+function normalizePhoneQL(raw) {
+  const d = (raw || '').replace(/\D/g, '');
+  if (!d) return '';
+  if (d.startsWith('595')) return d.slice(0, 12);
+  if (d.startsWith('0'))   return '595' + d.slice(1);
+  return '595' + d;
+}
+
+function normForMetaQL(s) {
+  return (s || '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+async function sha256QL(str) {
+  if (!str) return null;
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 function json(data, status = 200) {
