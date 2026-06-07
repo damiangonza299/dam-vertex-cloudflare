@@ -223,12 +223,22 @@ NUNCA tomar decisión de presupuesto basada solo en Ads Manager.
 **Eventos CAPI nuevos agregados:** `FastBuyer` (compra <24h), `ComboBuyer` (compra combo)
 **Eventos negativos:** NO enviados a Meta todavía. Uso interno en lead_quality.
 
-**Endpoints nuevos:**
-- `POST /api/intelligence/run-bqe` — Motor de scoring
+**Endpoints:**
+- `POST /api/intelligence/run-bqe` — Motor de scoring (BQE v2)
 - `POST /api/intelligence/stale-scanner` — Detector de leads vencidos
 - `GET  /api/intelligence/buyer-quality` — Consulta de compradores
 - `GET  /api/intelligence/creative-quality` — Calidad de creativos
 - `GET  /api/intelligence/recommendations` — Recomendaciones sin ejecutar
+- `GET  /api/intelligence/alerts` — Alertas en tiempo real (dashboard)
+- `POST /api/intelligence/send-alerts` — Genera alertas y las envía a Telegram Intelligence
+
+**Módulo compartido:** `functions/api/intelligence/_alert-engine.js` — importado por alerts.js y send-alerts.js. Contiene toda la lógica de generación de alertas. Agregar nuevos tipos de alerta aquí.
+
+**Alertas Telegram:**
+- Bot: mismo `TELEGRAM_BOT_TOKEN` que el grupo operativo de pedidos
+- Grupo: `TELEGRAM_INTELLIGENCE_CHAT_ID` — secret de Cloudflare Pages (grupo exclusivo Dam Intelligence)
+- Cron: `send-alerts-daily.yml` — diario 11:00 UTC (07:00 PYT)
+- Tipos: `creative_dead` 🚨 · `garbage_risk` 🚨 · `conversion_drop` 🚨 · `creative_scalable` ℹ️ · `winning_city` ℹ️ · `buyer_type_increase` ℹ️
 
 **Ventana de maduración:** 5 días pending sin compra = lead vencido.
 **Score:** Compra confirmada +50 base. Rápido +15. VIP +15. Interior vencido -40 base.
