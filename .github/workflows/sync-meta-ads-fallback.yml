@@ -1,0 +1,80 @@
+name: Sync Meta Ads — Fallback diario
+
+# Corre a las 05:00 UTC = 01:00 AM Paraguay (PYT, UTC-4 en invierno)
+# = 02:00 AM Paraguay (PYST, UTC-3 en verano)
+#
+# Firebase onSchedule sincroniza a las 23:59 PYT.
+# Este fallback dispara ~1 hora después con la fecha de AYER en PYT,
+# por si Cloud Scheduler perdió el run (p.ej. deploy después de 23:59).
+#
+# La llamada es idempotente: si Firebase ya corrió, sobreescribe con los mismos datos.
+#
+# Requiere: secret DAM_VERTEX_WEBHOOK_SECRET en GitHub → Settings → Secrets → Actions
+# Valor: mismo que process.env.DAM_VERTEX_WEBHOOK_SECRET en Firebase Functions
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    inputs:
+      date_override:
+        description: 'Fecha a sincronizar (YYYY-MM-DD). Vacío = ayer en PYT.'
+        required: false
+        default: ''
+
+jobs:
+  sync-meta-ads:
+    name: Sincronizar publicidad del día anterior
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      DAM_VERTEX_WEBHOOK_SECRET: ${{ secrets.DAM_VERTEX_WEBHOOK_SECRET }}
+
+    steps:
+      - name: Calcular fecha objetivo en PYT
+        id: fecha
+        run: |
+          if [ -n "${{ github.event.inputs.date_override }}" ]; then
+            TARGET_DATE="${{ github.event.inputs.date_override }}"
+          else
+            # 05:00 UTC = 01:00 PYT (UTC-4) → ayer en PYT es el día que queremos
+            TARGET_DATE=$(TZ=America/Asuncion date -d "yesterday" +%Y-%m-%d)
+          fi
+          echo "target_date=$TARGET_DATE" >> $GITHUB_OUTPUT
+          echo "Fecha objetivo: $TARGET_DATE"
+
+      - name: POST syncMetaDailyAdsNow
+        run: |
+          TARGET_DATE="${{ steps.fecha.outputs.target_date }}"
+
+          HTTP=$(curl -s \
+            -o /tmp/sync_result.json \
+            -w "%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -H "x-dam-vertex-secret: $DAM_VERTEX_WEBHOOK_SECRET" \
+            -d "{\"date\":\"$TARGET_DATE\"}" \
+            https://us-central1-dam-finanzas-cf863.cloudfunctions.net/syncMetaDailyAdsNow)
+
+          echo "HTTP Status: $HTTP"
+          echo "Respuesta:"
+          cat /tmp/sync_result.json
+
+          if [ "$HTTP" != "200" ]; then
+            echo "ERROR: syncMetaDailyAdsNow returned $HTTP"
+            exit 1
+          fi
+
+      - name: Verificar resultado
+        run: |
+          python3 -c "
+          import sys, json
+          with open('/tmp/sync_result.json') as f:
+              d = json.load(f)
+          date = d.get('date', 'N/A')
+          status = d.get('status', 'N/A')
+          pyg = d.get('pyg', 0)
+          print(f'Fecha sincronizada: {date}')
+          print(f'Estado: {status}')
+          print(f'Total PYG: {pyg:,.0f}')
+          "
