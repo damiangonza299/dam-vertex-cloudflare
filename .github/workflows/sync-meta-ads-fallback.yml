@@ -1,20 +1,21 @@
 name: Sync Meta Ads — Fallback diario
 
-# Corre a las 05:00 UTC = 01:00 AM Paraguay (PYT, UTC-4 en invierno)
-# = 02:00 AM Paraguay (PYST, UTC-3 en verano)
+# Corre a las 04:15 UTC = 00:15 AM Paraguay (PYT, UTC-4 en invierno)
+# = 01:15 AM Paraguay (PYST, UTC-3 en verano)
 #
-# Firebase onSchedule sincroniza a las 23:59 PYT.
-# Este fallback dispara ~1 hora después con la fecha de AYER en PYT,
-# por si Cloud Scheduler perdió el run (p.ej. deploy después de 23:59).
+# Firebase onSchedule sincroniza a las 23:59 PYT (máxima precisión posible — cron es por minuto).
+# Este fallback dispara 16 min después con la fecha de AYER en PYT para reconciliar
+# el gasto final real de Meta Ads, que consolida ~5-10 min post-medianoche.
 #
-# La llamada es idempotente: si Firebase ya corrió, sobreescribe con los mismos datos.
+# La llamada es idempotente: reportRef.set(merge:true) sobreescribe solo adsTotal.
+# No toca manualSalesTotal, pedidos, Purchase, CAPI ni stock.
 #
 # Requiere: secret DAM_VERTEX_WEBHOOK_SECRET en GitHub → Settings → Secrets → Actions
 # Valor: mismo que process.env.DAM_VERTEX_WEBHOOK_SECRET en Firebase Functions
 
 on:
   schedule:
-    - cron: '0 5 * * *'
+    - cron: '15 4 * * *'
   workflow_dispatch:
     inputs:
       date_override:
