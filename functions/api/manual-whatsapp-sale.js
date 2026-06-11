@@ -379,6 +379,86 @@ async function sendPurchaseCapi({
     }
 
     console.log('MANUAL_SALE_CAPI_OK', event_id, resBody.events_received ?? '?');
+
+    /* ── Eventos derivados: HighValuePurchase, VIPPurchase, ComboBuyer ──
+       Misma lógica que confirm-purchase.js. Solo si Purchase base fue exitoso.
+       FastBuyer NO — no hay forma de medir tiempo real desde primer contacto WA. */
+    const isComboSlug    = product_slug === 'combo-reloj-cadena';
+    const needsDerived   = value >= 199000 || isComboSlug;
+    if (needsDerived) {
+      const ts2          = Math.floor(Date.now() / 1000);
+      const derivedEvents = [];
+
+      if (value >= 199000) {
+        derivedEvents.push({
+          event_name:    'HighValuePurchase',
+          event_time:    ts2,
+          event_id:      `hvp_mwa_${saleId}_${ts2}`,
+          action_source,
+          user_data,
+          custom_data: {
+            content_name: product_name,
+            content_ids:  isComboSlug ? ['reloj', 'cadena'] : [product_slug],
+            content_type: 'product',
+            value,
+            currency:     'PYG',
+            num_items:    quantity,
+          },
+        });
+
+        if (value >= 300000) {
+          derivedEvents.push({
+            event_name:    'VIPPurchase',
+            event_time:    ts2,
+            event_id:      `vip_mwa_${saleId}_${ts2}`,
+            action_source,
+            user_data,
+            custom_data: {
+              content_name: product_name,
+              content_ids:  isComboSlug ? ['reloj', 'cadena'] : [product_slug],
+              content_type: 'product',
+              value,
+              currency:     'PYG',
+              num_items:    quantity,
+            },
+          });
+        }
+      }
+
+      if (isComboSlug) {
+        derivedEvents.push({
+          event_name:    'ComboBuyer',
+          event_time:    ts2,
+          event_id:      `cb_mwa_${saleId}_${ts2}`,
+          action_source,
+          user_data,
+          custom_data: {
+            content_name: product_name,
+            content_ids:  ['reloj', 'cadena'],
+            content_type: 'product',
+            value,
+            currency:     'PYG',
+          },
+        });
+      }
+
+      if (derivedEvents.length > 0) {
+        await fetch(
+          `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`,
+          {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+              data: derivedEvents,
+              ...(testCode && { test_event_code: testCode }),
+            }),
+          },
+        ).then(r => r.json())
+          .then(b => console.log('MANUAL_SALE_DERIVED_OK', saleId, derivedEvents.map(e => e.event_name).join(','), b.events_received ?? '?'))
+          .catch(e => console.warn('MANUAL_SALE_DERIVED_WARN', saleId, e?.message));
+      }
+    }
+
     return { ok: true, event_id };
 
   } catch (err) {
@@ -594,7 +674,7 @@ async function notifyDamFinanzas({ saleId, product_name, stockSlugFinal, value, 
 
   if (isCombo) {
     // Combo reloj + cadena: 1 card con 2 items
-    const rawVariants  = variant ? (Array.isArray(variant) ? variant : [variant]) : [];
+    const rawVariants  = parseLeadVariants(variant);
     const relojVariant = rawVariants[0] || null;
     const relojPrice   = Math.round(totalValue / 2);
     await sendItem({
@@ -613,7 +693,7 @@ async function notifyDamFinanzas({ saleId, product_name, stockSlugFinal, value, 
   }
 
   // Producto normal: 1 webhook por variante distinta
-  const rawVariants    = variant ? (Array.isArray(variant) ? variant : [variant]) : [];
+  const rawVariants    = parseLeadVariants(variant);
   const variantsToSend = rawVariants.length > 0 ? rawVariants : [null];
   const unitPrice      = Math.round(totalValue / saleQty);
 

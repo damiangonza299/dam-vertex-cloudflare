@@ -171,7 +171,7 @@
     <div class="admin-stats">
       <div class="admin-stat">
         <div class="admin-stat__val" id="stat-total">—</div>
-        <div class="admin-stat__label">Total leads</div>
+        <div class="admin-stat__label">Leads</div>
       </div>
       <div class="admin-stat">
         <div class="admin-stat__val" id="stat-pending" style="color:#fbbf24">—</div>
@@ -180,6 +180,10 @@
       <div class="admin-stat">
         <div class="admin-stat__val" id="stat-purchased" style="color:#4ade80">—</div>
         <div class="admin-stat__label">Comprados</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat__val" id="stat-expired" style="color:#f87171">—</div>
+        <div class="admin-stat__label">Vencidos</div>
       </div>
     </div>
 
@@ -225,7 +229,7 @@
         <option value="">Todos los estados</option>
         <option value="pending">Pendientes</option>
         <option value="purchased">Comprados</option>
-        <option value="cancelled">Cancelados</option>
+        <option value="expired">Vencidos</option>
       </select>
       <button id="refresh-btn" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer">
         ↻ Actualizar
@@ -235,6 +239,9 @@
       </button>
       <button id="manual-sale-btn" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;font-size:13px;font-weight:600;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer">
         + Venta WA
+      </button>
+      <button id="scan-stale-btn" onclick="runIntelligenceScan()" style="display:none">
+        ⚡ Analizar
       </button>
     </div>
 
@@ -270,6 +277,9 @@
       <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
         <button id="refresh-products-btn" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit">
           ↻ Actualizar stock
+        </button>
+        <button onclick="window.open('/product-studio/','_blank')" style="background:#1a1a1a;border:1px solid rgba(99,102,241,.4);color:#818cf8;font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit;font-weight:700">
+          + Nuevo producto
         </button>
         <span style="font-size:12px;color:var(--muted)">Los cambios se guardan automáticamente al confirmar cada compra</span>
       </div>
@@ -331,7 +341,6 @@
           <option value="">Todo</option>
           <option value="pending">Pendientes</option>
           <option value="purchased">Comprados</option>
-          <option value="cancelled">Cancelados</option>
         </select>
         <select id="ads-filter-prod" class="admin-filter-select" onchange="adsFilterChange()">
           <option value="">Productos</option>
@@ -486,11 +495,33 @@
 
     <!-- Clientes Bloqueados section -->
     <div id="blocked-section" style="display:none">
-      <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
+
+      <!-- Formulario: bloquear número manualmente -->
+      <div style="background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);border-radius:10px;padding:16px 18px;margin-bottom:18px">
+        <div style="font-size:13px;font-weight:700;color:#f87171;margin-bottom:12px">Bloquear número</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+          <input id="mb-phone" type="tel" placeholder="Teléfono *"
+            style="flex:1;min-width:140px;height:38px;background:#111;border:1px solid rgba(255,255,255,.12);color:#fff;font-size:13px;padding:0 12px;border-radius:7px;font-family:inherit;outline:none"
+            onkeydown="if(event.key==='Enter')submitManualBlock()">
+          <input id="mb-name" placeholder="Nombre (opcional)"
+            style="flex:1;min-width:130px;height:38px;background:#111;border:1px solid rgba(255,255,255,.12);color:#fff;font-size:13px;padding:0 12px;border-radius:7px;font-family:inherit;outline:none"
+            onkeydown="if(event.key==='Enter')submitManualBlock()">
+          <input id="mb-reason" placeholder="Motivo (opcional)"
+            style="flex:1;min-width:130px;height:38px;background:#111;border:1px solid rgba(255,255,255,.12);color:#fff;font-size:13px;padding:0 12px;border-radius:7px;font-family:inherit;outline:none"
+            onkeydown="if(event.key==='Enter')submitManualBlock()">
+          <button id="mb-submit" onclick="submitManualBlock()"
+            style="height:38px;padding:0 18px;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.4);color:#f87171;font-size:13px;font-weight:700;border-radius:7px;cursor:pointer;font-family:inherit;white-space:nowrap">
+            Bloquear número
+          </button>
+        </div>
+        <div id="mb-error" style="display:none;margin-top:8px;font-size:12px;color:#f87171"></div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap">
         <button id="block-refresh-btn" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit">
           ↻ Actualizar
         </button>
-        <span style="font-size:12px;color:var(--muted)">Solo bloqueos manuales desde el panel. Para bloquear, usá el menú ⋮ en un lead.</span>
+        <span style="font-size:12px;color:var(--muted)">También podés bloquear desde el menú ⋮ de un lead existente.</span>
       </div>
       <div class="admin-table-wrap">
         <table class="admin-table">
@@ -518,10 +549,11 @@
         <p style="font-size:13px;color:rgba(255,255,255,.5);margin:0">Ingresá los costos de envío del día. El total se distribuirá entre las ventas compradas.</p>
       </div>
 
-      <div class="admin-date-filters" style="margin-bottom:16px">
+      <div class="admin-date-filters" style="margin-bottom:16px;flex-wrap:wrap;gap:6px">
         <button class="date-btn" id="ship-date-all">Todos</button>
         <button class="date-btn date-btn--active" id="ship-date-today">Hoy</button>
         <button class="date-btn" id="ship-date-yesterday">Ayer</button>
+        <button class="date-btn" id="ship-date-this-month">Este mes</button>
         <input type="date" id="ship-date-picker" class="date-picker">
       </div>
 
@@ -568,7 +600,15 @@
 
       <!-- Historial -->
       <div style="max-width:640px">
-        <h4 id="shipping-history-title" style="font-size:12px;font-weight:600;color:rgba(255,255,255,.4);margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em">Historial</h4>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+          <h4 id="shipping-history-title" style="font-size:12px;font-weight:600;color:rgba(255,255,255,.4);margin:0;text-transform:uppercase;letter-spacing:.06em">Historial</h4>
+          <div style="display:flex;gap:5px">
+            <button class="date-btn date-btn--active" id="ship-type-all" style="font-size:10px;padding:4px 9px">Todos</button>
+            <button class="date-btn" id="ship-type-delivery" style="font-size:10px;padding:4px 9px">Delivery</button>
+            <button class="date-btn" id="ship-type-encomienda" style="font-size:10px;padding:4px 9px">Encomienda</button>
+          </div>
+        </div>
+        <div id="shipping-summary" style="display:none;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:11px 14px;margin-bottom:12px"></div>
         <div id="shipping-history-list">
           <p style="padding:14px 8px;color:rgba(255,255,255,.25);text-align:center;font-size:11px;margin:0">Cargando…</p>
         </div>

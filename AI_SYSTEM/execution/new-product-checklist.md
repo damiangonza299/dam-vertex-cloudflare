@@ -1,6 +1,29 @@
 # REGLA OPERATIVA — Nuevo Producto DAM Vertex + DAM Finanzas
 
-## Activación
+## FAST PATH — Product Studio (usar siempre que sea posible)
+
+Cuando el usuario quiera agregar un producto nuevo → **primero verificar si Product Studio puede manejar el caso**.
+
+Product Studio automatiza los pasos 1, 2, 3 y parte del 4:
+- Crea el producto en D1 (`products` + `product_briefs`)
+- Sincroniza con DAM Finanzas via `importProductFromVertex`
+- Lo activa en venta manual WhatsApp automáticamente
+- Genera blueprint de landing desde el brief
+
+Ruta: `/product-studio/` — acceso desde Admin Panel → Productos → "+ Nuevo producto"
+
+Flujo Product Studio:
+1. Tab Producto → Tab Inventario → Tab Estrategia → Tab Visual
+2. Tab Investigación → analizar URLs de proveedores (opcional pero recomendado)
+3. Tab Sync → "Sincronizar con DAM Finanzas" (requiere que el slug exista en D1)
+4. Tab Sync → "Activar producto" (requiere DAM Finanzas vinculado)
+5. Tab Landing → "Generar blueprint" → descargar HTML → deployar manualmente
+
+**El brief (`product_briefs` table) es la fuente de verdad. No editar products D1 directamente para campos que Product Studio gestiona.**
+
+---
+
+## Activación (flujo manual — cuando Product Studio no aplica)
 
 Cuando el usuario diga "quiero agregar un nuevo producto", "nuevo producto", "crear landing para X", o cualquier variante → ejecutar este flujo completo. No preguntar por la arquitectura. Solo pedir los datos del producto que falten.
 

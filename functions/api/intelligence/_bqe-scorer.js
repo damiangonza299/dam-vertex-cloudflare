@@ -10,11 +10,18 @@
      - normalizePhone: exportada para comparación consistente
    ========================================================= */
 
+// DAM VERTEX PY — UMBRALES OFICIALES
+// Alto valor:  >= 199.000 Gs  → interno + CAPI HighValuePurchase
+//              (189k precio base + 10k envío express = 199k = intención superior)
+// VIP:         >= 300.000 Gs  → CAPI HighValuePurchase + VIPPurchase
+// Ultra VIP:   >= 500.000 Gs  → solo interno (buyer_type=ultra_vip), sin evento CAPI dedicado
+// FastBuyer:   compra en < 24h → CAPI FastBuyer, server-side únicamente
 export const STALE_DAYS     = 5;
 export const FAST_BUYER_H   = 24;
-export const HIGH_VALUE_PYG = 200000;
+export const ALTO_VALOR_PYG = 199000;
 export const VIP_PYG        = 300000;
-export const SCORE_VERSION  = 'v2';
+export const ULTRA_VIP_PYG  = 500000;
+export const SCORE_VERSION  = 'v4';
 
 const GRAN_ASUNCION = [
   'asunción','asuncion','luque','lambaré','lambare',
@@ -31,8 +38,9 @@ export function scoreLeadBQE(lead, behaviorMap, nowMs, prevPurchases = 0) {
   const value       = Number(lead.value || 0);
   const productSlug = lead.product_slug || slugify(lead.product_name || '');
   const isCombo     = productSlug === 'combo-reloj-cadena';
-  const isHighValue = value >= HIGH_VALUE_PYG;
+  const isHighValue = value >= ALTO_VALOR_PYG;
   const isVIP       = value >= VIP_PYG;
+  const isUltraVip  = value >= ULTRA_VIP_PYG;
   const attrConf    = lead.attribution_confidence || 'none';
   const city        = (lead.location_city || lead.city || '').toLowerCase();
   const createdMs   = lead.created_at ? new Date(lead.created_at).getTime() : nowMs;
@@ -67,12 +75,15 @@ export function scoreLeadBQE(lead, behaviorMap, nowMs, prevPurchases = 0) {
       reasons.push('comprador <48h +8');
     }
 
-    if (isVIP) {
+    if (isUltraVip) {
+      score += 20;
+      reasons.push(`Ultra VIP >=${ULTRA_VIP_PYG / 1000}k +20`);
+    } else if (isVIP) {
       score += 15;
       reasons.push(`VIP >=${VIP_PYG / 1000}k +15`);
     } else if (isHighValue) {
       score += 10;
-      reasons.push(`alto valor >=${HIGH_VALUE_PYG / 1000}k +10`);
+      reasons.push(`alto valor >=${ALTO_VALOR_PYG / 1000}k +10`);
     }
 
     if (isCombo) {
@@ -153,7 +164,7 @@ export function scoreLeadBQE(lead, behaviorMap, nowMs, prevPurchases = 0) {
   const finalScore  = Math.max(-100, Math.min(100, score));
   const quality_label = scoreToLabel(finalScore);
 
-  // Buyer type — prioridad: reincidente > vip > alto_valor > rapido > lento > muy_tardio > baja_calidad > normal
+  // Buyer type — prioridad: reincidente > ultra_vip > vip > alto_valor > rapido > lento > muy_tardio > baja_calidad > normal
   let buyer_type;
 
   if (status === 'blocked') {
@@ -168,6 +179,7 @@ export function scoreLeadBQE(lead, behaviorMap, nowMs, prevPurchases = 0) {
       (timeToBuyH !== null && timeToBuyH > 120 && !isVIP && !isHighValue && attrConf === 'none');
 
     if      (prevPurchases > 0)                                               buyer_type = 'reincidente';
+    else if (isUltraVip)                                                      buyer_type = 'ultra_vip';
     else if (isVIP)                                                           buyer_type = 'vip';
     else if (isHighValue)                                                     buyer_type = 'alto_valor';
     else if (isFastBuyer)                                                     buyer_type = 'rapido';

@@ -54,20 +54,37 @@ DAM Vertex **nunca** debe recalcular: Ganancia · Utilidad · CPA · Publicidad 
 
 DAM Vertex solo envía datos. Dam Finanzas realiza los cálculos.
 
+### Product Studio — flujo de activación (módulo interno)
+
+Ruta: `/product-studio/` (botón "+ Nuevo producto" en Admin Panel → Productos)
+
+**El brief estructurado es la fuente de verdad.** No editar archivos de forma manual mientras el producto esté en Product Studio.
+
+Flujo obligatorio:
+1. Crear en Product Studio → `status='draft'`, `active=0` en D1
+2. Completar tabs: Producto → Inventario → Estrategia → Visual
+3. Tab Investigación (opcional): analizar URLs de proveedores
+4. Tab Sync → "Sincronizar con DAM Finanzas" → llama a `importProductFromVertex`
+5. Tab Sync → "Activar producto" → `active=1`, `status='active'`
+6. Landing: generar blueprint desde el brief (Tab Landing)
+7. InSync: instrumentar todas las secciones con `id` antes del primer deploy
+
+Una vez activado: aparece automáticamente en venta manual WhatsApp (MANUAL_PRODUCTS dinámico desde `/api/product-stock?active_only=1`).
+
 ### Checklist producto nuevo — 11 puntos obligatorios
 
 No se considera terminado hasta verificar:
 
-1. Existe en Admin Panel.
-2. Existe en venta manual WhatsApp.
-3. Existe en inventario DAM Vertex.
-4. Existe en inventario Dam Finanzas.
-5. Existe en el mapeo producto/variante.
-6. Existe en webhook hacia Dam Finanzas.
-7. Existe en reportes financieros.
-8. Existe en descuentos de stock.
-9. Existe en combos.
-10. Existe en landing y modal.
+1. Existe en Admin Panel. ← Product Studio lo crea
+2. Existe en venta manual WhatsApp. ← automático al activar en Product Studio
+3. Existe en inventario DAM Vertex. ← Product Studio lo crea
+4. Existe en inventario Dam Finanzas. ← Tab Sync → "Sincronizar con DAM Finanzas"
+5. Existe en el mapeo producto/variante. ← variants_json en D1 via Product Studio
+6. Existe en webhook hacia Dam Finanzas. ← `importProductFromVertex` vía `onAdminSale`
+7. Existe en reportes financieros. ← automático si DAM Finanzas vinculado
+8. Existe en descuentos de stock. ← automático (confirm-purchase.js usa slug)
+9. Existe en combos. ← combos nuevos van como `product_type='combo'` en Product Studio
+10. Existe en landing y modal. ← Tab Landing → generar blueprint → deploy manual
 11. Landing completamente instrumentada para InSync (todas las secciones visibles tienen `id` único).
 
 ### Regla de cambios en lógica financiera
@@ -90,6 +107,31 @@ Nunca `new Date().toISOString()`. Siempre:
 ```javascript
 new Intl.DateTimeFormat("en-CA", { timeZone: "America/Asuncion" }).format(new Date())
 ```
+
+## UMBRALES OFICIALES DAM VERTEX
+
+DAM VERTEX Paraguay — clasificación de compradores y eventos Meta CAPI. **Prohibido modificar sin decisión de negocio explícita documentada aquí.**
+
+| Clasificación | Umbral | Evento CAPI | buyer_type D1 |
+|---|---|---|---|
+| Alto valor | >= 199.000 Gs | `HighValuePurchase` | `alto_valor` |
+| VIP | >= 300.000 Gs | `HighValuePurchase` + `VIPPurchase` | `vip` |
+| Ultra VIP | >= 500.000 Gs | `HighValuePurchase` + `VIPPurchase` (sin CAPI dedicado) | `ultra_vip` |
+| Fast Buyer | compra en < 24h | `FastBuyer` (solo server-side CAPI, nunca Pixel) | `rapido` |
+
+**Mapping explícito CAPI ↔ DAM Intelligence:**
+- `HighValuePurchase` Meta = Alto Valor DAM VERTEX (>= Gs. 199.000)
+- `VIPPurchase` Meta = VIP DAM VERTEX (>= Gs. 300.000)
+- `FastBuyer` Meta = Fast Buyer DAM VERTEX (confirmación < 24h)
+- `Purchase` Meta = toda compra confirmada, sin umbral de valor
+
+**Justificación:** Precio base reloj Gs. 189.000. Con envío express: Gs. 199.000 → intención de compra superior → clasificación Alto Valor.
+
+**Archivos que implementan estos umbrales:**
+- `functions/api/intelligence/_bqe-scorer.js` — constantes `ALTO_VALOR_PYG`, `VIP_PYG`, `ULTRA_VIP_PYG`, `FAST_BUYER_H`
+- `functions/api/confirm-purchase.js` — condiciones de `HighValuePurchase` y `VIPPurchase`
+
+---
 
 ## REGLA CRÍTICA DE DEPLOY — DAM VERTEX
 

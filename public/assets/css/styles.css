@@ -648,7 +648,7 @@ details summary::-webkit-details-marker { display: none; }
 }
 .admin-table th {
   background: #111;
-  padding: 12px 16px;
+  padding: 10px 10px;
   text-align: left;
   font-size: 10px;
   font-weight: 700;
@@ -659,7 +659,7 @@ details summary::-webkit-details-marker { display: none; }
   border-bottom: 1px solid var(--border);
 }
 .admin-table td {
-  padding: 14px 16px;
+  padding: 12px 10px;
   border-bottom: 1px solid rgba(255,255,255,.04);
   color: #d1d5db;
   vertical-align: middle;
@@ -667,6 +667,9 @@ details summary::-webkit-details-marker { display: none; }
 }
 .admin-table tr:last-child td { border-bottom: none; }
 .admin-table tbody tr:hover td { background: rgba(255,255,255,.02); }
+.col-num  { width: 28px;  text-align: center; }
+.col-date { width: 54px; }
+.col-val  { width: 88px; }
 
 /* Status badges */
 .badge {

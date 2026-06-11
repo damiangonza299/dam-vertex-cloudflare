@@ -31,6 +31,7 @@ function clearToken() {
 
 let AUTH_TOKEN       = loadToken();
 let allLeads         = [];
+let _blockedPhones   = new Set();
 let activeDateFilter = 'all';
 
 /* ── Bootstrap ── */
@@ -96,9 +97,13 @@ if (IS_DELIVERY) {
   if (AUTH_TOKEN) {
     showPanel();
     loadLeads();
+    _scanIntelligence();
   } else {
     showLogin();
   }
+  // Refrescar leads cada 90 s cuando el tab está visible (sincroniza todos los dispositivos tras el scan)
+  setInterval(() => { if (!document.hidden && AUTH_TOKEN) loadLeads(); }, 90000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && AUTH_TOKEN) { loadLeads(); _scanIntelligence(); } });
 });
 
 /* ── Login ── */
@@ -146,11 +151,19 @@ document.getElementById('logout-btn')?.addEventListener('click', () => {
 /* ── Load leads ── */
 async function loadLeads() {
   try {
-    const res = await fetch('/api/admin-leads', {
-      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
-    });
-    if (res.status === 401) { clearToken(); location.reload(); return; }
-    const data = await res.json();
+    const [leadsRes, blockedRes] = await Promise.all([
+      fetch('/api/admin-leads',       { headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` } }),
+      fetch('/api/blocked-customers', { headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` } }),
+    ]);
+    if (leadsRes.status === 401) { clearToken(); location.reload(); return; }
+    const data        = await leadsRes.json();
+    const blockedData = await blockedRes.json().catch(() => ({}));
+    _blockedPhones = new Set(
+      (blockedData.blocks || [])
+        .filter(b => b.active)
+        .map(b => normalizePhone(b.phone))
+        .filter(Boolean)
+    );
     renderLeads(data.leads || []);
   } catch (_) {}
 }
@@ -163,13 +176,16 @@ function renderLeads(leads) {
 }
 
 function updateStats(leads) {
-  const pending   = leads.filter(l => l.status === 'pending').length;
+  const expired   = leads.filter(l => l.is_dead_lead || l.status === 'cancelled').length;
+  const pending   = leads.filter(l => l.status === 'pending' && !l.is_dead_lead).length;
   const purchased = leads.filter(l => l.status === 'purchased').length;
   const total     = leads.length;
 
   document.getElementById('stat-total').textContent     = total;
   document.getElementById('stat-pending').textContent   = pending;
   document.getElementById('stat-purchased').textContent = purchased;
+  const expiredEl = document.getElementById('stat-expired');
+  if (expiredEl) expiredEl.textContent = expired;
 }
 
 function applyFilters() {
@@ -185,8 +201,17 @@ function applyFilters() {
       || l.name?.toLowerCase().includes(q)
       || l.phone?.includes(q)
       || l.city?.toLowerCase().includes(q);
-    const matchProd   = !product || l.product_name === product;
-    const matchStatus = !status  || l.status === status;
+    const matchProd = !product || l.product_name === product;
+    let matchStatus;
+    if (!status) {
+      matchStatus = true;
+    } else if (status === 'expired') {
+      matchStatus = !!l.is_dead_lead || l.status === 'cancelled';
+    } else if (status === 'pending') {
+      matchStatus = l.status === 'pending' && !l.is_dead_lead;
+    } else {
+      matchStatus = l.status === status;
+    }
 
     let matchDate = true;
     if (activeDateFilter !== 'all') {
@@ -279,14 +304,20 @@ function buildActions(l) {
     ? `<button class="btn-confirm btn-icon" onclick="confirmPurchase(${l.id})" title="Confirmar pago">&#10003;</button>`
     : '<span class="act-done">&#10003;</span>';
 
+  const normPhone = normalizePhone(l.phone);
+  const isBlocked = normPhone && _blockedPhones.has(normPhone);
+  const blockBtn  = isBlocked
+    ? `<button disabled style="opacity:.4;cursor:not-allowed">Cliente bloqueado</button>`
+    : `<button onclick="blockCustomer(${l.id});closeMenus()">Bloquear cliente</button>`;
+
   const menuId = `menu-${l.id}`;
   return `<div class="actions-cell">
     ${confirmBtn}
     <button class="btn-menu" onclick="toggleMenu(event,this,'${menuId}')">&#8942;</button>
     <div class="action-menu" id="${menuId}">
-      <button onclick="cancelLead(${l.id});closeMenus()">Cancelar pedido</button>
-      <button onclick="blockCustomer(${l.id});closeMenus()">Bloquear cliente</button>
-      <button class="danger" onclick="deleteLead(${l.id});closeMenus()">Eliminar</button>
+      ${blockBtn}
+      <button class="danger" onclick="deleteLead(${l.id},'${l.status}');closeMenus()">Eliminar</button>
+      <button class="danger" style="font-size:10px;opacity:.8" onclick="deleteLeadInternal(${l.id},'${l.status}');closeMenus()">Eliminar internamente</button>
     </div>
   </div>`;
 }
@@ -310,11 +341,19 @@ function renderTable(leads) {
 <td class="col-city" title="${esc(l.location_city || l.city || '')}">${formatCity(l.location_city || l.city)}</td>
 <td class="col-prod" title="${esc(l.product_name)}">${esc(abbrevProduct(l.product_name))} (${Number(l.quantity || 1)})${fmtVariantCell(l)}</td>
       <td class="col-val">${Number(l.value || 0).toLocaleString('es-PY')}</td>
-      <td class="col-status"><span class="badge badge-${l.status}">${labelStatus(l.status)}</span>${buildSourceBadges(l)}</td>
+      <td class="col-status">${statusBadge(l)}${buildSourceBadges(l)}</td>
       <td class="col-date">${fmtDateShort(l.created_at)}</td>
       <td class="col-actions">${buildActions(l)}</td>
     </tr>
   `).join('');
+}
+
+function statusBadge(l) {
+  const inv = l.invoice_requested ? ' <span title="Factura solicitada" style="font-size:11px;opacity:.9">🧾</span>' : '';
+  if ((l.is_dead_lead && l.status === 'pending') || l.status === 'cancelled') {
+    return '<span class="badge badge-cancelled" style="opacity:.85">VENCIDO</span>' + inv;
+  }
+  return '<span class="badge badge-' + l.status + '">' + labelStatus(l.status) + '</span>' + inv;
 }
 
 /* ── Overflow menu ── */
@@ -326,7 +365,7 @@ function toggleMenu(e, btn, menuId) {
   closeMenus();
   if (!wasOpen) {
     const rect   = btn.getBoundingClientRect();
-    const MENU_H = 132;
+    const MENU_H = 124;
     const top    = (rect.bottom + MENU_H + 4 > window.innerHeight)
       ? rect.top - MENU_H - 4
       : rect.bottom + 4;
@@ -404,26 +443,93 @@ async function cancelLead(id) {
 }
 
 /* ── Delete lead ── */
-async function deleteLead(id) {
-  if (!confirm(`¿Eliminar lead #${id}?`)) return;
-  if (!confirm(`Confirmar: ¿eliminar definitivamente #${id}? Esta acción no se puede deshacer.`)) return;
+async function deleteLead(id, status) {
+  const isPurchased = status === 'purchased';
+  if (isPurchased) {
+    if (!confirm(`⚠️ Lead #${id} ya fue COMPRADO y tiene registro en Dam Finanzas.\n\nSi es un pedido de prueba: confirmá para eliminar y revertir en Dam Finanzas.\n\nNO uses esto para pedidos reales. ¿Continuar?`)) return;
+  } else {
+    if (!confirm(`¿Eliminar lead #${id}?`)) return;
+    if (!confirm(`Confirmar: ¿eliminar definitivamente #${id}? Esta acción no se puede deshacer.`)) return;
+  }
 
   try {
-    const res  = await fetch(`/api/admin-leads?id=${id}`, {
+    const params = isPurchased ? `?id=${id}&force=true` : `?id=${id}`;
+    const res    = await fetch(`/api/admin-leads${params}`, {
       method:  'DELETE',
       headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
     });
+    const data = await res.json().catch(() => ({}));
 
+    if (data.requiresConfirmation) {
+      if (!confirm(data.message)) return;
+      const res2 = await fetch(`/api/admin-leads?id=${id}&force=true`, {
+        method:  'DELETE',
+        headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+      });
+      if (res2.ok) { loadLeads(); } else { alert('Error al eliminar.'); }
+      return;
+    }
     if (res.ok) {
       loadLeads();
     } else {
-      const data = await res.json().catch(() => ({}));
       alert('Error al eliminar: ' + (data.error || res.status));
     }
   } catch (_) {
     alert('Error de red');
   }
 }
+
+/* ── Eliminar internamente (solo pruebas) ── */
+async function deleteLeadInternal(id, status) {
+  const isPurchased = status === 'purchased';
+  const msg = `⚠️ ELIMINAR INTERNAMENTE — lead #${id}\n\nEsto eliminará el lead de D1, limpiará Intelligence, revertirá Dam Finanzas y devolverá stock si corresponde.\n\nUsar SOLO para pruebas. NO usar en pedidos reales.\n\n¿Continuar?`;
+  if (!confirm(msg)) return;
+  if (isPurchased && !confirm(`Lead #${id} ya fue COMPRADO. ¿Confirmar eliminación interna y reversión de stock + Dam Finanzas?`)) return;
+
+  try {
+    const res  = await fetch(`/api/admin-leads?id=${id}&mode=internal_cleanup`, {
+      method:  'DELETE',
+      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    });
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok || !data.ok) {
+      alert('Error: ' + (data.error || res.status));
+      return;
+    }
+
+    const lines = [
+      `Lead #${data.lead_id} eliminado internamente.`,
+      `Lead D1: ${data.deleted_lead ? '✓' : '✗'}`,
+      `Intelligence: ${data.deleted_lead_quality ? '✓' : '✗'}`,
+      `Stock restaurado: ${data.stock_restored ? '✓' : '✗'}`,
+      `Dam Finanzas revertido: ${data.dam_finanzas_reverted ? '✓' : '✗'}`,
+    ];
+    if (data.notes?.length) lines.push('', ...data.notes);
+    alert(lines.join('\n'));
+    loadLeads();
+  } catch (_) {
+    alert('Error de red');
+  }
+}
+
+/* ── Intelligence Scan: corre automáticamente al iniciar y al recuperar foco ── */
+async function _scanIntelligence() {
+  const COOLDOWN = 5 * 60 * 1000;
+  const last = parseInt(localStorage.getItem('dam_last_scan') || '0');
+  if (Date.now() - last < COOLDOWN) return;
+  localStorage.setItem('dam_last_scan', String(Date.now()));
+  try {
+    await Promise.all([
+      fetch('/api/intelligence/stale-scanner', { method: 'POST', headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }),
+      fetch('/api/intelligence/run-bqe', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${AUTH_TOKEN}` }, body: '{}' }),
+    ]);
+    loadLeads();
+  } catch (_) {}
+}
+
+/* alias para llamadas manuales residuales */
+function runIntelligenceScan() { _scanIntelligence(); }
 
 /* ── Export CSV ── */
 function normalizePhone(raw) {
@@ -516,6 +622,7 @@ function formatCity(cityRaw) {
 
   let city = String(cityRaw)
     .replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .toLowerCase()
     .replace(/,/g, ' ')
     .replace(/\bparaguay\b/g, '')
@@ -597,8 +704,8 @@ function formatCity(cityRaw) {
 }
 function fmtDate(s){ return s ? new Date(s + 'Z').toLocaleString('es-PY', { day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit' }) : '—'; }
 function labelStatus(s, short = false) {
-  if (short) return { pending: 'Pend.', purchased: 'Pagado', cancelled: 'Canc.' }[s] || s;
-  return { pending: 'Pendiente', purchased: 'Comprado', cancelled: 'Cancelado' }[s] || s;
+  if (short) return { pending: 'Pend.', purchased: 'Pagado' }[s] || s;
+  return { pending: 'Pendiente', purchased: 'Comprado' }[s] || s;
 }
 
 /* ── Admin tab navigation ── */
@@ -1007,8 +1114,8 @@ function renderDashboard() {
   const chartLeads = getDashLeads(false);
 
   const purchased = leads.filter(l => l.status === 'purchased');
-  const pending   = leads.filter(l => l.status === 'pending');
-  const cancelled = leads.filter(l => l.status === 'cancelled');
+  const pending   = leads.filter(l => l.status === 'pending' && !l.is_dead_lead);
+  const expired   = leads.filter(l => l.is_dead_lead || l.status === 'cancelled');
 
   const revenue   = purchased.reduce((s, l) => s + (Number(l.value)    || 0), 0);
   const units     = purchased.reduce((s, l) => s + (Number(l.quantity) || 1), 0);
@@ -1035,7 +1142,7 @@ function renderDashboard() {
   `;
 
   renderDayBars(chartLeads);
-  renderStatusBars(purchased.length, pending.length, cancelled.length);
+  renderStatusBars(purchased.length, pending.length, expired.length);
   renderProductRanking(leads);
 }
 
@@ -1072,10 +1179,10 @@ function renderDayBars(leads) {
   el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;overflow:visible">${svg}</svg>`;
 }
 
-function renderStatusBars(purchased, pending, cancelled) {
+function renderStatusBars(purchased, pending, expired) {
   const el = document.getElementById('dash-status-bars');
   if (!el) return;
-  const total = purchased + pending + cancelled;
+  const total = purchased + pending + expired;
   if (!total) {
     el.innerHTML = '<p style="font-size:13px;color:rgba(255,255,255,.3);text-align:center;padding:24px 0">Sin datos para este período</p>';
     return;
@@ -1084,7 +1191,7 @@ function renderStatusBars(purchased, pending, cancelled) {
   const rows = [
     ['Comprados',  purchased, '#4ade80'],
     ['Pendientes', pending,   '#fbbf24'],
-    ...(cancelled ? [['Cancelados', cancelled, '#f87171']] : []),
+    ...(expired ? [['Vencidos', expired, '#f87171']] : []),
   ];
   el.innerHTML = rows.map(([label, val, color]) => `
     <div style="margin-bottom:14px">
@@ -1798,6 +1905,10 @@ async function confirmBlock() {
     if (res.ok && data.ok) {
       closeBlockModal();
       alert('Cliente bloqueado. No podrá enviar nuevos pedidos desde ese teléfono/dispositivo.');
+      loadLeads();
+    } else if (data.error === 'already_blocked') {
+      closeBlockModal();
+      alert('Este cliente ya está bloqueado activamente.');
     } else {
       if (errEl) { errEl.textContent = 'Error: ' + (data.error || 'desconocido'); errEl.style.display = 'block'; }
     }
@@ -1845,12 +1956,15 @@ function renderBlockedCustomers(blocks) {
            style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ade80;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit">
            Desbloquear
          </button>`
-      : '';
+      : `<button onclick="deleteBlockRecord(${b.id})"
+           style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit">
+           Eliminar
+         </button>`;
 
     return `<tr>
       <td>${esc(b.name || '—')}</td>
       <td>${esc(b.phone || '—')}</td>
-      <td style="font-size:11px;color:rgba(255,255,255,.45)">${esc(b.reason || '—')}</td>
+      <td style="font-size:11px;color:rgba(255,255,255,.45)">${esc(b.reason || '—')}${b.notes ? `<br><span style="font-size:10px;color:rgba(255,255,255,.25)">${esc(b.notes)}</span>` : ''}</td>
       <td>${statusBadge}</td>
       <td style="font-size:11px;color:rgba(255,255,255,.35)">${fmtDateShort(b.created_at)}</td>
       <td>${unblockBtn}</td>
@@ -1878,6 +1992,72 @@ async function unblockCustomer(blockId) {
   }
 }
 
+async function deleteBlockRecord(blockId) {
+  if (!confirm('¿Eliminar este registro permanentemente?')) return;
+  try {
+    const res  = await fetch(`/api/blocked-customers?id=${blockId}&hard=1`, {
+      method:  'DELETE',
+      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    });
+    const data = await res.json();
+    if (res.ok && data.ok) {
+      loadBlockedCustomers();
+    } else {
+      alert('Error al eliminar: ' + (data.error || res.status));
+    }
+  } catch (_) {
+    alert('Error de red');
+  }
+}
+
+/* Bloquear número sin lead — desde formulario manual */
+async function submitManualBlock() {
+  const phone  = (document.getElementById('mb-phone')?.value  || '').trim();
+  const name   = (document.getElementById('mb-name')?.value   || '').trim();
+  const reason = (document.getElementById('mb-reason')?.value || '').trim();
+  const errEl  = document.getElementById('mb-error');
+  const btn    = document.getElementById('mb-submit');
+
+  if (errEl) errEl.style.display = 'none';
+
+  const norm = normalizePhone(phone);
+  if (!norm) {
+    if (errEl) { errEl.textContent = 'Teléfono inválido. Formatos aceptados: 099X..., 595X..., +595X...'; errEl.style.display = 'block'; }
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+
+  try {
+    const res  = await fetch('/api/blocked-customers', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+      body:    JSON.stringify({ phone: norm, name: name || undefined, reason: reason || undefined }),
+    });
+    const data = await res.json();
+
+    if (data.error === 'already_blocked') {
+      if (errEl) { errEl.textContent = 'Número ya bloqueado activamente.'; errEl.style.display = 'block'; }
+      return;
+    }
+
+    if (res.ok && data.ok) {
+      if (document.getElementById('mb-phone'))  document.getElementById('mb-phone').value  = '';
+      if (document.getElementById('mb-name'))   document.getElementById('mb-name').value   = '';
+      if (document.getElementById('mb-reason')) document.getElementById('mb-reason').value = '';
+      const msg = data.reactivated ? `Bloqueo reactivado — ${norm}` : `Número bloqueado — ${norm}`;
+      alert(msg);
+      loadBlockedCustomers();
+    } else {
+      if (errEl) { errEl.textContent = 'Error: ' + (data.error || 'desconocido'); errEl.style.display = 'block'; }
+    }
+  } catch (_) {
+    if (errEl) { errEl.textContent = 'Error de red.'; errEl.style.display = 'block'; }
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('block-customer-modal')?.addEventListener('click', e => {
     if (e.target === e.currentTarget) closeBlockModal();
@@ -1889,9 +2069,28 @@ document.addEventListener('DOMContentLoaded', () => {
    Delivery — Panel de distribución de envíos
    ========================================================= */
 
-let shippingDate    = getParaguayDateLocal();
-let shippingShowAll = false;
-let _shippingRows   = {};
+let shippingDate       = getParaguayDateLocal();
+let shippingRangeMode  = 'today';   // 'today'|'yesterday'|'custom'|'all'|'this_month'|'last_month'
+let shippingTypeFilter = 'all';     // 'all'|'delivery'|'encomienda'
+let _shippingRows      = {};
+let _allShippingRows   = [];
+
+function setShipDateActive(id) {
+  ['ship-date-all','ship-date-today','ship-date-yesterday','ship-date-this-month'].forEach(bid => document.getElementById(bid)?.classList.remove('date-btn--active'));
+  document.getElementById(id)?.classList.add('date-btn--active');
+  const dp = document.getElementById('ship-date-picker');
+  if (dp) dp.value = '';
+}
+
+function setShipTypeActive(id) {
+  ['ship-type-all','ship-type-delivery','ship-type-encomienda'].forEach(bid => document.getElementById(bid)?.classList.remove('date-btn--active'));
+  document.getElementById(id)?.classList.add('date-btn--active');
+}
+
+function _resetShipTypeFilter() {
+  shippingTypeFilter = 'all';
+  setShipTypeActive('ship-type-all');
+}
 
 function getParaguayDateLocal(date = new Date()) {
   const parts = new Intl.DateTimeFormat('en-CA', {
@@ -1903,52 +2102,67 @@ function getParaguayDateLocal(date = new Date()) {
 }
 
 function initShippingPanel() {
-  shippingDate    = getParaguayDateLocal();
-  shippingShowAll = false;
-  const todayStr  = shippingDate;
-  const yestStr   = getParaguayDateLocal(new Date(Date.now() - 86400000));
+  shippingDate      = getParaguayDateLocal();
+  shippingRangeMode = 'today';
+  const todayStr    = shippingDate;
+  const yestStr     = getParaguayDateLocal(new Date(Date.now() - 86400000));
 
   document.getElementById('ship-date-all')?.addEventListener('click', () => {
-    shippingShowAll = true;
-    document.getElementById('ship-date-all')?.classList.add('date-btn--active');
-    document.getElementById('ship-date-today')?.classList.remove('date-btn--active');
-    document.getElementById('ship-date-yesterday')?.classList.remove('date-btn--active');
-    const dp = document.getElementById('ship-date-picker');
-    if (dp) dp.value = '';
+    shippingRangeMode = 'all';
+    _resetShipTypeFilter();
+    setShipDateActive('ship-date-all');
     loadShippingStats();
   });
 
   document.getElementById('ship-date-today')?.addEventListener('click', () => {
-    shippingShowAll = false;
-    shippingDate    = todayStr;
-    document.getElementById('ship-date-today')?.classList.add('date-btn--active');
-    document.getElementById('ship-date-yesterday')?.classList.remove('date-btn--active');
-    document.getElementById('ship-date-all')?.classList.remove('date-btn--active');
-    const dp = document.getElementById('ship-date-picker');
-    if (dp) dp.value = '';
+    shippingRangeMode = 'today';
+    shippingDate      = todayStr;
+    _resetShipTypeFilter();
+    setShipDateActive('ship-date-today');
     loadShippingStats();
   });
 
   document.getElementById('ship-date-yesterday')?.addEventListener('click', () => {
-    shippingShowAll = false;
-    shippingDate    = yestStr;
-    document.getElementById('ship-date-yesterday')?.classList.add('date-btn--active');
-    document.getElementById('ship-date-today')?.classList.remove('date-btn--active');
-    document.getElementById('ship-date-all')?.classList.remove('date-btn--active');
-    const dp = document.getElementById('ship-date-picker');
-    if (dp) dp.value = '';
+    shippingRangeMode = 'yesterday';
+    shippingDate      = yestStr;
+    _resetShipTypeFilter();
+    setShipDateActive('ship-date-yesterday');
+    loadShippingStats();
+  });
+
+  document.getElementById('ship-date-this-month')?.addEventListener('click', () => {
+    shippingRangeMode = 'this_month';
+    _resetShipTypeFilter();
+    setShipDateActive('ship-date-this-month');
     loadShippingStats();
   });
 
   document.getElementById('ship-date-picker')?.addEventListener('change', e => {
     if (e.target.value) {
-      shippingShowAll = false;
-      shippingDate    = e.target.value;
-      document.getElementById('ship-date-today')?.classList.remove('date-btn--active');
-      document.getElementById('ship-date-yesterday')?.classList.remove('date-btn--active');
-      document.getElementById('ship-date-all')?.classList.remove('date-btn--active');
+      shippingRangeMode = 'custom';
+      shippingDate      = e.target.value;
+      _resetShipTypeFilter();
+      ['ship-date-all','ship-date-today','ship-date-yesterday','ship-date-this-month'].forEach(bid => document.getElementById(bid)?.classList.remove('date-btn--active'));
       loadShippingStats();
     }
+  });
+
+  document.getElementById('ship-type-all')?.addEventListener('click', () => {
+    shippingTypeFilter = 'all';
+    setShipTypeActive('ship-type-all');
+    renderShippingHistory(_allShippingRows);
+  });
+
+  document.getElementById('ship-type-delivery')?.addEventListener('click', () => {
+    shippingTypeFilter = 'delivery';
+    setShipTypeActive('ship-type-delivery');
+    renderShippingHistory(_allShippingRows);
+  });
+
+  document.getElementById('ship-type-encomienda')?.addEventListener('click', () => {
+    shippingTypeFilter = 'encomienda';
+    setShipTypeActive('ship-type-encomienda');
+    renderShippingHistory(_allShippingRows);
   });
 }
 
@@ -1958,34 +2172,44 @@ async function loadShippingStats() {
   if (countEl)  countEl.textContent = '…';
   if (statusEl) { statusEl.style.color = ''; statusEl.textContent = ''; }
 
+  const isSingleDay = shippingRangeMode === 'today' || shippingRangeMode === 'yesterday' || shippingRangeMode === 'custom';
+
+  let url;
+  if (shippingRangeMode === 'this_month') {
+    url = `/api/delivery-shipping?month=${getParaguayDateLocal().slice(0, 7)}`;
+  } else if (shippingRangeMode === 'last_month') {
+    const py   = getParaguayDateLocal();
+    const [yr, mo] = py.split('-').map(Number);
+    const lmStr = mo === 1 ? `${yr - 1}-12` : `${yr}-${String(mo - 1).padStart(2, '0')}`;
+    url = `/api/delivery-shipping?month=${lmStr}`;
+  } else if (shippingRangeMode === 'all') {
+    url = '/api/delivery-shipping?all=1';
+  } else {
+    url = `/api/delivery-shipping?date=${shippingDate}`;
+  }
+
   try {
-    const res  = await fetch(`/api/delivery-shipping?date=${shippingDate}`, {
-      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
-    });
+    const res  = await fetch(url, { headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` } });
     const data = await res.json();
     if (data.ok) {
-      if (countEl) countEl.textContent = data.purchasedCount;
-
-      /* Pre-cargar inputs con historial del día si existe */
-      if (data.history) {
-        const h  = data.history;
+      if (isSingleDay) {
+        if (countEl) countEl.textContent = data.purchasedCount ?? '—';
         const di = document.getElementById('shipping-delivery-input');
         const ei = document.getElementById('shipping-encomienda-input');
-        if (di) di.value = h.delivery_amount   > 0 ? h.delivery_amount   : '';
-        if (ei) ei.value = h.encomienda_amount  > 0 ? h.encomienda_amount : '';
+        if (data.history) {
+          const h = data.history;
+          if (di) di.value = h.delivery_amount   > 0 ? h.delivery_amount   : '';
+          if (ei) ei.value = h.encomienda_amount  > 0 ? h.encomienda_amount : '';
+        } else {
+          if (di) di.value = '';
+          if (ei) ei.value = '';
+        }
+        updateShippingPerSale();
+        renderShippingHistory((data.recentHistory || []).filter(r => r.date === shippingDate));
       } else {
-        const di = document.getElementById('shipping-delivery-input');
-        const ei = document.getElementById('shipping-encomienda-input');
-        if (di) di.value = '';
-        if (ei) ei.value = '';
+        if (countEl) countEl.textContent = '—';
+        renderShippingHistory(data.recentHistory || []);
       }
-
-      updateShippingPerSale();
-      renderShippingHistory(
-        shippingShowAll
-          ? (data.recentHistory || [])
-          : (data.recentHistory || []).filter(r => r.date === shippingDate)
-      );
     } else {
       if (countEl) countEl.textContent = '?';
     }
@@ -2011,18 +2235,35 @@ function updateShippingPerSale() {
 }
 
 function renderShippingHistory(rows) {
-  _shippingRows = {};
+  _allShippingRows = rows;
+  _shippingRows    = {};
+  rows.forEach(r => { _shippingRows[r.date] = r; });
+
+  /* Filtrar por tipo solo para visualización */
+  let displayRows = rows;
+  if (shippingTypeFilter === 'delivery')   displayRows = rows.filter(r => (r.delivery_amount   || 0) > 0);
+  if (shippingTypeFilter === 'encomienda') displayRows = rows.filter(r => (r.encomienda_amount  || 0) > 0);
+
+  /* Título */
+  const titleEl = document.getElementById('shipping-history-title');
+  if (titleEl) {
+    const TITLES = {
+      all: 'Historial reciente', today: 'Historial', yesterday: 'Historial',
+      custom: 'Historial', this_month: 'Este mes', last_month: 'Mes anterior',
+    };
+    titleEl.textContent = TITLES[shippingRangeMode] || 'Historial';
+  }
+
+  renderShippingSummary(displayRows);
+
   const container = document.getElementById('shipping-history-list');
   if (!container) return;
-  const titleEl = document.getElementById('shipping-history-title');
-  if (titleEl) titleEl.textContent = shippingShowAll ? 'Historial reciente' : 'Historial';
-  if (!rows.length) {
+  if (!displayRows.length) {
     container.innerHTML = '<p style="padding:14px 8px;color:rgba(255,255,255,.25);text-align:center;font-size:11px;margin:0">Sin historial</p>';
     return;
   }
   const fmt = n => Number(n || 0).toLocaleString('es-PY');
-  rows.forEach(r => { _shippingRows[r.date] = r; });
-  container.innerHTML = rows.map(r => {
+  container.innerHTML = displayRows.map(r => {
     const label = fmtShipDate(r.date);
     return `
     <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px 14px;margin-bottom:8px">
@@ -2031,10 +2272,10 @@ function renderShippingHistory(rows) {
         <span style="font-size:14px;font-weight:700;color:#60a5fa">Gs. ${fmt(r.total_shipping)}</span>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:10px">
-        <span>Delivery: ${r.delivery_amount > 0 ? 'Gs. ' + fmt(r.delivery_amount) : '—'}</span>
+        <span>Delivery: ${r.delivery_amount > 0 ? 'Gs. ' + fmt(r.delivery_amount) : '—'}</span>
         <span>Comprados: ${r.purchased_count || 0}</span>
-        <span>Encom./Bolt: ${r.encomienda_amount > 0 ? 'Gs. ' + fmt(r.encomienda_amount) : '—'}</span>
-        <span>C/venta: ${r.per_sale > 0 ? 'Gs. ' + fmt(r.per_sale) : '—'}</span>
+        <span>Encom./Bolt: ${r.encomienda_amount > 0 ? 'Gs. ' + fmt(r.encomienda_amount) : '—'}</span>
+        <span>C/venta: ${r.per_sale > 0 ? 'Gs. ' + fmt(r.per_sale) : '—'}</span>
       </div>
       <div style="display:flex;gap:8px">
         <button onclick="editShippingRow('${r.date}')"
@@ -2048,6 +2289,34 @@ function renderShippingHistory(rows) {
       </div>
     </div>`;
   }).join('');
+}
+
+function renderShippingSummary(rows) {
+  const el = document.getElementById('shipping-summary');
+  if (!el) return;
+  if (!rows.length) { el.style.display = 'none'; return; }
+
+  const totalDelivery   = rows.reduce((a, r) => a + Number(r.delivery_amount   || 0), 0);
+  const totalEncomienda = rows.reduce((a, r) => a + Number(r.encomienda_amount  || 0), 0);
+  const total           = rows.reduce((a, r) => a + Number(r.total_shipping     || 0), 0);
+  const count           = rows.length;
+  const fmt = n => n.toLocaleString('es-PY');
+
+  let html = `<div style="display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center">`;
+  if (shippingTypeFilter !== 'encomienda') {
+    html += `<span style="font-size:12px;color:rgba(255,255,255,.5)">Delivery: <strong style="color:#fff">Gs. ${fmt(totalDelivery)}</strong></span>`;
+  }
+  if (shippingTypeFilter !== 'delivery') {
+    html += `<span style="font-size:12px;color:rgba(255,255,255,.5)">Encomienda: <strong style="color:#fff">Gs. ${fmt(totalEncomienda)}</strong></span>`;
+  }
+  if (shippingTypeFilter === 'all') {
+    html += `<span style="font-size:12px;color:rgba(255,255,255,.5)">Total: <strong style="color:#60a5fa">Gs. ${fmt(total)}</strong></span>`;
+  }
+  html += `<span style="font-size:11px;color:rgba(255,255,255,.3);margin-left:auto">${count} reg.</span>`;
+  html += `</div>`;
+
+  el.innerHTML = html;
+  el.style.display = '';
 }
 
 async function applyShipping() {
@@ -2100,8 +2369,10 @@ async function applyShipping() {
 function editShippingRow(date) {
   const r = _shippingRows[date];
   if (!r) return;
-  shippingShowAll = false;
-  document.getElementById('ship-date-all')?.classList.remove('date-btn--active');
+  shippingRangeMode = 'custom';
+  ['ship-date-all','ship-date-today','ship-date-yesterday','ship-date-this-month'].forEach(id => {
+    document.getElementById(id)?.classList.remove('date-btn--active');
+  });
   shippingDate = r.date;
   const di       = document.getElementById('shipping-delivery-input');
   const ei       = document.getElementById('shipping-encomienda-input');

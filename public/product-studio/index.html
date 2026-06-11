@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Studio — DAM Vertex</title>
+<style>
+:root {
+  --bg:         #0a0a0f;
+  --bg2:        #111118;
+  --bg3:        #18181f;
+  --border:     rgba(255,255,255,.08);
+  --border2:    rgba(255,255,255,.14);
+  --text:       #e8e8f0;
+  --muted:      rgba(255,255,255,.45);
+  --accent:     #818cf8;
+  --accent2:    #6366f1;
+  --green:      #4ade80;
+  --red:        #f87171;
+  --yellow:     #fbbf24;
+  --radius:     10px;
+  --radius-sm:  6px;
+  --sidebar-w:  260px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:13px;display:flex;height:100vh;overflow:hidden}
+
+/* ── Login ── */
+#login-screen{display:flex;align-items:center;justify-content:center;width:100%;height:100%;flex-direction:column;gap:16px}
+#login-screen h2{color:var(--accent);font-size:20px;letter-spacing:-.4px}
+#login-screen input{background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:10px 14px;border-radius:var(--radius-sm);font-size:14px;width:280px;outline:none}
+#login-screen input:focus{border-color:var(--accent)}
+#login-screen button{background:var(--accent2);color:#fff;border:none;padding:10px 24px;border-radius:var(--radius-sm);cursor:pointer;font-size:14px;width:280px}
+#login-error{color:var(--red);font-size:12px;min-height:16px}
+
+/* ── App shell ── */
+#app{display:none;width:100%;height:100%;overflow:hidden}
+
+/* ── Sidebar ── */
+#sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;overflow:hidden}
+#sidebar-header{padding:16px 14px 12px;border-bottom:1px solid var(--border)}
+#sidebar-header h1{font-size:15px;font-weight:700;color:var(--accent);letter-spacing:-.3px}
+#sidebar-header p{font-size:11px;color:var(--muted);margin-top:2px}
+#new-product-btn{margin:10px 10px 0;background:var(--accent2);color:#fff;border:none;padding:9px 12px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;font-weight:600;width:calc(100% - 20px);text-align:left}
+#new-product-btn:hover{background:var(--accent)}
+#product-list{flex:1;overflow-y:auto;padding:8px 6px}
+.product-item{padding:9px 10px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:2px;border:1px solid transparent;transition:background .15s}
+.product-item:hover{background:var(--bg3)}
+.product-item.active{background:var(--bg3);border-color:var(--border2)}
+.product-item .pi-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.product-item .pi-meta{font-size:10px;color:var(--muted);margin-top:2px;display:flex;gap:6px;align-items:center}
+.badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.badge-draft{background:rgba(255,255,255,.06);color:var(--muted)}
+.badge-pending{background:rgba(251,191,36,.1);color:var(--yellow)}
+.badge-active{background:rgba(74,222,128,.1);color:var(--green)}
+.badge-archived{background:rgba(248,113,113,.08);color:var(--red)}
+.badge-linked{background:rgba(74,222,128,.1);color:var(--green)}
+.badge-failed{background:rgba(248,113,113,.12);color:var(--red)}
+
+/* ── Main area ── */
+#main{flex:1;display:flex;flex-direction:column;height:100%;overflow:hidden;background:var(--bg)}
+#topbar{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;background:var(--bg2)}
+#topbar h2{font-size:14px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+#topbar .slug-badge{font-size:10px;color:var(--muted);background:var(--bg3);padding:2px 8px;border-radius:3px;font-family:monospace}
+.topbar-btn{background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:6px 14px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap}
+.topbar-btn:hover{border-color:var(--accent);color:var(--accent)}
+.topbar-btn.primary{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.topbar-btn.primary:hover{background:var(--accent);border-color:var(--accent)}
+.topbar-btn.danger{border-color:rgba(248,113,113,.3);color:var(--red)}
+.topbar-btn:disabled{opacity:.4;cursor:default}
+
+/* ── Tabs ── */
+#tab-nav{display:flex;gap:2px;padding:10px 20px 0;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg);overflow-x:auto}
+.tab-btn{padding:7px 14px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;font-family:inherit;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ── Tab content ── */
+#tab-content{flex:1;overflow-y:auto;padding:20px}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* ── Empty state ── */
+#empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--muted)}
+#empty-state h3{font-size:16px;color:var(--text)}
+#empty-state p{font-size:12px;text-align:center;max-width:280px;line-height:1.6}
+
+/* ── Forms ── */
+.form-section{margin-bottom:24px}
+.form-section h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-row.triple{grid-template-columns:1fr 1fr 1fr}
+.form-row.full{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-label{font-size:11px;color:var(--muted);font-weight:600}
+.form-input,.form-select,.form-textarea{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:var(--radius-sm);font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-textarea{resize:vertical;min-height:70px;line-height:1.5}
+.form-select option{background:var(--bg3)}
+.form-hint{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4}
+.color-row{display:flex;gap:8px;align-items:center}
+.color-row input[type=color]{width:36px;height:36px;padding:2px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg3);cursor:pointer}
+.color-row .form-input{flex:1}
+
+/* ── Tags input ── */
+.tags-container{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 8px;min-height:40px;display:flex;flex-wrap:wrap;gap:4px;cursor:text}
+.tags-container:focus-within{border-color:var(--accent)}
+.tag-chip{background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:2px 8px 2px 10px;border-radius:100px;font-size:11px;display:flex;align-items:center;gap:4px}
+.tag-chip button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0;line-height:1}
+.tags-input{background:none;border:none;color:var(--text);font-size:12px;font-family:inherit;outline:none;min-width:100px;flex:1}
+
+/* ── Variants ── */
+.variant-row{display:grid;grid-template-columns:1fr 80px 80px 80px 24px;gap:8px;align-items:center;margin-bottom:6px}
+.variant-row input{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:var(--radius-sm);font-size:12px;font-family:inherit;outline:none;width:100%}
+.variant-row input:focus{border-color:var(--accent)}
+.variant-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:0;line-height:1}
+.variant-remove:hover{color:var(--red)}
+.variant-header{display:grid;grid-template-columns:1fr 80px 80px 80px 24px;gap:8px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+#add-variant-btn{background:none;border:1px dashed var(--border2);color:var(--muted);padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;font-family:inherit;margin-top:4px}
+#add-variant-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── Research tab ── */
+.research-url-bar{display:flex;gap:8px;margin-bottom:16px}
+.research-url-bar input{flex:1}
+.research-preview{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px}
+.research-preview h4{font-size:13px;font-weight:700;margin-bottom:4px}
+.research-preview .rp-meta{font-size:11px;color:var(--muted);margin-bottom:12px}
+.research-preview .rp-section{margin-bottom:12px}
+.research-preview .rp-section h5{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+.research-preview ul{padding-left:16px}
+.research-preview li{font-size:12px;color:var(--text);margin-bottom:3px;line-height:1.4}
+.research-apply-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.apply-btn{background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;font-family:inherit}
+.apply-btn:hover{border-color:var(--accent);color:var(--accent)}
+.research-history{margin-top:20px}
+.research-history h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px}
+.history-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:6px;cursor:pointer}
+.history-item:hover{border-color:var(--border2)}
+.history-item .hi-url{font-size:11px;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.history-item .hi-meta{font-size:10px;color:var(--muted);margin-top:2px}
+.history-item .hi-title{font-size:12px;margin-top:4px}
+
+/* ── Landing tab ── */
+.landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.landing-panel{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.landing-panel h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:12px}
+.insync-metric{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.insync-metric:last-child{border-bottom:none}
+.insync-metric .im-label{font-size:11px;color:var(--muted)}
+.insync-metric .im-value{font-size:13px;font-weight:700;color:var(--text)}
+.insync-metric .im-value.good{color:var(--green)}
+.insync-metric .im-value.warn{color:var(--yellow)}
+.funnel-bar{height:6px;background:var(--bg2);border-radius:3px;margin-top:3px;overflow:hidden}
+.funnel-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s}
+.blueprint-preview{width:100%;height:300px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fff}
+
+/* ── Sync tab ── */
+.sync-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.sync-card h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px}
+.sync-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
+.sync-row:last-child{border-bottom:none}
+.sync-row .sr-label{font-size:11px;color:var(--muted)}
+.sync-row .sr-value{font-size:12px;font-weight:600}
+.sync-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.sync-btn{background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 16px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;font-family:inherit;font-weight:600}
+.sync-btn:hover{border-color:var(--accent);color:var(--accent)}
+.sync-btn.primary{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.sync-btn.primary:hover{background:var(--accent)}
+.sync-btn.green{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.3);color:var(--green)}
+.sync-btn.green:hover{background:rgba(74,222,128,.2)}
+.sync-btn:disabled{opacity:.4;cursor:default}
+.sync-log{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:var(--muted);font-family:monospace;line-height:1.6;min-height:40px;max-height:120px;overflow-y:auto;margin-top:8px;white-space:pre-wrap}
+
+/* ── Notice ── */
+.notice{padding:10px 14px;border-radius:var(--radius-sm);font-size:12px;line-height:1.5;margin-bottom:12px}
+.notice-info{background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.2);color:var(--accent)}
+.notice-warn{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);color:var(--yellow)}
+.notice-success{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);color:var(--green)}
+.notice-error{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:var(--red)}
+
+/* ── Save bar ── */
+#save-bar{display:none;position:fixed;bottom:16px;right:20px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 16px;display:flex;gap:8px;align-items:center;z-index:100;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+#save-status{font-size:12px;color:var(--muted)}
+
+/* ── Loading ── */
+.spinner{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-overlay{display:none;position:absolute;inset:0;background:rgba(10,10,15,.7);align-items:center;justify-content:center;z-index:50;border-radius:var(--radius)}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  #sidebar{width:200px}
+  .form-row{grid-template-columns:1fr}
+  .form-row.triple{grid-template-columns:1fr}
+  .landing-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login-screen">
+  <h2>Product Studio</h2>
+  <p style="font-size:12px;color:var(--muted)">DAM Vertex — Workspace de productos</p>
+  <input type="password" id="pw-input" placeholder="Admin password" autocomplete="current-password">
+  <button onclick="doLogin()">Ingresar</button>
+  <span id="login-error"></span>
+</div>
+
+<!-- App -->
+<div id="app">
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <h1>Product Studio</h1>
+      <p>DAM Vertex</p>
+    </div>
+    <button id="new-product-btn" onclick="openNewProduct()">+ Nuevo producto</button>
+    <div id="product-list"></div>
+  </div>
+
+  <div id="main">
+    <div id="empty-state">
+      <h3>Seleccioná un producto</h3>
+      <p>O creá uno nuevo con el botón <strong>+ Nuevo producto</strong> de la barra lateral.</p>
+    </div>
+
+    <!-- Product editor (hidden until product selected) -->
+    <div id="product-editor" style="display:none;flex-direction:column;height:100%">
+      <div id="topbar">
+        <h2 id="topbar-name">Nuevo producto</h2>
+        <span id="topbar-slug" class="slug-badge"></span>
+        <button class="topbar-btn" onclick="saveAll()">Guardar</button>
+        <button class="topbar-btn" id="archive-btn" onclick="archiveProduct()" style="display:none">Archivar</button>
+      </div>
+
+      <div id="tab-nav">
+        <button class="tab-btn active" data-tab="tab-producto" onclick="switchTab('tab-producto')">Producto</button>
+        <button class="tab-btn" data-tab="tab-inventario" onclick="switchTab('tab-inventario')">Inventario</button>
+        <button class="tab-btn" data-tab="tab-investigacion" onclick="switchTab('tab-investigacion')">Investigación</button>
+        <button class="tab-btn" data-tab="tab-estrategia" onclick="switchTab('tab-estrategia')">Estrategia</button>
+        <button class="tab-btn" data-tab="tab-visual" onclick="switchTab('tab-visual')">Visual</button>
+        <button class="tab-btn" data-tab="tab-landing" onclick="switchTab('tab-landing')">Landing</button>
+        <button class="tab-btn" data-tab="tab-sync" onclick="switchTab('tab-sync')">Sync</button>
+      </div>
+
+      <div id="tab-content">
+
+        <!-- TAB: Producto -->
+        <div class="tab-pane active" id="tab-producto">
+          <div class="form-section">
+            <h3>Identificación</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Nombre público</label>
+                <input class="form-input" id="f-name" placeholder="Reloj Pro X" oninput="onNameInput()">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Slug (URL)</label>
+                <input class="form-input" id="f-slug" placeholder="reloj-pro-x" pattern="[a-z0-9-]+">
+                <span class="form-hint">Solo minúsculas, números y guiones. Ej: reloj-pro-x</span>
+              </div>
+            </div>
+            <div class="form-row triple">
+              <div class="form-group">
+                <label class="form-label">Tipo</label>
+                <select class="form-select" id="f-type">
+                  <option value="simple">Simple (sin variantes)</option>
+                  <option value="variant">Con variantes (colores, tallas…)</option>
+                  <option value="combo">Combo (producto virtual)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Categoría</label>
+                <input class="form-input" id="f-category" placeholder="Relojes, Joyería…">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nombre interno</label>
+                <input class="form-input" id="f-internal-name" placeholder="Para dashboards internos">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Precios y costos</h3>
+            <div class="form-row triple">
+              <div class="form-group">
+                <label class="form-label">Precio de venta (Gs.)</label>
+                <input class="form-input" id="f-price" type="number" placeholder="189000">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Precio tachado / comparación (Gs.)</label>
+                <input class="form-input" id="f-compare-price" type="number" placeholder="250000">
+                <span class="form-hint">Precio que aparece tachado en la landing</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Costo unitario (Gs.)</label>
+                <input class="form-input" id="f-cost" type="number" placeholder="80000">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Descripción corta</h3>
+            <div class="form-row full">
+              <div class="form-group">
+                <textarea class="form-textarea" id="f-description" placeholder="Descripción breve del producto para uso interno y brief estratégico…" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+        </div><!-- /tab-producto -->
+
+        <!-- TAB: Inventario -->
+        <div class="tab-pane" id="tab-inventario">
+          <div class="form-section">
+            <h3>Stock general</h3>
+            <div class="form-row triple">
+              <div class="form-group">
+                <label class="form-label">Stock total</label>
+                <input class="form-input" id="f-stock" type="number" placeholder="50">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Alerta bajo stock (unidades)</label>
+                <input class="form-input" id="f-min-stock" type="number" placeholder="5">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section" id="variants-section">
+            <h3>
+              Variantes
+              <label style="margin-left:12px;font-size:11px;font-weight:normal;cursor:pointer">
+                <input type="checkbox" id="f-has-variants" onchange="onVariantsToggle()"> Tiene variantes
+              </label>
+            </h3>
+            <div id="variants-editor" style="display:none">
+              <div class="notice notice-info">Las variantes reemplazan el stock general. El stock total se calcula sumando todas las variantes.</div>
+              <div class="variant-header">
+                <span>Nombre</span><span>Stock</span><span>Precio</span><span>Alerta</span><span></span>
+              </div>
+              <div id="variants-list"></div>
+              <button id="add-variant-btn" onclick="addVariantRow()">+ Agregar variante</button>
+            </div>
+          </div>
+        </div><!-- /tab-inventario -->
+
+        <!-- TAB: Investigación -->
+        <div class="tab-pane" id="tab-investigacion">
+          <div class="notice notice-info">Analizá URLs de proveedores o competidores. El sistema extrae título, features y specs. Vos elegís qué aplicar al brief — nada es automático.</div>
+
+          <div class="research-url-bar">
+            <input class="form-input" id="research-url" placeholder="https://proveedor.com/producto" type="url">
+            <select class="form-select" id="research-type" style="width:160px">
+              <option value="supplier">Proveedor</option>
+              <option value="competitor">Competidor</option>
+              <option value="reference">Referencia</option>
+            </select>
+            <button class="topbar-btn primary" onclick="runResearch()" id="research-btn">Analizar</button>
+          </div>
+
+          <div id="research-result" style="display:none"></div>
+          <div id="research-history-section">
+            <div class="research-history" id="research-history"></div>
+          </div>
+        </div><!-- /tab-investigacion -->
+
+        <!-- TAB: Estrategia -->
+        <div class="tab-pane" id="tab-estrategia">
+          <div class="form-section">
+            <h3>Posicionamiento</h3>
+            <div class="form-row full">
+              <div class="form-group">
+                <label class="form-label">¿Qué problema resuelve este producto?</label>
+                <textarea class="form-textarea" id="f-problem" placeholder="Describe el pain point real del cliente…"></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Audiencia principal</label>
+                <select class="form-select" id="f-audience">
+                  <option value="">Seleccionar…</option>
+                  <option value="hombre">Hombre</option>
+                  <option value="mujer">Mujer</option>
+                  <option value="ambos">Ambos</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Urgencia de compra</label>
+                <select class="form-select" id="f-urgency">
+                  <option value="">Seleccionar…</option>
+                  <option value="escasez">Escasez (stock limitado)</option>
+                  <option value="oferta">Oferta (precio temporal)</option>
+                  <option value="novedad">Novedad (lanzamiento)</option>
+                  <option value="ninguno">Sin urgencia artificial</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row full">
+              <div class="form-group">
+                <label class="form-label">Promesa principal</label>
+                <input class="form-input" id="f-promise" placeholder="La propuesta de valor en una línea…">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Tipo de deseo</h3>
+            <div class="form-row full">
+              <div id="desire-types" style="display:flex;flex-wrap:wrap;gap:8px">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Beneficios (máx. 5, ordenados por impacto)</h3>
+            <div id="benefits-list"></div>
+            <button class="topbar-btn" onclick="addBenefit()" style="margin-top:8px">+ Agregar beneficio</button>
+          </div>
+
+          <div class="form-section">
+            <h3>Objeciones del cliente</h3>
+            <div id="objections-tags-container" class="tags-container" onclick="focusTagInput('objections-input')">
+              <input class="tags-input" id="objections-input" placeholder="Escribí una objeción y presioná Enter…" onkeydown="addTag(event,'objections')">
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>¿Por qué lo compraría hoy?</h3>
+            <div class="form-row full">
+              <div class="form-group">
+                <textarea class="form-textarea" id="f-motivation" placeholder="La razón principal que mueve la decisión de compra ahora…"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Diferenciador</h3>
+            <div class="form-row full">
+              <div class="form-group">
+                <input class="form-input" id="f-differentiator" placeholder="¿En qué es único vs. competencia?">
+              </div>
+            </div>
+          </div>
+        </div><!-- /tab-estrategia -->
+
+        <!-- TAB: Visual -->
+        <div class="tab-pane" id="tab-visual">
+          <div class="form-section">
+            <h3>Identidad de color</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Color principal</label>
+                <div class="color-row">
+                  <input type="color" id="f-color-primary" value="#0a0a0f">
+                  <input class="form-input" id="f-color-primary-hex" placeholder="#0a0a0f" oninput="syncColor('primary')">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Color secundario / acento</label>
+                <div class="color-row">
+                  <input type="color" id="f-color-secondary" value="#d4af37">
+                  <input class="form-input" id="f-color-secondary-hex" placeholder="#d4af37" oninput="syncColor('secondary')">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Estilo y sensación</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Estilo visual</label>
+                <select class="form-select" id="f-style">
+                  <option value="">Seleccionar…</option>
+                  <option value="premium">Premium / Lujo</option>
+                  <option value="minimalista">Minimalista</option>
+                  <option value="energetico">Energético / Bold</option>
+                  <option value="funcional">Funcional / Técnico</option>
+                  <option value="suave">Suave / Cálido</option>
+                  <option value="lifestyle">Lifestyle / Casual</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Sensación de marca</label>
+                <input class="form-input" id="f-feel" placeholder="Masculino, minimalista… o lo que aplique">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Especificaciones físicas</h3>
+            <div class="form-row triple">
+              <div class="form-group">
+                <label class="form-label">Material principal</label>
+                <input class="form-input" id="f-material" placeholder="Acero inoxidable, silicona…">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Dimensiones</label>
+                <input class="form-input" id="f-dimensions" placeholder="42mm diámetro, 30×20cm…">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Peso</label>
+                <input class="form-input" id="f-weight" placeholder="120g, 350g…">
+              </div>
+            </div>
+            <div class="form-row full">
+              <div class="form-group">
+                <label class="form-label">Notas visuales (referencia para diseñador/copy)</label>
+                <textarea class="form-textarea" id="f-visual-notes" placeholder="Notas adicionales sobre la estética del producto…"></textarea>
+              </div>
+            </div>
+          </div>
+        </div><!-- /tab-visual -->
+
+        <!-- TAB: Landing -->
+        <div class="tab-pane" id="tab-landing">
+          <div class="notice notice-warn" id="landing-unsaved-warn" style="display:none;margin-bottom:12px">
+            ⚠ El producto no está guardado. El blueprint se generará pero no se persistirá hasta que presiones <strong>Guardar</strong>.
+          </div>
+          <div class="landing-grid">
+            <div class="landing-panel">
+              <h4>InSync — Performance de landing <button class="topbar-btn" onclick="refreshInsync()" style="float:right;margin-top:-2px" id="refresh-insync-btn">↻ Actualizar</button></h4>
+              <div id="insync-panel">
+                <p style="font-size:12px;color:var(--muted)">No hay datos de InSync para este producto todavía.</p>
+              </div>
+              <div id="landing-intelligence-panel" style="display:none;margin-top:12px">
+                <h4 style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Landing Intelligence (futuro)</h4>
+                <p style="font-size:11px;color:var(--muted)">Cuando Landing Intelligence esté disponible, aparecerá aquí.</p>
+              </div>
+            </div>
+
+            <div class="landing-panel">
+              <h4>Blueprint de landing</h4>
+              <div id="landing-status-row" style="margin-bottom:12px;display:flex;gap:8px;align-items:center">
+                <span id="landing-status-badge" class="badge badge-draft">Sin blueprint</span>
+              </div>
+              <div class="notice notice-warn" style="font-size:11px">El blueprint es un borrador estructural generado desde el brief. No reemplaza el trabajo de diseño — es un punto de partida.</div>
+              <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+                <button class="sync-btn primary" onclick="generateBlueprint()">Generar blueprint</button>
+                <button class="sync-btn" id="preview-blueprint-btn" onclick="previewBlueprint()" disabled>Ver preview</button>
+                <button class="sync-btn" id="download-blueprint-btn" onclick="downloadBlueprint()" disabled>Descargar HTML</button>
+              </div>
+              <div id="blueprint-preview-area" style="display:none;margin-top:12px">
+                <iframe id="blueprint-iframe" class="blueprint-preview" sandbox="allow-scripts" srcdoc=""></iframe>
+              </div>
+            </div>
+          </div>
+        </div><!-- /tab-landing -->
+
+        <!-- TAB: Sync -->
+        <div class="tab-pane" id="tab-sync">
+          <div class="sync-card">
+            <h4>Estado en DAM Vertex</h4>
+            <div class="sync-row"><span class="sr-label">Producto en D1</span><span class="sr-value" id="sync-vertex-status">—</span></div>
+            <div class="sync-row"><span class="sr-label">Slug</span><span class="sr-value" id="sync-slug">—</span></div>
+            <div class="sync-row"><span class="sr-label">Activo en ventas</span><span class="sr-value" id="sync-active">—</span></div>
+            <div class="sync-row"><span class="sr-label">Estado</span><span class="sr-value" id="sync-lifecycle">—</span></div>
+          </div>
+
+          <div class="sync-card">
+            <h4>DAM Finanzas</h4>
+            <div class="sync-row"><span class="sr-label">Estado de sync</span><span class="sr-value" id="sync-finanzas-status">—</span></div>
+            <div class="sync-row"><span class="sr-label">ID en Firestore</span><span class="sr-value" id="sync-finanzas-id" style="font-family:monospace;font-size:10px">—</span></div>
+            <div class="sync-row"><span class="sr-label">Última nota</span><span class="sr-value" id="sync-finanzas-note">—</span></div>
+            <div class="sync-actions">
+              <button class="sync-btn primary" id="sync-to-finanzas-btn" onclick="syncToFinanzas()">Sincronizar con DAM Finanzas</button>
+              <button class="sync-btn green" id="activate-btn" onclick="activateProduct()">✓ Activar producto</button>
+            </div>
+            <div class="notice notice-info" style="margin-top:12px;font-size:11px">Al activar: el producto aparece en Venta Manual WhatsApp y queda disponible para pedidos.</div>
+            <div id="sync-log" class="sync-log" style="display:none"></div>
+          </div>
+
+          <div class="sync-card">
+            <h4>Validación pre-activación</h4>
+            <div id="checklist-items"></div>
+          </div>
+        </div><!-- /tab-sync -->
+
+      </div><!-- /tab-content -->
+    </div><!-- /product-editor -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<div id="save-bar" style="display:none">
+  <span class="spinner" id="save-spinner" style="display:none"></span>
+  <span id="save-status">Guardando…</span>
+  <button class="topbar-btn" onclick="saveAll()">Guardar ahora</button>
+</div>
+
+<script>
+'use strict';
+
+/* ──────────────────────────────────────────
+   State
+────────────────────────────────────────── */
+let TOKEN       = '';
+let briefs      = [];
+let currentSlug = null;
+let currentBrief = null;
+let isNew       = false;
+let dirty       = false;
+let autoSaveTimer = null;
+
+const DESIRE_OPTIONS = [
+  { key: 'status',      label: 'Status' },
+  { key: 'estetica',    label: 'Estética' },
+  { key: 'regalo',      label: 'Regalo' },
+  { key: 'uso_personal', label: 'Uso personal' },
+  { key: 'practicidad', label: 'Practicidad' },
+  { key: 'salud',       label: 'Salud' },
+  { key: 'comodidad',   label: 'Comodidad' },
+];
+
+/* ──────────────────────────────────────────
+   Auth
+────────────────────────────────────────── */
+async function doLogin() {
+  const pw = document.getElementById('pw-input').value.trim();
+  if (!pw) return;
+  const res = await fetch('/api/product-registry', {
+    headers: { Authorization: `Bearer ${pw}` },
+  });
+  if (res.status === 401) {
+    document.getElementById('login-error').textContent = 'Contraseña incorrecta';
+    return;
+  }
+  TOKEN = pw;
+  localStorage.setItem('ps_token', TOKEN);
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  loadBriefs();
+}
+
+function authHeaders() {
+  return { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` };
+}
+
+/* ──────────────────────────────────────────
+   Load briefs list
+────────────────────────────────────────── */
+async function loadBriefs() {
+  const res  = await fetch('/api/product-registry', { headers: authHeaders() });
+  const data = await res.json();
+  if (!data.ok) { console.error(data); return; }
+  briefs = data.briefs || [];
+  renderSidebar();
+}
+
+function renderSidebar() {
+  const list = document.getElementById('product-list');
+  if (!briefs.length) {
+    list.innerHTML = '<p style="padding:12px;font-size:11px;color:var(--muted)">Sin productos todavía.</p>';
+    return;
+  }
+  list.innerHTML = briefs.map(b => `
+    <div class="product-item ${b.product_slug === currentSlug ? 'active' : ''}"
+         onclick="loadBrief('${b.product_slug}')">
+      <div class="pi-name">${esc(b.name || b.product_slug)}</div>
+      <div class="pi-meta">
+        <span class="badge badge-${b.status}">${statusLabel(b.status)}</span>
+        ${b.dam_finanzas_status === 'linked' ? '<span class="badge badge-linked">DF</span>' : ''}
+        <span>/${esc(b.product_slug)}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function statusLabel(s) {
+  return { draft: 'Draft', pending_sync: 'Pendiente', active: 'Activo', archived: 'Archivado' }[s] || s;
+}
+
+/* ──────────────────────────────────────────
+   Open new product form
+────────────────────────────────────────── */
+function openNewProduct() {
+  isNew        = true;
+  currentSlug  = null;
+  currentBrief = null;
+  dirty        = false;
+  clearForm();
+  showEditor('Nuevo producto', '');
+  initDesireTypes([]);
+  initBenefits([]);
+  initVariants([]);
+  renderChecklist({});
+  document.getElementById('archive-btn').style.display = 'none';
+  switchTab('tab-producto');
+  renderSidebar();
+}
+
+/* ──────────────────────────────────────────
+   Load existing brief
+────────────────────────────────────────── */
+async function loadBrief(slug) {
+  currentSlug = slug;
+  isNew       = false;
+  dirty       = false;
+
+  const res  = await fetch(`/api/product-registry?slug=${encodeURIComponent(slug)}`, { headers: authHeaders() });
+  const data = await res.json();
+  if (!data.ok) { alert('Error: ' + data.error); return; }
+
+  const b = data.brief;
+  currentBrief = b;
+  populateForm(b);
+  renderSidebar();
+  showEditor(b.op_json?.name || slug, slug);
+  document.getElementById('archive-btn').style.display = b.status !== 'archived' ? 'inline-block' : 'none';
+  renderSyncTab(b);
+  renderInsyncPanel(b.insights_json);
+  renderLandingStatus(b);
+  renderChecklist(b);
+}
+
+/* ──────────────────────────────────────────
+   Populate / read form
+────────────────────────────────────────── */
+function populateForm(b) {
+  const op = b.op_json || {};
+  const st = b.strategic_json || {};
+  const vi = b.visual_json || {};
+
+  setVal('f-name', op.name || '');
+  setVal('f-slug', b.product_slug || '');
+  setVal('f-type', op.type || 'simple');
+  setVal('f-category', op.category || '');
+  setVal('f-internal-name', op.internal_name || '');
+  setVal('f-price', op.price || '');
+  setVal('f-compare-price', op.compare_price || '');
+  setVal('f-cost', op.cost || '');
+  setVal('f-description', op.description || '');
+  setVal('f-stock', op.stock || '');
+  setVal('f-min-stock', op.min_stock || '');
+
+  /* Variants */
+  const hasVariants = Array.isArray(op.variants) && op.variants.length > 0;
+  document.getElementById('f-has-variants').checked = hasVariants;
+  onVariantsToggle();
+  if (hasVariants) initVariants(op.variants);
+
+  /* Strategic */
+  setVal('f-problem', st.problem_solved || '');
+  setVal('f-audience', st.target_audience || '');
+  setVal('f-urgency', st.urgency_type || '');
+  setVal('f-promise', st.main_promise || '');
+  setVal('f-motivation', st.purchase_motivation || '');
+  setVal('f-differentiator', st.differentiator || '');
+  initDesireTypes(st.desire_type || []);
+  initBenefits(st.benefits || []);
+  initTags('objections', st.objections || []);
+
+  /* Visual */
+  const pc = vi.primary_color   || '#0a0a0f';
+  const sc = vi.secondary_color || '#d4af37';
+  document.getElementById('f-color-primary').value   = pc;
+  document.getElementById('f-color-primary-hex').value = pc;
+  document.getElementById('f-color-secondary').value  = sc;
+  document.getElementById('f-color-secondary-hex').value = sc;
+  setVal('f-style', vi.style || '');
+  setVal('f-feel', vi.feel || '');
+  setVal('f-material', vi.material || '');
+  setVal('f-dimensions', vi.dimensions || '');
+  setVal('f-weight', vi.weight || '');
+  setVal('f-visual-notes', vi.notes || '');
+
+  /* Research history */
+  renderResearchHistory(b.research_json || []);
+}
+
+function readForm() {
+  const op = {
+    name:          getVal('f-name'),
+    type:          getVal('f-type'),
+    category:      getVal('f-category'),
+    internal_name: getVal('f-internal-name'),
+    price:         numVal('f-price'),
+    compare_price: numVal('f-compare-price'),
+    cost:          numVal('f-cost'),
+    description:   getVal('f-description'),
+    stock:         numVal('f-stock'),
+    min_stock:     numVal('f-min-stock'),
+  };
+  if (document.getElementById('f-has-variants').checked) {
+    op.variants = readVariants();
+  }
+  const st = {
+    problem_solved:      getVal('f-problem'),
+    target_audience:     getVal('f-audience'),
+    urgency_type:        getVal('f-urgency'),
+    main_promise:        getVal('f-promise'),
+    purchase_motivation: getVal('f-motivation'),
+    differentiator:      getVal('f-differentiator'),
+    desire_type:         readDesireTypes(),
+    benefits:            readBenefits(),
+    objections:          readTags('objections'),
+  };
+  const vi = {
+    primary_color:   document.getElementById('f-color-primary-hex').value || '#0a0a0f',
+    secondary_color: document.getElementById('f-color-secondary-hex').value || '#d4af37',
+    style:           getVal('f-style'),
+    feel:            getVal('f-feel'),
+    material:        getVal('f-material'),
+    dimensions:      getVal('f-dimensions'),
+    weight:          getVal('f-weight'),
+    notes:           getVal('f-visual-notes'),
+  };
+  return { op_json: op, strategic_json: st, visual_json: vi };
+}
+
+/* ──────────────────────────────────────────
+   Save
+────────────────────────────────────────── */
+async function saveAll() {
+  const slug = isNew ? getVal('f-slug').trim() : currentSlug;
+  if (!slug) { alert('El slug es obligatorio'); return; }
+
+  const payload = readForm();
+
+  setSaveStatus('Guardando…', true);
+
+  if (isNew) {
+    payload.slug = slug;
+    payload.action = 'create';
+    const res  = await fetch('/api/product-registry', { method: 'POST', headers: authHeaders(), body: JSON.stringify(payload) });
+    const data = await res.json();
+    if (!data.ok) { setSaveStatus('Error: ' + data.error, false); return; }
+    isNew       = false;
+    currentSlug = slug;
+    await loadBriefs();
+    await loadBrief(slug);
+    setSaveStatus('Guardado', false);
+    return;
+  }
+
+  const res  = await fetch(`/api/product-registry?slug=${encodeURIComponent(slug)}`, {
+    method: 'PATCH', headers: authHeaders(), body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!data.ok) { setSaveStatus('Error: ' + data.error, false); return; }
+  dirty = false;
+  document.getElementById('topbar-name').textContent = payload.op_json.name || slug;
+  await loadBriefs();
+  setSaveStatus('Guardado', false);
+}
+
+function setSaveStatus(msg, loading) {
+  const bar  = document.getElementById('save-bar');
+  const spin = document.getElementById('save-spinner');
+  const txt  = document.getElementById('save-status');
+  bar.style.display = 'flex';
+  spin.style.display = loading ? 'inline-block' : 'none';
+  txt.textContent = msg;
+  if (!loading) setTimeout(() => { bar.style.display = 'none'; }, 2500);
+}
+
+function markDirty() {
+  dirty = true;
+  clearTimeout(autoSaveTimer);
+  /* Auto-save: existing products silently; new products only if slug is filled */
+  autoSaveTimer = setTimeout(() => {
+    if (!dirty) return;
+    if (!isNew) { saveAll(); return; }
+    if (isNew && getVal('f-slug').trim()) saveAll(); // auto-create si tiene slug
+  }, 8000);
+}
+
+/* ──────────────────────────────────────────
+   Research tab
+────────────────────────────────────────── */
+async function runResearch() {
+  const url  = document.getElementById('research-url').value.trim();
+  const type = document.getElementById('research-type').value;
+  if (!url) return;
+
+  const btn = document.getElementById('research-btn');
+  btn.textContent = '…';
+  btn.disabled = true;
+
+  const res  = await fetch('/api/product-research', {
+    method: 'POST', headers: authHeaders(), body: JSON.stringify({ url, source_type: type }),
+  });
+  const data = await res.json();
+  btn.textContent = 'Analizar';
+  btn.disabled = false;
+
+  if (!data.ok) {
+    document.getElementById('research-result').style.display = 'block';
+    document.getElementById('research-result').innerHTML = `<div class="notice notice-error">Error: ${esc(data.error || 'desconocido')}</div>`;
+    return;
+  }
+
+  renderResearchPreview(data);
+}
+
+function renderResearchPreview(data) {
+  const e = data.extracted;
+  const el = document.getElementById('research-result');
+  el.style.display = 'block';
+  el.innerHTML = `
+    <div class="research-preview">
+      <h4>${esc(e.title || e.h1 || '(sin título)')}</h4>
+      <p class="rp-meta">${esc(data.url)} &mdash; ${esc(data.source_type)} &mdash; ${new Date(data.fetched_at).toLocaleString('es-PY')}</p>
+      ${e.description ? `<div class="rp-section"><h5>Descripción</h5><p style="font-size:12px;line-height:1.5">${esc(e.description)}</p></div>` : ''}
+      ${e.features?.length ? `<div class="rp-section"><h5>Features (${e.features.length})</h5><ul>${e.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></div>` : ''}
+      ${Object.keys(e.specs||{}).length ? `<div class="rp-section"><h5>Specs</h5><ul>${Object.entries(e.specs).map(([k,v])=>`<li><strong>${esc(k)}:</strong> ${esc(v)}</li>`).join('')}</ul></div>` : ''}
+      ${e.price_signal ? `<div class="rp-section"><h5>Precio detectado</h5><p style="font-size:12px">${esc(e.price_signal)}</p></div>` : ''}
+      <div class="research-apply-row">
+        <button class="apply-btn" onclick="applyResearchToStrategy(${JSON.stringify(e).replace(/"/g,'&quot;')})">Aplicar a Estrategia</button>
+        <button class="apply-btn" onclick="applyResearchToVisual(${JSON.stringify(e).replace(/"/g,'&quot;')})">Aplicar a Visual</button>
+        <button class="apply-btn" onclick="saveResearchToHistory(${JSON.stringify(data).replace(/"/g,'&quot;')})">Guardar como referencia</button>
+      </div>
+    </div>
+  `;
+}
+
+function applyResearchToStrategy(e) {
+  let applied = 0;
+  // Solo descripción del proveedor va a "problema a resolver" — el usuario la reescribe
+  if (e.description) { setVal('f-problem', e.description); applied++; }
+  // Beneficios del proveedor como materia prima — el usuario filtra y reescribe
+  if (e.features?.length) {
+    initBenefits(e.features.slice(0, 5));
+    applied++;
+  }
+  // NO se auto-llena f-promise (main_promise) con títulos de Alibaba
+  // NO se auto-llena f-differentiator con specs técnicas
+  // Esos campos requieren redacción comercial manual
+  if (applied === 0) {
+    alert('La investigación no tiene datos estratégicos para aplicar. Intentá con otra URL o completá los campos manualmente.');
+    return;
+  }
+  switchTab('tab-estrategia');
+  markDirty();
+}
+
+function applyResearchToVisual(e) {
+  const specs = e.specs || {};
+  if (specs.Material    || specs.material)    setVal('f-material',    specs.Material    || specs.material);
+  if (specs.Dimensiones || specs.Dimensions || specs.Size) setVal('f-dimensions', specs.Dimensiones || specs.Dimensions || specs.Size);
+  if (specs.Peso        || specs.Weight)      setVal('f-weight',      specs.Peso        || specs.Weight);
+  if (e.title) setVal('f-visual-notes', (getVal('f-visual-notes') + '\nReferencia: ' + e.title).trim());
+  switchTab('tab-visual');
+  markDirty();
+}
+
+async function saveResearchToHistory(data) {
+  if (!currentSlug) { alert('Guardá el producto primero'); return; }
+  const res = await fetch(`/api/product-registry?slug=${encodeURIComponent(currentSlug)}`, {
+    method: 'PATCH', headers: authHeaders(),
+    body: JSON.stringify({ research_json: getResearchHistory().concat([data]) }),
+  });
+  const resp = await res.json();
+  if (resp.ok) {
+    renderResearchHistory(resp.brief.research_json || []);
+  }
+}
+
+function getResearchHistory() {
+  const items = document.querySelectorAll('#research-history .history-item');
+  return Array.from(items).map(el => JSON.parse(el.dataset.raw || '{}')).filter(x => x.url);
+}
+
+function renderResearchHistory(list) {
+  const el = document.getElementById('research-history');
+  if (!list.length) { el.innerHTML = ''; return; }
+  el.innerHTML = `<h4>Historial (${list.length})</h4>` + list.map((r, i) => `
+    <div class="history-item" data-raw="${esc(JSON.stringify(r))}" onclick="showHistoryItem(${i})">
+      <div class="hi-url">${esc(r.url || '')}</div>
+      <div class="hi-meta">${esc(r.source_type || '')} &mdash; ${r.fetched_at ? new Date(r.fetched_at).toLocaleDateString('es-PY') : ''}</div>
+      <div class="hi-title">${esc(r.extracted?.title || '')}</div>
+    </div>
+  `).join('');
+}
+
+function showHistoryItem(i) {
+  const items = document.querySelectorAll('#research-history .history-item');
+  const raw   = items[i]?.dataset.raw;
+  if (!raw) return;
+  try { renderResearchPreview(JSON.parse(raw)); } catch (_) {}
+}
+
+/* ──────────────────────────────────────────
+   InSync panel
+────────────────────────────────────────── */
+async function refreshInsync() {
+  if (!currentSlug) return;
+  const btn = document.getElementById('refresh-insync-btn');
+  btn.textContent = '…';
+  btn.disabled = true;
+  const res  = await fetch('/api/product-registry', {
+    method: 'POST', headers: authHeaders(),
+    body: JSON.stringify({ action: 'refresh_insync', slug: currentSlug, period: '30d' }),
+  });
+  const data = await res.json();
+  btn.textContent = '↻ Actualizar';
+  btn.disabled = false;
+  if (data.ok) renderInsyncPanel({ insync: data.insync, landing_intelligence: null });
+}
+
+function renderInsyncPanel(insights) {
+  const el      = document.getElementById('insync-panel');
+  const insync  = insights?.insync;
+  if (!insync || insync.low_volume) {
+    el.innerHTML = `<p style="font-size:12px;color:var(--muted)">${insync ? `Solo ${insync.sessions} sesiones en 30 días. Se necesitan 30+ para hipótesis.` : 'Sin datos de InSync todavía. Hacé clic en ↻ Actualizar.'}</p>`;
+    return;
+  }
+  const sf = insync.scroll_funnel || {};
+  const cv = insync.conversion    || {};
+  el.innerHTML = `
+    <div class="insync-metric"><span class="im-label">Sesiones (30d)</span><span class="im-value">${insync.sessions}</span></div>
+    <div style="margin:10px 0 4px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Scroll funnel</div>
+    ${['p25','p50','p75','p90'].map(k => `
+      <div class="insync-metric" style="padding:3px 0">
+        <span class="im-label" style="font-size:10px">${k.replace('p','')+'%'}</span>
+        <span class="im-value ${sf[k]>=50?'good':sf[k]>=30?'':'warn'}" style="font-size:11px">${sf[k] || 0}% sesiones</span>
+      </div>
+      <div class="funnel-bar"><div class="funnel-fill" style="width:${sf[k]||0}%"></div></div>
+    `).join('')}
+    <div style="margin:10px 0 4px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Conversión</div>
+    <div class="insync-metric"><span class="im-label">Leads atribuidos</span><span class="im-value">${cv.attributed_leads || 0}</span></div>
+    <div class="insync-metric"><span class="im-label">Sesiones con compra</span><span class="im-value ${cv.purchased_sessions>0?'good':''}">${cv.purchased_sessions || 0}</span></div>
+    <div class="insync-metric"><span class="im-label">Conv. sesión→compra</span><span class="im-value">${cv.session_to_purchase_pct || 0}%</span></div>
+    ${insync.top_sections?.length ? `
+      <div style="margin:10px 0 4px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Top secciones</div>
+      ${insync.top_sections.slice(0,4).map(s => `
+        <div class="insync-metric" style="padding:3px 0">
+          <span class="im-label" style="font-size:10px">${esc(s.name)}</span>
+          <span class="im-value" style="font-size:11px">${s.attention_score ?? '?'} score · ${s.reach_pct}% reach</span>
+        </div>
+      `).join('')}
+    ` : ''}
+    <p style="font-size:10px;color:var(--muted);margin-top:8px">Última actualización: ${insync.last_fetched ? new Date(insync.last_fetched).toLocaleString('es-PY') : '—'}</p>
+  `;
+}
+
+/* ──────────────────────────────────────────
+   Landing blueprint — V2
+   Fuentes: strategic_json completo + visual_json + InSync
+   V3 — sanitización estricta + helpers comerciales
+────────────────────────────────────────── */
+
+/* sanitizeForCopy — rechaza cualquier string que no sea copy comercial limpio.
+   Detecta: CSS (color:, px, ;), HTML tags, texto mayormente en inglés largo. */
+function sanitizeForCopy(str) {
+  if (!str || typeof str !== 'string') return '';
+  const t = str.trim();
+  if (!t) return '';
+  // CSS patterns
+  if (/[{}]/.test(t)) return '';
+  if (/;[\s]*[a-z-]+\s*:/i.test(t)) return '';  // "property: value; property2:"
+  if (/\b(font-family|font-size|background[-\s]|border[-\s:]|padding[\s:]|margin[\s:]|display\s*:|width\s*:|height\s*:)/i.test(t)) return '';
+  if (/\b\d{2,}px\b/i.test(t)) return '';
+  // HTML tags
+  if (/<[a-z]/i.test(t)) return '';
+  // Long English-only text (Alibaba titles like "New Original Luxury Watch For Men Waterproof")
+  const words = t.split(/\s+/).filter(w => w.length > 2);
+  if (words.length >= 6) {
+    const hasSpanish = /[áéíóúñüÁÉÍÓÚÑÜ]/.test(t) ||
+      /\b(para|con|por|una?|este|esta|los|las|que|del|son|más|tiene|entre|como|pero|muy|todo|también|ya|si|su|se|le|al|él|de|en|el|un|es|no|lo|mi|yo|nos|hay|fue|ser|ha|si|bien|así|está|son|sus)\b/i.test(t);
+    const englishOnly = words.filter(w => /^[a-zA-Z]+$/.test(w)).length;
+    if (!hasSpanish && englishOnly / words.length > 0.70) return ''; // >70% inglés → garbage Alibaba
+  }
+  return t;
+}
+
+/* generateHeroTitle — promesa comercial con fallback por categoría */
+function generateHeroTitle(name, promise) {
+  const p = sanitizeForCopy(promise);
+  if (p) return esc(p);
+  const n = (name || '').toLowerCase();
+  if (/reloj|watch/.test(n)) return 'El Accesorio Que Define Tu Estilo';
+  if (/lente|gafa|anteojos/.test(n)) return 'Mirá el Mundo con Estilo';
+  if (/cadena|collar|joya|pulsera/.test(n)) return 'El Detalle Que Marca la Diferencia';
+  if (/cepillo|pelo|cabello/.test(n)) return 'Tu Rutina, Tu Estilo';
+  if (/zapato|calzado|sandalia/.test(n)) return 'Comodidad y Estilo en Cada Paso';
+  return esc(name) || 'Tu Próximo Favorito';
+}
+
+/* generateFaqAnswer — respuestas comerciales breves para objeciones */
+function generateFaqAnswer(q, name) {
+  const ql = (q || '').toLowerCase();
+  if (/agua|impermeable|lluvia|water/.test(ql))
+    return `${esc(name)} tiene resistencia al agua para uso diario. No sumergir.`;
+  if (/regalo|regalar/.test(ql))
+    return `¡Perfecto para regalo! Lo enviamos con packaging especial.`;
+  if (/envío|entrega|demora|shipping/.test(ql))
+    return `Enviamos en 24-48 horas hábiles a todo Paraguay.`;
+  if (/original|genuino|falso|copia/.test(ql))
+    return `Sí, 100% original. Verificado antes de cada envío.`;
+  if (/garantía|garantia/.test(ql))
+    return `Garantía de satisfacción. Si no quedás conforme, lo resolvemos.`;
+  if (/color|colores/.test(ql))
+    return `Consultá disponibilidad por WhatsApp antes de hacer el pedido.`;
+  if (/talla|tamaño|talle|medida/.test(ql))
+    return `Consultá el talle exacto por WhatsApp antes de tu pedido.`;
+  if (/pago|cuota|tarjeta|precio/.test(ql))
+    return `Aceptamos transferencia y efectivo. Precio fijo sin sorpresas.`;
+  if (/hombre|mujer|unisex|quién/.test(ql))
+    return `Es unisex y funciona como regalo para cualquier ocasión.`;
+  return `${esc(name)} cumple con esta característica. ¿Tenés más dudas? Escribinos por WhatsApp.`;
+}
+
+/* filterBenefitsForBlueprint — filtro + sanitize */
+function filterBenefitsForBlueprint(benefits) {
+  return (benefits || []).map(sanitizeForCopy).filter(b => {
+    if (!b) return false;
+    if (b.length < 10) return false;
+    if (b.split(/\s+/).length < 3) return false;
+    const parts = b.split(',').map(p => p.trim()).filter(Boolean);
+    if (parts.length >= 2 && parts.every(p => p.split(/\s+/).length <= 3)) return false;
+    if (/[>|\\]/.test(b)) return false;
+    return true;
+  });
+}
+
+async function generateBlueprint() {
+  const data = readForm();
+  const op   = data.op_json;
+  const st   = data.strategic_json;
+  const vi   = data.visual_json;
+  const slug = currentSlug || getVal('f-slug');
+
+  // ── Producto ──
+  const name     = op.name || slug || 'Producto';
+  const price    = op.price    ? `Gs. ${Number(op.price).toLocaleString('es-PY')}` : '';
+  const cmpPrice = op.compare_price ? `Gs. ${Number(op.compare_price).toLocaleString('es-PY')}` : '';
+  const pc       = vi.primary_color   || '#0a0a0f';
+  const sc       = vi.secondary_color || '#d4af37';
+
+  // ── Estrategia — sanitizado estricto ──
+  const promise        = sanitizeForCopy(st.main_promise        || '');
+  const problem        = sanitizeForCopy(st.problem_solved      || '');
+  const differentiator = sanitizeForCopy(st.differentiator      || '');
+  const urgencyType    = st.urgency_type        || '';
+  const motivation     = sanitizeForCopy(st.purchase_motivation || '');
+  const audience       = sanitizeForCopy(st.target_audience     || '');
+  const objections     = (st.objections || []).filter(Boolean);
+  const benefits       = filterBenefitsForBlueprint(st.benefits);
+
+  // ── Specs visuales — solo de visual_json (datos seguros del usuario) ──
+  const specs = [];
+  if (vi.material)   specs.push(['Material',    vi.material]);
+  if (vi.dimensions) specs.push(['Dimensiones', vi.dimensions]);
+  if (vi.weight)     specs.push(['Peso',        vi.weight]);
+  if (vi.style)      specs.push(['Estilo',      vi.style]);
+  if (vi.feel)       specs.push(['Acabado',     vi.feel]);
+
+  // ── Caja — si visual/notes menciona caja ──
+  const hasCaja = /\bcaja\b/i.test(vi.notes || '');
+  const cajaNotes = hasCaja ? (vi.notes || '').match(/caja[^.!?\n]*/i)?.[0]?.trim() || '' : '';
+
+  // ── InSync (si disponible) ──
+  const insync   = currentBrief?.insights_json?.insync;
+  const hasSess  = insync && !insync.low_volume;
+  const topSecs  = (insync?.top_sections || []).slice(0, 5);
+  const convRate = insync?.conversion?.session_to_purchase_pct || 0;
+
+  // ── Helpers de render ──
+  const heroTitle  = generateHeroTitle(name, promise);
+  const heroSub    = problem || motivation || '';
+  const priceHtml  = price
+    ? `<div class="pb"><span class="pm">${price}</span>${cmpPrice ? `<span class="pc">${cmpPrice}</span>` : ''}</div>`
+    : '';
+  const urgencyHtml = urgencyType === 'escasez'
+    ? `<p class="urg">⚡ Stock limitado — últimas unidades</p>`
+    : urgencyType === 'oferta'
+    ? `<p class="urg">🔥 Precio especial por tiempo limitado</p>`
+    : '';
+
+  // ── Comentario InSync ──
+  const insyncComment = hasSess
+    ? `<!-- InSync ${insync.period}: ${insync.sessions} sesiones | conv ${convRate}%\n${topSecs.map(s => `     ${s.name}: reach ${s.reach_pct}% | ${s.avg_time_s}s | score ${s.attention_score}`).join('\n')}\n-->`
+    : `<!-- InSync: sin datos — actualizá en tab Landing después de recibir tráfico -->`;
+
+  // ── Sección: Problema ──
+  const sProblema = problem ? `
+<section class="sec" id="section-problema">
+<div class="inner">
+  ${audience ? `<p class="eyebrow">${esc(audience)}</p>` : ''}
+  <h2>¿Por qué lo necesitás?</h2>
+  <p class="body">${esc(problem)}</p>
+</div>
+</section>` : '';
+
+  // ── Sección: Beneficios ──
+  const sBeneficios = benefits.length ? `
+<section class="sec alt" id="section-beneficios">
+<div class="inner">
+  <h2>¿Por qué ${esc(name)}?</h2>
+  <ul class="blist">
+    ${benefits.map((b, i) => `<li><span class="bnum">${i + 1}</span><span class="btxt">${esc(b)}</span></li>`).join('\n    ')}
+  </ul>
+</div>
+</section>` : '';
+
+  // ── Sección: Diferenciador — solo si pasa sanitize ──
+  const sDif = differentiator ? `
+<section class="sec" id="section-diferenciador">
+<div class="inner">
+  <h2>Lo que nos hace diferentes</h2>
+  <p class="body dif">${esc(differentiator)}</p>
+</div>
+</section>` : '';
+
+  // ── Sección: Caja incluida ──
+  const sCaja = hasCaja ? `
+<section class="sec alt" id="section-caja">
+<div class="inner">
+  <h2>Incluye caja de regalo</h2>
+  <p class="body">${cajaNotes ? esc(cajaNotes) : 'Viene en packaging especial, listo para regalar.'}</p>
+</div>
+</section>` : '';
+
+  // ── Sección: Ficha técnica ──
+  const sSpecs = specs.length ? `
+<section class="sec ${hasCaja ? '' : 'alt'}" id="section-especificaciones">
+<div class="inner">
+  <h2>Ficha técnica</h2>
+  <table><tbody>
+    ${specs.map(([k, v]) => `<tr><td class="sk">${esc(k)}</td><td class="sv">${esc(v)}</td></tr>`).join('\n    ')}
+  </tbody></table>
+</div>
+</section>` : '';
+
+  // ── Sección: FAQ con respuestas generadas ──
+  const sFaq = objections.length ? `
+<section class="sec" id="section-faq">
+<div class="inner">
+  <h2>Preguntas frecuentes</h2>
+  ${objections.map(obj => `<div class="faq"><div class="fq">❓ ${esc(obj)}</div><div class="fa">${generateFaqAnswer(obj, name)}</div></div>`).join('\n  ')}
+</div>
+</section>` : '';
+
+  // ── Sección: Prueba social — no mostrar vacío ──
+  const sSocial = `
+<section class="sec alt" id="section-prueba-social">
+<div class="inner">
+  <h2>¿Para quién es ideal?</h2>
+  <p class="body">Ideal para regalo y uso diario. Perfecto para sorprender a alguien especial o para darte un gusto.</p>
+  <!-- INSERTAR TESTIMONIOS REALES AQUÍ -->
+</div>
+</section>`;
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${esc(name)}${promise ? ' — ' + esc(promise) : ''}</title>
+${insyncComment}
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:${pc};color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.55}
+.inner{max-width:520px;margin:0 auto;padding:0 4px}
+h2{font-size:20px;font-weight:700;margin-bottom:18px;color:#fff}
+.body{font-size:15px;color:rgba(255,255,255,.72);line-height:1.7}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${sc};margin-bottom:10px}
+.hero{padding:72px 20px 56px;text-align:center}
+.hero .inner{text-align:center}
+.hero-name{font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:${sc};margin-bottom:12px}
+.hero h1{font-size:clamp(22px,6vw,34px);font-weight:800;line-height:1.15;margin-bottom:14px;color:#fff}
+.hero .sub{font-size:16px;color:rgba(255,255,255,.6);margin-bottom:28px;max-width:400px;margin-left:auto;margin-right:auto}
+.pb{margin:16px 0 28px;text-align:center}
+.pm{font-size:30px;font-weight:800;color:${sc}}
+.pc{font-size:16px;color:rgba(255,255,255,.3);text-decoration:line-through;margin-left:10px}
+.cta{display:inline-block;background:${sc};color:#000;font-size:16px;font-weight:700;padding:16px 48px;border-radius:8px;border:none;cursor:pointer;letter-spacing:.02em;text-decoration:none}
+.urg{font-size:12px;color:rgba(255,255,255,.45);margin-top:12px}
+.sec{padding:52px 20px}
+.sec.alt{background:rgba(255,255,255,.035)}
+.blist{list-style:none;padding:0}
+.blist li{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
+.bnum{width:28px;height:28px;background:${sc};color:#000;font-weight:800;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.btxt{font-size:14px;color:rgba(255,255,255,.82);line-height:1.65}
+.dif{border-left:3px solid ${sc};padding-left:18px}
+table{width:100%;border-collapse:collapse}
+.sk{padding:10px 12px;font-size:13px;color:rgba(255,255,255,.45);width:38%;border-bottom:1px solid rgba(255,255,255,.07)}
+.sv{padding:10px 12px;font-size:13px;color:#fff;border-bottom:1px solid rgba(255,255,255,.07)}
+.faq{margin-bottom:12px;border:1px solid rgba(255,255,255,.09);border-radius:8px;overflow:hidden}
+.fq{padding:14px 16px;font-size:14px;font-weight:600;background:rgba(255,255,255,.05)}
+.fa{padding:12px 16px;font-size:13px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.02)}
+.cta-sec{text-align:center;padding:64px 20px}
+.cta-sec h2{font-size:22px;margin-bottom:24px}
+.cta-wa{display:inline-block;background:#25D366;color:#fff;font-size:14px;font-weight:600;padding:12px 32px;border-radius:8px;margin-top:16px;text-decoration:none;letter-spacing:.02em}
+.footer{text-align:center;padding:20px;font-size:11px;color:rgba(255,255,255,.2);border-top:1px solid rgba(255,255,255,.06)}
+</style>
+</head>
+<body>
+<section class="hero" id="section-hero">
+  <div class="inner">
+    <p class="hero-name">${esc(name)}</p>
+    <h1>${heroTitle}</h1>
+    ${heroSub ? `<p class="sub">${esc(heroSub)}</p>` : ''}
+    ${priceHtml}
+    <button class="cta" onclick="document.getElementById('section-cta').scrollIntoView({behavior:'smooth'})">Quiero el mío →</button>
+  </div>
+</section>
+${sProblema}
+${sBeneficios}
+${sDif}
+${sCaja}
+${sSpecs}
+${sFaq}
+${sSocial}
+<section class="cta-sec" id="section-cta">
+<div class="inner">
+  <h2>Llevate el tuyo hoy</h2>
+  ${priceHtml}
+  ${urgencyHtml}
+  <button class="cta" onclick="alert('Conectar modal de pedido')">Quiero el mío →</button>
+  <!-- WhatsApp: <a class="cta-wa" href="https://wa.me/595XXXXXXXXX?text=Hola%2C+quiero+el+${encodeURIComponent(name)}">Pedir por WhatsApp</a> -->
+</div>
+</section>
+<div class="footer">
+  <p>Blueprint V3 — Product Studio — Dam Vertex</p>
+  <p style="margin-top:4px;font-size:10px">Borrador estructural — no reemplaza el diseño final</p>
+</div>
+</body>
+</html>`;
+
+  window._blueprintHtml = html;
+
+  document.getElementById('preview-blueprint-btn').disabled = false;
+  document.getElementById('download-blueprint-btn').disabled = false;
+
+  const area   = document.getElementById('blueprint-preview-area');
+  const iframe = document.getElementById('blueprint-iframe');
+  area.style.display = 'block';
+  iframe.srcdoc = html;
+
+  renderLandingStatus({ landing_status: 'draft', landing_html: html });
+
+  if (currentSlug) {
+    const saveRes = await fetch('/api/product-registry', {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({ action: 'save_landing', slug: currentSlug, html }),
+    });
+    const saveData = await saveRes.json().catch(() => ({}));
+    if (!saveData.ok) console.warn('save_landing failed:', saveData.error);
+  } else {
+    setSaveStatus('Blueprint generado — guardá el producto para persistirlo', false);
+    return;
+  }
+
+  setSaveStatus('Blueprint generado y guardado', false);
+}
+
+function previewBlueprint() {
+  if (!window._blueprintHtml) return;
+  const area   = document.getElementById('blueprint-preview-area');
+  const iframe = document.getElementById('blueprint-iframe');
+  area.style.display = 'block';
+  iframe.srcdoc = window._blueprintHtml;
+  area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function downloadBlueprint() {
+  const html = window._blueprintHtml;
+  if (!html) return;
+  const slug = currentSlug || getVal('f-slug') || 'producto';
+  const blob = new Blob([html], { type: 'text/html' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `landing-${slug}-blueprint.html`;
+  a.click();
+}
+
+function renderLandingStatus(b) {
+  const badge = document.getElementById('landing-status-badge');
+  if (!badge) return;
+  const s = b.landing_status || 'none';
+  badge.className = `badge badge-${s === 'active' ? 'active' : s === 'draft' ? 'pending' : 'draft'}`;
+  badge.textContent = { none: 'Sin blueprint', draft: 'Blueprint draft', active: 'Landing activa' }[s] || s;
+  if (b.landing_html) {
+    window._blueprintHtml = b.landing_html;
+    document.getElementById('preview-blueprint-btn').disabled = false;
+    document.getElementById('download-blueprint-btn').disabled = false;
+  }
+}
+
+/* ──────────────────────────────────────────
+   Sync tab
+────────────────────────────────────────── */
+function renderSyncTab(b) {
+  setEl('sync-vertex-status',  b.product_slug ? '✓ Registrado en D1' : '—');
+  setEl('sync-slug',           b.product_slug || '—');
+  setEl('sync-active',         b.op_json?.active === 1 ? '✓ Activo' : 'No');
+  setEl('sync-lifecycle',      statusLabel(b.status));
+  setEl('sync-finanzas-status', { pending: 'Pendiente', linked: '✓ Vinculado', failed: '✗ Error' }[b.dam_finanzas_status] || '—');
+  setEl('sync-finanzas-id',    b.dam_finanzas_id || '—');
+  setEl('sync-finanzas-note',  b.dam_finanzas_note || '—');
+
+  const syncBtn     = document.getElementById('sync-to-finanzas-btn');
+  const activateBtn = document.getElementById('activate-btn');
+  if (syncBtn)     syncBtn.disabled     = !currentSlug || b.status === 'archived';
+  if (activateBtn) activateBtn.disabled = !currentSlug || b.status === 'active' || b.status === 'archived';
+}
+
+async function syncToFinanzas() {
+  if (!currentSlug) { alert('Guardá el producto primero'); return; }
+  logSync('Iniciando sincronización con DAM Finanzas…');
+  const btn = document.getElementById('sync-to-finanzas-btn');
+  btn.disabled = true;
+  const res  = await fetch('/api/product-registry', {
+    method: 'POST', headers: authHeaders(),
+    body: JSON.stringify({ action: 'sync_to_finanzas', slug: currentSlug }),
+  });
+  const data = await res.json();
+  btn.disabled = false;
+  if (data.ok) {
+    logSync(`✓ Sincronizado. productId: ${data.productId}\nAcción: ${data.action}`);
+    renderSyncTab(data.brief);
+    await loadBriefs();
+    renderChecklist(data.brief);
+  } else {
+    logSync(`✗ Error: ${data.error}\n${data.detail || ''}${data.finanzas ? '\n' + JSON.stringify(data.finanzas) : ''}`);
+  }
+}
+
+async function activateProduct() {
+  if (!currentSlug) return;
+  if (!confirm(`¿Activar "${currentSlug}"?\n\nEl producto aparecerá en Venta Manual WhatsApp.`)) return;
+  const res  = await fetch('/api/product-registry', {
+    method: 'POST', headers: authHeaders(),
+    body: JSON.stringify({ action: 'activate', slug: currentSlug }),
+  });
+  const data = await res.json();
+  if (data.ok) {
+    logSync(`✓ Producto activado: ${currentSlug}`);
+    await loadBriefs();
+    await loadBrief(currentSlug);
+  } else {
+    logSync(`✗ Error al activar: ${data.error}\n${data.hint || ''}`);
+  }
+}
+
+async function archiveProduct() {
+  if (!currentSlug) return;
+  if (!confirm(`¿Archivar "${currentSlug}"?\n\nDejará de aparecer en ventas. Se puede reactivar.`)) return;
+  const res  = await fetch('/api/product-registry', {
+    method: 'POST', headers: authHeaders(),
+    body: JSON.stringify({ action: 'archive', slug: currentSlug }),
+  });
+  const data = await res.json();
+  if (data.ok) {
+    await loadBriefs();
+    await loadBrief(currentSlug);
+    logSync(`Producto archivado: ${currentSlug}`);
+  } else {
+    logSync(`✗ Error al archivar: ${data.error}`);
+  }
+}
+
+function logSync(msg) {
+  const el = document.getElementById('sync-log');
+  if (!el) return;
+  el.style.display = 'block';
+  el.textContent = (el.textContent ? el.textContent + '\n' : '') + `[${new Date().toLocaleTimeString('es-PY')}] ${msg}`;
+  el.scrollTop = el.scrollHeight;
+}
+
+/* ──────────────────────────────────────────
+   Checklist
+────────────────────────────────────────── */
+function renderChecklist(b) {
+  const op  = b.op_json  || {};
+  const st  = b.strategic_json || {};
+  const vi  = b.visual_json    || {};
+  const items = [
+    { ok: !!op.name,          label: 'Nombre definido' },
+    { ok: !!op.price,         label: 'Precio de venta definido' },
+    { ok: !!op.cost,          label: 'Costo unitario definido' },
+    { ok: !!op.stock,         label: 'Stock inicial cargado' },
+    { ok: !!st.main_promise,  label: 'Promesa principal definida' },
+    { ok: st.benefits?.filter(Boolean).length >= 2, label: 'Al menos 2 beneficios' },
+    { ok: !!vi.primary_color, label: 'Colores definidos' },
+    { ok: b.dam_finanzas_status === 'linked', label: 'Sincronizado con DAM Finanzas' },
+    { ok: b.status === 'active', label: 'Producto activado' },
+  ];
+  const el = document.getElementById('checklist-items');
+  if (!el) return;
+  el.innerHTML = items.map(i => `
+    <div class="sync-row">
+      <span class="sr-label">${esc(i.label)}</span>
+      <span class="sr-value" style="color:${i.ok ? 'var(--green)' : 'var(--muted)'}">${i.ok ? '✓' : '○'}</span>
+    </div>
+  `).join('');
+}
+
+/* ──────────────────────────────────────────
+   Variants
+────────────────────────────────────────── */
+function onVariantsToggle() {
+  const has = document.getElementById('f-has-variants').checked;
+  document.getElementById('variants-editor').style.display = has ? 'block' : 'none';
+  if (has && !document.querySelectorAll('#variants-list .variant-row').length) {
+    addVariantRow();
+  }
+}
+
+function addVariantRow(v = {}) {
+  const row  = document.createElement('div');
+  row.className = 'variant-row';
+  row.innerHTML = `
+    <input type="text"   placeholder="Nombre (Negro, Dorado…)" value="${esc(v.name || '')}" oninput="markDirty()">
+    <input type="number" placeholder="0" value="${v.stock || 0}" min="0" oninput="markDirty()">
+    <input type="number" placeholder="0" value="${v.price || 0}" min="0" oninput="markDirty()">
+    <input type="number" placeholder="0" value="${v.min_stock || 0}" min="0" oninput="markDirty()">
+    <button class="variant-remove" onclick="this.closest('.variant-row').remove();markDirty()">×</button>
+  `;
+  document.getElementById('variants-list').appendChild(row);
+}
+
+function initVariants(variants) {
+  document.getElementById('variants-list').innerHTML = '';
+  (variants || []).forEach(v => addVariantRow(v));
+}
+
+function readVariants() {
+  return Array.from(document.querySelectorAll('#variants-list .variant-row')).map(row => {
+    const inputs = row.querySelectorAll('input');
+    return { name: inputs[0].value.trim(), stock: +inputs[1].value || 0, price: +inputs[2].value || 0, min_stock: +inputs[3].value || 0 };
+  }).filter(v => v.name);
+}
+
+/* ──────────────────────────────────────────
+   Desire types checkboxes
+────────────────────────────────────────── */
+function initDesireTypes(selected) {
+  const el = document.getElementById('desire-types');
+  el.innerHTML = DESIRE_OPTIONS.map(d => `
+    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px">
+      <input type="checkbox" value="${d.key}" ${selected.includes(d.key) ? 'checked' : ''} onchange="markDirty()">
+      ${d.label}
+    </label>
+  `).join('');
+}
+
+function readDesireTypes() {
+  return Array.from(document.querySelectorAll('#desire-types input:checked')).map(c => c.value);
+}
+
+/* ──────────────────────────────────────────
+   Benefits list
+────────────────────────────────────────── */
+function addBenefit(val = '') {
+  const list  = document.getElementById('benefits-list');
+  const count = list.querySelectorAll('.benefit-input').length;
+  if (count >= 5) return;
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;align-items:center';
+  div.innerHTML = `
+    <input class="form-input benefit-input" style="flex:1" placeholder="Beneficio ${count + 1}…" value="${esc(val)}" oninput="markDirty()">
+    <button class="variant-remove" onclick="this.parentElement.remove();markDirty()">×</button>
+  `;
+  list.appendChild(div);
+}
+
+function initBenefits(benefits) {
+  document.getElementById('benefits-list').innerHTML = '';
+  const vals = benefits.filter(Boolean).slice(0, 5);
+  if (vals.length) vals.forEach(b => addBenefit(b));
+  else addBenefit();
+}
+
+function readBenefits() {
+  return Array.from(document.querySelectorAll('.benefit-input')).map(i => i.value.trim()).filter(Boolean);
+}
+
+/* ──────────────────────────────────────────
+   Tags input
+────────────────────────────────────────── */
+const tagState = {};
+
+function initTags(key, values) {
+  tagState[key] = [...(values || [])];
+  renderTags(key);
+}
+
+function addTag(e, key) {
+  if (e.key !== 'Enter') return;
+  const input = document.getElementById(`${key}-input`);
+  const val   = input.value.trim();
+  if (!val) return;
+  e.preventDefault();
+  if (!tagState[key]) tagState[key] = [];
+  if (!tagState[key].includes(val)) {
+    tagState[key].push(val);
+    renderTags(key);
+    markDirty();
+  }
+  input.value = '';
+}
+
+function removeTag(key, i) {
+  tagState[key].splice(i, 1);
+  renderTags(key);
+  markDirty();
+}
+
+function renderTags(key) {
+  const container = document.getElementById(`${key}-tags-container`);
+  const input     = document.getElementById(`${key}-input`);
+  if (!container || !input) return;
+  const chips = (tagState[key] || []).map((t, i) => `
+    <span class="tag-chip">${esc(t)}<button onclick="removeTag('${key}',${i})">×</button></span>
+  `).join('');
+  container.innerHTML = chips;
+  container.appendChild(input);
+}
+
+function readTags(key) { return tagState[key] || []; }
+
+function focusTagInput(id) {
+  document.getElementById(id)?.focus();
+}
+
+/* ──────────────────────────────────────────
+   Color pickers
+────────────────────────────────────────── */
+function syncColor(which) {
+  const hex    = document.getElementById(`f-color-${which}-hex`).value;
+  const picker = document.getElementById(`f-color-${which}`);
+  if (/^#[0-9a-fA-F]{6}$/.test(hex)) picker.value = hex;
+  markDirty();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('f-color-primary').addEventListener('input', e => {
+    document.getElementById('f-color-primary-hex').value = e.target.value;
+    markDirty();
+  });
+  document.getElementById('f-color-secondary').addEventListener('input', e => {
+    document.getElementById('f-color-secondary-hex').value = e.target.value;
+    markDirty();
+  });
+});
+
+/* ──────────────────────────────────────────
+   UI helpers
+────────────────────────────────────────── */
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId)?.classList.add('active');
+  document.querySelector(`[data-tab="${tabId}"]`)?.classList.add('active');
+  /* Warn in Landing tab if product not saved yet */
+  if (tabId === 'tab-landing') {
+    const warn = document.getElementById('landing-unsaved-warn');
+    if (warn) warn.style.display = isNew ? 'block' : 'none';
+  }
+}
+
+function showEditor(name, slug) {
+  document.getElementById('empty-state').style.display    = 'none';
+  document.getElementById('product-editor').style.display = 'flex';
+  document.getElementById('topbar-name').textContent      = name || 'Nuevo producto';
+  document.getElementById('topbar-slug').textContent      = slug ? `/${slug}` : 'nuevo';
+}
+
+function clearForm() {
+  document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(el => { el.value = ''; });
+  document.getElementById('f-color-primary').value       = '#0a0a0f';
+  document.getElementById('f-color-primary-hex').value   = '#0a0a0f';
+  document.getElementById('f-color-secondary').value     = '#d4af37';
+  document.getElementById('f-color-secondary-hex').value = '#d4af37';
+  document.getElementById('f-has-variants').checked = false;
+  document.getElementById('variants-editor').style.display = 'none';
+  document.getElementById('variants-list').innerHTML = '';
+  document.getElementById('sync-log').textContent = '';
+  document.getElementById('sync-log').style.display = 'none';
+  window._blueprintHtml = null;
+  document.getElementById('preview-blueprint-btn').disabled = true;
+  document.getElementById('download-blueprint-btn').disabled = true;
+  document.getElementById('blueprint-preview-area').style.display = 'none';
+  document.getElementById('research-result').style.display = 'none';
+  document.getElementById('research-history').innerHTML = '';
+  document.getElementById('insync-panel').innerHTML = '<p style="font-size:12px;color:var(--muted)">Sin datos de InSync todavía.</p>';
+  tagState.objections = [];
+}
+
+function onNameInput() {
+  if (!isNew) return;
+  const name = getVal('f-name');
+  const slug = name.toLowerCase().trim()
+    .replace(/[áàâä]/g,'a').replace(/[éèêë]/g,'e').replace(/[íìîï]/g,'i').replace(/[óòôö]/g,'o').replace(/[úùûü]/g,'u').replace(/ñ/g,'n')
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  setVal('f-slug', slug);
+  document.getElementById('topbar-name').textContent = name || 'Nuevo producto';
+  document.getElementById('topbar-slug').textContent = slug ? `/${slug}` : 'nuevo';
+  markDirty();
+}
+
+function getVal(id)  { return document.getElementById(id)?.value || ''; }
+function setVal(id, v){ const el = document.getElementById(id); if (el) el.value = v ?? ''; }
+function numVal(id)  { const v = parseFloat(document.getElementById(id)?.value); return isNaN(v) ? null : v; }
+function setEl(id, v){ const el = document.getElementById(id); if (el) el.textContent = v; }
+function esc(s)      { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+/* ──────────────────────────────────────────
+   Init
+────────────────────────────────────────── */
+(function init() {
+  const saved = localStorage.getItem('ps_token');
+  if (saved) {
+    TOKEN = saved;
+    fetch('/api/product-registry', { headers: { Authorization: `Bearer ${saved}` } })
+      .then(r => {
+        if (r.status === 401) { localStorage.removeItem('ps_token'); return; }
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display          = 'flex';
+        loadBriefs();
+      });
+  }
+  document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+  /* Mark dirty on any input change (new y existing) */
+  document.addEventListener('input', e => {
+    if (e.target.closest('#tab-content')) markDirty();
+  });
+
+  /* Warn before leaving with unsaved new product */
+  window.addEventListener('beforeunload', e => {
+    if (isNew && dirty) {
+      e.preventDefault();
+      e.returnValue = 'Tenés cambios sin guardar. ¿Salir igual?';
+    }
+  });
+})();
+</script>
+</body>
+</html>

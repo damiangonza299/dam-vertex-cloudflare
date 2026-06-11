@@ -4,6 +4,27 @@ Leer antes de modificar cualquier archivo de código en este repositorio.
 
 ---
 
+## UMBRALES OFICIALES DAM VERTEX
+
+DAM VERTEX Paraguay — clasificación de compradores y eventos Meta CAPI. **Prohibido modificar sin decisión de negocio explícita documentada en CLAUDE.md y GEMINI.md.**
+
+| Clasificación | Umbral | Evento CAPI | buyer_type D1 |
+|---|---|---|---|
+| Alto valor | >= 199.000 Gs | `HighValuePurchase` | `alto_valor` |
+| VIP | >= 300.000 Gs | `HighValuePurchase` + `VIPPurchase` | `vip` |
+| Ultra VIP | >= 500.000 Gs | `HighValuePurchase` + `VIPPurchase` (sin CAPI dedicado) | `ultra_vip` |
+| Fast Buyer | compra en < 24h | `FastBuyer` (solo server-side CAPI, nunca Pixel) | `rapido` |
+
+**Mapping CAPI ↔ DAM Intelligence:**
+- `HighValuePurchase` Meta = Alto Valor DAM VERTEX (>= Gs. 199.000)
+- `VIPPurchase` Meta = VIP DAM VERTEX (>= Gs. 300.000)
+- `FastBuyer` Meta = Fast Buyer (< 24h) — nunca duplicar en Pixel/browser
+- `Purchase` Meta = toda compra confirmada, sin umbral de valor
+
+**Archivos:** `functions/api/intelligence/_bqe-scorer.js` · `functions/api/confirm-purchase.js`
+
+---
+
 ## REGLA CRÍTICA DE DEPLOY — DAM VERTEX
 
 > **Incidente 2026-06:** `wrangler pages deploy .` (raíz) subió estáticos bajo `/public/reloj/`, `/public/cadena/` etc. Landings en 404 en producción. `node_modules` incluido. **Este error no puede repetirse.**

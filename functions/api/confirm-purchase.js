@@ -30,7 +30,6 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const lead = await env.DB.prepare('SELECT * FROM leads WHERE id = ?').bind(id).first();
     if (!lead)           return json({ ok: false, error: 'Lead no encontrado' }, 404);
     if (lead.status === 'purchased') return json({ ok: false, error: 'Ya fue confirmado' }, 409);
-    if (lead.status === 'cancelled') return json({ ok: false, error: 'Lead cancelado' }, 409);
 
     /* Verificar stock — ANTES de enviar Purchase a Meta */
     const saleQty     = Number(lead.quantity) || 1;
@@ -263,9 +262,13 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     }
 
-    /* HighValuePurchase / VIPPurchase — server-side only, no browser counterpart */
+    /* HighValuePurchase / VIPPurchase — server-side only, no browser counterpart
+       DAM VERTEX PY — UMBRALES OFICIALES
+       HighValuePurchase: >= 199.000 Gs  (alto_valor + vip + ultra_vip)
+       VIPPurchase:       >= 300.000 Gs  (vip + ultra_vip)
+       Ultra VIP (500k+): cubierto por VIPPurchase; sin evento CAPI dedicado por ahora */
     const saleValue = lead.value || 0;
-    if (saleValue >= 300000 && pixelId && accessToken) {
+    if (saleValue >= 199000 && pixelId && accessToken) {
       const ts           = Math.floor(Date.now() / 1000);
       const customEvents = [];
 
@@ -285,7 +288,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
         },
       });
 
-      if (saleValue >= 500000) {
+      if (saleValue >= 300000) {
         customEvents.push({
           event_name:    'VIPPurchase',
           event_time:    ts,
@@ -387,10 +390,15 @@ export async function onRequestPost({ request, env, waitUntil }) {
       env
     ).catch(e => console.warn('DAM_FINANZAS_NOTIFY_FAILED', String(lead.id), e?.message));
 
+    const tgInvoicePromise = (lead.invoice_requested && env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_INVOICE_CHAT_ID)
+      ? sendTelegramInvoice(lead, env).catch(e => console.warn('TG_INVOICE_WARN lead_id=' + lead.id, e?.message))
+      : Promise.resolve();
+
     if (typeof waitUntil === 'function') {
       waitUntil(Promise.all([
         damNotifyPromise,
         autoScorePurchase(id, env.DB),
+        tgInvoicePromise,
       ]));
     }
     return json({ ok: true, name: lead.name, event_id });
@@ -447,6 +455,38 @@ function parseLeadVariants(value) {
 
   return [value];
 }
+async function sendTelegramInvoice(lead, env) {
+  const fmtNum = n => Number(n || 0).toLocaleString('es-PY');
+  let variants = '';
+  try {
+    const parsed = JSON.parse(lead.variant || 'null');
+    if (Array.isArray(parsed) && parsed.length) variants = ' — ' + parsed.filter(Boolean).join(' + ');
+    else if (typeof parsed === 'string' && parsed) variants = ' — ' + parsed;
+  } catch (_) {}
+
+  const lines = [
+    '🧾 FACTURA SOLICITADA',
+    '',
+    `Pedido: #${lead.id}`,
+    `Cliente: ${lead.name || ''}`,
+    `Teléfono: ${lead.phone || ''}`,
+    `Producto: ${lead.product_name || ''}${variants}`,
+    `Total cobrado: Gs. ${fmtNum(lead.value)}`,
+    `RUC: ${lead.invoice_ruc || ''}`,
+    `Razón social: ${lead.invoice_name || ''}`,
+    `Email: ${lead.invoice_email || 'No proporcionado'}`,
+    '',
+    'Concepto sugerido: Venta de mercadería',
+    'IVA: 10%',
+  ];
+
+  await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ chat_id: env.TELEGRAM_INVOICE_CHAT_ID, text: lines.join('\n') }),
+  });
+}
+
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -481,7 +521,7 @@ async function notifyDamFinanzasSale(
   if (!secret) return;
 
   const adminOrderId    = String(lead.id);
-  const operationalDate = getParaguayDateString();
+  const operationalDate = lead.operational_date_py || getParaguayDateString();
   const totalValue      = Number(lead.value || 0);
   const endpoint        = 'https://us-central1-dam-finanzas-cf863.cloudfunctions.net/onAdminSale';
   const headers         = { 'Content-Type': 'application/json', 'x-dam-vertex-secret': secret };

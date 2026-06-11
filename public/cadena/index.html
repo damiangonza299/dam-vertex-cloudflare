@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://maps.googleapis.com" crossorigin>
   <link rel="dns-prefetch" href="https://maps.googleapis.com">
   <link rel="preload" href="/assets/js/tracking.js?v=55" as="script">
-  <link rel="preload" href="/assets/js/products.js?v=56" as="script">
+  <link rel="preload" href="/assets/js/products.js?v=57" as="script">
   <meta name="description" content="Cadena Apex. Acero inoxidable negro. Diseño geométrico minimalista. El accesorio que define tu estilo. Envío en el día — Dam Vertex Paraguay.">
   <title>Cadena Apex — Dam Vertex</title>
   <script src="/assets/js/site-version.js?v=60"></script>
@@ -72,7 +72,7 @@
       font-size: clamp(30px,5.5vw,54px);
       font-weight: 800;
       line-height: 1.08;
-      margin: 0 0 18px;
+      margin: 0 0 10px;
       letter-spacing: -.02em;
       color: #fff;
     }
@@ -513,6 +513,8 @@
       max-width: none;
     }
     @media (min-width: 701px) { .sticky-cta { display: none; } }
+    body:has(#order-modal.active) .sticky-cta,
+    body:has(#combo-modal.active) .sticky-cta { display: none; }
 
     /* — RESPONSIVE — */
     @media (max-width: 700px) {
@@ -526,8 +528,12 @@
       .est-item__img { aspect-ratio: 4/5; }
     }
 
+    /* Cadena — spacing overrides */
+    .price-block { margin: 12px 0; }
+    .delivery-badges { margin: 8px 0 0; }
+
     /* Prueba social inline hero */
-    .spi       { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; }
+    .spi       { display: flex; align-items: center; gap: 8px; margin: 10px 0 14px; }
     .spi-stars { color: #fbbf24; font-size: 14px; line-height: 1; }
     .spi-text  { font-size: 12px; color: rgba(255,255,255,.5); font-weight: 600; }
 
@@ -585,6 +591,24 @@
       .combo-strip__inner { flex-direction: column; align-items: flex-start; }
       .combo-strip__btn { width: 100%; text-align: center; padding: 13px 22px; }
     }
+    /* — OFFER BAR — */
+    .offer-bar {
+      background: #fff;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 7px 10px;
+      letter-spacing: 0;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+    .offer-bar strong { font-weight: 800; }
+    .ob-sep { color: rgba(0,0,0,.22); }
+    .ob-icon { display: inline-block; width: 13px; height: 13px; vertical-align: middle; flex-shrink: 0; }
   </style>
 </head>
 <body class="theme-cadena">
@@ -596,6 +620,15 @@
     <span class="sticky-cta__note">Entrega hoy · Pago al recibir</span>
   </div>
   <button class="btn btn-primary sticky-cta__btn" data-scroll-form data-insync-cta="sticky">Pedí por WhatsApp</button>
+</div>
+
+<!-- Offer bar -->
+<div class="offer-bar">
+  <span><svg class="ob-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 12 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Entrega en Central</span>
+  <span class="ob-sep">|</span>
+  <span><svg class="ob-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pago al recibir</span>
+  <span class="ob-sep">|</span>
+  <span><svg class="ob-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> Envío gratis</span>
 </div>
 
 <!-- Nav -->
@@ -612,17 +645,24 @@
     </div>
     <div class="hero__text">
       <p class="eyebrow">CADENA APEX</p>
-      <h1 class="hero__h">El detalle que<br>habla antes que vos.</h1>
-      <p class="hero__sub">Una cadena negra que eleva cualquier outfit. Sin esfuerzo. Sin exagerar.</p>
+      <h1 class="hero__h">Tu outfit no está mal.<br>Se ve incompleto.</h1>
       <div class="price-block">
         <span class="price-main">Gs. 129.000</span>
         <span class="price-compare">Gs. 172.000</span>
         <span class="price-badge">25% OFF</span>
       </div>
+      <div class="delivery-badges">
+        <span class="db-badge db-green">🚚 Entrega en el día</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
+      </div>
       <div class="spi">
         <span class="spi-stars">★★★★★</span>
         <span class="spi-text">+50 pedidos entregados en Gran Asunción</span>
       </div>
+      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">Quiero la Cadena Apex hoy →</button>
+      <p style="font-size:12px;color:rgba(255,255,255,.58);margin:8px 0 16px;">Sin pago por adelantado en Central. Te contactamos en minutos.</p>
       <!-- Combos externos — preselección visual, sin tracking ni eventos -->
       <div class="combo-preview" id="combo-preview">
         <div class="combo-preview-card combo-preview-card--active" data-offer="1">
@@ -658,14 +698,6 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">Pedir ahora por WhatsApp →</button>
-      <p style="font-size:12px;color:rgba(255,255,255,.58);margin:8px 0 0;">Sin pago por adelantado en Central. Te contactamos en minutos.</p>
-      <div class="delivery-badges">
-        <span class="db-badge db-green">🚚 Entrega en el día</span>
-        <span class="db-badge db-green">✓ Envío gratis</span>
-        <span class="db-badge">💳 Pago al recibir · Central</span>
-        <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
-      </div>
       <p style="font-size:12px;color:rgba(255,255,255,.38);margin:10px 0 0;letter-spacing:.01em;">Precio de lanzamiento — stock inicial limitado.</p>
       <p class="scroll-hint">↓ Mirá el antes y después</p>
     </div>
@@ -698,7 +730,10 @@
 <section class="combo-sec" id="combo-section">
   <div class="combo-sec__inner">
     <div>
-      <img src="/assets/img/apex%20Cadena%20%2B%20reloj%20negro.png" alt="Cadena Apex + Reloj Blackout Minimal — combo" class="combo-sec__img" loading="lazy">
+      <picture>
+        <source srcset="/assets/img/combodorado%2Bapex.webp" type="image/webp">
+        <img src="/assets/img/combodorado%2Bapex.png" alt="Cadena Apex + Reloj Negro Dorado — combo" class="combo-sec__img" loading="lazy">
+      </picture>
     </div>
     <div>
       <!-- Combo strip -->
@@ -706,7 +741,7 @@
         <div class="combo-strip__inner">
           <div class="combo-strip__text">
             <span class="combo-strip__label">Oferta especial</span>
-            <span class="combo-strip__title">Cadena Apex + Reloj Blackout</span>
+            <span class="combo-strip__title">Cadena Apex + Reloj Negro Dorado</span>
             <span class="combo-strip__sub">Llevá ambos por <strong>Gs. 249.000</strong></span>
           </div>
           <button class="combo-strip__btn" id="open-combo-modal">Ver combo →</button>
@@ -714,7 +749,7 @@
       </div>
       <p class="cs-overline">Combo</p>
       <h2 class="cs-h">Cadena + reloj: el combo que completa el look.</h2>
-      <p class="cs-body">Dos detalles simples, un solo efecto: presencia sin exagerar. La Cadena Apex suma actitud y el Reloj Blackout termina el outfit con estilo limpio.</p>
+      <p class="cs-body">Dos detalles simples, un solo efecto: presencia sin exagerar. La Cadena Apex suma actitud y el Reloj Negro Dorado termina el outfit con estilo limpio.</p>
       <ul class="cs-list">
         <li><span class="e-check">✓</span>Combo listo para uso diario o regalo</li>
         <li><span class="e-check">✓</span>Elegís el modelo del reloj</li>
@@ -993,8 +1028,8 @@
           </div>
         </label>
 
-        <label class="offer-option">
-          <input type="radio" name="offer" value="custom">
+        <label class="offer-option" style="display:none" aria-hidden="true">
+          <input type="radio" name="offer" value="custom" tabindex="-1">
           <div class="offer-content">
             <span class="offer-qty">4+ unidades — 40% OFF</span>
             <div class="offer-prices">
@@ -1097,6 +1132,30 @@
         </div>
       </label>
 
+      <label class="upsell-block" id="m-invoice-block" style="margin-top:10px">
+        <input type="checkbox" id="m-invoice" name="invoice">
+        <div class="upsell-content">
+          <span class="upsell-title">🧾 Necesito factura</span>
+          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+        </div>
+      </label>
+      <div id="m-invoice-fields" style="display:none;margin-top:6px">
+        <div class="form-group">
+          <label for="m-invoice-ruc">RUC *</label>
+          <input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group">
+          <label for="m-invoice-name">Razón social / Nombre *</label>
+          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group" style="margin-top:18px">
+          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(255,255,255,.4)">(opcional)</span></label>
+          <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+        </div>
+      </div>
+
       <label class="confirm-intent">
         <input type="checkbox" id="m-confirm" name="confirm">
         <span class="confirm-text">Confirmo que tengo intención real de comprar este producto</span>
@@ -1128,9 +1187,9 @@
   <div class="modal-box">
     <p class="modal-urgency">⏳ Stock limitado</p>
     <button class="modal-close" id="combo-modal-close" aria-label="Cerrar">✕</button>
-    <h2 class="modal-title" id="combo-modal-title">Combo Cadena Apex + Reloj Blackout</h2>
-    <p class="modal-step">1 Cadena Apex + 1 Reloj Blackout — todo en un pedido</p>
-    <p class="modal-subtitle">La Cadena ya viene incluida. El reloj es modelo Negro Total.</p>
+    <h2 class="modal-title" id="combo-modal-title">Combo Cadena Apex + Reloj Negro Dorado</h2>
+    <p class="modal-step">1 Cadena Apex + 1 Reloj Negro Dorado — todo en un pedido</p>
+    <p class="modal-subtitle">La Cadena ya viene incluida. El reloj es modelo Negro Dorado.</p>
 
     <!-- Precio combo -->
     <div style="margin:16px 0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
@@ -1150,12 +1209,12 @@
       </div>
     </div>
 
-    <!-- Reloj incluido (fijo: Negro Total) -->
+    <!-- Reloj incluido (fijo: Negro Dorado) -->
     <div class="modal-section">
       <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid rgba(74,222,128,.3);border-radius:8px;background:rgba(74,222,128,.05)">
         <span style="color:#4ade80;font-size:16px;flex-shrink:0">✓</span>
         <div>
-          <div style="font-size:14px;font-weight:600;color:#fff">Reloj incluido: Negro Total</div>
+          <div style="font-size:14px;font-weight:600;color:#fff">Reloj incluido: Negro Dorado</div>
           <div style="font-size:12px;color:rgba(255,255,255,.45)">Modelo fijo · incluido en el combo</div>
         </div>
       </div>
@@ -1223,6 +1282,30 @@
         </div>
       </label>
 
+      <label class="upsell-block" id="cm-invoice-block" style="margin-top:10px">
+        <input type="checkbox" id="cm-invoice">
+        <div class="upsell-content">
+          <span class="upsell-title">🧾 Necesito factura</span>
+          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+        </div>
+      </label>
+      <div id="cm-invoice-fields" style="display:none;margin-top:6px">
+        <div class="form-group">
+          <label for="cm-invoice-ruc">RUC *</label>
+          <input type="text" id="cm-invoice-ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group">
+          <label for="cm-invoice-name">Razón social / Nombre *</label>
+          <input type="text" id="cm-invoice-name" placeholder="Nombre completo o razón social">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group" style="margin-top:8px">
+          <label for="cm-invoice-email">Email <span style="font-weight:400;color:rgba(255,255,255,.4)">(opcional)</span></label>
+          <input type="email" id="cm-invoice-email" placeholder="correo@ejemplo.com" autocomplete="email">
+        </div>
+      </div>
+
       <label class="confirm-intent" id="cm-confirm-block">
         <input type="checkbox" id="cm-confirm">
         <span class="confirm-text">Confirmo que tengo intención real de comprar este combo</span>
@@ -1252,13 +1335,13 @@
 </div>
 
 <footer class="footer">
-  &copy; 2026 DAM VERTEX
+  &copy; 2026 Dam Vertex
 </footer>
 
 <!-- Scripts -->
 <script>window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';</script>
 <script src="/assets/js/tracking.js?v=55" defer></script>
-<script src="/assets/js/products.js?v=56" defer></script>
+<script src="/assets/js/products.js?v=57" defer></script>
 <script defer src="/assets/js/insync.js?v=2"></script>
 <script src="/assets/js/location-picker.js?v=55" defer></script>
 <script>
@@ -1387,6 +1470,14 @@
         });
       }
 
+      var cmInvoiceCb = document.getElementById('cm-invoice');
+      var cmInvoiceFields = document.getElementById('cm-invoice-fields');
+      if (cmInvoiceCb && cmInvoiceFields) {
+        cmInvoiceCb.addEventListener('change', function() {
+          cmInvoiceFields.style.display = cmInvoiceCb.checked ? 'block' : 'none';
+        });
+      }
+
       comboForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
@@ -1405,7 +1496,7 @@
         var name     = nameEl    ? nameEl.value.trim()    : '';
         var rawPhone = phoneEl   ? phoneEl.value.trim()   : '';
         var city     = cityEl    ? cityEl.value.trim()    : '';
-        var variant  = 'Negro Total';
+        var variant  = 'Negro Dorado';
         var address  = (document.getElementById('cm-ref') || {}).value || '';
         var payment  = paymentEl ? paymentEl.value : '';
         address = address.trim();
@@ -1449,6 +1540,32 @@
           return;
         }
 
+        /* Invoice */
+        var cmInvoiceChecked = cmInvoiceCb ? cmInvoiceCb.checked : false;
+        if (cmInvoiceChecked) {
+          var invRucEl2  = document.getElementById('cm-invoice-ruc');
+          var invNameEl2 = document.getElementById('cm-invoice-name');
+          var invErr2 = false;
+          if (!invRucEl2 || !invRucEl2.value.trim()) {
+            var e2 = invRucEl2 && invRucEl2.closest('.form-group') && invRucEl2.closest('.form-group').querySelector('.form-error-msg');
+            if (invRucEl2) invRucEl2.classList.add('error');
+            if (e2) { e2.textContent = 'El RUC es obligatorio'; e2.classList.add('visible'); }
+            if (!invErr2 && invRucEl2) invRucEl2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            invErr2 = true;
+          }
+          if (!invNameEl2 || !invNameEl2.value.trim()) {
+            var e3 = invNameEl2 && invNameEl2.closest('.form-group') && invNameEl2.closest('.form-group').querySelector('.form-error-msg');
+            if (invNameEl2) invNameEl2.classList.add('error');
+            if (e3) { e3.textContent = 'La razón social es obligatoria'; e3.classList.add('visible'); }
+            if (!invErr2 && invNameEl2) invNameEl2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            invErr2 = true;
+          }
+          if (invErr2) return;
+        }
+        var cmInvRuc   = cmInvoiceChecked ? ((document.getElementById('cm-invoice-ruc')  || {}).value || '').trim() : '';
+        var cmInvName  = cmInvoiceChecked ? ((document.getElementById('cm-invoice-name') || {}).value || '').trim() : '';
+        var cmInvEmail = cmInvoiceChecked ? ((document.getElementById('cm-invoice-email')|| {}).value || '').trim() : '';
+
         var validPhone = typeof normalizeParaguayPhone === 'function' ? normalizeParaguayPhone(rawPhone) : rawPhone;
 
         var isExpress  = cmExpressEl ? cmExpressEl.checked : false;
@@ -1458,7 +1575,7 @@
 
         /* Armar WA URL ANTES del primer await — preservar gesture context */
         var waLines = [
-          '¡Hola! Acabo de realizar un pedido en DAM VERTEX y quiero confirmar los detalles:',
+          '¡Hola! Acabo de realizar un pedido en Dam Vertex y quiero confirmar los detalles:',
           '',
           'Nombre: ' + name,
           'Producto: Combo Reloj + Cadena Apex',
@@ -1472,6 +1589,11 @@
         waLines.push('WhatsApp: ' + rawPhone);
         if (cmLocMapsUrl) waLines.push('Ubicación exacta: ' + cmLocMapsUrl);
         if (address) waLines.push('Referencia: ' + address);
+        if (cmInvoiceChecked) {
+          waLines.push('Factura: Sí');
+          if (cmInvRuc)  waLines.push('RUC: ' + cmInvRuc);
+          if (cmInvName) waLines.push('Razón social: ' + cmInvName);
+        }
         waLines.push('', '¿Pueden ayudarme a coordinar el envío?');
         var waUrl = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waLines.join('\n'));
         if (comboWaManual) comboWaManual.href = waUrl;
@@ -1519,6 +1641,10 @@
             location_lng:     cmLocLng      || null,
             location_maps_url: cmLocMapsUrl || null,
             location_place_id: cmLocPlaceId || null,
+            invoice_requested: cmInvoiceChecked ? 1 : 0,
+            invoice_ruc:       cmInvRuc   || null,
+            invoice_name:      cmInvName  || null,
+            invoice_email:     cmInvEmail || null,
           });
           var res = await fetch('/api/leads', {
             method:  'POST',

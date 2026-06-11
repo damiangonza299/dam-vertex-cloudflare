@@ -43,7 +43,7 @@ function buildWAMsg(product, data, offerInfo) {
     ? `Colores: ${offerInfo.colors.map(c => VARIANT_DISPLAY_NAMES[c] || c).join(' + ')}`
     : null;
   const lines = [
-    '¡Hola! Acabo de realizar un pedido en DAM VERTEX y quiero confirmar los detalles:',
+    '¡Hola! Acabo de realizar un pedido en Dam Vertex y quiero confirmar los detalles:',
     '',
     `Nombre: ${data.name}`,
     `Producto: ${product.name} (${qtyLabel})${express}`,
@@ -52,6 +52,11 @@ function buildWAMsg(product, data, offerInfo) {
     `Método de Pago: ${data.payment || 'No especificado'}`,
     ...(data.city ? [`Ciudad: ${data.city}`] : []),
     `WhatsApp: ${data.phone}`,
+    ...(data.invoice_requested ? [
+      'Factura: Sí',
+      ...(data.invoice_ruc  ? [`RUC: ${data.invoice_ruc}`]          : []),
+      ...(data.invoice_name ? [`Razón social: ${data.invoice_name}`] : []),
+    ] : []),
     ...(data.location_maps_url ? [`Ubicación exacta: ${data.location_maps_url}`] : []),
     ...(data.referencia ? [`Referencia: ${data.referencia}`] : []),
     '',
@@ -66,7 +71,7 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
     : (!product.customNoVariants ? 'Colores/variantes: a coordinar por WhatsApp' : null);
 
   const lines = [
-    '¡Hola! Acabo de realizar un pedido en DAM VERTEX:',
+    '¡Hola! Acabo de realizar un pedido en Dam Vertex:',
     '',
     `Nombre: ${data.name}`,
     `Producto: ${product.name}`,
@@ -76,6 +81,11 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
     `Método de Pago: ${data.payment || 'No especificado'}`,
     ...(data.city ? [`Ciudad: ${data.city}`] : []),
     `WhatsApp: ${data.phone}`,
+    ...(data.invoice_requested ? [
+      'Factura: Sí',
+      ...(data.invoice_ruc  ? [`RUC: ${data.invoice_ruc}`]          : []),
+      ...(data.invoice_name ? [`Razón social: ${data.invoice_name}`] : []),
+    ] : []),
     ...(data.location_maps_url ? [`Ubicación exacta: ${data.location_maps_url}`] : []),
     ...(data.referencia ? [`Referencia: ${data.referencia}`] : []),
     '',
@@ -209,6 +219,8 @@ DV.initForm = function (product) {
   const confirmCb  = document.getElementById('m-confirm');
   const expressEl  = document.getElementById('m-express');
   const upsellEl   = document.querySelector('.upsell-block');
+  const invoiceCb  = document.getElementById('m-invoice');
+  const invoiceFieldsEl = document.getElementById('m-invoice-fields');
 
   if (!overlay || !modalForm) return;
   DV.initCityPicker();
@@ -316,6 +328,13 @@ DV.initForm = function (product) {
   if (expressEl && upsellEl) {
     expressEl.addEventListener('change', () => {
       upsellEl.classList.toggle('checked', expressEl.checked);
+    });
+  }
+
+  /* Invoice toggle */
+  if (invoiceCb && invoiceFieldsEl) {
+    invoiceCb.addEventListener('change', () => {
+      invoiceFieldsEl.style.display = invoiceCb.checked ? 'block' : 'none';
     });
   }
 
@@ -489,6 +508,29 @@ if (submitBtn)          submitBtn.textContent             = 'Confirmar pedido po
     }
     if (!validateModalForm()) return;
 
+    /* Invoice validation */
+    const invoiceChecked = invoiceCb?.checked || false;
+    if (invoiceChecked) {
+      const invRucEl  = document.getElementById('m-invoice-ruc');
+      const invNameEl = document.getElementById('m-invoice-name');
+      let invErr = false;
+      if (!invRucEl?.value.trim()) {
+        const e = invRucEl?.closest('.form-group')?.querySelector('.form-error-msg');
+        invRucEl?.classList.add('error');
+        if (e) { e.textContent = 'El RUC es obligatorio'; e.classList.add('visible'); }
+        if (!invErr) invRucEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        invErr = true;
+      }
+      if (!invNameEl?.value.trim()) {
+        const e = invNameEl?.closest('.form-group')?.querySelector('.form-error-msg');
+        invNameEl?.classList.add('error');
+        if (e) { e.textContent = 'La razón social es obligatoria'; e.classList.add('visible'); }
+        if (!invErr) invNameEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        invErr = true;
+      }
+      if (invErr) return;
+    }
+
     /* NormalizaciÃ³n de telÃ©fono Paraguay (no bloquea el envÃ­o) */
     const rawPhone   = document.getElementById('m-phone')?.value.trim() || '';
     const validPhone = normalizeParaguayPhone(rawPhone);
@@ -517,6 +559,10 @@ if (submitBtn)          submitBtn.textContent             = 'Confirmar pedido po
       location_lng:      parseFloat(document.getElementById('m-loc-lng')?.value  || '') || null,
       location_maps_url: document.getElementById('m-loc-maps-url')?.value || '',
       location_place_id: document.getElementById('m-loc-place-id')?.value || '',
+      invoice_requested: invoiceChecked,
+      invoice_ruc:       invoiceChecked ? (document.getElementById('m-invoice-ruc')?.value.trim()   || null) : null,
+      invoice_name:      invoiceChecked ? (document.getElementById('m-invoice-name')?.value.trim()  || null) : null,
+      invoice_email:     invoiceChecked ? (document.getElementById('m-invoice-email')?.value.trim() || null) : null,
     };
 
     /* ââ Pedido personalizado (4+ unidades, 40% OFF) ââ */
@@ -585,6 +631,10 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
             location_maps_url: commonData.location_maps_url || null,
             location_place_id: commonData.location_place_id || null,
             session_id:        window.DV_INSYNC_SESSION     || null,
+            invoice_requested: commonData.invoice_requested ? 1 : 0,
+            invoice_ruc:       commonData.invoice_ruc   || null,
+            invoice_name:      commonData.invoice_name  || null,
+            invoice_email:     commonData.invoice_email || null,
           }),
         });
         if (!res.ok) throw new Error('lead_error');
@@ -683,6 +733,10 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
           location_maps_url: data.location_maps_url || null,
           location_place_id: data.location_place_id || null,
           session_id:        window.DV_INSYNC_SESSION || null,
+          invoice_requested: data.invoice_requested ? 1 : 0,
+          invoice_ruc:       data.invoice_ruc   || null,
+          invoice_name:      data.invoice_name  || null,
+          invoice_email:     data.invoice_email || null,
         }),
       });
 

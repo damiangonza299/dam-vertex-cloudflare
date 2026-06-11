@@ -25,9 +25,12 @@ export async function onRequestGet({ request, env }) {
       ).bind(slug).first();
       return json({ ok: true, product: row ? parseProduct(row) : null });
     }
-    const { results } = await env.DB.prepare(
-      'SELECT * FROM products ORDER BY id'
-    ).all();
+    /* ?active_only=1 → return only active=1 products (used by MANUAL_PRODUCTS dynamic fetch) */
+    const activeOnly = url.searchParams.get('active_only') === '1';
+    const query = activeOnly
+      ? 'SELECT * FROM products WHERE active = 1 ORDER BY id'
+      : 'SELECT * FROM products ORDER BY id';
+    const { results } = await env.DB.prepare(query).all();
     return json({ ok: true, products: (results || []).map(parseProduct) });
   } catch (err) {
     return json({ ok: false, error: err.message }, 500);

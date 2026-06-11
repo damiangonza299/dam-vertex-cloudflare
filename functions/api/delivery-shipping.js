@@ -22,8 +22,34 @@ export async function onRequestGet({ request, env }) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 
-  const url  = new URL(request.url);
-  const date = url.searchParams.get('date');
+  const url    = new URL(request.url);
+  const date   = url.searchParams.get('date');
+  const month  = url.searchParams.get('month');
+  const getAll = url.searchParams.get('all') === '1';
+
+  /* ── Modo mes: ?month=YYYY-MM ── */
+  if (month && /^\d{4}-\d{2}$/.test(month)) {
+    try {
+      const { results } = await env.DB.prepare(
+        `SELECT * FROM shipping_history WHERE date >= ? AND date <= ? ORDER BY date DESC`
+      ).bind(`${month}-01`, `${month}-31`).all();
+      return json({ ok: true, mode: 'month', month, recentHistory: results || [] });
+    } catch (err) {
+      return json({ ok: false, error: err.message }, 500);
+    }
+  }
+
+  /* ── Modo todos: ?all=1 — últimos 90 registros ── */
+  if (getAll) {
+    try {
+      const { results } = await env.DB.prepare(
+        `SELECT * FROM shipping_history ORDER BY date DESC LIMIT 90`
+      ).all();
+      return json({ ok: true, mode: 'all', recentHistory: results || [] });
+    } catch (err) {
+      return json({ ok: false, error: err.message }, 500);
+    }
+  }
 
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return json({ ok: false, error: 'date requerida (YYYY-MM-DD)' }, 400);
@@ -36,7 +62,7 @@ export async function onRequestGet({ request, env }) {
     ).bind(startUTC, endUTC).first();
     const purchasedCount = Number(row?.count || 0);
 
-    /* Historial: entrada del día solicitado + últimas 10 entradas */
+    /* Historial: entrada del día solicitado + últimas 30 entradas */
     let history       = null;
     let recentHistory = [];
     try {
@@ -46,7 +72,7 @@ export async function onRequestGet({ request, env }) {
       if (histRow) history = histRow;
 
       const recent = await env.DB.prepare(
-        `SELECT * FROM shipping_history ORDER BY date DESC LIMIT 10`
+        `SELECT * FROM shipping_history ORDER BY date DESC LIMIT 30`
       ).all();
       recentHistory = recent?.results || [];
     } catch (_) { /* tabla puede no existir aún */ }

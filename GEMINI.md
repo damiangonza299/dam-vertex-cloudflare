@@ -194,6 +194,54 @@ Estas 3 skills instaladas en Claude actúan como marco de referencia complementa
 
 ---
 
+## PRODUCT STUDIO — Workspace de productos (migrate23)
+
+Módulo interno para crear, investigar y activar productos. Reemplaza el flujo manual de modificar 5+ archivos.
+
+**Ruta:** `/product-studio/` — botón "+ Nuevo producto" en Admin Panel → Productos
+**Patrón:** igual a `/intelligence/` — admin auth requerido, se abre en nueva pestaña
+
+**Arquitectura:**
+- `product_briefs` table (D1) — fuente de verdad: `op_json`, `strategic_json`, `visual_json`, `research_json`, `insights_json`
+- `products` table — extendida con `status`, `product_type`, `compare_price` (migrate23)
+- `insights_json.insync` — snapshot de InSync bajo demanda via `/api/insync-report`
+- `insights_json.landing_intelligence` — `null` ahora, reservado para Landing Intelligence futuro
+
+**Endpoints nuevos:**
+- `GET/POST/PATCH /api/product-registry` — CRUD de products + product_briefs + proxy sync DAM Finanzas
+- `POST /api/product-research` — fetch URL server-side + extracción de título, features, specs
+
+**Estado del producto (lifecycle):**
+- `draft` — creado, no visible en ventas (`active=0`)
+- `pending_sync` — vinculado a DAM Finanzas, pendiente de activación
+- `active` — activo en ventas (`active=1`), aparece en MANUAL_PRODUCTS
+- `archived` — inactivo (`active=0`), sin eliminar
+
+**MANUAL_PRODUCTS:**
+- Ahora dinámico — fetcheado de `/api/product-stock?active_only=1` al cargar el admin
+- Fallback al array hardcodeado si el fetch falla
+- Productos nuevos aparecen automáticamente al activarlos en Product Studio
+
+**Sync DAM Finanzas:**
+- Tab Sync → "Sincronizar" → `product-registry` llama a `importProductFromVertex` en `us-central1-dam-finanzas-cf863.cloudfunctions.net`
+- Requiere `DAM_FINANZAS_WEBHOOK_SECRET` en Cloudflare secrets
+- Resultado: `dam_finanzas_id` (UUID Firestore) en `product_briefs`
+- `importProductFromVertex` funciona sobre el slug D1 → fetchea `damvertex.com/api/product-stock?slug=X`
+
+**Research Engine:**
+- Tab Investigación → URL → `/api/product-research` → extracción de title/features/specs
+- No aplica nada automáticamente — usuario revisa y elige qué mergear al brief
+- Historial guardado en `research_json` (array de sesiones)
+
+**Landing Blueprint:**
+- Tab Landing → "Generar blueprint" → HTML generado desde el brief
+- Almacenado en `product_briefs.landing_html`
+- Se puede descargar y deployar manualmente
+
+**Regla:** No tocar products D1 directamente para slugs gestionados por Product Studio. Editar via Tab Producto → Guardar.
+
+---
+
 ## DAM INTELLIGENCE — Regla Permanente
 
 Sistema: `public/intelligence/` + `functions/api/intelligence/`
@@ -325,6 +373,29 @@ Campos OBLIGATORIOS para que la UI lo reconozca:
 - `date: "YYYY-MM-DD"` — para `getDaySummaryByDate()`
 - `adsTotal: NUMBER` — en PYG (cuenta ya en guaraníes, no multiplicar)
 - `_metaCurrency: "PYG"`
+
+### UMBRALES OFICIALES DAM VERTEX
+
+DAM VERTEX Paraguay — clasificación de compradores y eventos Meta CAPI. **Prohibido modificar sin decisión de negocio explícita documentada en este archivo.**
+
+| Clasificación | Umbral | Evento CAPI | buyer_type D1 |
+|---|---|---|---|
+| Alto valor | >= 199.000 Gs | `HighValuePurchase` | `alto_valor` |
+| VIP | >= 300.000 Gs | `HighValuePurchase` + `VIPPurchase` | `vip` |
+| Ultra VIP | >= 500.000 Gs | `HighValuePurchase` + `VIPPurchase` (sin CAPI dedicado) | `ultra_vip` |
+| Fast Buyer | compra en < 24h | `FastBuyer` (solo server-side CAPI, nunca Pixel) | `rapido` |
+
+**Mapping explícito CAPI ↔ DAM Intelligence:**
+- `HighValuePurchase` Meta = Alto Valor DAM VERTEX (>= Gs. 199.000)
+- `VIPPurchase` Meta = VIP DAM VERTEX (>= Gs. 300.000)
+- `FastBuyer` Meta = Fast Buyer DAM VERTEX (confirmación < 24h)
+- `Purchase` Meta = toda compra confirmada, sin umbral de valor
+
+**Justificación:** Precio base reloj Gs. 189.000. Con envío express: Gs. 199.000 → intención de compra superior → clasificación Alto Valor.
+
+**Archivos:** `_bqe-scorer.js` (constantes `ALTO_VALOR_PYG`, `VIP_PYG`, `ULTRA_VIP_PYG`) · `confirm-purchase.js` (condiciones `HighValuePurchase`, `VIPPurchase`)
+
+---
 
 ### REGLA CRÍTICA DE DEPLOY — DAM VERTEX
 

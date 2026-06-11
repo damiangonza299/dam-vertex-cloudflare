@@ -23,6 +23,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       address, payment_method,
       location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
       session_id,
+      invoice_requested, invoice_ruc, invoice_name, invoice_email,
     } = body;
 
     /* Si el picker detectó ciudad automáticamente, usarla como city efectiva */
@@ -37,16 +38,18 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     /* ── Block check — multi-signal blacklist ── */
     try {
-      const bPhone   = phone?.trim()        || '';
-      const bUa      = ua                   || '';
-      const bFbp     = fbp                  || '';
-      const bFbc     = fbc                  || '';
-      const bSession = session_id?.trim()   || '';
+      const bPhone     = phone?.trim()        || '';
+      const bPhoneNorm = normalizePhoneBlock(bPhone);
+      const bUa        = ua                   || '';
+      const bFbp       = fbp                  || '';
+      const bFbc       = fbc                  || '';
+      const bSession   = session_id?.trim()   || '';
 
       const conditions = [];
       const params     = [];
 
-      if (bPhone)                { conditions.push('phone = ?');                        params.push(bPhone); }
+      if (bPhone)                              { conditions.push('phone = ?');                        params.push(bPhone); }
+      if (bPhoneNorm && bPhoneNorm !== bPhone) { conditions.push('phone = ?');                        params.push(bPhoneNorm); }
       if (ip)                    { conditions.push('ip = ?');                           params.push(ip); }
       if (bUa && ip)             { conditions.push('(user_agent = ? AND ip = ?)');      params.push(bUa, ip); }
       if (bFbp)                  { conditions.push('fbp = ?');                          params.push(bFbp); }
@@ -71,6 +74,10 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     const locLat = location_lat != null ? Number(location_lat) || null : null;
     const locLng = location_lng != null ? Number(location_lng) || null : null;
+
+    // Capture Paraguay date ONCE — reused for both operational_date_py (D1) and onLeadsCountUpdate (Firebase).
+    // Two separate calls near midnight can return different dates due to clock rollover between INSERT and webhook.
+    const leadDate = getParaguayDateString();
 
     const bindArgs = [
       product_name,
@@ -107,7 +114,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       // slug (index 29)
       product_slug   || null,
       // attribution quality (indices 30-31)
-      getParaguayDateString(),
+      leadDate,
       getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source, utm_campaign }),
       // location picker (indices 32-37)
       location_address?.trim() || null,
@@ -118,6 +125,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
       location_place_id?.trim()  || null,
       // session_id for DAM inSync revenue attribution (index 38)
       session_id?.trim() || null,
+      // invoice (indices 39-42)
+      invoice_requested ? 1 : 0,
+      invoice_ruc?.trim()   || null,
+      invoice_name?.trim()  || null,
+      invoice_email?.trim() || null,
     ];
 
     let result;
@@ -130,12 +142,27 @@ export async function onRequestPost({ request, env, waitUntil }) {
           address, payment_method, product_slug,
           operational_date_py, attribution_confidence,
           location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
-          session_id
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          session_id,
+          invoice_requested, invoice_ruc, invoice_name, invoice_email
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(...bindArgs).run();
     } catch (insertErr) {
       const msg = insertErr.message || '';
-      if (msg.includes('session_id')) {
+      if (msg.includes('invoice_requested') || msg.includes('invoice_ruc') || msg.includes('invoice_name') || msg.includes('invoice_email')) {
+        // invoice columns not yet migrated (run migrate24.sql) — retry without them
+        console.error('LEAD_SCHEMA: run migrate24.sql for invoice columns');
+        result = await env.DB.prepare(`
+          INSERT INTO leads (
+            product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity, variant,
+            fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+            campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer,
+            address, payment_method, product_slug,
+            operational_date_py, attribution_confidence,
+            location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
+            session_id
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).bind(...bindArgs.slice(0, 39)).run();
+      } else if (msg.includes('session_id')) {
         // session_id column not yet migrated (run migrate17.sql) — retry without it
         console.error('LEAD_SCHEMA: run migrate17.sql for session_id column');
         result = await env.DB.prepare(`
@@ -221,7 +248,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
           : product_name;
         const tgCity = (location_city?.trim() || city?.trim() || '');
         const text = [
-          'Nuevo pedido DAM VERTEX',
+          'Nuevo pedido Dam Vertex',
           '',
           `Producto: ${tgProductName}`,
           `Nombre: ${name.trim()}`,
@@ -310,13 +337,13 @@ export async function onRequestPost({ request, env, waitUntil }) {
     }
 
     /* ── Notificar DAM Finanzas: actualizar shopifyOrdersTotal (Pedidos del día) ── */
-    const leadDate = getParaguayDateString();
+    // leadDate was captured at the top of the request handler — same value used for operational_date_py.
     const leadsCountPromise = (async () => {
       try {
         const startUTC = getParaguayDayStartUTC(leadDate);
         const endUTC   = new Date(startUTC.getTime() + 24 * 60 * 60 * 1000);
         const cntRow   = await env.DB.prepare(
-          `SELECT COUNT(*) AS count FROM leads WHERE created_at >= ? AND created_at < ?`
+          `SELECT COUNT(*) AS count FROM leads WHERE created_at >= ? AND created_at < ? AND (source_type IS NULL OR source_type != 'meta_ads_manual')`
         ).bind(
           startUTC.toISOString().replace('T', ' ').slice(0, 19),
           endUTC.toISOString().replace('T', ' ').slice(0, 19)
@@ -417,4 +444,15 @@ function json(data, status = 200) {
     status,
     headers: { 'Content-Type': 'application/json', ...CORS },
   });
+}
+
+/* Normaliza teléfono para block check — mismo criterio que blocked-customers.js y admin.js */
+function normalizePhoneBlock(raw) {
+  const digits = (raw || '').replace(/\D/g, '');
+  let norm;
+  if      (digits.startsWith('595')) norm = digits;
+  else if (digits.startsWith('0'))   norm = '595' + digits.slice(1);
+  else if (digits.startsWith('9'))   norm = '595' + digits;
+  else return '';
+  return /^5959\d{8}$/.test(norm) ? norm : '';
 }
