@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1038,77 +1038,91 @@ function renderInsyncPanel(insights) {
 }
 
 /* ──────────────────────────────────────────
-   Landing blueprint — V2
-   Fuentes: strategic_json completo + visual_json + InSync
-   V3 — sanitización estricta + helpers comerciales
+   Landing blueprint — V3
+   Fuentes de datos por rol:
+   · strategic_json → COPY PRINCIPAL (promise, problem, differentiator, benefits, objections, urgency)
+   · visual_json    → SPECS TÉCNICAS ÚNICAMENTE (material, dimensions, weight, colors)
+   · insights_json.insync → PRIORIZACIÓN de secciones (top_sections, attention_score, retention)
+   · Estructura: landings ganadoras DAM VERTEX (reloj, cadena): orden, jerarquía, CTAs, modal
+   · Alibaba / Research: PROHIBIDO como copy — solo specs del visual_json completado por el usuario
 ────────────────────────────────────────── */
 
-/* sanitizeForCopy — rechaza cualquier string que no sea copy comercial limpio.
-   Detecta: CSS (color:, px, ;), HTML tags, texto mayormente en inglés largo. */
+/* sanitizeForCopy — rechaza CSS, HTML, y texto mayormente en inglés (garbage Alibaba) */
 function sanitizeForCopy(str) {
   if (!str || typeof str !== 'string') return '';
   const t = str.trim();
   if (!t) return '';
-  // CSS patterns
   if (/[{}]/.test(t)) return '';
-  if (/;[\s]*[a-z-]+\s*:/i.test(t)) return '';  // "property: value; property2:"
+  if (/;[\s]*[a-z-]+\s*:/i.test(t)) return '';
   if (/\b(font-family|font-size|background[-\s]|border[-\s:]|padding[\s:]|margin[\s:]|display\s*:|width\s*:|height\s*:)/i.test(t)) return '';
   if (/\b\d{2,}px\b/i.test(t)) return '';
-  // HTML tags
   if (/<[a-z]/i.test(t)) return '';
-  // Long English-only text (Alibaba titles like "New Original Luxury Watch For Men Waterproof")
   const words = t.split(/\s+/).filter(w => w.length > 2);
   if (words.length >= 6) {
     const hasSpanish = /[áéíóúñüÁÉÍÓÚÑÜ]/.test(t) ||
-      /\b(para|con|por|una?|este|esta|los|las|que|del|son|más|tiene|entre|como|pero|muy|todo|también|ya|si|su|se|le|al|él|de|en|el|un|es|no|lo|mi|yo|nos|hay|fue|ser|ha|si|bien|así|está|son|sus)\b/i.test(t);
+      /\b(para|con|por|una?|este|esta|los|las|que|del|son|más|tiene|entre|como|pero|muy|todo|también|ya|si|su|se|le|al|él|de|en|el|un|es|no|lo|mi|yo|nos|hay|fue|ser|ha|bien|así|está|son|sus)\b/i.test(t);
     const englishOnly = words.filter(w => /^[a-zA-Z]+$/.test(w)).length;
-    if (!hasSpanish && englishOnly / words.length > 0.70) return ''; // >70% inglés → garbage Alibaba
+    if (!hasSpanish && englishOnly / words.length > 0.70) return '';
   }
   return t;
 }
 
-/* generateHeroTitle — promesa comercial con fallback por categoría */
-function generateHeroTitle(name, promise) {
+/* generateHeroH1 — H1 con peso emocional, nunca descripción de producto */
+function generateHeroH1(name, promise, differentiator) {
   const p = sanitizeForCopy(promise);
-  if (p) return esc(p);
+  if (p && p.length >= 15 && p.length <= 80) return esc(p);
+  const d = sanitizeForCopy(differentiator);
+  if (d && d.length >= 15 && d.length <= 70) return esc(d);
   const n = (name || '').toLowerCase();
-  if (/reloj|watch/.test(n)) return 'El Accesorio Que Define Tu Estilo';
-  if (/lente|gafa|anteojos/.test(n)) return 'Mirá el Mundo con Estilo';
-  if (/cadena|collar|joya|pulsera/.test(n)) return 'El Detalle Que Marca la Diferencia';
-  if (/cepillo|pelo|cabello/.test(n)) return 'Tu Rutina, Tu Estilo';
-  if (/zapato|calzado|sandalia/.test(n)) return 'Comodidad y Estilo en Cada Paso';
-  return esc(name) || 'Tu Próximo Favorito';
+  if (/reloj|watch/.test(n))             return 'El reloj que no necesita hablar.<br>Igual, todo lo dice.';
+  if (/lente|gafa|anteojos|sunglass/.test(n)) return 'El look que siempre quisiste.<br>Sin esfuerzo.';
+  if (/cadena|collar|joya|pulsera|chain/.test(n)) return 'El detalle que define<br>cualquier look.';
+  if (/cepillo|pelo|cabello|brush/.test(n)) return 'Tu cabello, tu regla.<br>Resultados desde el primer uso.';
+  if (/zapato|calzado|sandalia/.test(n))  return 'Comodidad real.<br>Estilo que dura.';
+  if (/bolso|cartera|bag/.test(n))        return 'Tu estilo, sin comprometer<br>lo que necesitás.';
+  return esc(name) ? esc(name) + '.<br>El que buscabas.' : 'Tu próximo favorito.<br>Ya disponible.';
 }
 
-/* generateFaqAnswer — respuestas comerciales breves para objeciones */
-function generateFaqAnswer(q, name) {
+/* generateHeroSub — subtítulo comercial, nunca repite el H1 */
+function generateHeroSub(promise, problem, motivation) {
+  const prom = sanitizeForCopy(promise);
+  const m    = sanitizeForCopy(motivation);
+  if (m && m.length >= 20 && m.length <= 130 && m !== prom) return esc(m);
+  const prob = sanitizeForCopy(problem);
+  if (prob && prob.length >= 20 && prob.length <= 130 && prob !== prom) return esc(prob);
+  return '';
+}
+
+/* generateFaqAnswer — respuestas comerciales orientadas a Paraguay */
+function generateFaqAnswer(q) {
   const ql = (q || '').toLowerCase();
   if (/agua|impermeable|lluvia|water/.test(ql))
-    return `${esc(name)} tiene resistencia al agua para uso diario. No sumergir.`;
+    return 'Soporta el uso cotidiano — sudor y salpicaduras del d\xEDa. Para especificaciones exactas consult\xE1nos por WhatsApp antes de comprar.';
   if (/regalo|regalar/.test(ql))
-    return `¡Perfecto para regalo! Lo enviamos con packaging especial.`;
-  if (/envío|entrega|demora|shipping/.test(ql))
-    return `Enviamos en 24-48 horas hábiles a todo Paraguay.`;
+    return 'Perfecto para regalo. Lo enviamos listo para entregar.';
+  if (/env\xEDo|entrega|demora|llega/.test(ql))
+    return 'Central: enviamos el mismo d\xEDa. Interior: coordinamos con vos — generalmente 1 a 2 d\xEDas h\xE1biles.';
   if (/original|genuino|falso|copia/.test(ql))
-    return `Sí, 100% original. Verificado antes de cada envío.`;
-  if (/garantía|garantia/.test(ql))
-    return `Garantía de satisfacción. Si no quedás conforme, lo resolvemos.`;
-  if (/color|colores/.test(ql))
-    return `Consultá disponibilidad por WhatsApp antes de hacer el pedido.`;
-  if (/talla|tamaño|talle|medida/.test(ql))
-    return `Consultá el talle exacto por WhatsApp antes de tu pedido.`;
+    return 'S\xED, 100% original. Revisamos cada unidad antes del env\xEDo.';
+  if (/garant\xEDa|garantia/.test(ql))
+    return 'Garant\xEDa de satisfacci\xF3n. Si hay alg\xFAn problema con el producto, lo resolvemos.';
+  if (/color|colores|modelo/.test(ql))
+    return 'Ten\xE9s varios modelos disponibles. Consult\xE1 stock actualizado por WhatsApp antes de hacer el pedido.';
+  if (/talla|tama\xF1o|talle|medida/.test(ql))
+    return 'Consult\xE1 la medida exacta por WhatsApp antes de tu pedido para asegurarte de que quede perfecto.';
   if (/pago|cuota|tarjeta|precio/.test(ql))
-    return `Aceptamos transferencia y efectivo. Precio fijo sin sorpresas.`;
-  if (/hombre|mujer|unisex|quién/.test(ql))
-    return `Es unisex y funciona como regalo para cualquier ocasión.`;
-  return `${esc(name)} cumple con esta característica. ¿Tenés más dudas? Escribinos por WhatsApp.`;
+    return 'Central: pag\xE1s cuando lo recib\xEDs. Interior: pago anticipado y coordinamos el env\xEDo.';
+  if (/hombre|mujer|unisex|qui\xE9n/.test(ql))
+    return 'Funciona para hombre y mujer. Es unisex y perfecto como regalo para cualquier ocasi\xF3n.';
+  if (/caja|packaging|empaque/.test(ql))
+    return 'Viene en packaging presentable, listo para entregar o regalar.';
+  return 'Para m\xE1s detalles escrib\xEDnos por WhatsApp y te respondemos al toque.';
 }
 
-/* filterBenefitsForBlueprint — filtro + sanitize */
+/* filterBenefitsForBlueprint — filtro + sanitize, rechaza listas de specs */
 function filterBenefitsForBlueprint(benefits) {
   return (benefits || []).map(sanitizeForCopy).filter(b => {
-    if (!b) return false;
-    if (b.length < 10) return false;
+    if (!b || b.length < 12) return false;
     if (b.split(/\s+/).length < 3) return false;
     const parts = b.split(',').map(p => p.trim()).filter(Boolean);
     if (parts.length >= 2 && parts.every(p => p.split(/\s+/).length <= 3)) return false;
@@ -1124,202 +1138,306 @@ async function generateBlueprint() {
   const vi   = data.visual_json;
   const slug = currentSlug || getVal('f-slug');
 
-  // ── Producto ──
-  const name     = op.name || slug || 'Producto';
-  const price    = op.price    ? `Gs. ${Number(op.price).toLocaleString('es-PY')}` : '';
-  const cmpPrice = op.compare_price ? `Gs. ${Number(op.compare_price).toLocaleString('es-PY')}` : '';
-  const pc       = vi.primary_color   || '#0a0a0f';
-  const sc       = vi.secondary_color || '#d4af37';
+  const name   = op.name || slug || 'Producto';
+  const priceN = op.price ? Number(op.price) : 0;
+  const cmpN   = op.compare_price ? Number(op.compare_price) : 0;
+  const priceS = priceN ? priceN.toLocaleString('es-PY') : '';
+  const cmpS   = cmpN   ? cmpN.toLocaleString('es-PY')  : '';
+  const offPct = (priceN && cmpN && cmpN > priceN) ? Math.round((1 - priceN / cmpN) * 100) : 0;
+  const pc     = vi.primary_color   || '#0a0a0a';
+  const sc     = vi.secondary_color || '#d4af37';
 
-  // ── Estrategia — sanitizado estricto ──
   const promise        = sanitizeForCopy(st.main_promise        || '');
   const problem        = sanitizeForCopy(st.problem_solved      || '');
   const differentiator = sanitizeForCopy(st.differentiator      || '');
-  const urgencyType    = st.urgency_type        || '';
+  const urgencyType    = st.urgency_type || '';
   const motivation     = sanitizeForCopy(st.purchase_motivation || '');
   const audience       = sanitizeForCopy(st.target_audience     || '');
   const objections     = (st.objections || []).filter(Boolean);
   const benefits       = filterBenefitsForBlueprint(st.benefits);
 
-  // ── Specs visuales — solo de visual_json (datos seguros del usuario) ──
   const specs = [];
   if (vi.material)   specs.push(['Material',    vi.material]);
   if (vi.dimensions) specs.push(['Dimensiones', vi.dimensions]);
   if (vi.weight)     specs.push(['Peso',        vi.weight]);
   if (vi.style)      specs.push(['Estilo',      vi.style]);
   if (vi.feel)       specs.push(['Acabado',     vi.feel]);
-
-  // ── Caja — si visual/notes menciona caja ──
   const hasCaja = /\bcaja\b/i.test(vi.notes || '');
-  const cajaNotes = hasCaja ? (vi.notes || '').match(/caja[^.!?\n]*/i)?.[0]?.trim() || '' : '';
 
-  // ── InSync (si disponible) ──
-  const insync   = currentBrief?.insights_json?.insync;
+  const insync   = currentBrief && currentBrief.insights_json && currentBrief.insights_json.insync;
   const hasSess  = insync && !insync.low_volume;
-  const topSecs  = (insync?.top_sections || []).slice(0, 5);
-  const convRate = insync?.conversion?.session_to_purchase_pct || 0;
+  const topSecs  = (insync && insync.top_sections || []).slice(0, 6);
+  const convRate = (insync && insync.conversion && insync.conversion.session_to_purchase_pct) || 0;
+  const sf       = (insync && insync.scroll_funnel) || {};
+  const highAttn = topSecs.filter(s => (s.attention_score || 0) >= 65).map(s => (s.name || '').toLowerCase());
+  function insyncScore(kws) {
+    for (const s of topSecs) {
+      const sn = (s.name || '').toLowerCase();
+      if (kws.some(k => sn.includes(k) || k.includes(sn))) return s.attention_score || 0;
+    }
+    return 0;
+  }
 
-  // ── Helpers de render ──
-  const heroTitle  = generateHeroTitle(name, promise);
-  const heroSub    = problem || motivation || '';
-  const priceHtml  = price
-    ? `<div class="pb"><span class="pm">${price}</span>${cmpPrice ? `<span class="pc">${cmpPrice}</span>` : ''}</div>`
-    : '';
-  const urgencyHtml = urgencyType === 'escasez'
-    ? `<p class="urg">⚡ Stock limitado — últimas unidades</p>`
-    : urgencyType === 'oferta'
-    ? `<p class="urg">🔥 Precio especial por tiempo limitado</p>`
-    : '';
+  const heroH1  = generateHeroH1(name, promise, differentiator);
+  const heroSub = generateHeroSub(promise, problem, motivation);
 
-  // ── Comentario InSync ──
-  const insyncComment = hasSess
-    ? `<!-- InSync ${insync.period}: ${insync.sessions} sesiones | conv ${convRate}%\n${topSecs.map(s => `     ${s.name}: reach ${s.reach_pct}% | ${s.avg_time_s}s | score ${s.attention_score}`).join('\n')}\n-->`
-    : `<!-- InSync: sin datos — actualizá en tab Landing después de recibir tráfico -->`;
+  let priceHtml = '';
+  if (priceS) {
+    priceHtml += '<div class="price-block">';
+    priceHtml += '<span class="price-main">Gs. ' + priceS + '</span>';
+    if (cmpS)        priceHtml += '<span class="price-compare">Gs. ' + cmpS + '</span>';
+    if (offPct >= 5) priceHtml += '<span class="price-badge">' + offPct + '% OFF</span>';
+    priceHtml += '</div>';
+  }
+  const urgencyHtml =
+    urgencyType === 'escasez' ? '<p class="urgency-tag">⚡ Stock limitado — \xFAltimas unidades</p>' :
+    urgencyType === 'oferta'  ? '<p class="urgency-tag">🔥 Precio especial por tiempo limitado</p>' :
+    urgencyType === 'novedad' ? '<p class="urgency-tag">✦ Nuevo — lanzamiento exclusivo</p>' : '';
 
-  // ── Sección: Problema ──
-  const sProblema = problem ? `
-<section class="sec" id="section-problema">
-<div class="inner">
-  ${audience ? `<p class="eyebrow">${esc(audience)}</p>` : ''}
-  <h2>¿Por qué lo necesitás?</h2>
-  <p class="body">${esc(problem)}</p>
-</div>
-</section>` : '';
+  const insyncLines = hasSess
+    ? '<!-- InSync ' + insync.period + ': ' + insync.sessions + ' sesiones | conv ' + convRate + '%\n' +
+      '     scroll p25=' + (sf.p25||0) + '% p50=' + (sf.p50||0) + '% p75=' + (sf.p75||0) + '% p90=' + (sf.p90||0) + '%\n' +
+      topSecs.map(s => '     [' + s.name + '] reach ' + s.reach_pct + '% | ' + s.avg_time_s + 's | score ' + s.attention_score).join('\n') + '\n-->'
+    : '<!-- InSync: sin datos — actualiz\xE1 en Tab Landing despu\xE9s del primer tr\xE1fico -->';
 
-  // ── Sección: Beneficios ──
-  const sBeneficios = benefits.length ? `
-<section class="sec alt" id="section-beneficios">
-<div class="inner">
-  <h2>¿Por qué ${esc(name)}?</h2>
-  <ul class="blist">
-    ${benefits.map((b, i) => `<li><span class="bnum">${i + 1}</span><span class="btxt">${esc(b)}</span></li>`).join('\n    ')}
-  </ul>
-</div>
-</section>` : '';
+  const sProblema = {
+    id: 'problema', score: insyncScore(['problem','problema']),
+    html: (problem && problem.length >= 30)
+      ? '<section class="sec" id="section-problema"><div class="inner">' +
+        (audience ? '<p class="overline">' + esc(audience) + '</p>' : '') +
+        '<h2 class="sec-h">\xBFPor qu\xE9 lo necesit\xE1s?</h2>' +
+        '<p class="sec-body">' + esc(problem) + '</p></div></section>' : '',
+  };
 
-  // ── Sección: Diferenciador — solo si pasa sanitize ──
-  const sDif = differentiator ? `
-<section class="sec" id="section-diferenciador">
-<div class="inner">
-  <h2>Lo que nos hace diferentes</h2>
-  <p class="body dif">${esc(differentiator)}</p>
-</div>
-</section>` : '';
+  const hasBenHighAttn = highAttn.some(s => /benefi|benefit/.test(s));
+  const sBeneficios = {
+    id: 'beneficios', score: insyncScore(['benefi','benefit']) + 10,
+    html: benefits.length
+      ? '<section class="sec sec-alt' + (hasBenHighAttn ? ' sec-featured' : '') + '" id="section-beneficios"><div class="inner">' +
+        '<h2 class="sec-h">\xBFPor qu\xE9 ' + esc(name) + '?</h2>' +
+        '<ul class="b-list">' + benefits.map((b,i) => '<li class="b-item"><span class="b-num">' + (i+1) + '</span><span class="b-txt">' + esc(b) + '</span></li>').join('') + '</ul>' +
+        '<div style="text-align:center;margin-top:28px"><button class="btn-primary" onclick="openModal()">Quiero el m\xEDo →</button></div>' +
+        '</div></section>' : '',
+  };
 
-  // ── Sección: Caja incluida ──
-  const sCaja = hasCaja ? `
-<section class="sec alt" id="section-caja">
-<div class="inner">
-  <h2>Incluye caja de regalo</h2>
-  <p class="body">${cajaNotes ? esc(cajaNotes) : 'Viene en packaging especial, listo para regalar.'}</p>
-</div>
-</section>` : '';
+  const lifeBullets = benefits.slice(0,3).map(b => '<li><span class="t-dash">—</span><span>' + esc(b) + '</span></li>').join('');
+  const sEstilo = {
+    id: 'estilo', score: insyncScore(['estilo','style','lifestyle']),
+    html: (differentiator || benefits.length)
+      ? '<section class="sec" id="section-estilo"><div class="inner inner-split">' +
+        '<div class="estilo-ph" aria-hidden="true"><span class="estilo-ph-label">— Imagen producto —</span></div>' +
+        '<div>' + (audience ? '<p class="overline">' + esc(audience) + '</p>' : '') +
+        '<h2 class="sec-h">' + (differentiator ? esc(differentiator) : 'El detalle que hace la diferencia.') + '</h2>' +
+        (motivation ? '<p class="sec-body">' + esc(motivation) + '</p>' : '') +
+        (lifeBullets ? '<ul class="t-list">' + lifeBullets + '</ul>' : '') +
+        '<button class="btn-primary" onclick="openModal()" style="margin-top:20px">Lo quiero ahora →</button>' +
+        '</div></div></section>' : '',
+  };
 
-  // ── Sección: Ficha técnica ──
-  const sSpecs = specs.length ? `
-<section class="sec ${hasCaja ? '' : 'alt'}" id="section-especificaciones">
-<div class="inner">
-  <h2>Ficha técnica</h2>
-  <table><tbody>
-    ${specs.map(([k, v]) => `<tr><td class="sk">${esc(k)}</td><td class="sv">${esc(v)}</td></tr>`).join('\n    ')}
-  </tbody></table>
-</div>
-</section>` : '';
+  const sSpecs = {
+    id: 'especificaciones', score: insyncScore(['spec','materi','detalle']),
+    html: specs.length
+      ? '<section class="sec sec-alt" id="section-especificaciones"><div class="inner">' +
+        '<p class="overline">Detalles</p><h2 class="sec-h">Lo que llev\xE1s con vos</h2>' +
+        '<div class="specs-grid">' +
+        specs.map((s,i) => '<div class="spec-card"><div class="spec-num">0' + (i+1) + '</div><strong class="spec-k">' + esc(s[0]) + '</strong><p class="spec-v">' + esc(s[1]) + '</p></div>').join('') +
+        '</div></div></section>' : '',
+  };
 
-  // ── Sección: FAQ con respuestas generadas ──
-  const sFaq = objections.length ? `
-<section class="sec" id="section-faq">
-<div class="inner">
-  <h2>Preguntas frecuentes</h2>
-  ${objections.map(obj => `<div class="faq"><div class="fq">❓ ${esc(obj)}</div><div class="fa">${generateFaqAnswer(obj, name)}</div></div>`).join('\n  ')}
-</div>
-</section>` : '';
+  const sCaja = {
+    id: 'caja', score: 0,
+    html: hasCaja
+      ? '<section class="sec" id="section-caja"><div class="inner">' +
+        '<h2 class="sec-h">Incluye packaging especial</h2>' +
+        '<p class="sec-body">Viene listo para regalar o para darte un gusto. Sin costo adicional.</p>' +
+        '</div></section>' : '',
+  };
 
-  // ── Sección: Prueba social — no mostrar vacío ──
-  const sSocial = `
-<section class="sec alt" id="section-prueba-social">
-<div class="inner">
-  <h2>¿Para quién es ideal?</h2>
-  <p class="body">Ideal para regalo y uso diario. Perfecto para sorprender a alguien especial o para darte un gusto.</p>
-  <!-- INSERTAR TESTIMONIOS REALES AQUÍ -->
-</div>
-</section>`;
+  const defaultFaqs =
+    '<details class="faq-item"><summary class="faq-q">\xBFCu\xE1ndo llega mi pedido?</summary><div class="faq-a">Central: enviamos el mismo d\xEDa. Interior: coordinamos con vos — generalmente 1 a 2 d\xEDas h\xE1biles.</div></details>' +
+    '<details class="faq-item"><summary class="faq-q">\xBFC\xF3mo se paga?</summary><div class="faq-a">Central: pag\xE1s cuando lo recib\xEDs. Interior: pago anticipado y coordinamos el env\xEDo una vez confirmado.</div></details>' +
+    '<details class="faq-item"><summary class="faq-q">\xBFEl producto es original?</summary><div class="faq-a">S\xED, 100% original. Revisamos cada unidad antes del env\xEDo.</div></details>';
+  const sFaq = {
+    id: 'faq', score: insyncScore(['faq','preg','duda']),
+    html: '<section class="sec sec-alt" id="section-faq"><div class="inner">' +
+      '<p class="overline" style="text-align:center">Preguntas frecuentes</p>' +
+      '<h2 class="sec-h" style="text-align:center">Lo que quer\xE9s saber</h2>' +
+      '<div class="faq-wrap">' +
+      objections.map(obj => '<details class="faq-item"><summary class="faq-q">' + esc(obj) + '</summary><div class="faq-a">' + generateFaqAnswer(obj) + '</div></details>').join('') +
+      defaultFaqs + '</div></div></section>',
+  };
 
-  const html = `<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>${esc(name)}${promise ? ' — ' + esc(promise) : ''}</title>
-${insyncComment}
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:${pc};color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.55}
-.inner{max-width:520px;margin:0 auto;padding:0 4px}
-h2{font-size:20px;font-weight:700;margin-bottom:18px;color:#fff}
-.body{font-size:15px;color:rgba(255,255,255,.72);line-height:1.7}
-.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${sc};margin-bottom:10px}
-.hero{padding:72px 20px 56px;text-align:center}
-.hero .inner{text-align:center}
-.hero-name{font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:${sc};margin-bottom:12px}
-.hero h1{font-size:clamp(22px,6vw,34px);font-weight:800;line-height:1.15;margin-bottom:14px;color:#fff}
-.hero .sub{font-size:16px;color:rgba(255,255,255,.6);margin-bottom:28px;max-width:400px;margin-left:auto;margin-right:auto}
-.pb{margin:16px 0 28px;text-align:center}
-.pm{font-size:30px;font-weight:800;color:${sc}}
-.pc{font-size:16px;color:rgba(255,255,255,.3);text-decoration:line-through;margin-left:10px}
-.cta{display:inline-block;background:${sc};color:#000;font-size:16px;font-weight:700;padding:16px 48px;border-radius:8px;border:none;cursor:pointer;letter-spacing:.02em;text-decoration:none}
-.urg{font-size:12px;color:rgba(255,255,255,.45);margin-top:12px}
-.sec{padding:52px 20px}
-.sec.alt{background:rgba(255,255,255,.035)}
-.blist{list-style:none;padding:0}
-.blist li{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
-.bnum{width:28px;height:28px;background:${sc};color:#000;font-weight:800;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.btxt{font-size:14px;color:rgba(255,255,255,.82);line-height:1.65}
-.dif{border-left:3px solid ${sc};padding-left:18px}
-table{width:100%;border-collapse:collapse}
-.sk{padding:10px 12px;font-size:13px;color:rgba(255,255,255,.45);width:38%;border-bottom:1px solid rgba(255,255,255,.07)}
-.sv{padding:10px 12px;font-size:13px;color:#fff;border-bottom:1px solid rgba(255,255,255,.07)}
-.faq{margin-bottom:12px;border:1px solid rgba(255,255,255,.09);border-radius:8px;overflow:hidden}
-.fq{padding:14px 16px;font-size:14px;font-weight:600;background:rgba(255,255,255,.05)}
-.fa{padding:12px 16px;font-size:13px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.02)}
-.cta-sec{text-align:center;padding:64px 20px}
-.cta-sec h2{font-size:22px;margin-bottom:24px}
-.cta-wa{display:inline-block;background:#25D366;color:#fff;font-size:14px;font-weight:600;padding:12px 32px;border-radius:8px;margin-top:16px;text-decoration:none;letter-spacing:.02em}
-.footer{text-align:center;padding:20px;font-size:11px;color:rgba(255,255,255,.2);border-top:1px solid rgba(255,255,255,.06)}
-</style>
-</head>
-<body>
-<section class="hero" id="section-hero">
-  <div class="inner">
-    <p class="hero-name">${esc(name)}</p>
-    <h1>${heroTitle}</h1>
-    ${heroSub ? `<p class="sub">${esc(heroSub)}</p>` : ''}
-    ${priceHtml}
-    <button class="cta" onclick="document.getElementById('section-cta').scrollIntoView({behavior:'smooth'})">Quiero el mío →</button>
-  </div>
-</section>
-${sProblema}
-${sBeneficios}
-${sDif}
-${sCaja}
-${sSpecs}
-${sFaq}
-${sSocial}
-<section class="cta-sec" id="section-cta">
-<div class="inner">
-  <h2>Llevate el tuyo hoy</h2>
-  ${priceHtml}
-  ${urgencyHtml}
-  <button class="cta" onclick="alert('Conectar modal de pedido')">Quiero el mío →</button>
-  <!-- WhatsApp: <a class="cta-wa" href="https://wa.me/595XXXXXXXXX?text=Hola%2C+quiero+el+${encodeURIComponent(name)}">Pedir por WhatsApp</a> -->
-</div>
-</section>
-<div class="footer">
-  <p>Blueprint V3 — Product Studio — Dam Vertex</p>
-  <p style="margin-top:4px;font-size:10px">Borrador estructural — no reemplaza el diseño final</p>
-</div>
-</body>
-</html>`;
+  const middlePool = [sProblema, sBeneficios, sEstilo, sSpecs, sCaja, sFaq].filter(s => s.html.trim());
+  if (hasSess) middlePool.sort((a,b) => b.score - a.score);
+  const middleSections = middlePool.map(s => s.html).join('\n');
+
+  const closeH = priceS ? 'Gs. ' + priceS + ' \xB7 Llev\xE1te el tuyo hoy.' : 'Llev\xE1te el tuyo hoy.';
+  const sClose =
+    '<section class="sec close-sec" id="section-cierre"><div class="inner" style="text-align:center">' +
+    (promise ? '<p class="close-quote">&ldquo;' + esc(promise) + '&rdquo;</p><div class="close-div"></div>' : '') +
+    '<h2 class="sec-h">' + esc(closeH) + '</h2>' +
+    '<div class="trust-list">' +
+    '<div class="trust-item"><span class="trust-ok">✓</span><span>Env\xEDo GRATIS \xB7 Entrega en el d\xEDa (Central)</span></div>' +
+    '<div class="trust-item"><span class="trust-ok">✓</span><span>Central: pag\xE1s al recibir \xB7 Interior: pago anticipado</span></div>' +
+    '<div class="trust-item"><span class="trust-ok">✓</span><span>Atenci\xF3n directa por WhatsApp</span></div>' +
+    '</div>' + urgencyHtml +
+    '<button class="btn-primary btn-lg" onclick="openModal()" style="margin-top:28px">Quiero el m\xEDo →</button>' +
+    '<p style="font-size:11px;color:rgba(255,255,255,.28);margin-top:12px">Stock limitado. Precio puede cambiar sin previo aviso.</p>' +
+    '</div></section>';
+
+  const css =
+    '*{box-sizing:border-box;margin:0;padding:0}\n' +
+    'body{background:' + pc + ';color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;line-height:1.55}\n' +
+    '.inner{max-width:560px;margin:0 auto;padding:0 20px}\n' +
+    '.inner-split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;max-width:1000px}\n' +
+    '@media(max-width:700px){.inner-split{grid-template-columns:1fr;gap:28px}}\n' +
+    '.nav{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;z-index:80;background:' + pc + ';backdrop-filter:blur(8px)}\n' +
+    '.nav-logo{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff}\n' +
+    '.nav-cta{background:' + sc + ';color:#000;font-size:12px;font-weight:700;padding:8px 18px;border-radius:6px;border:none;cursor:pointer;letter-spacing:.04em}\n' +
+    '.hero{padding:clamp(32px,8vw,72px) 20px;background:' + pc + '}\n' +
+    '.hero-inner{max-width:580px;margin:0 auto;text-align:center}\n' +
+    '.overline{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:12px}\n' +
+    'h1{font-size:clamp(26px,6vw,46px);font-weight:800;line-height:1.1;letter-spacing:-.01em;color:#fff;margin-bottom:16px}\n' +
+    '.hero-sub{font-size:clamp(14px,2.5vw,17px);color:rgba(255,255,255,.6);line-height:1.65;margin-bottom:24px;max-width:460px;margin-left:auto;margin-right:auto}\n' +
+    '.price-block{display:flex;align-items:baseline;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0 24px}\n' +
+    '.price-main{font-size:clamp(26px,5vw,40px);font-weight:800;color:' + sc + '}\n' +
+    '.price-compare{font-size:16px;color:rgba(255,255,255,.28);text-decoration:line-through}\n' +
+    '.price-badge{font-size:11px;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;padding:3px 9px;border-radius:4px;letter-spacing:.06em}\n' +
+    '.spi{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:20px}\n' +
+    '.spi-stars{color:#fbbf24;font-size:14px}\n' +
+    '.spi-txt{font-size:12px;color:rgba(255,255,255,.5);font-weight:600}\n' +
+    '.btn-primary{display:inline-block;background:' + sc + ';color:#000;font-size:15px;font-weight:700;padding:16px 40px;border-radius:8px;border:none;cursor:pointer;letter-spacing:.02em;text-decoration:none;transition:opacity .18s}\n' +
+    '.btn-primary:hover{opacity:.88}\n' +
+    '.btn-lg{font-size:16px;padding:18px 52px}\n' +
+    '.urgency-tag{font-size:12px;color:rgba(255,255,255,.45);margin-top:12px}\n' +
+    '.db-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:20px}\n' +
+    '.db-badge{font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55)}\n' +
+    '.db-green{border-color:rgba(74,222,128,.3);color:#4ade80;background:rgba(74,222,128,.06)}\n' +
+    '.sec{padding:clamp(48px,9vw,80px) 20px;border-top:1px solid rgba(255,255,255,.06)}\n' +
+    '.sec-alt{background:rgba(255,255,255,.025)}\n' +
+    '.sec-featured .sec-h{font-size:clamp(24px,4vw,36px)}\n' +
+    '.sec-h{font-size:clamp(20px,3.5vw,30px);font-weight:700;color:#fff;line-height:1.2;margin-bottom:18px}\n' +
+    '.sec-body{font-size:15px;color:rgba(255,255,255,.62);line-height:1.72}\n' +
+    '.b-list{list-style:none;max-width:520px;margin:0 auto}\n' +
+    '.b-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}\n' +
+    '.b-num{width:30px;height:30px;background:' + sc + ';color:#000;font-weight:800;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}\n' +
+    '.b-txt{font-size:14px;color:rgba(255,255,255,.82);line-height:1.65}\n' +
+    '.estilo-ph{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center}\n' +
+    '.estilo-ph-label{font-size:11px;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:.1em}\n' +
+    '.t-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin:16px 0 4px}\n' +
+    '.t-list li{font-size:14px;color:#e2e2e2;display:flex;align-items:flex-start;gap:10px;line-height:1.4}\n' +
+    '.t-dash{color:rgba(255,255,255,.3);flex-shrink:0}\n' +
+    '.specs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.06);max-width:840px;margin:32px auto 0;border-radius:4px;overflow:hidden}\n' +
+    '@media(max-width:600px){.specs-grid{grid-template-columns:1fr}}\n' +
+    '.spec-card{background:' + pc + ';padding:28px 24px}\n' +
+    '.spec-num{font-size:10px;font-weight:800;color:rgba(255,255,255,.2);letter-spacing:.08em;margin-bottom:12px}\n' +
+    '.spec-k{display:block;font-size:14px;font-weight:700;color:#fff;margin-bottom:8px}\n' +
+    '.spec-v{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;margin:0}\n' +
+    '.faq-wrap{max-width:600px;margin:28px auto 0}\n' +
+    '.faq-item{border:1px solid rgba(255,255,255,.08);border-radius:8px;margin-bottom:8px;overflow:hidden}\n' +
+    '.faq-item summary{list-style:none}\n' +
+    '.faq-item summary::-webkit-details-marker{display:none}\n' +
+    '.faq-q{padding:16px 20px;font-size:14px;font-weight:600;cursor:pointer;background:rgba(255,255,255,.04);user-select:none;transition:background .15s;display:block}\n' +
+    '.faq-item[open] .faq-q,.faq-q:hover{background:rgba(255,255,255,.07)}\n' +
+    '.faq-a{padding:14px 20px;font-size:13px;color:rgba(255,255,255,.58);line-height:1.65;border-top:1px solid rgba(255,255,255,.07)}\n' +
+    '.close-sec{padding:clamp(64px,12vw,100px) 20px;text-align:center}\n' +
+    '.close-quote{font-size:clamp(16px,3vw,22px);font-style:italic;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:24px;font-weight:300}\n' +
+    '.close-div{width:32px;height:1px;background:rgba(255,255,255,.1);margin:0 auto 24px}\n' +
+    '.trust-list{display:flex;flex-direction:column;gap:8px;max-width:400px;margin:0 auto 24px;text-align:left}\n' +
+    '.trust-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.62)}\n' +
+    '.trust-ok{color:' + sc + ';font-weight:700;flex-shrink:0}\n' +
+    '.modal-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.78);align-items:flex-end;justify-content:center}\n' +
+    '.modal-overlay.active{display:flex}\n' +
+    '@media(min-width:600px){.modal-overlay{align-items:center;padding:20px}}\n' +
+    '.modal-box{background:#111;border-radius:16px 16px 0 0;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding:24px 20px;position:relative}\n' +
+    '@media(min-width:600px){.modal-box{border-radius:14px;max-height:80vh}}\n' +
+    '.modal-urgency{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;text-align:center;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:16px}\n' +
+    '.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.08);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px}\n' +
+    '.modal-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:4px}\n' +
+    '.modal-sub{font-size:13px;color:rgba(255,255,255,.45);margin-bottom:20px}\n' +
+    '.form-group{margin-bottom:14px}\n' +
+    '.form-group label{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}\n' +
+    '.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;padding:10px 12px;border-radius:8px;font-size:14px;font-family:inherit;outline:none}\n' +
+    '.form-group input:focus,.form-group textarea:focus{border-color:' + sc + '}\n' +
+    '.form-group textarea{resize:vertical;min-height:70px}\n' +
+    '.modal-submit{width:100%;background:' + sc + ';color:#000;font-size:15px;font-weight:700;padding:14px;border-radius:8px;border:none;cursor:pointer;margin-top:8px;letter-spacing:.02em}\n' +
+    '.modal-note{font-size:11px;color:rgba(255,255,255,.28);text-align:center;margin-top:8px}\n' +
+    '.sticky-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:150;background:rgba(0,0,0,.92);border-top:1px solid rgba(255,255,255,.08);padding:10px 16px;padding-bottom:max(10px,env(safe-area-inset-bottom));backdrop-filter:blur(8px)}\n' +
+    '@media(max-width:700px){.sticky-cta{display:block}}\n' +
+    '.sticky-cta button{width:100%;background:' + sc + ';color:#000;font-size:14px;font-weight:700;padding:13px;border-radius:8px;border:none;cursor:pointer}\n' +
+    '.footer{text-align:center;padding:20px;font-size:11px;color:rgba(255,255,255,.18);border-top:1px solid rgba(255,255,255,.06)}';
+
+  const modalUrgencyTxt = (urgencyType === 'escasez') ? 'Stock limitado' : 'Pedidos activos';
+  const notesPlaceholder = vi.style ? esc(vi.style) + '… o el modelo que prefer\xEDs' : 'Color, variante o modelo que prefer\xEDs…';
+  const stickyLabel = priceS ? 'Gs. ' + priceS + ' — Quiero el m\xEDo →' : 'Quiero el m\xEDo →';
+  const waProduct = encodeURIComponent(name);
+
+  const jsBlock =
+    'function openModal(){\n' +
+    '  document.getElementById(\'order-modal\').classList.add(\'active\');\n' +
+    '  document.body.style.overflow=\'hidden\';\n' +
+    '  var sc=document.getElementById(\'sticky-cta\');if(sc)sc.style.display=\'none\';\n' +
+    '}\n' +
+    'function closeModal(){\n' +
+    '  document.getElementById(\'order-modal\').classList.remove(\'active\');\n' +
+    '  document.body.style.overflow=\'\';\n' +
+    '  var sc=document.getElementById(\'sticky-cta\');if(sc)sc.style.display=\'block\';\n' +
+    '}\n' +
+    'document.getElementById(\'order-modal\').addEventListener(\'click\',function(e){if(e.target===this)closeModal();});\n' +
+    'document.getElementById(\'modal-form\').addEventListener(\'submit\',function(e){\n' +
+    '  e.preventDefault();\n' +
+    '  var n=document.getElementById(\'m-name\').value.trim();\n' +
+    '  var p=document.getElementById(\'m-phone\').value.trim();\n' +
+    '  var c=document.getElementById(\'m-city\').value.trim();\n' +
+    '  var o=document.getElementById(\'m-notes\').value.trim();\n' +
+    '  if(!n||!p||!c){alert(\'Por favor complet\\xE1 nombre, tel\\xE9fono y ciudad.\');return;}\n' +
+    '  var msg=\'Hola, quiero hacer un pedido:\\nProducto: ' + esc(name).replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\\nNombre: \'+n+\'\\nTel\\xE9fono: \'+p+\'\\nCiudad: \'+c+(o?\'\\nNotas: \'+o:\'\')' +
+    (priceS ? '+\'\\nPrecio: Gs. ' + priceS + '\'' : '') + ';\n' +
+    '  window.open(\'https:\' + \'//wa.me/595XXXXXXXXX?text=\'+encodeURIComponent(msg),\'_blank\');\n' +
+    '  closeModal();\n' +
+    '});';
+
+  const html =
+    '<!DOCTYPE html>\n<html lang="es">\n<head>\n' +
+    '<meta charset="UTF-8">\n' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">\n' +
+    '<title>' + esc(name) + (promise ? ' — ' + esc(promise) : '') + '</title>\n' +
+    insyncLines + '\n' +
+    '<style>' + css + '</style>\n</head>\n<body>\n\n' +
+    '<nav class="nav"><span class="nav-logo">DAM VERTEX</span><button class="nav-cta" onclick="openModal()">Quiero el m\xEDo →</button></nav>\n\n' +
+    '<section class="hero" id="section-hero"><div class="hero-inner">\n' +
+    '<p class="overline">' + esc(name) + '</p>\n' +
+    '<h1>' + heroH1 + '</h1>\n' +
+    (heroSub ? '<p class="hero-sub">' + heroSub + '</p>\n' : '') +
+    priceHtml + '\n' +
+    '<div class="spi"><span class="spi-stars">★★★★★</span><span class="spi-txt">Pedidos activos \xB7 Entrega en el d\xEDa</span></div>\n' +
+    '<button class="btn-primary" onclick="openModal()">Quiero el m\xEDo →</button>\n' +
+    urgencyHtml + '\n' +
+    '<div class="db-row">' +
+    '<span class="db-badge db-green">🚚 Entrega en el d\xEDa</span>' +
+    '<span class="db-badge db-green">✓ Env\xEDo gratis (Central)</span>' +
+    '<span class="db-badge">💳 Pag\xE1s al recibir \xB7 Central</span>' +
+    '<span class="db-badge">📦 Interior: pago anticipado</span>' +
+    '</div>\n</div></section>\n\n' +
+    middleSections + '\n' +
+    sClose + '\n\n' +
+    '<div id="order-modal" class="modal-overlay" role="dialog" aria-modal="true">\n<div class="modal-box">\n' +
+    '<div class="modal-urgency">⏳ ' + modalUrgencyTxt + '</div>\n' +
+    '<button class="modal-close" onclick="closeModal()" aria-label="Cerrar">✕</button>\n' +
+    '<h2 class="modal-title">Hac\xE9 tu pedido</h2>\n' +
+    '<p class="modal-sub">Complet\xE1 tus datos — te contactamos al toque.</p>\n' +
+    '<form id="modal-form" novalidate>\n' +
+    '<div class="form-group"><label for="m-name">Nombre y apellido</label><input type="text" id="m-name" placeholder="Tu nombre completo" autocomplete="name" required></div>\n' +
+    '<div class="form-group"><label for="m-phone">Tel\xE9fono (WhatsApp)</label><input type="tel" id="m-phone" placeholder="Ej: 0981 123 456" autocomplete="tel" required></div>\n' +
+    '<div class="form-group"><label for="m-city">Ciudad / Barrio</label><input type="text" id="m-city" placeholder="Asunci\xF3n, Fernando de la Mora…" required></div>\n' +
+    '<div class="form-group"><label for="m-notes">Variante / modelo (opcional)</label><textarea id="m-notes" placeholder="' + notesPlaceholder + '"></textarea></div>\n' +
+    '<button type="submit" class="modal-submit">Confirmar pedido →</button>\n' +
+    '<p class="modal-note">⚠️ El precio puede cambiar sin previo aviso.</p>\n' +
+    '</form></div></div>\n\n' +
+    '<div class="sticky-cta" id="sticky-cta"><button onclick="openModal()">' + stickyLabel + '</button></div>\n\n' +
+    '<div class="footer"><p>Blueprint V3 — Product Studio — Dam Vertex</p>' +
+    '<p style="margin-top:4px;font-size:10px">Reemplazar 595XXXXXXXXX con n\xFAmero real antes del deploy. Instrumentar secci\xF3n IDs para InSync.</p></div>\n\n' +
+    '<script>\n' + jsBlock + '\n<\/script>\n</body>\n</html>';
 
   window._blueprintHtml = html;
 
@@ -1334,18 +1452,18 @@ ${sSocial}
   renderLandingStatus({ landing_status: 'draft', landing_html: html });
 
   if (currentSlug) {
-    const saveRes = await fetch('/api/product-registry', {
+    const saveRes  = await fetch('/api/product-registry', {
       method: 'POST', headers: authHeaders(),
       body: JSON.stringify({ action: 'save_landing', slug: currentSlug, html }),
     });
     const saveData = await saveRes.json().catch(() => ({}));
     if (!saveData.ok) console.warn('save_landing failed:', saveData.error);
   } else {
-    setSaveStatus('Blueprint generado — guardá el producto para persistirlo', false);
+    setSaveStatus('Blueprint generado — guard\xE1 el producto para persistirlo', false);
     return;
   }
 
-  setSaveStatus('Blueprint generado y guardado', false);
+  setSaveStatus('Blueprint V3 generado y guardado', false);
 }
 
 function previewBlueprint() {
