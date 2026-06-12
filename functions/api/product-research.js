@@ -75,7 +75,8 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: 'fetch_error', detail: fetchErr.message }, 502);
   }
 
-  const extracted = extractFromHtml(html);
+  const extracted           = extractFromHtml(html);
+  const reference_structure = extractReferenceStructure(html);
 
   return json({
     ok: true,
@@ -83,6 +84,7 @@ export async function onRequestPost({ request, env }) {
     source_type,
     fetched_at: new Date().toISOString(),
     extracted,
+    reference_structure,
   });
 }
 
@@ -133,7 +135,10 @@ function extractFirstParagraph(html) {
   const ps = [...html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)];
   for (const p of ps) {
     const text = stripTags(p[1]).trim();
-    if (text.length > 30 && text.length < 600) return text;
+    if (text.length < 50 || text.length > 600) continue;
+    if (/alibaba|aliexpress|contact\s+supplier|trade\s+assurance|minimum\s+order|free\s+shipping/i.test(text)) continue;
+    if (/^(home|shop|buy|browse|copyright|©|all\s+rights)/i.test(text)) continue;
+    return text;
   }
   return '';
 }
@@ -153,13 +158,21 @@ function extractListItems(html) {
 }
 
 function isProductFeature(text) {
-  if (!text || text.length < 15 || text.length > 300) return false;
-  if (text.split(/\s+/).length < 3) return false;
+  if (!text || text.length < 20 || text.length > 300) return false;
+  if (text.split(/\s+/).length < 4) return false;
   // Navigation breadcrumb separators
   if (/[>|\\]/.test(text)) return false;
   // Comma-separated category lists (e.g., "Jewelry, Eyewear, Watches & Accessories")
   const parts = text.split(',').map(p => p.trim()).filter(Boolean);
   if (parts.length >= 2 && parts.every(p => p.split(/\s+/).length <= 3)) return false;
+  // Supplier/platform boilerplate
+  if (/alibaba|aliexpress|dhgate|contact\s+supplier|trade\s+assurance|minimum\s+order|ships?\s+from|add\s+to\s+(cart|wishlist)|free\s+shipping/i.test(text)) return false;
+  // Navigation / CTA patterns
+  if (/^(home|shop|buy|browse|view\s+all|see\s+more|sign\s+in|log\s+in|all\s+categories)/i.test(text)) return false;
+  // CSS accidentally scraped from code blocks
+  if (/\{[^}]{3,}:[^}]+\}/.test(text)) return false;
+  // All uppercase (banners/ads)
+  if (text.length > 15 && text === text.toUpperCase()) return false;
   return true;
 }
 
@@ -195,6 +208,46 @@ function extractSpecs(html) {
   }
 
   return specs;
+}
+
+function extractReferenceStructure(html) {
+  const clean = html
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<!--[\s\S]*?-->/g, '');
+
+  const headingRe = /<h[23][^>]*>([\s\S]*?)<\/h[23]>/gi;
+  const sections = [];
+  let m, order = 0;
+  while ((m = headingRe.exec(clean)) !== null && sections.length < 12) {
+    const text = stripTags(m[1]).trim().replace(/\s+/g, ' ').slice(0, 100);
+    if (text.length >= 3) sections.push({ text, type: classifySection(text), order: order++ });
+  }
+
+  return {
+    sections,
+    patterns: {
+      has_benefits_list: /<ul[^>]*>[\s\S]{30,}?<\/ul>/i.test(clean),
+      has_faq:           /faq|preguntas\s+frecuentes/i.test(clean),
+      has_testimonials:  /testimonial|rese[ñn]a|opini[oó]n\s+de\s+clientes/i.test(clean),
+      has_specs_table:   /<table/i.test(clean),
+      section_count:     sections.length,
+    },
+  };
+}
+
+function classifySection(text) {
+  const t = text.toLowerCase();
+  if (/benefi|ventaj|por\s+qu[eé]|why|raz[oó]n/.test(t)) return 'benefits';
+  if (/especif|material|medida|t[eé]cnic|dimension/.test(t)) return 'specs';
+  if (/faq|pregunta|duda|frecuente/.test(t)) return 'faq';
+  if (/testimonial|opini[oó]n|review|rese[ñn]a|cliente/.test(t)) return 'testimonials';
+  if (/env[ií]o|entrega|shipping|delivery/.test(t)) return 'shipping';
+  if (/garant[íi]|devoluci[oó]n|reclamo/.test(t)) return 'warranty';
+  if (/precio|oferta|descuento|promo/.test(t)) return 'pricing';
+  if (/incluye|contenido|caja|paquete/.test(t)) return 'box_content';
+  if (/c[oó]mo|uso|instruc|pasos/.test(t)) return 'how_to';
+  return 'content';
 }
 
 function extractPrice(html) {
