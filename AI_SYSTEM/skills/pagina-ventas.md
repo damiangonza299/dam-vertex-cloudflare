@@ -231,3 +231,51 @@ Al completar este skill, el usuario tiene:
 4. Sección de manejo de objeciones + FAQ
 5. Stack de valor con precio de anclaje
 6. CTA copy en 3 posiciones de la página
+
+---
+
+## Regla de Patrones vs Copia — DAM Vertex
+
+Al crear una landing nueva para DAM Vertex, **no construir solo desde el brief**.
+
+### El flujo correcto
+
+```
+Producto nuevo
+→ Brief del producto
+→ Landings ganadoras existentes (referencia estructural)
+→ InSync histórico (referencia de comportamiento)
+→ Extracción de patrones ganadores
+→ Adaptación al nuevo producto
+→ Landing dedicada con identidad propia
+```
+
+### Qué es un patrón (extraer esto)
+
+- Orden de secciones que retuvo mejor en landings similares
+- Bloques con mayor attention_score o menor abandono posterior
+- CTAs con mejor comportamiento según InSync
+- Tipo de copy que retuvo (problema-solución / status / regalo / precio)
+- Densidad visual y ritmo de sección a sección
+- Posición donde aparece: precio visible, prueba social, pago al recibir, entrega en el día
+- Secuencia en que se resuelven las objeciones
+
+### Qué NO es un patrón (no copiar esto)
+
+- Colores o paleta de un producto anterior
+- Imágenes o producto anterior
+- Nombres de variantes
+- Testimonios ni copy literal
+- Diseño exacto sin adaptar al nuevo producto
+- Fondo negro genérico si el producto no lo justifica
+
+### La regla central
+
+**USAR LO GANADOR COMO ESTRUCTURA Y PSICOLOGÍA. NO USARLO COMO PLANTILLA VISUAL LITERAL.**
+
+### Cuando no hay InSync histórico
+
+- Producto nuevo con 0 sesiones: usar los frameworks de esta skill como base
+- No inventar datos de comportamiento
+- Documentar la decisión basada en framework (no en dato real)
+- Revisar InSync a las 2-4 semanas post-lanzamiento para ajustar

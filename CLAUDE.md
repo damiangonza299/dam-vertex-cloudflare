@@ -180,4 +180,63 @@ Verifica wrangler.toml, ejecuta deploy correcto, prueba rutas automáticamente.
 
 ---
 
+---
+
+## LANDINGS — REGLA CRÍTICA DE CREACIÓN
+
+### Flujo obligatorio antes de escribir HTML
+
+No se crea una landing solo desde el brief del producto. El flujo correcto:
+
+```
+1. Leer brief completo (nombre, precio, specs, variantes, restricciones)
+2. Verificar estado del producto en D1: active, stock_total, variants
+3. Revisar InSync de landings existentes relevantes (/reloj/, /cadena/, /lentes/, /cepillo/)
+4. Extraer patrones ganadores: orden de secciones, bloques que retienen, ubicación de precio/confianza
+5. Proponer ángulo principal, secciones y referencias antes de codear
+6. Recién después crear o modificar HTML
+```
+
+**No saltar directo a escribir código.**
+
+### Patrones = estructura y psicología. No = plantilla visual literal
+
+**Extraer de InSync histórico:**
+- Orden de secciones que retuvo mejor
+- Bloques con mayor attention_score y menor abandono
+- Posición de precio, pago al recibir, entrega en el día, prueba social
+
+**No copiar entre landings:**
+- Colores, paleta, fondo
+- Imágenes, variantes, testimonios
+- Copy literal o diseño exacto
+
+### Jerarquía brief vs InSync
+
+- **Brief manda sobre:** nombre, precio, specs, variantes, material, oferta
+- **InSync manda sobre:** orden de secciones, peso de bloques, ubicación de precio/confianza
+
+### Prueba social — prohibido inventar
+
+- No usar nombres falsos ni "pedido verificado" sin datos reales
+- Usar prueba social genérica: "Pedidos activos · Entrega en el día", "Clientes en Central e Interior"
+- Si hay testimonios reales: incluirlos con nombre y resultado específico
+
+### Identidad visual — parte del producto, no de otra landing
+
+1. Color y material del producto → paleta base
+2. Percepción deseada → tono visual
+3. No usar fondo negro por defecto — justificar si se elige
+4. No copiar look de otra landing sin justificación de negocio
+
+### Archivos de referencia
+
+```
+AI_SYSTEM/skills/insync-cro.md         ← extracción de patrones históricos
+AI_SYSTEM/skills/product-studio.md     ← checklist pre-código + regla de testimonios
+AI_SYSTEM/skills/pagina-ventas.md      ← frameworks de copy + regla patrones vs copia
+```
+
+---
+
 Para contexto completo del proyecto, skills y routing: leer `gemini.md`.
