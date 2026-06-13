@@ -177,8 +177,6 @@ export async function onRequestGet({ request, env }) {
 
     /* ── Step 6: compute metrics and classify ── */
     const sections = Object.entries(sectionData).map(([name, data]) => {
-      const slugSessions = sessionsBySlug;
-
       /* aggregate metrics */
       const reachPct  = totalSessions > 0 ? Math.round(data.views / totalSessions * 100) : 0;
       const avgTimeS  = data.timeCount > 0
@@ -186,6 +184,7 @@ export async function onRequestGet({ request, env }) {
         : 0;
       const timeScore = avgTimeS ? Math.min(Math.round((avgTimeS / 15) * 100), 100) : 0;
       const attnScore = Math.round(reachPct * 0.5 + timeScore * 0.5);
+      /* cta_rate = CTA interactions per 100 sessions — can exceed 100 if multiple clicks per session */
       const ctaRate   = totalSessions > 0 ? Math.round(data.ctaClicks / totalSessions * 100) : 0;
 
       /* per-landing breakdown */
@@ -226,9 +225,16 @@ export async function onRequestGet({ request, env }) {
     sections.sort((a, b) => b.attention_score - a.attention_score);
 
     /* build ranking buckets */
+    const STRENGTH_TO_BUCKET = {
+      FUERTE:    'strong',
+      DEBIL:     'weak',
+      NEUTRO:    'neutral',
+      PENDIENTE: 'pending',
+    };
     const ranking = { strong: [], neutral: [], weak: [], pending: [] };
     sections.forEach(s => {
-      ranking[s.strength.toLowerCase()].push(s.name);
+      const bucket = STRENGTH_TO_BUCKET[s.strength] || 'pending';
+      ranking[bucket].push(s.name);
     });
 
     /* ── Step 7: build meta ── */
