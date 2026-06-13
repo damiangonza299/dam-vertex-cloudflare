@@ -153,6 +153,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .funnel-bar{height:6px;background:var(--bg2);border-radius:3px;margin-top:3px;overflow:hidden}
 .funnel-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s}
 .blueprint-preview{width:100%;height:300px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fff}
+.brief-preview{width:100%;height:420px;font-family:'SF Mono',Consolas,monospace;font-size:11px;line-height:1.7;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);padding:12px;resize:vertical}
 
 /* ── Sync tab ── */
 .sync-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
@@ -170,6 +171,21 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .sync-btn.green:hover{background:rgba(74,222,128,.2)}
 .sync-btn:disabled{opacity:.4;cursor:default}
 .sync-log{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:var(--muted);font-family:monospace;line-height:1.6;min-height:40px;max-height:120px;overflow-y:auto;margin-top:8px;white-space:pre-wrap}
+.check-row{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px}
+.check-row:last-child{border-bottom:none}
+.check-badge{flex-shrink:0;padding:1px 6px;border-radius:3px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
+.check-badge-PASS{background:rgba(74,222,128,.12);color:var(--green)}
+.check-badge-WARNING{background:rgba(251,191,36,.12);color:var(--yellow)}
+.check-badge-FAIL{background:rgba(248,113,113,.12);color:var(--red)}
+.check-label{font-weight:600;color:var(--text)}
+.check-evidence{color:var(--muted);margin-top:2px;font-family:monospace}
+.check-fix{color:var(--yellow);margin-top:2px}
+.verdict-banner{padding:12px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;line-height:1.4}
+.verdict-banner.complete{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:var(--green)}
+.verdict-banner.incomplete{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red)}
+.manual-block{margin-top:14px;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.manual-block-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px}
+.manual-item{font-size:11px;color:var(--muted);padding:3px 0;display:flex;gap:6px;align-items:flex-start}
 
 /* ── Notice ── */
 .notice{padding:10px 14px;border-radius:var(--radius-sm);font-size:12px;line-height:1.5;margin-bottom:12px}
@@ -535,7 +551,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         <!-- TAB: Landing -->
         <div class="tab-pane" id="tab-landing">
           <div class="notice notice-warn" id="landing-unsaved-warn" style="display:none;margin-bottom:12px">
-            ⚠ El producto no está guardado. El blueprint se generará pero no se persistirá hasta que presiones <strong>Guardar</strong>.
+            ⚠ El producto no está guardado. El brief y el blueprint se generarán pero no se persistirán hasta que presiones <strong>Guardar</strong>.
           </div>
           <div class="landing-grid">
             <div class="landing-panel">
@@ -550,29 +566,45 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
             </div>
 
             <div class="landing-panel">
-              <h4>Blueprint de landing</h4>
-              <div id="landing-status-row" style="margin-bottom:12px;display:flex;gap:8px;align-items:center">
-                <span id="landing-status-badge" class="badge badge-draft">Sin blueprint</span>
+              <h4>Brief para Claude Code <span id="landing-status-badge" class="badge badge-draft" style="float:right;margin-top:-1px;text-transform:none;font-weight:400;letter-spacing:0">Sin brief</span></h4>
+
+              <!-- Acciones principales del Brief -->
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+                <button class="sync-btn primary" onclick="generateBrief()">Generar Brief</button>
+                <button class="sync-btn" id="copy-brief-btn" onclick="copyBrief()" disabled>Copiar Brief</button>
+                <button class="sync-btn" id="download-brief-btn" onclick="downloadBrief()" disabled>Descargar .md</button>
               </div>
-              <div class="form-group" style="margin-bottom:10px">
-                <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px">Landing Base</label>
-                <select id="bp-landing-base" class="form-input" style="font-size:12px">
-                  <option value="apex">Apex (mejor rendimiento)</option>
-                  <option value="blackout">Blackout</option>
-                  <option value="lentes">Lentes</option>
-                  <option value="cepillo">Cepillo</option>
-                </select>
-              </div>
-              <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">
-                <button class="sync-btn primary" onclick="showBlueprintPlan()">Ver plan</button>
-                <button class="sync-btn primary" id="confirm-generate-btn" onclick="generateBlueprint()" disabled style="display:none">Confirmar y generar</button>
-                <button class="sync-btn" id="preview-blueprint-btn" onclick="previewBlueprint()" disabled>Ver preview</button>
-                <button class="sync-btn" id="download-blueprint-btn" onclick="downloadBlueprint()" disabled>Descargar HTML</button>
-              </div>
-              <div id="bp-plan-panel" style="display:none;margin-top:12px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:11px;line-height:1.9"></div>
-              <div id="blueprint-preview-area" style="display:none;margin-top:12px">
-                <iframe id="blueprint-iframe" class="blueprint-preview" sandbox="allow-scripts" srcdoc=""></iframe>
-              </div>
+              <div id="brief-status" style="font-size:11px;color:var(--muted);min-height:16px;margin-bottom:8px"></div>
+              <textarea id="brief-preview" class="brief-preview" readonly placeholder="Presioná 'Generar Brief' para construir el brief completo con todos los datos del producto..." style="display:none"></textarea>
+
+              <!-- Blueprint experimental — colapsado por defecto -->
+              <details style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px">
+                <summary style="cursor:pointer;user-select:none;list-style:none;display:flex;align-items:center;gap:8px;outline:none">
+                  <span style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(251,146,60,.8);background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:3px;padding:2px 7px">EXPERIMENTAL</span>
+                  <span style="font-size:10px;color:var(--muted)">Blueprint auto-generado — no usar en producción</span>
+                  <span style="font-size:9px;color:rgba(255,255,255,.2);margin-left:auto">▸</span>
+                </summary>
+                <div style="margin-top:10px">
+                  <div class="form-group" style="margin-bottom:8px">
+                    <select id="bp-landing-base" class="form-input" style="font-size:11px">
+                      <option value="apex">Apex (mejor rendimiento)</option>
+                      <option value="blackout">Blackout</option>
+                      <option value="lentes">Lentes</option>
+                      <option value="cepillo">Cepillo</option>
+                    </select>
+                  </div>
+                  <div style="display:flex;gap:6px;flex-wrap:wrap">
+                    <button class="sync-btn" style="font-size:10px" onclick="showBlueprintPlan()">Ver plan</button>
+                    <button class="sync-btn" id="confirm-generate-btn" onclick="generateBlueprint()" disabled style="display:none;font-size:10px">Confirmar y generar</button>
+                    <button class="sync-btn" id="preview-blueprint-btn" onclick="previewBlueprint()" disabled style="font-size:10px">Ver preview</button>
+                    <button class="sync-btn" id="download-blueprint-btn" onclick="downloadBlueprint()" disabled style="font-size:10px">Descargar HTML</button>
+                  </div>
+                  <div id="bp-plan-panel" style="display:none;margin-top:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:11px;line-height:1.9"></div>
+                  <div id="blueprint-preview-area" style="display:none;margin-top:10px">
+                    <iframe id="blueprint-iframe" class="blueprint-preview" sandbox="allow-scripts" srcdoc=""></iframe>
+                  </div>
+                </div>
+              </details>
             </div>
           </div>
         </div><!-- /tab-landing -->
@@ -601,8 +633,16 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
           </div>
 
           <div class="sync-card">
-            <h4>Validación pre-activación</h4>
+            <h4>Validación de Activación Total</h4>
+            <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <button class="sync-btn" id="run-activation-check-btn" onclick="runActivationCheck()">⚡ Validar ahora</button>
+            </div>
+            <div id="verdict-banner" style="display:none"></div>
             <div id="checklist-items"></div>
+            <div id="manual-validation-block" style="display:none"></div>
+            <div class="notice notice-info" style="margin-top:10px;font-size:11px">
+              Solo los checks FAIL bloquean la activación. Los WARNING son opcionales.
+            </div>
           </div>
         </div><!-- /tab-sync -->
 
@@ -1492,11 +1532,14 @@ function detectPurchasePsychology(st, op) {
     op.category || '',
   ].join(' ').toLowerCase();
 
-  if (/regalo|regalar|sorpresa|cumplea|aniversario|navidad|ideal.*dar|para dar/.test(src)) return 'REGALO';
+  // REGALO solo gana si la intención de regalo está en los campos principales, no en benefits/nombre
+  const coreSrc = [st.main_promise || '', st.problem_solved || '', st.purchase_motivation || ''].join(' ').toLowerCase();
+
+  if (/regalo|regalar|sorpresa|cumplea|aniversario|navidad|ideal.*dar|para dar/.test(coreSrc)) return 'REGALO';
   if (/duele|dolor|molestia|cansancio|fatiga|visi|vista|problemas.*ojo|lumbar/.test(src)) return 'DOLOR';
   if (/transform|cambio|mejor versi|nuevo t|diferente|antes.*despu|look/.test(src)) return 'TRANSFORMACION';
   if (/demo|resultado|funciona|prueba|antes.*despues|evidencia|comprobado/.test(src)) return 'DEMO';
-  if (/presencia|estatus|imagen|elegante|profesional|verte mejor|impresi|status/.test(src)) return 'STATUS';
+  if (/presencia|estatus|imagen|elegante|profesional|verte mejor|impresi|status|premium|ejecutivo|hombre.*estilo|estilo.*hombre/.test(src)) return 'STATUS';
   return 'ACCESORIO';
 }
 
@@ -1780,7 +1823,9 @@ function composePlan(op, st, vi, insync, pattern) {
 
   /* 8. CREAR: testimonios para patrones con prueba social */
   if (pattern === 'DEMO' || pattern === 'DOLOR' || pattern === 'TRANSFORMACION') {
-    plan.push({ slot: 'testimonios', action: 'CREAR', template: 'testimonios', after: 'trust',
+    // DEMO ya insertó autoridad en el paso anterior — encadenar testimonios después de autoridad
+    var testimoniosAfter = (pattern === 'DEMO') ? 'autoridad' : 'trust';
+    plan.push({ slot: 'testimonios', action: 'CREAR', template: 'testimonios', after: testimoniosAfter,
       reason: 'Patron ' + pattern + ' — prueba social' });
   }
 
@@ -2014,9 +2059,9 @@ function lcRenderHero(sec, data, doc) {
     var parts = promise.replace(' — ', '|||').replace(' - ', '|||').split('|||');
     if (parts.length > 1) {
       titleEl.innerHTML = '';
-      titleEl.appendChild(document.createTextNode(parts[0]));
+      titleEl.appendChild(doc.createTextNode(parts[0]));
       titleEl.appendChild(doc.createElement('br'));
-      titleEl.appendChild(document.createTextNode(parts[1]));
+      titleEl.appendChild(doc.createTextNode(parts[1]));
     } else {
       titleEl.textContent = promise;
     }
@@ -2058,7 +2103,7 @@ function lcRenderHero(sec, data, doc) {
   if (spiText) spiText.textContent = 'Pedidos activos · Entrega en el dia';
 
   var ctaTexts = {
-    STATUS:        'Quiero el mio →',
+    STATUS:        'Quiero el mío →',
     DOLOR:         'Quiero solucionar esto →',
     TRANSFORMACION:'Quiero cambiar →',
     DEMO:          'Ver resultado →',
@@ -2236,9 +2281,9 @@ function lcRenderCierre(sec, data, doc) {
     var parts = promise.replace(' — ', '|||').split('|||');
     if (parts.length > 1) {
       closeH.innerHTML = '';
-      closeH.appendChild(document.createTextNode(parts[0]));
+      closeH.appendChild(doc.createTextNode(parts[0]));
       closeH.appendChild(doc.createElement('br'));
-      closeH.appendChild(document.createTextNode(parts[1]));
+      closeH.appendChild(doc.createTextNode(parts[1]));
     } else {
       closeH.textContent = promise;
     }
@@ -2314,6 +2359,9 @@ function executePlan(doc, plan, data) {
       tmp2.innerHTML = tplFn2(data);
       var replacement = tmp2.firstElementChild;
       if (replacement && secEl.parentNode) {
+        // Bug 1 fix: heredar ID y slot del elemento original para evitar colisión de IDs
+        if (secEl.id) replacement.id = secEl.id;
+        replacement.setAttribute('data-bp-slot', slot);
         secEl.parentNode.replaceChild(replacement, secEl);
       } else {
         secEl.style.display = 'none';
@@ -2523,6 +2571,380 @@ function downloadBlueprint() {
   a.click();
 }
 
+/* ──────────────────────────────────────────
+   Brief para Claude Code
+────────────────────────────────────────── */
+
+function isCleanSpec(key, value) {
+  var dirty = ['px','font-family','border','margin','padding','box-sizing',
+               'var(','rgba(','rgb(','display:','cursor:','text-decoration',
+               'class=','style=','<div','<span','">',';','}'];
+  var combined = (String(key) + ' ' + String(value)).toLowerCase();
+  return !dirty.some(function(d) { return combined.indexOf(d) !== -1; });
+}
+
+function cleanVisualNotes(notes) {
+  if (!notes) return '';
+  var dirtyCss = ['px','font-family','border-','margin','padding','box-sizing',
+                  'var(','rgba(','rgb(','display:','cursor:','text-decoration',
+                  'class=','style=','<div','<span'];
+  return notes.split('\n').filter(function(line) {
+    var l = line.trim();
+    if (!l) return false;
+    if (/^referencia:/i.test(l)) return false;
+    if (/https?:\/\//i.test(l)) return false;
+    return !dirtyCss.some(function(d) { return l.toLowerCase().indexOf(d) !== -1; });
+  }).join('\n').trim();
+}
+
+function generateBrief() {
+  var data     = readForm();
+  var op       = data.op_json;
+  var st       = data.strategic_json || {};
+  var vi       = data.visual_json    || {};
+  var slug     = currentSlug || getVal('f-slug') || 'sin-slug';
+  var name     = op.name || slug || 'Producto';
+  var insync   = currentBrief && currentBrief.insights_json && currentBrief.insights_json.insync;
+  var research = (currentBrief && currentBrief.research_json) || [];
+  var pattern  = detectPurchasePsychology(st, op);
+  var base     = (document.getElementById('bp-landing-base') || {}).value || BP_DEFAULT_BASE;
+  var baseInfo = BP_BASES[base] || BP_BASES[BP_DEFAULT_BASE];
+  var date     = new Date().toLocaleDateString('es-PY');
+
+  var priceN   = Number(op.price)         || 0;
+  var cmpN     = Number(op.compare_price) || 0;
+  var costN    = Number(op.cost)          || 0;
+  var variants  = Array.isArray(op.variants) && op.variants.length ? op.variants : null;
+  var benefits  = Array.isArray(st.benefits)   ? st.benefits   : [];
+  var objs      = Array.isArray(st.objections) ? st.objections : [];
+  var insyncSessions = (insync && (insync.sessions || insync.total_sessions || 0)) || 0;
+  var topSections    = (insync && Array.isArray(insync.top_sections)) ? insync.top_sections : [];
+
+  function fmtGs(n) { return n ? 'Gs. ' + n.toLocaleString('es-PY') : '—'; }
+
+  var md = '';
+
+  // ── Header
+  md += '# Brief de Landing — ' + name + '\n';
+  md += '**Fecha:** ' + date + ' | **Slug:** `' + slug + '` | **Patrón:** ' + pattern + '\n\n';
+  md += '---\n\n';
+
+  // ── 1. Datos del Producto
+  md += '## 1. Datos del Producto\n\n';
+  md += '| Campo | Valor |\n|---|---|\n';
+  md += '| Nombre | ' + name + ' |\n';
+  md += '| Slug | `' + slug + '` |\n';
+  md += '| Categoría | ' + (op.category || '—') + ' |\n';
+  md += '| Precio | ' + fmtGs(priceN) + ' |\n';
+  if (cmpN)  md += '| Precio tachado | ' + fmtGs(cmpN)  + ' |\n';
+  if (costN) md += '| Costo unitario | ' + fmtGs(costN) + ' |\n';
+  md += '| Estado | ' + (op.status || 'borrador') + ' |\n';
+  if (op.type) md += '| Tipo | ' + op.type + ' |\n';
+
+  if (variants) {
+    md += '\n**Variantes:**\n\n';
+    variants.forEach(function(v) {
+      var s = v.stock !== undefined ? ' — stock: ' + v.stock : '';
+      var a = v.alert ? ' (alerta en ' + v.alert + ')' : '';
+      md += '- **' + (v.name || 'Variante') + '**' + s + a + '\n';
+    });
+  } else {
+    md += '\n_Sin variantes — producto unitario._\n';
+  }
+
+  md += '\n---\n\n';
+
+  // ── 2. Investigación
+  md += '## 2. Investigación\n\n';
+
+  var hasViSpecs = vi.material || vi.dimensions || vi.weight;
+  if (hasViSpecs) {
+    md += '**Especificaciones físicas:**\n\n';
+    if (vi.material)   md += '- Material: ' + vi.material + '\n';
+    if (vi.dimensions) md += '- Dimensiones: ' + vi.dimensions + '\n';
+    if (vi.weight)     md += '- Peso: ' + vi.weight + '\n';
+    md += '\n';
+  }
+
+  if (research.length) {
+    research.forEach(function(r, i) {
+      var srcType = r.source_type || 'url';
+      var url     = r.url || '';
+
+      // Referencia interna: solo URL + nota de uso
+      if (srcType === 'reference') {
+        md += '**Referencia ' + (i + 1) + ':** reference' + (url ? ' — ' + url : '') + '\n';
+        md += 'Uso: referencia visual/estructural. No copiar copy ni specs.\n\n';
+        return;
+      }
+
+      var specs      = r.specs || (r.extracted && r.extracted.specs) || {};
+      var cleanSpecs = Object.keys(specs).filter(function(k) {
+        return specs[k] && isCleanSpec(k, specs[k]);
+      });
+
+      // Fuente supplier: URL + specs limpias únicamente
+      if (srcType === 'supplier') {
+        md += '**Fuente supplier:** ' + (url || '—') + '\n';
+        if (cleanSpecs.length) {
+          md += 'Specs limpias:\n';
+          cleanSpecs.forEach(function(k) { md += '- ' + k + ': ' + specs[k] + '\n'; });
+        } else {
+          md += 'No se encontraron specs limpias en esta fuente.\n';
+        }
+        md += '\n';
+        return;
+      }
+
+      // Otros tipos (competencia, etc.): título limpio + specs limpias
+      var title = (r.extracted && r.extracted.title) || r.title || r.h1 || '';
+      md += '**Fuente ' + (i + 1) + ':** ' + srcType + (url ? ' — ' + url : '') + '\n';
+      if (title && isCleanSpec('title', title)) md += 'Título: ' + title + '\n';
+      if (cleanSpecs.length) {
+        md += '\nSpecs técnicas:\n';
+        cleanSpecs.forEach(function(k) { md += '- ' + k + ': ' + specs[k] + '\n'; });
+      }
+      md += '\n';
+    });
+  }
+
+  if (!hasViSpecs && !research.length) {
+    md += '_Sin investigación cargada. Completar en los tabs Investigación y Visual._\n\n';
+  }
+
+  md += '---\n\n';
+
+  // ── 3. Estrategia
+  md += '## 3. Estrategia\n\n';
+
+  var stratRows = [
+    ['Problema que resuelve', st.problem_solved],
+    ['Audiencia objetivo',    st.target_audience],
+    ['Promesa principal',     st.main_promise],
+    ['Motivación de compra',  st.purchase_motivation],
+    ['Diferenciador clave',   st.differentiator],
+    ['Tipo de urgencia',      st.urgency_type],
+  ];
+  stratRows.forEach(function(r) { if (r[1]) md += '**' + r[0] + ':** ' + r[1] + '\n\n'; });
+
+  if (benefits.length) {
+    md += '**Beneficios (en orden de impacto):**\n\n';
+    benefits.forEach(function(b, i) { md += (i + 1) + '. ' + b + '\n'; });
+    md += '\n';
+  }
+  if (objs.length) {
+    md += '**Objeciones a resolver en el copy:**\n\n';
+    objs.forEach(function(o) { md += '- ' + o + '\n'; });
+    md += '\n';
+  }
+  if (!st.main_promise && !st.differentiator && !st.problem_solved) {
+    md += '_Sin estrategia cargada. Completar en el tab Estrategia._\n\n';
+  }
+
+  md += '---\n\n';
+
+  // ── 4. Visual
+  md += '## 4. Visual\n\n';
+
+  var viRows = [
+    ['Estilo visual',      vi.style],
+    ['Sensación de marca', vi.feel],
+    ['Material',           vi.material],
+    ['Dimensiones',        vi.dimensions],
+    ['Peso',               vi.weight],
+    ['Notas visuales',     cleanVisualNotes(vi.notes)],
+  ];
+  var viExtra = viRows.some(function(r) { return !!r[1]; });
+  md += '**Colores:** principal `' + (vi.primary_color || '#0a0a0f') + '` / secundario `' + (vi.secondary_color || '#d4af37') + '`\n\n';
+  if (viExtra) {
+    viRows.forEach(function(r) { if (r[1]) md += '**' + r[0] + ':** ' + r[1] + '\n\n'; });
+  } else {
+    md += '_Sin especificaciones visuales adicionales. Completar en el tab Visual._\n\n';
+  }
+
+  md += '**Dirección de fotos necesarias:**\n\n';
+  if (variants) {
+    variants.forEach(function(v) { md += '- [ ] Imagen variante **' + (v.name || 'Variante') + '** (fondo neutro)\n'; });
+  }
+  md += '- [ ] Hero principal — producto frontal, ángulo protagonista\n';
+  md += '- [ ] Detalle de materiales / textura\n';
+  md += '- [ ] Lifestyle — producto en uso o contexto de uso\n\n';
+
+  md += '---\n\n';
+
+  // ── 5. InSync / Referencias internas
+  md += '## 5. InSync / Referencias Internas\n\n';
+  md += '**Landing base recomendada:** ' + baseInfo.label + ' (`' + baseInfo.path + '`)\n\n';
+
+  if (insyncSessions > 0) {
+    var reliable = insyncSessions >= 100;
+    md += '**InSync:** ' + insyncSessions + ' sesiones' + (reliable ? ' ✓ confiable' : ' — muestra insuficiente (< 100 sesiones)') + '\n\n';
+    if (topSections.length) {
+      var sorted = topSections.slice().sort(function(a, b) { return (b.attention_score || 0) - (a.attention_score || 0); });
+      var high = sorted.filter(function(s) { return (s.attention_score || 0) >= 60; });
+      var mid  = sorted.filter(function(s) { var sc = s.attention_score || 0; return sc >= 20 && sc < 60; });
+      var low  = sorted.filter(function(s) { var sc = s.attention_score || 0; return sc > 0 && sc < 20; });
+      if (high.length) {
+        md += '**Secciones de alta retención (priorizar):**\n';
+        high.forEach(function(s) { md += '- `' + (s.name || s.section) + '` — score ' + s.attention_score + '\n'; });
+        md += '\n';
+      }
+      if (mid.length) {
+        md += '**Secciones de retención media:**\n';
+        mid.forEach(function(s) { md += '- `' + (s.name || s.section) + '` — score ' + s.attention_score + '\n'; });
+        md += '\n';
+      }
+      if (low.length) {
+        md += '**Bloques a evitar o reemplazar (score bajo):**\n';
+        low.forEach(function(s) { md += '- `' + (s.name || s.section) + '` — score ' + s.attention_score + '\n'; });
+        md += '\n';
+      }
+    }
+  } else {
+    md += '_Sin datos InSync para este producto._\n\n';
+  }
+
+  md += '**Elementos técnicos a heredar de la landing base:**\n';
+  md += '- Modal de pedido (estructura HTML, JS de validación, eventos Pixel)\n';
+  md += '- Sticky CTA bar\n';
+  md += '- CAPI + Pixel (confirm-purchase — NO TOCAR)\n';
+  md += '- InSync observer (data-insync-cta, data-insync-section)\n';
+  md += '- WhatsApp button con número del sistema\n';
+  md += '- Nav y Footer base\n\n';
+
+  md += '---\n\n';
+
+  // ── 6. Instrucciones para Claude Code
+  md += '## 6. Instrucciones para Claude Code\n\n';
+
+  md += '### Lo que NO hay que hacer\n\n';
+  md += '- No generar una landing genérica ni reutilizar copy placeholder.\n';
+  md += '- No copiar el diseño exacto de Apex (/reloj/), Blackout (/cadena/), Lentes (/lentes/) ni Cepillo (/cepillo/).\n';
+  md += '- No tocar `confirm-purchase`, CAPI, Pixel ni ningún endpoint backend.\n';
+  md += '- No cambiar el número de WhatsApp — heredar el existente del sistema.\n';
+  md += '- No romper compatibilidad con Dam Finanzas ni con Admin.\n';
+  md += '- No inventar datos del producto que no figuren en este brief.\n';
+  md += '- No crear abstracciones innecesarias — landing dedicada, no componente reutilizable.\n\n';
+
+  md += '### Lo que SÍ hay que hacer\n\n';
+  md += '- Crear una landing **dedicada y con identidad visual propia** para **' + name + '**.\n';
+  md += '- Usar las landings existentes solo como referencia estructural y de tracking.\n';
+  md += '- Mantener: Pixel events, CAPI, InSync observers, modal funcional, sticky CTA, WhatsApp.\n';
+  md += '- Conectar al sistema de pedidos existente de DAM Vertex.\n';
+  md += '- Mantener compatibilidad total con Dam Finanzas (reportes de ventas) y Admin.\n';
+  md += '- Patrón psicológico a aplicar: **' + pattern + '**.\n\n';
+
+  var patternGuide = {
+    STATUS:        'El copy debe comunicar distinción, imagen y presencia. La funcionalidad técnica no es el argumento principal.',
+    DOLOR:         'Arrancar con el problema antes de mostrar el producto. Estructura: problema → empatía → solución → evidencia.',
+    TRANSFORMACION:'Mostrar el antes/después de forma visual y emocional. El producto es el puente entre quien es y quien quiere ser.',
+    DEMO:          'El producto tiene que demostrar que funciona. Evidencia > promesa. Incluir datos, comparaciones o testimonios verificables.',
+    REGALO:        'La audiencia compra para otra persona. El copy habla del receptor, no del comprador. Presentación y packaging importan.',
+    ACCESORIO:     'Copy práctico y directo. Precio + disponibilidad son los argumentos clave. No dramatizar.',
+  };
+  if (patternGuide[pattern]) {
+    md += '**Guía de copy para ' + pattern + ':** ' + patternGuide[pattern] + '\n\n';
+  }
+
+  md += '---\n\n';
+
+  // ── 7. Checklist de Implementación
+  md += '## 7. Checklist de Implementación\n\n';
+
+  md += '### Archivo y estructura\n\n';
+  md += '- [ ] Crear: `public/' + slug + '/index.html`\n';
+  md += '- [ ] Copiar estructura base desde: `' + baseInfo.path + 'index.html`\n';
+  md += '- [ ] Slug final: `' + slug + '`\n\n';
+
+  md += '### Assets necesarios\n\n';
+  if (variants) {
+    variants.forEach(function(v) { md += '- [ ] Imagen variante **' + (v.name || 'Variante') + '**\n'; });
+  }
+  md += '- [ ] Hero image (1200×800 mín, fondo oscuro)\n';
+  md += '- [ ] Imagen de detalle / materiales\n';
+  md += '- [ ] Foto lifestyle (producto en contexto)\n';
+  var _cleanNotes = cleanVisualNotes(vi.notes);
+  if (_cleanNotes) {
+    _cleanNotes.split('\n').forEach(function(line) {
+      if (line.trim()) md += '- [ ] Nota visual: ' + line.trim() + '\n';
+    });
+  }
+  md += '\n';
+
+  md += '### Secciones recomendadas\n\n';
+  md += '- [ ] Hero — nombre, precio, CTA, eyebrow de categoría\n';
+  if (pattern === 'DOLOR' || pattern === 'TRANSFORMACION') md += '- [ ] Bloque problema → solución (patrón ' + pattern + ')\n';
+  if (variants) md += '- [ ] Selector/galería de variantes (' + variants.length + ')\n';
+  if (vi.material || vi.dimensions) md += '- [ ] Especificaciones técnicas\n';
+  if (benefits.length >= 3) md += '- [ ] Beneficios clave (' + benefits.length + ' disponibles en el brief)\n';
+  if (pattern === 'STATUS' || pattern === 'DEMO') md += '- [ ] Bloque autoridad / validación (patrón ' + pattern + ')\n';
+  if (pattern === 'DEMO' || pattern === 'DOLOR' || pattern === 'TRANSFORMACION') md += '- [ ] Testimonios de clientes reales\n';
+  md += '- [ ] FAQ — objeciones: ' + (objs.length ? objs.slice(0, 3).join(' / ') : 'sin objeciones cargadas') + '\n';
+  md += '- [ ] Cierre con urgencia tipo **' + (st.urgency_type || 'escasez') + '**\n\n';
+
+  md += '### Técnico\n\n';
+  var ctaMap = { STATUS:'Quiero el mío →', DOLOR:'Quiero solucionar esto →',
+                 TRANSFORMACION:'Quiero cambiar →', DEMO:'Ver resultado →',
+                 REGALO:'Elegir para regalar →' };
+  md += '- [ ] CTA principal: **' + (ctaMap[pattern] || 'Pedir ' + name + ' →') + '**\n';
+  md += '- [ ] Modal: heredar de `' + baseInfo.path + 'index.html`\n';
+  md += '- [ ] Sticky CTA: heredar de la landing base, actualizar precio\n';
+  md += '- [ ] Inline script: `const PRODUCT = { name: \'' + name + '\', slug: \'' + slug + '\', price: ' + priceN + ' }`\n';
+  md += '- [ ] Pixel: ViewContent, AddToCart, Purchase — NO modificar\n';
+  md += '- [ ] CAPI: /api/capi — NO modificar\n';
+  md += '- [ ] InSync: observer data-insync-* — heredar sin cambios\n\n';
+
+  md += '### Pruebas antes de deploy\n\n';
+  md += '- [ ] Modal abre y muestra nombre/precio correctos\n';
+  md += '- [ ] Sticky CTA visible en mobile (< 768px)\n';
+  md += '- [ ] WhatsApp button dispara con número correcto\n';
+  md += '- [ ] Pixel ViewContent llega en Meta Events Manager\n';
+  md += '- [ ] Pedido de prueba registra en Dam Finanzas\n';
+  md += '- [ ] No hay referencias visuales a otros productos de DAM Vertex\n';
+  md += '- [ ] No quedan imágenes placeholder de la landing base\n';
+  md += '- [ ] Producto aparece en Admin con datos correctos\n\n';
+
+  md += '---\n';
+  md += '*Brief generado por Product Studio — DAM Vertex / ' + date + '*\n';
+
+  // Store + update UI
+  window._briefMd = md;
+
+  var preview = document.getElementById('brief-preview');
+  if (preview) { preview.value = md; preview.style.display = 'block'; }
+
+  var copyBtn = document.getElementById('copy-brief-btn');
+  var dlBtn   = document.getElementById('download-brief-btn');
+  if (copyBtn) copyBtn.disabled = false;
+  if (dlBtn)   dlBtn.disabled   = false;
+
+  var statusEl = document.getElementById('brief-status');
+  if (statusEl) statusEl.textContent = '✓ Brief generado · ' + name + ' · patrón ' + pattern;
+}
+
+function copyBrief() {
+  var md  = window._briefMd;
+  if (!md) return;
+  var btn = document.getElementById('copy-brief-btn');
+  navigator.clipboard.writeText(md).then(function() {
+    if (btn) { btn.textContent = '✓ Copiado'; setTimeout(function() { btn.textContent = 'Copiar Brief'; }, 2200); }
+  }).catch(function() {
+    var preview = document.getElementById('brief-preview');
+    if (preview) { preview.select(); document.execCommand('copy'); }
+    if (btn) { btn.textContent = '✓ Copiado'; setTimeout(function() { btn.textContent = 'Copiar Brief'; }, 2200); }
+  });
+}
+
+function downloadBrief() {
+  var md   = window._briefMd;
+  if (!md) return;
+  var slug = currentSlug || getVal('f-slug') || 'producto';
+  var a    = document.createElement('a');
+  a.href   = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(md);
+  a.download = 'brief-' + slug + '.md';
+  a.click();
+}
+
 function renderLandingStatus(b) {
   const badge = document.getElementById('landing-status-badge');
   if (!badge) return;
@@ -2575,9 +2997,120 @@ async function syncToFinanzas() {
   }
 }
 
+async function runActivationCheck() {
+  if (!currentSlug) return;
+  const btn         = document.getElementById('run-activation-check-btn');
+  const items       = document.getElementById('checklist-items');
+  const banner      = document.getElementById('verdict-banner');
+  const manualBlock = document.getElementById('manual-validation-block');
+  if (btn) btn.disabled = true;
+  if (banner) banner.style.display = 'none';
+  if (manualBlock) manualBlock.style.display = 'none';
+  if (items) items.innerHTML = '<div style="color:var(--muted);font-size:11px">Analizando…</div>';
+
+  try {
+    const res = await fetch(`/api/product-activation-check?slug=${encodeURIComponent(currentSlug)}`, {
+      headers: authHeaders(),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.checks) {
+      if (items) items.innerHTML = `<div style="color:var(--red);font-size:11px">Error: ${data.error || 'desconocido'}</div>`;
+      return;
+    }
+    renderActivationChecks(data);
+  } catch (err) {
+    if (items) items.innerHTML = `<div style="color:var(--red);font-size:11px">Error de red: ${err.message}</div>`;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+function renderActivationChecks(data) {
+  const items         = document.getElementById('checklist-items');
+  const verdictBanner = document.getElementById('verdict-banner');
+  const manualBlock   = document.getElementById('manual-validation-block');
+  if (!items) return;
+
+  /* Verdict banner */
+  if (verdictBanner) {
+    const complete   = data.product_complete !== false;
+    const failCount  = data.fail_count || 0;
+    const warnCount  = data.warning_count || 0;
+    verdictBanner.style.display = 'block';
+    verdictBanner.className = `verdict-banner ${complete ? 'complete' : 'incomplete'}`;
+    if (complete) {
+      const warnNote = warnCount > 0 ? ` · ${warnCount} advertencia${warnCount !== 1 ? 's' : ''}` : '';
+      verdictBanner.innerHTML = `<span style="font-size:16px">✓</span><span>PRODUCTO COMPLETO — listo para activar${warnNote}</span>`;
+    } else {
+      verdictBanner.innerHTML = `<span style="font-size:16px">✗</span><span>PRODUCTO INCOMPLETO — ${failCount} check${failCount !== 1 ? 's' : ''} crítico${failCount !== 1 ? 's' : ''} fallaron</span>`;
+    }
+  }
+
+  /* Check rows */
+  items.innerHTML = (data.checks || []).map(c => `
+    <div class="check-row">
+      <span class="check-badge check-badge-${c.status}">${c.status}</span>
+      <div>
+        <div class="check-label">${c.label}</div>
+        ${c.evidence ? `<div class="check-evidence">${c.evidence}</div>` : ''}
+        ${c.fix ? `<div class="check-fix">→ ${c.fix}</div>` : ''}
+      </div>
+    </div>`).join('');
+
+  /* Manual validation block */
+  if (manualBlock) {
+    const manualItems = [
+      'Lead aparece en Admin Panel tras submit del formulario',
+      'Telegram recibe notificación de lead',
+      'Confirmar venta en Admin → stock descuenta en D1',
+      'Dam Finanzas registra venta con ganancia correcta',
+      'Purchase manual funciona end-to-end',
+      'Landing carga correctamente en mobile',
+      'Console F12 sin errores al navegar la landing',
+      'InSync registra section_view en behavior_events (verificar D1 post-visita)',
+    ];
+    manualBlock.style.display = 'block';
+    manualBlock.innerHTML = `
+      <div class="manual-block">
+        <div class="manual-block-title">Validación manual requerida</div>
+        ${manualItems.map(t => `<div class="manual-item"><span>□</span><span>${t}</span></div>`).join('')}
+      </div>`;
+  }
+}
+
 async function activateProduct() {
   if (!currentSlug) return;
-  if (!confirm(`¿Activar "${currentSlug}"?\n\nEl producto aparecerá en Venta Manual WhatsApp.`)) return;
+
+  /* Verificar si hay checks FAIL antes de activar */
+  const btn   = document.getElementById('run-activation-check-btn');
+  const items = document.getElementById('checklist-items');
+  if (btn) btn.disabled = true;
+  if (items) items.innerHTML = '';
+
+  let productComplete = true;
+  try {
+    const checkRes = await fetch(`/api/product-activation-check?slug=${encodeURIComponent(currentSlug)}`, {
+      headers: authHeaders(),
+    });
+    const checkData = await checkRes.json();
+    if (checkData.checks) {
+      renderActivationChecks(checkData);
+      productComplete = checkData.product_complete !== false;
+    }
+  } catch (_) {}
+  if (btn) btn.disabled = false;
+
+  if (!productComplete) {
+    alert(
+      `✗ PRODUCTO INCOMPLETO\n\n` +
+      `La validación encontró checks FAIL críticos.\n\n` +
+      `Corregí los errores marcados y volvé a validar antes de activar.`
+    );
+    return;
+  }
+
+  if (!confirm(`¿Activar "${currentSlug}"?\n\nEl producto aparecerá en Venta Manual WhatsApp y Home.`)) return;
+
   const res  = await fetch('/api/product-registry', {
     method: 'POST', headers: authHeaders(),
     body: JSON.stringify({ action: 'activate', slug: currentSlug }),

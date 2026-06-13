@@ -23,8 +23,10 @@ Cargar **únicamente** el área relevante a la tarea. No cargar todo el árbol.
 ### Product Studio — cuando se trabaja en productos nuevos o edición de existentes
 
 ```
-skills/product-studio.md        ← flujo PS completo, Blueprint V3, InSync, prohibiciones
-execution/new-product-checklist.md  ← 11 puntos obligatorios antes de activar
+skills/product-studio.md                    ← flujo PS completo, Blueprint V3, InSync, prohibiciones
+execution/new-product-checklist.md          ← flujo completo DAM Vertex + DAM Finanzas
+execution/PRODUCT_COMPLETION_CHECKLIST.md   ← 22 puntos obligatorios antes de declarar producto terminado
+execution/landing-insync-instrumentation.md ← triple atributo: id + data-insync-section + data-insync-cta
 ```
 
 ### Dam Intelligence — cuando se analizan leads, compradores, scoring o alertas
@@ -166,4 +168,4 @@ AI_SYSTEM/skills/
 
 ---
 
-*Última actualización: 2026-06-13*
+*Última actualización: 2026-06-13 — PRODUCT_COMPLETION_CHECKLIST agregado; instrumentación InSync actualizada a triple atributo*

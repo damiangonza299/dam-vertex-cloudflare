@@ -76,18 +76,24 @@ Si el reloj aparece en 10 lugares, el nuevo producto debe aparecer en esos mismo
 ## Paso 1B — Instrumentación InSync (obligatorio antes del primer deploy)
 
 **Regla completa:** `AI_SYSTEM/execution/landing-insync-instrumentation.md`
+**Referencia canónica:** `public/reloj-imperial-verde/index.html`
 
-Toda sección visual de la landing debe tener un `id` único. Sin ID, InSync no puede registrar `section_view` ni `section_time` para esa sección.
+Toda sección visual debe tener los tres atributos. Sin ellos, InSync no puede medir ni el Structure Engine puede analizar CTAs.
 
 Verificar antes de deploy:
 
-- [ ] Hero tiene `id="section-hero"`
-- [ ] Cada sección de contenido principal tiene ID descriptivo
-- [ ] FAQ tiene `id="section-faq"`
-- [ ] Cierre / CTA final tiene `id="section-cierre"`
-- [ ] No existe ningún `<section class="...">` sin `id` (salvo secciones ocultas con `display:none`)
+- [ ] Hero: `id="section-hero"` y `data-insync-section="hero"`
+- [ ] Cada sección de contenido principal: `id="section-{nombre}"` y `data-insync-section="{nombre}"`
+- [ ] FAQ: `id="section-faq"` y `data-insync-section="faq"`
+- [ ] Cierre: `id="section-cierre"` y `data-insync-section="cierre"`
+- [ ] Ningún `<section>` sin `id` ni `data-insync-section` (excepto `display:none`)
+- [ ] Todos los CTAs principales tienen `data-insync-cta="{nombre}"` donde `{nombre}` = `data-insync-section` de la sección contenedora
+- [ ] No usar `data-insync-cta="oferta"` — valor genérico que no matchea ninguna sección
 
 **PROHIBIDO hacer deploy de una landing nueva sin completar este paso.**
+
+Después del deploy, correr el **PRODUCT_COMPLETION_CHECKLIST** completo antes de declarar el producto terminado.
+Ver: `AI_SYSTEM/execution/PRODUCT_COMPLETION_CHECKLIST.md`
 
 ---
 

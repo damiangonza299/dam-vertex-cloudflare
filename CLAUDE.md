@@ -65,18 +65,33 @@ Flujo obligatorio:
 2. Completar tabs: Producto → Inventario → Estrategia → Visual
 3. Tab Investigación (opcional): analizar URLs de proveedores
 4. Tab Sync → "Sincronizar con DAM Finanzas" → llama a `importProductFromVertex`
-5. Tab Sync → "Activar producto" → `active=1`, `status='active'`
-6. Landing: generar blueprint desde el brief (Tab Landing)
-7. InSync: instrumentar todas las secciones con `id` antes del primer deploy
+5. Tab Sync → **"Validar Activación Total"** → corre `/api/product-activation-check` (PASS/WARNING/FAIL por check)
+6. Tab Sync → "Activar producto" → `active=1`, `status='active'`
+7. Landing: generar blueprint desde el brief (Tab Landing) + crear `public/{slug}/index.html` + deploy manual
+8. InSync: instrumentar todas las secciones con triple atributo antes del primer deploy:
+   - `id="section-{nombre}"` + `data-insync-section="{nombre}"` en cada `<section>`
+   - `data-insync-cta="{nombre}"` en cada CTA, donde `{nombre}` = sección que lo contiene
+   - Referencia canónica: `public/reloj-imperial-verde/index.html`
+9. Correr PRODUCT_COMPLETION_CHECKLIST antes de declarar el producto terminado
 
-Una vez activado: aparece automáticamente en venta manual WhatsApp (MANUAL_PRODUCTS dinámico desde `/api/product-stock?active_only=1`).
+Una vez activado: aparece automáticamente en:
+- Venta manual WhatsApp (MANUAL_PRODUCTS dinámico desde `/api/product-stock?active_only=1`)
+- Home `/` y `/productos/` (cargados dinámicamente desde la misma API)
+- Filtros Admin: leads, dashboard, ads, meta (poblados en login desde la API)
+- Intelligence: selector InSync (poblado desde la API tras auth)
+- Ranking de productos del dashboard (slug como clave, sin ambigüedad por includes())
+
+**Regla permanente — Activación Total:**
+> Ningún producto nuevo se considera terminado por tener landing y active=1.
+> Todo módulo que liste, filtre, mida, reporte o venda productos debe leer Product Registry o una fuente dinámica equivalente.
+> Los hardcodes de productos son deuda técnica y deben eliminarse o marcarse como FAIL en la validación.
 
 ### Checklist producto nuevo — 11 puntos obligatorios
 
 No se considera terminado hasta verificar:
 
 1. Existe en Admin Panel. ← Product Studio lo crea
-2. Existe en venta manual WhatsApp. ← automático al activar en Product Studio
+2. Existe en venta manual WhatsApp. ← **automático** al activar (MANUAL_PRODUCTS dinámico desde API)
 3. Existe en inventario DAM Vertex. ← Product Studio lo crea
 4. Existe en inventario Dam Finanzas. ← Tab Sync → "Sincronizar con DAM Finanzas"
 5. Existe en el mapeo producto/variante. ← variants_json en D1 via Product Studio
@@ -85,7 +100,23 @@ No se considera terminado hasta verificar:
 8. Existe en descuentos de stock. ← automático (confirm-purchase.js usa slug)
 9. Existe en combos. ← combos nuevos van como `product_type='combo'` en Product Studio
 10. Existe en landing y modal. ← Tab Landing → generar blueprint → deploy manual
-11. Landing completamente instrumentada para InSync (todas las secciones visibles tienen `id` único).
+11. Landing completamente instrumentada para InSync — triple atributo: `id="section-{nombre}"` + `data-insync-section="{nombre}"` + `data-insync-cta="{nombre}"` en CTAs.
+12. Pasó Validación de Activación Total sin FAIL crítico. ← `/api/product-activation-check`
+13. Aparece en Home y /productos/ sin deploy manual. ← **automático** (carga dinámica desde API)
+14. Aparece en filtros Admin sin código manual. ← **automático** (carga dinámica tras login)
+15. Aparece en Intelligence/InSync sin código manual. ← **automático** (carga dinámica tras auth)
+
+### Regla permanente — PRODUCT COMPLETION CHECKLIST
+
+**Ningún producto nuevo está terminado hasta pasar el PRODUCT_COMPLETION_CHECKLIST completo.**
+
+Ver: `AI_SYSTEM/execution/PRODUCT_COMPLETION_CHECKLIST.md`
+
+El checklist cubre 22 áreas: slug, PRODUCT object, InSync instrumentation, modal, WhatsApp, lead/Telegram, tracking, InitiateCheckout, QualifiedLead, Purchase manual, CAPI, Product Registry, Admin, Dam Finanzas, Stock, Home, /productos, Intelligence, activation check, auditoría final.
+
+No declarar "producto terminado", "listo para activar" ni "listo para deploy" sin haber verificado cada punto de ese checklist.
+
+---
 
 ### Regla de cambios en lógica financiera
 

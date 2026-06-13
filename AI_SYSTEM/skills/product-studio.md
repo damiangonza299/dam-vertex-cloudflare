@@ -126,27 +126,42 @@ Blueprint V3 define exactamente qué va en cada sección. No improvisar.
 
 ---
 
-## InSync — Instrumentación Obligatoria
+## InSync — Instrumentación Obligatoria (triple atributo)
 
-Toda sección visible de la landing debe tener `id` único antes del primer deploy.
+Regla completa: `AI_SYSTEM/execution/landing-insync-instrumentation.md`
+
+Referencia canónica: `public/reloj-imperial-verde/index.html`
+
+Toda sección visible debe tener los tres atributos antes del primer deploy:
 
 ```html
-<!-- Formato: sección descriptiva en español, sin espacios -->
-<section id="hero">...</section>
-<section id="problema">...</section>
-<section id="solucion">...</section>
-<section id="prueba-social">...</section>
-<section id="oferta">...</section>
-<section id="faq">...</section>
+<section id="section-hero" data-insync-section="hero">
+  <button data-scroll-form data-insync-cta="hero">Elegir mi modelo →</button>
+</section>
+
+<section id="section-beneficios" data-insync-section="beneficios">
+  <button data-scroll-form data-insync-cta="beneficios">Quiero el mío →</button>
+</section>
+
+<section id="section-faq" data-insync-section="faq">...</section>
+
+<section id="section-cierre" data-insync-section="cierre">
+  <button data-scroll-form data-insync-cta="cierre">Pedí al WhatsApp →</button>
+</section>
 ```
 
-**Regla:** Si la sección no tiene `id`, InSync no puede registrar ni analizar ese scroll/atención. Datos ciegos = decisiones de CRO a ciegas.
+**Reglas:**
+- `id="section-{nombre}"` — InSync observa vía `section[id]`
+- `data-insync-section="{nombre}"` — define el nombre exacto en `behavior_events.section`
+- `data-insync-cta="{nombre}"` — debe coincidir con `data-insync-section` de la sección que lo contiene. Si no coincide, el CTA enrichment del Structure Engine queda roto.
+- Excepciones: `data-insync-cta="nav"` (navbar) y `data-insync-cta="sticky"` (sticky bar) son válidos fuera de secciones.
+- **NO** usar `data-insync-cta="oferta"` — valor genérico que no mapea a ninguna sección.
 
 Para leer datos InSync post-lanzamiento → cargar `skills/insync-cro.md`.
 
 ---
 
-## Checklist 11 Puntos — No Activar Sin Completar
+## Checklist de Activación — No Activar Sin Completar
 
 | # | Punto | Automatizado |
 |---|---|---|
@@ -159,8 +174,12 @@ Para leer datos InSync post-lanzamiento → cargar `skills/insync-cro.md`.
 | 7 | Existe en reportes financieros | ✅ automático si synced |
 | 8 | Existe en descuentos de stock (confirm-purchase.js slug map) | ✅ automático por slug |
 | 9 | Existe en combos si aplica (product_type='combo') | Tab Producto |
-| 10 | Landing desplegada y funcionando | Tab Landing → deploy manual |
-| 11 | Landing completamente instrumentada para InSync | Todos los `id` en secciones |
+| 10 | Landing desplegada y funcionando | `public/{slug}/index.html` + deploy manual |
+| 11 | Landing completamente instrumentada para InSync | Triple atributo en cada sección |
+
+**Regla permanente: ningún producto está terminado hasta pasar el PRODUCT_COMPLETION_CHECKLIST completo.**
+
+Ver: `AI_SYSTEM/execution/PRODUCT_COMPLETION_CHECKLIST.md`
 
 ---
 
