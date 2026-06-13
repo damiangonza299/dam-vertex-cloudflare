@@ -4,7 +4,7 @@
 
    GET  ?slug=X          → get one brief
    GET  (no slug)        → list all briefs (summary)
-   POST body.action      → create | sync_to_finanzas | activate | archive | refresh_insync | save_landing
+   POST body.action      → create | sync_to_finanzas | activate | archive | refresh_insync | save_landing | update_landing_intelligence
    PATCH ?slug=X         → update brief fields (partial)
    ========================================================= */
 
@@ -15,6 +15,9 @@ const CORS = {
 };
 
 const DAM_FINANZAS_BASE = 'https://us-central1-dam-finanzas-cf863.cloudfunctions.net';
+
+const ANGLE_FAMILY_VALID     = new Set(['regalo','presencia','transformacion','precio','escasez','novedad','bienestar','practicidad']);
+const MECHANISM_FAMILY_VALID = new Set(['diseno_premium','material_premium','gift_ready','tecnologia','comodidad','estetica_minimalista','funcional']);
 
 export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
@@ -68,12 +71,16 @@ export async function onRequestPost({ request, env }) {
   const { action } = body;
 
   try {
+    // NOTE: There is no create_brief action for existing products.
+    // New products must go through handleCreate (Product Studio).
+    // Legacy product_briefs were backfilled via migrate25.sql, not via an endpoint.
     if (!action || action === 'create') return handleCreate(body, env);
     if (action === 'sync_to_finanzas')  return handleSync(body, env);
     if (action === 'activate')          return handleActivate(body, env);
     if (action === 'archive')           return handleArchive(body, env);
-    if (action === 'refresh_insync')    return handleRefreshInsync(body, env);
-    if (action === 'save_landing')      return handleSaveLanding(body, env);
+    if (action === 'refresh_insync')              return handleRefreshInsync(body, env);
+    if (action === 'save_landing')                return handleSaveLanding(body, env);
+    if (action === 'update_landing_intelligence') return handleUpdateLandingIntelligence(body, env);
     return json({ ok: false, error: `accion_desconocida: ${action}` }, 400);
   } catch (err) {
     console.error('PRODUCT_REGISTRY_POST', action, err.message);
@@ -258,7 +265,7 @@ async function handleRefreshInsync(body, env) {
   if (!slug) return json({ ok: false, error: 'slug requerido' }, 400);
 
   const p = period || '30d';
-  const landingFilter = `%/${slug}%`;
+  const landingFilter = `%/${slug}/%`;
   const periodSecs = { '24h': 86400, '7d': 604800, '30d': 2592000 };
   const since = Math.floor(Date.now() / 1000) - (periodSecs[p] || 2592000);
 
@@ -334,6 +341,39 @@ async function handleSaveLanding(body, env) {
   ).bind(html, slug).run();
 
   return json({ ok: true, action: 'landing_saved', slug });
+}
+
+async function handleUpdateLandingIntelligence(body, env) {
+  const { slug, landing_intelligence } = body;
+  if (!slug) return json({ ok: false, error: 'slug requerido' }, 400);
+  if (!landing_intelligence || typeof landing_intelligence !== 'object' || Array.isArray(landing_intelligence)) {
+    return json({ ok: false, error: 'landing_intelligence requerido y debe ser objeto' }, 400);
+  }
+
+  const { angle_family, mechanism_family } = landing_intelligence;
+  if (angle_family != null && !ANGLE_FAMILY_VALID.has(angle_family)) {
+    return json({ ok: false, error: `angle_family inválido: "${angle_family}". Valores permitidos: ${[...ANGLE_FAMILY_VALID].join(', ')}` }, 400);
+  }
+  if (mechanism_family != null && !MECHANISM_FAMILY_VALID.has(mechanism_family)) {
+    return json({ ok: false, error: `mechanism_family inválido: "${mechanism_family}". Valores permitidos: ${[...MECHANISM_FAMILY_VALID].join(', ')}` }, 400);
+  }
+
+  const brief = await env.DB.prepare(
+    'SELECT insights_json FROM product_briefs WHERE product_slug = ?'
+  ).bind(slug).first();
+  if (!brief) return json({ ok: false, error: 'brief_not_found' }, 404);
+
+  const current = JSON.parse(brief.insights_json || '{"insync":null,"landing_intelligence":null}');
+  const merged = {
+    insync:               current.insync,         /* preserved — never overwritten by this action */
+    landing_intelligence: landing_intelligence,
+  };
+
+  await env.DB.prepare(
+    "UPDATE product_briefs SET insights_json=?, updated_at=datetime('now') WHERE product_slug=?"
+  ).bind(JSON.stringify(merged), slug).run();
+
+  return json({ ok: true, slug, insights_json: merged });
 }
 
 /* ── Helpers ── */
