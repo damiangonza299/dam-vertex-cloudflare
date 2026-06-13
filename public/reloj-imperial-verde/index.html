@@ -406,6 +406,11 @@
     .theme-imperial-verde .btn-primary:hover {
       background: var(--imperial-light);
     }
+
+    /* Badge modal: fila inferior junto a offer-saving */
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
+    .offer-foot .offer-saving { margin-top: 0; }
+    .offer-foot .offer-badge  { position: static; flex-shrink: 0; }
   </style>
 </head>
 <body class="theme-imperial-verde">
@@ -413,7 +418,7 @@
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">Quiero cambiar →</a>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">Quiero el mío →</a>
 </nav>
 
 <!-- ══ HERO ══ -->
@@ -459,7 +464,7 @@
         <span class="spi-text">Stock limitado · Entrega en el día</span>
       </div>
       <button class="btn-imperial" data-scroll-form data-insync-cta="hero">
-        Quiero cambiar <span class="arrow">→</span>
+        Quiero el mío <span class="arrow">→</span>
       </button>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
@@ -519,7 +524,7 @@
 
     <div style="text-align:center;margin-top:40px">
       <button class="btn-imperial" data-scroll-form data-insync-cta="transformacion" style="display:inline-flex;max-width:300px">
-        Quiero cambiar <span class="arrow">→</span>
+        Quiero el mío <span class="arrow">→</span>
       </button>
     </div>
   </div>
@@ -594,7 +599,7 @@
 
       <div style="margin-top:28px">
         <button class="btn-imperial" data-scroll-form data-insync-cta="producto" style="display:inline-flex;max-width:300px">
-          Quiero cambiar <span class="arrow">→</span>
+          Quiero el mío <span class="arrow">→</span>
         </button>
       </div>
     </div>
@@ -638,7 +643,7 @@
 
     <div style="text-align:center;margin-top:40px">
       <button class="btn-imperial" data-scroll-form data-insync-cta="beneficios" style="display:inline-flex;max-width:300px">
-        Quiero cambiar <span class="arrow">→</span>
+        Quiero el mío <span class="arrow">→</span>
       </button>
     </div>
   </div>
@@ -759,7 +764,7 @@
     <h2 class="cierre-iv__h">El estilo que querés<br>te lo ponés hoy.</h2>
     <p class="cierre-iv__sub">Gs. 349.000 — antes Gs. 499.000. Entrega en el día.<br>Mientras haya stock a este precio.</p>
     <button class="btn-imperial" data-scroll-form data-insync-cta="cierre" style="display:inline-flex;max-width:340px;font-size:16px;padding:17px 36px">
-      Quiero cambiar <span class="arrow">→</span>
+      Quiero el mío <span class="arrow">→</span>
     </button>
     <div class="cierre-trust">
       <div class="ct-item"><span class="ct-ok">✓</span><span>Entrega en el día · Central</span></div>
@@ -1014,7 +1019,7 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
 <!-- CRO: Sticky CTA bar — mobile only -->
 <div class="sticky-cta-bar" id="sticky-cta-bar">
   <button class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;background:var(--imperial-green)">
-    Quiero cambiar →
+    Quiero el mío →
   </button>
 </div>
 

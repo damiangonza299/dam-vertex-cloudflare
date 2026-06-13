@@ -63,7 +63,8 @@ export async function onRequestPost({ request, env }) {
       )
     `).run();
 
-    // Historial por alerta individual — clave única (tipo:sujeto:severidad, bucket_semanal)
+    // Historial por alerta individual — clave única global (tipo:sujeto:severidad)
+    // date_bucket se guarda para trazabilidad histórica pero ya no se usa como límite de dedup.
     await env.DB.prepare(`
       CREATE TABLE IF NOT EXISTS intelligence_alert_log (
         id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -173,11 +174,12 @@ export async function onRequestPost({ request, env }) {
 
       const alertKey = `${alert.tipo}:${getAlertSubject(alert)}:${alert.severidad}`;
 
-      // Dedup por alerta: saltar si ya fue enviada esta semana con la misma clave
+      // Dedup global: saltar si esta clave ya fue enviada alguna vez (sin límite semanal).
+      // Para reenviar: usar ?force=true (bypass manual explícito).
       if (!force) {
         const existing = await env.DB.prepare(
-          `SELECT id FROM intelligence_alert_log WHERE alert_key = ? AND date_bucket = ?`
-        ).bind(alertKey, bucket).first();
+          `SELECT id FROM intelligence_alert_log WHERE alert_key = ?`
+        ).bind(alertKey).first();
         if (existing) {
           dedupSkipped++;
           continue;
@@ -201,6 +203,7 @@ export async function onRequestPost({ request, env }) {
         if (res.ok) {
           sent++;
           // Registrar en historial para evitar reenvíos futuros esta semana
+          // Guardar con bucket para trazabilidad histórica; el SELECT de dedup usa solo alert_key.
           await env.DB.prepare(
             `INSERT OR IGNORE INTO intelligence_alert_log (alert_key, date_bucket, sent_at) VALUES (?, ?, ?)`
           ).bind(alertKey, bucket, new Date().toISOString()).run().catch(() => {});

@@ -33,6 +33,7 @@ let AUTH_TOKEN       = loadToken();
 let allLeads         = [];
 let _blockedPhones   = new Set();
 let activeDateFilter = 'all';
+let _activeProducts  = [];
 
 /* ── Bootstrap ── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -115,6 +116,53 @@ function showLogin() {
 function showPanel() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('panel-screen').style.display  = 'block';
+  loadActiveProducts();
+}
+
+async function loadActiveProducts() {
+  try {
+    const res = await fetch('/api/product-stock?active_only=1', {
+      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    _activeProducts = data.products || [];
+    populateProdFilters(_activeProducts);
+    MANUAL_PRODUCTS = _activeProducts.map(p => ({ slug: p.slug, name: p.name }));
+  } catch (_) {}
+}
+
+function populateProdFilters(products) {
+  /* #filter-product — exact product_name match */
+  const fp = document.getElementById('filter-product');
+  if (fp) {
+    fp.innerHTML = '<option value="">Todos los productos</option>' +
+      products.map(p => `<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
+  }
+  /* #dash-prod-select — exact product_name match */
+  const dp = document.getElementById('dash-prod-select');
+  if (dp) {
+    dp.innerHTML = '<option value="">Todos los productos</option>' +
+      products.map(p => `<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
+  }
+  /* #ads-filter-prod — slug value, abbrevProduct label (slug-based filter for new products) */
+  const ap = document.getElementById('ads-filter-prod');
+  if (ap) {
+    ap.innerHTML = '<option value="">Productos</option>' +
+      products.map(p => `<option value="${esc(p.slug)}">${esc(abbrevProduct(p.name))}</option>`).join('');
+  }
+  /* #meta-prod-filter — slug value, abbrevProduct label */
+  const mp = document.getElementById('meta-prod-filter');
+  if (mp) {
+    mp.innerHTML = '<option value="">Todos</option>' +
+      products.map(p => `<option value="${esc(p.slug)}">${esc(abbrevProduct(p.name))}</option>`).join('');
+  }
+  /* #msf-product — slug values, full name label */
+  const msfSel = document.getElementById('msf-product');
+  if (msfSel) {
+    msfSel.innerHTML = '<option value="">Seleccionar producto...</option>' +
+      products.map(p => `<option value="${esc(p.slug)}">${esc(p.name)}</option>`).join('');
+  }
 }
 
 document.getElementById('login-btn')?.addEventListener('click', async () => {
@@ -267,8 +315,9 @@ function abbrevProduct(name) {
   if (!name) return '—';
   if (name.includes('Combo') && name.includes('Reloj')) return 'Combo Reloj';
   if (name.includes('Cepillo')) return 'Cepillo';
-  if (name.includes('Lentes'))  return 'Lentes';
-  if (name.includes('Reloj'))   return 'Reloj';
+  if (name.includes('Lentes'))   return 'Lentes';
+  if (name.includes('Imperial')) return 'Rel. Imperial';
+  if (name.includes('Reloj'))    return 'Reloj';
   if (name.includes('Cadena') || name.includes('Apex')) return 'Apex';
   return name.length > 10 ? name.slice(0, 10) + '...' : name;
 }
@@ -1124,10 +1173,13 @@ function renderDashboard() {
 
   const prodUnits = {};
   purchased.forEach(l => {
-    const p = abbrevProduct(l.product_name);
-    prodUnits[p] = (prodUnits[p] || 0) + (Number(l.quantity) || 1);
+    const k = l.product_slug || abbrevProduct(l.product_name);
+    prodUnits[k] = (prodUnits[k] || 0) + (Number(l.quantity) || 1);
   });
-  const bestProd = Object.entries(prodUnits).sort((a, b) => b[1] - a[1])[0];
+  const bestProdEntry = Object.entries(prodUnits).sort((a, b) => b[1] - a[1])[0];
+  const bestProd = bestProdEntry
+    ? [_activeProducts.find(p => p.slug === bestProdEntry[0])?.name || abbrevProduct(bestProdEntry[0]), bestProdEntry[1]]
+    : null;
 
   const kpiEl = document.getElementById('dash-kpis');
   if (kpiEl) kpiEl.innerHTML = `
@@ -1216,9 +1268,10 @@ function formatProductShortName(name) {
   if (!name) return '—';
   if (name.includes('Combo') && name.includes('Reloj')) return 'Reloj + Cadena Apex';
   if (name.includes('Cadena') || name.includes('Apex')) return 'Apex';
-  if (name.includes('Cepillo')) return 'Cepillo';
-  if (name.includes('Lentes'))  return 'Lentes';
-  if (name.includes('Reloj'))   return 'Reloj';
+  if (name.includes('Cepillo'))  return 'Cepillo';
+  if (name.includes('Lentes'))   return 'Lentes';
+  if (name.includes('Imperial')) return 'Rel. Imperial';
+  if (name.includes('Reloj'))    return 'Reloj';
   return name.length > 12 ? name.slice(0, 12) + '…' : name;
 }
 
@@ -1274,7 +1327,11 @@ function renderAdsTable() {
   if (adsStatusFilter)             filtered = filtered.filter(l => l.status === adsStatusFilter);
   if (adsAttrFilter === 'with')    filtered = filtered.filter(l =>  hasAttribution(l));
   if (adsAttrFilter === 'without') filtered = filtered.filter(l => !hasAttribution(l));
-  if (adsProductFilter)            filtered = filtered.filter(l => formatProductShortName(l.product_name) === adsProductFilter);
+  if (adsProductFilter)            filtered = filtered.filter(l => {
+    if (l.product_slug) return l.product_slug === adsProductFilter;
+    const prod = _activeProducts.find(p => p.slug === adsProductFilter);
+    return prod ? abbrevProduct(l.product_name) === abbrevProduct(prod.name) : false;
+  });
 
   if (!filtered.length) {
     const msg = adsAttrFilter === 'with'
@@ -1420,11 +1477,16 @@ function renderMetaReport(data) {
 
   /* ── Product filter ── */
   if (metaProductFilter) {
-    const pf = metaProductFilter.toLowerCase();
-    rows = rows.filter(r =>
-      (r.product_name || '').toLowerCase().includes(pf) ||
-      (r.campaign_name || '').toLowerCase().includes(pf)
-    );
+    const prod     = _activeProducts.find(p => p.slug === metaProductFilter);
+    const abbrevPf = prod ? abbrevProduct(prod.name).toLowerCase() : '';
+    const namePf   = metaProductFilter.toLowerCase().replace(/-/g, ' ');
+    rows = rows.filter(r => {
+      const pn = (r.product_name  || '').toLowerCase();
+      const cn = (r.campaign_name || '').toLowerCase();
+      return (r.product_slug || '') === metaProductFilter ||
+             (abbrevPf && (pn.includes(abbrevPf) || cn.includes(abbrevPf))) ||
+             pn.includes(namePf) || cn.includes(namePf);
+    });
   }
 
   /* ── Sort: campañas ACTIVE primero, luego por gasto ── */
@@ -1577,13 +1639,14 @@ function buildStockBadge(l) {
    Venta Manual WhatsApp — Modal
    ========================================================= */
 
-const MANUAL_PRODUCTS = [
-  { slug: 'cepillo',            name: 'Cepillo Eléctrico Recargable (4 Cabezales)' },
-  { slug: 'lentes',             name: 'Lentes Anti Luz Azul Rojos' },
-  { slug: 'reloj',              name: 'Reloj Blackout Minimal' },
-  { slug: 'cadena',             name: 'Cadena Apex' },
-  { slug: 'combo-reloj-cadena', name: 'Combo Reloj Blackout Minimal + Cadena Apex' },
-];
+let MANUAL_PRODUCTS = [
+  { slug: 'cepillo',              name: 'Cepillo Eléctrico Recargable (4 Cabezales)' },
+  { slug: 'lentes',               name: 'Lentes Anti Luz Azul Rojos' },
+  { slug: 'reloj',                name: 'Reloj Blackout Minimal' },
+  { slug: 'reloj-imperial-verde', name: 'Reloj Imperial Verde' },
+  { slug: 'cadena',               name: 'Cadena Apex' },
+  { slug: 'combo-reloj-cadena',   name: 'Combo Reloj Blackout Minimal + Cadena Apex' },
+]; /* Sobrescrito dinámicamente por loadActiveProducts() tras login */
 
 let msfVariantNames = [];
 
@@ -1820,16 +1883,21 @@ async function submitManualSale(sendCapi, force) {
 function renderProductRanking(leads) {
   const el = document.getElementById('dash-ranking');
   if (!el) return;
-  const prodNames = ['Cepillo', 'Lentes', 'Reloj', 'Apex'];
+  /* Agrupar por product_slug (fuente de verdad) con fallback a abbrev por nombre */
   const map = {};
+  const nameMap = {};
   leads.filter(l => l.status === 'purchased').forEach(l => {
-    const k = abbrevProduct(l.product_name);
-    if (!map[k]) map[k] = { units: 0, revenue: 0 };
+    const k = l.product_slug || abbrevProduct(l.product_name);
+    if (!map[k]) { map[k] = { units: 0, revenue: 0 }; nameMap[k] = l.product_name || k; }
     map[k].units   += Number(l.quantity) || 1;
     map[k].revenue += Number(l.value)    || 0;
   });
-  const rows = prodNames
-    .map(n => ({ name: n, ...(map[n] || { units: 0, revenue: 0 }) }))
+  /* Usar productos activos como filas; si no están cargados, usar los slugs con ventas */
+  const prodEntries = _activeProducts.length > 0
+    ? _activeProducts.map(p => ({ key: p.slug, name: p.name }))
+    : Object.keys(map).map(k => ({ key: k, name: nameMap[k] || k }));
+  const rows = prodEntries
+    .map(p => ({ name: p.name, ...(map[p.key] || { units: 0, revenue: 0 }) }))
     .sort((a, b) => b.units - a.units);
   const maxU = Math.max(...rows.map(r => r.units), 1);
   el.innerHTML = rows.map(r => `

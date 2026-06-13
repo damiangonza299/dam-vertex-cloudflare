@@ -1,48 +1,46 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="description" content="Todos los productos Dam Vertex. Envío gratis en el día en Paraguay.">
-  <title>Productos — Dam Vertex</title>
+  <meta name="description" content="Todos los productos DAM VERTEX. Envío gratis en el día en Paraguay.">
+  <title>Productos — DAM VERTEX</title>
   <script src="/assets/js/site-version.js?v=60"></script>
   <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
 </head>
 <body>
 
 <nav class="nav">
-  <div class="nav__logo"><a href="/">Dam Vertex</a></div>
+  <div class="nav__logo"><a href="/">DAM <span>VERTEX</span></a></div>
   <span style="font-size:13px;color:var(--muted)">Envío GRATIS en el día</span>
 </nav>
 
-<section style="padding: clamp(20px,3.5vw,40px) clamp(20px,5vw,48px) clamp(10px,1.5vw,18px); text-align:center; background:#000">
-  <h1 style="font-size:clamp(22px,3.5vw,34px);font-weight:800;color:#fff;margin-bottom:6px;letter-spacing:-.01em">Nuestros productos</h1>
-  <p style="color:var(--muted);font-size:12px;line-height:1.5">Seleccioná el que te interesa para ver todos los detalles.</p>
-</section>
+<div class="catalog-header">
+  <h1 class="catalog-header__title">Nuestros productos</h1>
+  <p class="catalog-header__sub">Seleccioná el que te interesa para ver todos los detalles y coordinar tu pedido.</p>
+  <div class="catalog-pills">
+    <span class="trust-pill trust-pill--blue">🚚 Entrega en el día</span>
+    <span class="trust-pill trust-pill--grey">💳 Pago al recibir · Central</span>
+    <span class="trust-pill trust-pill--green">🎁 Envío gratis por hoy</span>
+    <span class="trust-pill trust-pill--wa">💬 WhatsApp directo</span>
+  </div>
+</div>
 
-<div class="products-grid">
-
+<!-- Products grid — renderizado dinámico -->
+<div class="products-grid" id="products-grid">
+  <!-- Fallback estático (reemplazado por JS si el API responde) -->
   <a href="/reloj/" class="product-card" style="display:block;color:inherit">
-    <img
-      src="/assets/img/reloj%20black%20caracteristicas.png"
-      alt="Reloj Blackout Minimal"
-      class="product-card__img"
-      loading="eager">
+    <img src="/assets/img/reloj%20black%20caracteristicas.png" alt="Reloj Blackout Minimal" class="product-card__img" loading="eager">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Reloj Blackout Minimal</div>
       <div class="product-card__price">Gs. 189.000 <small>Gs. 250.000</small></div>
-      <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:4px;margin-bottom:8px">6 modelos disponibles</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:-7px;margin-bottom:9px">6 modelos disponibles</div>
       <span class="product-card__btn">Ver colección →</span>
     </div>
   </a>
-
   <a href="/cadena/" class="product-card" style="display:block;color:inherit">
-    <img
-      src="/assets/img/Cadena%20Apex%20perfil.png"
-      alt="Cadena Apex"
-      class="product-card__img"
-      loading="eager">
+    <img src="/assets/img/Cadena%20Apex%20perfil.png" alt="Cadena Apex" class="product-card__img" loading="eager">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Cadena Apex</div>
@@ -50,13 +48,19 @@
       <span class="product-card__btn">Ver producto →</span>
     </div>
   </a>
-
+  <a href="/reloj-imperial-verde/" class="product-card" style="display:block;color:inherit">
+    <div class="product-card__img" style="background:linear-gradient(145deg,#0a4f39,#0f6b4d);display:flex;align-items:center;justify-content:center">
+      <span style="font-size:40px;opacity:.35">⌚</span>
+    </div>
+    <div class="product-card__body">
+      <div class="product-card__badge">Envío gratis · entrega en el día</div>
+      <div class="product-card__name">Reloj Imperial Verde</div>
+      <div class="product-card__price">Gs. 349.000 <small>Gs. 499.000</small></div>
+      <span class="product-card__btn">Ver producto →</span>
+    </div>
+  </a>
   <a href="/cepillo/" class="product-card" style="display:block;color:inherit">
-    <img
-      src="https://cdn.shopify.com/s/files/1/0699/4126/4560/files/tiktok_cepillo1.png?v=1777066635"
-      alt="Cepillo Eléctrico Recargable"
-      class="product-card__img"
-      loading="eager">
+    <img src="https://cdn.shopify.com/s/files/1/0699/4126/4560/files/tiktok_cepillo1.png?v=1777066635" alt="Cepillo Eléctrico Recargable" class="product-card__img" loading="eager">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Cepillo Eléctrico Recargable (4 Cabezales)</div>
@@ -64,14 +68,8 @@
       <span class="product-card__btn">Ver producto →</span>
     </div>
   </a>
-
   <a href="/lentes/" class="product-card" style="display:block;color:inherit">
-    <img
-      src="/assets/img/ANUNCIO%203%20-%20ANTES%20vs%20DESPU%C3%89S%20-%201920.png"
-      alt="Lentes Anti Luz Azul Rojos"
-      class="product-card__img"
-      style="object-position:right center"
-      loading="eager">
+    <img src="/assets/img/ANUNCIO%203%20-%20ANTES%20vs%20DESPU%C3%89S%20-%201920.png" alt="Lentes Anti Luz Azul Rojos" class="product-card__img" style="object-position:right center" loading="eager">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Lentes Anti Luz Azul Rojos</div>
@@ -79,12 +77,80 @@
       <span class="product-card__btn">Ver producto →</span>
     </div>
   </a>
-
 </div>
 
 <footer class="footer">
   &copy; 2025 Dam Vertex Paraguay
 </footer>
+
+<script>
+/* ── Imágenes por slug (productos existentes con imagen conocida) ── */
+var DV_CARD_IMAGES = {
+  'reloj':    '/assets/img/reloj%20black%20caracteristicas.png',
+  'cadena':   '/assets/img/Cadena%20Apex%20perfil.png',
+  'cepillo':  'https://cdn.shopify.com/s/files/1/0699/4126/4560/files/tiktok_cepillo1.png?v=1777066635',
+  'lentes':   '/assets/img/ANUNCIO%203%20-%20ANTES%20vs%20DESPU%C3%89S%20-%201920.png',
+};
+var DV_CARD_IMG_STYLE = {
+  'lentes': 'object-position:right center',
+};
+var DV_CARD_BTN = {
+  'reloj': 'Ver colección →',
+};
+/* ── Precios fallback para productos sin default_price en D1 ── */
+var DV_CARD_PRICES = {
+  'reloj':   { price: 189000, compare: 250000 },
+  'cadena':  { price: 129000, compare: 169000 },
+  'cepillo': { price: 159000, compare: 190000 },
+  'lentes':  { price: 165000, compare: 0      },
+};
+/* ── Orden visual de productos ── */
+var DV_SLUG_ORDER = ['reloj', 'cadena', 'reloj-imperial-verde', 'cepillo', 'lentes'];
+
+function buildCardHtml(p) {
+  var fb       = DV_CARD_PRICES[p.slug] || {};
+  var defPrice = p.default_price || fb.price || 0;
+  var cmpPrice = p.compare_price || fb.compare || 0;
+  var price    = defPrice.toLocaleString('es-PY');
+  var compare  = cmpPrice && cmpPrice > defPrice
+    ? ' <small>Gs. ' + cmpPrice.toLocaleString('es-PY') + '</small>' : '';
+  var imgUrl   = DV_CARD_IMAGES[p.slug];
+  var imgStyle = DV_CARD_IMG_STYLE[p.slug] || '';
+  var btnText  = DV_CARD_BTN[p.slug] || 'Ver producto →';
+  var imgHtml  = imgUrl
+    ? '<img src="' + imgUrl + '" alt="' + p.name + '" class="product-card__img"' +
+      (imgStyle ? ' style="' + imgStyle + '"' : '') + ' loading="eager">'
+    : '<div class="product-card__img" style="background:linear-gradient(145deg,#1a1a2e,#16213e);' +
+      'display:flex;align-items:center;justify-content:center">' +
+      '<span style="font-size:40px;opacity:.3">📦</span></div>';
+
+  return '<a href="/' + p.slug + '/" class="product-card" style="display:block;color:inherit">' +
+    imgHtml +
+    '<div class="product-card__body">' +
+      '<div class="product-card__badge">Envío gratis · entrega en el día</div>' +
+      '<div class="product-card__name">' + p.name + '</div>' +
+      '<div class="product-card__price">Gs. ' + price + compare + '</div>' +
+      '<span class="product-card__btn">' + btnText + '</span>' +
+    '</div></a>';
+}
+
+fetch('/api/product-stock?active_only=1')
+  .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
+  .then(function(data) {
+    var products = (data.products || []).filter(function(p) { return p.active; });
+    if (!products.length) return;
+    products.sort(function(a, b) {
+      var ia = DV_SLUG_ORDER.indexOf(a.slug);
+      var ib = DV_SLUG_ORDER.indexOf(b.slug);
+      if (ia === -1) ia = 999;
+      if (ib === -1) ib = 999;
+      return ia - ib;
+    });
+    var grid = document.getElementById('products-grid');
+    if (grid) grid.innerHTML = products.map(buildCardHtml).join('');
+  })
+  .catch(function() { /* mantener fallback estático */ });
+</script>
 
 <script>
 (function(){

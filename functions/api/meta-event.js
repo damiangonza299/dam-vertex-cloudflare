@@ -44,6 +44,15 @@ export async function onRequestPost({ request, env }) {
       user_data.external_id = [phHash];
     }
 
+    if (event_name === 'InitiateCheckout' && lead) {
+      const nameParts = (lead.name || '').trim().split(/\s+/);
+      if (nameParts[0])           user_data.fn = [await sha256(normalizeForMeta(nameParts[0]))];
+      if (nameParts.length > 1)   user_data.ln = [await sha256(normalizeForMeta(nameParts.slice(1).join(' ')))];
+      const city = normalizeForMeta(lead.location_city || lead.city || '');
+      if (city)                   user_data.ct = [await sha256(city)];
+      user_data.country = [await sha256('py')];
+    }
+
     /* Build custom_data */
     const custom_data = {};
     if (product) {
@@ -100,6 +109,14 @@ async function sha256(str) {
   if (!str) return null;
   const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.trim().toLowerCase()));
   return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function normalizeForMeta(s) {
+  return (s || '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim();
 }
 
 function genId(event, slug) {

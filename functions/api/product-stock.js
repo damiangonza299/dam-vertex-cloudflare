@@ -98,6 +98,7 @@ function parseProduct(row) {
     variants_meta: variants_meta,
     unit_cost:     row.unit_cost     || 0,
     default_price: row.default_price || 0,
+    compare_price: row.compare_price || 0,
     min_stock:     row.min_stock     || 0,
     active:        row.active,
     updated_at:    row.updated_at,

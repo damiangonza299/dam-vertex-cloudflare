@@ -261,6 +261,7 @@ tr:hover td{background:var(--bg3)}
   <select id="sync-landing">
     <option value="all">Todas las landings</option>
     <option value="reloj">Reloj</option>
+    <option value="reloj-imperial-verde">Rel. Imperial Verde</option>
     <option value="cadena">Cadena</option>
     <option value="cepillo">Cepillo</option>
     <option value="lentes">Lentes</option>
@@ -463,8 +464,24 @@ function switchTab(name) {
 
 /* ── Load all ── */
 async function loadAll() {
+  loadActiveProducts();
   await Promise.all([loadBuyerQuality(), loadRecommendations(), loadCreatives('ad'), loadAlerts()]);
   loadSync();
+}
+
+async function loadActiveProducts() {
+  try {
+    const data = await apiFetch('/api/product-stock?active_only=1');
+    const products = data.products || [];
+    const sel = document.getElementById('sync-landing');
+    if (!sel || !products.length) return;
+    const current = sel.value;
+    sel.innerHTML = '<option value="all">Todas las landings</option>' +
+      products.map(function(p) {
+        return '<option value="' + p.slug + '">' + p.name + '</option>';
+      }).join('');
+    if (current) sel.value = current;
+  } catch (_) {}
 }
 
 /* ── Fetch helper ── */

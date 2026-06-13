@@ -242,9 +242,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
       try {
         const now         = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
         const variantText = formatVariantForTelegram(variant);
-        const isComboTg   = product_slug === 'combo-reloj-cadena' || (product_name || '').includes('Combo Reloj');
-        const tgProductName = (isComboTg && variantText)
-          ? 'Combo Reloj ' + variantText + ' + Cadena Apex'
+        const isComboTg   = product_slug === 'combo-reloj-cadena';
+        const tgProductName = isComboTg
+          ? (product_name || ('Combo Cadena Apex + Reloj ' + (variantText || '').trim()))
           : product_name;
         const tgCity = (location_city?.trim() || city?.trim() || '');
         const text = [

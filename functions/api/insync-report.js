@@ -32,7 +32,7 @@ export async function onRequestGet({ request, env }) {
 
   const periodSec     = PERIOD_SECS[period] || 86400;
   const since         = Math.floor(Date.now() / 1000) - periodSec;
-  const landingFilter = landing === 'all' ? '%' : `%/${landing}%`;
+  const landingFilter = landing === 'all' ? '%' : `%/${landing}/%`;
 
   try {
     const [

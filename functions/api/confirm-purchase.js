@@ -116,10 +116,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
     }
 
     /* Preparar user_data hasheado */
-    const user_data = {
-      client_ip_address: lead.ip || '',
-      client_user_agent: lead.user_agent || '',
-    };
+    const user_data = {};
+    if (lead.ip)         user_data.client_ip_address = lead.ip;
+    if (lead.user_agent) user_data.client_user_agent = lead.user_agent;
     if (lead.fbp)   user_data.fbp = lead.fbp;
     if (lead.fbc)   user_data.fbc = lead.fbc;
     if (lead.email) user_data.em  = [await sha256(lead.email)];
@@ -273,10 +272,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
       const customEvents = [];
 
       customEvents.push({
-        event_name:    'HighValuePurchase',
-        event_time:    ts,
-        event_id:      `hvp_${lead.id}_${ts}`,
-        action_source: 'website',
+        event_name:       'HighValuePurchase',
+        event_time:       ts,
+        event_id:         `hvp_${lead.id}_${ts}`,
+        action_source:    'website',
+        event_source_url: eventSourceUrl,
         user_data,
         custom_data: {
           content_name: lead.product_name,
@@ -290,10 +290,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
       if (saleValue >= 300000) {
         customEvents.push({
-          event_name:    'VIPPurchase',
-          event_time:    ts,
-          event_id:      `vip_${lead.id}_${ts}`,
-          action_source: 'website',
+          event_name:       'VIPPurchase',
+          event_time:       ts,
+          event_id:         `vip_${lead.id}_${ts}`,
+          action_source:    'website',
+          event_source_url: eventSourceUrl,
           user_data,
           custom_data: {
             content_name: lead.product_name,
@@ -437,6 +438,7 @@ function slugify(s) {
 function getProductSlug(name) {
   const MAP = {
     'Reloj Blackout Minimal':                       'reloj',
+    'Reloj Imperial Verde':                         'reloj-imperial-verde',
     'Cepillo Eléctrico Recargable (4 Cabezales)':   'cepillo',
     'Lentes Anti Luz Azul Rojos':                   'lentes',
     'Cadena Apex':                                  'cadena',

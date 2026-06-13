@@ -1406,7 +1406,7 @@
     (function() {
       var COMBO_PRICE = 249000;
       var COMBO_SLUG  = 'combo-reloj-cadena';
-      var COMBO_NAME  = 'Combo Reloj Blackout Minimal + Cadena Apex';
+      var COMBO_NAME  = 'Combo Cadena Apex + Reloj Negro Dorado';
 
       var comboOverlay  = document.getElementById('combo-modal');
       var comboForm     = document.getElementById('combo-form');
@@ -1578,7 +1578,7 @@
           '¡Hola! Acabo de realizar un pedido en Dam Vertex y quiero confirmar los detalles:',
           '',
           'Nombre: ' + name,
-          'Producto: Combo Reloj + Cadena Apex',
+          'Producto: Combo Cadena Apex + Reloj Negro Dorado',
           'Reloj: ' + variant,
           'Cadena Apex: 1 unidad incluida',
         ];
@@ -1602,11 +1602,17 @@
         comboSubmit.innerHTML = '<span class="spinner"></span>';
         if (comboStockEl) comboStockEl.style.display = 'none';
 
-        /* Verificar stock del modelo de reloj seleccionado */
-        var comboRelojStock = await checkProductStock('reloj', 1, variant);
-        if (!comboRelojStock.ok) {
+        /* Verificar stock reloj + cadena en paralelo */
+        var stockResults = await Promise.all([
+          checkProductStock('reloj', 1, variant),
+          checkProductStock('cadena', 1),
+        ]);
+        var comboRelojStock   = stockResults[0];
+        var comboCadenaStock  = stockResults[1];
+        if (!comboRelojStock.ok || !comboCadenaStock.ok) {
+          var stockErr = !comboRelojStock.ok ? comboRelojStock.error : 'Cadena Apex: ' + comboCadenaStock.error;
           if (comboStockEl) {
-            comboStockEl.textContent = comboRelojStock.error;
+            comboStockEl.textContent = stockErr;
             comboStockEl.style.display = 'block';
             comboStockEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
@@ -1641,6 +1647,7 @@
             location_lng:     cmLocLng      || null,
             location_maps_url: cmLocMapsUrl || null,
             location_place_id: cmLocPlaceId || null,
+            session_id:        window.DV_INSYNC_SESSION || null,
             invoice_requested: cmInvoiceChecked ? 1 : 0,
             invoice_ruc:       cmInvRuc   || null,
             invoice_name:      cmInvName  || null,
