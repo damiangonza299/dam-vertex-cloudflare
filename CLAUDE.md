@@ -1,5 +1,57 @@
 # DAM VERTEX — Instrucciones Claude Code
 
+## CONTEXT LOADING POLICY — Optimización de Tokens
+
+### Regla permanente
+
+Cuando se indique "Lee AI_SYSTEM/INDEX.md" o al iniciar una sesión:
+**No cargar automáticamente todo el ecosistema.**
+Primero clasificar la tarea. Luego cargar solo lo necesario.
+
+`AI_SYSTEM/INDEX.md` actúa como **router**. Leerlo no implica cargar todo.
+
+### Niveles de tarea
+
+#### Nivel 1 — Tarea pequeña
+
+Señales: mover botones · cambiar colores · spacing · CSS · textos · badges · ajustes visuales · pequeños fixes HTML
+
+Acción:
+- Leer `AI_SYSTEM/INDEX.md`
+- Identificar si existe skill relacionado
+- Cargar solamente lo estrictamente necesario
+- No cargar Product Studio, InSync, Dam Finanzas, Meta Ads, Event Flow si no aplican
+
+#### Nivel 2 — Tarea mediana
+
+Señales: nueva funcionalidad aislada · Admin Panel · Product Studio · Dam Finanzas · Activation Check · Dam Intelligence · landing completa · tracking específico
+
+Acción:
+- Leer `AI_SYSTEM/INDEX.md`
+- Cargar únicamente los skills relacionados con la tarea
+- No cargar skills de áreas no involucradas
+
+#### Nivel 3 — Tarea grande
+
+Señales: producto nuevo · auditoría completa · migraciones · InSync Recommendation Engine · Meta CAPI · Event Flow · arquitectura · sistemas cross-module
+
+Acción:
+- Leer `AI_SYSTEM/INDEX.md`
+- Cargar todos los skills relevantes al alcance de la tarea
+- Expandir contexto progresivamente, no de golpe
+
+### Prioridad de principios
+
+1. Precisión
+2. Arquitectura correcta
+3. Minimización de contexto
+4. Minimización de tokens
+
+Nunca sacrificar precisión por ahorrar tokens.
+Nunca cargar el ecosistema completo si la tarea puede resolverse con un subconjunto.
+
+---
+
 ## META ADS — STRICT MODE
 
 ### CHECKLIST PRE-CAMPAÑA — Obligatorio antes de crear o modificar campañas
@@ -246,6 +298,20 @@ No se crea una landing solo desde el brief del producto. El flujo correcto:
 
 - **Brief manda sobre:** nombre, precio, specs, variantes, material, oferta
 - **InSync manda sobre:** orden de secciones, peso de bloques, ubicación de precio/confianza
+
+### Modal — reglas de coherencia visual (obligatorio por landing)
+
+Toda landing nueva debe cumplir estos 4 puntos en su modal de pedido. **No declarar landing terminada si el modal no los cumple.**
+
+1. **Paleta visual coherente** — el modal usa la misma paleta principal/secundaria de la landing vía clase `.theme-{producto}`. No usar colores genéricos sin override.
+2. **3 combos por defecto** — siempre incluir:
+   - 1 unidad (sin badge)
+   - 2 unidades con badge `Más elegido`
+   - 3 unidades con badge `Mayor ahorro`
+3. **Badges de combo** — colores coherentes con el color de acento de la landing.
+4. **Espaciado consistente** — todos los bloques secundarios (Envío express, Necesito factura, futuros upsells) deben tener el mismo margen entre sí. Prohibido `margin-top` distinto por bloque.
+
+---
 
 ### Prueba social — prohibido inventar
 

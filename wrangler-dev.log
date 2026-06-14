@@ -1,0 +1,93 @@
+
+ ⛅️ wrangler 3.114.17 (update available 4.100.0)
+------------------------------------------------
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mThe version of Wrangler you are using is now out-of-date.[0m
+
+  Please update to the latest version to prevent critical errors.
+  Run `npm install --save-dev wrangler@4` to update to the latest version.
+  After installation, run Wrangler with `npx wrangler`.
+
+
+✨ Compiled Worker successfully
+✨ Parsed 6 valid header rules.
+Using vars defined in .dev.vars
+Your Worker and resources are simulated locally via Miniflare. For more information, see: https://developers.cloudflare.com/workers/testing/local-development.
+
+Your worker has access to the following bindings:
+- D1 Databases:
+  - DB: local-DB (DB) [simulated locally]
+- Vars:
+  - META_MARKETING_TOKEN: "(hidden)"
+  - META_AD_ACCOUNT_ID: "(hidden)"
+  - ADMIN_PASSWORD: "(hidden)"
+  - META_PIXEL_ID: "(hidden)"
+  - META_ACCESS_TOKEN: "(hidden)"
+  - META_TEST_EVENT_CODE: "(hidden)"
+[wrangler:inf] Ready on http://127.0.0.1:8788
+⎔ Starting local server...
+[wrangler:inf] GET /api/insync/structure-patterns 401 Unauthorized (21ms)
+[wrangler:inf] GET /api/insync/structure-patterns 400 Bad Request (17ms)
+[wrangler:inf] GET /api/insync/structure-patterns 400 Bad Request (4ms)
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mSTRUCTURE_PATTERNS_ERROR D1_ERROR: no such table: product_briefs: SQLITE_ERROR[0m
+
+
+[wrangler:inf] GET /api/insync/structure-patterns 500 Internal Server Error (40ms)
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mSTRUCTURE_PATTERNS_ERROR D1_ERROR: no such table: product_briefs: SQLITE_ERROR[0m
+
+
+[wrangler:inf] GET /api/insync/structure-patterns 500 Internal Server Error (9ms)
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mSTRUCTURE_PATTERNS_ERROR D1_ERROR: no such table: product_briefs: SQLITE_ERROR[0m
+
+
+[wrangler:inf] GET /api/insync/structure-patterns 500 Internal Server Error (11ms)
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mSTRUCTURE_PATTERNS_ERROR D1_ERROR: no such table: product_briefs: SQLITE_ERROR[0m
+
+
+[wrangler:inf] GET /api/insync/structure-patterns 500 Internal Server Error (14ms)
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mSTRUCTURE_PATTERNS_ERROR D1_ERROR: no such table: product_briefs: SQLITE_ERROR[0m
+
+
+[wrangler:inf] GET /api/insync/structure-patterns 500 Internal Server Error (12ms)
+[wrangler:inf] POST /api/product-registry 400 Bad Request (379ms)
+[wrangler:inf] POST /api/product-registry 400 Bad Request (364ms)
+[wrangler:inf] POST /api/product-registry 400 Bad Request (356ms)
+[wrangler:inf] POST /api/product-registry 400 Bad Request (359ms)
+[wrangler:err] Error: D1_ERROR: no such table: product_briefs: SQLITE_ERROR
+    at D1DatabaseSessionAlwaysPrimary._sendOrThrow (cloudflare-internal:d1-api:125:19)
+    at async D1PreparedStatement.first (cloudflare-internal:d1-api:287:35)
+    at async handleUpdateLandingIntelligence (file:///F:/Desktop/dam-vertex-cloudflare/functions/api/product-registry.js:361:17)
+    at async next (file:///F:/Desktop/dam-vertex-cloudflare/node_modules/wrangler/templates/pages-template-worker.ts:161:22)
+    at async Object.fetch (file:///F:/Desktop/dam-vertex-cloudflare/node_modules/wrangler/templates/pages-template-worker.ts:180:11)
+    at async jsonError (file:///F:/Desktop/dam-vertex-cloudflare/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts:22:10)
+    at async drainBody (file:///F:/Desktop/dam-vertex-cloudflare/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts:5:10)
+    at async jsonError (file:///F:/Desktop/dam-vertex-cloudflare/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts:22:10)
+    at async drainBody (file:///F:/Desktop/dam-vertex-cloudflare/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts:5:10)
+[wrangler:err] Cause: undefined
+[wrangler:inf] POST /api/product-registry 100 Continue (396ms)
+✨ Compiled Worker successfully
+✨ Compiled Worker successfully
+⎔ Reloading local server...
+✨ Compiled Worker successfully
+✨ Compiled Worker successfully
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mBuild failed with 1 error:[0m
+
+  [31mX [41;31m[[41;97mERROR[41;31m][0m [1mNo matching export in ".wrangler/tmp/pages-FRFqax/functionsWorker-0.5327786386965333.mjs" for import "default"[0m
+  
+      .wrangler/tmp/bundle-Umdzi0/middleware-insertion-facade.js:1:11:
+  [37m      1 │         import [32mworker[37m, * as OTHER_EXPORTS from "F:\\Desktop\\dam-ve...
+          ╵                [32m~~~~~~[0m
+  
+  
+
+
+⎔ Reloading local server...
+✨ Compiled Worker successfully
+✨ Compiled Worker successfully
+⎔ Reloading local server...
+✨ Compiled Worker successfully
+✨ Compiled Worker successfully
+⎔ Reloading local server...
+✨ Compiled Worker successfully
+✨ Compiled Worker successfully
+⎔ Reloading local server...

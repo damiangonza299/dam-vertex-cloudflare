@@ -76,6 +76,15 @@ Secciones estándar:
 - [ ] Campos del formulario: nombre, teléfono, variante (si aplica), cantidad (si aplica)
 - [ ] `<button id="modal-submit-btn">` existe
 
+### 6b. Modal — coherencia visual y estructura estándar
+
+**Ninguna landing está terminada si el modal no cumple estos 4 puntos:**
+
+- [ ] Modal usa la paleta visual de la landing (clase `.theme-{producto}` con overrides de color de acento)
+- [ ] Opciones de compra: **3 combos obligatorios** — 1 unidad (sin badge) / 2 unidades badge `Más elegido` / 3 unidades badge `Mayor ahorro`
+- [ ] Badges de combo usan el color de acento de la landing (coherente, no genérico)
+- [ ] Bloques secundarios (Envío express, Necesito factura, upsells futuros) tienen el mismo espaciado visual entre sí — sin `margin-top` ad-hoc diferente por bloque
+
 ---
 
 ## 7. WhatsApp

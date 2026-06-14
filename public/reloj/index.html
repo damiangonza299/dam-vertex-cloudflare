@@ -11,8 +11,8 @@
   <link rel="dns-prefetch" href="https://maps.googleapis.com">
   <link rel="preload" href="/assets/js/tracking.js?v=55" as="script">
   <link rel="preload" href="/assets/js/products.js?v=57" as="script">
-  <meta name="description" content="Reloj Blackout Minimal — 6 modelos: Negro Total, Negro Dorado, Negro Rosa, Negro Cobre, Negro Dorado Sutil, Plateado Negro. Envío gratis en el día. Dam Vertex Paraguay.">
-  <title>Reloj Blackout Minimal — Colección 6 Modelos — Dam Vertex</title>
+  <meta name="description" content="Reloj Blackout Minimal — Negro Total. Diseño minimalista, acabado oscuro total. Envío gratis en el día. Dam Vertex Paraguay.">
+  <title>Reloj Blackout Minimal — Negro Total — Dam Vertex</title>
   <script src="/assets/js/site-version.js?v=60"></script>
   <link rel="stylesheet" href="/assets/css/styles.css?v=55">
   <style>
@@ -32,43 +32,6 @@
     .hero__h { font-size: clamp(28px,5vw,50px); font-weight: 800; line-height: 1.1; margin: 0 0 20px; letter-spacing: -.01em; color: #fff; }
     .hero__sub { font-size: clamp(15px,2vw,17px); color: rgba(255,255,255,.65); line-height: 1.6; margin: 0 0 8px; }
 
-    /* Modelos */
-    .modelos { background: #080808; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.06); }
-    .modelos__inner { max-width: 1100px; margin: 0 auto; }
-    .modelos__head { text-align: center; margin-bottom: 40px; }
-    .modelos__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,.07); }
-    .modelo-card { background: #080808; position: relative; display: flex; flex-direction: column; }
-    .modelo-card__img-wrap { aspect-ratio: 1; overflow: hidden; background: #111; position: relative; }
-    .modelo-card__img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
-    .modelo-card:hover .modelo-card__img { transform: scale(1.04); }
-    .modelo-card__ph {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 14px;
-    }
-    .modelo-card__ph-ring {
-      width: 64px; height: 64px; border-radius: 50%;
-      border: 1.5px solid;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .modelo-card__ph-inner {
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 1px solid;
-    }
-    .modelo-card__ph-file {
-      font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
-      color: rgba(255,255,255,.2); text-align: center; padding: 0 12px;
-    }
-    .modelo-card__badge {
-      position: absolute; top: 12px; left: 12px; z-index: 2;
-      font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-      background: #fff; color: #000; padding: 4px 9px; border-radius: 3px;
-    }
-    .modelo-card__body { padding: 20px; flex: 1; }
-    .modelo-card__code { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 6px; }
-    .modelo-card__name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-    .modelo-card__stock { font-size: 12px; color: rgba(255,255,255,.38); }
-    .modelo-card__stock--low { color: #f87171; font-weight: 600; }
 
     /* Estilo */
     .estilo { background: #000; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.06); }
@@ -89,17 +52,6 @@
     .mat-card strong { display: block; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 10px; }
     .mat-card p { font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.65; margin: 0; }
 
-    /* Stock */
-    .stock-sec { background: #000; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.06); }
-    .stock-sec__inner { max-width: 720px; margin: 0 auto; }
-    .stock-rows { display: flex; flex-direction: column; gap: 1px; background: rgba(255,255,255,.06); border-radius: 8px; overflow: hidden; margin-top: 32px; }
-    .stock-row { background: #050505; display: flex; align-items: center; gap: 16px; padding: 18px 24px; }
-    .stock-row__name { font-size: 14px; color: #e2e2e2; min-width: 140px; }
-    .stock-row__bar { flex: 1; height: 2px; background: rgba(255,255,255,.07); border-radius: 2px; overflow: hidden; }
-    .stock-row__fill { height: 100%; background: rgba(255,255,255,.22); border-radius: 2px; }
-    .stock-row__fill--low { background: #f87171; }
-    .stock-row__qty { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.38); white-space: nowrap; min-width: 56px; text-align: right; }
-    .stock-row__qty--low { color: #f87171; }
 
     /* FAQ */
     .faq { background: #0a0a0a; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.06); }
@@ -114,13 +66,8 @@
 
     @media (max-width: 700px) {
       .hero__inner { grid-template-columns: 1fr; gap: 20px; }
-      .modelos__grid { grid-template-columns: 1fr 1fr; }
       .estilo__inner { grid-template-columns: 1fr; gap: 32px; }
       .mat__grid { grid-template-columns: 1fr; }
-      .stock-row__name { min-width: 100px; font-size: 13px; }
-    }
-    @media (max-width: 420px) {
-      .modelos__grid { grid-template-columns: 1fr 1fr; }
     }
 
     /* CRO: Hero mobile conservador — CTA sube por encima de combo cards */
@@ -134,8 +81,7 @@
       .hero__text .spi            { order: 5; }
       .hero__text .btn-primary    { order: 6; width: 100%; margin-bottom: 14px; }
       .hero__text .combo-preview  { order: 7; }
-      .hero__text .swatches-link  { order: 8; }
-      .hero__text .delivery-badges { order: 9; }
+      .hero__text .delivery-badges { order: 8; }
       /* Combo cards más compactos */
       .combo-preview-card { padding: 9px 12px; }
       /* Badges más compactos: 2 líneas claras */
@@ -206,35 +152,6 @@
     .theme-reloj .confirm-intent.checked,
     .theme-reloj .confirm-intent:has(input:checked) { border-color: var(--green); background: rgba(74,222,128,.06); }
 
-    /* Color swatches — discovery hint en hero */
-    .swatches-link {
-      display: inline-flex; flex-direction: column; gap: 7px;
-      text-decoration: none; margin: 14px 0 0; cursor: pointer;
-    }
-    .swatches-row { display: flex; align-items: center; gap: 9px; }
-    .swatch {
-      width: 20px; height: 20px; border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,.12); flex-shrink: 0;
-      transition: transform .22s ease, border-color .22s ease;
-    }
-    .swatches-link:hover .swatch { transform: scale(1.18); border-color: rgba(255,255,255,.35); }
-    .swatches-label {
-      font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-      color: rgba(255,255,255,.3);
-    }
-
-    /* Scroll hint — indicador de modelos debajo del hero */
-    .models-scroll-hint { background: #000; padding: 20px 20px 4px; text-align: center; }
-    .models-scroll-hint a {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-      color: rgba(255,255,255,.4); text-decoration: none;
-      border: 1px solid rgba(255,255,255,.1); border-radius: 20px;
-      padding: 8px 18px; transition: color .2s, border-color .2s;
-    }
-    .models-scroll-hint a:hover { color: rgba(255,255,255,.72); border-color: rgba(255,255,255,.25); }
-    .models-scroll-hint__arrow { display: inline-block; animation: hint-bounce 1.8s ease-in-out infinite; }
-    @keyframes hint-bounce { 0%,100% { transform: translateY(0); } 55% { transform: translateY(4px); } }
 
     /* Combo strip */
     .combo-strip { background: transparent; border: none; padding: 0 0 28px; }
@@ -261,7 +178,7 @@
 </nav>
 
 <!-- Hero -->
-<section class="hero" id="section-hero">
+<section class="hero" id="section-hero" data-insync-section="hero">
   <div class="hero__inner">
     <div class="hero__media">
       <picture>
@@ -275,9 +192,9 @@
       </picture>
     </div>
     <div class="hero__text">
-      <p class="eyebrow">Blackout Minimal · Colección 6 Modelos</p>
+      <p class="eyebrow">Blackout Minimal · Negro Total</p>
       <h1 class="hero__h">El reloj que no necesita hablar.<br>Igual, todo lo dice.</h1>
-      <p class="hero__sub">6 modelos. Un solo lenguaje: minimalismo.</p>
+      <p class="hero__sub">Diseño minimalista. Acabado oscuro total.</p>
       <div class="price-block">
         <span class="price-main">Gs. 189.000</span>
         <span class="price-compare">Gs. 250.000</span>
@@ -322,18 +239,7 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">Elegir mi modelo →</button>
-      <a class="swatches-link" href="#section-modelos">
-        <div class="swatches-row">
-          <span class="swatch" style="background:#1a1a1a" title="Negro Total"></span>
-          <span class="swatch" style="background:#c4a24a" title="Negro Dorado"></span>
-          <span class="swatch" style="background:#b87878" title="Negro Rosa"></span>
-          <span class="swatch" style="background:#b07238" title="Negro Cobre"></span>
-          <span class="swatch" style="background:#9e8a5a" title="Negro Dorado Sutil"></span>
-          <span class="swatch" style="background:#7a8a98" title="Plateado Negro"></span>
-        </div>
-        <span class="swatches-label">6 acabados — elegí el tuyo ↓</span>
-      </a>
+      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">Pedir ahora →</button>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
         <span class="db-badge db-green">✓ Envío gratis</span>
@@ -344,153 +250,8 @@
   </div>
 </section>
 
-<!-- Scroll hint — indicador de 6 modelos -->
-<div class="models-scroll-hint">
-  <a href="#section-modelos">6 modelos disponibles <span class="models-scroll-hint__arrow">↓</span></a>
-</div>
-
-<!-- Modelos -->
-<section class="modelos" id="section-modelos">
-  <div class="modelos__inner">
-    <div class="modelos__head">
-      <p class="sec-label">Colección</p>
-      <h2 class="sec-title" style="margin-bottom:10px">Elegí tu modelo</h2>
-      <p style="font-size:14px;color:rgba(255,255,255,.38);max-width:420px;margin:0 auto">Todos al mismo precio. Todos disponibles hoy.</p>
-    </div>
-
-    <div style="text-align:center;margin-bottom:28px">
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="oferta" style="max-width:280px">
-        Elegir modelo →
-      </button>
-    </div>
-
-    <div class="modelos__grid">
-
-      <!-- 1 — Negro Total -->
-      <div class="modelo-card">
-        <div class="modelo-card__badge">Principal</div>
-        <div class="modelo-card__img-wrap">
-          <picture>
-            <source srcset="/assets/img/reloj-black-caracteristicas.webp" type="image/webp">
-            <img
-              src="/assets/img/reloj%20black%20caracteristicas.png"
-              alt="Reloj Blackout Negro Total"
-              class="modelo-card__img"
-              loading="lazy"
-              decoding="async">
-          </picture>
-        </div>
-        <div class="modelo-card__body" data-variant="Negro Total">
-          <div class="modelo-card__name">Negro Total</div>
-          <div class="modelo-card__stock">67 unidades</div>
-        </div>
-      </div>
-
-      <!-- 2 — Dorado -->
-      <div class="modelo-card">
-        <div class="modelo-card__img-wrap">
-          <picture>
-            <source srcset="/assets/img/negro-dorado.webp" type="image/webp">
-            <img
-              src="/assets/img/negro%20dorado.png"
-              alt="Reloj Blackout Dorado"
-              class="modelo-card__img"
-              loading="lazy"
-              decoding="async">
-          </picture>
-        </div>
-        <div class="modelo-card__body" data-variant="Negro Dorado">
-          <div class="modelo-card__name">Dorado</div>
-          <div class="modelo-card__stock">10 unidades</div>
-        </div>
-      </div>
-
-      <!-- 3 — Rosa -->
-      <div class="modelo-card">
-        <div class="modelo-card__img-wrap">
-          <picture>
-            <source srcset="/assets/img/negro-rosa.webp" type="image/webp">
-            <img
-              src="/assets/img/negro%20rosa.png"
-              alt="Reloj Blackout Rosa"
-              class="modelo-card__img"
-              loading="lazy"
-              decoding="async">
-          </picture>
-        </div>
-        <div class="modelo-card__body" data-variant="Negro Rosa">
-          <div class="modelo-card__name">Rosa</div>
-          <div class="modelo-card__stock modelo-card__stock--low">Solo 5 unidades ⚠</div>
-        </div>
-      </div>
-
-      <!-- 4 — Cobre -->
-      <div class="modelo-card">
-        <div class="modelo-card__img-wrap">
-          <picture>
-            <source srcset="/assets/img/negro-cobre.webp" type="image/webp">
-            <img
-              src="/assets/img/negro%20cobre.png"
-              alt="Reloj Blackout Cobre"
-              class="modelo-card__img"
-              loading="lazy"
-              decoding="async">
-          </picture>
-        </div>
-        <div class="modelo-card__body" data-variant="Negro Cobre">
-          <div class="modelo-card__name">Cobre</div>
-          <div class="modelo-card__stock">10 unidades</div>
-        </div>
-      </div>
-
-      <!-- 5 — Dorado Sutil -->
-      <div class="modelo-card">
-        <div class="modelo-card__img-wrap">
-          <picture>
-            <source srcset="/assets/img/negro-dorado-sutil.webp" type="image/webp">
-            <img
-              src="/assets/img/negro%20dorado%20sutil.png"
-              alt="Reloj Blackout Dorado Sutil"
-              class="modelo-card__img"
-              loading="lazy"
-              decoding="async">
-          </picture>
-        </div>
-        <div class="modelo-card__body" data-variant="Negro Dorado Sutil">
-          <div class="modelo-card__name">Dorado Sutil</div>
-          <div class="modelo-card__stock modelo-card__stock--low">AGOTADO ⚠</div>
-        </div>
-      </div>
-
-      <!-- 6 — Plateado -->
-      <div class="modelo-card">
-        <div class="modelo-card__img-wrap">
-          <picture>
-            <source srcset="/assets/img/plateado-negro.webp" type="image/webp">
-            <img
-              src="/assets/img/Plateado%20negro.png"
-              alt="Reloj Blackout Plateado"
-              class="modelo-card__img"
-              loading="lazy"
-              decoding="async">
-          </picture>
-        </div>
-        <div class="modelo-card__body" data-variant="Plateado Negro">
-          <div class="modelo-card__name">Plateado</div>
-          <div class="modelo-card__stock modelo-card__stock--low">Solo 3 unidades ⚠</div>
-        </div>
-      </div>
-
-    </div>
-
-    <div style="text-align:center;margin-top:36px">
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="oferta" style="max-width:320px">Elegir modelo y pedir →</button>
-    </div>
-  </div>
-</section>
-
 <!-- Estilo -->
-<section class="estilo" id="section-estilo">
+<section class="estilo" id="section-estilo" data-insync-section="estilo">
   <div class="estilo__inner">
     <div>
       <!-- lookbook: Cadena + reloj negro -->
@@ -526,8 +287,8 @@
         <li><span class="t-dash">—</span> Esfera limpia, sin ruido visual.</li>
       </ul>
       <div style="margin-top:28px">
-        <button class="btn btn-primary" data-scroll-form data-insync-cta="oferta" style="max-width:280px">
-          Elegir mi modelo →
+        <button class="btn btn-primary" data-scroll-form data-insync-cta="estilo" style="max-width:280px">
+          Pedir ahora →
         </button>
       </div>
     </div>
@@ -535,7 +296,7 @@
 </section>
 
 <!-- Materiales -->
-<section class="materiales" id="section-materiales">
+<section class="materiales" id="section-materiales" data-insync-section="materiales">
   <div style="max-width:900px;margin:0 auto;text-align:center">
     <p class="sec-label">Detalles</p>
     <h2 class="sec-title" style="margin-bottom:10px">Lo que llevás en la muñeca</h2>
@@ -549,8 +310,8 @@
     </div>
     <div class="mat-card">
       <div class="mat-num">02</div>
-      <strong>Correa en tono acorde</strong>
-      <p>Negra, rose, gold o silver según el modelo. Ajuste cómodo para uso prolongado durante el día.</p>
+      <strong>Correa negra</strong>
+      <p>Tono oscuro total. Ajuste cómodo para uso prolongado durante el día.</p>
     </div>
     <div class="mat-card">
       <div class="mat-num">03</div>
@@ -564,78 +325,24 @@
     </div>
     <div class="mat-card">
       <div class="mat-num">05</div>
-      <strong>6 modelos disponibles</strong>
-      <p>Negro Total, Dorado, Rosa, Cobre, Dorado Sutil, Plateado — cada uno con su acabado. Un mismo lenguaje, seis versiones distintas.</p>
+      <strong>Versión única — Negro Total</strong>
+      <p>No hay opciones de color. Hay una sola elección deliberada: el acabado más oscuro, sin concesiones.</p>
     </div>
     <div class="mat-card">
       <div class="mat-num">06</div>
-      <strong>Stock limitado por modelo</strong>
-      <p>No es marketing: tenemos cantidades fijas por modelo. Una vez agotado, no hay reposición garantizada.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Stock -->
-<section class="stock-sec" id="section-stock">
-  <div class="stock-sec__inner">
-    <div style="text-align:center">
-      <p class="sec-label">Disponibilidad</p>
-      <h2 class="sec-title" style="margin-bottom:10px">Stock real por modelo</h2>
-      <p style="font-size:14px;color:rgba(255,255,255,.38);max-width:420px;margin:0 auto">Los números son exactos. Cuando se acaba, se acaba.</p>
-    </div>
-    <div class="stock-rows">
-      <div class="stock-row" data-variant="Negro Total">
-        <span class="stock-row__name">Negro Total</span>
-        <div class="stock-row__bar"><div class="stock-row__fill" style="width:100%"></div></div>
-        <span class="stock-row__qty">67 uds</span>
-      </div>
-      <div class="stock-row" data-variant="Negro Dorado">
-        <span class="stock-row__name">Dorado</span>
-        <div class="stock-row__bar"><div class="stock-row__fill" style="width:15%"></div></div>
-        <span class="stock-row__qty">10 uds</span>
-      </div>
-      <div class="stock-row" data-variant="Negro Rosa">
-        <span class="stock-row__name">Rosa</span>
-        <div class="stock-row__bar"><div class="stock-row__fill stock-row__fill--low" style="width:8%"></div></div>
-        <span class="stock-row__qty stock-row__qty--low">5 uds ⚠</span>
-      </div>
-      <div class="stock-row" data-variant="Negro Cobre">
-        <span class="stock-row__name">Cobre</span>
-        <div class="stock-row__bar"><div class="stock-row__fill" style="width:15%"></div></div>
-        <span class="stock-row__qty">10 uds</span>
-      </div>
-      <div class="stock-row" data-variant="Negro Dorado Sutil">
-        <span class="stock-row__name">Dorado Sutil</span>
-        <div class="stock-row__bar"><div class="stock-row__fill stock-row__fill--low" style="width:0%"></div></div>
-        <span class="stock-row__qty stock-row__qty--low">AGOTADO</span>
-      </div>
-      <div class="stock-row" data-variant="Plateado Negro">
-        <span class="stock-row__name">Plateado</span>
-        <div class="stock-row__bar"><div class="stock-row__fill stock-row__fill--low" style="width:5%"></div></div>
-        <span class="stock-row__qty stock-row__qty--low">3 uds ⚠</span>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:36px">
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="oferta" style="max-width:320px">Asegurar el mío ahora →</button>
+      <strong>Stock limitado</strong>
+      <p>No es marketing: tenemos cantidades fijas. Una vez agotado, no hay reposición garantizada.</p>
     </div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section class="faq" id="section-faq">
+<section class="faq" id="section-faq" data-insync-section="faq">
   <p class="sec-label" style="text-align:center">Preguntas frecuentes</p>
   <div class="faq-wrap">
     <details class="faq-item">
-      <summary class="faq-q">¿Puedo elegir el modelo exacto?</summary>
-      <div class="faq-a">Sí. Al hacer el pedido indicás el modelo que querés (Negro Total, Negro Rosa, Negro Dorado, etc.). Si pedís más de uno, podés combinar modelos distintos.</div>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-q">¿Todos los modelos tienen el mismo precio?</summary>
-      <div class="faq-a">Sí. Precio único: Gs. 189.000 por unidad para cualquier modelo de la colección. Sin recargo por modelo.</div>
-    </details>
-    <details class="faq-item">
       <summary class="faq-q">¿Con qué outfits combina?</summary>
-      <div class="faq-a">El Negro Total es el más versátil — funciona con cualquier look, casual o formal. Los modelos con detalles rosa, dorado o plateado suman un toque más distinguido y se usan en ambos contextos igual.</div>
+      <div class="faq-a">El Blackout Minimal Negro Total es el más versátil — funciona con cualquier look, casual o formal. Su acabado oscuro total lo hace discreto sin perder presencia.</div>
     </details>
     <details class="faq-item">
       <summary class="faq-q">¿Es resistente al agua o sudor?</summary>
@@ -666,19 +373,19 @@
 </section>
 
 <!-- Cierre -->
-<section class="close-sec" id="section-cierre">
+<section class="close-sec" id="section-cierre" data-insync-section="cierre">
   <div class="close-sec__inner">
     <p class="close-quote">"Para el que se viste bien<br>sin hacer ruido."</p>
     <div class="close-divider"></div>
-    <h2 class="close-h">6 modelos. Un solo precio.<br>El tuyo te espera.</h2>
+    <h2 class="close-h">Negro Total. Un solo precio.<br>Tuyo hoy.</h2>
     <div class="close-trust">
       <div class="ct-item"><span class="ct-ok">✓</span><span>Envío GRATIS · Envío en el día</span></div>
       <div class="ct-item"><span class="ct-ok">✓</span><span>Central: pagás al recibir · Interior: pago anticipado - sin envío gratis</span></div>
-      <div class="ct-item"><span class="ct-ok">✓</span><span>Elegís el modelo exacto que querés</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Diseño único, acabado oscuro total</span></div>
     </div>
     <button class="cta-ref" data-scroll-form data-insync-cta="cierre">
       <span class="cta-ref-arrow">↑</span>
-      <span>Elegir mi modelo ahora</span>
+      <span>Pedir ahora</span>
     </button>
   </div>
 </section>
@@ -686,11 +393,11 @@
 <!-- Modal Pedido -->
 <div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-reloj">
   <div class="modal-box">
-    <p class="modal-urgency">⏳ Stock limitado por modelo</p>
+    <p class="modal-urgency">⏳ Stock limitado</p>
     <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
     <h2 class="modal-title" id="modal-title-reloj">Hacé tu pedido</h2>
     <p class="modal-step">Estás a un paso de recibir tu reloj 🚚</p>
-    <p class="modal-subtitle">Elegí cantidad y modelo. Te contactamos al toque.</p>
+    <p class="modal-subtitle">Elegí la cantidad. Te contactamos al toque.</p>
 
     <!-- Ofertas -->
     <div class="modal-section">
@@ -735,54 +442,9 @@
           </div>
         </label>
 
-        <label class="offer-option" style="display:none" aria-hidden="true">
-          <input type="radio" name="offer" value="custom" tabindex="-1">
-          <div class="offer-content">
-            <span class="offer-qty">4+ unidades — 40% OFF</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-custom">—</span>
-              <span class="offer-price" id="offer-price-custom">—</span>
-            </div>
-          </div>
-        </label>
-
       </div>
     </div>
     <p class="modal-price-warning">⚠️ Este precio puede cambiar en cualquier momento</p>
-
-    <!-- Modelos por unidad (1/2/3 — se rellena por products.js) -->
-    <div class="modal-section" id="variant-section" style="display:none">
-      <span class="modal-section-label">Elegí el modelo de cada unidad</span>
-      <div id="variant-selectors"></div>
-    </div>
-
-    <!-- 4+ unidades con 40% OFF -->
-    <div class="modal-section" id="custom-order-section" style="display:none">
-      <span class="modal-section-label">Más de 3 unidades con 40% OFF</span>
-      <p style="font-size:13px;color:var(--muted);margin:4px 0 14px">Elegí la cantidad y cuántos querés de cada modelo.</p>
-      <div class="form-group">
-        <label>Cantidad</label>
-        <div class="qty-stepper">
-          <button type="button" class="qty-btn qty-minus" id="m-custom-qty-minus" aria-label="Disminuir cantidad" disabled>−</button>
-          <span class="qty-val" id="m-custom-qty-display">4</span>
-          <button type="button" class="qty-btn qty-plus" id="m-custom-qty-plus" aria-label="Aumentar cantidad">+</button>
-          <input type="hidden" id="m-custom-qty" value="4">
-        </div>
-      </div>
-
-      <!-- Distribución de modelos (se rellena por products.js) -->
-      <div class="form-group" id="custom-variant-section" style="display:none;margin-top:14px">
-        <label>¿Cuántos querés de cada modelo?</label>
-        <p style="font-size:12px;color:var(--muted);margin:4px 0 10px">La suma debe coincidir con la cantidad elegida.</p>
-        <div id="custom-variant-rows"></div>
-      </div>
-
-      <div style="margin-top:12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
-        <span id="custom-compare-display" style="font-size:13px;color:var(--muted);text-decoration:line-through">—</span>
-        <span id="custom-price-display" style="font-size:18px;font-weight:700;color:#fff">—</span>
-        <span style="font-size:11px;font-weight:700;color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);padding:2px 7px;border-radius:4px">40% OFF</span>
-      </div>
-    </div>
 
     <!-- Formulario -->
     <form class="modal-form" id="modal-form" novalidate>
@@ -910,28 +572,13 @@
     <button class="modal-close" id="combo-modal-close" aria-label="Cerrar">✕</button>
     <h2 class="modal-title" id="combo-modal-title">Combo Reloj + Cadena Apex</h2>
     <p class="modal-step">1 reloj + 1 Cadena Apex — todo en un pedido</p>
-    <p class="modal-subtitle">Elegí el modelo de tu reloj. La Cadena ya viene incluida.</p>
+    <p class="modal-subtitle">Reloj Blackout Minimal + Cadena Apex. Todo en un pedido.</p>
 
     <!-- Precio combo -->
     <div style="margin:16px 0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
       <span style="font-size:clamp(22px,5vw,30px);font-weight:800;color:#fff">Gs. 249.000</span>
       <span class="price-compare" style="font-size:13px">Gs. 318.000</span>
       <span class="price-badge">22% OFF</span>
-    </div>
-
-    <!-- Selector modelo reloj -->
-    <div class="modal-section">
-      <span class="modal-section-label">Modelo del reloj</span>
-      <div class="form-group" style="margin-top:10px">
-        <select id="cm-variant" class="admin-filter-select" style="width:100%">
-          <option value="Negro Total">Negro Total</option>
-          <option value="Negro Dorado">Dorado</option>
-          <option value="Negro Rosa">Rosa</option>
-          <option value="Negro Cobre">Cobre</option>
-          <option value="Negro Dorado Sutil">Dorado Sutil</option>
-          <option value="Plateado Negro">Plateado</option>
-        </select>
-      </div>
     </div>
 
     <!-- Cadena incluida (fija) -->
@@ -1077,17 +724,6 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
     name: 'Reloj Blackout Minimal',
     slug: 'reloj',
     price: 189000,
-    variants: {
-      type: 'modelo',
-      options: [
-        'Negro Total',
-        'Negro Dorado',
-        'Negro Rosa',
-        'Negro Cobre',
-        'Negro Dorado Sutil',
-        'Plateado Negro',
-      ],
-    },
   };
 
   function preSelectOffer(val) {
@@ -1408,71 +1044,12 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
       });
     })();
 
-    /* ── Stock visual dinámico — actualiza cards y rows desde API ── */
-    fetch('/api/product-stock?slug=reloj')
-      .then(function(r) { return r.ok ? r.json() : null; })
-      .then(function(data) {
-        if (!data || !data.ok || !data.product) return;
-        var variants = data.product.variants || {};
-        var stockNums = Object.values(variants).map(Number).filter(function(n) { return !isNaN(n); });
-        var maxStock  = Math.max.apply(null, stockNums.concat([1]));
-
-        /* Actualizar cards de modelos */
-        document.querySelectorAll('.modelo-card__body[data-variant]').forEach(function(body) {
-          var v    = body.dataset.variant;
-          var qty  = Number(variants[v]);
-          if (!Number.isFinite(qty)) return;
-          var stockEl = body.querySelector('.modelo-card__stock');
-          if (!stockEl) return;
-          if (qty === 0) {
-            stockEl.textContent = 'AGOTADO ⚠';
-            stockEl.className   = 'modelo-card__stock modelo-card__stock--low';
-          } else if (qty <= 5) {
-            stockEl.textContent = 'Solo ' + qty + ' unidade' + (qty === 1 ? '' : 's') + ' ⚠';
-            stockEl.className   = 'modelo-card__stock modelo-card__stock--low';
-          } else {
-            stockEl.textContent = qty + ' unidades';
-            stockEl.className   = 'modelo-card__stock';
-          }
-        });
-
-        /* Actualizar stock rows */
-        document.querySelectorAll('.stock-row[data-variant]').forEach(function(row) {
-          var v    = row.dataset.variant;
-          var qty  = Number(variants[v]);
-          if (!Number.isFinite(qty)) return;
-          var isOut = qty === 0;
-          var isLow = qty > 0 && qty <= 5;
-          var pct   = isOut ? 0 : Math.max(Math.round((qty / maxStock) * 100), 2);
-
-          var fillEl = row.querySelector('.stock-row__fill');
-          var qtyEl  = row.querySelector('.stock-row__qty');
-
-          if (fillEl) {
-            fillEl.style.width = pct + '%';
-            fillEl.className   = 'stock-row__fill' + (isOut || isLow ? ' stock-row__fill--low' : '');
-          }
-          if (qtyEl) {
-            if (isOut) {
-              qtyEl.textContent = 'AGOTADO';
-              qtyEl.className   = 'stock-row__qty stock-row__qty--low';
-            } else if (isLow) {
-              qtyEl.textContent = qty + ' uds ⚠';
-              qtyEl.className   = 'stock-row__qty stock-row__qty--low';
-            } else {
-              qtyEl.textContent = qty + ' uds';
-              qtyEl.className   = 'stock-row__qty';
-            }
-          }
-        });
-      })
-      .catch(function() {});
   });
 </script>
 <!-- CRO: Sticky bottom CTA — mobile only, se oculta cuando modal está activo (CSS :has) -->
 <div class="sticky-cta-bar" id="sticky-cta-bar">
   <button class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0">
-    Elegir mi modelo →
+    Pedir ahora →
   </button>
 </div>
 

@@ -173,13 +173,14 @@ var DV_CARD_BTN = {
 };
 /* ── Precios fallback para productos sin default_price en D1 ── */
 var DV_CARD_PRICES = {
-  'reloj':   { price: 189000, compare: 250000 },
-  'cadena':  { price: 129000, compare: 169000 },
-  'cepillo': { price: 159000, compare: 190000 },
-  'lentes':  { price: 165000, compare: 0      },
+  'reloj':                          { price: 189000, compare: 250000 },
+  'cadena':                         { price: 129000, compare: 169000 },
+  'cepillo':                        { price: 159000, compare: 190000 },
+  'lentes':                         { price: 165000, compare: 0      },
+  'luna-mini-vibrador-bala-recargable': { price: 229000, compare: 330000 },
 };
 /* ── Orden visual de productos ── */
-var DV_SLUG_ORDER = ['reloj', 'cadena', 'reloj-imperial-verde', 'cepillo', 'lentes'];
+var DV_SLUG_ORDER = ['reloj', 'cadena', 'reloj-imperial-verde', 'cepillo', 'lentes', 'luna-mini-vibrador-bala-recargable'];
 
 function buildCardHtml(p) {
   var fb       = DV_CARD_PRICES[p.slug] || {};

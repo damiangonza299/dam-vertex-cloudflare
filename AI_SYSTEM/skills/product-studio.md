@@ -201,6 +201,8 @@ public/admin/index.html             → MANUAL_PRODUCTS: dinámico desde /api/pr
 - **NO** editar landing manual mientras producto está en draft — usar Tab Landing
 - **NO** sincronizar con Dam Finanzas más de una vez el mismo producto (duplica inventario)
 - **NO** cambiar el slug de un producto activo — rompe confirm-purchase.js y Dam Finanzas
+- **NO** usar modal con colores genéricos sin override — cada landing define `.theme-{producto}` con la paleta del producto
+- **NO** crear modal con solo 2 combos — 3 combos es el estándar: 1 unidad / 2 unidades "Más elegido" / 3 unidades "Mayor ahorro" (ver PRODUCT_COMPLETION_CHECKLIST, punto 6b)
 
 ---
 

@@ -2,6 +2,20 @@
 
 Punto de entrada único para sesiones nuevas. Leer este archivo, luego cargar **solo** lo que la tarea requiera.
 
+> **Regla crítica:** Leer este archivo NO implica cargar todo el ecosistema. Actúa como router. Clasificar la tarea primero, cargar después.
+
+---
+
+## Clasificación de Tareas por Nivel
+
+Antes de cargar cualquier skill, clasificar la tarea:
+
+| Nivel | Señales típicas | Acción |
+|---|---|---|
+| **Nivel 1 — Pequeña** | CSS · textos · botones · colores · spacing · badges · fix visual | Cargar mínimo: solo skill del área afectada |
+| **Nivel 2 — Mediana** | Funcionalidad aislada · Admin Panel · Product Studio · Dam Finanzas · landing completa · tracking específico | Cargar: archivos obligatorios + skills del área |
+| **Nivel 3 — Grande** | Producto nuevo · auditoría · migraciones · CAPI · Event Flow · sistemas cross-module · arquitectura | Cargar: archivos obligatorios + todos los skills relevantes, progresivamente |
+
 ---
 
 ## Carga Obligatoria al Iniciar
@@ -168,4 +182,4 @@ AI_SYSTEM/skills/
 
 ---
 
-*Última actualización: 2026-06-13 — PRODUCT_COMPLETION_CHECKLIST agregado; instrumentación InSync actualizada a triple atributo*
+*Última actualización: 2026-06-14 — Context Loading Policy integrada: clasificación por Nivel 1/2/3; leer INDEX no implica cargar todo*
