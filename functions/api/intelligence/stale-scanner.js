@@ -15,7 +15,7 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-import { VIP_PYG, ALTO_VALOR_PYG, STALE_DAYS, SCORE_VERSION, scoreToLabel, slugify } from './_bqe-scorer.js';
+import { VIP_PYG, ALTO_VALOR_PYG, STALE_DAYS, SCORE_VERSION, scoreToLabel, slugify, isComboProduct } from './_bqe-scorer.js';
 
 export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
@@ -154,7 +154,7 @@ export async function onRequestPost({ request, env }) {
         null,
         leadAgeH,
         value,
-        productSlug === 'combo-reloj-cadena' ? 1 : 0,
+        isComboProduct(productSlug) ? 1 : 0,
         value >= VIP_PYG        ? 1 : 0,
         0,
         value >= ALTO_VALOR_PYG ? 1 : 0,

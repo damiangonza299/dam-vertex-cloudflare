@@ -10,6 +10,12 @@
      - normalizePhone: exportada para comparación consistente
    ========================================================= */
 
+// Detecta combos de forma genérica: cualquier slug que contenga "combo"
+export function isComboProduct(slug) {
+  if (!slug) return false;
+  return String(slug).toLowerCase().includes('combo');
+}
+
 // DAM VERTEX PY — UMBRALES OFICIALES
 // Alto valor:  >= 199.000 Gs  → interno + CAPI HighValuePurchase
 //              (189k precio base + 10k envío express = 199k = intención superior)
@@ -37,7 +43,7 @@ export function scoreLeadBQE(lead, behaviorMap, nowMs, prevPurchases = 0) {
   const status      = lead.status || 'pending';
   const value       = Number(lead.value || 0);
   const productSlug = lead.product_slug || slugify(lead.product_name || '');
-  const isCombo     = productSlug === 'combo-reloj-cadena';
+  const isCombo     = isComboProduct(productSlug);
   const isHighValue = value >= ALTO_VALOR_PYG;
   const isVIP       = value >= VIP_PYG;
   const isUltraVip  = value >= ULTRA_VIP_PYG;

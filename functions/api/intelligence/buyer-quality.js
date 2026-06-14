@@ -36,81 +36,100 @@ export async function onRequestGet({ request, env }) {
   const product = url.searchParams.get('product')    || null;
   const label   = url.searchParams.get('label')      || null;
   const btype   = url.searchParams.get('buyer_type') || null;
-  const limit   = Math.min(parseInt(url.searchParams.get('limit') || '100'), 500);
+  const limit   = Math.min(parseInt(url.searchParams.get('limit') || '100', 10), 500);
 
   try {
-    // Resumen agregado
+    // ── Build parametrized queries — cero interpolación de strings ──────────
+
+    // Summary: condiciones base + filtro opcional de producto
+    const summaryBinds = [since, until];
+    const summaryExtra = product ? (summaryBinds.push(product), 'AND product_slug = ?') : '';
+    const summaryStmt  = env.DB.prepare(`
+      SELECT
+        status_snapshot,
+        quality_label,
+        buyer_type,
+        COUNT(*)                                                      AS total,
+        AVG(quality_score)                                            AS avg_score,
+        SUM(total_value)                                              AS total_revenue,
+        SUM(CASE WHEN is_fast_buyer  = 1 THEN 1 ELSE 0 END)          AS fast_buyers,
+        SUM(CASE WHEN is_vip         = 1 THEN 1 ELSE 0 END)          AS vip_buyers,
+        SUM(CASE WHEN is_high_value  = 1 THEN 1 ELSE 0 END)          AS high_value_buyers,
+        SUM(CASE WHEN is_combo       = 1 THEN 1 ELSE 0 END)          AS combo_buyers,
+        AVG(CASE WHEN time_to_purchase_h IS NOT NULL
+                 THEN time_to_purchase_h END)                         AS avg_time_h
+      FROM lead_quality
+      WHERE processed_at >= ? AND processed_at < date(?, '+1 day')
+        ${summaryExtra}
+      GROUP BY status_snapshot, quality_label, buyer_type
+      ORDER BY total DESC
+    `).bind(...summaryBinds);
+
+    // Top buyers: condiciones base + filtros opcionales de producto, label, buyer_type
+    const topBinds = [since, until];
+    const topFilters = [];
+    if (product) { topFilters.push('lq.product_slug = ?'); topBinds.push(product); }
+    if (label)   { topFilters.push('lq.quality_label = ?'); topBinds.push(label); }
+    if (btype)   { topFilters.push('lq.buyer_type = ?');   topBinds.push(btype); }
+    topBinds.push(limit);
+    const topExtra = topFilters.length > 0 ? 'AND ' + topFilters.join(' AND ') : '';
+    const topStmt  = env.DB.prepare(`
+      SELECT lq.*, l.name, l.created_at AS lead_created
+      FROM lead_quality lq
+      JOIN leads l ON l.id = lq.lead_id
+      WHERE lq.status_snapshot = 'purchased'
+        AND lq.processed_at >= ? AND lq.processed_at < date(?, '+1 day')
+        ${topExtra}
+      ORDER BY lq.quality_score DESC, lq.total_value DESC
+      LIMIT ?
+    `).bind(...topBinds);
+
+    // Stale summary
+    const staleBinds = [since, until];
+    if (product) staleBinds.push(product);
+    const staleExtra = product ? 'AND product_slug = ?' : '';
+    const staleStmt  = env.DB.prepare(`
+      SELECT COUNT(*) AS total, AVG(lead_age_h) AS avg_age_h, SUM(total_value) AS lost_revenue
+      FROM lead_quality
+      WHERE is_dead_lead = 1
+        AND processed_at >= ? AND processed_at < date(?, '+1 day')
+        ${staleExtra}
+    `).bind(...staleBinds);
+
+    // Cancelled summary
+    const cancelBinds = [since, until];
+    if (product) cancelBinds.push(product);
+    const cancelExtra = product ? 'AND product_slug = ?' : '';
+    const cancelStmt  = env.DB.prepare(`
+      SELECT COUNT(*) AS total, SUM(total_value) AS lost_revenue
+      FROM lead_quality
+      WHERE is_cancelled = 1
+        AND processed_at >= ? AND processed_at < date(?, '+1 day')
+        ${cancelExtra}
+    `).bind(...cancelBinds);
+
     const [summaryR, topBuyersR, staleR, cancelledR] = await env.DB.batch([
-
-      // Resumen por status y buyer_type
-      env.DB.prepare(`
-        SELECT
-          status_snapshot,
-          quality_label,
-          buyer_type,
-          COUNT(*)                                                          AS total,
-          AVG(quality_score)                                                AS avg_score,
-          SUM(total_value)                                                  AS total_revenue,
-          SUM(CASE WHEN is_fast_buyer = 1 THEN 1 ELSE 0 END)              AS fast_buyers,
-          SUM(CASE WHEN is_vip = 1 THEN 1 ELSE 0 END)                     AS vip_buyers,
-          SUM(CASE WHEN is_high_value = 1 THEN 1 ELSE 0 END)              AS high_value_buyers,
-          SUM(CASE WHEN is_combo = 1 THEN 1 ELSE 0 END)                   AS combo_buyers,
-          AVG(CASE WHEN time_to_purchase_h IS NOT NULL THEN time_to_purchase_h END) AS avg_time_h
-        FROM lead_quality
-        WHERE processed_at >= ? AND processed_at < date(?, '+1 day')
-          ${product ? "AND product_slug = '" + product.replace(/'/g,"''") + "'" : ''}
-        GROUP BY status_snapshot, quality_label, buyer_type
-        ORDER BY total DESC
-      `).bind(since, until),
-
-      // Top compradores
-      env.DB.prepare(`
-        SELECT lq.*, l.name, l.created_at AS lead_created
-        FROM lead_quality lq
-        JOIN leads l ON l.id = lq.lead_id
-        WHERE lq.status_snapshot = 'purchased'
-          AND lq.processed_at >= ? AND lq.processed_at < date(?, '+1 day')
-          ${product ? "AND lq.product_slug = '" + product.replace(/'/g,"''") + "'" : ''}
-          ${label   ? "AND lq.quality_label = '" + label.replace(/'/g,"''") + "'" : ''}
-          ${btype   ? "AND lq.buyer_type = '" + btype.replace(/'/g,"''") + "'" : ''}
-        ORDER BY lq.quality_score DESC, lq.total_value DESC
-        LIMIT ?
-      `).bind(since, until, limit),
-
-      // Leads vencidos
-      env.DB.prepare(`
-        SELECT COUNT(*) AS total, AVG(lead_age_h) AS avg_age_h, SUM(total_value) AS lost_revenue
-        FROM lead_quality
-        WHERE is_dead_lead = 1
-          AND processed_at >= ? AND processed_at < date(?, '+1 day')
-          ${product ? "AND product_slug = '" + product.replace(/'/g,"''") + "'" : ''}
-      `).bind(since, until),
-
-      // Cancelados
-      env.DB.prepare(`
-        SELECT COUNT(*) AS total, SUM(total_value) AS lost_revenue
-        FROM lead_quality
-        WHERE is_cancelled = 1
-          AND processed_at >= ? AND processed_at < date(?, '+1 day')
-          ${product ? "AND product_slug = '" + product.replace(/'/g,"''") + "'" : ''}
-      `).bind(since, until),
+      summaryStmt,
+      topStmt,
+      staleStmt,
+      cancelStmt,
     ]);
 
-    const summary    = summaryR.results || [];
-    const topBuyers  = topBuyersR.results || [];
-    const stale      = staleR.results?.[0] || {};
-    const cancelled  = cancelledR.results?.[0] || {};
+    const summary   = summaryR.results || [];
+    const topBuyers = topBuyersR.results || [];
+    const stale     = staleR.results?.[0] || {};
+    const cancelled = cancelledR.results?.[0] || {};
 
-    // Calcular métricas agregadas del resumen
-    let total_leads = 0, total_purchased = 0, total_revenue = 0, total_stale = 0, total_cancelled = 0;
-    let score_sum = 0, score_count = 0;
+    // Calcular métricas agregadas
+    let total_leads = 0, total_purchased = 0, total_revenue = 0,
+        total_stale = 0, total_cancelled = 0, score_sum = 0, score_count = 0;
 
     for (const row of summary) {
-      total_leads += row.total;
-      total_revenue += row.total_revenue || 0;
-      if (row.status_snapshot === 'purchased') total_purchased += row.total;
-      if (row.status_snapshot === 'stale' || row.is_dead_lead) total_stale += row.total;
-      if (row.status_snapshot === 'cancelled') total_cancelled += row.total;
+      total_leads    += row.total;
+      total_revenue  += row.total_revenue || 0;
+      if (row.status_snapshot === 'purchased')            total_purchased += row.total;
+      if (row.status_snapshot === 'stale')                total_stale     += row.total;
+      if (row.status_snapshot === 'cancelled')            total_cancelled += row.total;
       if (row.avg_score) { score_sum += row.avg_score * row.total; score_count += row.total; }
     }
 
@@ -120,6 +139,7 @@ export async function onRequestGet({ request, env }) {
     return json({
       ok: true,
       period: { since, until },
+      filters: { product, label, buyer_type: btype },
       summary: {
         total_leads,
         total_purchased,
@@ -130,7 +150,7 @@ export async function onRequestGet({ request, env }) {
         stale_avg_age_h: stale.avg_age_h ? Math.round(stale.avg_age_h) : 0,
         cancelled_leads: cancelled.total || 0,
       },
-      breakdown: summary,
+      breakdown:  summary,
       top_buyers: topBuyers,
     });
 

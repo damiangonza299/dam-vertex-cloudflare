@@ -1,23 +1,24 @@
 /* =========================================================
-   POST /api/intelligence/send-alerts
+   POST /api/intelligence/send-alerts  v3
    Envío de alertas Dam Intelligence a Telegram.
 
-   Genera alertas con el mismo motor que /api/intelligence/alerts
-   y envía cada una al grupo exclusivo de Dam Intelligence.
+   Cambios v3:
+     - dry_run=true simula sin enviar a Telegram ni escribir en logs
+     - Mensajes incluyen: producto, campaña, período, leads, compras,
+       conversión compra/lead, revenue, gasto, CPA, ROAS, confianza
+     - Nuevo tipo city_risk en formatMessage y getAlertSubject
+     - Deduplicación con ventana temporal por severidad:
+         info → 7d | media → 14d | alta → 30d
 
    Variables requeridas:
-     ADMIN_PASSWORD                — autenticación
-     TELEGRAM_BOT_TOKEN            — ya existe (mismo bot que pedidos)
-     TELEGRAM_INTELLIGENCE_CHAT_ID — grupo nuevo exclusivo de inteligencia
+     ADMIN_PASSWORD
+     TELEGRAM_BOT_TOKEN
+     TELEGRAM_INTELLIGENCE_CHAT_ID
+   Opcionales (para CPA/ROAS y filtro de activos):
+     META_MARKETING_TOKEN
+     META_AD_ACCOUNT_ID
 
-   Comportamiento:
-     - Envía TODOS los tipos de alerta (alta, media, info)
-     - 🚨 = alta  |  ⚠️ = media  |  ℹ️ = info
-     - Si no hay alertas activas, no envía ningún mensaje
-     - Si TELEGRAM_* no está configurado, retorna error claro
-     - NO pausa anuncios. NO modifica Meta Ads. NO toca Purchase.
-
-   Disparado por: GitHub Actions (cron diario 11:00 UTC = 07:00 PYT)
+   Disparado por: GitHub Actions (cron 11:00 UTC = 07:00 PYT)
                   o manualmente vía POST autenticado.
    ========================================================= */
 
@@ -28,6 +29,8 @@ const CORS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
+
+const META_VERSION = 'v21.0';
 
 export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
@@ -48,12 +51,13 @@ export async function onRequestPost({ request, env }) {
 
   const chatId = env.TELEGRAM_INTELLIGENCE_CHAT_ID.replace(/^﻿/, '').trim();
 
-  const url   = new URL(request.url);
-  const force = url.searchParams.get('force') === 'true';
-  const source = force ? 'manual-force' : (url.searchParams.get('source') || 'cron');
+  const url    = new URL(request.url);
+  const force  = url.searchParams.get('force')   === 'true';
+  const dryRun = url.searchParams.get('dry_run') === 'true';
+  const source = dryRun ? 'dry_run' : force ? 'manual-force' : (url.searchParams.get('source') || 'cron');
 
   try {
-    // Tablas de log para deduplicación (crea si no existen)
+    // Crear tablas de log si no existen
     await env.DB.prepare(`
       CREATE TABLE IF NOT EXISTS intelligence_run_log (
         id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,8 +67,6 @@ export async function onRequestPost({ request, env }) {
       )
     `).run();
 
-    // Historial por alerta individual — clave única global (tipo:sujeto:severidad)
-    // date_bucket se guarda para trazabilidad histórica pero ya no se usa como límite de dedup.
     await env.DB.prepare(`
       CREATE TABLE IF NOT EXISTS intelligence_alert_log (
         id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -75,7 +77,6 @@ export async function onRequestPost({ request, env }) {
       )
     `).run();
 
-    // Log de alertas descartadas por estado inactivo en Meta
     await env.DB.prepare(`
       CREATE TABLE IF NOT EXISTS intelligence_meta_filter_log (
         id               INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -87,106 +88,134 @@ export async function onRequestPost({ request, env }) {
       )
     `).run();
 
-    // Protección contra duplicados de ejecución: omitir si ya se ejecutó en las últimas 6 h
-    if (!force) {
+    // Protección anti-ejecución duplicada (omitir en dry_run y force)
+    if (!force && !dryRun) {
       const since6h = new Date(Date.now() - 6 * 3600000).toISOString();
       const last = await env.DB.prepare(
         `SELECT run_at FROM intelligence_run_log WHERE run_at >= ? ORDER BY run_at DESC LIMIT 1`
       ).bind(since6h).first();
       if (last) {
         return json({
-          ok:       true,
-          skipped:  true,
-          message:  `Ya se ejecutó a las ${last.run_at}. Usar ?force=true para forzar.`,
+          ok: true, skipped: true,
+          message: `Ya se ejecutó a las ${last.run_at}. Usar ?force=true para forzar.`,
           last_run: last.run_at,
         });
       }
     }
 
-    const { alerts, generated_at } = await generateAlerts(env.DB);
+    // ── Prefetch Meta: activeAdIds + metaSpendMap (misma ventana 30d) ─────────
+    let activeAdIds  = null;
+    let metaSpendMap = new Map();
 
-    if (alerts.length === 0) {
-      return json({ ok: true, sent: 0, total_alerts: 0, message: 'Sin alertas activas. No se enviaron mensajes.', generated_at });
-    }
+    if (env.META_MARKETING_TOKEN && env.META_AD_ACCOUNT_ID) {
+      const rawAccId = String(env.META_AD_ACCOUNT_ID);
+      const accId    = rawAccId.startsWith('act_') ? rawAccId : `act_${rawAccId}`;
 
-    // ── Validación Meta: effective_status de todos los ad_id únicos ──────────
-    // Fetch en paralelo antes del loop para minimizar llamadas API.
-    const adStatusMap = new Map(); // ad_id (string) → { effective_status, name }
-    const uniqueAdIds = [...new Set(
-      alerts.filter(a => a.evidencia?.ad_id).map(a => String(a.evidencia.ad_id))
-    )];
+      // 1. IDs de anuncios activos (para filtrar creativos inactivos en el motor)
+      try {
+        const activeUrl = new URL(`https://graph.facebook.com/${META_VERSION}/${accId}/ads`);
+        activeUrl.searchParams.set('fields', 'id,effective_status');
+        activeUrl.searchParams.set('filtering', JSON.stringify([
+          { field: 'effective_status', operator: 'IN', value: ['ACTIVE'] },
+        ]));
+        activeUrl.searchParams.set('limit', '500');
+        activeUrl.searchParams.set('access_token', env.META_MARKETING_TOKEN);
 
-    if (uniqueAdIds.length > 0) {
-      if (env.META_MARKETING_TOKEN) {
-        await Promise.all(uniqueAdIds.map(async (adId) => {
-          try {
-            const u = new URL(`https://graph.facebook.com/v21.0/${adId}`);
-            u.searchParams.set('fields', 'id,name,effective_status');
-            u.searchParams.set('access_token', env.META_MARKETING_TOKEN);
-            const res = await fetch(u.toString());
-            if (res.ok) {
-              const d = await res.json();
-              adStatusMap.set(adId, { effective_status: d.effective_status || 'UNKNOWN', name: d.name || null });
-            } else {
-              console.warn('ALERT_META_STATUS_FAIL', adId, res.status);
-            }
-          } catch (e) {
-            console.warn('ALERT_META_STATUS_ERR', adId, e.message);
-          }
-        }));
-      } else {
-        console.warn('ALERT_META_SKIP_NO_TOKEN — validación Meta omitida, META_MARKETING_TOKEN no configurado');
+        const res = await fetch(activeUrl.toString());
+        if (res.ok) {
+          const data = await res.json();
+          activeAdIds = new Set((data.data || []).map(a => String(a.id)));
+          console.log('ALERT_META_ACTIVE_ADS', activeAdIds.size);
+        } else {
+          console.warn('ALERT_META_ACTIVE_FAIL', res.status);
+        }
+      } catch (e) {
+        console.warn('ALERT_META_ACTIVE_ERR', e.message);
       }
+
+      // 2. Gasto por anuncio — ventana 30d (misma que D1 para ROAS/CPA consistente)
+      try {
+        const since30 = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+        const today   = new Date().toISOString().slice(0, 10);
+        const insUrl  = new URL(`https://graph.facebook.com/${META_VERSION}/${accId}/insights`);
+        insUrl.searchParams.set('fields', 'ad_id,spend');
+        insUrl.searchParams.set('level', 'ad');
+        insUrl.searchParams.set('time_range', JSON.stringify({ since: since30, until: today }));
+        insUrl.searchParams.set('limit', '500');
+        insUrl.searchParams.set('access_token', env.META_MARKETING_TOKEN);
+
+        const res = await fetch(insUrl.toString());
+        if (res.ok) {
+          const data = await res.json();
+          for (const row of (data.data || [])) {
+            if (row.ad_id && row.spend) {
+              metaSpendMap.set(String(row.ad_id), { spend: Number(row.spend) });
+            }
+          }
+          console.log('ALERT_META_SPEND_ADS', metaSpendMap.size);
+        } else {
+          console.warn('ALERT_META_SPEND_FAIL', res.status);
+        }
+      } catch (e) {
+        console.warn('ALERT_META_SPEND_ERR', e.message);
+      }
+    } else {
+      console.warn('ALERT_META_SKIP — META_MARKETING_TOKEN o META_AD_ACCOUNT_ID no configurados. Fallback seguro: sin filtro de activos, sin CPA/ROAS.');
     }
     // ─────────────────────────────────────────────────────────────────────────
 
-    const bucket = getWeekBucket();
-    let sent            = 0;
-    let failed          = 0;
-    let dedupSkipped    = 0;
-    let metaFiltered    = 0;
-    const metaFilterDetails = [];
-    const errors = [];
+    const { alerts, generated_at, global_conv_rate_pct } = await generateAlerts(env.DB, {
+      metaSpendMap,
+      activeAdIds,
+    });
+
+    if (alerts.length === 0) {
+      if (!dryRun) await logRun(env.DB, 0, source);
+      return json({
+        ok: true, sent: 0, total_alerts: 0,
+        message: 'Sin alertas activas. No se enviaron mensajes.',
+        generated_at, dry_run: dryRun,
+      });
+    }
+
+    const bucket       = getWeekBucket();
+    let sent           = 0;
+    let failed         = 0;
+    let dedupSkipped   = 0;
+    const errors       = [];
+    const dryRunMessages = [];
 
     for (const alert of alerts) {
-      // ── Filtro Meta: verificar estado actual del activo antes de todo ────
-      if (alert.evidencia?.ad_id) {
-        const adId    = String(alert.evidencia.ad_id);
-        const metaInfo = adStatusMap.get(adId);
-        if (metaInfo && metaInfo.effective_status !== 'ACTIVE') {
-          const adName = metaInfo.name || alert.evidencia.ad_name || null;
-          console.log('ALERT_META_FILTERED', alert.tipo, `ad:${adId}`, metaInfo.effective_status);
-          metaFiltered++;
-          metaFilterDetails.push({
-            tipo:             alert.tipo,
-            ad_id:            adId,
-            ad_name:          adName,
-            effective_status: metaInfo.effective_status,
-            filtered_at:      new Date().toISOString(),
-          });
-          await env.DB.prepare(
-            `INSERT INTO intelligence_meta_filter_log (tipo, ad_id, ad_name, effective_status, filtered_at) VALUES (?, ?, ?, ?, ?)`
-          ).bind(alert.tipo, adId, adName, metaInfo.effective_status, new Date().toISOString()).run().catch(() => {});
-          continue;
-        }
-      }
-      // ─────────────────────────────────────────────────────────────────────
+      const alertKey   = `${alert.tipo}:${getAlertSubject(alert)}:${alert.severidad}`;
+      const windowDays = getDedupWindowDays(alert.severidad);
 
-      const alertKey = `${alert.tipo}:${getAlertSubject(alert)}:${alert.severidad}`;
-
-      // Dedup global: saltar si esta clave ya fue enviada alguna vez (sin límite semanal).
-      // Para reenviar: usar ?force=true (bypass manual explícito).
+      // Dedup con ventana temporal (también en dry_run para simular comportamiento real)
       if (!force) {
+        const windowStart = new Date(Date.now() - windowDays * 86400000).toISOString();
         const existing = await env.DB.prepare(
-          `SELECT id FROM intelligence_alert_log WHERE alert_key = ?`
-        ).bind(alertKey).first();
+          `SELECT id FROM intelligence_alert_log WHERE alert_key = ? AND sent_at >= ?`
+        ).bind(alertKey, windowStart).first();
         if (existing) {
           dedupSkipped++;
           continue;
         }
       }
 
-      const text = formatMessage(alert);
+      const text = formatMessage(alert, global_conv_rate_pct);
+
+      // dry_run: colectar mensajes sin enviar a Telegram ni escribir logs
+      if (dryRun) {
+        sent++;
+        dryRunMessages.push({
+          alert_key:  alertKey,
+          tipo:       alert.tipo,
+          severidad:  alert.severidad,
+          titulo:     alert.titulo,
+          text,
+        });
+        continue;
+      }
+
       try {
         const res = await fetch(
           `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`,
@@ -194,7 +223,7 @@ export async function onRequestPost({ request, env }) {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({
-              chat_id:              chatId,
+              chat_id: chatId,
               text,
               disable_web_page_preview: true,
             }),
@@ -202,8 +231,6 @@ export async function onRequestPost({ request, env }) {
         );
         if (res.ok) {
           sent++;
-          // Registrar en historial para evitar reenvíos futuros esta semana
-          // Guardar con bucket para trazabilidad histórica; el SELECT de dedup usa solo alert_key.
           await env.DB.prepare(
             `INSERT OR IGNORE INTO intelligence_alert_log (alert_key, date_bucket, sent_at) VALUES (?, ?, ?)`
           ).bind(alertKey, bucket, new Date().toISOString()).run().catch(() => {});
@@ -220,21 +247,32 @@ export async function onRequestPost({ request, env }) {
       }
     }
 
-    // Registrar ejecución para deduplicación de runs completos
-    await env.DB.prepare(
-      `INSERT INTO intelligence_run_log (run_at, alerts_sent, source) VALUES (?, ?, ?)`
-    ).bind(new Date().toISOString(), sent, source).run().catch(() => {});
+    if (!dryRun) await logRun(env.DB, sent, source);
+
+    if (dryRun) {
+      return json({
+        ok:            true,
+        dry_run:       true,
+        would_send:    sent,
+        dedup_skipped: dedupSkipped,
+        total_alerts:  alerts.length,
+        generated_at,
+        active_ads:    activeAdIds ? activeAdIds.size : null,
+        spend_ads:     metaSpendMap.size,
+        messages:      dryRunMessages,
+      });
+    }
 
     return json({
-      ok:                  true,
+      ok:            true,
       sent,
       failed,
-      dedup_skipped:       dedupSkipped,
-      meta_filtered:       metaFiltered,
-      total_alerts:        alerts.length,
+      dedup_skipped: dedupSkipped,
+      total_alerts:  alerts.length,
       generated_at,
       source,
-      ...(metaFilterDetails.length > 0 && { meta_filter_details: metaFilterDetails }),
+      active_ads:    activeAdIds ? activeAdIds.size : null,
+      spend_ads:     metaSpendMap.size,
       ...(errors.length > 0 && { errors }),
     });
 
@@ -244,9 +282,9 @@ export async function onRequestPost({ request, env }) {
   }
 }
 
-// ── Formateadores de mensaje ─────────────────────────────────────────────────
+// ── Formateadores de mensaje ──────────────────────────────────────────────────
 
-function formatMessage(alert) {
+function formatMessage(alert, globalConvPct) {
   const ev   = alert.evidencia || {};
   const icon = alert.severidad === 'alta' ? '🚨' : alert.severidad === 'media' ? '⚠️' : 'ℹ️';
 
@@ -254,95 +292,181 @@ function formatMessage(alert) {
     `${icon} Dam Intelligence`,
     alert.titulo,
     '',
+    `Período: ${alert.periodo || 'últimos 30 días'}`,
   ];
 
   switch (alert.tipo) {
+
     case 'creative_dead':
-      if (ev.ad_name || ev.ad_id)         lines.push(`Anuncio: ${ev.ad_name || ev.ad_id}`);
-      if (ev.total_leads != null)          lines.push(`Leads: ${ev.total_leads}`);
-      if (ev.dead_leads != null)           lines.push(`Vencidos: ${ev.dead_leads}`);
-      if (ev.dead_lead_rate_pct != null)   lines.push(`Dead rate: ${ev.dead_lead_rate_pct}%`);
-      if (ev.purchased != null)            lines.push(`Compras: ${ev.purchased}`);
-      if (ev.purchase_rate_pct != null)    lines.push(`Purchase rate: ${ev.purchase_rate_pct}%`);
-      if (ev.data_days != null)            lines.push(`Días de datos: ${ev.data_days}`);
-      break;
-
     case 'creative_scalable':
-      if (ev.ad_name || ev.ad_id)         lines.push(`Anuncio: ${ev.ad_name || ev.ad_id}`);
-      if (ev.total_leads != null)          lines.push(`Leads: ${ev.total_leads}`);
-      if (ev.purchased != null)            lines.push(`Compras: ${ev.purchased}`);
-      if (ev.purchase_rate_pct != null)    lines.push(`Purchase rate: ${ev.purchase_rate_pct}%`);
-      if (ev.avg_score != null)            lines.push(`Score promedio: ${ev.avg_score}/100`);
-      if (ev.dead_lead_rate_pct != null)   lines.push(`Dead rate: ${ev.dead_lead_rate_pct}%`);
+    case 'garbage_risk': {
+      if (ev.campaign_name)  lines.push(`Campaña: ${ev.campaign_name}`);
+      if (ev.ad_name)        lines.push(`Anuncio: ${ev.ad_name}`);
+      lines.push('');
+      if (ev.total_leads != null)        lines.push(`Leads: ${ev.total_leads}`);
+      if (ev.purchased != null)          lines.push(`Compras: ${ev.purchased}`);
+      if (ev.purchase_rate_pct != null)  lines.push(`Conversión: ${ev.purchase_rate_pct}%`);
+      if (ev.revenue)                    lines.push(`Revenue: Gs. ${fmtN(ev.revenue)}`);
+      if (ev.dead_leads != null)         lines.push(`Vencidos: ${ev.dead_leads}`);
+      if (ev.dead_lead_rate_pct != null) lines.push(`Dead rate: ${ev.dead_lead_rate_pct}%`);
+      if (ev.cancel_rate_pct != null)    lines.push(`Cancel rate: ${ev.cancel_rate_pct}%`);
+      if (ev.avg_score != null)          lines.push(`Score comprador: ${ev.avg_score}/100`);
+      if (ev.meta_spend)                 lines.push(`Gasto Meta: Gs. ${fmtN(ev.meta_spend)}`);
+      if (ev.cpa_real != null)           lines.push(`CPA real: Gs. ${fmtN(ev.cpa_real)}`);
+      if (ev.avg_ticket != null)         lines.push(`Ticket promedio: Gs. ${fmtN(ev.avg_ticket)}`);
+      if (ev.roas != null)               lines.push(`ROAS: ${ev.roas}x`);
+      if (ev.data_days != null)          lines.push(`Días de datos: ${ev.data_days}`);
       break;
-
-    case 'garbage_risk':
-      if (ev.ad_name || ev.ad_id)         lines.push(`Anuncio: ${ev.ad_name || ev.ad_id}`);
-      if (ev.city)                         lines.push(`Ciudad: ${ev.city}`);
-      if (ev.total_leads != null)          lines.push(`Leads: ${ev.total_leads}`);
-      if (ev.dead_leads != null)           lines.push(`Vencidos: ${ev.dead_leads}`);
-      if (ev.dead_lead_rate_pct != null)   lines.push(`Dead rate: ${ev.dead_lead_rate_pct}%`);
-      if (ev.stale_rate_pct != null)       lines.push(`Stale rate: ${ev.stale_rate_pct}%`);
-      if (ev.purchased != null)            lines.push(`Compras: ${ev.purchased}`);
-      if (ev.cancel_rate_pct != null)      lines.push(`Cancel rate: ${ev.cancel_rate_pct}%`);
-      break;
+    }
 
     case 'winning_city':
-      if (ev.city)                         lines.push(`Ciudad: ${ev.city}`);
-      if (ev.total_leads != null)          lines.push(`Leads: ${ev.total_leads}`);
-      if (ev.purchased != null)            lines.push(`Compras: ${ev.purchased}`);
-      if (ev.purchase_rate_pct != null)    lines.push(`Conversión: ${ev.purchase_rate_pct}%`);
-      if (ev.revenue)                      lines.push(`Revenue: Gs. ${Number(ev.revenue).toLocaleString('es-PY')}`);
-      if (ev.data_days != null)            lines.push(`Días de datos: ${ev.data_days}`);
+    case 'city_risk': {
+      if (ev.product_name)   lines.push(`Producto: ${ev.product_name}`);
+      if (ev.campaign_name)  lines.push(`Campaña: ${ev.campaign_name}`);
+      lines.push('');
+      if (ev.total_leads != null)        lines.push(`Leads: ${ev.total_leads}`);
+      if (ev.purchased != null)          lines.push(`Compras: ${ev.purchased}`);
+      if (ev.purchase_rate_pct != null)  lines.push(`Conversión: ${ev.purchase_rate_pct}%`);
+      if (ev.national_rate_pct != null)  lines.push(`Promedio nacional (producto): ${ev.national_rate_pct}%`);
+      if (ev.delta_vs_national != null) {
+        const sign = ev.delta_vs_national >= 0 ? '+' : '';
+        lines.push(`Diferencia: ${sign}${ev.delta_vs_national}pp`);
+      }
+      if (ev.revenue)                    lines.push(`Revenue: Gs. ${fmtN(ev.revenue)}`);
+      if (ev.data_days != null)          lines.push(`Días de datos: ${ev.data_days}`);
+      if (ev.confidence)                 lines.push(`Confianza: ${ev.confidence}`);
       break;
+    }
 
-    case 'buyer_type_increase':
-      if (ev.buyer_type)                   lines.push(`Tipo: ${ev.buyer_type}`);
-      if (ev.recent_7d != null)            lines.push(`Última semana: ${ev.recent_7d} compradores`);
-      if (ev.prev_7d != null)              lines.push(`Semana anterior: ${ev.prev_7d} compradores`);
-      if (ev.delta_pct != null)            lines.push(`Variación: +${ev.delta_pct}%`);
+    case 'buyer_type_increase': {
+      if (ev.buyer_type)   lines.push(`Tipo: ${ev.buyer_type}`);
+      lines.push('');
+      if (ev.recent_7d != null) lines.push(`Esta semana: ${ev.recent_7d} compradores`);
+      if (ev.prev_7d != null)   lines.push(`Semana anterior: ${ev.prev_7d} compradores`);
+      if (ev.delta_pct != null) lines.push(`Variación: +${ev.delta_pct}%`);
       break;
+    }
 
-    case 'conversion_drop':
-      if (ev.recent_7d != null)            lines.push(`Compras esta semana: ${ev.recent_7d}`);
-      if (ev.prev_7d != null)              lines.push(`Semana anterior: ${ev.prev_7d}`);
-      if (ev.delta_pct != null)            lines.push(`Caída: ${ev.delta_pct}%`);
+    case 'conversion_drop': {
+      lines.push('');
+      if (ev.recent_purchased != null) lines.push(`Compras esta semana: ${ev.recent_purchased}`);
+      if (ev.prev_purchased != null)   lines.push(`Compras semana anterior: ${ev.prev_purchased}`);
+      if (ev.delta_pct != null)        lines.push(`Variación compras: ${ev.delta_pct}%`);
+      lines.push('');
+      if (ev.recent_leads != null)     lines.push(`Leads esta semana: ${ev.recent_leads}`);
+      if (ev.prev_leads != null)       lines.push(`Leads semana anterior: ${ev.prev_leads}`);
+      if (ev.tipo_caida) {
+        const tipo = ev.tipo_caida === 'cierre'
+          ? 'Caída de cierre (tráfico activo)'
+          : 'Caída de demanda y cierre';
+        lines.push(`Diagnóstico: ${tipo}`);
+      }
       break;
+    }
+
+    case 'product_winner': {
+      lines.push('');
+      if (ev.product_name)              lines.push(`Producto: ${ev.product_name}`);
+      if (ev.total_leads != null)       lines.push(`Leads: ${ev.total_leads}`);
+      if (ev.purchased != null)         lines.push(`Compras: ${ev.purchased}`);
+      if (ev.purchase_rate_pct != null) lines.push(`Conversión: ${ev.purchase_rate_pct}%`);
+      if (ev.revenue)                   lines.push(`Revenue: Gs. ${fmtN(ev.revenue)}`);
+      break;
+    }
+
+    case 'product_risk': {
+      lines.push('');
+      if (ev.product_name)              lines.push(`Producto: ${ev.product_name}`);
+      if (ev.total_leads != null)       lines.push(`Leads: ${ev.total_leads}`);
+      if (ev.purchased != null)         lines.push(`Compras: ${ev.purchased}`);
+      if (ev.purchase_rate_pct != null) lines.push(`Conversión: ${ev.purchase_rate_pct}%`);
+      if (ev.revenue != null)           lines.push(`Revenue: Gs. ${fmtN(ev.revenue)}`);
+      if (ev.dead_leads != null)        lines.push(`Vencidos: ${ev.dead_leads}`);
+      if (ev.dead_rate_pct != null)     lines.push(`Dead rate: ${ev.dead_rate_pct}%`);
+      if (ev.posible_causa)             lines.push(`Posible causa: ${ev.posible_causa}`);
+      break;
+    }
+
+    case 'cpa_high': {
+      if (ev.campaign_name)             lines.push(`Campaña: ${ev.campaign_name}`);
+      if (ev.ad_name)                   lines.push(`Anuncio: ${ev.ad_name}`);
+      lines.push('');
+      if (ev.total_leads != null)       lines.push(`Leads: ${ev.total_leads}`);
+      if (ev.purchased != null)         lines.push(`Compras reales: ${ev.purchased}`);
+      if (ev.purchase_rate_pct != null) lines.push(`Conversión: ${ev.purchase_rate_pct}%`);
+      if (ev.meta_spend != null)        lines.push(`Gasto Meta: Gs. ${fmtN(ev.meta_spend)}`);
+      if (ev.cpa_real != null)          lines.push(`CPA real: Gs. ${fmtN(ev.cpa_real)}`);
+      if (ev.avg_ticket != null)        lines.push(`Ticket promedio: Gs. ${fmtN(ev.avg_ticket)}`);
+      if (ev.cpa_ratio_pct != null)     lines.push(`CPA / Ticket: ${ev.cpa_ratio_pct}%`);
+      if (ev.revenue)                   lines.push(`Revenue: Gs. ${fmtN(ev.revenue)}`);
+      break;
+    }
+
+    case 'roas_alert': {
+      if (ev.campaign_name)             lines.push(`Campaña: ${ev.campaign_name}`);
+      if (ev.ad_name)                   lines.push(`Anuncio: ${ev.ad_name}`);
+      lines.push('');
+      if (ev.total_leads != null)       lines.push(`Leads: ${ev.total_leads}`);
+      if (ev.purchased != null)         lines.push(`Compras: ${ev.purchased}`);
+      if (ev.purchase_rate_pct != null) lines.push(`Conversión: ${ev.purchase_rate_pct}%`);
+      if (ev.meta_spend != null)        lines.push(`Gasto Meta: Gs. ${fmtN(ev.meta_spend)}`);
+      if (ev.revenue != null)           lines.push(`Revenue real: Gs. ${fmtN(ev.revenue)}`);
+      if (ev.roas != null)              lines.push(`ROAS: ${ev.roas}x`);
+      break;
+    }
+
+    default:
+      lines.push('');
+      lines.push(alert.explicacion || '');
   }
 
   if (alert.accion_sugerida) {
     lines.push('');
-    lines.push('Acción sugerida:');
-    lines.push(alert.accion_sugerida);
+    lines.push(`Accion: ${alert.accion_sugerida}`);
   }
 
   if (alert.requiere_aprobacion) {
     lines.push('');
-    lines.push('Requiere aprobación manual antes de actuar.');
+    lines.push('Requiere aprobacion manual antes de actuar.');
   }
 
-  return lines.join('\n');
+  return lines.filter(l => l !== undefined).join('\n');
 }
 
-// ── Helpers de deduplicación ──────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function getDedupWindowDays(severidad) {
+  if (severidad === 'info')  return 7;
+  if (severidad === 'media') return 14;
+  return 30; // alta
+}
 
 function getAlertSubject(alert) {
   const ev = alert.evidencia || {};
-  if (ev.ad_id)      return `ad:${ev.ad_id}`;
-  if (ev.city)       return `city:${String(ev.city).toLowerCase()}`;
-  if (ev.buyer_type) return `buyer:${ev.buyer_type}`;
+  if (ev.ad_id)                        return `ad:${ev.ad_id}`;
+  if (ev.city && ev.product_slug)      return `city:${String(ev.city).toLowerCase()}:${ev.product_slug}`;
+  if (ev.city)                         return `city:${String(ev.city).toLowerCase()}`;
+  if (ev.product_slug)                 return `product:${ev.product_slug}`;
+  if (ev.buyer_type)                   return `buyer:${ev.buyer_type}`;
   return 'global';
 }
 
 function getWeekBucket(date = new Date()) {
-  // ISO-8601 week bucket: YYYY-WNN — misma alerta no se reenvía dentro de la misma semana
-  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const d   = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   const day = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - day);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const week = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+  const week      = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
   return `${d.getUTCFullYear()}-W${String(week).padStart(2, '0')}`;
 }
+
+async function logRun(DB, alertsSent, source) {
+  await DB.prepare(
+    `INSERT INTO intelligence_run_log (run_at, alerts_sent, source) VALUES (?, ?, ?)`
+  ).bind(new Date().toISOString(), alertsSent, source).run().catch(() => {});
+}
+
+function fmtN(n) { return Math.round(n || 0).toLocaleString('es-PY'); }
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
