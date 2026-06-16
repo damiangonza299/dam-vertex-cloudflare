@@ -106,6 +106,7 @@ export async function onRequestPost({ request, env }) {
     // ── Prefetch Meta: activeAdIds + metaSpendMap (misma ventana 30d) ─────────
     let activeAdIds  = null;
     let metaSpendMap = new Map();
+    let activeFilterReason = null; // motivo si activeAdIds queda null: TOKEN_MISSING | META_ERROR | NETWORK_ERROR | RATE_LIMIT
 
     if (env.META_MARKETING_TOKEN && env.META_AD_ACCOUNT_ID) {
       const rawAccId = String(env.META_AD_ACCOUNT_ID);
@@ -127,9 +128,11 @@ export async function onRequestPost({ request, env }) {
           activeAdIds = new Set((data.data || []).map(a => String(a.id)));
           console.log('ALERT_META_ACTIVE_ADS', activeAdIds.size);
         } else {
+          activeFilterReason = res.status === 429 ? 'RATE_LIMIT' : 'META_ERROR';
           console.warn('ALERT_META_ACTIVE_FAIL', res.status);
         }
       } catch (e) {
+        activeFilterReason = 'NETWORK_ERROR';
         console.warn('ALERT_META_ACTIVE_ERR', e.message);
       }
 
@@ -160,6 +163,7 @@ export async function onRequestPost({ request, env }) {
         console.warn('ALERT_META_SPEND_ERR', e.message);
       }
     } else {
+      activeFilterReason = 'TOKEN_MISSING';
       console.warn('ALERT_META_SKIP — META_MARKETING_TOKEN o META_AD_ACCOUNT_ID no configurados. Fallback seguro: sin filtro de activos, sin CPA/ROAS.');
     }
     // ─────────────────────────────────────────────────────────────────────────
@@ -167,6 +171,7 @@ export async function onRequestPost({ request, env }) {
     const { alerts, generated_at, global_conv_rate_pct } = await generateAlerts(env.DB, {
       metaSpendMap,
       activeAdIds,
+      activeFilterReason,
     });
 
     if (alerts.length === 0) {
@@ -257,9 +262,10 @@ export async function onRequestPost({ request, env }) {
         dedup_skipped: dedupSkipped,
         total_alerts:  alerts.length,
         generated_at,
-        active_ads:    activeAdIds ? activeAdIds.size : null,
-        spend_ads:     metaSpendMap.size,
-        messages:      dryRunMessages,
+        active_ads:                activeAdIds ? activeAdIds.size : null,
+        spend_ads:                 metaSpendMap.size,
+        active_filter_unavailable: activeAdIds === null ? (activeFilterReason || 'UNKNOWN_REASON') : null,
+        messages:                  dryRunMessages,
       });
     }
 
@@ -271,8 +277,9 @@ export async function onRequestPost({ request, env }) {
       total_alerts:  alerts.length,
       generated_at,
       source,
-      active_ads:    activeAdIds ? activeAdIds.size : null,
-      spend_ads:     metaSpendMap.size,
+      active_ads:                activeAdIds ? activeAdIds.size : null,
+      spend_ads:                 metaSpendMap.size,
+      active_filter_unavailable: activeAdIds === null ? (activeFilterReason || 'UNKNOWN_REASON') : null,
       ...(errors.length > 0 && { errors }),
     });
 

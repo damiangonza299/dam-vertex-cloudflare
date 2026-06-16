@@ -32,8 +32,21 @@
      CITY_RISK_MIN  = 15 (mínimo para city_risk)
      CITY_MIN_BUYS  =  2 (mínimo compras para winning_city)
 
-   options.activeAdIds  — Set<string> de ad_ids activos en Meta (filtra en el motor)
-   options.metaSpendMap — Map<ad_id, {spend}> con gasto Meta 30 días (para CPA/ROAS)
+   options.activeAdIds       — Set<string> de ad_ids activos en Meta (filtra en el motor)
+   options.metaSpendMap      — Map<ad_id, {spend}> con gasto Meta 30 días (para CPA/ROAS)
+   options.activeFilterReason — motivo si activeAdIds es null: TOKEN_MISSING | META_ERROR |
+                                 NETWORK_ERROR | RATE_LIMIT
+
+   FILTRO OPERATIVO (v4): product_winner, product_risk, winning_city y city_risk
+   SOLO se generan para productos con al menos un anuncio activo en Meta
+   (derivado de activeAdIds vía fetchActiveProductSlugs). Si activeAdIds es null
+   (Meta no respondió o no está configurado), estas 4 alertas se SUPRIMEN
+   completamente — se prefiere ausencia de alerta a un diagnóstico falso sobre
+   campañas pausadas/archivadas. Se loguea INTELLIGENCE_ACTIVE_FILTER_UNAVAILABLE.
+   Si Meta respondió pero ningún producto activo alcanza MIN_LEADS (10) en D1,
+   se suprimen product_winner y winning_city y se loguea INTELLIGENCE_NO_ACTIVE_PRODUCT_DATA.
+   creative_dead, creative_scalable, garbage_risk, cpa_high y roas_alert NO cambian:
+   siguen filtrando por ad_id activo como antes (o sin filtro si Meta no responde).
 
    NO toca Meta Ads. NO pausa campañas. NO modifica datos.
    ========================================================= */
@@ -48,22 +61,23 @@ const PERIOD_30      = 30;
 const PERIOD_7       = 7;
 
 export async function generateAlerts(DB, options = {}) {
-  const { metaSpendMap = new Map(), activeAdIds = null } = options;
+  const { metaSpendMap = new Map(), activeAdIds = null, activeFilterReason = null } = options;
 
   const now     = Date.now();
   const since30 = new Date(now - 30 * 86400000).toISOString().slice(0, 10);
   const since7  = new Date(now -  7 * 86400000).toISOString().slice(0, 10);
   const since14 = new Date(now - 14 * 86400000).toISOString().slice(0, 10);
 
-  const [creativeLeads, creativeLQ, cityProductData, buyerTrend, convTrend, productStats, globalStats] =
+  const [creativeLeads, creativeLQ, cityProductData, buyerTrend, convTrend, productStats, globalStats, activeProductSlugs] =
     await Promise.all([
       fetchCreativeLeads(DB, since30),
       fetchCreativeLQ(DB, since30),
       fetchCityDataByProduct(DB, since30),
       fetchBuyerTrend(DB, since7, since14),
-      fetchConversionTrend(DB, since7, since14),   // v3: incluye prev_leads
-      fetchProductStats(DB, since30),               // v3: incluye rateMap
+      fetchConversionTrend(DB, since7, since14),         // v3: incluye prev_leads
+      fetchProductStats(DB, since30),                     // v4: devuelve rows + rateMap (sin winner/loser)
       fetchGlobalStats(DB, since30),
+      fetchActiveProductSlugs(DB, since30, activeAdIds),  // v4: product_slug con al menos 1 ad activo
     ]);
 
   const alerts = [];
@@ -71,9 +85,51 @@ export async function generateAlerts(DB, options = {}) {
     ? globalStats.total_purchased / globalStats.total_leads
     : 0;
 
-  // Mapa de tasa de conversión nacional por producto (product_slug → rate)
-  // Fallback a globalConvRate si el producto no tiene suficiente muestra
-  const { winner: productWinner, loser: productLoser, rateMap: productNationalRateMap } = productStats;
+  // rateMap: tasa de conversión nacional por producto (histórico, SIN filtrar por actividad —
+  // sirve de baseline de comparación, no de criterio de disparo)
+  const { rows: productStatsRows, rateMap: productNationalRateMap } = productStats;
+
+  // ── Filtro operativo: product_winner/product_risk/winning_city/city_risk requieren
+  // producto con tráfico Meta activo. Si no se puede determinar, se suprimen las 4. ──
+  if (activeProductSlugs === null) {
+    console.warn('INTELLIGENCE_ACTIVE_FILTER_UNAVAILABLE', activeFilterReason || 'UNKNOWN_REASON');
+  }
+
+  let productWinner = null;
+  let productLoser  = null;
+  if (activeProductSlugs !== null) {
+    const activeRows = productStatsRows.filter(r => activeProductSlugs.has(String(r.product_slug)));
+
+    // Si Meta respondió pero ningún producto activo tiene suficiente muestra, suprimir
+    // product_winner y winning_city y registrar la razón operativa.
+    const hasQualifyingActiveProduct = activeRows.some(r => Number(r.total_leads) >= MIN_LEADS);
+    if (!hasQualifyingActiveProduct) {
+      console.warn('INTELLIGENCE_NO_ACTIVE_PRODUCT_DATA', {
+        active_slugs:      [...activeProductSlugs],
+        active_rows_count: activeRows.length,
+        reason: activeProductSlugs.size === 0
+          ? 'no_active_ads_in_meta'
+          : 'active_products_below_min_leads',
+      });
+      // productWinner y productLoser permanecen null → product_winner y winning_city no se generan
+    }
+
+    // Ganador: mejor purchase_rate CON compras reales + revenue > 0, SOLO entre productos activos
+    productWinner = activeRows.find(r =>
+      r.purchased >= MIN_PURCHASES &&
+      r.purchase_rate >= 0.2 &&
+      Number(r.revenue) > 0
+    ) || null;
+
+    // En riesgo: muchos leads pero conversión < 5%, SOLO entre productos activos
+    const activeLosers = activeRows.filter(r =>
+      Number(r.total_leads) >= MIN_LEADS && r.purchase_rate < 0.05
+    ).sort((a, b) => a.purchase_rate - b.purchase_rate);
+
+    productLoser = (activeLosers[0] && (!productWinner || activeLosers[0].product_slug !== productWinner.product_slug))
+      ? activeLosers[0]
+      : null;
+  }
 
   // Mapa lead_quality por ad_id
   const lqMap = new Map();
@@ -300,8 +356,11 @@ export async function generateAlerts(DB, options = {}) {
     const city_pct       = pct(purchase_rate);
     const delta_pp       = city_pct - nat_pct;
 
+    // Filtro operativo: solo si el producto tiene tráfico Meta activo
+    const isProductActive = activeProductSlugs !== null && activeProductSlugs.has(String(best.product_slug || ''));
+
     // Ciudad ganadora: purchase_rate > promedio nacional del producto + mínimo de compras
-    if (purchased >= CITY_MIN_BUYS && purchase_rate > productNatRate && data_days >= MIN_DAYS) {
+    if (isProductActive && purchased >= CITY_MIN_BUYS && purchase_rate > productNatRate && data_days >= MIN_DAYS) {
       alerts.push({
         tipo:        'winning_city',
         severidad:   'info',
@@ -329,7 +388,7 @@ export async function generateAlerts(DB, options = {}) {
     }
 
     // Ciudad de riesgo: muchos leads pero purchase_rate < 50% del promedio nacional
-    if (total >= CITY_RISK_MIN && purchase_rate < productNatRate * 0.5 && purchased < CITY_MIN_BUYS) {
+    if (isProductActive && total >= CITY_RISK_MIN && purchase_rate < productNatRate * 0.5 && purchased < CITY_MIN_BUYS) {
       alerts.push({
         tipo:        'city_risk',
         severidad:   'media',
@@ -622,7 +681,9 @@ async function fetchConversionTrend(DB, since7, since14) {
   }
 }
 
-// v3: devuelve rateMap (product_slug → purchase_rate) para comparación en ciudades
+// v4: devuelve rows + rateMap (product_slug → purchase_rate). NO selecciona winner/loser
+// aquí — esa selección requiere el filtro de actividad Meta y se hace en generateAlerts.
+// rateMap es histórico (sin filtrar), usado como baseline de comparación para ciudades.
 async function fetchProductStats(DB, since30) {
   try {
     const { results } = await DB.prepare(`
@@ -649,30 +710,40 @@ async function fetchProductStats(DB, since30) {
       purchase_rate: Number(r.total_leads) > 0 ? Number(r.purchased) / Number(r.total_leads) : 0,
     }));
 
-    // Mapa de tasa nacional por producto (para comparar ciudades contra el promedio del producto)
     const rateMap = new Map();
     for (const r of rows) rateMap.set(String(r.product_slug), r.purchase_rate);
 
-    // Ganador: mejor purchase_rate CON compras reales + revenue > 0 (lead-only no cuenta)
-    const winner = rows.find(r =>
-      r.purchased  >= MIN_PURCHASES &&
-      r.purchase_rate >= 0.2 &&
-      Number(r.revenue) > 0
-    ) || null;
-
-    // En riesgo: muchos leads pero conversión < 5% (posible mala calidad de tráfico)
-    const losers = rows.filter(r =>
-      Number(r.total_leads) >= MIN_LEADS && r.purchase_rate < 0.05
-    ).sort((a, b) => a.purchase_rate - b.purchase_rate);
-
-    const loser = (losers[0] && (!winner || losers[0].product_slug !== winner.product_slug))
-      ? losers[0]
-      : null;
-
-    return { winner, loser, rateMap };
+    return { rows, rateMap };
   } catch (e) {
     console.warn('ALERT_ENGINE_PRODUCT_WARN', e.message);
-    return { winner: null, loser: null, rateMap: new Map() };
+    return { rows: [], rateMap: new Map() };
+  }
+}
+
+// v4: product_slug con al menos un ad_id activo en Meta, dentro de la ventana de 30 días.
+// activeAdIds === null  → filtro no disponible (Meta no respondió) → devuelve null (fail-safe)
+// activeAdIds.size === 0 → Meta respondió pero no hay ningún ad activo → devuelve Set vacío
+async function fetchActiveProductSlugs(DB, since30, activeAdIds) {
+  if (activeAdIds === null) return null;
+  if (activeAdIds.size === 0) return new Set();
+
+  try {
+    const { results } = await DB.prepare(`
+      SELECT DISTINCT ad_id, product_slug
+      FROM leads
+      WHERE created_at >= ?
+        AND ad_id IS NOT NULL
+        AND product_slug IS NOT NULL AND product_slug != ''
+    `).bind(since30).all();
+
+    const slugs = new Set();
+    for (const r of (results || [])) {
+      if (activeAdIds.has(String(r.ad_id))) slugs.add(String(r.product_slug));
+    }
+    return slugs;
+  } catch (e) {
+    console.warn('ALERT_ENGINE_ACTIVE_SLUGS_WARN', e.message);
+    return null; // error de D1 → tratar como filtro no disponible, fail-safe
   }
 }
 
