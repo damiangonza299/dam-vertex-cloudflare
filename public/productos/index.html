@@ -155,8 +155,10 @@ fetch('/api/product-stock?active_only=1')
 
 <script>
 (function(){
-  var v = window.DAM_VERTEX_VERSION || '1';
-  document.write('<script src="/assets/js/tracking.js?v=' + v + '"><\/script>');
+  var s = document.createElement('script');
+  s.src = '/assets/js/tracking.js?v=' + (window.DAM_VERTEX_VERSION || '57');
+  s.defer = true;
+  document.head.appendChild(s);
 })();
 </script>
 
