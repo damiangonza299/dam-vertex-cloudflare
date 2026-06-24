@@ -31,7 +31,9 @@ export async function onRequestGet({ request, env }) {
       ? 'SELECT * FROM products WHERE active = 1 ORDER BY id'
       : 'SELECT * FROM products ORDER BY id';
     const { results } = await env.DB.prepare(query).all();
-    return json({ ok: true, products: (results || []).map(parseProduct) });
+    return json({ ok: true, products: (results || []).map(parseProduct) }, 200, {
+      'Cache-Control': 's-maxage=300, stale-while-revalidate=60',
+    });
   } catch (err) {
     return json({ ok: false, error: err.message }, 500);
   }
@@ -102,12 +104,13 @@ function parseProduct(row) {
     min_stock:     row.min_stock     || 0,
     active:        row.active,
     updated_at:    row.updated_at,
+    combo_apex_dorado_stock: row.combo_apex_dorado_stock ?? 0,
   };
 }
 
-function json(data, status = 200) {
+function json(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json', ...CORS },
+    headers: { 'Content-Type': 'application/json', ...CORS, ...extraHeaders },
   });
 }

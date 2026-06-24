@@ -609,6 +609,53 @@
     .offer-bar strong { font-weight: 800; }
     .ob-sep { color: rgba(0,0,0,.22); }
     .ob-icon { display: inline-block; width: 13px; height: 13px; vertical-align: middle; flex-shrink: 0; }
+
+    /* ── Hover microinteracciones ── */
+    .c-item { transition: background .22s; }
+    .c-item:hover { background: #0d0d0d; }
+
+    .sp-card { transition: transform .22s, background .22s; }
+    .sp-card:hover { transform: translateY(-3px); background: #070707; }
+
+    .est-item { overflow: hidden; }
+    .est-item__img { transition: transform .38s ease; }
+    .est-item:hover .est-item__img { transform: scale(1.04); }
+
+    /* ── Scroll fade-in — activado por .js-anim en <html> ── */
+    .js-anim #section-construccion .construccion__inner,
+    .js-anim #section-social-proof .social-proof__inner,
+    .js-anim #section-exclusividad .exclusividad__inner,
+    .js-anim #section-estilo .estilo__inner,
+    .js-anim #section-efecto .efecto__inner {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .js-anim #section-construccion.is-visible .construccion__inner,
+    .js-anim #section-social-proof.is-visible .social-proof__inner,
+    .js-anim #section-exclusividad.is-visible .exclusividad__inner,
+    .js-anim #section-estilo.is-visible .estilo__inner,
+    .js-anim #section-efecto.is-visible .efecto__inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .js-anim #section-construccion .c-item {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .5s ease, transform .5s ease, background .22s;
+    }
+    .js-anim #section-construccion.is-visible .c-item:nth-child(1) { opacity: 1; transform: none; transition-delay: .05s; }
+    .js-anim #section-construccion.is-visible .c-item:nth-child(2) { opacity: 1; transform: none; transition-delay: .15s; }
+    .js-anim #section-construccion.is-visible .c-item:nth-child(3) { opacity: 1; transform: none; transition-delay: .25s; }
+    .js-anim #section-construccion.is-visible .c-item:nth-child(4) { opacity: 1; transform: none; transition-delay: .35s; }
+    @media (prefers-reduced-motion: reduce) {
+      .js-anim #section-construccion .construccion__inner,
+      .js-anim #section-social-proof .social-proof__inner,
+      .js-anim #section-exclusividad .exclusividad__inner,
+      .js-anim #section-estilo .estilo__inner,
+      .js-anim #section-efecto .efecto__inner,
+      .js-anim #section-construccion .c-item { opacity: 1; transform: none; transition: none; }
+    }
   </style>
 </head>
 <body class="theme-cadena">
@@ -638,7 +685,7 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero" id="hero-section">
+<section class="hero" id="section-hero" data-insync-section="hero" data-insync-funnel-step="1">
   <div class="hero__inner">
     <div class="hero__media">
       <img src="/assets/img/Cadena%20Apex%20perfil.png" alt="Cadena Apex — acero inoxidable negro" class="hero__img" loading="eager" fetchpriority="high">
@@ -761,7 +808,7 @@
 </section>
 
 <!-- CONSTRUCCIÓN PREMIUM: materiales -->
-<section class="construccion" id="section-construccion">
+<section class="construccion" id="section-construccion" data-insync-section="construccion" data-insync-funnel-step="2">
   <div class="construccion__inner">
     <p class="c-overline">Materiales</p>
     <h2 class="c-h">Construida para el uso diario real.<br>Diseñada para destacar.</h2>
@@ -799,7 +846,7 @@
 </section>
 
 <!-- SOCIAL PROOF: testimonios -->
-<section class="social-proof" id="section-social-proof">
+<section class="social-proof" id="section-social-proof" data-insync-section="social-proof" data-insync-funnel-step="3">
   <div class="social-proof__inner">
     <p class="sp-overline">Clientes verificados</p>
     <h2 class="sp-h">Lo que dicen los que ya la tienen.</h2>
@@ -831,7 +878,7 @@
 </section>
 
 <!-- EXCLUSIVIDAD PARAGUAY -->
-<section class="exclusividad" id="section-exclusividad">
+<section class="exclusividad" id="section-exclusividad" data-insync-section="exclusividad" data-insync-funnel-step="4">
   <div class="exclusividad__inner">
     <p class="ex-pre">Disponibilidad en Paraguay</p>
     <h2 class="ex-h">Este diseño no se<br>consigue en cualquier lado.</h2>
@@ -844,7 +891,7 @@
 </section>
 
 <!-- ESTILO: cómo combina -->
-<section class="estilo" id="section-estilo">
+<section class="estilo" id="section-estilo" data-insync-section="estilo" data-insync-funnel-step="5">
   <div class="estilo__inner">
     <p class="est-overline">Versatilidad</p>
     <h2 class="est-h">Funciona con todo<br>lo que ya usás.</h2>
@@ -879,7 +926,7 @@
 </section>
 
 <!-- EL EFECTO: vende identidad / status -->
-<section class="efecto" id="section-efecto">
+<section class="efecto" id="section-efecto" data-insync-section="efecto" data-insync-funnel-step="6">
   <div class="efecto__inner">
     <div>
       <img src="/assets/img/Apex%20el%20efecto.png" alt="Cadena Apex — el efecto" class="efecto__img-main" loading="lazy">
@@ -899,7 +946,7 @@
 </section>
 
 <!-- FAQ -->
-<section class="faq" id="section-faq">
+<section class="faq" id="section-faq" data-insync-section="faq" data-insync-funnel-step="7">
   <p class="sec-label" style="text-align:center">Preguntas</p>
   <div class="faq-wrap">
     <details class="faq-item">
@@ -959,7 +1006,7 @@
 </section>
 
 <!-- Cierre -->
-<section class="close-sec" id="section-cierre">
+<section class="close-sec" id="section-cierre" data-insync-section="cierre" data-insync-funnel-step="8">
   <div class="close-sec__inner">
     <p class="close-quote">"Para el que no necesita<br>explicar su estilo."</p>
     <div class="close-divider"></div>
@@ -970,7 +1017,7 @@
       <div class="ct-item"><span class="ct-ok">✓</span><span>Atención rápida por WhatsApp</span></div>
     </div>
     <p style="font-size:15px;color:rgba(255,255,255,.58);margin:0 0 24px;line-height:1.6;">Si querés una cadena negra, simple y masculina — esta es la opción. Stock limitado, sin segunda vuelta.</p>
-    <button class="btn btn-primary" data-scroll-form data-insync-cta="oferta">
+    <button class="btn btn-primary" data-scroll-form data-insync-cta="cierre">
       Quiero la mía — pedir por WhatsApp →
     </button>
   </div>
@@ -1368,7 +1415,7 @@
 
     /* Sticky CTA — aparece al salir del hero */
     const stickyCta = document.getElementById('sticky-cta');
-    const heroSec   = document.getElementById('hero-section');
+    const heroSec   = document.getElementById('section-hero');
     if (stickyCta && heroSec && 'IntersectionObserver' in window) {
       const obs = new IntersectionObserver(
         ([entry]) => stickyCta.classList.toggle('visible', !entry.isIntersecting),
@@ -1422,6 +1469,23 @@
       var cmExpressEl   = document.getElementById('cm-express');
 
       if (!comboOverlay || !comboForm) return;
+
+      /* Verificar stock Negro Dorado — deshabilitar si agotado */
+      fetch('/api/product-stock?slug=reloj')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var doradoStock = (data.ok && data.product) ? Number(data.product.combo_apex_dorado_stock || 0) : 0;
+          if (doradoStock <= 0) {
+            if (comboOpenBtn) {
+              comboOpenBtn.disabled = true;
+              comboOpenBtn.textContent = 'Sin stock';
+              comboOpenBtn.style.opacity = '0.45';
+              comboOpenBtn.style.cursor = 'not-allowed';
+            }
+            if (comboOverlay) comboOverlay.style.display = 'none';
+          }
+        })
+        .catch(function() {});
 
       var _comboAtcFired  = false;
       var _comboLocInit   = false;
@@ -1602,9 +1666,14 @@
         comboSubmit.innerHTML = '<span class="spinner"></span>';
         if (comboStockEl) comboStockEl.style.display = 'none';
 
-        /* Verificar stock reloj + cadena en paralelo */
+        /* Verificar stock reloj + cadena en paralelo.
+           Para el combo Negro Dorado se verifica combo_apex_dorado_stock,
+           no stock_total del reloj (que permanece en 0 intencionalmente). */
         var stockResults = await Promise.all([
-          checkProductStock('reloj', 1, variant),
+          fetch('/api/product-stock?slug=reloj').then(function(r) { return r.json(); }).then(function(data) {
+            var doradoStock = (data.ok && data.product) ? Number(data.product.combo_apex_dorado_stock || 0) : 0;
+            return doradoStock > 0 ? { ok: true } : { ok: false, error: 'Sin stock del modelo: Negro Dorado' };
+          }).catch(function() { return { ok: true }; }),
           checkProductStock('cadena', 1),
         ]);
         var comboRelojStock   = stockResults[0];
@@ -1686,5 +1755,22 @@
   });
 </script>
 
+<script>
+  /* ── Scroll fade-in: IntersectionObserver mínimo ── */
+  document.documentElement.classList.add('js-anim');
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!('IntersectionObserver' in window)) return;
+    var animObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); animObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    ['section-construccion','section-social-proof','section-exclusividad',
+     'section-estilo','section-efecto'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) animObs.observe(el);
+    });
+  });
+</script>
 </body>
 </html>
