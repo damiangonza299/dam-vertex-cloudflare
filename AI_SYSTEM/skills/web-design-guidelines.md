@@ -186,3 +186,16 @@ Cada landing nueva parte del producto, no de la landing anterior:
 - [ ] Footer idéntico a las demás landings
 - [ ] No hay fuentes externas importadas por esta landing
 - [ ] Todos los colores hardcodeados son solo para este tema (ninguno global roto)
+
+---
+
+## Integración con Lighthouse Standards
+
+Este skill opera junto a `lighthouse-geo-standards.md`.
+Toda decisión de diseño debe respetar:
+- Imágenes en WebP con dimensiones declaradas
+- Animaciones con `prefers-reduced-motion`
+- Contraste mínimo 4.5:1 para texto normal
+- No usar `document.write` ni scripts síncronos
+
+Ver checklist completo en: `AI_SYSTEM/skills/lighthouse-geo-standards.md`

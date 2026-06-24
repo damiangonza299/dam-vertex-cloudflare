@@ -162,3 +162,16 @@ Nunca usar urgencia falsa que no pueda sostenerse. Usar solo si es real.
 - NO carruseles — aumentan bounce, disminuyen conversión
 - NO pop-ups de entrada — arruinan la primera impresión
 - NO pedir email si no hay un email flow conectado
+
+---
+
+## Integración con Lighthouse Standards
+
+Este skill opera junto a `lighthouse-geo-standards.md`.
+Toda decisión de diseño debe respetar:
+- Imágenes en WebP con dimensiones declaradas
+- Animaciones con `prefers-reduced-motion`
+- Contraste mínimo 4.5:1 para texto normal
+- No usar `document.write` ni scripts síncronos
+
+Ver checklist completo en: `AI_SYSTEM/skills/lighthouse-geo-standards.md`

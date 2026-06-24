@@ -88,6 +88,18 @@ Antes de escribir o modificar cualquier landing, cargar y aplicar estas 4 skills
 
 ---
 
+## Estándares de Calidad Obligatorios
+
+Toda landing generada desde Product Studio debe cumplir `AI_SYSTEM/skills/lighthouse-geo-standards.md` antes de considerarse terminada. El brief generado debe incluir instrucciones explícitas para Claude Code sobre:
+- Formato WebP para todas las imágenes
+- JSON-LD schema del producto
+- Viewport correcto
+- Estructura semántica completa
+
+Referencia: `AI_SYSTEM/skills/lighthouse-geo-standards.md`
+
+---
+
 ## Blueprint V3 — Estructura de Landing Profesional
 
 Blueprint V3 define exactamente qué va en cada sección. No improvisar.

@@ -212,3 +212,16 @@ obs.observe(heroSection);
 - NO usar `jQuery.animate()` — obsoleto
 - NO poner IntersectionObserver en scroll handler — usar el API directamente
 - NO animar elementos ocultos con `display:none` (cambia a `visibility:hidden` si necesitás animar)
+
+---
+
+## Integración con Lighthouse Standards
+
+Este skill opera junto a `lighthouse-geo-standards.md`.
+Toda decisión de diseño debe respetar:
+- Imágenes en WebP con dimensiones declaradas
+- Animaciones con `prefers-reduced-motion`
+- Contraste mínimo 4.5:1 para texto normal
+- No usar `document.write` ni scripts síncronos
+
+Ver checklist completo en: `AI_SYSTEM/skills/lighthouse-geo-standards.md`

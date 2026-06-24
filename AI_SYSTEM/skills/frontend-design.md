@@ -126,3 +126,16 @@ Nunca valores fijos de padding en secciones — usan clamp para adaptarse al vie
 - NO heights fijos en contenedores de texto
 - NO `overflow: hidden` sin `border-radius` visible
 - NO usar `px` para font-size en body (usar `rem` o `clamp`)
+
+---
+
+## Integración con Lighthouse Standards
+
+Este skill opera junto a `lighthouse-geo-standards.md`.
+Toda decisión de diseño debe respetar:
+- Imágenes en WebP con dimensiones declaradas
+- Animaciones con `prefers-reduced-motion`
+- Contraste mínimo 4.5:1 para texto normal
+- No usar `document.write` ni scripts síncronos
+
+Ver checklist completo en: `AI_SYSTEM/skills/lighthouse-geo-standards.md`
