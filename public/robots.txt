@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Private panels — no indexar
+Disallow: /admin/
+Disallow: /intelligence/
+Disallow: /product-studio/
+
+# API endpoints
+Disallow: /api/
+
+Sitemap: https://damvertex.com/sitemap.xml

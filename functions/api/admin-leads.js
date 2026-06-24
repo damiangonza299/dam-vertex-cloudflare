@@ -6,7 +6,7 @@
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
-  'Access-Control-Allow-Methods': 'GET, PATCH, DELETE, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, PATCH, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Cache-Control': 'no-store',
 };
@@ -47,6 +47,40 @@ export async function onRequestPatch({ request, env }) {
     await env.DB.prepare(
       'UPDATE leads SET status = ? WHERE id = ?'
     ).bind(status, id).run();
+
+    return json({ ok: true });
+  } catch (err) {
+    return json({ ok: false, error: err.message }, 500);
+  }
+}
+
+/* ── PUT — editar nombre, ciudad y valor ── */
+export async function onRequestPut({ request, env }) {
+  if (!isAuthorized(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+
+  try {
+    const { id, name, city, value, extra_product_slug, extra_product_variant, extra_product_qty } = await request.json();
+    if (!id) return json({ ok: false, error: 'id requerido' }, 400);
+
+    const trimName = (name || '').trim();
+    if (!trimName) return json({ ok: false, error: 'name no puede estar vacío' }, 400);
+
+    const trimCity = (city || '').trim() || null;
+
+    const numValue = Math.floor(Number(value));
+    if (!Number.isFinite(numValue) || numValue <= 0) {
+      return json({ ok: false, error: 'El valor debe ser un número entero positivo' }, 400);
+    }
+
+    const extraSlug    = (extra_product_slug    || '').trim() || null;
+    const extraVariant = (extra_product_variant || '').trim() || null;
+    const extraQtyN    = extra_product_qty != null
+      ? Math.max(1, Math.floor(Number(extra_product_qty)) || 1)
+      : null;
+
+    await env.DB.prepare(
+      'UPDATE leads SET name = ?, city = ?, value = ?, extra_product_slug = ?, extra_product_variant = ?, extra_product_qty = ?, location_city = NULL WHERE id = ?'
+    ).bind(trimName, trimCity, numValue, extraSlug, extraVariant, extraQtyN, id).run();
 
     return json({ ok: true });
   } catch (err) {

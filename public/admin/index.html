@@ -655,6 +655,64 @@
   </div>
 </div>
 
+<!-- Modal: Editar Lead -->
+<div id="edit-lead-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.75);align-items:center;justify-content:center;padding:16px">
+  <div style="background:#111;border:1px solid rgba(255,255,255,.1);border-radius:14px;width:100%;max-width:400px;padding:24px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h3 style="margin:0;font-size:16px;color:#fff">Editar lead</h3>
+      <button onclick="closeEditLeadModal()" style="background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;padding:0 4px">×</button>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">Nombre *</label>
+      <input id="elm-name" type="text" autocomplete="off"
+        style="width:100%;box-sizing:border-box;background:#1a1a1a;border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:10px 12px;font-size:13px;font-family:inherit;outline:none">
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">Ciudad</label>
+      <input id="elm-city" type="text" autocomplete="off"
+        style="width:100%;box-sizing:border-box;background:#1a1a1a;border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:10px 12px;font-size:13px;font-family:inherit;outline:none">
+    </div>
+    <div style="margin-bottom:16px">
+      <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">Valor (₲) *</label>
+      <input id="elm-value" type="number" min="1" step="1" autocomplete="off"
+        style="width:100%;box-sizing:border-box;background:#1a1a1a;border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:10px 12px;font-size:13px;font-family:inherit;outline:none">
+    </div>
+    <!-- Producto adicional -->
+    <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:14px;margin-bottom:16px">
+      <div style="font-size:10px;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.6px">Producto adicional (opcional)</div>
+      <div style="margin-bottom:10px">
+        <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">Producto</label>
+        <select id="elm-extra-slug" onchange="elmOnExtraSlugChange()"
+          style="width:100%;box-sizing:border-box;background:#1a1a1a;border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:10px 12px;font-size:13px;font-family:inherit;height:40px">
+          <option value="">Sin producto adicional</option>
+        </select>
+      </div>
+      <div id="elm-extra-variant-wrap" style="display:none;margin-bottom:10px">
+        <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">Variante</label>
+        <select id="elm-extra-variant"
+          style="width:100%;box-sizing:border-box;background:#1a1a1a;border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:10px 12px;font-size:13px;font-family:inherit;height:40px">
+        </select>
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">Cantidad</label>
+        <input id="elm-extra-qty" type="number" min="1" step="1" value="1" autocomplete="off"
+          style="width:100%;box-sizing:border-box;background:#1a1a1a;border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:10px 12px;font-size:13px;font-family:inherit;outline:none">
+      </div>
+    </div>
+    <div id="elm-error" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:12px"></div>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeEditLeadModal()"
+        style="flex:1;background:transparent;border:1px solid var(--border);color:var(--muted);padding:10px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;font-family:inherit">
+        Cancelar
+      </button>
+      <button id="elm-save-btn" onclick="submitEditLead()"
+        style="flex:1;background:#3b82f6;border:none;color:#fff;padding:10px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;font-family:inherit;font-weight:600">
+        Guardar
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal: Venta Manual WhatsApp -->
 <div id="manual-sale-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.75);align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto">
   <div style="background:#111;border:1px solid rgba(255,255,255,.1);border-radius:14px;width:100%;max-width:520px;padding:24px;margin:auto">

@@ -2,3 +2,14 @@ node_modules/
 .dev.vars
 .wrangler/
 dist/
+
+# Backups
+backups/
+
+# Claude Code settings (may contain tokens)
+.claude/
+
+# Orphan files
+CUsersDAMVER*
+cleanup_*.sql
+Dam Vertex - Cloudflare/

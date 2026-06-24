@@ -36,6 +36,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const productSlug = lead.product_slug || getProductSlug(lead.product_name);
     const isCombo     = productSlug === 'combo-reloj-cadena';
     const requestedVariants = parseLeadVariants(lead.variant);
+    const isDorado    = isCombo && requestedVariants[0] === 'Negro Dorado';
 
     let productRow     = null;
     let comboRelojRow  = null;
@@ -53,16 +54,24 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
 
       if (!comboRelojRow) return json({ ok: false, error: 'Producto reloj no encontrado' }, 409);
-      if (Number(comboRelojRow.stock_total) < 1)
-        return json({ ok: false, error: 'Sin stock del reloj' }, 409);
 
-      if (requestedVariants.length && comboRelojRow.variants_json) {
-        let vars;
-        try { vars = JSON.parse(comboRelojRow.variants_json); } catch (_) { vars = {}; }
-        for (const color of requestedVariants) {
-          const available = Number(vars[color] ?? -1);
-          if (available === 0) return json({ ok: false, error: `Sin stock del modelo: ${color}` }, 409);
-          if (available < 0)  return json({ ok: false, error: `Modelo no encontrado: ${color}` }, 409);
+      if (isDorado) {
+        /* Negro Dorado: stock propio — no depende de reloj.stock_total */
+        if (Number(comboRelojRow.combo_apex_dorado_stock || 0) < 1)
+          return json({ ok: false, error: 'Sin stock del modelo: Negro Dorado' }, 409);
+      } else {
+        /* Cualquier otro color del combo: guard original intacto */
+        if (Number(comboRelojRow.stock_total) < 1)
+          return json({ ok: false, error: 'Sin stock del reloj' }, 409);
+
+        if (requestedVariants.length && comboRelojRow.variants_json) {
+          let vars;
+          try { vars = JSON.parse(comboRelojRow.variants_json); } catch (_) { vars = {}; }
+          for (const color of requestedVariants) {
+            const available = Number(vars[color] ?? -1);
+            if (available === 0) return json({ ok: false, error: `Sin stock del modelo: ${color}` }, 409);
+            if (available < 0)  return json({ ok: false, error: `Modelo no encontrado: ${color}` }, 409);
+          }
         }
       }
 
@@ -115,6 +124,36 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     }
 
+    /* Stock guard — producto adicional */
+    let extraProductRow = null;
+    const extraSlug    = lead.extra_product_slug    || null;
+    const extraVariant = lead.extra_product_variant || null;
+    const extraQty     = Math.max(1, Number(lead.extra_product_qty) || 1);
+
+    if (extraSlug) {
+      try {
+        extraProductRow = await env.DB.prepare(
+          'SELECT * FROM products WHERE slug = ?'
+        ).bind(extraSlug).first();
+      } catch (err) {
+        console.error('EXTRA_STOCK_LOOKUP_ERROR', err.message);
+      }
+      if (!extraProductRow)
+        return json({ ok: false, error: `Producto adicional no encontrado: ${extraSlug}` }, 409);
+      if (Number(extraProductRow.stock_total) < extraQty) {
+        const msg = extraProductRow.stock_total === 0
+          ? `Sin stock para producto adicional: ${extraProductRow.name}`
+          : `Stock insuficiente para adicional (${extraProductRow.name}) — disponible: ${extraProductRow.stock_total}`;
+        return json({ ok: false, error: msg }, 409);
+      }
+      if (extraVariant && extraProductRow.variants_json) {
+        let vars; try { vars = JSON.parse(extraProductRow.variants_json); } catch (_) { vars = {}; }
+        const av = Number(vars[extraVariant] ?? -1);
+        if (av < extraQty)
+          return json({ ok: false, error: `Sin stock variante adicional: ${extraVariant}` }, 409);
+      }
+    }
+
     /* Preparar user_data hasheado */
     const user_data = {};
     if (lead.ip)         user_data.client_ip_address = lead.ip;
@@ -154,12 +193,12 @@ export async function onRequestPost({ request, env, waitUntil }) {
       event_source_url: eventSourceUrl,
       user_data,
       custom_data: {
-        content_name:  lead.product_name,
-        content_ids:   isCombo ? ['reloj', 'cadena'] : [productSlug],
-        content_type:  'product',
-        value:         lead.value || 0,
-        currency:      lead.currency || 'PYG',
-        num_items:     isCombo ? 2 : (lead.quantity || 1),
+        content_name: lead.product_name,
+        content_type: 'product',
+        value:        lead.value || 0,
+        currency:     lead.currency || 'PYG',
+        contents:     buildContents({ isCombo, productSlug, saleQty, extraSlug, extraQty, totalValue: lead.value || 0 }),
+        num_items:    isCombo ? 2 : saleQty + (extraSlug ? extraQty : 0),
       },
     };
 
@@ -196,33 +235,47 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     /* Descontar stock */
     if (isCombo) {
-      /* Combo: descontar reloj (variante seleccionada) + cadena (total) en batch */
+      /* Combo: descontar stock según variante */
       try {
-        const relojModel    = requestedVariants[0] || null;
-        const newRelojTotal = Math.max(0, (comboRelojRow?.stock_total || 0) - 1);
-        let   newRelojVarJson = comboRelojRow?.variants_json || null;
-
-        if (relojModel && comboRelojRow?.variants_json) {
-          let vars;
-          try { vars = JSON.parse(comboRelojRow.variants_json); } catch (_) { vars = {}; }
-          if (Number.isFinite(Number(vars[relojModel]))) {
-            vars[relojModel] = Math.max(0, Number(vars[relojModel]) - 1);
-          }
-          newRelojVarJson = JSON.stringify(vars);
-        }
-
         const newCadenaTotal = Math.max(0, (comboCadenaRow?.stock_total || 0) - 1);
 
-        await env.DB.batch([
-          env.DB.prepare(
-            `UPDATE products SET stock_total = ?, variants_json = ?, updated_at = datetime('now') WHERE slug = 'reloj'`
-          ).bind(newRelojTotal, newRelojVarJson),
-          env.DB.prepare(
-            `UPDATE products SET stock_total = ?, updated_at = datetime('now') WHERE slug = 'cadena'`
-          ).bind(newCadenaTotal),
-        ]);
+        if (isDorado) {
+          /* Negro Dorado: solo combo_apex_dorado_stock — reloj.stock_total y variants_json intactos */
+          const newDoradoStock = Math.max(0, Number(comboRelojRow?.combo_apex_dorado_stock || 0) - 1);
+          await env.DB.batch([
+            env.DB.prepare(
+              `UPDATE products SET combo_apex_dorado_stock = ?, updated_at = datetime('now') WHERE slug = 'reloj'`
+            ).bind(newDoradoStock),
+            env.DB.prepare(
+              `UPDATE products SET stock_total = ?, updated_at = datetime('now') WHERE slug = 'cadena'`
+            ).bind(newCadenaTotal),
+          ]);
+          console.log(`COMBO_DORADO_STOCK_OK lead_id=${id}: dorado=${newDoradoStock} cadena=${newCadenaTotal}`);
+        } else {
+          /* Otro color: lógica original intacta */
+          const relojModel    = requestedVariants[0] || null;
+          const newRelojTotal = Math.max(0, (comboRelojRow?.stock_total || 0) - 1);
+          let   newRelojVarJson = comboRelojRow?.variants_json || null;
 
-        console.log(`COMBO_STOCK_OK lead_id=${id}: reloj total=${newRelojTotal} model=${relojModel} cadena total=${newCadenaTotal}`);
+          if (relojModel && comboRelojRow?.variants_json) {
+            let vars;
+            try { vars = JSON.parse(comboRelojRow.variants_json); } catch (_) { vars = {}; }
+            if (Number.isFinite(Number(vars[relojModel]))) {
+              vars[relojModel] = Math.max(0, Number(vars[relojModel]) - 1);
+            }
+            newRelojVarJson = JSON.stringify(vars);
+          }
+
+          await env.DB.batch([
+            env.DB.prepare(
+              `UPDATE products SET stock_total = ?, variants_json = ?, updated_at = datetime('now') WHERE slug = 'reloj'`
+            ).bind(newRelojTotal, newRelojVarJson),
+            env.DB.prepare(
+              `UPDATE products SET stock_total = ?, updated_at = datetime('now') WHERE slug = 'cadena'`
+            ).bind(newCadenaTotal),
+          ]);
+          console.log(`COMBO_STOCK_OK lead_id=${id}: reloj total=${newRelojTotal} model=${relojModel} cadena total=${newCadenaTotal}`);
+        }
       } catch (err) {
         console.error('COMBO_STOCK_UPDATE_FAILED lead_id=' + id, err.message);
       }
@@ -261,6 +314,26 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     }
 
+    /* Descontar stock del producto adicional */
+    if (extraSlug && extraProductRow) {
+      try {
+        const newExtraTotal = Math.max(0, Number(extraProductRow.stock_total) - extraQty);
+        let newExtraVarJson = extraProductRow.variants_json;
+        if (extraVariant && extraProductRow.variants_json) {
+          let vars; try { vars = JSON.parse(extraProductRow.variants_json); } catch (_) { vars = {}; }
+          if (Number.isFinite(Number(vars[extraVariant])))
+            vars[extraVariant] = Math.max(0, Number(vars[extraVariant]) - extraQty);
+          newExtraVarJson = JSON.stringify(vars);
+        }
+        await env.DB.prepare(
+          `UPDATE products SET stock_total = ?, variants_json = ?, updated_at = datetime('now') WHERE slug = ?`
+        ).bind(newExtraTotal, newExtraVarJson, extraSlug).run();
+        console.log(`EXTRA_STOCK_OK lead_id=${id}: ${extraSlug} total=${newExtraTotal}`);
+      } catch (err) {
+        console.error('EXTRA_STOCK_UPDATE_FAILED lead_id=' + id, err.message);
+      }
+    }
+
     /* HighValuePurchase / VIPPurchase — server-side only, no browser counterpart
        DAM VERTEX PY — UMBRALES OFICIALES
        HighValuePurchase: >= 199.000 Gs  (alto_valor + vip + ultra_vip)
@@ -280,11 +353,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
         user_data,
         custom_data: {
           content_name: lead.product_name,
-          content_ids:  isCombo ? ['reloj', 'cadena'] : [productSlug],
           content_type: 'product',
           value:        saleValue,
           currency:     lead.currency || 'PYG',
-          num_items:    isCombo ? 2 : (lead.quantity || 1),
+          contents:     buildContents({ isCombo, productSlug, saleQty, extraSlug, extraQty, totalValue: saleValue }),
+          num_items:    isCombo ? 2 : saleQty + (extraSlug ? extraQty : 0),
         },
       });
 
@@ -298,11 +371,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
           user_data,
           custom_data: {
             content_name: lead.product_name,
-            content_ids:  isCombo ? ['reloj', 'cadena'] : [productSlug],
             content_type: 'product',
             value:        saleValue,
             currency:     lead.currency || 'PYG',
-            num_items:    isCombo ? 2 : (lead.quantity || 1),
+            contents:     buildContents({ isCombo, productSlug, saleQty, extraSlug, extraQty, totalValue: saleValue }),
+            num_items:    isCombo ? 2 : saleQty + (extraSlug ? extraQty : 0),
           },
         });
       }
@@ -387,7 +460,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
     }
 
     const damNotifyPromise = notifyDamFinanzasSale(
-      { lead, productSlug, saleQty, isCombo, requestedVariants, productRow, comboRelojRow, comboCadenaRow },
+      { lead, productSlug, saleQty, isCombo, requestedVariants, productRow, comboRelojRow, comboCadenaRow,
+        extraSlug, extraVariant, extraQty, extraProductRow },
       env
     ).catch(e => console.warn('DAM_FINANZAS_NOTIFY_FAILED', String(lead.id), e?.message));
 
@@ -489,6 +563,25 @@ async function sendTelegramInvoice(lead, env) {
   });
 }
 
+function buildContents({ isCombo, productSlug, saleQty, extraSlug, extraQty, totalValue }) {
+  if (isCombo) {
+    const half = Math.round(totalValue / 2);
+    return [
+      { id: 'reloj',  quantity: 1, item_price: half },
+      { id: 'cadena', quantity: 1, item_price: totalValue - half },
+    ];
+  }
+  if (extraSlug) {
+    const totalItems = saleQty + extraQty;
+    const unitPrice  = Math.round(totalValue / totalItems);
+    return [
+      { id: productSlug, quantity: saleQty,  item_price: unitPrice },
+      { id: extraSlug,   quantity: extraQty, item_price: unitPrice },
+    ];
+  }
+  return [{ id: productSlug, quantity: saleQty, item_price: Math.round(totalValue / saleQty) }];
+}
+
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -516,7 +609,8 @@ function resolveVariantId(metaJson, variantName) {
 }
 
 async function notifyDamFinanzasSale(
-  { lead, productSlug, saleQty, isCombo, requestedVariants, productRow, comboRelojRow, comboCadenaRow },
+  { lead, productSlug, saleQty, isCombo, requestedVariants, productRow, comboRelojRow, comboCadenaRow,
+    extraSlug, extraVariant, extraQty, extraProductRow },
   env
 ) {
   const secret = env.DAM_FINANZAS_WEBHOOK_SECRET || '';
@@ -571,6 +665,22 @@ async function notifyDamFinanzasSale(
       quantity:        qty,
       salePrice:       unitPrice,
       itemIndex:       i,
+      purchasedAt:     new Date().toISOString(),
+      operationalDate,
+    });
+  }
+
+  if (extraSlug && extraProductRow) {
+    const totalItems = saleQty + extraQty;
+    const extraPrice = Math.round(totalValue * extraQty / totalItems);
+    await sendItem({
+      sourceSystem: 'DAM_VERTEX', adminOrderId, productSlug: extraSlug,
+      productName:     extraProductRow.name || extraSlug,
+      variantName:     extraVariant || null,
+      variantId:       resolveVariantId(extraProductRow?.variants_meta_json, extraVariant),
+      quantity:        extraQty,
+      salePrice:       extraPrice,
+      itemIndex:       variantsToSend.length,
       purchasedAt:     new Date().toISOString(),
       operationalDate,
     });

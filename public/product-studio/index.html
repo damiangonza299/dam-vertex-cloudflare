@@ -568,6 +568,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
             <div class="landing-panel">
               <h4>Brief para Claude Code <span id="landing-status-badge" class="badge badge-draft" style="float:right;margin-top:-1px;text-transform:none;font-weight:400;letter-spacing:0">Sin brief</span></h4>
 
+              <div class="notice notice-info" style="margin-bottom:10px;font-size:11px;line-height:1.7">
+                <strong>SKILLS VISUALES OBLIGATORIAS:</strong> Antes de generar cualquier landing, Claude Code debe cargar y aplicar:<br>
+                &bull; <code>AI_SYSTEM/skills/frontend-design.md</code> → Diseño moderno y responsive<br>
+                &bull; <code>AI_SYSTEM/skills/ui-ux-pro-max.md</code> → UI/UX profesional que convierte<br>
+                &bull; <code>AI_SYSTEM/skills/animate.md</code> → Animaciones y microinteracciones<br>
+                &bull; <code>AI_SYSTEM/skills/web-design-guidelines.md</code> → Consistencia visual y jerarquía
+              </div>
+
               <!-- Acciones principales del Brief -->
               <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
                 <button class="sync-btn primary" onclick="generateBrief()">Generar Brief</button>

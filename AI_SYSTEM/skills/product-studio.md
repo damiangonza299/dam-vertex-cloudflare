@@ -73,6 +73,21 @@ Tab 7: Landing
 
 ---
 
+## Skills Visuales — Obligatorias Antes de Generar HTML
+
+Antes de escribir o modificar cualquier landing, cargar y aplicar estas 4 skills:
+
+| Skill | Archivo | Propósito |
+|---|---|---|
+| Frontend Design | `AI_SYSTEM/skills/frontend-design.md` | Grid, tipografía, espaciado, performance |
+| UI/UX Pro Max | `AI_SYSTEM/skills/ui-ux-pro-max.md` | CRO, flujo de decisión, modal, CTAs |
+| Animate | `AI_SYSTEM/skills/animate.md` | Scroll fade-in, hover, microinteracciones |
+| Web Design Guidelines | `AI_SYSTEM/skills/web-design-guidelines.md` | Consistencia visual, tokens, temas |
+
+**Regla:** Ninguna landing nueva se genera sin haber consultado estas 4 skills.
+
+---
+
 ## Blueprint V3 — Estructura de Landing Profesional
 
 Blueprint V3 define exactamente qué va en cada sección. No improvisar.

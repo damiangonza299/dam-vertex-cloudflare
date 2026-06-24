@@ -336,7 +336,12 @@ function fmtVariant(v) {
 function fmtVariantCell(l) {
   const vt = fmtVariant(l.variant);
   if (!vt) return '';
-  const isCombo = l.product_slug === 'combo-reloj-cadena' || (l.product_name || '').includes('Combo Reloj');
+  const slug = l.product_slug || '';
+  const name = l.product_name || '';
+  const isCombo   = slug === 'combo-reloj-cadena' || name.includes('Combo Reloj');
+  const isReloj   = slug === 'reloj'   || (!slug && name.includes('Reloj')   && !name.includes('Combo') && !name.includes('Imperial'));
+  const isCepillo = slug === 'cepillo' || (!slug && name.includes('Cepillo'));
+  if (isReloj || isCepillo) return '';
   const display = isCombo ? vt + ' + Cadena Apex' : vt;
   return '<br><span style="font-size:10px;color:rgba(255,255,255,.45)">' + esc(display) + '</span>';
 }
@@ -364,6 +369,7 @@ function buildActions(l) {
     ${confirmBtn}
     <button class="btn-menu" onclick="toggleMenu(event,this,'${menuId}')">&#8942;</button>
     <div class="action-menu" id="${menuId}">
+      <button onclick="openEditLeadModal(${l.id});closeMenus()">Editar lead</button>
       ${blockBtn}
       <button class="danger" onclick="deleteLead(${l.id},'${l.status}');closeMenus()">Eliminar</button>
       <button class="danger" style="font-size:10px;opacity:.8" onclick="deleteLeadInternal(${l.id},'${l.status}');closeMenus()">Eliminar internamente</button>
@@ -414,7 +420,7 @@ function toggleMenu(e, btn, menuId) {
   closeMenus();
   if (!wasOpen) {
     const rect   = btn.getBoundingClientRect();
-    const MENU_H = 124;
+    const MENU_H = 160;
     const top    = (rect.bottom + MENU_H + 4 > window.innerHeight)
       ? rect.top - MENU_H - 4
       : rect.bottom + 4;
@@ -559,6 +565,137 @@ async function deleteLeadInternal(id, status) {
     loadLeads();
   } catch (_) {
     alert('Error de red');
+  }
+}
+
+/* ── Editar lead ── */
+let _editLeadId = null;
+
+function openEditLeadModal(id) {
+  const lead = allLeads.find(l => l.id === id);
+  if (!lead) return;
+  _editLeadId = id;
+
+  const modal    = document.getElementById('edit-lead-modal');
+  const nameEl   = document.getElementById('elm-name');
+  const cityEl   = document.getElementById('elm-city');
+  const valueEl  = document.getElementById('elm-value');
+  const errEl    = document.getElementById('elm-error');
+  const saveBtn  = document.getElementById('elm-save-btn');
+
+  nameEl.value  = lead.name || '';
+  cityEl.value  = lead.location_city || lead.city || '';
+  valueEl.value = lead.value || '';
+  errEl.style.display = 'none';
+  errEl.textContent   = '';
+  saveBtn.disabled    = false;
+  saveBtn.textContent = 'Guardar';
+
+  // Extra product section
+  const extraSlugEl = document.getElementById('elm-extra-slug');
+  if (extraSlugEl) {
+    extraSlugEl.innerHTML = '<option value="">Sin producto adicional</option>' +
+      (_activeProducts || []).map(p => `<option value="${p.slug}">${p.name}</option>`).join('');
+    extraSlugEl.value = lead.extra_product_slug || '';
+    elmOnExtraSlugChange(lead.extra_product_variant || '');
+  }
+  const extraQtyEl = document.getElementById('elm-extra-qty');
+  if (extraQtyEl) extraQtyEl.value = lead.extra_product_qty || 1;
+
+  modal.style.display = 'flex';
+  nameEl.focus();
+}
+
+function closeEditLeadModal() {
+  const modal = document.getElementById('edit-lead-modal');
+  if (modal) modal.style.display = 'none';
+  _editLeadId = null;
+}
+
+async function elmOnExtraSlugChange(preselectVariant = '') {
+  const slug        = document.getElementById('elm-extra-slug')?.value || '';
+  const variantWrap = document.getElementById('elm-extra-variant-wrap');
+  const variantEl   = document.getElementById('elm-extra-variant');
+  if (!variantWrap || !variantEl) return;
+  if (!slug) { variantWrap.style.display = 'none'; return; }
+  try {
+    const res  = await fetch(`/api/product-stock?slug=${encodeURIComponent(slug)}`);
+    const data = await res.json();
+    const vars = data.product?.variants;
+    if (vars && typeof vars === 'object' && !Array.isArray(vars)) {
+      variantEl.innerHTML = Object.keys(vars)
+        .map(v => `<option value="${v}">${v}</option>`).join('');
+      if (preselectVariant) variantEl.value = preselectVariant;
+      variantWrap.style.display = 'block';
+    } else {
+      variantWrap.style.display = 'none';
+    }
+  } catch (_) {
+    variantWrap.style.display = 'none';
+  }
+}
+
+async function submitEditLead() {
+  if (!_editLeadId) return;
+
+  const name     = (document.getElementById('elm-name')?.value  || '').trim();
+  const city     = (document.getElementById('elm-city')?.value  || '').trim();
+  const valueRaw = document.getElementById('elm-value')?.value || '';
+  const errEl    = document.getElementById('elm-error');
+  const saveBtn  = document.getElementById('elm-save-btn');
+
+  const extraSlug    = document.getElementById('elm-extra-slug')?.value    || '';
+  const extraVariant = extraSlug
+    ? (document.getElementById('elm-extra-variant')?.value || null)
+    : null;
+  const extraQty     = extraSlug
+    ? Math.max(1, Math.floor(Number(document.getElementById('elm-extra-qty')?.value)) || 1)
+    : null;
+
+  if (!name) {
+    errEl.textContent   = 'El nombre no puede estar vacío.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const numValue = Math.floor(Number(valueRaw));
+  if (!valueRaw || !Number.isFinite(numValue) || numValue <= 0) {
+    errEl.textContent   = 'El valor debe ser un número entero positivo.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  errEl.style.display = 'none';
+  saveBtn.disabled    = true;
+  saveBtn.textContent = 'Guardando…';
+
+  try {
+    const res  = await fetch('/api/admin-leads', {
+      method:  'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+      body:    JSON.stringify({
+        id: _editLeadId, name, city: city || null, value: numValue,
+        extra_product_slug:    extraSlug    || null,
+        extra_product_variant: extraVariant || null,
+        extra_product_qty:     extraQty,
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.ok) {
+      closeEditLeadModal();
+      loadLeads();
+    } else {
+      errEl.textContent   = data.error || 'Error al guardar.';
+      errEl.style.display = 'block';
+      saveBtn.disabled    = false;
+      saveBtn.textContent = 'Guardar';
+    }
+  } catch (_) {
+    errEl.textContent   = 'Error de red.';
+    errEl.style.display = 'block';
+    saveBtn.disabled    = false;
+    saveBtn.textContent = 'Guardar';
   }
 }
 
