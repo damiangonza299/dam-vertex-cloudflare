@@ -769,23 +769,7 @@
 window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
 </script>
 <script src="/assets/js/tracking.js?v=57" defer></script>
-<script>
-(function() {
-  var productsLoaded = false;
-  function loadProducts() {
-    if (productsLoaded) return;
-    productsLoaded = true;
-    var s = document.createElement('script');
-    s.src = '/assets/js/products.js?v=' + (window.DAM_VERTEX_VERSION || '57');
-    document.head.appendChild(s);
-  }
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('[data-scroll-form], .nav__cta').forEach(function(el) {
-      el.addEventListener('click', loadProducts, {once: true});
-    });
-  });
-})();
-</script>
+<script src="/assets/js/products.js?v=57" defer></script>
 <script defer src="/assets/js/insync.js?v=2"></script>
 <script>
 (function() {
