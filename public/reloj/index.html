@@ -771,7 +771,36 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
 <script src="/assets/js/tracking.js?v=57" defer></script>
 <script src="/assets/js/products.js?v=57" defer></script>
 <script defer src="/assets/js/insync.js?v=2"></script>
-<script src="/assets/js/location-picker.js?v=57" defer></script>
+<script>
+(function() {
+  var lpLoaded = false;
+  function loadLP() {
+    if (lpLoaded) return;
+    lpLoaded = true;
+    var s = document.createElement('script');
+    s.src = '/assets/js/location-picker.js?v=57';
+    s.onload = function() {
+      if (typeof DV.initLocationPicker === 'function') {
+        DV.initLocationPicker('m', window.DV_MAPS_KEY || '');
+      }
+    };
+    document.head.appendChild(s);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[data-scroll-form]').forEach(function(el) {
+      el.addEventListener('click', loadLP);
+    });
+    var modal = document.getElementById('order-modal');
+    if (modal) {
+      new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          if (m.target.classList.contains('active')) loadLP();
+        });
+      }).observe(modal, { attributes: true, attributeFilter: ['class'] });
+    }
+  });
+})();
+</script>
 <script>
   const PRODUCT = {
     name: 'Reloj Blackout Minimal',

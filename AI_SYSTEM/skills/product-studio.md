@@ -108,7 +108,7 @@ Referencia: `AI_SYSTEM/skills/lighthouse-geo-standards.md`
 ### Checklist anti-regresión (ejecutar antes de cada deploy)
 
 - [ ] `location-picker.js` NO tiene preload ni dns-prefetch a maps.googleapis.com
-- [ ] `location-picker.js` cargado con `defer` (NO lazy inject desde HTML — rompe `DV.initLocationPicker` en DOMContentLoaded)
+- [ ] `location-picker.js` usa lazy inject + `onload` callback (NO defer — carga Maps API al DOMContentLoaded; NO lazy inject sin onload — mapa queda roto)
 - [ ] `products.js` NO tiene `<link rel="preload">` en head
 - [ ] `products.js` cargado con `defer` (NO preload, NO lazy inject)
 - [ ] Grid dinámico: `opacity:0` solo al momento del swap, NO al inicio del script

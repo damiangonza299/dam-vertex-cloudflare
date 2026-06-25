@@ -219,14 +219,60 @@ npx lighthouse https://damvertex.com/cadena/ --output=json --output-path=./lh-ca
 
 ### location-picker.js + Google Maps
 
-- El mapa se inicializa via `DV.initLocationPicker()` en `products.js`
-- `products.js` llama `initLocationPicker` en DOMContentLoaded
-- `location-picker.js` DEBE estar cargado con `defer` (no lazy inject) para que esté disponible cuando DOMContentLoaded ejecuta
-- La Maps API (~400KB) se carga internamente por `location-picker.js` solo cuando el usuario tipea en el campo → esto ya es lazy
+**CONFLICTO CONOCIDO — leer antes de tocar:**
+
+| Opción | LCP | Mapa |
+|---|---|---|
+| `defer` directo | ❌ 6.9s — Maps API carga en DOMContentLoaded | ✅ funciona |
+| lazy inject sin `onload` | ✅ LCP rápido | ❌ roto — `DV.initLocationPicker` no existe al DOMContentLoaded |
+| **lazy inject + `onload` callback** | ✅ LCP rápido | ✅ funciona |
+
+**Solución correcta y definitiva — patrón lazy inject + onload:**
+```javascript
+(function() {
+  var lpLoaded = false;
+  function loadLP() {
+    if (lpLoaded) return;
+    lpLoaded = true;
+    var s = document.createElement('script');
+    s.src = '/assets/js/location-picker.js?v=57';
+    s.onload = function() {
+      // products.js ya corrió su guard (falló) — llamar manualmente
+      if (typeof DV.initLocationPicker === 'function') {
+        DV.initLocationPicker('m', window.DV_MAPS_KEY || '');
+      }
+    };
+    document.head.appendChild(s);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[data-scroll-form]').forEach(function(el) {
+      el.addEventListener('click', loadLP);
+    });
+    var modal = document.getElementById('order-modal');
+    if (modal) {
+      new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          if (m.target.classList.contains('active')) loadLP();
+        });
+      }).observe(modal, { attributes: true, attributeFilter: ['class'] });
+    }
+  });
+})();
+```
+
+**Por qué funciona:**
+- `location-picker.js` no carga hasta que el usuario abre el modal → LCP limpio
+- `products.js` llama `DV.initLocationPicker('m', key)` en DOMContentLoaded pero falla silenciosamente (guard `typeof`)
+- `inputEl._dvLocInit` NO se setea hasta que `initLocationPicker` corre → cuando `onload` llama `initLocationPicker('m', key)`, el guard pasa limpiamente
+- Maps API (~400KB) solo carga cuando `initLocationPicker` es llamado desde `onload`
+- El usuario tarda 5-10s en llegar al campo de ubicación → Maps API ya cargó para entonces
+
+**Reglas:**
 - NO agregar `preconnect` ni `dns-prefetch` a `maps.googleapis.com`
-- NO convertir `location-picker.js` a lazy inject desde el HTML
+- NO usar `defer` directo — carga Maps API al DOMContentLoaded
+- NO usar lazy inject sin `onload` — `initLocationPicker` no corre nunca
+- SIEMPRE usar el patrón lazy inject + onload mostrado arriba
 - El flujo completo: usuario tipea ciudad → sugerencias aparecen → usuario selecciona → pin aparece en mapa → link generado → link llega a WhatsApp y Telegram con coordenadas exactas
-- TOCAR ESTO SOLO SI hay una regresión confirmada en producción y con autorización explícita del usuario
 
 ### products.js
 
