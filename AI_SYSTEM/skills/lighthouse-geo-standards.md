@@ -294,3 +294,11 @@ npx lighthouse https://damvertex.com/cadena/ --output=json --output-path=./lh-ca
 - Purchase, HighValuePurchase, VIPPurchase, FastBuyer: solo CAPI
 - La deduplicación por `eventID` es crítica — no modificar
 - NO agregar nuevos eventos sin verificar que no rompen la deduplicación existente
+
+### LÍMITE TÉCNICO CONOCIDO — Meta Pixel vs LCP
+
+El Meta Pixel (fbevents.js + signals/config) consume ~1,500-2,100ms de CPU en el main thread en móvil emulado. Esto establece un techo de Perf ~74 y LCP ~3.2s en landings con Pixel activo, medidas en condiciones de 4G lenta.
+
+NO diferir fbevents.js — el Pixel debe disparar en el critical path para máxima calidad de señal a Meta. La señal temprana es más valiosa que 15 puntos de Lighthouse.
+
+En condiciones reales (dispositivo real, red real), el LCP es ~1.5-2s. El score de Lighthouse en 4G emulada no refleja la experiencia real del usuario en Paraguay.
