@@ -30,7 +30,7 @@
 <div class="products-grid" id="products-grid">
   <!-- Fallback estático (reemplazado por JS si el API responde) -->
   <a href="/reloj/" class="product-card" style="display:block;color:inherit">
-    <img src="/assets/img/reloj%20black%20caracteristicas.png" alt="Reloj Blackout Minimal" class="product-card__img" width="1024" height="1118" loading="eager">
+    <img src="/assets/img/reloj-black-caracteristicas.webp" alt="Reloj Blackout Minimal" class="product-card__img" width="1024" height="1118" loading="eager">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Reloj Blackout Minimal</div>
@@ -40,7 +40,7 @@
     </div>
   </a>
   <a href="/cadena/" class="product-card" style="display:block;color:inherit">
-    <img src="/assets/img/Cadena%20Apex%20perfil.png" alt="Cadena Apex" class="product-card__img" width="1122" height="1402" loading="eager">
+    <img src="/assets/img/cadena-hero.webp" alt="Cadena Apex" class="product-card__img" width="700" height="875" loading="eager">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Cadena Apex</div>
@@ -86,13 +86,19 @@
 <script>
 /* ── Imágenes por slug (productos existentes con imagen conocida) ── */
 var DV_CARD_IMAGES = {
-  'reloj':    '/assets/img/reloj%20black%20caracteristicas.png',
-  'cadena':   '/assets/img/Cadena%20Apex%20perfil.png',
-  'cepillo':  '/assets/img/cepillo-card.webp',
-  'lentes':   '/assets/img/lentes-card.webp',
+  'reloj':   '/assets/img/reloj-black-caracteristicas.webp',
+  'cadena':  '/assets/img/cadena-hero.webp',
+  'cepillo': '/assets/img/cepillo-card.webp',
+  'lentes':  '/assets/img/lentes-card.webp',
 };
 var DV_CARD_IMG_STYLE = {
   'lentes': 'object-position:right center',
+};
+var DV_CARD_DIMS = {
+  'reloj':   'width="1024" height="1118"',
+  'cadena':  'width="700"  height="875"',
+  'cepillo': 'width="600"  height="1066"',
+  'lentes':  'width="600"  height="900"',
 };
 var DV_CARD_BTN = {
   'reloj': 'Ver colección →',
@@ -117,9 +123,11 @@ function buildCardHtml(p) {
     ? ' <small>Gs. ' + cmpPrice.toLocaleString('es-PY') + '</small>' : '';
   var imgUrl   = DV_CARD_IMAGES[p.slug];
   var imgStyle = DV_CARD_IMG_STYLE[p.slug] || '';
+  var imgDims  = DV_CARD_DIMS[p.slug] || '';
   var btnText  = DV_CARD_BTN[p.slug] || 'Ver producto →';
   var imgHtml  = imgUrl
     ? '<img src="' + imgUrl + '" alt="' + p.name + '" class="product-card__img"' +
+      (imgDims ? ' ' + imgDims : '') +
       (imgStyle ? ' style="' + imgStyle + '"' : '') + ' loading="eager">'
     : '<div class="product-card__img" style="background:linear-gradient(145deg,#1a1a2e,#16213e);' +
       'display:flex;align-items:center;justify-content:center">' +
@@ -135,11 +143,13 @@ function buildCardHtml(p) {
     '</div></a>';
 }
 
+var grid = document.getElementById('products-grid');
+if (grid) { grid.style.opacity = '0'; grid.style.transition = 'opacity .18s ease'; }
 fetch('/api/product-stock?active_only=1')
   .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
   .then(function(data) {
     var products = (data.products || []).filter(function(p) { return p.active; });
-    if (!products.length) return;
+    if (!products.length) { if (grid) grid.style.opacity = '1'; return; }
     products.sort(function(a, b) {
       var ia = DV_SLUG_ORDER.indexOf(a.slug);
       var ib = DV_SLUG_ORDER.indexOf(b.slug);
@@ -147,10 +157,12 @@ fetch('/api/product-stock?active_only=1')
       if (ib === -1) ib = 999;
       return ia - ib;
     });
-    var grid = document.getElementById('products-grid');
-    if (grid) grid.innerHTML = products.map(buildCardHtml).join('');
+    if (grid) {
+      grid.innerHTML = products.map(buildCardHtml).join('');
+      requestAnimationFrame(function() { grid.style.opacity = '1'; });
+    }
   })
-  .catch(function() { /* mantener fallback estático */ });
+  .catch(function() { if (grid) grid.style.opacity = '1'; });
 </script>
 
 <script>
