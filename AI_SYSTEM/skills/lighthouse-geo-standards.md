@@ -124,14 +124,23 @@ Patrones que causaron regresiones reales en DAM Vertex. Cada uno tiene un fix co
     if (mapsLoaded) return;
     mapsLoaded = true;
     var s = document.createElement('script');
-    s.src = '/assets/js/location-picker.js?v=XX';
+    s.src = '/assets/js/location-picker.js?v=57';
     document.head.appendChild(s);
   }
   document.addEventListener('DOMContentLoaded', function() {
-    var input = document.querySelector('#m-location, #cm-location, [data-location]');
-    if (input) {
-      input.addEventListener('focus', loadLocationPicker, {once: true});
-      input.addEventListener('click', loadLocationPicker, {once: true});
+    // TRIGGER CORRECTO: apertura del modal, NO focus en el input.
+    // El input de ubicación está dentro del modal — si el script no cargó
+    // antes de que el modal abra, el mapa no inicializa y queda en blanco.
+    document.querySelectorAll('[data-scroll-form]').forEach(function(el) {
+      el.addEventListener('click', loadLocationPicker);
+    });
+    var modal = document.getElementById('order-modal');
+    if (modal) {
+      new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          if (m.target.classList.contains('active')) loadLocationPicker();
+        });
+      }).observe(modal, { attributes: true, attributeFilter: ['class'] });
     }
   });
 })();
@@ -140,7 +149,8 @@ Patrones que causaron regresiones reales en DAM Vertex. Cada uno tiene un fix co
 Reglas:
 - NUNCA preload de `location-picker.js`
 - NUNCA `dns-prefetch` ni `preconnect` a `maps.googleapis.com`
-- Cargar solo cuando el usuario hace focus o click en el campo de ubicación
+- TRIGGER: apertura del modal (`[data-scroll-form]` click + MutationObserver en `#order-modal.active`)
+- ❌ NUNCA trigger en focus/click del input de ubicación — el input está DENTRO del modal, el script no tiene tiempo de cargar e inicializar para ese momento
 
 ---
 
