@@ -7,8 +7,7 @@
   <link rel="preload" href="/assets/css/styles.css?v=55" as="style">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
-  <link rel="preconnect" href="https://maps.googleapis.com" crossorigin>
-  <link rel="dns-prefetch" href="https://maps.googleapis.com">
+  <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=57" as="script">
   <meta name="description" content="Reloj Blackout Minimal — Negro Total. Diseño minimalista, acabado oscuro total. Envío gratis en el día. Dam Vertex Paraguay.">
   <title>Reloj Blackout Minimal — Negro Total — Dam Vertex</title>
@@ -783,7 +782,24 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
 })();
 </script>
 <script defer src="/assets/js/insync.js?v=2"></script>
-<script src="/assets/js/location-picker.js?v=55" defer></script>
+<script>
+(function() {
+  var mapsLoaded = false;
+  function loadLocationPicker() {
+    if (mapsLoaded) return;
+    mapsLoaded = true;
+    var s = document.createElement('script');
+    s.src = '/assets/js/location-picker.js?v=' + (window.DAM_VERTEX_VERSION || '55');
+    document.head.appendChild(s);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('#m-location, #cm-location').forEach(function(el) {
+      el.addEventListener('focus', loadLocationPicker, {once: true});
+      el.addEventListener('click', loadLocationPicker, {once: true});
+    });
+  });
+})();
+</script>
 <script>
   const PRODUCT = {
     name: 'Reloj Blackout Minimal',
