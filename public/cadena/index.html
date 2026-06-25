@@ -1438,31 +1438,7 @@
 <script src="/assets/js/tracking.js?v=57" defer></script>
 <script src="/assets/js/products.js?v=57" defer></script>
 <script defer src="/assets/js/insync.js?v=2"></script>
-<script>
-(function() {
-  var mapsLoaded = false;
-  function loadLocationPicker() {
-    if (mapsLoaded) return;
-    mapsLoaded = true;
-    var s = document.createElement('script');
-    s.src = '/assets/js/location-picker.js?v=57';
-    document.head.appendChild(s);
-  }
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('[data-scroll-form]').forEach(function(el) {
-      el.addEventListener('click', loadLocationPicker);
-    });
-    var modal = document.getElementById('order-modal');
-    if (modal) {
-      new MutationObserver(function(mutations) {
-        mutations.forEach(function(m) {
-          if (m.target.classList.contains('active')) loadLocationPicker();
-        });
-      }).observe(modal, { attributes: true, attributeFilter: ['class'] });
-    }
-  });
-})();
-</script>
+<script src="/assets/js/location-picker.js?v=57" defer></script>
 <script>
   const PRODUCT = {
     name:             'Cadena Apex',
