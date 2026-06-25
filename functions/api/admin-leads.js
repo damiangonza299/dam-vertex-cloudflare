@@ -59,7 +59,7 @@ export async function onRequestPut({ request, env }) {
   if (!isAuthorized(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   try {
-    const { id, name, city, value, extra_product_slug, extra_product_variant, extra_product_qty } = await request.json();
+    const { id, name, city, value, extra_product_slug, extra_product_variant, extra_product_qty, variant } = await request.json();
     if (!id) return json({ ok: false, error: 'id requerido' }, 400);
 
     const trimName = (name || '').trim();
@@ -78,9 +78,11 @@ export async function onRequestPut({ request, env }) {
       ? Math.max(1, Math.floor(Number(extra_product_qty)) || 1)
       : null;
 
+    const variantVal   = (variant || '').trim() || null;
+
     await env.DB.prepare(
-      'UPDATE leads SET name = ?, city = ?, value = ?, extra_product_slug = ?, extra_product_variant = ?, extra_product_qty = ?, location_city = NULL WHERE id = ?'
-    ).bind(trimName, trimCity, numValue, extraSlug, extraVariant, extraQtyN, id).run();
+      'UPDATE leads SET name = ?, city = ?, value = ?, extra_product_slug = ?, extra_product_variant = ?, extra_product_qty = ?, variant = ?, location_city = NULL WHERE id = ?'
+    ).bind(trimName, trimCity, numValue, extraSlug, extraVariant, extraQtyN, variantVal, id).run();
 
     return json({ ok: true });
   } catch (err) {

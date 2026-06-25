@@ -333,6 +333,18 @@ function fmtVariant(v) {
   }
 }
 
+function abbrevVariantText(str) {
+  if (!str) return '';
+  return str
+    .replace(/Negro Total/g, 'NT')
+    .replace(/Plateado/g,    'PL')
+    .replace(/Dorado/g,      'DO')
+    .replace(/Verde/g,       'VD')
+    .replace(/Cadena Apex/g, 'CA')
+    .replace(/Cadena/g,      'CA')
+    .replace(/Reloj Imperial/g, 'RI');
+}
+
 function fmtVariantCell(l) {
   const vt = fmtVariant(l.variant);
   if (!vt) return '';
@@ -342,8 +354,9 @@ function fmtVariantCell(l) {
   const isReloj   = slug === 'reloj'   || (!slug && name.includes('Reloj')   && !name.includes('Combo') && !name.includes('Imperial'));
   const isCepillo = slug === 'cepillo' || (!slug && name.includes('Cepillo'));
   if (isReloj || isCepillo) return '';
-  const display = isCombo ? vt + ' + Cadena Apex' : vt;
-  return '<br><span style="font-size:10px;color:rgba(255,255,255,.45)">' + esc(display) + '</span>';
+  const full   = isCombo ? vt + ' + Cadena Apex' : vt;
+  const abbrev = abbrevVariantText(full);
+  return '<br><span style="font-size:10px;color:rgba(255,255,255,.45)" title="' + esc(full) + '">' + esc(abbrev) + '</span>';
 }
 
 function buildActions(l) {
@@ -602,6 +615,9 @@ function openEditLeadModal(id) {
   const extraQtyEl = document.getElementById('elm-extra-qty');
   if (extraQtyEl) extraQtyEl.value = lead.extra_product_qty || 1;
 
+  const variantEl = document.getElementById('elm-variant');
+  if (variantEl) variantEl.value = fmtVariant(lead.variant) || '';
+
   modal.style.display = 'flex';
   nameEl.focus();
 }
@@ -652,6 +668,8 @@ async function submitEditLead() {
     ? Math.max(1, Math.floor(Number(document.getElementById('elm-extra-qty')?.value)) || 1)
     : null;
 
+  const variant = (document.getElementById('elm-variant')?.value || '').trim() || null;
+
   if (!name) {
     errEl.textContent   = 'El nombre no puede estar vacío.';
     errEl.style.display = 'block';
@@ -678,6 +696,7 @@ async function submitEditLead() {
         extra_product_slug:    extraSlug    || null,
         extra_product_variant: extraVariant || null,
         extra_product_qty:     extraQty,
+        variant,
       }),
     });
     const data = await res.json().catch(() => ({}));

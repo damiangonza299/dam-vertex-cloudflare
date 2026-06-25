@@ -5,16 +5,21 @@ dam-vertex-cloudflare/ es el único proyecto que se deploya.
 Todo vive aquí. Nunca crear proyectos paralelos que dependan
 de este repo sin documentarlo aquí.
 
-## Comando de deploy
-& "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public \
-  --project-name=dam-vertex-cloudflare \
-  --branch=dam-vertex-cloudflare \
-  --commit-dirty=true
+## COMANDO DE DEPLOY — dam-vertex-cloudflare
+SIEMPRE deployar con este comando exacto, sin variaciones:
 
-## Git
+& "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true
+
+Después del deploy a Cloudflare, SIEMPRE pushear a GitHub:
+
 git add .
 git commit -m "update"
 git push origin main
+
+NUNCA usar otro comando de deploy para este proyecto.
+NUNCA omitir el --branch=dam-vertex-cloudflare.
+NUNCA omitir el --commit-dirty=true.
+El orden es siempre: primero Cloudflare, después GitHub.
 
 ## Qué se deploya
 pages_build_output_dir = "public"
@@ -41,13 +46,7 @@ product-studio vive en public/product-studio/index.html — así debe quedarse.
 ## Proyectos en el workspace — reglas de deploy
 
 ### dam-vertex-cloudflare (PADRE)
-Comando de deploy:
-```powershell
-& "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public `
-  --project-name=dam-vertex-cloudflare `
-  --branch=dam-vertex-cloudflare `
-  --commit-dirty=true
-```
+Ver "## COMANDO DE DEPLOY — dam-vertex-cloudflare" al inicio del archivo.
 
 ### dam-product-research (PROYECTO INDEPENDIENTE)
 Este proyecto tiene su PROPIO deploy, separado de dam-vertex-cloudflare.
