@@ -108,13 +108,17 @@ Referencia: `AI_SYSTEM/skills/lighthouse-geo-standards.md`
 ### Checklist anti-regresión (ejecutar antes de cada deploy)
 
 - [ ] `location-picker.js` NO tiene preload ni dns-prefetch a maps.googleapis.com
+- [ ] `location-picker.js` cargado con `defer` (NO lazy inject desde HTML — rompe `DV.initLocationPicker` en DOMContentLoaded)
 - [ ] `products.js` NO tiene `<link rel="preload">` en head
+- [ ] `products.js` cargado con `defer` (NO preload, NO lazy inject)
 - [ ] Grid dinámico: `opacity:0` solo al momento del swap, NO al inicio del script
 - [ ] `.product-card__img` tiene `height: auto` en CSS (no solo width/height en HTML)
 - [ ] `favicon.ico` existe en `/public/favicon.ico` y está referenciado en el `<head>`
 - [ ] Lighthouse corrido de forma SECUENCIAL (no paralela) — TBT paralelo es falso
 - [ ] `<main>` landmark presente en el HTML
 - [ ] `styles.min.css` referenciado (no `styles.css` sin minificar)
+- [ ] QualifiedLead: NO tocar `functions/api/leads.js` sin autorización explícita
+- [ ] tracking.js: NO agregar eventos sin verificar deduplicación por `eventID`
 
 ---
 

@@ -212,3 +212,39 @@ npx lighthouse https://damvertex.com/cadena/ --output=json --output-path=./lh-ca
 - **`<main>` landmark:** obligatorio en todas las páginas — `landmark-one-main` es audit con weight=3.
 - **Imágenes de cards dinámicas:** `DV_CARD_DIMS` con `width`/`height` en el `<img>` + `height: auto` en CSS.
 - **Preload hero image:** `<link rel="preload" as="image" href="/assets/img/hero.webp" fetchpriority="high" type="image/webp">` — crítico para LCP.
+
+---
+
+## FUNCIONALIDADES CRÍTICAS — NUNCA MODIFICAR SIN AUTORIZACIÓN EXPLÍCITA
+
+### location-picker.js + Google Maps
+
+- El mapa se inicializa via `DV.initLocationPicker()` en `products.js`
+- `products.js` llama `initLocationPicker` en DOMContentLoaded
+- `location-picker.js` DEBE estar cargado con `defer` (no lazy inject) para que esté disponible cuando DOMContentLoaded ejecuta
+- La Maps API (~400KB) se carga internamente por `location-picker.js` solo cuando el usuario tipea en el campo → esto ya es lazy
+- NO agregar `preconnect` ni `dns-prefetch` a `maps.googleapis.com`
+- NO convertir `location-picker.js` a lazy inject desde el HTML
+- El flujo completo: usuario tipea ciudad → sugerencias aparecen → usuario selecciona → pin aparece en mapa → link generado → link llega a WhatsApp y Telegram con coordenadas exactas
+- TOCAR ESTO SOLO SI hay una regresión confirmada en producción y con autorización explícita del usuario
+
+### products.js
+
+- Siempre `defer`, nunca `preload`, nunca lazy inject
+- `DV.initForm()` se llama en DOMContentLoaded — `products.js` debe estar disponible en ese momento
+- El conditional loader (para productos agotados) es la única excepción permitida
+
+### QualifiedLead
+
+- Vive en `functions/api/leads.js` líneas 282, 318, 419
+- Es 100% server-side CAPI — no existe browser-side
+- Se dispara cuando el lead se guarda en D1
+- NUNCA agregar implementación browser-side en `tracking.js`
+- NUNCA modificar `leads.js` sin autorización explícita
+
+### tracking.js eventos
+
+- PageView, ViewContent, AddToCart, InitiateCheckout: browser+CAPI
+- Purchase, HighValuePurchase, VIPPurchase, FastBuyer: solo CAPI
+- La deduplicación por `eventID` es crítica — no modificar
+- NO agregar nuevos eventos sin verificar que no rompen la deduplicación existente
