@@ -78,3 +78,127 @@ indexar y citar el contenido:
 - [ ] FAQPage schema en sección FAQ
 - [ ] tracking.js con defer y versión actualizada
 - [ ] Lighthouse score verificado: 90+ en todas las categorías
+- [ ] location-picker.js NO tiene preload ni dns-prefetch a maps.googleapis.com
+- [ ] products.js NO tiene <link rel="preload"> en head
+- [ ] Grid dinámico: opacity:0 solo al momento del swap, no al inicio
+- [ ] .product-card__img tiene height: auto en CSS
+- [ ] favicon.ico existe y está referenciado en el head
+- [ ] Lighthouse corrido de forma SECUENCIAL (no paralela)
+
+---
+
+## Errores Críticos Confirmados en Producción
+
+Patrones que causaron regresiones reales en DAM Vertex. Cada uno tiene un fix confirmado.
+
+---
+
+### ❌ ERROR 1 — width/height en `<img>` de cards dinámicas
+
+**Problema:** Agregar `height="1118"` como atributo HTML a imágenes en grids dinámicos suprime el CSS `aspect-ratio` y agranda las cards visualmente. El atributo HTML actúa como UA style (`height: 1118px`) y gana contra `aspect-ratio` cuando el CSS no tiene `height` explícito.
+
+**Solución correcta:**
+```css
+.product-card__img {
+  width: 100%;
+  height: auto;        /* OBLIGATORIO: override del atributo HTML */
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  object-position: center top;
+}
+```
+- Mantener `width` y `height` en el `<img>` para prevenir CLS
+- `height: auto` en el CSS siempre — sin excepción
+
+---
+
+### ❌ ERROR 2 — Google Maps en el critical path
+
+**Problema:** Cargar `location-picker.js` en el `<head>` o con `<link rel="preload">` arrastra 411KB de Google Maps API al critical path. LCP pasa de ~2s a 7s+ porque el browser no puede pintar el hero hasta que Maps termina de parsear y ejecutar. Incluso `dns-prefetch` a `maps.googleapis.com` agrava el problema.
+
+**Solución correcta — patrón lazy inject obligatorio:**
+```javascript
+(function() {
+  var mapsLoaded = false;
+  function loadLocationPicker() {
+    if (mapsLoaded) return;
+    mapsLoaded = true;
+    var s = document.createElement('script');
+    s.src = '/assets/js/location-picker.js?v=XX';
+    document.head.appendChild(s);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    var input = document.querySelector('#m-location, #cm-location, [data-location]');
+    if (input) {
+      input.addEventListener('focus', loadLocationPicker, {once: true});
+      input.addEventListener('click', loadLocationPicker, {once: true});
+    }
+  });
+})();
+```
+
+Reglas:
+- NUNCA preload de `location-picker.js`
+- NUNCA `dns-prefetch` ni `preconnect` a `maps.googleapis.com`
+- Cargar solo cuando el usuario hace focus o click en el campo de ubicación
+
+---
+
+### ❌ ERROR 3 — products.js en el critical path
+
+**Problema:** `<link rel="preload">` de `products.js` (266KB) en el `<head>` compite con el hero image por ancho de banda. Aunque tenga `defer`, el preload lo descarga con alta prioridad. Combinado con LCP-blocking, puede sumar 1–2s adicionales al LCP.
+
+**Solución correcta:**
+- NUNCA `<link rel="preload">` para `products.js`
+- Usar `<script src="/assets/js/products.js?vXX" defer>` al final del body
+- Si el producto puede estar agotado: conditional loader verificando estado del CTA
+- **IMPORTANTE:** No usar click-triggered lazy inject para `products.js` si hay código en `DOMContentLoaded` que llama a `DV.initForm()` u otras funciones de products.js. El inject dinámico es async y no garantiza que products.js esté listo cuando dispara DOMContentLoaded.
+
+---
+
+### ❌ ERROR 4 — Grid dinámico con `opacity:0` desde el inicio
+
+**Problema:** Ocultar el grid estático con `opacity:0` antes del fetch hace que el browser no pueda encontrar el LCP element hasta que el fetch resuelve. LCP pasa de 1.4s a 2.6s+.
+
+**Solución correcta:**
+```javascript
+// MAL — opacity:0 bloquea LCP
+grid.style.opacity = '0';
+fetch('/api/products').then(data => {
+  grid.innerHTML = buildCards(data);
+  grid.style.opacity = '1';
+});
+
+// BIEN — opacity:0 solo justo antes del swap
+fetch('/api/products').then(data => {
+  grid.style.opacity = '0';          // solo aquí, dentro del .then()
+  grid.innerHTML = buildCards(data);
+  requestAnimationFrame(() => { grid.style.opacity = '1'; });
+}).catch(() => {
+  /* NO tocar opacity — fallback estático permanece visible */
+});
+```
+
+---
+
+### ❌ ERROR 5 — Lighthouse en paralelo da TBT falso
+
+**Problema:** Correr 5 instancias de Lighthouse simultáneamente comparte CPU y produce TBT inflado artificialmente (ejemplo confirmado: 630ms → 1529ms).
+
+**Solución:** Siempre correr Lighthouse de forma secuencial:
+```powershell
+npx lighthouse https://damvertex.com --output=json --output-path=./lh-home.json --chrome-flags="--headless --no-sandbox" --only-categories=performance,accessibility,best-practices,seo --quiet 2>$null
+npx lighthouse https://damvertex.com/cadena/ --output=json --output-path=./lh-cadena.json ...
+# etc — un comando por URL, en secuencia
+```
+
+---
+
+### ✅ Patrones correctos confirmados en producción
+
+- **CSS minificado:** `npx csso-cli styles.css --output styles.min.css` → 23% reducción. Aplicar a todas las landings y referenciar con `?v=XX`.
+- **Favicon:** siempre incluir `<link rel="icon" href="/favicon.ico">` y asegurar que `/favicon.ico` exista — un 404 penaliza Best Practices.
+- **JSON-LD:** Product schema + FAQPage schema en todas las landings → SEO 100.
+- **`<main>` landmark:** obligatorio en todas las páginas — `landmark-one-main` es audit con weight=3.
+- **Imágenes de cards dinámicas:** `DV_CARD_DIMS` con `width`/`height` en el `<img>` + `height: auto` en CSS.
+- **Preload hero image:** `<link rel="preload" as="image" href="/assets/img/hero.webp" fetchpriority="high" type="image/webp">` — crítico para LCP.

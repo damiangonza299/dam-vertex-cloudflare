@@ -137,5 +137,6 @@ Toda decisión de diseño debe respetar:
 - Animaciones con `prefers-reduced-motion`
 - Contraste mínimo 4.5:1 para texto normal
 - No usar `document.write` ni scripts síncronos
+- Scripts de terceros (Maps, analytics, widgets) NUNCA en el critical path. Usar lazy injection on user interaction. Ver patrones en: `AI_SYSTEM/skills/lighthouse-geo-standards.md` sección **Errores Críticos Confirmados en Producción**.
 
 Ver checklist completo en: `AI_SYSTEM/skills/lighthouse-geo-standards.md`

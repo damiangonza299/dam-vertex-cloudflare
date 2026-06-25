@@ -98,6 +98,24 @@ Toda landing generada desde Product Studio debe cumplir `AI_SYSTEM/skills/lighth
 
 Referencia: `AI_SYSTEM/skills/lighthouse-geo-standards.md`
 
+### Scripts de terceros — reglas obligatorias
+
+- **Google Maps / location-picker:** SIEMPRE lazy inject on user interaction (focus/click en el input). NUNCA preload, NUNCA dns-prefetch a maps.googleapis.com. Ver patrón en `lighthouse-geo-standards.md` ERROR 2.
+- **products.js:** SIEMPRE con `defer` al final del body, NUNCA con `<link rel="preload">` en head. Si el script contiene funciones llamadas en `DOMContentLoaded`, usar `defer` garantiza que esté disponible — el inject dinámico (async) NO lo garantiza.
+- **Cualquier script >50KB:** evaluar si puede ser lazy. Si no es crítico para el LCP, no va en el critical path.
+- **Regla de oro:** `<link rel="preload">` solo para el hero image y el CSS principal. Nada más.
+
+### Checklist anti-regresión (ejecutar antes de cada deploy)
+
+- [ ] `location-picker.js` NO tiene preload ni dns-prefetch a maps.googleapis.com
+- [ ] `products.js` NO tiene `<link rel="preload">` en head
+- [ ] Grid dinámico: `opacity:0` solo al momento del swap, NO al inicio del script
+- [ ] `.product-card__img` tiene `height: auto` en CSS (no solo width/height en HTML)
+- [ ] `favicon.ico` existe en `/public/favicon.ico` y está referenciado en el `<head>`
+- [ ] Lighthouse corrido de forma SECUENCIAL (no paralela) — TBT paralelo es falso
+- [ ] `<main>` landmark presente en el HTML
+- [ ] `styles.min.css` referenciado (no `styles.css` sin minificar)
+
 ---
 
 ## Blueprint V3 — Estructura de Landing Profesional
