@@ -274,6 +274,35 @@ npx lighthouse https://damvertex.com/cadena/ --output=json --output-path=./lh-ca
 - SIEMPRE usar el patrón lazy inject + onload mostrado arriba
 - El flujo completo: usuario tipea ciudad → sugerencias aparecen → usuario selecciona → pin aparece en mapa → link generado → link llega a WhatsApp y Telegram con coordenadas exactas
 
+**Si la landing tiene múltiples modales (order-modal + combo-modal):**
+
+El MutationObserver de `loadLP()` debe observar TODOS los modales, no solo el principal. De lo contrario el mapa no aparece en el combo-modal si el usuario lo abre antes de haber tocado cualquier CTA del order-modal — porque `DV.initLocationPicker('cm', ...)` dentro de `openComboModal()` falla silenciosamente cuando Maps todavía no cargó, y nadie lo reintenta.
+
+```javascript
+// Agregar dentro del DOMContentLoaded del IIFE de loadLP():
+var comboBtn = document.getElementById('open-combo-modal');
+if (comboBtn) comboBtn.addEventListener('click', loadLP);
+var comboModal = document.getElementById('combo-modal');
+if (comboModal) {
+  new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      if (m.target.classList.contains('active')) loadLP();
+    });
+  }).observe(comboModal, { attributes: true, attributeFilter: ['class'] });
+}
+
+// Y en el onload de location-picker.js, también inicializar combo si está activo:
+s.onload = function() {
+  if (typeof DV.initLocationPicker === 'function') {
+    DV.initLocationPicker('m', window.DV_MAPS_KEY || '');
+    var cm = document.getElementById('combo-modal');
+    if (cm && cm.classList.contains('active')) {
+      DV.initLocationPicker('cm', window.DV_MAPS_KEY || '');
+    }
+  }
+};
+```
+
 ### products.js
 
 - Siempre `defer`, nunca `preload`, nunca lazy inject

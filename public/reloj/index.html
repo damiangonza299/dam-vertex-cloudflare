@@ -782,6 +782,10 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
     s.onload = function() {
       if (typeof DV.initLocationPicker === 'function') {
         DV.initLocationPicker('m', window.DV_MAPS_KEY || '');
+        var cm = document.getElementById('combo-modal');
+        if (cm && cm.classList.contains('active')) {
+          DV.initLocationPicker('cm', window.DV_MAPS_KEY || '');
+        }
       }
     };
     document.head.appendChild(s);
@@ -797,6 +801,16 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
           if (m.target.classList.contains('active')) loadLP();
         });
       }).observe(modal, { attributes: true, attributeFilter: ['class'] });
+    }
+    var comboBtn = document.getElementById('open-combo-modal');
+    if (comboBtn) comboBtn.addEventListener('click', loadLP);
+    var comboModal = document.getElementById('combo-modal');
+    if (comboModal) {
+      new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          if (m.target.classList.contains('active')) loadLP();
+        });
+      }).observe(comboModal, { attributes: true, attributeFilter: ['class'] });
     }
   });
 })();
