@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product Studio — DAM Vertex</title>
+<title>Product Studio — Dam Vertex</title>
 <style>
 :root {
   --bg:         #0a0a0f;
@@ -222,7 +222,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <!-- Login -->
 <div id="login-screen">
   <h2>Product Studio</h2>
-  <p style="font-size:12px;color:var(--muted)">DAM Vertex — Workspace de productos</p>
+  <p style="font-size:12px;color:var(--muted)">Dam Vertex — Workspace de productos</p>
   <input type="password" id="pw-input" placeholder="Admin password" autocomplete="current-password">
   <button onclick="doLogin()">Ingresar</button>
   <span id="login-error"></span>
@@ -233,7 +233,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div id="sidebar">
     <div id="sidebar-header">
       <h1>Product Studio</h1>
-      <p>DAM Vertex</p>
+      <p>Dam Vertex</p>
     </div>
     <button id="new-product-btn" onclick="openNewProduct()">+ Nuevo producto</button>
     <div id="product-list"></div>
@@ -634,7 +634,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         <!-- TAB: Sync -->
         <div class="tab-pane" id="tab-sync">
           <div class="sync-card">
-            <h4>Estado en DAM Vertex</h4>
+            <h4>Estado en Dam Vertex</h4>
             <div class="sync-row"><span class="sr-label">Producto en D1</span><span class="sr-value" id="sync-vertex-status">—</span></div>
             <div class="sync-row"><span class="sr-label">Slug</span><span class="sr-value" id="sync-slug">—</span></div>
             <div class="sync-row"><span class="sr-label">Activo en ventas</span><span class="sr-value" id="sync-active">—</span></div>
@@ -642,12 +642,12 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
           </div>
 
           <div class="sync-card">
-            <h4>DAM Finanzas</h4>
+            <h4>Dam Finanzas</h4>
             <div class="sync-row"><span class="sr-label">Estado de sync</span><span class="sr-value" id="sync-finanzas-status">—</span></div>
             <div class="sync-row"><span class="sr-label">ID en Firestore</span><span class="sr-value" id="sync-finanzas-id" style="font-family:monospace;font-size:10px">—</span></div>
             <div class="sync-row"><span class="sr-label">Última nota</span><span class="sr-value" id="sync-finanzas-note">—</span></div>
             <div class="sync-actions">
-              <button class="sync-btn primary" id="sync-to-finanzas-btn" onclick="syncToFinanzas()">Sincronizar con DAM Finanzas</button>
+              <button class="sync-btn primary" id="sync-to-finanzas-btn" onclick="syncToFinanzas()">Sincronizar con Dam Finanzas</button>
               <button class="sync-btn green" id="activate-btn" onclick="activateProduct()">✓ Activar producto</button>
             </div>
             <div class="notice notice-info" style="margin-top:12px;font-size:11px">Al activar: el producto aparece en Venta Manual WhatsApp y queda disponible para pedidos.</div>
@@ -2028,7 +2028,7 @@ var SECTION_TEMPLATES = {
     var name = data.name, differ = data.differ || '', promise = data.promise || '';
     return '<section class="materiales" id="section-autoridad" data-bp-slot="autoridad">' +
       '<div style="max-width:700px;margin:0 auto;text-align:center">' +
-        '<p class="sec-label">Por qué DAM Vertex</p>' +
+        '<p class="sec-label">Por qué Dam Vertex</p>' +
         '<h2 class="sec-title" style="margin-bottom:28px">' + (differ || promise || name) + '</h2>' +
         '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:36px">' +
           '<div><div style="font-size:32px;font-weight:800;color:#fff">500+</div><div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px">pedidos entregados</div></div>' +
@@ -2061,7 +2061,7 @@ var SECTION_TEMPLATES = {
       '<div style="max-width:900px;margin:0 auto;text-align:center;margin-bottom:36px">' +
         '<p class="sec-label">Clientes</p>' +
         '<h2 class="sec-title" style="margin-bottom:10px">Lo que dicen de ' + name + '</h2>' +
-        '<p style="font-size:14px;color:rgba(255,255,255,.38)">Clientes reales de DAM Vertex.</p>' +
+        '<p style="font-size:14px;color:rgba(255,255,255,.38)">Clientes reales de Dam Vertex.</p>' +
       '</div>' +
       '<div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:16px">' + cards + '</div>' +
     '</section>';
@@ -2852,7 +2852,7 @@ function generateBrief() {
   md += '- Crear una landing **dedicada y con identidad visual propia** para **' + name + '**.\n';
   md += '- Usar las landings existentes solo como referencia estructural y de tracking.\n';
   md += '- Mantener: Pixel events, CAPI, InSync observers, modal funcional, sticky CTA, WhatsApp.\n';
-  md += '- Conectar al sistema de pedidos existente de DAM Vertex.\n';
+  md += '- Conectar al sistema de pedidos existente de Dam Vertex.\n';
   md += '- Mantener compatibilidad total con Dam Finanzas (reportes de ventas) y Admin.\n';
   md += '- Patrón psicológico a aplicar: **' + pattern + '**.\n\n';
 
@@ -2922,12 +2922,12 @@ function generateBrief() {
   md += '- [ ] WhatsApp button dispara con número correcto\n';
   md += '- [ ] Pixel ViewContent llega en Meta Events Manager\n';
   md += '- [ ] Pedido de prueba registra en Dam Finanzas\n';
-  md += '- [ ] No hay referencias visuales a otros productos de DAM Vertex\n';
+  md += '- [ ] No hay referencias visuales a otros productos de Dam Vertex\n';
   md += '- [ ] No quedan imágenes placeholder de la landing base\n';
   md += '- [ ] Producto aparece en Admin con datos correctos\n\n';
 
   md += '---\n';
-  md += '*Brief generado por Product Studio — DAM Vertex / ' + date + '*\n';
+  md += '*Brief generado por Product Studio — Dam Vertex / ' + date + '*\n';
 
   // Store + update UI
   window._briefMd = md;
@@ -3000,7 +3000,7 @@ function renderSyncTab(b) {
 
 async function syncToFinanzas() {
   if (!currentSlug) { alert('Guardá el producto primero'); return; }
-  logSync('Iniciando sincronización con DAM Finanzas…');
+  logSync('Iniciando sincronización con Dam Finanzas…');
   const btn = document.getElementById('sync-to-finanzas-btn');
   btn.disabled = true;
   const res  = await fetch('/api/product-registry', {
@@ -3187,7 +3187,7 @@ function renderChecklist(b) {
     { ok: !!st.main_promise,  label: 'Promesa principal definida' },
     { ok: st.benefits?.filter(Boolean).length >= 2, label: 'Al menos 2 beneficios' },
     { ok: !!vi.primary_color, label: 'Colores definidos' },
-    { ok: b.dam_finanzas_status === 'linked', label: 'Sincronizado con DAM Finanzas' },
+    { ok: b.dam_finanzas_status === 'linked', label: 'Sincronizado con Dam Finanzas' },
     { ok: b.status === 'active', label: 'Producto activado' },
   ];
   const el = document.getElementById('checklist-items');
