@@ -236,9 +236,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     }
 
-    /* Telegram — awaited for diagnostics, wrapped so it never breaks lead save */
-    console.log('Telegram env exists', !!env.TELEGRAM_BOT_TOKEN, !!env.TELEGRAM_CHAT_ID);
-    if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
+    /* Telegram — background, no bloquea la respuesta */
+    waitUntil((async () => {
+      if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
       try {
         const now         = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
         const variantText = formatVariantForTelegram(variant);
@@ -277,10 +277,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
       } catch (tgErr) {
         console.error('Telegram exception', tgErr.message);
       }
-    }
+    })());
 
-    /* CAPI QualifiedLead — una vez por insert D1 exitoso, fuente de verdad = backend */
-    if (env.META_PIXEL_ID && env.META_ACCESS_TOKEN) {
+    /* CAPI QualifiedLead — background, no bloquea la respuesta */
+    waitUntil((async () => {
+      if (!env.META_PIXEL_ID || !env.META_ACCESS_TOKEN) return;
       try {
         const ts  = Math.floor(Date.now() / 1000);
         const rnd = Math.random().toString(36).slice(2, 6);
@@ -334,7 +335,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
           },
         );
       } catch (_) {}
-    }
+    })());
 
     /* ── Notificar DAM Finanzas: actualizar shopifyOrdersTotal (Pedidos del día) ── */
     // leadDate was captured at the top of the request handler — same value used for operational_date_py.

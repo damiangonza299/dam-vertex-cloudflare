@@ -94,10 +94,19 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
   return encodeURIComponent(lines.join('\n'));
 }
 
+/* ── Fetch con timeout — AbortController ── */
+function fetchWithTimeout(url, options, ms) {
+  ms = ms || 8000;
+  var controller = new AbortController();
+  var timer = setTimeout(function() { controller.abort(); }, ms);
+  return fetch(url, Object.assign({}, options, { signal: controller.signal }))
+    .finally(function() { clearTimeout(timer); });
+}
+
 /* ── Stock helpers ── */
 async function checkProductStock(slug, qty, variant) {
   try {
-    const res = await fetch(`/api/product-stock?slug=${encodeURIComponent(slug)}`);
+    const res = await fetchWithTimeout(`/api/product-stock?slug=${encodeURIComponent(slug)}`, {}, 5000);
     if (!res.ok) return { ok: true };
 
     const data = await res.json();
@@ -604,7 +613,7 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
       try {
         const client = typeof getClientData === 'function' ? getClientData() : {};
         const attr   = typeof DV.getAttribution === 'function' ? DV.getAttribution() : {};
-        const res = await fetch('/api/leads', {
+        const res = await fetchWithTimeout('/api/leads', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({
@@ -706,7 +715,7 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
 
       /* 1 â Guardar lead */
       const attr   = typeof DV.getAttribution === 'function' ? DV.getAttribution() : {};
-      const res = await fetch('/api/leads', {
+      const res = await fetchWithTimeout('/api/leads', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({
