@@ -36,7 +36,10 @@ export async function onRequestGet({ request, env }) {
   const level = url.searchParams.get('level') || 'ad'; // ad | adset | campaign
 
   const marketingToken = env.META_MARKETING_TOKEN;
-  const rawAccountId   = env.META_AD_ACCOUNT_ID || '';
+  const account        = url.searchParams.get('account') === 'pyg' ? 'pyg' : 'usd';
+  const rawAccountId   = account === 'pyg'
+    ? (env.META_AD_ACCOUNT_ID_PYG || '')
+    : (env.META_AD_ACCOUNT_ID || '');
   const adAccountId    = rawAccountId.startsWith('act_') ? rawAccountId : `act_${rawAccountId}`;
 
   try {
@@ -135,7 +138,7 @@ export async function onRequestGet({ request, env }) {
       return a.metrics.garbage_score - b.metrics.garbage_score;
     });
 
-    return json({ ok: true, period: { since, until }, level, rows });
+    return json({ ok: true, account, period: { since, until }, level, rows });
 
   } catch (err) {
     console.error('CREATIVE_QUALITY_ERROR', err.message);

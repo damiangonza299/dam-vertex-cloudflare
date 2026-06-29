@@ -37,16 +37,20 @@ export async function onRequestGet({ request, env }) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 
+  /* Parámetros de fecha y cuenta */
+  const { searchParams } = new URL(request.url);
+  const account        = searchParams.get('account') === 'pyg' ? 'pyg' : 'usd';
   const marketingToken = env.META_MARKETING_TOKEN;
-  const rawAccountId   = env.META_AD_ACCOUNT_ID || '';
+  const rawAccountId   = account === 'pyg'
+    ? (env.META_AD_ACCOUNT_ID_PYG || '')
+    : (env.META_AD_ACCOUNT_ID || '');
   const adAccountId    = rawAccountId.startsWith('act_') ? rawAccountId : `act_${rawAccountId}`;
 
   if (!marketingToken || !rawAccountId) {
-    return json({ ok: false, error: 'META_MARKETING_TOKEN o META_AD_ACCOUNT_ID no configurados' }, 503);
+    return json({ ok: false, error: account === 'pyg'
+      ? 'META_MARKETING_TOKEN o META_AD_ACCOUNT_ID_PYG no configurados'
+      : 'META_MARKETING_TOKEN o META_AD_ACCOUNT_ID no configurados' }, 503);
   }
-
-  /* Parámetros de fecha */
-  const { searchParams } = new URL(request.url);
   const today      = new Date().toISOString().split('T')[0];
   const thirtyAgo  = new Date(Date.now() - 30 * 86_400_000).toISOString().split('T')[0];
   const since = searchParams.get('since') || thirtyAgo;
@@ -133,6 +137,7 @@ export async function onRequestGet({ request, env }) {
 
     return json({
       ok:     true,
+      account,
       period: { since, until },
       rows,
       alerts,

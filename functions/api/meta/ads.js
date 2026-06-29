@@ -35,19 +35,23 @@ export async function onRequestGet({ request, env }) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 
+  const { searchParams } = new URL(request.url);
+  const account        = searchParams.get('account') === 'pyg' ? 'pyg' : 'usd';
   const marketingToken = env.META_MARKETING_TOKEN;
-  const rawAccountId   = env.META_AD_ACCOUNT_ID || '';
+  const rawAccountId   = account === 'pyg'
+    ? (env.META_AD_ACCOUNT_ID_PYG || '')
+    : (env.META_AD_ACCOUNT_ID || '');
   const adAccountId    = rawAccountId.startsWith('act_') ? rawAccountId : `act_${rawAccountId}`;
 
   if (!marketingToken || !rawAccountId) {
     return json({
       ok: false,
-      error: 'META_MARKETING_TOKEN o META_AD_ACCOUNT_ID no configurados',
+      error: account === 'pyg'
+        ? 'META_MARKETING_TOKEN o META_AD_ACCOUNT_ID_PYG no configurados'
+        : 'META_MARKETING_TOKEN o META_AD_ACCOUNT_ID no configurados',
       hint: 'Configurar en Cloudflare Dashboard > Settings > Environment Variables',
     }, 503);
   }
-
-  const { searchParams } = new URL(request.url);
   const campaignId = searchParams.get('campaign_id') || null;
   const statusFilter = searchParams.get('status') || null;
 
@@ -84,7 +88,7 @@ export async function onRequestGet({ request, env }) {
       return json({ ok: false, meta_error: data.error }, res.status);
     }
 
-    return json({ ok: true, ads: data.data, paging: data.paging });
+    return json({ ok: true, account, ads: data.data, paging: data.paging });
 
   } catch (err) {
     return json({ ok: false, error: err.message }, 500);

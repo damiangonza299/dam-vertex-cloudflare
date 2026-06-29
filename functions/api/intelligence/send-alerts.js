@@ -108,8 +108,10 @@ export async function onRequestPost({ request, env }) {
     let metaSpendMap = new Map();
     let activeFilterReason = null; // motivo si activeAdIds queda null: TOKEN_MISSING | META_ERROR | NETWORK_ERROR | RATE_LIMIT
 
-    if (env.META_MARKETING_TOKEN && env.META_AD_ACCOUNT_ID) {
-      const rawAccId = String(env.META_AD_ACCOUNT_ID);
+    const account  = url.searchParams.get('account') === 'pyg' ? 'pyg' : 'usd';
+    const _accRaw  = account === 'pyg' ? env.META_AD_ACCOUNT_ID_PYG : env.META_AD_ACCOUNT_ID;
+    if (env.META_MARKETING_TOKEN && _accRaw) {
+      const rawAccId = String(_accRaw);
       const accId    = rawAccId.startsWith('act_') ? rawAccId : `act_${rawAccId}`;
 
       // 1. IDs de anuncios activos (para filtrar creativos inactivos en el motor)

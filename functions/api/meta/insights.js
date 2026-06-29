@@ -37,19 +37,23 @@ export async function onRequestGet({ request, env }) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 
+  const { searchParams } = new URL(request.url);
+  const account        = searchParams.get('account') === 'pyg' ? 'pyg' : 'usd';
   const marketingToken = env.META_MARKETING_TOKEN;
-  const rawAccountId   = env.META_AD_ACCOUNT_ID || '';
+  const rawAccountId   = account === 'pyg'
+    ? (env.META_AD_ACCOUNT_ID_PYG || '')
+    : (env.META_AD_ACCOUNT_ID || '');
   const adAccountId    = rawAccountId.startsWith('act_') ? rawAccountId : `act_${rawAccountId}`;
 
   if (!marketingToken || !rawAccountId) {
     return json({
       ok: false,
-      error: 'META_MARKETING_TOKEN o META_AD_ACCOUNT_ID no configurados',
+      error: account === 'pyg'
+        ? 'META_MARKETING_TOKEN o META_AD_ACCOUNT_ID_PYG no configurados'
+        : 'META_MARKETING_TOKEN o META_AD_ACCOUNT_ID no configurados',
       hint: 'Configurar en Cloudflare Dashboard > Settings > Environment Variables',
     }, 503);
   }
-
-  const { searchParams } = new URL(request.url);
 
   /* Rango de fechas — por defecto últimos 7 días */
   const today = new Date().toISOString().split('T')[0];
@@ -119,6 +123,7 @@ export async function onRequestGet({ request, env }) {
 
     return json({
       ok:      true,
+      account,
       period:  { since, until },
       level,
       insights: enriched,
