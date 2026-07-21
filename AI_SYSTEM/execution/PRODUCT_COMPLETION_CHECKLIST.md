@@ -141,6 +141,15 @@ Secciones estándar:
 - [ ] `user_data` incluye teléfono (hasheado), IP y user_agent
 - [ ] No se disparan eventos CAPI incorrectos o inexistentes para este producto
 
+### 13b. SEÑALES META — OBLIGATORIO VERIFICAR ANTES DE DEPLOY
+
+- [ ] `fbp` y `fbc` se capturan via `getClientData()` de `tracking.js` en el submit handler (no antes)
+- [ ] El POST a `/api/leads` incluye `fbp: client.fbp || null` y `fbc: client.fbc || null` (nunca string vacío `''`)
+- [ ] `email` **no está hardcodeado como string vacío** — si no hay campo email, el campo se omite del POST
+- [ ] `value` enviado es el precio real seleccionado (precio base + express si aplica), nunca `0` ni valor fijo
+- [ ] `product_slug` en el POST coincide exactamente con `products.slug` en D1
+- [ ] Verificar en Meta Events Manager que `Purchase` llega con Match Quality ≥ 7/10 después del primer deploy
+
 ---
 
 ## 14. Product Registry

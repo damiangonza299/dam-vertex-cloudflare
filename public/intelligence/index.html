@@ -400,8 +400,21 @@ tr:hover td{background:var(--bg3)}
 </div><!-- /main -->
 
 <script>
-/* ── Estado global ── */
+/* ── Estado global ──
+   TOKEN  → JWT de sesión, 8h (ver /api/admin-login).
+   DEVICE → JWT de "dispositivo conocido", 30 días — se canjea por una
+   sesión nueva en /api/admin-refresh sin volver a pedir contraseña. */
+/* Valida forma de JWT (header.body.signature) — descarta cualquier valor viejo
+   guardado por la versión anterior del login (guardaba la contraseña cruda). */
+function isValidJWT(t) {
+  return typeof t === 'string' && t.split('.').length === 3;
+}
+
 let TOKEN = localStorage.getItem('dam_intel_token') || '';
+if (!isValidJWT(TOKEN)) {
+  localStorage.removeItem('dam_intel_token');
+  TOKEN = '';
+}
 let DATA  = {};
 
 /* ── Auth ── */
@@ -410,25 +423,61 @@ document.getElementById('auth-input').addEventListener('keydown', e => { if(e.ke
 async function doAuth() {
   const pw = document.getElementById('auth-input').value.trim();
   if (!pw) return;
-  // Verificar con un endpoint real
-  const r = await fetch('/api/intelligence/buyer-quality?limit=1', {
-    headers: { Authorization: 'Bearer ' + pw }
-  }).catch(() => ({ ok: false }));
-  if (r.status === 200 || r.ok) {
-    TOKEN = pw;
-    localStorage.setItem('dam_intel_token', pw);
-    document.getElementById('auth-overlay').style.display = 'none';
-    initDates();
-    loadAll();
-  } else {
-    document.getElementById('auth-error').textContent = 'Contraseña incorrecta.';
+  try {
+    const r    = await fetch('/api/admin-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (r.ok && data.token) {
+      TOKEN = data.token;
+      localStorage.setItem('dam_intel_token', data.token);
+      if (data.deviceToken) localStorage.setItem('dam_intel_device', data.deviceToken);
+      document.getElementById('auth-overlay').style.display = 'none';
+      initDates();
+      loadAll();
+    } else {
+      document.getElementById('auth-error').textContent = 'Contraseña incorrecta.';
+    }
+  } catch (_) {
+    document.getElementById('auth-error').textContent = 'Error de conexión.';
   }
+}
+
+/* Canjea el JWT de dispositivo (si existe) por una sesión nueva, sin pedir
+   contraseña. Devuelve true si logró renovar la sesión. */
+async function tryDeviceRefresh() {
+  const deviceToken = localStorage.getItem('dam_intel_device') || '';
+  if (!isValidJWT(deviceToken)) { localStorage.removeItem('dam_intel_device'); return false; }
+  try {
+    const res  = await fetch('/api/admin-refresh', {
+      method:  'POST',
+      headers: { 'Authorization': `Bearer ${deviceToken}` },
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.token) {
+      TOKEN = data.token;
+      localStorage.setItem('dam_intel_token', data.token);
+      return true;
+    }
+  } catch (_) {}
+  localStorage.removeItem('dam_intel_device');
+  return false;
 }
 
 if (TOKEN) {
   document.getElementById('auth-overlay').style.display = 'none';
   initDates();
   loadAll();
+} else {
+  tryDeviceRefresh().then(ok => {
+    if (ok) {
+      document.getElementById('auth-overlay').style.display = 'none';
+      initDates();
+      loadAll();
+    }
+  });
 }
 
 /* ── Fechas ── */
@@ -486,7 +535,18 @@ async function loadActiveProducts() {
 
 /* ── Fetch helper ── */
 async function apiFetch(path) {
-  const r = await fetch(path, { headers: { Authorization: 'Bearer ' + TOKEN } });
+  let r = await fetch(path, { headers: { Authorization: 'Bearer ' + TOKEN } });
+  if (r.status === 401) {
+    if (await tryDeviceRefresh()) {
+      r = await fetch(path, { headers: { Authorization: 'Bearer ' + TOKEN } });
+    }
+    if (r.status === 401) {
+      localStorage.removeItem('dam_intel_token');
+      localStorage.removeItem('dam_intel_device');
+      TOKEN = '';
+      document.getElementById('auth-overlay').style.display = 'flex';
+    }
+  }
   if (!r.ok) throw new Error(await r.text());
   return r.json();
 }

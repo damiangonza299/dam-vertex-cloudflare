@@ -5,6 +5,8 @@
    PATCH             → admin   — actualizar stock
    ========================================================= */
 
+import { verifyAdminToken } from '../_lib/adminAuth.js';
+
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'GET, PATCH, OPTIONS',
@@ -40,9 +42,7 @@ export async function onRequestGet({ request, env }) {
 }
 
 export async function onRequestPatch({ request, env }) {
-  const auth  = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-  if (!token || token !== env.ADMIN_PASSWORD.trim()) {
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 
@@ -105,6 +105,7 @@ function parseProduct(row) {
     active:        row.active,
     updated_at:    row.updated_at,
     combo_apex_dorado_stock: row.combo_apex_dorado_stock ?? 0,
+    combo_apex_rosa_stock:   row.combo_apex_rosa_stock   ?? 0,
   };
 }
 

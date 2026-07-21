@@ -13,6 +13,7 @@
    ========================================================= */
 
 import { scoreLeadBQE, scoreToLabel, slugify, normalizePhone, STALE_DAYS, SCORE_VERSION } from './_bqe-scorer.js';
+import { verifyAdminToken } from '../../_lib/adminAuth.js';
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -25,8 +26,7 @@ export async function onRequestOptions() {
 }
 
 export async function onRequestPost({ request, env }) {
-  const token = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim();
-  if (!env.ADMIN_PASSWORD || token !== env.ADMIN_PASSWORD.trim()) {
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

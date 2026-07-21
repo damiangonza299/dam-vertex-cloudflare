@@ -16,14 +16,14 @@ const CORS = {
 };
 
 import { VIP_PYG, ALTO_VALOR_PYG, STALE_DAYS, SCORE_VERSION, scoreToLabel, slugify, isComboProduct } from './_bqe-scorer.js';
+import { verifyAdminToken } from '../../_lib/adminAuth.js';
 
 export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
 }
 
 export async function onRequestPost({ request, env }) {
-  const token = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim();
-  if (!env.ADMIN_PASSWORD || token !== env.ADMIN_PASSWORD.trim()) {
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

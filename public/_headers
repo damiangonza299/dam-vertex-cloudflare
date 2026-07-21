@@ -2,23 +2,39 @@
 # ── HTML — nunca cachear (ni browser ni CDN edge)
 /*
   Cache-Control: no-store
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
 
 # ── CSS versionado — cachear para siempre (el ?v= invalida automáticamente)
+# ! Cache-Control limpia el no-store heredado de /* antes de fijar el valor real
 /assets/css/*.css
-  Cache-Control: public, max-age=31536000
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
 
 # ── JS versionado — cachear para siempre
 /assets/js/*.js
-  Cache-Control: public, max-age=31536000
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
 
 # ── site-version.js — NUNCA cachear (es la fuente del número de versión)
 # esta regla va DESPUÉS de /assets/js/*.js para sobreescribirla
 /assets/js/site-version.js
+  ! Cache-Control
   Cache-Control: no-store
 
-# ── Imágenes y video — cachear para siempre
+# ── Imágenes — cachear para siempre
 /assets/img/*
-  Cache-Control: public, max-age=31536000
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
 
+# ── Video — cachear para siempre (mismo bug que CSS/JS/img: /* no-store se
+#    combinaba con esta regla; ! Cache-Control limpia el heredado)
 /assets/video/*
-  Cache-Control: public, max-age=31536000
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+
+# ── favicon — cachear para siempre
+/favicon.ico
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable

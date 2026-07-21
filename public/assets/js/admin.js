@@ -4,19 +4,31 @@
 
 const IS_DELIVERY = new URLSearchParams(location.search).get('mode') === 'delivery';
 
-/* ── Token persistence — 30 days ── */
-const TOKEN_KEY  = IS_DELIVERY ? 'dv_delivery_token' : 'dv_admin_token';
-const TOKEN_TS   = IS_DELIVERY ? 'dv_delivery_ts'    : 'dv_admin_ts';
-const MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+/* ── Token persistence ──
+   AUTH_TOKEN  → sesión JWT, 8h (ver /api/admin-login).
+   DEVICE_KEY  → JWT de "dispositivo conocido", 30 días. No sirve para leer
+   datos — solo se canjea por una sesión nueva en /api/admin-refresh, para
+   no pedir contraseña de nuevo en el mismo browser cuando la sesión expira. */
+const TOKEN_KEY  = IS_DELIVERY ? 'dv_delivery_token'  : 'dv_admin_token';
+const TOKEN_TS   = IS_DELIVERY ? 'dv_delivery_ts'     : 'dv_admin_ts';
+const DEVICE_KEY = IS_DELIVERY ? 'dv_delivery_device' : 'dv_admin_device';
+const MAX_AGE_MS = 8 * 60 * 60 * 1000;
+
+/* Valida forma de JWT (header.body.signature) — descarta cualquier valor viejo
+   guardado por versiones anteriores del login (ej. la contraseña cruda). */
+function isValidJWT(t) {
+  return typeof t === 'string' && t.split('.').length === 3;
+}
 
 function loadToken() {
   const ts = parseInt(localStorage.getItem(TOKEN_TS) || '0');
-  if (Date.now() - ts > MAX_AGE_MS) {
+  const t  = localStorage.getItem(TOKEN_KEY) || '';
+  if (!isValidJWT(t) || Date.now() - ts > MAX_AGE_MS) {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(TOKEN_TS);
     return '';
   }
-  return localStorage.getItem(TOKEN_KEY) || '';
+  return t;
 }
 
 function saveToken(t) {
@@ -27,6 +39,35 @@ function saveToken(t) {
 function clearToken() {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(TOKEN_TS);
+}
+
+function saveDeviceToken(t) {
+  if (t) localStorage.setItem(DEVICE_KEY, t);
+}
+
+function forgetDevice() {
+  localStorage.removeItem(DEVICE_KEY);
+}
+
+/* Canjea el JWT de dispositivo (si existe) por una sesión nueva, sin pedir
+   contraseña. Devuelve true si logró renovar la sesión. */
+async function tryDeviceRefresh() {
+  const deviceToken = localStorage.getItem(DEVICE_KEY) || '';
+  if (!isValidJWT(deviceToken)) { forgetDevice(); return false; }
+  try {
+    const res  = await fetch('/api/admin-refresh', {
+      method:  'POST',
+      headers: { 'Authorization': `Bearer ${deviceToken}` },
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.token) {
+      AUTH_TOKEN = data.token;
+      saveToken(data.token);
+      return true;
+    }
+  } catch (_) {}
+  forgetDevice();
+  return false;
 }
 
 let AUTH_TOKEN       = loadToken();
@@ -100,7 +141,10 @@ if (IS_DELIVERY) {
     loadLeads();
     _scanIntelligence();
   } else {
-    showLogin();
+    tryDeviceRefresh().then(ok => {
+      if (ok) { showPanel(); loadLeads(); _scanIntelligence(); }
+      else    { showLogin(); }
+    });
   }
   // Refrescar leads cada 90 s cuando el tab está visible (sincroniza todos los dispositivos tras el scan)
   setInterval(() => { if (!document.hidden && AUTH_TOKEN) loadLeads(); }, 90000);
@@ -170,19 +214,27 @@ document.getElementById('login-btn')?.addEventListener('click', async () => {
   const err = document.getElementById('login-err');
   if (!pw) return;
 
-  const res = await fetch('/api/admin-leads', {
-    headers: { 'Authorization': `Bearer ${pw}` },
-  });
+  try {
+    const res  = await fetch('/api/admin-login', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ password: pw }),
+    });
+    const data = await res.json().catch(() => ({}));
 
-  if (res.ok) {
-    AUTH_TOKEN = pw;
-    saveToken(pw);
-    showPanel();
-    const data = await res.json();
-    renderLeads(data.leads || []);
-  } else {
+    if (res.ok && data.token) {
+      AUTH_TOKEN = data.token;
+      saveToken(data.token);
+      saveDeviceToken(data.deviceToken);
+      showPanel();
+      loadLeads();
+    } else {
+      err.classList.add('visible');
+      err.textContent = 'Contraseña incorrecta';
+    }
+  } catch (_) {
     err.classList.add('visible');
-    err.textContent = 'Contraseña incorrecta';
+    err.textContent = 'Error de conexión';
   }
 });
 
@@ -192,6 +244,7 @@ document.getElementById('login-password')?.addEventListener('keydown', e => {
 
 document.getElementById('logout-btn')?.addEventListener('click', () => {
   clearToken();
+  forgetDevice();
   AUTH_TOKEN = '';
   location.reload();
 });
@@ -203,7 +256,10 @@ async function loadLeads() {
       fetch('/api/admin-leads',       { headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` } }),
       fetch('/api/blocked-customers', { headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` } }),
     ]);
-    if (leadsRes.status === 401) { clearToken(); location.reload(); return; }
+    if (leadsRes.status === 401) {
+      if (await tryDeviceRefresh()) return loadLeads();
+      clearToken(); location.reload(); return;
+    }
     const data        = await leadsRes.json();
     const blockedData = await blockedRes.json().catch(() => ({}));
     _blockedPhones = new Set(
@@ -816,7 +872,14 @@ function fmtCompact(n) {
   return String(v);
 }
 function fmt(n)    { return 'Gs. ' + Number(n || 0).toLocaleString('es-PY'); }
-function esc(s)    { return (s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function esc(s) {
+  return (s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
 function shortName(s) {
   const parts = (s || '').trim().split(/\s+/);
   if (parts.length <= 2) return esc(s);

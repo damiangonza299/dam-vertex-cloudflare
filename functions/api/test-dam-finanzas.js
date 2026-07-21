@@ -7,6 +7,8 @@
    Protegido con Authorization: Bearer {ADMIN_PASSWORD}
    ========================================================= */
 
+import { verifyAdminToken } from '../_lib/adminAuth.js';
+
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -18,9 +20,7 @@ export async function onRequestOptions() {
 }
 
 export async function onRequestPost({ request, env }) {
-  const auth  = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-  if (!token || token !== env.ADMIN_PASSWORD.trim()) {
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

@@ -5,6 +5,8 @@
    DELETE → desbloquear por id de bloqueo (admin)
    ========================================================= */
 
+import { verifyAdminToken } from '../_lib/adminAuth.js';
+
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
@@ -17,7 +19,7 @@ export async function onRequestOptions() {
 
 /* ── GET — listar todos los bloqueos ── */
 export async function onRequestGet({ request, env }) {
-  if (!isAuthorized(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+  if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   try {
     const { results } = await env.DB.prepare(
@@ -32,7 +34,7 @@ export async function onRequestGet({ request, env }) {
 
 /* ── POST — crear bloqueo desde lead_id O teléfono manual ── */
 export async function onRequestPost({ request, env }) {
-  if (!isAuthorized(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+  if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   try {
     const body               = await request.json();
@@ -119,7 +121,7 @@ export async function onRequestPost({ request, env }) {
 
 /* ── DELETE — desbloquear por id ── */
 export async function onRequestDelete({ request, env }) {
-  if (!isAuthorized(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+  if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   try {
     const url = new URL(request.url);
@@ -145,12 +147,6 @@ export async function onRequestDelete({ request, env }) {
 }
 
 /* ── Helpers ── */
-function isAuthorized(request, env) {
-  const auth  = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-  return token && token === env.ADMIN_PASSWORD.trim();
-}
-
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,

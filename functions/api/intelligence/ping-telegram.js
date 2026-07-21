@@ -11,6 +11,8 @@
      TELEGRAM_INTELLIGENCE_CHAT_ID
    ========================================================= */
 
+import { verifyAdminToken } from '../../_lib/adminAuth.js';
+
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -22,8 +24,7 @@ export async function onRequestOptions() {
 }
 
 export async function onRequestPost({ request, env }) {
-  const token = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim();
-  if (!env.ADMIN_PASSWORD || token !== env.ADMIN_PASSWORD.trim()) {
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

@@ -310,6 +310,7 @@ Toda landing nueva debe cumplir estos 4 puntos en su modal de pedido. **No decla
    - 3 unidades con badge `Mayor ahorro`
 3. **Badges de combo** — colores coherentes con el color de acento de la landing.
 4. **Espaciado consistente** — todos los bloques secundarios (Envío express, Necesito factura, futuros upsells) deben tener el mismo margen entre sí. Prohibido `margin-top` distinto por bloque.
+5. **Ahorro en Gs. exactos, nunca porcentaje** — en combos de 2 y 3 unidades (mismo producto), el texto de descuento siempre muestra el monto real: `Ahorrás Gs. 32.250`. Prohibido `"25% OFF"` / `"Ahorrás 25%"` en ese tipo de combo. Cálculo: `(precio unitario × cantidad) − precio del combo`, formateado con puntos de miles. No aplica a combos cruzados de productos distintos (ej. Reloj + Cadena) ni a badges de precio de 1 unidad — esos sí pueden usar porcentaje.
 
 ---
 
@@ -333,6 +334,58 @@ AI_SYSTEM/skills/insync-cro.md         ← extracción de patrones históricos
 AI_SYSTEM/skills/product-studio.md     ← checklist pre-código + regla de testimonios
 AI_SYSTEM/skills/pagina-ventas.md      ← frameworks de copy + regla patrones vs copia
 ```
+
+---
+
+## REGLA CRÍTICA — Señales Meta CAPI en toda landing nueva
+
+Toda landing nueva DEBE cumplir estos requisitos antes de considerarse terminada.
+
+### CHECKLIST DE SEÑALES META
+
+- `tracking.js` cargado antes del submit (via `<script defer>` o antes del cierre de `</body>`)
+- `getClientData()` llamado en el momento del submit (no antes — para dar tiempo al pixel de setear `_fbp`)
+- `fbp` y `fbc` incluidos en el POST a `/api/leads` (`client.fbp || null` y `client.fbc || null`)
+- `ip` y `user_agent` se capturan automáticamente en el servidor — no requieren acción en el frontend
+- Si el formulario tiene campo email → incluirlo en el POST; **nunca hardcodear `email: ''`**
+- `product_slug` correcto en el POST (debe coincidir con `products.slug` en D1)
+- `value` correcto en el POST (precio real seleccionado por el usuario, no `0` ni valor fijo hardcodeado)
+
+### PROHIBIDO
+
+- `email: ''` hardcodeado — si no hay campo email en el formulario, **omitir el campo completamente** del POST
+- `fbp: client.fbp || ''` — nunca enviar string vacío; usar `client.fbp || null`
+- `fbc: client.fbc || ''` — ídem; usar `client.fbc || null`
+- Llamar `getClientData()` al cargar la página o al abrir el modal — debe ser en el submit handler
+
+### Estado actual (2026-06)
+
+- `tracking.js` ya implementa `getCookie('_fbp')`, `getFbc()` y `getClientData()` correctamente
+- `products.js` y los submits inline de cadena/reloj ya usan `client.fbp || ''` — **pendiente migrar a `|| null`**
+- `functions/api/leads.js` ya guarda `fbp` y `fbc` en D1 con `fbp || null`
+- `functions/api/confirm-purchase.js` ya lee fbp/fbc de D1 e incluye en el evento Purchase CAPI
+
+---
+
+## REGLA — Customer Data para ViewContent
+
+Después de cualquier submit exitoso de formulario en una landing:
+
+1. Llamar `DV.saveLeadDataLocal(phone, name, email)` de `tracking.js`.
+2. Esto enriquece automáticamente el próximo `ViewContent` de esa persona (vía `lead_hashed` en `/api/meta-event`).
+3. **`saveLeadDataLocal` hashea con SHA-256 antes de guardar — nunca persistir phone/name/email en crudo en localStorage.** Solo se guarda el hash; Meta recibe el mismo hash de cualquier forma, así que el match quality es idéntico. Guardar el dato real sin hashear expondría PII de cada visitante ante XSS o browsers compartidos durante 90 días — no hacerlo nunca, sin excepción.
+4. Los datos expiran automáticamente a los 90 días.
+5. Toda landing nueva debe incluir esta llamada después del submit exitoso — si usa el formulario compartido (`DV.initForm` de `products.js`), ya está cubierto automáticamente y no requiere código adicional por landing.
+
+### Causa real de match quality baja
+
+La calidad de coincidencias en Meta Events Manager puede ser baja por:
+
+1. **Adblocker del usuario** → Meta pixel no carga → `_fbp` cookie no se setea → NULL en D1
+2. **Tráfico sin fbclid** (orgánico, directo, WhatsApp) → `_fbc` nunca se genera → NULL en D1
+3. **Email no recolectado** → `em` ausente del payload CAPI (impacto alto en match quality)
+
+Estos son límites del modelo de negocio (COD sin email), no bugs de código.
 
 ---
 

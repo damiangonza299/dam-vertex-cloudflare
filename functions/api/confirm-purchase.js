@@ -3,6 +3,7 @@
    ========================================================= */
 
 import { autoScorePurchase } from './intelligence/_bqe-scorer.js';
+import { verifyAdminToken }  from '../_lib/adminAuth.js';
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -16,9 +17,7 @@ export async function onRequestOptions() {
 
 export async function onRequestPost({ request, env, waitUntil }) {
   /* Auth */
-  const auth = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-  if (!token || token !== env.ADMIN_PASSWORD.trim()) {
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 
@@ -37,6 +36,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const isCombo     = productSlug === 'combo-reloj-cadena';
     const requestedVariants = parseLeadVariants(lead.variant);
     const isDorado    = isCombo && requestedVariants[0] === 'Negro Dorado';
+    const isRosa      = isCombo && requestedVariants[0] === 'Negro Rosa';
 
     let productRow     = null;
     let comboRelojRow  = null;
@@ -59,6 +59,10 @@ export async function onRequestPost({ request, env, waitUntil }) {
         /* Negro Dorado: stock propio — no depende de reloj.stock_total */
         if (Number(comboRelojRow.combo_apex_dorado_stock || 0) < 1)
           return json({ ok: false, error: 'Sin stock del modelo: Negro Dorado' }, 409);
+      } else if (isRosa) {
+        /* Negro Rosa: stock propio — no depende de reloj.stock_total */
+        if (Number(comboRelojRow.combo_apex_rosa_stock || 0) < 1)
+          return json({ ok: false, error: 'Sin stock del modelo: Negro Rosa' }, 409);
       } else {
         /* Cualquier otro color del combo: guard original intacto */
         if (Number(comboRelojRow.stock_total) < 1)
@@ -233,6 +237,17 @@ export async function onRequestPost({ request, env, waitUntil }) {
       `UPDATE leads SET status = 'purchased', purchased_at = datetime('now') WHERE id = ?`
     ).bind(id).run();
 
+    /* Incrementar contador del panel PiP — KV, best-effort (no bloquea la confirmación) */
+    if (env.COUNTER_KV && typeof waitUntil === 'function') {
+      waitUntil((async () => {
+        try {
+          const key     = `counter:purchases:${getParaguayDateString()}`;
+          const current = Number((await env.COUNTER_KV.get(key)) || 0);
+          await env.COUNTER_KV.put(key, String(current + 1));
+        } catch (_) {}
+      })());
+    }
+
     /* Descontar stock */
     if (isCombo) {
       /* Combo: descontar stock según variante */
@@ -251,6 +266,18 @@ export async function onRequestPost({ request, env, waitUntil }) {
             ).bind(newCadenaTotal),
           ]);
           console.log(`COMBO_DORADO_STOCK_OK lead_id=${id}: dorado=${newDoradoStock} cadena=${newCadenaTotal}`);
+        } else if (isRosa) {
+          /* Negro Rosa: solo combo_apex_rosa_stock — reloj.stock_total y variants_json intactos */
+          const newRosaStock = Math.max(0, Number(comboRelojRow?.combo_apex_rosa_stock || 0) - 1);
+          await env.DB.batch([
+            env.DB.prepare(
+              `UPDATE products SET combo_apex_rosa_stock = ?, updated_at = datetime('now') WHERE slug = 'reloj'`
+            ).bind(newRosaStock),
+            env.DB.prepare(
+              `UPDATE products SET stock_total = ?, updated_at = datetime('now') WHERE slug = 'cadena'`
+            ).bind(newCadenaTotal),
+          ]);
+          console.log(`COMBO_ROSA_STOCK_OK lead_id=${id}: rosa=${newRosaStock} cadena=${newCadenaTotal}`);
         } else {
           /* Otro color: lógica original intacta */
           const relojModel    = requestedVariants[0] || null;
@@ -380,7 +407,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
         });
       }
 
-      await fetch(
+      const customRes  = await fetch(
         `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`,
         {
           method:  'POST',
@@ -391,6 +418,12 @@ export async function onRequestPost({ request, env, waitUntil }) {
           }),
         },
       );
+      const customBody = await customRes.json().catch(() => ({}));
+      if (!customRes.ok) {
+        console.error('CUSTOM_EVENTS_CAPI_FAILED lead_id=' + id, customRes.status, JSON.stringify(customBody));
+      } else {
+        console.log('CUSTOM_EVENTS_CAPI_OK lead_id=' + id, 'events_received=' + (customBody.events_received ?? '?'), 'events=' + customEvents.map(e => e.event_name).join(','));
+      }
     }
 
     /* FastBuyer / ComboBuyer — eventos CAPI positivos adicionales, no modifican Purchase */

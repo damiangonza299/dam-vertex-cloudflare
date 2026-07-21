@@ -1,0 +1,215 @@
+﻿{
+    "data":  [
+                 {
+                     "adset_name":  "CADENA | ASU+Central | Sin Expansion | 18-65 | TEST V2",
+                     "impressions":  "35343",
+                     "reach":  "23619",
+                     "frequency":  "1.49638",
+                     "clicks":  "752",
+                     "unique_clicks":  "623",
+                     "spend":  "341926",
+                     "cpc":  "454.68883",
+                     "cpm":  "9674.504145",
+                     "ctr":  "2.12772",
+                     "cpp":  "14476.734832",
+                     "actions":  [
+                                     {
+                                         "action_type":  "web_in_store_purchase",
+                                         "value":  "6"
+                                     },
+                                     {
+                                         "action_type":  "omni_purchase",
+                                         "value":  "6"
+                                     },
+                                     {
+                                         "action_type":  "link_click",
+                                         "value":  "430"
+                                     },
+                                     {
+                                         "action_type":  "initiate_checkout",
+                                         "value":  "7"
+                                     },
+                                     {
+                                         "action_type":  "offsite_purchase_add_20_s_calls",
+                                         "value":  "6"
+                                     },
+                                     {
+                                         "action_type":  "add_to_cart",
+                                         "value":  "28"
+                                     },
+                                     {
+                                         "action_type":  "offsite_conversion.fb_pixel_purchase",
+                                         "value":  "6"
+                                     },
+                                     {
+                                         "action_type":  "offsite_conversion.fb_pixel_initiate_checkout",
+                                         "value":  "7"
+                                     },
+                                     {
+                                         "action_type":  "offsite_conversion.fb_pixel_custom",
+                                         "value":  "7"
+                                     },
+                                     {
+                                         "action_type":  "offsite_initiate_checkout_add_20_s_calls",
+                                         "value":  "7"
+                                     },
+                                     {
+                                         "action_type":  "offsite_conversion.fb_pixel_add_to_cart",
+                                         "value":  "28"
+                                     },
+                                     {
+                                         "action_type":  "post_reaction",
+                                         "value":  "77"
+                                     },
+                                     {
+                                         "action_type":  "offsite_content_view_add_20_s_calls",
+                                         "value":  "327"
+                                     },
+                                     {
+                                         "action_type":  "landing_page_view",
+                                         "value":  "326"
+                                     },
+                                     {
+                                         "action_type":  "omni_landing_page_view",
+                                         "value":  "326"
+                                     },
+                                     {
+                                         "action_type":  "onsite_conversion.total_messaging_connection",
+                                         "value":  "1"
+                                     },
+                                     {
+                                         "action_type":  "onsite_conversion.post_unlike",
+                                         "value":  "4"
+                                     },
+                                     {
+                                         "action_type":  "post_engagement",
+                                         "value":  "543"
+                                     },
+                                     {
+                                         "action_type":  "like",
+                                         "value":  "2"
+                                     },
+                                     {
+                                         "action_type":  "post_interaction_gross",
+                                         "value":  "110"
+                                     },
+                                     {
+                                         "action_type":  "comment",
+                                         "value":  "6"
+                                     },
+                                     {
+                                         "action_type":  "onsite_web_app_purchase",
+                                         "value":  "6"
+                                     },
+                                     {
+                                         "action_type":  "page_engagement",
+                                         "value":  "545"
+                                     },
+                                     {
+                                         "action_type":  "purchase",
+                                         "value":  "6"
+                                     },
+                                     {
+                                         "action_type":  "onsite_web_view_content",
+                                         "value":  "327"
+                                     },
+                                     {
+                                         "action_type":  "onsite_web_add_to_cart",
+                                         "value":  "28"
+                                     },
+                                     {
+                                         "action_type":  "post_interaction_net",
+                                         "value":  "114"
+                                     },
+                                     {
+                                         "action_type":  "onsite_conversion.messaging_first_reply",
+                                         "value":  "1"
+                                     },
+                                     {
+                                         "action_type":  "onsite_web_app_view_content",
+                                         "value":  "327"
+                                     },
+                                     {
+                                         "action_type":  "post",
+                                         "value":  "2"
+                                     },
+                                     {
+                                         "action_type":  "view_content",
+                                         "value":  "327"
+                                     },
+                                     {
+                                         "action_type":  "onsite_conversion.post_save",
+                                         "value":  "25"
+                                     },
+                                     {
+                                         "action_type":  "onsite_conversion.post_net_comment",
+                                         "value":  "6"
+                                     },
+                                     {
+                                         "action_type":  "web_app_in_store_purchase",
+                                         "value":  "6"
+                                     },
+                                     {
+                                         "action_type":  "onsite_web_app_add_to_cart",
+                                         "value":  "28"
+                                     },
+                                     {
+                                         "action_type":  "onsite_conversion.post_net_save",
+                                         "value":  "25"
+                                     },
+                                     {
+                                         "action_type":  "onsite_conversion.post_net_like",
+                                         "value":  "73"
+                                     },
+                                     {
+                                         "action_type":  "onsite_web_initiate_checkout",
+                                         "value":  "7"
+                                     },
+                                     {
+                                         "action_type":  "omni_initiated_checkout",
+                                         "value":  "7"
+                                     },
+                                     {
+                                         "action_type":  "omni_add_to_cart",
+                                         "value":  "28"
+                                     },
+                                     {
+                                         "action_type":  "offsite_content_view_add_meta_leads",
+                                         "value":  "327"
+                                     },
+                                     {
+                                         "action_type":  "onsite_web_purchase",
+                                         "value":  "6"
+                                     },
+                                     {
+                                         "action_type":  "onsite_conversion.messaging_conversation_started_7d",
+                                         "value":  "1"
+                                     },
+                                     {
+                                         "action_type":  "offsite_add_to_cart_add_20_s_calls",
+                                         "value":  "28"
+                                     },
+                                     {
+                                         "action_type":  "video_view",
+                                         "value":  "3"
+                                     },
+                                     {
+                                         "action_type":  "omni_view_content",
+                                         "value":  "327"
+                                     },
+                                     {
+                                         "action_type":  "offsite_conversion.fb_pixel_view_content",
+                                         "value":  "327"
+                                     }
+                                 ],
+                     "date_start":  "2026-06-29",
+                     "date_stop":  "2026-07-05"
+                 }
+             ],
+    "paging":  {
+                   "cursors":  {
+                                   "before":  "MAZDZD",
+                                   "after":  "MAZDZD"
+                               }
+               }
+}

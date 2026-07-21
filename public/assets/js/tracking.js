@@ -51,6 +51,65 @@ function getClientData() {
   };
 }
 
+/* ── Lead data hasheado — enriquece el ViewContent de visitas futuras ──
+   Solo se persisten hashes SHA-256 irreversibles, nunca el dato real:
+   si alguien lee este localStorage (XSS, browser compartido) no obtiene
+   PII, solo un hash que ya es exactamente lo que Meta recibiría igual. */
+const LEAD_LOCAL_KEY = '_dv_lead';
+const LEAD_LOCAL_TTL = 90 * 24 * 60 * 60 * 1000;
+
+async function sha256Hex(str) {
+  if (!str) return null;
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.trim().toLowerCase()));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function normalizeForMetaClient(s) {
+  return (s || '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+function normalizePhoneClient(raw) {
+  const d = (raw || '').replace(/\D/g, '');
+  if (!d) return '';
+  if (d.startsWith('595')) return d.slice(0, 12);
+  if (d.startsWith('0'))   return '595' + d.slice(1);
+  return '595' + d;
+}
+
+async function saveLeadDataLocal(phone, name, email) {
+  try {
+    const data = { ts: Date.now() };
+
+    const ph = normalizePhoneClient(phone);
+    if (ph) data.ph = await sha256Hex(ph);
+
+    const parts = (name || '').trim().split(/\s+/).filter(Boolean);
+    if (parts[0])         data.fn = await sha256Hex(normalizeForMetaClient(parts[0]));
+    if (parts.length > 1) data.ln = await sha256Hex(normalizeForMetaClient(parts.slice(1).join(' ')));
+
+    if (email) data.em = await sha256Hex(normalizeForMetaClient(email));
+
+    if (data.ph || data.fn || data.em) localStorage.setItem(LEAD_LOCAL_KEY, JSON.stringify(data));
+  } catch (_) {}
+}
+
+function getLeadDataLocal() {
+  try {
+    const raw = localStorage.getItem(LEAD_LOCAL_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (!data.ts || Date.now() - data.ts > LEAD_LOCAL_TTL) {
+      localStorage.removeItem(LEAD_LOCAL_KEY);
+      return null;
+    }
+    return data;
+  } catch (_) { return null; }
+}
+
 /* ── CAPI proxy ── */
 async function sendCAPI(payload) {
   try {
@@ -67,8 +126,9 @@ async function sendCAPI(payload) {
 window.DV = window.DV || {};
 
 DV.trackViewContent = function (product) {
-  const event_id = genEventId('vc', product.slug);
-  const client   = getClientData();
+  const event_id  = genEventId('vc', product.slug);
+  const client    = getClientData();
+  const leadHashed = getLeadDataLocal();
 
   fbq('track', 'ViewContent', {
     content_name:  product.name,
@@ -83,6 +143,7 @@ DV.trackViewContent = function (product) {
     event_id,
     product,
     client,
+    lead_hashed: leadHashed || undefined,
     num_items:   1,
   });
 };
@@ -200,4 +261,5 @@ function getAttribution() {
   } catch (_) { return {}; }
 }
 
-DV.getAttribution = getAttribution;
+DV.getAttribution   = getAttribution;
+DV.saveLeadDataLocal = saveLeadDataLocal;

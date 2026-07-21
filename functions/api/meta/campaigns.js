@@ -12,6 +12,8 @@
    - Solo permite GET. No modifica campañas.
    ========================================================= */
 
+import { verifyAdminToken } from '../../_lib/adminAuth.js';
+
 const META_API_VERSION = 'v21.0';
 
 const CORS = {
@@ -25,10 +27,8 @@ export async function onRequestOptions() {
 }
 
 export async function onRequestGet({ request, env }) {
-  /* Auth interna — reutiliza ADMIN_PASSWORD existente */
-  const auth = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-  if (!token || token !== env.ADMIN_PASSWORD.trim()) {
+  /* Auth interna */
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

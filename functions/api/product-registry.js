@@ -8,6 +8,8 @@
    PATCH ?slug=X         → update brief fields (partial)
    ========================================================= */
 
+import { verifyAdminToken } from '../_lib/adminAuth.js';
+
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'GET, POST, PATCH, OPTIONS',
@@ -23,14 +25,9 @@ export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
 }
 
-function auth(request, env) {
-  const token = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim();
-  return env.ADMIN_PASSWORD && token === env.ADMIN_PASSWORD.trim();
-}
-
 /* ── GET ── */
 export async function onRequestGet({ request, env }) {
-  if (!auth(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+  if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   const url  = new URL(request.url);
   const slug = url.searchParams.get('slug');
@@ -63,7 +60,7 @@ export async function onRequestGet({ request, env }) {
 
 /* ── POST ── */
 export async function onRequestPost({ request, env }) {
-  if (!auth(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+  if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   let body = {};
   try { body = await request.json(); } catch (_) {}
@@ -90,7 +87,7 @@ export async function onRequestPost({ request, env }) {
 
 /* ── PATCH ── */
 export async function onRequestPatch({ request, env }) {
-  if (!auth(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+  if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   const url  = new URL(request.url);
   const slug = url.searchParams.get('slug');

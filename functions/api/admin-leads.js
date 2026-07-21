@@ -4,6 +4,8 @@
    PATCH → cambiar status
    ========================================================= */
 
+import { verifyAdminToken } from '../_lib/adminAuth.js';
+
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'GET, PATCH, PUT, DELETE, OPTIONS',
@@ -17,7 +19,7 @@ export async function onRequestOptions() {
 
 /* ── GET — listar todos los leads ── */
 export async function onRequestGet({ request, env }) {
-  if (!isAuthorized(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+  if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   try {
     const { results } = await env.DB.prepare(
@@ -35,7 +37,7 @@ export async function onRequestGet({ request, env }) {
 
 /* ── PATCH — cambiar status (cancelar) ── */
 export async function onRequestPatch({ request, env }) {
-  if (!isAuthorized(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+  if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   try {
     const { id, status } = await request.json();
@@ -56,7 +58,7 @@ export async function onRequestPatch({ request, env }) {
 
 /* ── PUT — editar nombre, ciudad y valor ── */
 export async function onRequestPut({ request, env }) {
-  if (!isAuthorized(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+  if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   try {
     const { id, name, city, value, extra_product_slug, extra_product_variant, extra_product_qty, variant } = await request.json();
@@ -92,7 +94,7 @@ export async function onRequestPut({ request, env }) {
 
 /* ── DELETE — eliminar lead ── */
 export async function onRequestDelete({ request, env }) {
-  if (!isAuthorized(request, env)) return json({ ok: false, error: 'Unauthorized' }, 401);
+  if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   try {
     const url        = new URL(request.url);
@@ -104,7 +106,7 @@ export async function onRequestDelete({ request, env }) {
 
     const lead = await env.DB.prepare(
       `SELECT id, status, operational_date_py, source_type,
-              product_slug, variant, quantity, stock_deducted
+              product_slug, variant, quantity, stock_deducted, created_at
        FROM leads WHERE id = ?`
     ).bind(parseInt(id)).first();
     if (!lead) return json({ ok: false, error: 'Lead no encontrado' }, 404);
@@ -229,6 +231,20 @@ export async function onRequestDelete({ request, env }) {
       }
     }
 
+    /* ── Contador KV del panel PiP — el lead eliminado deja de contar hacia
+       leads_today/purchases_today. Se usa la fecha (Paraguay) del created_at
+       original del lead, no la fecha de hoy, para decrementar la clave correcta
+       aunque el borrado ocurra días después de creado el lead. ── */
+    if (isInternal && env.COUNTER_KV && lead.created_at) {
+      try {
+        const leadDate = getParaguayDateString(new Date(lead.created_at.replace(' ', 'T') + 'Z'));
+        await decrementKV(env, `counter:leads:${leadDate}`);
+        if (lead.status === 'purchased') {
+          await decrementKV(env, `counter:purchases:${leadDate}`);
+        }
+      } catch (_) {}
+    }
+
     if (isInternal) {
       return json({
         ok:                    true,
@@ -277,10 +293,22 @@ async function _resyncLeadsCount(date, secret, db) {
 }
 
 /* ── Helpers ── */
-function isAuthorized(request, env) {
-  const auth  = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-  return token && token === env.ADMIN_PASSWORD.trim();
+
+/* Misma lógica de día operativo Paraguay que functions/api/leads.js — reutilizada, no reinventada */
+function getParaguayDateString(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Asuncion',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(date);
+  const p = Object.fromEntries(parts.filter(x => x.type !== 'literal').map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+
+async function decrementKV(env, key) {
+  try {
+    const current = Number((await env.COUNTER_KV.get(key)) || 0);
+    await env.COUNTER_KV.put(key, String(Math.max(0, current - 1)));
+  } catch (_) {}
 }
 
 function json(data, status = 200) {

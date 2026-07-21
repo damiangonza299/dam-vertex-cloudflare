@@ -659,6 +659,9 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
       const capiLead       = { ...commonData, phone: validPhone || '' };
       const customProduct  = { ...product, price: customTotal };
       DV.trackInitiateCheckout(customProduct, capiLead, customQty);
+      if (typeof DV.saveLeadDataLocal === 'function') {
+        DV.saveLeadDataLocal(validPhone || rawPhone, commonData.name, commonData.invoice_email || '');
+      }
 
       modalForm.style.display = 'none';
       success.classList.add('visible');
@@ -758,6 +761,9 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
       const capiLead = { ...data, phone: validPhone || '' };
       const trackProduct = { ...product, price: expressTotal };
       DV.trackInitiateCheckout(trackProduct, capiLead, selectedQty);
+      if (typeof DV.saveLeadDataLocal === 'function') {
+        DV.saveLeadDataLocal(validPhone || rawPhone, data.name, data.invoice_email || '');
+      }
 
       /* 5 â Mostrar Ã©xito */
       modalForm.style.display = 'none';

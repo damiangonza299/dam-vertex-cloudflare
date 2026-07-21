@@ -8,6 +8,10 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+/* Solo eventos de tracking pasivo pueden dispararse desde este proxy público sin auth.
+   Purchase/HighValuePurchase/VIPPurchase deben originarse server-side desde confirm-purchase.js. */
+const ALLOWED_PUBLIC_EVENTS = new Set(['ViewContent', 'AddToCart', 'InitiateCheckout']);
+
 export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
 }
@@ -15,7 +19,11 @@ export async function onRequestOptions() {
 export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
-    const { event_name, event_id, product, lead, client, num_items } = body;
+    const { event_name, event_id, product, lead, lead_hashed, client, num_items } = body;
+
+    if (!ALLOWED_PUBLIC_EVENTS.has(event_name)) {
+      return json({ ok: false, error: 'evento no permitido' }, 400);
+    }
 
     const pixelId     = env.META_PIXEL_ID;
     const accessToken = env.META_ACCESS_TOKEN;
@@ -51,6 +59,16 @@ export async function onRequestPost({ request, env }) {
       const city = normalizeForMeta(lead.location_city || lead.city || '');
       if (city)                   user_data.ct = [await sha256(city)];
       user_data.country = [await sha256('py')];
+    }
+
+    /* Datos hasheados de una visita anterior (ViewContent enriquecido con
+       localStorage) — ya vienen en SHA-256 desde el cliente, no rehashear.
+       Solo completan lo que no vino ya de `lead` en este mismo evento. */
+    if (lead_hashed) {
+      if (lead_hashed.ph && !user_data.ph) { user_data.ph = [lead_hashed.ph]; user_data.external_id = [lead_hashed.ph]; }
+      if (lead_hashed.fn && !user_data.fn) user_data.fn = [lead_hashed.fn];
+      if (lead_hashed.ln && !user_data.ln) user_data.ln = [lead_hashed.ln];
+      if (lead_hashed.em && !user_data.em) user_data.em = [lead_hashed.em];
     }
 
     /* Build custom_data */

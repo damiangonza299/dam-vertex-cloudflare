@@ -1,4 +1,5 @@
 import { autoScorePurchase } from './intelligence/_bqe-scorer.js';
+import { verifyAdminToken }  from '../_lib/adminAuth.js';
 
 /* =========================================================
    /api/manual-whatsapp-sale — Registrar venta manual (admin)
@@ -29,9 +30,7 @@ export async function onRequestOptions() {
 
 export async function onRequestPost({ request, env, waitUntil }) {
   /* ── Auth ── */
-  const auth  = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-  if (!token || token !== env.ADMIN_PASSWORD.trim()) {
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

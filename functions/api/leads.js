@@ -26,15 +26,37 @@ export async function onRequestPost({ request, env, waitUntil }) {
       invoice_requested, invoice_ruc, invoice_name, invoice_email,
     } = body;
 
-    /* Si el picker detectó ciudad automáticamente, usarla como city efectiva */
-    const effectiveCity = location_city?.trim() || city?.trim() || null;
+    /* Sanear inputs públicos antes de guardarlos/renderizarlos en el admin — evita XSS almacenado */
+    const sanitizeText = (s, maxLen) => (s || '').toString().replace(/[<>"'\\/]/g, '').trim().slice(0, maxLen);
 
-    if (!name || !phone || !product_name) {
+    const safeName         = sanitizeText(name, 100);
+    const safeProductName  = sanitizeText(product_name, 100);
+    const safeCity         = sanitizeText(city, 100);
+    const safeLocationCity = sanitizeText(location_city, 100);
+
+    /* Si el picker detectó ciudad automáticamente, usarla como city efectiva */
+    const effectiveCity = safeLocationCity || safeCity || null;
+
+    if (!safeName || !phone?.trim() || !safeProductName) {
       return json({ ok: false, error: 'Campos requeridos: name, phone, product_name' }, 400);
     }
 
     const ip = request.headers.get('CF-Connecting-IP') || '';
     const ua = user_agent || request.headers.get('User-Agent') || '';
+
+    /* ── Rate limit — máx 10 leads/hora por IP, best-effort vía COUNTER_KV ── */
+    if (ip && env.COUNTER_KV) {
+      try {
+        const rlKey     = `rl:leads:${ip}:${Math.floor(Date.now() / 3600000)}`;
+        const rlCurrent = Number((await env.COUNTER_KV.get(rlKey)) || 0);
+        if (rlCurrent >= 10) {
+          return json({ ok: false, error: 'demasiados intentos' }, 429);
+        }
+        await env.COUNTER_KV.put(rlKey, String(rlCurrent + 1), { expirationTtl: 3600 });
+      } catch (rlErr) {
+        console.error('RATE_LIMIT_SKIP:', rlErr.message);
+      }
+    }
 
     /* ── Block check — multi-signal blacklist ── */
     try {
@@ -80,8 +102,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const leadDate = getParaguayDateString();
 
     const bindArgs = [
-      product_name,
-      name.trim(),
+      safeProductName,
+      safeName,
       phone.trim(),
       email?.trim() || null,
       effectiveCity,
@@ -118,7 +140,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source, utm_campaign }),
       // location picker (indices 32-37)
       location_address?.trim() || null,
-      location_city?.trim()    || null,
+      safeLocationCity          || null,
       locLat,
       locLng,
       location_maps_url?.trim()  || null,
@@ -244,14 +266,14 @@ export async function onRequestPost({ request, env, waitUntil }) {
         const variantText = formatVariantForTelegram(variant);
         const isComboTg   = product_slug === 'combo-reloj-cadena';
         const tgProductName = isComboTg
-          ? (product_name || ('Combo Cadena Apex + Reloj ' + (variantText || '').trim()))
-          : product_name;
-        const tgCity = (location_city?.trim() || city?.trim() || '');
+          ? (safeProductName || ('Combo Cadena Apex + Reloj ' + (variantText || '').trim()))
+          : safeProductName;
+        const tgCity = effectiveCity || '';
         const text = [
           'Nuevo pedido Dam Vertex',
           '',
           `Producto: ${tgProductName}`,
-          `Nombre: ${name.trim()}`,
+          `Nombre: ${safeName}`,
           `Telefono: ${phone.trim()}`,
           ...(payment_method ? [`Metodo de pago: ${payment_method}`] : []),
           ...(tgCity ? [`Ciudad: ${tgCity}`] : []),
@@ -299,7 +321,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
           ud.external_id = [phHash];
         }
 
-        const namePartsQL = (name || '').trim().split(/\s+/);
+        const namePartsQL = safeName.split(/\s+/);
         if (namePartsQL[0])           ud.fn = [await sha256QL(normForMetaQL(namePartsQL[0]))];
         if (namePartsQL.length > 1)   ud.ln = [await sha256QL(normForMetaQL(namePartsQL.slice(1).join(' ')))];
 
@@ -323,7 +345,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
                 event_source_url: landing_path ? `https://damvertex.com${landing_path}` : 'https://damvertex.com',
                 user_data:        ud,
                 custom_data: {
-                  content_name: product_name || '',
+                  content_name: safeProductName || '',
                   content_ids:  [product_slug || ''],
                   content_type: 'product',
                   value:        value  || 0,
@@ -363,6 +385,17 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     })();
     if (typeof waitUntil === 'function') waitUntil(leadsCountPromise);
+
+    /* Incrementar contador del panel PiP — KV, best-effort (no bloquea el guardado del lead) */
+    if (env.COUNTER_KV && typeof waitUntil === 'function') {
+      waitUntil((async () => {
+        try {
+          const key     = `counter:leads:${leadDate}`;
+          const current = Number((await env.COUNTER_KV.get(key)) || 0);
+          await env.COUNTER_KV.put(key, String(current + 1));
+        } catch (_) {}
+      })());
+    }
 
     return json({ ok: true, lead_id: result.meta?.last_row_id });
 

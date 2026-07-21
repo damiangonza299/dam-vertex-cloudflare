@@ -28,6 +28,8 @@
    NO modifica nada. No toca CAPI, Pixel, Purchase, D1, campañas ni anuncios.
    ========================================================= */
 
+import { verifyAdminToken } from '../../_lib/adminAuth.js';
+
 const META_API_VERSION = 'v21.0';
 
 const CORS = {
@@ -41,9 +43,7 @@ export async function onRequestOptions() {
 }
 
 export async function onRequestGet({ request, env }) {
-  const auth = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-  if (!token || token !== env.ADMIN_PASSWORD.trim()) {
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

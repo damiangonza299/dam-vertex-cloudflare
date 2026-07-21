@@ -3,17 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style">
+  <link rel="preload" as="video" href="/assets/video/video1-lunamini.mp4" fetchpriority="high" type="video/mp4">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=57" as="script">
-  <link rel="preload" href="/assets/js/products.js?v=57" as="script">
-  <meta name="description" content="LUNA MINI™ Vibrador Bala Recargable — silicona médica, 10 modos, silencioso. Compacto y discreto. Entrega en el día en Paraguay.">
-  <title>LUNA MINI™ Vibrador Bala Recargable — Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=60"></script>
-  <link rel="stylesheet" href="/assets/css/styles.min.css?v=55">
+  <meta name="description" content="Compacto. Silencioso. Recargable. Entrega hoy en Central. Pagás cuando lo recibís.">
+  <title>LUNA MINI — Bienestar Personal · Dam Vertex</title>
+  <script src="/assets/js/site-version.js?v=60" defer></script>
+  <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
   <style>
+    /* ══ CRÍTICO ABOVE-THE-FOLD — extraído de styles.min.css ══
+       Necesario para nav/hero/precio sin FOUC mientras styles.min.css carga async. */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 48px); height: 60px;
+      background: rgba(0,0,0,.88); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .nav__cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent); color: #fff; font-size: 13px; font-weight: 700;
+      letter-spacing: .02em; padding: 9px 20px; border-radius: var(--radius-sm);
+      transition: opacity .2s;
+    }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+    .price-badge {
+      font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green);
+      border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px;
+    }
+
     /* ══ LUNA MINI — rosa íntimo ══ */
     :root {
       --luna-pink:     #E91E63;
@@ -43,18 +74,18 @@
     /* ══ HERO ══ */
     .hero-luna {
       background: var(--bg-base);
-      padding: clamp(32px,7vw,64px) clamp(20px,5vw,64px);
+      padding: clamp(6px,1.5vw,14px) clamp(20px,5vw,64px) clamp(8px,2vw,20px);
       border-bottom: 1px solid var(--border-subtle);
     }
     .hero-luna__inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 60px;
+      gap: 56px;
       align-items: center;
       max-width: 1100px;
       margin: 0 auto;
     }
-    .hero-luna__media { position: relative; }
+    .hero-luna__media { position: relative; max-width: 460px; margin: 0 auto; width: 100%; }
 
     .img-ph {
       width: 100%; aspect-ratio: 4/5;
@@ -65,10 +96,25 @@
       align-items: center; justify-content: center;
       gap: 14px; overflow: hidden; position: relative;
     }
-    .img-ph img {
+    .img-ph img,
+    .img-ph video {
       width: 100%; height: 100%;
       object-fit: cover; object-position: center;
       display: block; position: absolute; inset: 0; border-radius: 6px;
+    }
+    /* Hero video: fuente real 1280×720 (16:9) — el contenedor debe respetar ese ratio,
+       no el 4/5 (desktop) / 1:1 (mobile) que usan los otros placeholders de .img-ph */
+    #hero-img {
+      border-style: solid; border-color: transparent;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+    #hero-img video {
+      position: static; inset: auto;
+      width: 100%; height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      background: #000;
     }
     .img-ph__label {
       display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -109,8 +155,64 @@
     .spi-stars { color: var(--luna-pink); font-size: 14px; }
     .spi-text  { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
-    .hero-luna .price-block { margin: 0 0 24px; gap: 6px 10px; }
+    .hero-luna .price-block { margin: 0 0 10px; gap: 6px 10px; }
+    .exclusive-badge {
+      border-left: 3px solid #FF3EA5;
+      background: rgba(255,255,255,.03);
+      color: #fff;
+      font-size: 13px;
+      padding: 8px 12px;
+      margin: 0 0 14px;
+      line-height: 1.4;
+    }
     .hero-luna .price-main  { font-size: clamp(26px,5vw,40px); }
+
+    /* ══ EVERGREEN TIMER — copiado exacto de /cadena/ ══ */
+    .evergreen-timer {
+      background: #111;
+      border-left: 3px solid #f59e0b;
+      color: #fff;
+      padding: 6px 14px;
+      margin: 6px 0;
+      line-height: 1.4;
+      display: inline-block;
+      width: fit-content;
+      max-width: 100%;
+    }
+    .evergreen-timer__line1 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .evergreen-timer__time {
+      color: #f59e0b;
+      font-weight: 800;
+      font-size: 16px;
+      font-variant-numeric: tabular-nums;
+    }
+    .evergreen-timer__line2 {
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      margin-top: 2px;
+    }
+    .evergreen-timer__expired {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* ══ 3 características debajo del contador ══ */
+    .luna-features {
+      list-style: none; padding: 0; margin: 14px 0 20px;
+      display: flex; flex-direction: column; gap: 9px;
+    }
+    .luna-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13.5px; color: rgba(255,255,255,.82); line-height: 1.4;
+    }
+    .luna-features__dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--luna-pink); flex-shrink: 0; margin-top: 5px;
+    }
 
     .btn-luna {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -199,6 +301,16 @@
     .sec-overline { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--luna-pink); margin: 0 0 14px; }
     .sec-h   { font-size: clamp(20px,3.5vw,30px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0 0 16px; letter-spacing: -.01em; }
     .sec-body { font-size: 14px; color: var(--text-dim); line-height: 1.75; margin: 0 0 24px; }
+
+    /* ══ DETALLE — imagen real (specs). El WebP ya trae el texto
+       "Silicona médica · IPX7 · 10 modos / Hecho para sentir. / 45+ min · USB · Un solo botón"
+       quemado en los píxeles — no se superpone texto en HTML/CSS encima. ══ */
+    #detalle-img { border-style: solid; border-color: transparent; background: #0a0507; }
+
+    /* ══ CONFIANZA — imagen real (empaque discreto). El WebP ya trae el texto
+       "Empaque 100% discreto / Nadie sabe lo que hay adentro. / Bolsa neutra · Sin marcas · Entrega en el día"
+       quemado en los píxeles, con su propio contraste — no necesita overlay adicional. ══ */
+    #lifestyle-img { border-style: solid; border-color: transparent; background: #0a0507; }
 
     /* ══ BENEFICIOS ══ */
     .beneficios {
@@ -313,10 +425,11 @@
       .confianza__layout { grid-template-columns: 1fr; }
     }
     @media (max-width: 700px) {
-      .hero-luna__inner { grid-template-columns: 1fr; gap: 28px; }
-      .hero-luna__media { order: -1; }
+      .hero-luna__inner { grid-template-columns: 1fr; gap: 18px; }
+      .hero-luna__media { order: -1; max-width: 100%; }
+      .hero-luna__media .img-ph { aspect-ratio: 1; }
       .producto__inner  { grid-template-columns: 1fr; gap: 36px; }
-      .hero-luna        { padding: 16px 16px 24px; }
+      .hero-luna        { padding: 10px 16px 20px; }
       .btn-luna         { max-width: 100%; }
     }
 
@@ -328,26 +441,29 @@
     }
     .theme-luna .btn-primary { background: var(--luna-pink); }
     .theme-luna .btn-primary:hover { background: var(--luna-light); }
+    #modal-submit-btn { white-space: nowrap; font-size: clamp(13px, 3.5vw, 16px); }
     .theme-luna .offer-option.selected,
     .theme-luna .offer-option:has(input:checked) {
       border-color: var(--luna-pink);
       background: rgba(233,30,99,.07);
     }
-    .theme-luna .offer-saving { color: var(--luna-light); }
-    .offer-combo-badge {
-      display: inline-block;
-      font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
-      padding: 3px 8px; border-radius: 3px; vertical-align: middle;
-    }
-    .theme-luna .offer-combo-badge { background: var(--luna-pink); color: #fff; }
+    /* Badge modal: fila inferior junto a offer-saving */
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
+    .offer-foot .offer-saving { margin-top: 0; }
+    .offer-foot .offer-badge  { position: static; flex-shrink: 0; }
   </style>
+  <meta property="og:title" content="LUNA MINI — Bienestar Personal · Dam Vertex" />
+  <meta property="og:description" content="Compacto. Silencioso. Recargable. Entrega hoy en Central. Pagás cuando lo recibís." />
+  <meta property="og:image" content="/assets/img/lunamini2image.webp" />
+  <meta property="og:url" content="https://damvertex.com/luna-mini-vibrador-bala-recargable/" />
+  <meta property="og:type" content="website" />
 </head>
 <body class="theme-luna">
 
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">Quiero cambiar →</a>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">Quiero mi vibrador →</a>
 </nav>
 
 <main>
@@ -358,40 +474,62 @@
     <div class="hero-luna__media">
       <span class="hero-luna__badge">Novedad</span>
       <div class="img-ph" id="hero-img">
-        <!--
-          ┌─────────────────────────────────────────────────────┐
-          │  IMAGEN PENDIENTE — NO reemplazar con placeholder   │
-          │  Foto real del producto · LUNA MINI™ (rosa)         │
-          │  Ángulo: frontal, protagonista, fondo oscuro        │
-          │  Archivo destino: /assets/img/luna-mini-hero.webp   │
-          │  Tamaño mínimo: 800 × 1000 px                       │
-          │  Reemplazar cuando llegue el stock físico            │
-          └─────────────────────────────────────────────────────┘
-        -->
-        <div class="img-ph__label">
-          <div class="img-ph__icon">📷</div>
-          <div class="img-ph__title">Imagen pendiente<br>Foto real del producto</div>
-          <div class="img-ph__file">luna-mini-hero.webp</div>
-          <div class="img-ph__size">Reemplazar cuando llegue stock · 800 × 1000 px</div>
-        </div>
+        <video
+          id="hero-video"
+          autoplay
+          loop
+          muted
+          playsinline
+          preload="auto"
+          fetchpriority="high"
+          poster="/assets/img/luna-mini-poster.webp"
+          aria-hidden="true">
+          <source src="/assets/video/video1-lunamini.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
+    <script>
+      /* Fallback Instagram/Facebook in-app WebView — algunos WebViews ignoran
+         el atributo autoplay aunque tenga muted+playsinline. Si a 1s el video
+         sigue pausado, forzamos play() manualmente. */
+      (function() {
+        var v = document.getElementById('hero-video');
+        if (!v) return;
+        setTimeout(function() {
+          if (v.paused) {
+            v.muted = true;
+            var p = v.play();
+            if (p && typeof p.catch === 'function') p.catch(function() {});
+          }
+        }, 1000);
+      })();
+    </script>
 
     <div>
-      <p class="eyebrow-luna">Bienestar femenino · Novedad exclusiva</p>
-      <h1 class="hero-luna__h">Un momento<br><em>completamente tuyo.</em></h1>
-      <p class="hero-luna__sub">Compacto. Silencioso. Recargable por USB. LUNA MINI™ fue diseñado para la mujer que quiere privacidad real — sin ruido, sin complicaciones, sin depender de nadie.</p>
+      <p class="eyebrow-luna">Vibrador bala · Novedad exclusiva</p>
+      <h1 class="hero-luna__h">Sí, es un vibrador.<br><em>Y es hora de tener el tuyo.</em></h1>
+      <p class="hero-luna__sub">LUNA MINI es un vibrador bala compacto, silencioso y recargable — hecho para que sientas placer real, sin ruido, sin culpa y sin depender de nadie. Vos elegís cuándo, cómo y cuánto.</p>
+      <p class="exclusive-badge">🇵🇾 No conseguís esto en ningún local de Paraguay.</p>
       <div class="price-block">
         <span class="price-main">Gs. 229.000</span>
         <span class="price-compare">Gs. 330.000</span>
         <span class="price-badge">30% OFF</span>
       </div>
+      <div class="evergreen-timer" id="evergreen-timer">
+        <div class="evergreen-timer__line1">Este precio cierra en <strong class="evergreen-timer__time">07:00</strong></div>
+        <div class="evergreen-timer__line2">Últimas unidades con entrega en el día</div>
+      </div>
+      <ul class="luna-features">
+        <li><span class="luna-features__dot"></span>Silencioso de verdad — nadie escucha nada, nunca</li>
+        <li><span class="luna-features__dot"></span>10 modos de vibración — de suave a intenso, vos elegís</li>
+        <li><span class="luna-features__dot"></span>45+ minutos de placer con una sola carga</li>
+      </ul>
       <div class="spi">
         <span class="spi-stars">★★★★★</span>
         <span class="spi-text">Stock limitado · Entrega en el día</span>
       </div>
       <button class="btn-luna" data-scroll-form data-insync-cta="hero">
-        Quiero cambiar <span class="arrow">→</span>
+        Quiero mi vibrador <span class="arrow">→</span>
       </button>
       <div class="delivery-badges">
         <span class="db-badge db-pink">🚚 Entrega en el día</span>
@@ -408,20 +546,20 @@
 <section class="transf" id="section-transformacion" data-insync-section="transformacion">
   <div class="transf__inner">
     <div class="transf__head">
-      <p class="transf__overline">El cambio que importa</p>
+      <p class="transf__overline">La diferencia se siente</p>
       <div class="pink-line pink-line--center"></div>
-      <h2 class="transf__title">Tu bienestar no debería<br>depender de nadie más.</h2>
+      <h2 class="transf__title">Tu placer no debería<br>depender de nadie más.</h2>
     </div>
 
     <div class="transf__bridge">
 
       <div class="transf__col transf__col--antes">
         <p class="transf__col-label">Antes</p>
-        <h3>Sin privacidad. Sin espacio tuyo.</h3>
+        <h3>Sin vibrador propio. Sin placer garantizado.</h3>
         <ul class="transf__list">
-          <li>Productos grandes, incómodos y llamativos</li>
-          <li>Nada que quepa discretamente en tu cartera</li>
-          <li>Ansiedad por el ruido o ser descubierta</li>
+          <li>Vibradores genéricos, incómodos y que se notan</li>
+          <li>Nada que entre discretamente en tu cartera</li>
+          <li>Miedo al ruido — que alguien escuche o pregunte</li>
           <li>Precios de importación que no tienen sentido</li>
           <li>Sin garantía local, sin soporte real</li>
         </ul>
@@ -429,16 +567,16 @@
 
       <div class="transf__center">
         <div class="transf__arrow">→</div>
-        <span class="transf__product-name">LUNA MINI™</span>
+        <span class="transf__product-name">LUNA MINI</span>
       </div>
 
       <div class="transf__col transf__col--despues">
         <p class="transf__col-label">Después</p>
-        <h3>Tu momento, cuando vos querés.</h3>
+        <h3>Tu vibrador, tu momento, cuando vos querés.</h3>
         <ul class="transf__list">
-          <li>80 mm — cabe en cualquier cajón o cartera</li>
-          <li>Silencioso de verdad — privacidad total</li>
-          <li>10 modos para elegir lo que querés sentir</li>
+          <li>80 mm — el vibrador bala que cabe en cualquier cartera</li>
+          <li>Silencioso de verdad — nadie escucha nada, nunca</li>
+          <li>10 modos para sentir exactamente lo que querés</li>
           <li>Gs. 229.000 con entrega en el día</li>
           <li>Atención por WhatsApp y garantía real</li>
         </ul>
@@ -448,7 +586,7 @@
 
     <div style="text-align:center;margin-top:40px">
       <button class="btn-luna" data-scroll-form data-insync-cta="transformacion" style="display:inline-flex;max-width:300px">
-        Quiero cambiar <span class="arrow">→</span>
+        Quiero mi vibrador <span class="arrow">→</span>
       </button>
     </div>
   </div>
@@ -460,30 +598,15 @@
 
     <div>
       <div class="img-ph img-ph--sq" id="detalle-img">
-        <!--
-          ┌─────────────────────────────────────────────────────┐
-          │  IMAGEN PENDIENTE — NO reemplazar con placeholder   │
-          │  Foto real del producto · detalle textura/silicona  │
-          │  Mostrar: textura, carga USB, detalle del bala      │
-          │  Archivo destino: /assets/img/luna-mini-detalle.webp│
-          │  Tamaño mínimo: 800 × 800 px                        │
-          │  Reemplazar cuando llegue el stock físico            │
-          └─────────────────────────────────────────────────────┘
-        -->
-        <div class="img-ph__label">
-          <div class="img-ph__icon">🔍</div>
-          <div class="img-ph__title">Imagen pendiente<br>Detalle real del producto</div>
-          <div class="img-ph__file">luna-mini-detalle.webp</div>
-          <div class="img-ph__size">Reemplazar cuando llegue stock · 800 × 800 px</div>
-        </div>
+        <img src="/assets/img/segundaimagenlanding.webp" alt="LUNA MINI — silicona médica, IPX7, 10 modos de vibración, hecho para sentir" width="600" height="600" loading="lazy">
       </div>
     </div>
 
     <div>
       <p class="sec-overline">Especificaciones</p>
       <div class="pink-line"></div>
-      <h2 class="sec-h">Hecho para durar.<br>Pensado para vos.</h2>
-      <p class="sec-body">Silicona médica IPX7. 10 modos de vibración. Carga USB. 50 gramos. Un vibrador que entra en cualquier bolso y dura 45+ minutos de uso con una sola carga.</p>
+      <h2 class="sec-h">Un vibrador hecho para durar.<br>Pensado para tu placer.</h2>
+      <p class="sec-body">Silicona médica ultra suave, 10 modos de vibración, carga USB. LUNA MINI es el vibrador bala que se siente increíble y no ocupa lugar — entra en cualquier bolso y te da 45+ minutos de placer con una sola carga.</p>
 
       <div class="specs__grid">
         <div class="spec-item">
@@ -520,7 +643,7 @@
 
       <div style="margin-top:28px">
         <button class="btn-luna" data-scroll-form data-insync-cta="producto" style="display:inline-flex;max-width:300px">
-          Quiero cambiar <span class="arrow">→</span>
+          Quiero mi vibrador <span class="arrow">→</span>
         </button>
       </div>
     </div>
@@ -534,7 +657,7 @@
     <div class="beneficios__head">
       <p class="sec-overline">5 razones para elegirlo</p>
       <div class="pink-line pink-line--center"></div>
-      <h2 class="sec-h" style="margin:0">Todo lo que importa.<br>Nada que sobre.</h2>
+      <h2 class="sec-h" style="margin:0">Todo lo que tu placer necesita.<br>Nada de más.</h2>
     </div>
 
     <div class="bene-grid">
@@ -542,19 +665,19 @@
         <div class="bene-num">01</div>
         <div class="bene-card__icon">🎛️</div>
         <strong>10 modos de vibración</strong>
-        <p>Desde suave hasta intenso. Un solo botón controla la experiencia. Sin manual, sin complicaciones — elegís lo que querés sentir.</p>
+        <p>Desde suave hasta intenso — vos decidís qué sentir cada vez. Un solo botón, sin manual, sin complicarte: el vibrador que se adapta a tu momento.</p>
       </div>
       <div class="bene-card">
         <div class="bene-num">02</div>
         <div class="bene-card__icon">🔇</div>
         <strong>Silencioso de verdad</strong>
-        <p>Motor de baja vibración y alta eficiencia. Podés usarlo sin preocuparte por el ruido. Privacidad total, sin comprometer la potencia.</p>
+        <p>Motor silencioso de verdad — usás tu vibrador sin que nadie en la otra habitación se entere. Privacidad total, sin bajarle nada a la potencia.</p>
       </div>
       <div class="bene-card">
         <div class="bene-num">03</div>
         <div class="bene-card__icon">👜</div>
         <strong>Diseño para discreción</strong>
-        <p>80mm de largo, 50 gramos. Cabe en cualquier bolso o cajón sin que llame la atención. Elegante, compacto y completamente tuyo.</p>
+        <p>80mm, 50 gramos. Tu vibrador bala entra en cualquier cartera o cajón sin llamar la atención. Elegante, compacto, completamente tuyo.</p>
       </div>
     </div>
     <div class="bene-grid-2">
@@ -562,19 +685,19 @@
         <div class="bene-num">04</div>
         <div class="bene-card__icon">⚡</div>
         <strong>Recargable vía USB</strong>
-        <p>Sin pilas. Conectás al cargador del celular, 1 hora de carga y tenés 45+ minutos de uso. Simple, rápido, sin gastos extra.</p>
+        <p>Sin pilas que se agotan a mitad del momento. Cargás en el mismo cable del celular y tenés 45+ minutos de placer listos cuando vos querés.</p>
       </div>
       <div class="bene-card">
         <div class="bene-num">05</div>
         <div class="bene-card__icon">💧</div>
         <strong>Impermeable IPX7</strong>
-        <p>Limpieza rápida y segura bajo el agua. Silicona médica certificada — higiénico, duradero y totalmente amigable con la piel.</p>
+        <p>Limpieza rápida y segura bajo el agua. Silicona médica certificada — higiénico, suave en la piel y hecho para durar.</p>
       </div>
     </div>
 
     <div style="text-align:center;margin-top:40px">
       <button class="btn-luna" data-scroll-form data-insync-cta="beneficios" style="display:inline-flex;max-width:300px">
-        Quiero cambiar <span class="arrow">→</span>
+        Quiero mi vibrador <span class="arrow">→</span>
       </button>
     </div>
   </div>
@@ -586,29 +709,14 @@
     <div class="confianza__head">
       <p class="sec-overline">Comprás sin riesgos</p>
       <div class="pink-line pink-line--center"></div>
-      <h2 class="sec-h" style="margin:0">Privacidad total.<br>De principio a fin.</h2>
+      <h2 class="sec-h" style="margin:0">Tu vibrador llega.<br>Tu privacidad, intacta.</h2>
     </div>
 
     <div class="confianza__layout">
 
       <div>
         <div class="img-ph img-ph--sq" id="lifestyle-img">
-          <!--
-            ┌─────────────────────────────────────────────────────┐
-            │  IMAGEN PENDIENTE — NO reemplazar con placeholder   │
-            │  Foto real del producto en contexto de uso          │
-            │  Ambiente elegante y discreto · producto rosa       │
-            │  Archivo: /assets/img/luna-mini-lifestyle.webp      │
-            │  Tamaño mínimo: 800 × 800 px                        │
-            │  Reemplazar cuando llegue el stock físico            │
-            └─────────────────────────────────────────────────────┘
-          -->
-          <div class="img-ph__label">
-            <div class="img-ph__icon">✨</div>
-            <div class="img-ph__title">Imagen pendiente<br>Foto en contexto real</div>
-            <div class="img-ph__file">luna-mini-lifestyle.webp</div>
-            <div class="img-ph__size">Reemplazar cuando llegue stock · 800 × 800 px</div>
-          </div>
+          <img src="/assets/img/empaque-discreto.webp" alt="LUNA MINI — empaque 100% discreto, bolsa neutra sin marcas, entrega en el día" width="600" height="600" loading="lazy">
         </div>
       </div>
 
@@ -616,7 +724,7 @@
         <div class="trust-card" style="border-color:rgba(233,30,99,.25);background:rgba(233,30,99,.05)">
           <div style="font-size:24px;margin-bottom:10px">📦</div>
           <p class="t-title">Empaque 100% discreto</p>
-          <p class="t-body">Entregamos en bolsa neutra sin marcas ni contenido visible. Nadie sabrá lo que hay adentro — ni la persona que entrega.</p>
+          <p class="t-body">Tu vibrador llega en bolsa neutra, sin marcas ni contenido visible. Nadie sabrá lo que hay adentro — ni la persona que entrega.</p>
         </div>
         <div class="trust-card">
           <div style="font-size:24px;margin-bottom:10px">🚚</div>
@@ -631,7 +739,7 @@
         <div class="trust-card">
           <div style="font-size:24px;margin-bottom:10px">💬</div>
           <p class="t-title">Soporte real por WhatsApp</p>
-          <p class="t-body">Cualquier duda o consulta, te respondemos directo por WhatsApp. Garantía local y soporte post-venta real.</p>
+          <p class="t-body">Cualquier duda sobre tu vibrador, te respondemos directo por WhatsApp. Garantía local y soporte post-venta real.</p>
         </div>
       </div>
 
@@ -639,7 +747,7 @@
 
     <div style="text-align:center;margin-top:40px">
       <button class="btn-luna" data-scroll-form data-insync-cta="confianza" style="display:inline-flex;max-width:300px">
-        Quiero cambiar <span class="arrow">→</span>
+        Quiero mi vibrador <span class="arrow">→</span>
       </button>
     </div>
   </div>
@@ -652,18 +760,18 @@
   <div class="faq-wrap">
 
     <details class="faq-item">
-      <summary class="faq-q">¿Es de buena calidad?</summary>
-      <div class="faq-a">Sí. El material es silicona médica — suave, sin látex y seguro para uso personal. El motor es silencioso y potente. El LUNA MINI™ fue seleccionado y probado antes de incluirlo en nuestro catálogo. La relación calidad-precio es excepcional.</div>
+      <summary class="faq-q">¿Es un buen vibrador?</summary>
+      <div class="faq-a">Sí. Es un vibrador de silicona médica — suave, sin látex y seguro para uso íntimo. El motor es silencioso y potente de verdad. Lo seleccionamos y probamos antes de sumarlo al catálogo. Calidad real, sin pagar de más.</div>
     </details>
 
     <details class="faq-item">
       <summary class="faq-q">¿Hace mucho ruido?</summary>
-      <div class="faq-a">No. El motor está diseñado específicamente para vibración silenciosa. Podés usarlo sin que nadie en la misma habitación lo note. Privacidad total, sin comprometer la potencia ni la intensidad.</div>
+      <div class="faq-a">No. El motor de tu vibrador está diseñado específicamente para ser silencioso. Nadie en la misma habitación lo va a notar. Privacidad total, sin bajarle nada a la intensidad.</div>
     </details>
 
     <details class="faq-item">
       <summary class="faq-q">¿Por qué está tan barato si se ve tan bien?</summary>
-      <div class="faq-a">Porque no pagás una marca. Dam Vertex trabaja directamente con proveedores seleccionados y mantiene los márgenes al mínimo. El producto es de calidad real — sin el marketing inflado que multiplica el precio.</div>
+      <div class="faq-a">Porque no pagás una marca importada. Trabajamos directo con proveedores seleccionados y mantenemos el margen al mínimo. Es un vibrador de calidad real — sin el marketing inflado que multiplica el precio.</div>
     </details>
 
     <details class="faq-item">
@@ -678,12 +786,12 @@
 
     <details class="faq-item">
       <summary class="faq-q">¿Hay garantía?</summary>
-      <div class="faq-a">Sí. Si llega con algún defecto de fábrica, lo coordinamos directamente por WhatsApp. Soporte posventa real — no desaparecemos después de la venta.</div>
+      <div class="faq-a">Sí. Si tu vibrador llega con algún defecto de fábrica, lo coordinamos directamente por WhatsApp. Soporte posventa real — no desaparecemos después de la venta.</div>
     </details>
 
     <details class="faq-item">
       <summary class="faq-q">¿El empaque es discreto?</summary>
-      <div class="faq-a">100%. Entregamos en bolsa neutra sin marcas, logos ni identificación del contenido. Ni la persona que entrega sabe exactamente qué lleva. Tu privacidad es nuestra prioridad en todo momento.</div>
+      <div class="faq-a">100%. Tu vibrador llega en bolsa neutra, sin marcas, logos ni identificación del contenido. Ni la persona que entrega sabe exactamente qué lleva. Tu privacidad es nuestra prioridad en todo momento.</div>
     </details>
 
   </div>
@@ -696,10 +804,10 @@
       <span class="cierre-novedad__dot"></span>
       Novedad exclusiva · Stock limitado
     </div>
-    <h2 class="cierre-luna__h">Tu momento llegó.<br>Gs. 229.000. Hoy.</h2>
-    <p class="cierre-luna__sub">LUNA MINI™ Vibrador Bala Recargable — silencioso, compacto, 10 modos. Entrega en el día. Empaque discreto. Precio de lanzamiento mientras haya stock.</p>
+    <h2 class="cierre-luna__h">Tu vibrador te espera.<br>Gs. 229.000. Hoy.</h2>
+    <p class="cierre-luna__sub">LUNA MINI — el vibrador silencioso, compacto y con 10 modos que estabas buscando. Entrega en el día. Empaque discreto. Precio de lanzamiento mientras haya stock.</p>
     <button class="btn-luna" data-scroll-form data-insync-cta="cierre" style="display:inline-flex;max-width:340px;font-size:16px;padding:17px 36px">
-      Quiero cambiar <span class="arrow">→</span>
+      Quiero mi vibrador <span class="arrow">→</span>
     </button>
     <div class="cierre-trust">
       <div class="ct-item"><span class="ct-ok">✓</span><span>Entrega en el día · Central</span></div>
@@ -716,7 +824,7 @@
     <p class="modal-urgency">⏳ Stock limitado · Novedad</p>
     <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
     <h2 class="modal-title" id="modal-title-luna">Hacé tu pedido</h2>
-    <p class="modal-step">LUNA MINI™ · Entrega en el día 🚚</p>
+    <p class="modal-step">Tu vibrador LUNA MINI · Entrega en el día 🚚</p>
     <p class="modal-subtitle">Completá los datos y te contactamos al instante.</p>
 
     <div class="modal-section">
@@ -734,28 +842,30 @@
         <label class="offer-option">
           <input type="radio" name="offer" value="2">
           <div class="offer-content">
-            <span class="offer-qty">2 unidades <span class="offer-combo-badge">Más elegido</span></span>
+            <span class="offer-qty">2 unidades</span>
             <div class="offer-prices">
               <span class="offer-compare" id="offer-compare-2">—</span>
               <span class="offer-price" id="offer-price-2">—</span>
             </div>
           </div>
-          <div style="margin-top:4px">
-            <span class="offer-saving">Llevá 2 y ahorrá 25%</span>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 114.500</span>
+            <div class="offer-badge">🔥 Más elegido</div>
           </div>
         </label>
 
         <label class="offer-option">
           <input type="radio" name="offer" value="3">
           <div class="offer-content">
-            <span class="offer-qty">3 unidades <span class="offer-combo-badge">Mayor ahorro</span></span>
+            <span class="offer-qty">3 unidades</span>
             <div class="offer-prices">
               <span class="offer-compare" id="offer-compare-3">—</span>
               <span class="offer-price" id="offer-price-3">—</span>
             </div>
           </div>
-          <div style="margin-top:4px">
-            <span class="offer-saving">Llevá 3 y ahorrá 35%</span>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 240.450</span>
+            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           </div>
         </label>
 
@@ -859,11 +969,9 @@
         </div>
       </div>
 
-      <label class="confirm-intent">
-        <input type="checkbox" id="m-confirm" name="confirm">
-        <span class="confirm-text">Quiero recibir este producto y confirmo mi pedido</span>
+      <label class="confirm-intent" style="display:none">
+        <input type="checkbox" id="m-confirm" name="confirm" checked>
       </label>
-      <span class="confirm-error-msg form-error-msg">Debés confirmar tu intención de compra para continuar</span>
 
       <div class="form-submit">
         <button type="submit" class="btn btn-primary" id="modal-submit-btn">
@@ -931,7 +1039,7 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
 
 <script>
   const PRODUCT = {
-    name:  'LUNA MINI™ Vibrador Bala Recargable',
+    name:  'LUNA MINI Vibrador Bala Recargable',
     slug:  'luna-mini-vibrador-bala-recargable',
     price: 229000,
   };
@@ -939,13 +1047,53 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
   document.addEventListener('DOMContentLoaded', () => {
     DV.trackViewContent(PRODUCT);
     DV.initForm(PRODUCT);
+
+    /* Evergreen timer — persiste en localStorage por visitante, nunca se reinicia.
+       Al llegar a 0 muestra mensaje de escasez fijo, sin timer. */
+    (function() {
+      var el = document.getElementById('evergreen-timer');
+      if (!el) return;
+      var START_KEY = '_lmnx_start2';
+      var DUR_KEY   = '_lmnx_dur2';
+      var DEFAULT_DUR = 420;
+
+      var start = parseInt(localStorage.getItem(START_KEY) || '0', 10);
+      var dur   = parseInt(localStorage.getItem(DUR_KEY) || '0', 10);
+      if (!start || !dur) {
+        start = Date.now();
+        dur = DEFAULT_DUR;
+        localStorage.setItem(START_KEY, String(start));
+        localStorage.setItem(DUR_KEY, String(dur));
+      }
+
+      var timerId = null;
+
+      function render() {
+        var remaining = Math.ceil(dur - (Date.now() - start) / 1000);
+        if (remaining > 0) {
+          var mm = Math.floor(remaining / 60);
+          var ss = remaining % 60;
+          var mmStr = (mm < 10 ? '0' : '') + mm;
+          var ssStr = (ss < 10 ? '0' : '') + ss;
+          el.innerHTML =
+            '<div class="evergreen-timer__line1">Este precio cierra en <strong class="evergreen-timer__time">' + mmStr + ':' + ssStr + '</strong></div>' +
+            '<div class="evergreen-timer__line2">Últimas unidades con entrega en el día</div>';
+        } else {
+          if (timerId) clearInterval(timerId);
+          el.innerHTML = '<div class="evergreen-timer__expired">⚠️ Precio especial · Últimas unidades disponibles</div>';
+        }
+      }
+
+      render();
+      timerId = setInterval(render, 1000);
+    })();
   });
 </script>
 
 <!-- CRO: Sticky CTA bar — mobile only -->
 <div class="sticky-cta-bar" id="sticky-cta-bar">
   <button class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;background:var(--luna-pink)">
-    Quiero cambiar →
+    Quiero mi vibrador →
   </button>
 </div>
 

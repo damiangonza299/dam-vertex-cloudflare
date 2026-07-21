@@ -272,7 +272,7 @@
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Llevá 2 y ahorrá 25%</span>
+            <span class="offer-saving">Ahorrás Gs. 94.500</span>
             <div class="offer-badge">🔥 Más elegido</div>
           </div>
         </div>
@@ -285,7 +285,7 @@
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">3 unidades con 35% OFF</span>
+            <span class="offer-saving">Ahorrás Gs. 198.450</span>
             <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           </div>
         </div>
@@ -475,7 +475,7 @@
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Llevá 2 y ahorrá 25%</span>
+            <span class="offer-saving">Ahorrás Gs. 94.500</span>
             <div class="offer-badge">🔥 Más elegido</div>
           </div>
         </label>
@@ -490,7 +490,7 @@
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">3 unidades con 35% OFF</span>
+            <span class="offer-saving">Ahorrás Gs. 198.450</span>
             <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           </div>
         </label>
@@ -1133,6 +1133,9 @@ window.DV_MAPS_KEY = 'AIzaSyBJgh6tAGU4ud2t7blo9Nl4ScpipUuLEBc';
           { name: name, phone: validPhone || '' },
           2
         );
+        if (typeof DV.saveLeadDataLocal === 'function') {
+          DV.saveLeadDataLocal(validPhone || rawPhone, name, cmInvEmail || '');
+        }
 
         comboForm.style.display = 'none';
         comboSuccess.classList.add('visible');

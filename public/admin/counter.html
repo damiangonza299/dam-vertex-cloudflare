@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contador — Dam Vertex</title>
+<link rel="icon" href="/favicon.ico">
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: #000;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  #wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    gap: clamp(16px, 6vw, 48px);
+    position: relative;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+  }
+  .subtitle {
+    font-size: clamp(9px, 2vw, 11px);
+    color: rgba(255,255,255,.32);
+    font-weight: 500;
+    letter-spacing: .02em;
+    margin-bottom: 2px;
+  }
+  .num {
+    font-size: clamp(36px, 12vw, 88px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    transition: transform .15s ease;
+  }
+  .num.leads    { color: #fff; }
+  .num.purchases { color: #4ade80; }
+  .label {
+    font-size: clamp(9px, 2vw, 12px);
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  #divider {
+    width: 1px;
+    align-self: stretch;
+    margin: 12px 0;
+    background: rgba(255,255,255,.12);
+  }
+
+  /* Flash de fondo al recibir un evento */
+  #wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .12s ease;
+  }
+  #wrap.flash-lead::before    { background: rgba(255,255,255,.14); opacity: 1; }
+  #wrap.flash-purchase::before { background: rgba(74,222,128,.18); opacity: 1; }
+
+  #pip-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.6);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    padding: 5px 9px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  #pip-btn:hover { background: rgba(255,255,255,.15); color: #fff; }
+
+  #status-dot {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #444;
+  }
+  #status-dot.live { background: #4ade80; }
+</style>
+</head>
+<body>
+
+<div id="wrap">
+  <button id="pip-btn" type="button">🔲 PiP</button>
+
+  <div class="col">
+    <span class="subtitle">Facturación pendiente</span>
+    <span class="num leads" id="num-leads">—</span>
+    <span class="label">Pedidos 📦</span>
+  </div>
+
+  <div id="divider"></div>
+
+  <div class="col">
+    <span class="subtitle">Facturación confirmada</span>
+    <span class="num purchases" id="num-purchases">—</span>
+    <span class="label">Ventas ✅</span>
+  </div>
+
+  <div id="status-dot" title="Última actualización OK"></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Auth — misma convención que admin.js (dv_admin_token, TTL 30 días) ── */
+  var TOKEN_KEY  = 'dv_admin_token';
+  var TOKEN_TS   = 'dv_admin_ts';
+  var MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+
+  function loadToken() {
+    var ts = parseInt(localStorage.getItem(TOKEN_TS) || '0', 10);
+    if (Date.now() - ts > MAX_AGE_MS) {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(TOKEN_TS);
+      return '';
+    }
+    return localStorage.getItem(TOKEN_KEY) || '';
+  }
+
+  var AUTH_TOKEN = loadToken();
+  if (!AUTH_TOKEN) {
+    location.href = '/admin/';
+    return;
+  }
+
+  var numLeads     = document.getElementById('num-leads');
+  var numPurchases = document.getElementById('num-purchases');
+  var wrap         = document.getElementById('wrap');
+  var statusDot    = document.getElementById('status-dot');
+  var pipBtn       = document.getElementById('pip-btn');
+
+  var rawLeadsCount  = 0;
+  var purchasesCount = 0;
+
+  function flash(kind) {
+    var cls = kind === 'purchase' ? 'flash-purchase' : 'flash-lead';
+    wrap.classList.add(cls);
+    setTimeout(function () { wrap.classList.remove(cls); }, 220);
+  }
+
+  /* ── Polling cada 5s — sin Durable Objects, compatible con plan Free.
+     1 request cada 5s es consumo mínimo; 5s de delay es imperceptible
+     para un contador de pedidos/ventas. ── */
+  var POLL_MS = 5000;
+  var firstLoad = true;
+
+  function poll() {
+    fetch('/api/admin-counter', { headers: { 'Authorization': 'Bearer ' + AUTH_TOKEN } })
+      .then(function (r) {
+        if (r.status === 401) { location.href = '/admin/'; return null; }
+        return r.json();
+      })
+      .then(function (data) {
+        if (!data || !data.ok) { statusDot.classList.remove('live'); return; }
+        statusDot.classList.add('live');
+
+        var newLeads     = Number(data.leads_today || 0);
+        var newPurchases = Number(data.purchases_today || 0);
+
+        if (!firstLoad) {
+          if (newLeads     > rawLeadsCount)  flash('lead');
+          if (newPurchases > purchasesCount) flash('purchase');
+        }
+        firstLoad = false;
+
+        rawLeadsCount  = newLeads;
+        purchasesCount = newPurchases;
+
+        /* Pedidos = leads del día que todavía no se confirmaron como venta */
+        var pending = Math.max(0, rawLeadsCount - purchasesCount);
+        numLeads.textContent     = pending;
+        numPurchases.textContent = purchasesCount;
+      })
+      .catch(function () { statusDot.classList.remove('live'); });
+  }
+
+  poll();
+  setInterval(poll, POLL_MS);
+
+  /* ── Picture-in-Picture ──
+     No existe document.documentElement.requestPictureInPicture() — PiP nativo
+     solo aplica a elementos <video>. Para DOM arbitrario, el API real y
+     experimental (Chrome/Edge) es Document Picture-in-Picture. Si no está
+     disponible, cae a una ventana popup chica (sin "always on top" real —
+     eso no existe como feature de window.open en ningún browser). */
+  pipBtn.addEventListener('click', async function () {
+    if (window.documentPictureInPicture) {
+      try {
+        var pipWindow = await window.documentPictureInPicture.requestWindow({ width: 320, height: 160 });
+        [...document.styleSheets].forEach(function (sheet) {
+          try {
+            var css = [...sheet.cssRules].map(function (r) { return r.cssText; }).join('\n');
+            var style = document.createElement('style');
+            style.textContent = css;
+            pipWindow.document.head.appendChild(style);
+          } catch (_) {}
+        });
+        pipWindow.document.body.style.margin = '0';
+        pipWindow.document.body.appendChild(wrap);
+        /* El botón viaja con #wrap a la ventana PiP — ocultarlo ahí,
+           no tiene sentido volver a abrir PiP estando ya minimizado. */
+        pipBtn.style.display = 'none';
+        pipWindow.addEventListener('pagehide', function () {
+          document.body.appendChild(wrap);
+          pipBtn.style.display = '';
+        });
+        return;
+      } catch (_) { /* usuario canceló o no soportado — cae a popup */ }
+    }
+    var popup = window.open(location.href, 'dv_counter_pip', 'width=320,height=160');
+    if (popup) {
+      pipBtn.style.display = 'none';
+      popup.addEventListener('pagehide', function () {
+        pipBtn.style.display = '';
+      });
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

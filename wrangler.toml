@@ -6,3 +6,7 @@ pages_build_output_dir = "public"
 binding       = "DB"
 database_name = "dam-vertex-leads"
 database_id = "53df5abe-f022-487d-a8c2-58e150f256e2"
+
+[[kv_namespaces]]
+binding = "COUNTER_KV"
+id      = "a797ff2029ee4b528fb1d57d70cd23d5"

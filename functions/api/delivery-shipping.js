@@ -4,6 +4,8 @@
    POST { date, deliveryAmount, encomiendaAmount }  → distribuye en DAM Finanzas
    ========================================================= */
 
+import { verifyAdminToken } from '../_lib/adminAuth.js';
+
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -16,9 +18,7 @@ export async function onRequestOptions() {
 
 /* ── GET: cuántas ventas compradas hubo ese día + historial reciente ── */
 export async function onRequestGet({ request, env }) {
-  const auth  = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-  if (!token || token !== env.ADMIN_PASSWORD.trim()) {
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 
@@ -85,9 +85,7 @@ export async function onRequestGet({ request, env }) {
 
 /* ── POST: distribuir total de envíos en DAM Finanzas ── */
 export async function onRequestPost({ request, env }) {
-  const auth  = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-  if (!token || token !== env.ADMIN_PASSWORD.trim()) {
+  if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 
