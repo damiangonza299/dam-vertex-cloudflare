@@ -14,7 +14,8 @@ name: BQE Scorer — Periódico
 # NO toca Purchase ni QualifiedLead.
 # Solo escribe en lead_quality.
 #
-# Requiere: secret ADMIN_PASSWORD en GitHub → Settings → Secrets → Actions
+# Requiere: secret SERVICE_SECRET en GitHub → Settings → Secrets → Actions
+# (mismo valor que la variable de entorno SERVICE_SECRET en Cloudflare Pages)
 
 on:
   schedule:
@@ -29,7 +30,7 @@ jobs:
     env:
       # VS Code YAML linter no puede leer GitHub Secrets y marca falso positivo.
       # Mover a env del job resuelve la advertencia y mantiene el comportamiento identico.
-      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      SERVICE_SECRET: ${{ secrets.SERVICE_SECRET }}
 
     steps:
       - name: POST /api/intelligence/run-bqe
@@ -38,7 +39,7 @@ jobs:
             -o /tmp/bqe_result.json \
             -w "%{http_code}" \
             -X POST \
-            -H "Authorization: Bearer $ADMIN_PASSWORD" \
+            -H "Authorization: Bearer $SERVICE_SECRET" \
             -H "Content-Type: application/json" \
             -d '{}' \
             https://dam-vertex-cloudflare.pages.dev/api/intelligence/run-bqe)

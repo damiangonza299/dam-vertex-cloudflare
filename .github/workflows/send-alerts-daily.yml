@@ -18,7 +18,7 @@ name: Dam Intelligence — Alertas Diarias Telegram
 # Solo lectura de D1 + envío de texto a Telegram.
 #
 # Requiere secrets en GitHub → Settings → Secrets → Actions:
-#   ADMIN_PASSWORD                — contraseña del admin panel
+#   SERVICE_SECRET                — mismo valor que env SERVICE_SECRET en Cloudflare Pages
 #   (TELEGRAM_BOT_TOKEN y TELEGRAM_INTELLIGENCE_CHAT_ID se configuran
 #    como secrets de Cloudflare Pages, no como secrets de GitHub)
 
@@ -35,7 +35,7 @@ jobs:
     env:
       # VS Code YAML linter no puede leer GitHub Secrets y marca falso positivo.
       # Mover a env del job resuelve la advertencia y mantiene el comportamiento identico.
-      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      SERVICE_SECRET: ${{ secrets.SERVICE_SECRET }}
 
     steps:
       - name: POST /api/intelligence/send-alerts
@@ -44,7 +44,7 @@ jobs:
             -o /tmp/alerts_result.json \
             -w "%{http_code}" \
             -X POST \
-            -H "Authorization: Bearer $ADMIN_PASSWORD" \
+            -H "Authorization: Bearer $SERVICE_SECRET" \
             -H "Content-Type: application/json" \
             --max-time 30 \
             https://dam-vertex-cloudflare.pages.dev/api/intelligence/send-alerts)
