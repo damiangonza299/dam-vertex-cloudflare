@@ -56,7 +56,7 @@
         {
           "@type": "Question",
           "name": "¿En cuántos días llega?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Asunción 3-5 días / Interior 5-7 días." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Central y Asunción: entrega en el día. Interior del país: 2 días hábiles." }
         },
         {
           "@type": "Question",
@@ -110,8 +110,8 @@
     .theme-taza .btn-primary:hover,
     .btn-taza:hover { background: var(--taza-brown-dk); transform: translateY(-1px); }
 
-    /* ══ HERO ══ */
-    .hero-taza { background: var(--taza-cream); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    /* ══ HERO — fondo café oscuro (primer eslabón de la alternancia de secciones) ══ */
+    .hero-taza { background: var(--taza-brown); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
     .hero-taza__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
     .hero-taza__media { max-width: 420px; margin: 0 auto; width: 100%; }
     .hero-taza__img {
@@ -119,24 +119,30 @@
       aspect-ratio: 1254 / 1117; object-fit: cover; background: var(--taza-card2);
     }
 
-    .eyebrow-taza { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--taza-brown-dk); margin: 0 0 12px; }
-    .hero-taza__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--taza-text); margin: 0 0 12px; }
-    .hero-taza__h em { font-style: normal; color: var(--taza-brown); }
-    .hero-taza__sub { font-size: clamp(14px,2vw,16px); color: var(--taza-text-dim); line-height: 1.65; margin: 0 0 18px; }
+    .eyebrow-taza { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--taza-accent); margin: 0 0 12px; }
+    .hero-taza__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--taza-cream); margin: 0 0 12px; }
+    .hero-taza__h em { font-style: normal; color: var(--taza-accent); }
+    .hero-taza__sub { font-size: clamp(14px,2vw,16px); color: rgba(253,246,240,.82); line-height: 1.65; margin: 0 0 18px; }
 
     .spi-taza { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; }
-    .spi-taza__stars { color: var(--taza-brown-dk); font-size: 14px; }
-    .spi-taza__text  { font-size: 12px; color: var(--taza-text-muted); font-weight: 600; }
+    .spi-taza__stars { color: var(--taza-accent); font-size: 14px; }
+    .spi-taza__text  { font-size: 12px; color: rgba(253,246,240,.65); font-weight: 600; }
 
     .hero-taza .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
-    .hero-taza .price-main    { color: var(--taza-text); }
-    .hero-taza .price-compare { color: rgba(42,24,16,.4); }
-    .hero-taza .price-badge   { background: var(--taza-brown); color: #fff; border: none; }
-    .hero-taza__proof { font-size: 13px; font-weight: 600; color: var(--taza-brown-dk); margin: 0 0 18px; }
+    .hero-taza .price-main    { color: var(--taza-cream); }
+    .hero-taza .price-compare { color: rgba(253,246,240,.45); }
+    .hero-taza .price-badge   { background: var(--taza-accent); color: var(--taza-brown-dk); border: none; }
+    .hero-taza__proof { font-size: 13px; font-weight: 600; color: var(--taza-accent); margin: 0 0 18px; }
+
+    /* Botón y badges de entrega — necesitan su propio contraste sobre fondo café oscuro */
+    .hero-taza .btn-primary { background: #ffffff; color: var(--taza-brown-dk); }
+    .hero-taza .btn-primary:hover { background: rgba(255,255,255,.9); }
+    .hero-taza .db-badge { font-size: 11px; color: var(--taza-cream); padding: 5px 10px; border-radius: 20px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.28); }
+    .hero-taza .db-badge.db-green { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.4); color: var(--taza-cream); }
 
     /* ── Selector de color (hero) ── */
     .color-select-taza { margin: 0 0 18px; }
-    .color-select-taza__label { display: block; font-size: 12px; font-weight: 700; color: var(--taza-text); margin-bottom: 10px; letter-spacing: .01em; }
+    .color-select-taza__label { display: block; font-size: 12px; font-weight: 700; color: var(--taza-cream); margin-bottom: 10px; letter-spacing: .01em; }
     .color-swatches-taza { display: flex; gap: 10px; flex-wrap: wrap; }
     .color-swatch-taza {
       display: flex; flex-direction: column; align-items: center; gap: 4px;
@@ -152,27 +158,13 @@
     .color-swatch-taza--disabled { opacity: .45; cursor: not-allowed; }
     .color-swatch-taza--disabled .color-swatch-taza__name,
     .color-swatch-taza--disabled .color-swatch-taza__stock { text-decoration: line-through; }
-    .color-select-taza__error { display: none; margin-top: 8px; font-size: 12px; font-weight: 600; color: #c0392b; }
+    .color-select-taza__error { display: none; margin-top: 8px; font-size: 12px; font-weight: 600; color: #ff8a80; }
     .color-select-taza__error.visible { display: block; }
 
     .hero-taza .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
-    .hero-taza .db-badge { font-size: 11px; color: var(--taza-text); padding: 5px 10px; border-radius: 20px; background: rgba(107,63,42,.08); border: 1px solid rgba(107,63,42,.25); }
-    .hero-taza .db-badge.db-green { background: rgba(107,63,42,.16); border-color: rgba(107,63,42,.4); color: var(--taza-brown-dk); }
 
-    /* ══ FEATURES RÁPIDAS ══ */
-    .features-taza { background: var(--taza-card); padding: clamp(40px,7vw,64px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
-    .features-taza__inner { max-width: 900px; margin: 0 auto; }
-    .features-taza__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--taza-border); border-radius: 10px; overflow: hidden; }
-    .feature-card-taza { background: var(--taza-card); padding: 26px 20px; text-align: center; }
-    .feature-card-taza__icon {
-      width: 44px; height: 44px; border-radius: 8px; margin: 0 auto 12px;
-      background: rgba(107,63,42,.1); border: 1px solid rgba(107,63,42,.3);
-      display: flex; align-items: center; justify-content: center; font-size: 20px;
-    }
-    .feature-card-taza strong { display: block; font-size: 13.5px; font-weight: 700; color: var(--taza-text); line-height: 1.35; }
-
-    /* ══ DEMO ══ */
-    .demo-taza { background: var(--taza-card2); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    /* ══ DEMO — fondo blanco (2do eslabón de la alternancia) ══ */
+    .demo-taza { background: #FFFFFF; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
     .demo-taza__inner { max-width: 1000px; margin: 0 auto; }
     .demo-taza__head { text-align: center; margin-bottom: 40px; }
     .sec-overline-taza { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--taza-brown-dk); margin: 0 0 14px; }
@@ -190,7 +182,7 @@
     .demo-video-title-taza { font-size: 13px; font-weight: 700; color: var(--taza-text); line-height: 1.3; }
 
     /* ══ BEBIDAS ══ */
-    .bebidas-taza { background: var(--taza-card); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    .bebidas-taza { background: var(--taza-cream); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
     .bebidas-taza__inner { max-width: 900px; margin: 0 auto; }
     .bebidas-taza__head { text-align: center; margin-bottom: 40px; }
     .bebidas-taza__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
@@ -199,11 +191,11 @@
     .bebida-item-taza__label { font-size: 13px; font-weight: 700; color: var(--taza-text); }
 
     /* ══ CÓMO FUNCIONA ══ */
-    .como-taza { background: var(--taza-card2); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    .como-taza { background: #FFFFFF; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
     .como-taza__inner { max-width: 900px; margin: 0 auto; }
     .como-taza__head { text-align: center; margin-bottom: 44px; }
     .como-taza__steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
-    .step-taza { background: var(--taza-card); border: 1px solid var(--taza-border); border-radius: 12px; padding: 26px 22px; text-align: center; }
+    .step-taza { background: var(--taza-card2); border: 1px solid var(--taza-border); border-radius: 12px; padding: 26px 22px; text-align: center; }
     .step-taza__num {
       width: 34px; height: 34px; border-radius: 50%; margin: 0 auto 14px;
       background: var(--taza-brown); color: #fff; font-weight: 800; font-size: 15px;
@@ -213,22 +205,22 @@
     .step-taza p { font-size: 13px; color: var(--taza-text-muted); line-height: 1.6; margin: 0; }
 
     /* ══ BENEFICIOS ══ */
-    .beneficios-taza { background: var(--taza-card); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    .beneficios-taza { background: var(--taza-cream); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
     .beneficios-taza__inner { max-width: 1000px; margin: 0 auto; }
     .beneficios-taza__head { text-align: center; margin-bottom: 44px; }
     .bene-grid-taza { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--taza-border); border-radius: 10px 10px 0 0; overflow: hidden; }
     .bene-grid-taza-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--taza-border); border-radius: 0 0 10px 10px; overflow: hidden; margin-top: 1px; }
-    .bene-card-taza { background: var(--taza-card2); padding: 30px 24px; }
+    .bene-card-taza { background: var(--taza-card); padding: 30px 24px; }
     .bene-card-taza strong { display: block; font-size: 15px; font-weight: 700; color: var(--taza-text); margin-bottom: 8px; }
     .bene-card-taza p { font-size: 13px; color: var(--taza-text-muted); line-height: 1.6; margin: 0; }
 
     /* ══ ESPECIFICACIONES ══ */
-    .especificaciones-taza { background: var(--taza-card2); padding: clamp(40px,7vw,64px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); text-align: center; }
+    .especificaciones-taza { background: #FFFFFF; padding: clamp(40px,7vw,64px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); text-align: center; }
     .especificaciones-taza__inner { max-width: 700px; margin: 0 auto; }
     .specs-line-taza { font-size: clamp(13px,2.2vw,15px); font-weight: 700; color: var(--taza-text); line-height: 1.6; margin: 18px 0 0; }
 
     /* ══ FAQ ══ */
-    .faq-taza { background: var(--taza-card); padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    .faq-taza { background: var(--taza-cream); padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
     .faq-taza .faq-wrap { max-width: 640px; margin: 0 auto; }
     .faq-taza .faq-item { border-bottom: 1px solid var(--taza-border); }
     .faq-taza .faq-item:first-of-type { border-top: 1px solid var(--taza-border); }
@@ -292,6 +284,28 @@
     }
     .offer-badge-top-taza--best { background: var(--taza-brown-dk); }
     .theme-taza .offer-saving { display: block; margin-top: 6px; color: #1a8a52; font-size: 12px; font-weight: 600; }
+
+    /* Dropdown compacto de variante — debajo de los combos, discreto */
+    .modal-variant-taza {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      margin: 14px 0; padding: 10px 14px;
+      background: #fff; border: 1px solid rgba(107,63,42,.18); border-radius: 8px;
+    }
+    .modal-variant-taza__label { font-size: 12.5px; font-weight: 600; color: rgba(42,24,16,.6); }
+    .modal-variant-taza__select {
+      font-size: 13px; font-weight: 700; color: var(--taza-text); font-family: inherit;
+      background-color: transparent; border: none; padding: 4px 22px 4px 4px;
+      cursor: pointer; appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B3F2A'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 2px center;
+    }
+
+    /* Contenedor de los <select> nativos por unidad que genera products.js —
+       funcional (products.js los lee al enviar el pedido) pero nunca visible:
+       el dropdown compacto de arriba es el único control que ve el usuario.
+       !important porque products.js hace variantSection.style.display='block'
+       vía JS inline al renderizar, que sin esto pisaría cualquier display:none. */
+    #variant-section { display: none !important; }
 
     .theme-taza .form-group label { color: var(--taza-text); }
     .theme-taza .form-group input,
@@ -367,7 +381,6 @@
     @media (max-width: 900px) {
       .bene-grid-taza { grid-template-columns: 1fr; border-radius: 10px 10px 0 0; }
       .bene-grid-taza-2 { grid-template-columns: 1fr; }
-      .features-taza__grid { grid-template-columns: 1fr; }
       .bebidas-taza__grid { grid-template-columns: repeat(2,1fr); }
       .como-taza__steps { grid-template-columns: 1fr; }
     }
@@ -459,26 +472,6 @@
       </div>
     </div>
 
-  </div>
-</section>
-
-<!-- ══ 3 CARACTERÍSTICAS RÁPIDAS ══ -->
-<section class="features-taza" id="section-features" data-insync-section="features">
-  <div class="features-taza__inner">
-    <div class="features-taza__grid">
-      <div class="feature-card-taza">
-        <div class="feature-card-taza__icon">⚡</div>
-        <strong>Mezcla sola en segundos</strong>
-      </div>
-      <div class="feature-card-taza">
-        <div class="feature-card-taza__icon">🔌</div>
-        <strong>Recargable por USB — sin pilas</strong>
-      </div>
-      <div class="feature-card-taza">
-        <div class="feature-card-taza__icon">🌡️</div>
-        <strong>Mantiene la temperatura</strong>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -654,7 +647,7 @@
     </details>
     <details class="faq-item">
       <summary class="faq-q">¿En cuántos días llega?</summary>
-      <div class="faq-a">Asunción 3-5 días / Interior 5-7 días.</div>
+      <div class="faq-a">Central y Asunción: entrega en el día · Interior del país: 2 días hábiles.</div>
     </details>
     <details class="faq-item">
       <summary class="faq-q">¿Cómo funciona el pago?</summary>
@@ -733,6 +726,23 @@
 
       </div>
     </div>
+
+    <!-- Variante — dropdown compacto, sincronizado con el selector de color del hero -->
+    <div class="modal-variant-taza">
+      <label for="m-variant-select" class="modal-variant-taza__label">Color elegido</label>
+      <select id="m-variant-select" class="modal-variant-taza__select">
+        <option value="Negro">⬛ Negro — quedan 4</option>
+        <option value="Marrón">🟫 Marrón — quedan 3</option>
+        <option value="Blanco">⬜ Blanco — quedan 3</option>
+      </select>
+    </div>
+
+    <!-- Selects nativos por unidad (ocultos) — products.js los lee al enviar el pedido
+         para incluir el color en /api/leads; ver PRODUCT.variants + syncModalColor() más abajo -->
+    <div class="modal-section" id="variant-section">
+      <div id="variant-selectors"></div>
+    </div>
+
     <p class="modal-price-warning">🔒 Tus datos están seguros · Solo los usamos para coordinar tu entrega</p>
 
     <!-- Formulario -->
@@ -1038,6 +1048,8 @@
   var colorStock    = { 'Negro': 4, 'Marrón': 3, 'Blanco': 3 };
   var selectedColor = 'Negro';
 
+  var COLOR_ICONS = { 'Negro': '⬛', 'Marrón': '🟫', 'Blanco': '⬜' };
+
   function renderColorStock() {
     document.querySelectorAll('.color-swatch-taza').forEach(function(btn) {
       var color    = btn.dataset.color;
@@ -1048,6 +1060,20 @@
       btn.classList.toggle('color-swatch-taza--disabled', agotado);
       btn.disabled = agotado;
     });
+
+    /* Dropdown compacto del modal — mismas etiquetas/estado que los swatches */
+    var variantSelect = document.getElementById('m-variant-select');
+    if (variantSelect) {
+      Array.prototype.forEach.call(variantSelect.options, function(opt) {
+        var color   = opt.value;
+        var stock   = Number(colorStock[color]);
+        var agotado = !(stock > 0);
+        var icon    = COLOR_ICONS[color] || '●';
+        opt.textContent = icon + ' ' + color + ' — ' + (agotado ? 'agotado' : 'quedan ' + stock);
+        opt.disabled = agotado;
+      });
+    }
+
     /* Si el color elegido quedó sin stock, reasignar al primero disponible */
     if (!(Number(colorStock[selectedColor]) > 0)) {
       var next = Object.keys(colorStock).find(function(c) { return Number(colorStock[c]) > 0; });
@@ -1061,14 +1087,19 @@
     document.querySelectorAll('.color-swatch-taza').forEach(function(btn) {
       btn.classList.toggle('color-swatch-taza--selected', btn.dataset.color === color);
     });
+    var variantSelect = document.getElementById('m-variant-select');
+    if (variantSelect && variantSelect.value !== color) variantSelect.value = color;
     var err = document.getElementById('color-select-taza-error');
     if (err) err.classList.remove('visible');
     syncModalColor();
   }
 
-  /* Aplica el color elegido en el hero a los <select> por unidad que
-     products.js genera dentro de #variant-selectors (misma lista de
-     opciones que PRODUCT.variants.options — siempre matchea). */
+  /* Aplica el color elegido (hero o dropdown del modal) a los <select> por
+     unidad que products.js genera dentro de #variant-selectors (misma lista
+     de opciones que PRODUCT.variants.options — siempre matchea). Esos selects
+     ocultos son los que products.js lee al armar el pedido, así que el color
+     final llega a /api/leads → D1 → confirm-purchase.js → Dam Finanzas igual
+     que cualquier otra variante del sitio. */
   function syncModalColor() {
     document.querySelectorAll('#variant-selectors select[id^="m-color-"]').forEach(function(sel) {
       var hasOption = Array.prototype.some.call(sel.options, function(o) { return o.value === selectedColor; });
@@ -1083,6 +1114,14 @@
     document.querySelectorAll('.color-swatch-taza').forEach(function(btn) {
       btn.addEventListener('click', function() { selectColor(btn.dataset.color); });
     });
+
+    /* Dropdown compacto del modal: arranca en el color elegido en el hero,
+       y si el usuario lo cambia ahí adentro, ese cambio manda. */
+    var variantSelect = document.getElementById('m-variant-select');
+    if (variantSelect) {
+      variantSelect.value = selectedColor;
+      variantSelect.addEventListener('change', function() { selectColor(variantSelect.value); });
+    }
 
     renderColorStock();
     syncModalColor();
