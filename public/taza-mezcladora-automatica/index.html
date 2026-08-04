@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/assets/img/batidora-landing.webp" fetchpriority="high" type="image/webp">
+  <link rel="preload" as="image" href="/assets/img/batidora-landing.webp?v=2" fetchpriority="high" type="image/webp">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
@@ -116,7 +116,7 @@
     .hero-taza__media { max-width: 420px; margin: 0 auto; width: 100%; }
     .hero-taza__img {
       width: 100%; height: auto; display: block; border-radius: 12px;
-      aspect-ratio: 1254 / 1117; object-fit: cover; background: var(--taza-card2);
+      aspect-ratio: 840 / 748; object-fit: cover; background: var(--taza-card2);
     }
 
     .eyebrow-taza { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--taza-accent); margin: 0 0 12px; }
@@ -416,10 +416,10 @@
   <div class="hero-taza__inner">
 
     <div class="hero-taza__media">
-      <img src="/assets/img/batidora-landing.webp"
+      <img src="/assets/img/batidora-landing.webp?v=2"
            alt="Taza Mezcladora Automática"
            class="hero-taza__img"
-           width="1254" height="1117"
+           width="840" height="748"
            loading="eager"
            fetchpriority="high">
     </div>
@@ -487,24 +487,24 @@
     <div class="demo-taza__videos">
       <div class="demo-video-card-taza">
         <div class="demo-video-wrap-taza">
-          <video preload="none" loading="lazy" playsinline controls>
-            <source src="/assets/video/sin-cucharita-sin-grumos.mp4" type="video/mp4">
+          <video class="demo-video-taza" autoplay muted loop playsinline preload="none" aria-hidden="true">
+            <source data-src="/assets/video/sin-cucharita-sin-grumos.mp4" type="video/mp4">
           </video>
         </div>
         <p class="demo-video-title-taza">Sin cucharita, sin grumos</p>
       </div>
       <div class="demo-video-card-taza">
         <div class="demo-video-wrap-taza">
-          <video preload="none" loading="lazy" playsinline controls>
-            <source src="/assets/video/proteina-y-gym.mp4" type="video/mp4">
+          <video class="demo-video-taza" autoplay muted loop playsinline preload="none" aria-hidden="true">
+            <source data-src="/assets/video/proteina-y-gym.mp4" type="video/mp4">
           </video>
         </div>
         <p class="demo-video-title-taza">Proteína y gym</p>
       </div>
       <div class="demo-video-card-taza">
         <div class="demo-video-wrap-taza">
-          <video preload="none" loading="lazy" playsinline controls>
-            <source src="/assets/video/la-temperatura-en-tiempo-real.mp4" type="video/mp4">
+          <video class="demo-video-taza" autoplay muted loop playsinline preload="none" aria-hidden="true">
+            <source data-src="/assets/video/la-temperatura-en-tiempo-real.mp4" type="video/mp4">
           </video>
         </div>
         <p class="demo-video-title-taza">Mantiene la temperatura en tiempo real</p>
@@ -518,6 +518,34 @@
     </div>
   </div>
 </section>
+<script defer>
+  /* Videos demo: autoplay al entrar en viewport, pausa al salir — mismo patrón
+     data-src + IntersectionObserver que /rizador-automatico-giratorio/, con
+     threshold 30% (en vez del rootMargin de rizador) y pausa on-exit para no
+     seguir decodificando video fuera de pantalla. */
+  (function() {
+    var videos = document.querySelectorAll('.demo-video-taza');
+    if (!videos.length || typeof IntersectionObserver !== 'function') return;
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        var v = entry.target;
+        if (entry.isIntersecting) {
+          var source = v.querySelector('source');
+          if (source && source.dataset.src) {
+            source.src = source.dataset.src;
+            source.removeAttribute('data-src');
+            v.load();
+          }
+          var p = v.play();
+          if (p && typeof p.catch === 'function') p.catch(function() {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.3 });
+    videos.forEach(function(v) { obs.observe(v); });
+  })();
+</script>
 
 <!-- ══ PARA QUÉ BEBIDAS SIRVE ══ -->
 <section class="bebidas-taza" id="section-bebidas" data-insync-section="bebidas">
