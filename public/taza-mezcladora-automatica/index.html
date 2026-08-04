@@ -110,8 +110,8 @@
     .theme-taza .btn-primary:hover,
     .btn-taza:hover { background: var(--taza-brown-dk); transform: translateY(-1px); }
 
-    /* ══ HERO — fondo café oscuro (primer eslabón de la alternancia de secciones) ══ */
-    .hero-taza { background: var(--taza-brown); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    /* ══ HERO — fondo blanco ══ */
+    .hero-taza { background: #FFFFFF; padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
     .hero-taza__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
     .hero-taza__media { max-width: 420px; margin: 0 auto; width: 100%; }
     .hero-taza__img {
@@ -119,30 +119,27 @@
       aspect-ratio: 840 / 748; object-fit: cover; background: var(--taza-card2);
     }
 
-    .eyebrow-taza { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--taza-accent); margin: 0 0 12px; }
-    .hero-taza__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--taza-cream); margin: 0 0 12px; }
-    .hero-taza__h em { font-style: normal; color: var(--taza-accent); }
-    .hero-taza__sub { font-size: clamp(14px,2vw,16px); color: rgba(253,246,240,.82); line-height: 1.65; margin: 0 0 18px; }
+    .eyebrow-taza { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--taza-brown-dk); margin: 0 0 12px; }
+    .hero-taza__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--taza-text); margin: 0 0 12px; }
+    .hero-taza__h em { font-style: normal; color: var(--taza-brown); }
+    .hero-taza__sub { font-size: clamp(14px,2vw,16px); color: var(--taza-text-dim); line-height: 1.65; margin: 0 0 18px; }
 
     .spi-taza { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; }
-    .spi-taza__stars { color: var(--taza-accent); font-size: 14px; }
-    .spi-taza__text  { font-size: 12px; color: rgba(253,246,240,.65); font-weight: 600; }
+    .spi-taza__stars { color: var(--taza-brown-dk); font-size: 14px; }
+    .spi-taza__text  { font-size: 12px; color: var(--taza-text-muted); font-weight: 600; }
 
     .hero-taza .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
-    .hero-taza .price-main    { color: var(--taza-cream); }
-    .hero-taza .price-compare { color: rgba(253,246,240,.45); }
-    .hero-taza .price-badge   { background: var(--taza-accent); color: var(--taza-brown-dk); border: none; }
-    .hero-taza__proof { font-size: 13px; font-weight: 600; color: var(--taza-accent); margin: 0 0 18px; }
+    .hero-taza .price-main    { color: var(--taza-text); }
+    .hero-taza .price-compare { color: rgba(42,24,16,.4); }
+    .hero-taza .price-badge   { background: var(--taza-brown); color: #fff; border: none; }
+    .hero-taza__proof { font-size: 13px; font-weight: 600; color: var(--taza-brown-dk); margin: 0 0 18px; }
 
-    /* Botón y badges de entrega — necesitan su propio contraste sobre fondo café oscuro */
-    .hero-taza .btn-primary { background: #ffffff; color: var(--taza-brown-dk); }
-    .hero-taza .btn-primary:hover { background: rgba(255,255,255,.9); }
-    .hero-taza .db-badge { font-size: 11px; color: var(--taza-cream); padding: 5px 10px; border-radius: 20px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.28); }
-    .hero-taza .db-badge.db-green { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.4); color: var(--taza-cream); }
+    .hero-taza .db-badge { font-size: 11px; color: var(--taza-text); padding: 5px 10px; border-radius: 20px; background: rgba(107,63,42,.08); border: 1px solid rgba(107,63,42,.25); }
+    .hero-taza .db-badge.db-green { background: rgba(107,63,42,.16); border-color: rgba(107,63,42,.4); color: var(--taza-brown-dk); }
 
     /* ── Selector de color (hero) ── */
     .color-select-taza { margin: 0 0 18px; }
-    .color-select-taza__label { display: block; font-size: 12px; font-weight: 700; color: var(--taza-cream); margin-bottom: 10px; letter-spacing: .01em; }
+    .color-select-taza__label { display: block; font-size: 12px; font-weight: 700; color: var(--taza-text); margin-bottom: 10px; letter-spacing: .01em; }
     .color-swatches-taza { display: flex; gap: 10px; flex-wrap: wrap; }
     .color-swatch-taza {
       display: flex; flex-direction: column; align-items: center; gap: 4px;
@@ -158,7 +155,7 @@
     .color-swatch-taza--disabled { opacity: .45; cursor: not-allowed; }
     .color-swatch-taza--disabled .color-swatch-taza__name,
     .color-swatch-taza--disabled .color-swatch-taza__stock { text-decoration: line-through; }
-    .color-select-taza__error { display: none; margin-top: 8px; font-size: 12px; font-weight: 600; color: #ff8a80; }
+    .color-select-taza__error { display: none; margin-top: 8px; font-size: 12px; font-weight: 600; color: #c0392b; }
     .color-select-taza__error.visible { display: block; }
 
     .hero-taza .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
