@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preload" as="image" href="/assets/img/batidora-landing.webp" fetchpriority="high" type="image/webp">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/js/tracking.js?v=59" as="script">
+  <meta name="description" content="Taza Mezcladora Automática — mezclá café, proteína, chocolate o matcha con un solo toque. Sin cucharita, sin grumos. Entrega en el día en Paraguay. Gs. 149.000.">
+  <title>Taza Mezcladora Automática — Hogar / Cocina — Dam Vertex</title>
+  <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <meta property="og:title" content="Taza Mezcladora Automática — Dam Vertex" />
+  <meta property="og:description" content="Mezclá tu bebida sola, sin cucharita ni grumos. Batidora integrada recargable por USB. Entrega en el día en Paraguay." />
+  <meta property="og:url" content="https://damvertex.com/taza-mezcladora-automatica/" />
+  <meta property="og:type" content="website" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "name": "Taza Mezcladora Automática",
+      "description": "Taza mezcladora automática — batidora integrada recargable por USB, doble pared de acero inoxidable, con tapa. Mezcla café, chocolate, proteína, matcha y cualquier bebida con un solo toque.",
+      "brand": { "@type": "Brand", "name": "DAM Vertex" },
+      "url": "https://damvertex.com/taza-mezcladora-automatica/",
+      "offers": {
+        "@type": "Offer",
+        "price": "149000",
+        "priceCurrency": "PYG",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "DAM Vertex" }
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Funciona con bebidas calientes y frías?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Sí, compatible con ambas." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto dura la batería?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Múltiples usos por carga." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Se puede lavar?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Sí, apta para lavado." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿En cuántos días llega?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Asunción 3-5 días / Interior 5-7 días." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo funciona el pago?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Pagás cuando recibís en tu puerta." }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <style>
+    /* ══ Taza Mezcladora Automática — theme café/cálido ══ */
+    :root {
+      --taza-brown:     #6B3F2A;
+      --taza-brown-dk:  #4A2A1A;
+      --taza-accent:    #C8956C;
+      --taza-cream:     #FDF6F0;
+      --taza-card2:     #F3E3D3;
+      --taza-text:      #2A1810;
+      --taza-text-dim:  rgba(42,24,16,.68);
+      --taza-text-muted: rgba(42,24,16,.5);
+      --taza-border:    rgba(107,63,42,.22);
+      --taza-card:      #ffffff;
+    }
+    body.theme-taza { background: var(--taza-cream); color: var(--taza-text); }
+
+    /* ── Nav ── */
+    .theme-taza .nav { background: rgba(253,246,240,.92); border-bottom: 1px solid var(--taza-border); backdrop-filter: blur(12px); }
+    .theme-taza .nav__logo { color: var(--taza-text); }
+    .theme-taza .nav__logo span { opacity: .4; }
+    .theme-taza .nav__cta {
+      background: var(--taza-brown); color: #fff;
+      font-size: clamp(9px, 2.4vw, 12px); white-space: nowrap; gap: 5px; padding: 8px 12px;
+    }
+    .theme-taza .nav__cta:hover { background: var(--taza-brown-dk); }
+
+    /* ── Footer ── */
+    .theme-taza .footer { color: rgba(42,24,16,.4); border-top: 1px solid var(--taza-border); }
+
+    /* ── Botón primario ── */
+    .theme-taza .btn-primary,
+    .btn-taza {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--taza-brown); color: #fff; font-weight: 700;
+      padding: 15px 20px; border-radius: 8px; border: none; cursor: pointer;
+      text-decoration: none; transition: background .2s, transform .15s;
+      letter-spacing: .01em; width: 100%; max-width: 340px;
+      font-size: clamp(11px, 3.1vw, 14px); white-space: nowrap;
+    }
+    .theme-taza .btn-primary:hover,
+    .btn-taza:hover { background: var(--taza-brown-dk); transform: translateY(-1px); }
+
+    /* ══ HERO ══ */
+    .hero-taza { background: var(--taza-cream); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-taza__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+    .hero-taza__media { max-width: 420px; margin: 0 auto; width: 100%; }
+    .hero-taza__img {
+      width: 100%; height: auto; display: block; border-radius: 12px;
+      aspect-ratio: 1254 / 1117; object-fit: cover; background: var(--taza-card2);
+    }
+
+    .eyebrow-taza { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--taza-brown-dk); margin: 0 0 12px; }
+    .hero-taza__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--taza-text); margin: 0 0 12px; }
+    .hero-taza__h em { font-style: normal; color: var(--taza-brown); }
+    .hero-taza__sub { font-size: clamp(14px,2vw,16px); color: var(--taza-text-dim); line-height: 1.65; margin: 0 0 18px; }
+
+    .spi-taza { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; }
+    .spi-taza__stars { color: var(--taza-brown-dk); font-size: 14px; }
+    .spi-taza__text  { font-size: 12px; color: var(--taza-text-muted); font-weight: 600; }
+
+    .hero-taza .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
+    .hero-taza .price-main    { color: var(--taza-text); }
+    .hero-taza .price-compare { color: rgba(42,24,16,.4); }
+    .hero-taza .price-badge   { background: var(--taza-brown); color: #fff; border: none; }
+    .hero-taza__proof { font-size: 13px; font-weight: 600; color: var(--taza-brown-dk); margin: 0 0 18px; }
+
+    /* ── Selector de color (hero) ── */
+    .color-select-taza { margin: 0 0 18px; }
+    .color-select-taza__label { display: block; font-size: 12px; font-weight: 700; color: var(--taza-text); margin-bottom: 10px; letter-spacing: .01em; }
+    .color-swatches-taza { display: flex; gap: 10px; flex-wrap: wrap; }
+    .color-swatch-taza {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      background: #fff; border: 2px solid rgba(107,63,42,.2); border-radius: 10px;
+      padding: 10px 14px; cursor: pointer; font-family: inherit;
+      transition: border-color .15s, background .15s; min-width: 84px;
+    }
+    .color-swatch-taza__dot { width: 22px; height: 22px; border-radius: 50%; }
+    .color-swatch-taza__name { font-size: 12.5px; font-weight: 700; color: var(--taza-text); }
+    .color-swatch-taza__stock { font-size: 10.5px; color: var(--taza-text-muted); }
+    .color-swatch-taza--selected { border-color: var(--taza-brown); background: rgba(107,63,42,.06); }
+    .color-swatch-taza--selected .color-swatch-taza__stock { color: var(--taza-brown-dk); font-weight: 600; }
+    .color-swatch-taza--disabled { opacity: .45; cursor: not-allowed; }
+    .color-swatch-taza--disabled .color-swatch-taza__name,
+    .color-swatch-taza--disabled .color-swatch-taza__stock { text-decoration: line-through; }
+    .color-select-taza__error { display: none; margin-top: 8px; font-size: 12px; font-weight: 600; color: #c0392b; }
+    .color-select-taza__error.visible { display: block; }
+
+    .hero-taza .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+    .hero-taza .db-badge { font-size: 11px; color: var(--taza-text); padding: 5px 10px; border-radius: 20px; background: rgba(107,63,42,.08); border: 1px solid rgba(107,63,42,.25); }
+    .hero-taza .db-badge.db-green { background: rgba(107,63,42,.16); border-color: rgba(107,63,42,.4); color: var(--taza-brown-dk); }
+
+    /* ══ FEATURES RÁPIDAS ══ */
+    .features-taza { background: var(--taza-card); padding: clamp(40px,7vw,64px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    .features-taza__inner { max-width: 900px; margin: 0 auto; }
+    .features-taza__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--taza-border); border-radius: 10px; overflow: hidden; }
+    .feature-card-taza { background: var(--taza-card); padding: 26px 20px; text-align: center; }
+    .feature-card-taza__icon {
+      width: 44px; height: 44px; border-radius: 8px; margin: 0 auto 12px;
+      background: rgba(107,63,42,.1); border: 1px solid rgba(107,63,42,.3);
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .feature-card-taza strong { display: block; font-size: 13.5px; font-weight: 700; color: var(--taza-text); line-height: 1.35; }
+
+    /* ══ DEMO ══ */
+    .demo-taza { background: var(--taza-card2); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    .demo-taza__inner { max-width: 1000px; margin: 0 auto; }
+    .demo-taza__head { text-align: center; margin-bottom: 40px; }
+    .sec-overline-taza { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--taza-brown-dk); margin: 0 0 14px; }
+    .sec-h-taza { font-size: clamp(20px,3.5vw,30px); font-weight: 800; color: var(--taza-text); line-height: 1.2; margin: 0; letter-spacing: -.01em; }
+    .line-taza { width: 40px; height: 2px; background: linear-gradient(90deg, var(--taza-brown), transparent); margin: 0 auto 18px; }
+
+    .demo-taza__videos { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; max-width: 760px; margin: 0 auto; }
+    .demo-video-card-taza { text-align: center; }
+    .demo-video-wrap-taza {
+      aspect-ratio: 9/16; border-radius: 14px; overflow: hidden; position: relative;
+      background: #100309; border: 1px solid rgba(107,63,42,.25);
+      margin-bottom: 12px;
+    }
+    .demo-video-wrap-taza video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .demo-video-title-taza { font-size: 13px; font-weight: 700; color: var(--taza-text); line-height: 1.3; }
+
+    /* ══ BEBIDAS ══ */
+    .bebidas-taza { background: var(--taza-card); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    .bebidas-taza__inner { max-width: 900px; margin: 0 auto; }
+    .bebidas-taza__head { text-align: center; margin-bottom: 40px; }
+    .bebidas-taza__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .bebida-item-taza { text-align: center; padding: 18px 12px; border-radius: 10px; background: var(--taza-card2); }
+    .bebida-item-taza__icon { font-size: 26px; margin-bottom: 8px; }
+    .bebida-item-taza__label { font-size: 13px; font-weight: 700; color: var(--taza-text); }
+
+    /* ══ CÓMO FUNCIONA ══ */
+    .como-taza { background: var(--taza-card2); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    .como-taza__inner { max-width: 900px; margin: 0 auto; }
+    .como-taza__head { text-align: center; margin-bottom: 44px; }
+    .como-taza__steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+    .step-taza { background: var(--taza-card); border: 1px solid var(--taza-border); border-radius: 12px; padding: 26px 22px; text-align: center; }
+    .step-taza__num {
+      width: 34px; height: 34px; border-radius: 50%; margin: 0 auto 14px;
+      background: var(--taza-brown); color: #fff; font-weight: 800; font-size: 15px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-taza strong { display: block; font-size: 15px; font-weight: 700; color: var(--taza-text); margin-bottom: 8px; }
+    .step-taza p { font-size: 13px; color: var(--taza-text-muted); line-height: 1.6; margin: 0; }
+
+    /* ══ BENEFICIOS ══ */
+    .beneficios-taza { background: var(--taza-card); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    .beneficios-taza__inner { max-width: 1000px; margin: 0 auto; }
+    .beneficios-taza__head { text-align: center; margin-bottom: 44px; }
+    .bene-grid-taza { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--taza-border); border-radius: 10px 10px 0 0; overflow: hidden; }
+    .bene-grid-taza-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--taza-border); border-radius: 0 0 10px 10px; overflow: hidden; margin-top: 1px; }
+    .bene-card-taza { background: var(--taza-card2); padding: 30px 24px; }
+    .bene-card-taza strong { display: block; font-size: 15px; font-weight: 700; color: var(--taza-text); margin-bottom: 8px; }
+    .bene-card-taza p { font-size: 13px; color: var(--taza-text-muted); line-height: 1.6; margin: 0; }
+
+    /* ══ ESPECIFICACIONES ══ */
+    .especificaciones-taza { background: var(--taza-card2); padding: clamp(40px,7vw,64px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); text-align: center; }
+    .especificaciones-taza__inner { max-width: 700px; margin: 0 auto; }
+    .specs-line-taza { font-size: clamp(13px,2.2vw,15px); font-weight: 700; color: var(--taza-text); line-height: 1.6; margin: 18px 0 0; }
+
+    /* ══ FAQ ══ */
+    .faq-taza { background: var(--taza-card); padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
+    .faq-taza .faq-wrap { max-width: 640px; margin: 0 auto; }
+    .faq-taza .faq-item { border-bottom: 1px solid var(--taza-border); }
+    .faq-taza .faq-item:first-of-type { border-top: 1px solid var(--taza-border); }
+    .faq-taza .faq-q { color: var(--taza-text); }
+    .faq-taza .faq-q::after { color: var(--taza-brown-dk); }
+    .faq-taza .faq-a { color: var(--taza-text-dim); }
+
+    /* ══ CIERRE ══ */
+    .cierre-taza { background: linear-gradient(180deg, var(--taza-brown) 0%, var(--taza-cream) 100%); padding: clamp(64px,12vw,100px) clamp(20px,5vw,64px); text-align: center; border-top: 1px solid var(--taza-border); }
+    .cierre-taza__inner { max-width: 540px; margin: 0 auto; }
+    .cierre-taza__novedad {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: #fff; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.35);
+      padding: 7px 16px; border-radius: 20px; margin-bottom: 26px;
+    }
+    .cierre-taza__dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: pulse-taza 2s ease-in-out infinite; will-change: opacity, transform; }
+    @keyframes pulse-taza { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.7); } }
+    .cierre-taza__h { font-size: clamp(22px,4vw,34px); font-weight: 800; color: #fff; line-height: 1.18; letter-spacing: -.01em; margin: 0 0 14px; }
+    .cierre-taza__sub { font-size: 14px; color: rgba(255,255,255,.85); line-height: 1.6; margin: 0 0 32px; }
+    .cierre-taza .close-trust { margin: 30px auto 0; }
+    .cierre-taza .close-trust .ct-item { color: rgba(255,255,255,.9); justify-content: center; }
+    .cierre-taza .close-trust .ct-ok { color: #fff; }
+    .cierre-taza .btn-primary { background: #fff; color: var(--taza-brown-dk); }
+    .cierre-taza .btn-primary:hover { background: rgba(255,255,255,.9); }
+
+    /* ══ STICKY CTA ══ */
+    .sticky-cta-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+      background: rgba(253,246,240,.97); border-top: 1px solid var(--taza-border);
+      padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width: 700px) {
+      .sticky-cta-bar { display: block; }
+      body:has(#order-modal.active) .sticky-cta-bar { display: none; }
+    }
+
+    /* ══ Modal — fondo café claro ══ */
+    .theme-taza .modal-box { background: var(--taza-cream); border: 1px solid rgba(107,63,42,.25); }
+    .theme-taza .modal-title { color: var(--taza-text); }
+    .theme-taza .modal-subtitle { color: rgba(42,24,16,.65); }
+    .theme-taza .modal-section-label { color: rgba(42,24,16,.55); }
+    .theme-taza .modal-urgency { background: rgba(107,63,42,.1); border-color: rgba(107,63,42,.3); color: var(--taza-brown-dk); }
+    .theme-taza .modal-close { background: rgba(107,63,42,.12); color: var(--taza-text); }
+    .theme-taza .modal-price-warning { color: #8a5a1f; }
+
+    .theme-taza .offer-option { background: #fff; border-color: rgba(107,63,42,.18); }
+    .theme-taza .offer-option .offer-qty,
+    .theme-taza .offer-option .offer-price { color: var(--taza-text); }
+    .theme-taza .offer-option .offer-compare { color: rgba(42,24,16,.4); }
+    .theme-taza .offer-option.selected,
+    .theme-taza .offer-option:has(input:checked) { border-color: var(--taza-brown); background: rgba(107,63,42,.06); }
+
+    /* Badge ENCIMA de la oferta, precio DEBAJO del badge */
+    .offer-badge-top-taza {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10.5px; font-weight: 800; letter-spacing: .02em;
+      background: var(--taza-brown); color: #fff;
+      border-radius: 20px; padding: 3px 10px; margin-bottom: 10px;
+    }
+    .offer-badge-top-taza--best { background: var(--taza-brown-dk); }
+    .theme-taza .offer-saving { display: block; margin-top: 6px; color: #1a8a52; font-size: 12px; font-weight: 600; }
+
+    .theme-taza .form-group label { color: var(--taza-text); }
+    .theme-taza .form-group input,
+    .theme-taza .form-group select,
+    .theme-taza .city-search-input,
+    .theme-taza .city-manual-input { background: #fff; border-color: rgba(107,63,42,.25); color: var(--taza-text); }
+    .theme-taza .form-group input::placeholder,
+    .theme-taza .city-search-input::placeholder,
+    .theme-taza .city-manual-input::placeholder { color: #999999; }
+
+    /* Select de color por unidad (generado por products.js — .admin-filter-select
+       trae flecha blanca pensada para fondo oscuro; se recolorea para el modal claro) */
+    .theme-taza .admin-filter-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B3F2A'/%3E%3C/svg%3E");
+    }
+
+    .theme-taza .upsell-block { background: #fff; border-color: rgba(107,63,42,.16); }
+    .theme-taza .upsell-block.checked,
+    .theme-taza .upsell-block:has(input:checked) { border-color: var(--taza-brown); background: rgba(107,63,42,.06); }
+    .theme-taza .upsell-title { color: var(--taza-text); }
+    .theme-taza .upsell-sub { color: rgba(42,24,16,.55); }
+
+    .theme-taza .confirm-intent { background: #fff; border-color: rgba(107,63,42,.16); }
+    .theme-taza .confirm-intent.checked,
+    .theme-taza .confirm-intent:has(input:checked) { border-color: var(--taza-brown); background: rgba(107,63,42,.06); }
+    .theme-taza .confirm-text { color: var(--taza-text); }
+    .theme-taza .form-success p { color: rgba(42,24,16,.7); }
+    .theme-taza #m-invoice-email + span,
+    .theme-taza label[for="m-invoice-email"] span { color: rgba(42,24,16,.4); }
+
+    /* Autocomplete de ciudad — mismo patrón que rizador/luna */
+    .city-input-wrap { position: relative; }
+    .city-suggestions {
+      display: none !important;
+      position: absolute !important; left: 0 !important; right: 0 !important; top: 100% !important;
+      margin-top: 4px !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
+      border: 1px solid rgba(0,0,0,0.1) !important;
+      border-radius: 8px !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      overscroll-behavior: contain !important;
+      touch-action: pan-y !important;
+      max-height: 240px !important;
+      z-index: 50 !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    .city-suggestions.open { display: block !important; }
+    .city-suggestions__item {
+      padding: 12px 16px !important;
+      min-height: 40px !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      align-items: center !important;
+      font-size: 14px !important;
+      color: #000000 !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
+      cursor: pointer !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    .city-suggestions__item + .city-suggestions__item { border-top: 1px solid rgba(0,0,0,0.08) !important; }
+    .city-suggestions__item:hover,
+    .city-suggestions__item:focus,
+    .city-suggestions__item.touch-active { background-color: var(--taza-brown) !important; color: #ffffff !important; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 900px) {
+      .bene-grid-taza { grid-template-columns: 1fr; border-radius: 10px 10px 0 0; }
+      .bene-grid-taza-2 { grid-template-columns: 1fr; }
+      .features-taza__grid { grid-template-columns: 1fr; }
+      .bebidas-taza__grid { grid-template-columns: repeat(2,1fr); }
+      .como-taza__steps { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .hero-taza__inner { grid-template-columns: 1fr; gap: 18px; }
+      .hero-taza__media { order: -1; max-width: 100%; }
+      .hero-taza { padding: 10px 16px 20px; }
+      .hero-taza .btn-primary { max-width: 100%; }
+      .demo-taza__videos { grid-template-columns: repeat(3,1fr); gap: 8px; }
+      .demo-video-title-taza { font-size: 10.5px; }
+      .bebidas-taza__grid { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body class="theme-taza">
+
+<!-- Sprite: icono WhatsApp (reusado de luna-mini/rizador) -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <symbol id="ic-whatsapp" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </symbol>
+</svg>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
+</nav>
+
+<main>
+<!-- ══ HERO ══ -->
+<section class="hero-taza" id="section-hero" data-insync-section="hero">
+  <div class="hero-taza__inner">
+
+    <div class="hero-taza__media">
+      <img src="/assets/img/batidora-landing.webp"
+           alt="Taza Mezcladora Automática"
+           class="hero-taza__img"
+           width="1254" height="1117"
+           loading="eager"
+           fetchpriority="high">
+    </div>
+
+    <div>
+      <p class="eyebrow-taza">Hogar / Cocina</p>
+      <h1 class="hero-taza__h">Tu bebida, mezclada sola.<br><em>Sin cucharita, sin grumos.</em></h1>
+      <p class="hero-taza__sub">La Taza Mezcladora Automática bate tu café, chocolate, proteína o matcha con un solo toque. Batidora integrada recargable por USB — llevala a la oficina, al gym o al auto.</p>
+      <div class="spi-taza">
+        <span class="spi-taza__stars">★★★★★</span>
+        <span class="spi-taza__text">Nuevo en Paraguay · Entrega en el día</span>
+      </div>
+      <div class="price-block">
+        <span class="price-main">Gs. 149.000</span>
+        <span class="price-compare">Gs. 179.000</span>
+        <span class="price-badge">17% OFF</span>
+      </div>
+      <p class="hero-taza__proof">Envío gratis incluido — se paga sola con 3 salidas menos a la cafetería</p>
+
+      <div class="color-select-taza" id="color-select-taza">
+        <span class="color-select-taza__label">Elegí tu color</span>
+        <div class="color-swatches-taza" id="color-swatches-taza">
+          <button type="button" class="color-swatch-taza color-swatch-taza--selected" data-color="Negro">
+            <span class="color-swatch-taza__dot" style="background:#1a1a1a"></span>
+            <span class="color-swatch-taza__name">Negro</span>
+            <span class="color-swatch-taza__stock" data-stock-for="Negro">quedan 4</span>
+          </button>
+          <button type="button" class="color-swatch-taza" data-color="Marrón">
+            <span class="color-swatch-taza__dot" style="background:#6B3F2A"></span>
+            <span class="color-swatch-taza__name">Marrón</span>
+            <span class="color-swatch-taza__stock" data-stock-for="Marrón">quedan 3</span>
+          </button>
+          <button type="button" class="color-swatch-taza" data-color="Blanco">
+            <span class="color-swatch-taza__dot" style="background:#F5F0E8;border:1px solid rgba(107,63,42,.3)"></span>
+            <span class="color-swatch-taza__name">Blanco</span>
+            <span class="color-swatch-taza__stock" data-stock-for="Blanco">quedan 3</span>
+          </button>
+        </div>
+        <span class="color-select-taza__error" id="color-select-taza-error">Elegí un color antes de continuar.</span>
+      </div>
+
+      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </button>
+      <div class="delivery-badges">
+        <span class="db-badge db-green">🚚 Entrega en el día</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 3 CARACTERÍSTICAS RÁPIDAS ══ -->
+<section class="features-taza" id="section-features" data-insync-section="features">
+  <div class="features-taza__inner">
+    <div class="features-taza__grid">
+      <div class="feature-card-taza">
+        <div class="feature-card-taza__icon">⚡</div>
+        <strong>Mezcla sola en segundos</strong>
+      </div>
+      <div class="feature-card-taza">
+        <div class="feature-card-taza__icon">🔌</div>
+        <strong>Recargable por USB — sin pilas</strong>
+      </div>
+      <div class="feature-card-taza">
+        <div class="feature-card-taza__icon">🌡️</div>
+        <strong>Mantiene la temperatura</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DEMO ══ -->
+<section class="demo-taza" id="section-demo" data-insync-section="demo">
+  <div class="demo-taza__inner">
+    <div class="demo-taza__head">
+      <p class="sec-overline-taza">Así de fácil</p>
+      <div class="line-taza"></div>
+      <h2 class="sec-h-taza">Mirá cómo funciona en segundos.</h2>
+    </div>
+
+    <div class="demo-taza__videos">
+      <div class="demo-video-card-taza">
+        <div class="demo-video-wrap-taza">
+          <video preload="none" loading="lazy" playsinline controls>
+            <source src="/assets/video/sin-cucharita-sin-grumos.mp4" type="video/mp4">
+          </video>
+        </div>
+        <p class="demo-video-title-taza">Sin cucharita, sin grumos</p>
+      </div>
+      <div class="demo-video-card-taza">
+        <div class="demo-video-wrap-taza">
+          <video preload="none" loading="lazy" playsinline controls>
+            <source src="/assets/video/proteina-y-gym.mp4" type="video/mp4">
+          </video>
+        </div>
+        <p class="demo-video-title-taza">Proteína y gym</p>
+      </div>
+      <div class="demo-video-card-taza">
+        <div class="demo-video-wrap-taza">
+          <video preload="none" loading="lazy" playsinline controls>
+            <source src="/assets/video/la-temperatura-en-tiempo-real.mp4" type="video/mp4">
+          </video>
+        </div>
+        <p class="demo-video-title-taza">Mantiene la temperatura en tiempo real</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <button class="btn btn-primary" data-scroll-form data-insync-cta="demo" style="display:inline-flex;max-width:340px">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PARA QUÉ BEBIDAS SIRVE ══ -->
+<section class="bebidas-taza" id="section-bebidas" data-insync-section="bebidas">
+  <div class="bebidas-taza__inner">
+    <div class="bebidas-taza__head">
+      <p class="sec-overline-taza">Para qué bebidas sirve</p>
+      <div class="line-taza"></div>
+      <h2 class="sec-h-taza">Una taza, todas tus bebidas.</h2>
+    </div>
+    <div class="bebidas-taza__grid">
+      <div class="bebida-item-taza"><div class="bebida-item-taza__icon">☕</div><div class="bebida-item-taza__label">Café</div></div>
+      <div class="bebida-item-taza"><div class="bebida-item-taza__icon">🍫</div><div class="bebida-item-taza__label">Chocolate</div></div>
+      <div class="bebida-item-taza"><div class="bebida-item-taza__icon">💪</div><div class="bebida-item-taza__label">Proteína</div></div>
+      <div class="bebida-item-taza"><div class="bebida-item-taza__icon">🍵</div><div class="bebida-item-taza__label">Matcha</div></div>
+      <div class="bebida-item-taza"><div class="bebida-item-taza__icon">🥛</div><div class="bebida-item-taza__label">Leche</div></div>
+      <div class="bebida-item-taza"><div class="bebida-item-taza__icon">🍹</div><div class="bebida-item-taza__label">Cualquier bebida</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CÓMO FUNCIONA ══ -->
+<section class="como-taza" id="section-como-funciona" data-insync-section="como-funciona">
+  <div class="como-taza__inner">
+    <div class="como-taza__head">
+      <p class="sec-overline-taza">Cómo funciona</p>
+      <div class="line-taza"></div>
+      <h2 class="sec-h-taza">3 pasos. Nada más.</h2>
+    </div>
+    <div class="como-taza__steps">
+      <div class="step-taza">
+        <div class="step-taza__num">1</div>
+        <strong>Agregás tu bebida</strong>
+        <p>Café, chocolate, proteína o lo que quieras, directo en la taza.</p>
+      </div>
+      <div class="step-taza">
+        <div class="step-taza__num">2</div>
+        <strong>Presionás el botón</strong>
+        <p>La batidora integrada mezcla todo en segundos.</p>
+      </div>
+      <div class="step-taza">
+        <div class="step-taza__num">3</div>
+        <strong>Disfrutás sin grumos</strong>
+        <p>Cerrás la tapa y listo, para llevar a donde vayas.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <button class="btn btn-primary" data-scroll-form data-insync-cta="como-funciona" style="display:inline-flex;max-width:340px">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BENEFICIOS ══ -->
+<section class="beneficios-taza" id="section-beneficios" data-insync-section="beneficios">
+  <div class="beneficios-taza__inner">
+    <div class="beneficios-taza__head">
+      <p class="sec-overline-taza">Por qué te va a encantar</p>
+      <div class="line-taza"></div>
+      <h2 class="sec-h-taza">Todo lo que ganás con la Taza Mezcladora.</h2>
+    </div>
+
+    <div class="bene-grid-taza">
+      <div class="bene-card-taza">
+        <strong>Mezcla sola en segundos — sin cucharita ni esfuerzo <span style="font-size:1em">⚡</span></strong>
+        <p>Apretás el botón y listo. Sin revolver, sin ensuciar cucharas.</p>
+      </div>
+      <div class="bene-card-taza">
+        <strong>Recargable por USB — sin pilas, dura múltiples usos <span style="font-size:1em">🔋</span></strong>
+        <p>La cargás con el mismo cable de tu celular y te dura varios días de uso.</p>
+      </div>
+      <div class="bene-card-taza">
+        <strong>Mantiene la temperatura — doble pared de acero inoxidable <span style="font-size:1em">🌡️</span></strong>
+        <p>Tu café sigue caliente y tu bebida fría sigue fría, por más tiempo.</p>
+      </div>
+    </div>
+    <div class="bene-grid-taza-2">
+      <div class="bene-card-taza">
+        <strong>Con tapa — llevala a la oficina, gym o auto <span style="font-size:1em">🎒</span></strong>
+        <p>Cerrada y lista para salir sin derramar nada en el camino.</p>
+      </div>
+      <div class="bene-card-taza">
+        <strong>Regalo ideal — diseño premium, lista para regalar <span style="font-size:1em">🎁</span></strong>
+        <p>Se ve bien desde el primer día — un regalo que se usa todos los días.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <button class="btn btn-primary" data-scroll-form data-insync-cta="beneficios" style="display:inline-flex;max-width:340px">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ESPECIFICACIONES ══ -->
+<section class="especificaciones-taza" id="section-especificaciones" data-insync-section="especificaciones">
+  <div class="especificaciones-taza__inner">
+    <p class="sec-overline-taza">Especificaciones</p>
+    <div class="line-taza"></div>
+    <h2 class="sec-h-taza">Hecho para durar.</h2>
+    <p class="specs-line-taza">USB Recargable · Acero Inoxidable · Con Tapa · Frío y Caliente</p>
+    <div style="margin-top:28px">
+      <button class="btn btn-primary" data-scroll-form data-insync-cta="especificaciones" style="display:inline-flex;max-width:340px">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section class="faq-taza" id="section-faq" data-insync-section="faq">
+  <p class="sec-overline-taza" style="text-align:center;margin-bottom:10px">Preguntas frecuentes</p>
+  <div class="line-taza" style="margin-bottom:28px"></div>
+  <div class="faq-wrap">
+    <details class="faq-item">
+      <summary class="faq-q">¿Funciona con bebidas calientes y frías?</summary>
+      <div class="faq-a">Sí, compatible con ambas.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Cuánto dura la batería?</summary>
+      <div class="faq-a">Múltiples usos por carga.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Se puede lavar?</summary>
+      <div class="faq-a">Sí, apta para lavado.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿En cuántos días llega?</summary>
+      <div class="faq-a">Asunción 3-5 días / Interior 5-7 días.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">¿Cómo funciona el pago?</summary>
+      <div class="faq-a">Pagás cuando recibís en tu puerta.</div>
+    </details>
+  </div>
+</section>
+
+<!-- ══ CIERRE ══ -->
+<section class="cierre-taza" id="section-cierre" data-insync-section="cierre">
+  <div class="cierre-taza__inner">
+    <div class="cierre-taza__novedad">
+      <span class="cierre-taza__dot"></span>
+      Nueva en Paraguay
+    </div>
+    <h2 class="cierre-taza__h">Tu bebida, mezclada sola.<br>Gs. 149.000. Hoy mismo.</h2>
+    <p class="cierre-taza__sub">Taza Mezcladora Automática — batidora integrada, recargable por USB, con tapa para llevar a cualquier lado. Entrega en el día mientras haya stock.</p>
+    <button class="btn btn-primary" data-scroll-form data-insync-cta="cierre" style="display:inline-flex;max-width:380px">
+      LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+    </button>
+    <div class="close-trust">
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Nueva en Paraguay · Pagás cuando llegue</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Entrega en el día · Central</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Envío gratis</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MODAL PEDIDO — estructura de luna-mini / rizador (sin mapa, ciudad simple) ══ -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-taza">
+  <div class="modal-box">
+    <p class="modal-urgency">⏳ Novedad · Stock limitado</p>
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+    <h2 class="modal-title" id="modal-title-taza">Ya casi es tuya ☕</h2>
+    <p class="modal-step">Tu Taza Mezcladora Automática · Entrega en el día 🚚</p>
+    <p class="modal-subtitle">Completá tus datos y te escribimos por WhatsApp en minutos para coordinar la entrega hoy mismo.</p>
+
+    <!-- Ofertas: badge ENCIMA de la opción, precio DEBAJO del badge -->
+    <div class="modal-section">
+      <span class="modal-section-label">Elegí tu oferta</span>
+      <div class="offer-options">
+
+        <label class="offer-option selected">
+          <input type="radio" name="offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price" id="offer-price-1">—</span>
+          </div>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="2">
+          <div class="offer-badge-top-taza">🔥 Más elegido</div>
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-2">—</span>
+              <span class="offer-price" id="offer-price-2">—</span>
+            </div>
+          </div>
+          <span class="offer-saving">Ahorrás Gs. 74.500</span>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="3">
+          <div class="offer-badge-top-taza offer-badge-top-taza--best">⭐ Mayor ahorro</div>
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-3">—</span>
+              <span class="offer-price" id="offer-price-3">—</span>
+            </div>
+          </div>
+          <span class="offer-saving">Ahorrás Gs. 156.450</span>
+        </label>
+
+      </div>
+    </div>
+    <p class="modal-price-warning">🔒 Tus datos están seguros · Solo los usamos para coordinar tu entrega</p>
+
+    <!-- Formulario -->
+    <form class="modal-form" id="modal-form" novalidate>
+
+      <div class="form-group">
+        <label for="m-name">Nombre y apellido</label>
+        <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-phone">Teléfono (WhatsApp)</label>
+        <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group" id="location-group">
+        <label for="m-city-input">Ciudad</label>
+        <div class="city-input-wrap">
+          <input type="text" id="m-city-input" name="city_input" placeholder="¿De qué ciudad sos?" required autocomplete="off">
+          <div class="city-suggestions" id="m-city-suggestions"></div>
+        </div>
+        <input type="hidden" id="m-location" name="location_search_legacy">
+        <div style="margin-top:2px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(42,24,16,.35);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
+        <span class="form-error-msg"></span>
+      </div>
+      <input type="hidden" id="m-loc-address"  name="location_address">
+      <input type="hidden" id="m-loc-city"     name="location_city">
+      <input type="hidden" id="m-loc-lat"      name="location_lat">
+      <input type="hidden" id="m-loc-lng"      name="location_lng">
+      <input type="hidden" id="m-loc-maps-url" name="location_maps_url">
+      <input type="hidden" id="m-loc-place-id" name="location_place_id">
+
+      <div class="form-group" id="m-ref-group" style="display:none;margin-top:-4px">
+        <label for="m-ref">Referencia adicional</label>
+        <input type="text" id="m-ref" name="referencia" placeholder="piso, portón, referencia extra" style="margin-top:6px">
+      </div>
+
+      <div class="form-group" id="city-group" style="display:none">
+        <label for="m-city-search" style="font-size:12px;color:rgba(42,24,16,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
+        <div class="city-picker-wrap">
+          <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
+          <div class="city-dropdown" id="m-city-dropdown"></div>
+        </div>
+        <input type="hidden" id="m-city" name="city">
+        <div class="city-manual-wrap" id="city-manual-wrap" style="display:none">
+          <input type="text" id="m-city-manual" class="city-manual-input" placeholder="Escribí tu ciudad" autocomplete="off">
+        </div>
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-payment">Método de pago</label>
+        <select id="m-payment" name="payment">
+          <option value="">Seleccioná...</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Efectivo">Efectivo</option>
+        </select>
+        <span class="form-error-msg"></span>
+      </div>
+
+      <label class="upsell-block">
+        <input type="checkbox" id="m-express" name="express">
+        <div class="upsell-content">
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
+        </div>
+      </label>
+
+      <label class="upsell-block" id="m-invoice-block" style="margin-top:10px">
+        <input type="checkbox" id="m-invoice" name="invoice">
+        <div class="upsell-content">
+          <span class="upsell-title">🧾 Necesito factura</span>
+          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+        </div>
+      </label>
+      <div id="m-invoice-fields" style="display:none;margin-top:6px">
+        <div class="form-group">
+          <label for="m-invoice-ruc">RUC *</label>
+          <input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="m-invoice-name">Razón social / Nombre *</label>
+          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(42,24,16,.4)">(opcional)</span></label>
+          <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+        </div>
+      </div>
+
+      <label class="confirm-intent" style="display:none">
+        <input type="checkbox" id="m-confirm" name="confirm" checked>
+      </label>
+
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="modal-submit-btn">
+          Confirmar pedido por WhatsApp
+        </button>
+      </div>
+
+    </form>
+
+    <div class="form-success" id="modal-success">
+      <h3>¡Listo!</h3>
+      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
+      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
+      <div class="manual-wa">
+        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<footer class="footer">
+  &copy; 2026 Dam Vertex
+</footer>
+
+<!-- Scripts -->
+<script src="/assets/js/tracking.js?v=59" defer></script>
+<script src="/assets/js/products.js?v=59" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+
+<script defer>
+  /* Selector de ciudad sin Google Maps (patrón luna-mini / rizador). products.js exige
+     #m-location._dvPlaceSelected=true + location_lat/city/maps_url no vacíos
+     para permitir el submit — se completan con coords aproximadas del depto. */
+  (function() {
+    var DEPT_COORDS = {
+      'Central':          [-25.3000, -57.5500],
+      'Alto Paraná':       [-25.5163, -54.6119],
+      'Itapúa':            [-27.3308, -55.8664],
+      'Cordillera':        [-25.3866, -57.1414],
+      'Paraguarí':         [-25.6294, -57.1519],
+      'Guairá':            [-25.7500, -56.4333],
+      'Caaguazú':          [-25.4500, -56.4500],
+      'Misiones':          [-26.6667, -57.1333],
+      'Ñeembucú':          [-26.8667, -58.3000],
+      'Amambay':           [-22.5500, -55.7333],
+      'Concepción':        [-23.4064, -57.4344],
+      'Canindeyú':         [-24.0667, -54.3333],
+      'San Pedro':         [-24.0833, -57.0833],
+      'Caazapá':           [-26.2000, -56.3833],
+      'Boquerón':          [-22.3500, -60.0333],
+      'Presidente Hayes':  [-25.0958, -57.5442],
+      'Alto Paraguay':     [-21.0333, -57.8667],
+    };
+
+    var CITIES_BY_DEPT = {
+      'Central': ['Asunción','San Lorenzo','Luque','Capiatá','Lambaré','Fernando de la Mora','Limpio','Ñemby','Villa Elisa','Mariano Roque Alonso','Itauguá','Areguá','Villeta','Nueva Italia','Guarambaré','Ypacaraí','San Antonio','Ypané','Tobatí','Emboscada','Altos','Compañía','Itá'],
+      'Alto Paraná': ['Ciudad del Este','Hernandarias','Minga Guazú','Presidente Franco','Minga Porã','Santa Rita','Los Cedrales','Naranjal','Juan León Mallorquín','Santa Rosa del Monday','Iruña','Itakyry',"Juan Emilio O'Leary",'Ñacunday','San Alberto','San Cristóbal','Santa Fe del Paraná','Tavapy','Yguazú','Doctor Raúl Peña','Domingo Martínez de Irala'],
+      'Itapúa': ['Encarnación','Cambyretá','Coronel Bogado','General Artigas','Hohenau','Bella Vista','Obligado','Capitán Miranda','Natalio','Edelira','Alto Verá','Capitán Meza','Carmen del Paraná','Fram','General Delgado','Jesús','La Paz','Mayor Otaño','Nueva Alborada','PJC Caballero Álvarez','Pirapó','San Cosme y Damián','San Juan del Paraná','San Pedro del Paraná','Tomás Romero Pereira','Trinidad','Yatytay'],
+      'Cordillera': ['Caacupé','Valenzuela','San Bernardino','Arroyos y Esteros','Caraguatay','Escobar','Isla Pucú','Juan de Mena','Loma Grande','Mbocayaty del Yhaguy','Nueva Colombia','Piribebuy','Primero de Marzo','San José Obrero','Santa Elena','Itacurubí de la Cordillera','Tacuara'],
+      'Paraguarí': ['Paraguarí','Acahay','Caapucú','Caballero','Carapeguá','General Bernardino Caballero','La Colmena','Mbuyapey','Pirayú','Quiindy','Quyquyhó','San Roque González de Santa Cruz','Sapucai','Tebicuarymí','Yaguarón','Ybycuí','Ybytymí'],
+      'Guairá': ['Villarrica','Borja','Capitán Mauricio José Troche','Colonia Independencia','Coronel Martínez','Dr. Bottrell','Félix Pérez Cardozo','General Eugenio A. Garay','Iturbe','José Fassardi','Mbocayaty','Natalicio Talavera','Ñumí','San Salvador','Tembiaporã','Tebicuary'],
+      'Caaguazú': ['Coronel Oviedo','Caaguazú','Carayaó','Dr. Juan Manuel Frutos','José Domingo Ocampo','Nueva Londres','R.I. 3 Corrales','Repatriación','San Joaquín','San José de los Arroyos','Simón Bolívar','Tres Corrales','Vaquería','Yhú','Mbutuy','Dr. Cecilio Báez','Dr. J. Eulogio Estigarribia','La Pastora','Mcal. Francisco Solano López','Nueva Toledo','Raúl Arsenio Oviedo','Santa Rosa del Mbutuy','3 de Febrero'],
+      'Misiones': ['San Juan Bautista','Ayolas','San Ignacio','San Miguel','San Patricio','Santa María','Santa Rosa','Santiago','Villa Florida','Yabebyry'],
+      'Ñeembucú': ['Pilar','Alberdi','Cerrito','Desmochados','General José Eduvigis Díaz','Guazú Cuá','Humaitá','Isla Umbú','Laureles','Mayor José J. Martínez','Paso de Patria','San Juan Bautista del Ñeembucú','Tacuaras','Villa Oliva','Villalbin'],
+      'Amambay': ['Pedro Juan Caballero','Bella Vista Norte','Capitán Bado','Cinturón','Paso Yobai','Zanja Pytá','Cerro Corá','Karapaí'],
+      'Concepción': ['Concepción','Belén','Horqueta','Loreto','San Carlos','San Lázaro','Yby Yaú',"Azote'y",'Sargento José Félix López','Paso Barreto'],
+      'Canindeyú': ['Salto del Guairá','Corpus Christi','Curuguaty','Igatimí','Itanará','Katueté','La Paloma','Maracayu','Mbaracayú','Nueva Esperanza','Villa Curuguaty','Ypejhú','Yby Pytã'],
+      'San Pedro': ['San Pedro de Ycuamandiyú','Antequera','Chore','General Elizardo Aquino','Guayaibí','Itacurubí del Rosario','Lima','Nueva Germania','San Estanislao','San Pablo','Tacuatí','Unión','Villa del Rosario','Yataity del Norte','25 de Diciembre','Capiibary','General Isidoro Resquín','Liberación','San Vicente Pancholo'],
+      'Caazapá': ['Caazapá','Abai','Buena Vista','Dr. Moisés Bertoni','Fulgencio Yegros','Gral. Higinio Morínigo','Maciel','San Juan Nepomuceno','Tavaí','Yuty','3 de Mayo'],
+      'Boquerón': ['Filadelfia','Loma Plata','Mariscal Estigarribia','Neuland','General Díaz'],
+      'Presidente Hayes': ['Villa Hayes','Benjamín Aceval','General José María Bruguez','José Falcón','Nanawa','Nueva Asunción','Pozo Colorado','Puerto Pinasco','Tte. 1ro Manuel Irala Fernández','Tte. Esteban Martínez'],
+      'Alto Paraguay': ['Fuerte Olimpo','Bahía Negra','Carmelo Peralta','La Victoria'],
+    };
+    var CITY_TO_DEPT = {};
+    Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
+      CITIES_BY_DEPT[dept].forEach(function(city) {
+        CITY_TO_DEPT[city.toLowerCase()] = dept;
+      });
+    });
+
+    var centralCities = CITIES_BY_DEPT['Central'].slice().sort(function(a, b) { return a.localeCompare(b, 'es'); });
+    var restCities = [];
+    Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
+      if (dept === 'Central') return;
+      CITIES_BY_DEPT[dept].forEach(function(city) { restCities.push(city); });
+    });
+    restCities.sort(function(a, b) { return a.localeCompare(b, 'es'); });
+    var CITY_LIST = centralCities.concat(restCities);
+
+    var cityField = document.getElementById('m-city-input');
+    var suggBox   = document.getElementById('m-city-suggestions');
+    var locInput  = document.getElementById('m-location');
+    if (!cityField || !suggBox || !locInput) return;
+
+    function applyCity(city) {
+      var dept = CITY_TO_DEPT[city.toLowerCase()];
+      if (!dept) return false;
+      var coords = DEPT_COORDS[dept] || DEPT_COORDS['Central'];
+      var cityHidden    = document.getElementById('m-city');
+      var locCityHidden = document.getElementById('m-loc-city');
+      var latHidden     = document.getElementById('m-loc-lat');
+      var lngHidden      = document.getElementById('m-loc-lng');
+      var mapsUrlHidden = document.getElementById('m-loc-maps-url');
+      if (cityHidden)    cityHidden.value    = city;
+      if (locCityHidden) locCityHidden.value = city;
+      if (latHidden)     latHidden.value     = coords[0];
+      if (lngHidden)      lngHidden.value     = coords[1];
+      if (mapsUrlHidden) mapsUrlHidden.value = 'https://www.google.com/maps?q=' + coords[0] + ',' + coords[1];
+      locInput.value             = city;
+      locInput._dvPlaceSelected  = true;
+      cityField.classList.remove('error');
+      var grp = cityField.closest('.form-group');
+      if (grp) {
+        var err = grp.querySelector('.form-error-msg');
+        if (err) err.classList.remove('visible');
+      }
+      return true;
+    }
+
+    function hideSuggestions() {
+      suggBox.classList.remove('open');
+      suggBox.innerHTML = '';
+    }
+
+    function renderSuggestions(matches) {
+      suggBox.innerHTML = '';
+      matches.forEach(function(city) {
+        var item = document.createElement('div');
+        item.className = 'city-suggestions__item';
+        item.textContent = city;
+        function pick() {
+          cityField.value = city;
+          applyCity(city);
+          hideSuggestions();
+        }
+        var touchStartY = null;
+        var touchMoved  = false;
+        item.addEventListener('touchstart', function(e) {
+          touchStartY = e.touches[0].clientY;
+          touchMoved  = false;
+          item.classList.add('touch-active');
+        }, { passive: true });
+        item.addEventListener('touchmove', function(e) {
+          if (touchStartY !== null && Math.abs(e.touches[0].clientY - touchStartY) > 8) {
+            touchMoved = true;
+            item.classList.remove('touch-active');
+          }
+        }, { passive: true });
+        item.addEventListener('touchend', function(e) {
+          item.classList.remove('touch-active');
+          if (!touchMoved) {
+            e.preventDefault();
+            pick();
+          }
+          touchStartY = null;
+        });
+        item.addEventListener('touchcancel', function() {
+          item.classList.remove('touch-active');
+          touchStartY = null;
+        });
+        item.addEventListener('mousedown', function(e) { e.preventDefault(); pick(); });
+        suggBox.appendChild(item);
+      });
+      suggBox.classList.add('open');
+    }
+
+    function onCityInput() {
+      var typed = cityField.value.trim();
+      if (!applyCity(typed)) locInput._dvPlaceSelected = false;
+      if (!typed) { hideSuggestions(); return; }
+      var typedLower = typed.toLowerCase();
+      var matches = CITY_LIST.filter(function(c) {
+        return c.toLowerCase().indexOf(typedLower) === 0;
+      }).slice(0, 6);
+      if (matches.length) renderSuggestions(matches);
+      else hideSuggestions();
+    }
+
+    cityField.addEventListener('input', onCityInput);
+    cityField.addEventListener('focus', onCityInput);
+    document.addEventListener('click', function(e) {
+      if (e.target !== cityField && !suggBox.contains(e.target)) hideSuggestions();
+    });
+  })();
+</script>
+
+<script defer>
+  const PRODUCT = {
+    name:  'Taza Mezcladora Automática',
+    slug:  'taza-mezcladora-automatica',
+    price: 149000,
+    /* Variantes de color — activa el selector nativo por unidad de products.js
+       (mismo mecanismo que Reloj Blackout / Cepillo). El selector visual de la
+       landing (swatches en el hero) se sincroniza con esos <select> generados. */
+    variants: { type: 'color', options: ['Negro', 'Marrón', 'Blanco'] },
+    /* Sin mapa real — el link de Maps usa coords aproximadas del depto, se omite del WhatsApp. */
+    hideExactLocation: true,
+  };
+
+  /* ── Selector de color (hero) → sincronizado con el modal ──
+     Stock inicial = el cargado en D1 al momento de crear la landing; se
+     autocorrige apenas responde /api/product-stock (fuente de verdad real). */
+  var colorStock    = { 'Negro': 4, 'Marrón': 3, 'Blanco': 3 };
+  var selectedColor = 'Negro';
+
+  function renderColorStock() {
+    document.querySelectorAll('.color-swatch-taza').forEach(function(btn) {
+      var color    = btn.dataset.color;
+      var stock    = Number(colorStock[color]);
+      var stockEl  = btn.querySelector('[data-stock-for="' + color + '"]');
+      var agotado  = !(stock > 0);
+      if (stockEl) stockEl.textContent = agotado ? 'agotado' : ('quedan ' + stock);
+      btn.classList.toggle('color-swatch-taza--disabled', agotado);
+      btn.disabled = agotado;
+    });
+    /* Si el color elegido quedó sin stock, reasignar al primero disponible */
+    if (!(Number(colorStock[selectedColor]) > 0)) {
+      var next = Object.keys(colorStock).find(function(c) { return Number(colorStock[c]) > 0; });
+      if (next) selectColor(next);
+    }
+  }
+
+  function selectColor(color) {
+    if (!(Number(colorStock[color]) > 0)) return;
+    selectedColor = color;
+    document.querySelectorAll('.color-swatch-taza').forEach(function(btn) {
+      btn.classList.toggle('color-swatch-taza--selected', btn.dataset.color === color);
+    });
+    var err = document.getElementById('color-select-taza-error');
+    if (err) err.classList.remove('visible');
+    syncModalColor();
+  }
+
+  /* Aplica el color elegido en el hero a los <select> por unidad que
+     products.js genera dentro de #variant-selectors (misma lista de
+     opciones que PRODUCT.variants.options — siempre matchea). */
+  function syncModalColor() {
+    document.querySelectorAll('#variant-selectors select[id^="m-color-"]').forEach(function(sel) {
+      var hasOption = Array.prototype.some.call(sel.options, function(o) { return o.value === selectedColor; });
+      if (hasOption) sel.value = selectedColor;
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    DV.trackViewContent(PRODUCT);
+    DV.initForm(PRODUCT);
+
+    document.querySelectorAll('.color-swatch-taza').forEach(function(btn) {
+      btn.addEventListener('click', function() { selectColor(btn.dataset.color); });
+    });
+
+    renderColorStock();
+    syncModalColor();
+
+    /* Re-sincronizar cada vez que products.js regenera los selects
+       (al abrir el modal o al cambiar la cantidad de unidades). */
+    var variantSelectorsEl = document.getElementById('variant-selectors');
+    if (variantSelectorsEl && typeof MutationObserver === 'function') {
+      new MutationObserver(syncModalColor).observe(variantSelectorsEl, { childList: true });
+    }
+
+    /* Stock real desde D1 — autocorrige los valores por defecto de arriba */
+    fetch('/api/product-stock?slug=' + PRODUCT.slug)
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (data && data.ok && data.product && data.product.variants) {
+          colorStock = data.product.variants;
+          renderColorStock();
+          syncModalColor();
+        }
+      })
+      .catch(function() {});
+  });
+</script>
+
+<!-- CRO: Sticky bottom CTA — mobile only -->
+<div class="sticky-cta-bar" id="sticky-cta-bar">
+  <button class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;white-space:nowrap;font-size:clamp(12px,3.6vw,15px);padding:12px 10px">
+    LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+  </button>
+</div>
+
+<script src="/assets/js/protect.js?v=68"></script>
+</body>
+</html>
