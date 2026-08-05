@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/rizador-automatico-giratorio/rizador-principal.webp" fetchpriority="high" type="image/webp">
+  <link rel="preload" as="image" href="/rizador-automatico-giratorio/realizador-2-landing.webp?v=2" fetchpriority="high" type="image/webp">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
@@ -15,7 +15,7 @@
   <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
   <meta property="og:title" content="Rizador Automático Giratorio — Dam Vertex" />
   <meta property="og:description" content="Rulos y ondas de peluquería sin técnica ni riesgo de quemarte. Entrega en el día en Paraguay." />
-  <meta property="og:image" content="/rizador-automatico-giratorio/rizador-principal.webp" />
+  <meta property="og:image" content="/rizador-automatico-giratorio/realizador-2-landing.webp?v=2" />
   <meta property="og:url" content="https://damvertex.com/rizador-automatico-giratorio/" />
   <meta property="og:type" content="website" />
   <script type="application/ld+json">
@@ -157,7 +157,7 @@
     .hero-riz { background: var(--riz-cream); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
     .hero-riz__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
     .hero-riz__media { max-width: 420px; margin: 0 auto; width: 100%; }
-    .hero-riz__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; background: var(--riz-card2); }
+    .hero-riz__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1200/630; object-fit: cover; background: var(--riz-card2); }
 
     .eyebrow-riz { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--riz-pink-dk); margin: 0 0 12px; }
     .hero-riz__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--riz-text); margin: 0 0 12px; }
@@ -180,6 +180,27 @@
     .hero-riz .price-compare { color: rgba(26,26,26,.4); }
     .hero-riz .price-badge   { background: var(--riz-pink); color: #fff; border: none; }
     .hero-riz__proof { font-size: 13px; font-weight: 600; color: var(--riz-pink-dk); margin: 0 0 18px; }
+
+    /* ── Selector de color (hero) ── */
+    .color-select-riz { margin: 0 0 18px; }
+    .color-select-riz__label { display: block; font-size: 12px; font-weight: 700; color: var(--riz-text); margin-bottom: 10px; letter-spacing: .01em; }
+    .color-swatches-riz { display: flex; gap: 10px; flex-wrap: wrap; }
+    .color-swatch-riz {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      background: #fff; border: 2px solid rgba(255,47,109,.2); border-radius: 10px;
+      padding: 10px 14px; cursor: pointer; font-family: inherit;
+      transition: border-color .15s, background .15s; min-width: 84px;
+    }
+    .color-swatch-riz__dot { width: 22px; height: 22px; border-radius: 50%; }
+    .color-swatch-riz__name { font-size: 12.5px; font-weight: 700; color: var(--riz-text); }
+    .color-swatch-riz__stock { font-size: 10.5px; color: var(--riz-text-muted); }
+    .color-swatch-riz--selected { border-color: var(--riz-pink); background: rgba(255,47,109,.06); }
+    .color-swatch-riz--selected .color-swatch-riz__stock { color: var(--riz-pink-dk); font-weight: 600; }
+    .color-swatch-riz--disabled { opacity: .45; cursor: not-allowed; }
+    .color-swatch-riz--disabled .color-swatch-riz__name,
+    .color-swatch-riz--disabled .color-swatch-riz__stock { text-decoration: line-through; }
+    .color-select-riz__error { display: none; margin-top: 8px; font-size: 12px; font-weight: 600; color: #c0392b; }
+    .color-select-riz__error.visible { display: block; }
 
     .combo-preview { display: flex; flex-direction: column; gap: 8px; margin: 0 0 18px; }
     .combo-preview-card {
@@ -290,6 +311,28 @@
     .theme-rizador .offer-badge { position: static; background: var(--riz-pink); color: #fff; }
     .theme-rizador .offer-badge--best { position: static; background: var(--riz-pink-dk); color: #fff; }
 
+    /* Dropdown compacto de variante — debajo de los combos, discreto */
+    .modal-variant-riz {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      margin: 14px 0; padding: 10px 14px;
+      background: #fff; border: 1px solid rgba(255,47,109,.18); border-radius: 8px;
+    }
+    .modal-variant-riz__label { font-size: 12.5px; font-weight: 600; color: rgba(26,26,26,.6); }
+    .modal-variant-riz__select {
+      font-size: 13px; font-weight: 700; color: var(--riz-text); font-family: inherit;
+      background-color: transparent; border: none; padding: 4px 22px 4px 4px;
+      cursor: pointer; appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23FF2F6D'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 2px center;
+    }
+
+    /* Contenedor de los <select> nativos por unidad que genera products.js — funcional
+       (products.js los lee al enviar el pedido) pero nunca visible: el dropdown
+       compacto de arriba es el único control que ve el usuario. !important porque
+       products.js hace variantSection.style.display='block' vía JS inline al
+       renderizar, que sin esto pisaría cualquier display:none. */
+    #variant-section { display: none !important; }
+
     .theme-rizador .form-group label { color: var(--riz-text); }
     .theme-rizador .form-group input,
     .theme-rizador .form-group select,
@@ -388,12 +431,12 @@
   <div class="hero-riz__inner">
 
     <div class="hero-riz__media">
-      <img src="/rizador-automatico-giratorio/rizador-principal.webp"
+      <img src="/rizador-automatico-giratorio/realizador-2-landing.webp?v=2"
            alt="Rizador Automático Giratorio"
            class="hero-riz__img"
            loading="eager"
            fetchpriority="high"
-           width="1200" height="1200">
+           width="1200" height="630">
     </div>
 
     <div>
@@ -450,6 +493,23 @@
             <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           </div>
         </div>
+      </div>
+
+      <div class="color-select-riz" id="color-select-riz">
+        <span class="color-select-riz__label">Elegí tu color</span>
+        <div class="color-swatches-riz" id="color-swatches-riz">
+          <button type="button" class="color-swatch-riz color-swatch-riz--selected" data-color="Púrpura">
+            <span class="color-swatch-riz__dot" style="background:#9B59B6"></span>
+            <span class="color-swatch-riz__name">Púrpura</span>
+            <span class="color-swatch-riz__stock" data-stock-for="Púrpura">quedan 7</span>
+          </button>
+          <button type="button" class="color-swatch-riz" data-color="Rosado">
+            <span class="color-swatch-riz__dot" style="background:#FF2F6D"></span>
+            <span class="color-swatch-riz__name">Rosado</span>
+            <span class="color-swatch-riz__stock" data-stock-for="Rosado">quedan 3</span>
+          </button>
+        </div>
+        <span class="color-select-riz__error" id="color-select-riz-error">Elegí un color antes de continuar.</span>
       </div>
 
       <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">
@@ -693,6 +753,22 @@
 
       </div>
     </div>
+
+    <!-- Variante — dropdown compacto, sincronizado con el selector de color del hero -->
+    <div class="modal-variant-riz">
+      <label for="m-variant-select" class="modal-variant-riz__label">Color elegido</label>
+      <select id="m-variant-select" class="modal-variant-riz__select">
+        <option value="Púrpura">🟣 Púrpura — quedan 7</option>
+        <option value="Rosado">🌸 Rosado — quedan 3</option>
+      </select>
+    </div>
+
+    <!-- Selects nativos por unidad (ocultos) — products.js los lee al enviar el pedido
+         para incluir el color en /api/leads; ver PRODUCT.variants + syncModalColor() más abajo -->
+    <div class="modal-section" id="variant-section">
+      <div id="variant-selectors"></div>
+    </div>
+
     <p class="modal-price-warning">🔒 Tus datos están seguros · Solo los usamos para coordinar tu entrega</p>
 
     <!-- Formulario -->
@@ -984,9 +1060,78 @@
     name:  'Rizador Automático Giratorio',
     slug:  'rizador-automatico-giratorio',
     price: 189000,
+    /* Variantes de color — activa el selector nativo por unidad de products.js
+       (mismo mecanismo que taza-mezcladora-automatica). El selector visual de la
+       landing (swatches en el hero) se sincroniza con esos <select> generados. */
+    variants: { type: 'color', options: ['Púrpura', 'Rosado'] },
     /* Sin mapa real — el link de Maps usa coords aproximadas del depto, se omite del WhatsApp. */
     hideExactLocation: true,
   };
+
+  /* ── Selector de color (hero) → sincronizado con el modal ──
+     Stock inicial = el cargado en D1 al momento de crear la landing; se
+     autocorrige apenas responde /api/product-stock (fuente de verdad real). */
+  var colorStock    = { 'Púrpura': 7, 'Rosado': 3 };
+  var selectedColor = 'Púrpura';
+
+  var COLOR_ICONS = { 'Púrpura': '🟣', 'Rosado': '🌸' };
+
+  function renderColorStock() {
+    document.querySelectorAll('.color-swatch-riz').forEach(function(btn) {
+      var color    = btn.dataset.color;
+      var stock    = Number(colorStock[color]);
+      var stockEl  = btn.querySelector('[data-stock-for="' + color + '"]');
+      var agotado  = !(stock > 0);
+      if (stockEl) stockEl.textContent = agotado ? 'agotado' : ('quedan ' + stock);
+      btn.classList.toggle('color-swatch-riz--disabled', agotado);
+      btn.disabled = agotado;
+    });
+
+    /* Dropdown compacto del modal — mismas etiquetas/estado que los swatches */
+    var variantSelect = document.getElementById('m-variant-select');
+    if (variantSelect) {
+      Array.prototype.forEach.call(variantSelect.options, function(opt) {
+        var color   = opt.value;
+        var stock   = Number(colorStock[color]);
+        var agotado = !(stock > 0);
+        var icon    = COLOR_ICONS[color] || '●';
+        opt.textContent = icon + ' ' + color + ' — ' + (agotado ? 'agotado' : 'quedan ' + stock);
+        opt.disabled = agotado;
+      });
+    }
+
+    /* Si el color elegido quedó sin stock, reasignar al primero disponible */
+    if (!(Number(colorStock[selectedColor]) > 0)) {
+      var next = Object.keys(colorStock).find(function(c) { return Number(colorStock[c]) > 0; });
+      if (next) selectColor(next);
+    }
+  }
+
+  function selectColor(color) {
+    if (!(Number(colorStock[color]) > 0)) return;
+    selectedColor = color;
+    document.querySelectorAll('.color-swatch-riz').forEach(function(btn) {
+      btn.classList.toggle('color-swatch-riz--selected', btn.dataset.color === color);
+    });
+    var variantSelect = document.getElementById('m-variant-select');
+    if (variantSelect && variantSelect.value !== color) variantSelect.value = color;
+    var err = document.getElementById('color-select-riz-error');
+    if (err) err.classList.remove('visible');
+    syncModalColor();
+  }
+
+  /* Aplica el color elegido (hero o dropdown del modal) a los <select> por
+     unidad que products.js genera dentro de #variant-selectors (misma lista
+     de opciones que PRODUCT.variants.options — siempre matchea). Esos selects
+     ocultos son los que products.js lee al armar el pedido, así que el color
+     final llega a /api/leads → D1 → confirm-purchase.js → Dam Finanzas igual
+     que cualquier otra variante del sitio. */
+  function syncModalColor() {
+    document.querySelectorAll('#variant-selectors select[id^="m-color-"]').forEach(function(sel) {
+      var hasOption = Array.prototype.some.call(sel.options, function(o) { return o.value === selectedColor; });
+      if (hasOption) sel.value = selectedColor;
+    });
+  }
 
   function preSelectOffer(val) {
     var radio = document.querySelector('.offer-options input[name="offer"][value="' + val + '"]');
@@ -1001,6 +1146,40 @@
   document.addEventListener('DOMContentLoaded', () => {
     DV.trackViewContent(PRODUCT);
     DV.initForm(PRODUCT);
+
+    document.querySelectorAll('.color-swatch-riz').forEach(function(btn) {
+      btn.addEventListener('click', function() { selectColor(btn.dataset.color); });
+    });
+
+    /* Dropdown compacto del modal: arranca en el color elegido en el hero,
+       y si el usuario lo cambia ahí adentro, ese cambio manda. */
+    var variantSelect = document.getElementById('m-variant-select');
+    if (variantSelect) {
+      variantSelect.value = selectedColor;
+      variantSelect.addEventListener('change', function() { selectColor(variantSelect.value); });
+    }
+
+    renderColorStock();
+    syncModalColor();
+
+    /* Re-sincronizar cada vez que products.js regenera los selects
+       (al abrir el modal o al cambiar la cantidad de unidades). */
+    var variantSelectorsEl = document.getElementById('variant-selectors');
+    if (variantSelectorsEl && typeof MutationObserver === 'function') {
+      new MutationObserver(syncModalColor).observe(variantSelectorsEl, { childList: true });
+    }
+
+    /* Stock real desde D1 — autocorrige los valores por defecto de arriba */
+    fetch('/api/product-stock?slug=' + PRODUCT.slug)
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (data && data.ok && data.product && data.product.variants) {
+          colorStock = data.product.variants;
+          renderColorStock();
+          syncModalColor();
+        }
+      })
+      .catch(function() {});
 
     /* Precios de combos externos */
     (function() {
