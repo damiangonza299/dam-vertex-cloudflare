@@ -124,6 +124,7 @@ Flujo obligatorio:
    - `id="section-{nombre}"` + `data-insync-section="{nombre}"` en cada `<section>`
    - `data-insync-cta="{nombre}"` en cada CTA, donde `{nombre}` = sección que lo contiene
    - Referencia canónica: `public/reloj-imperial-verde/index.html`
+   - **REGLA OBLIGATORIA:** `insync.js` siempre debe referenciarse con `?v=4` o la versión más reciente. `FLUSH_MS` en `public/assets/js/insync.js` debe ser `2000`, nunca `8000`. El `page_view` debe dispararse de forma inmediata (`flush()` sin esperar el batch), no solo encolarse.
 9. Correr PRODUCT_COMPLETION_CHECKLIST antes de declarar el producto terminado
 
 Una vez activado: aparece automáticamente en:
@@ -334,6 +335,70 @@ AI_SYSTEM/skills/insync-cro.md         ← extracción de patrones históricos
 AI_SYSTEM/skills/product-studio.md     ← checklist pre-código + regla de testimonios
 AI_SYSTEM/skills/pagina-ventas.md      ← frameworks de copy + regla patrones vs copia
 ```
+
+---
+
+## CARGA CRÍTICA — CSS NO BLOQUEANTE (obligatorio en toda landing nueva)
+
+> **Incidente:** al entrar por primera vez a una landing desde un anuncio de Meta Ads, el navegador in-app de Facebook (WebView) mostraba **"Se produjo un problema al cargar este sitio web"**. Al tocar "Reintentar" (segundo intento) cargaba normal. Confirmado en `luna-mini-vibrador-bala-recargable` (resuelto primero) y luego reproducido en `rizador-automatico-giratorio` y `taza-mezcladora-automatica`.
+
+### Causa exacta
+
+Las landings cargaban `/assets/css/styles.min.css` con un `<link rel="stylesheet">` **síncrono y bloqueante para el render**. Aunque hubiera un `<link rel="preload">` adicional, el preload solo adelanta la descarga — no evita que el navegador bloquee el primer paint esperando ese CSS.
+
+En el primer ingreso desde un anuncio, el WebView de Meta arranca sin caché: sin CDN edge cacheado y sin caché del propio navegador in-app. Esa espera bloqueante por el CSS externo puede superar el timeout interno del WebView, que corta la carga y muestra su pantalla nativa de error. En el segundo intento, tanto el edge de Cloudflare como el navegador ya tienen el CSS cacheado → carga instantáneo → sin error. Esto coincide exactamente con el síntoma ("falla la primera vez, funciona la segunda").
+
+`taza-mezcladora-automatica` ya tenía la mitad de la solución (el CSS cargaba async) pero le faltaba el bloque de CSS crítico inline — sin él, el `<nav>` y el bloque de precio no tienen ningún estilo estructural (flex, sticky, tamaños) hasta que el CSS externo termina de aplicar, porque esas reglas viven *solo* en `styles.min.css`.
+
+### El fix — obligatorio en toda landing nueva desde el primer commit
+
+**1. CSS externo siempre async, nunca `<link rel="stylesheet">` directo:**
+
+```html
+<!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
+<link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+```
+
+**2. Bloque de CSS crítico inline** — al inicio del `<style>` de la landing, antes del CSS del theme propio (copiar tal cual, son tokens genéricos que el theme de cada landing sobreescribe igual porque ambos bloques son inline y se aplican juntos sin espera de red):
+
+```css
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+:root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+.nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(0,0,0,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+.nav__logo span { opacity: .45; }
+.nav__cta { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; padding: 9px 20px; border-radius: var(--radius-sm); transition: opacity .2s; }
+.price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+.price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+.price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+.price-badge { font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green); border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px; }
+```
+
+**Referencia canónica:** `public/luna-mini-vibrador-bala-recargable/index.html` (líneas 14-46). También aplicado en `public/rizador-automatico-giratorio/index.html` y `public/taza-mezcladora-automatica/index.html`.
+
+### Prohibido
+
+- `<link rel="stylesheet" href="/assets/css/styles.min.css?...">` directo en el `<head>` de una landing nueva, aunque tenga un `<link rel="preload">` acompañándolo — el preload no lo vuelve no-bloqueante.
+- Declarar una landing "terminada" o "lista para deploy" sin el patrón preload+swap+noscript Y el bloque de CSS crítico inline.
+- Confundir esto con un problema de Pixel/CAPI — el error es del WebView de Meta cargando la página, no del tracking. No tocar Pixel/CAPI para "solucionar" este síntoma.
+
+### Verificación
+
+Después de aplicar el fix, confirmar que el Pixel (`ViewContent`) y el CAPI (`/api/meta-event`) siguen disparando igual — este fix no toca `tracking.js` ni el orden de esos scripts, solo el CSS.
+
+---
+
+## PROTECCIÓN DE CONTENIDO EN LANDINGS
+
+Toda landing nueva debe incluir `<script src='/assets/js/protect.js?v=VERSION'></script>` antes de `</body>` (bumpear `VERSION` junto con `site-version.js`).
+
+No agregar este script en `public/admin/` ni en `public/intelligence/` — bloquearía el uso normal de DevTools/clic derecho que esos paneles necesitan para operación interna.
+
+El script de protección solo aplica en desktop — en mobile se desactiva automáticamente por detección de userAgent y touch points.
 
 ---
 
