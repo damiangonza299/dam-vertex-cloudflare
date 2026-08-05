@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/rizador-automatico-giratorio/realizador-3-landing.webp?v=3" fetchpriority="high" type="image/webp">
+  <link rel="preload" as="image" href="/rizador-automatico-giratorio/realizador-3-landing.webp?v=4" fetchpriority="high" type="image/webp">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
@@ -15,7 +15,7 @@
   <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
   <meta property="og:title" content="Rizador Automático Giratorio — Dam Vertex" />
   <meta property="og:description" content="Rulos y ondas de peluquería sin técnica ni riesgo de quemarte. Entrega en el día en Paraguay." />
-  <meta property="og:image" content="/rizador-automatico-giratorio/realizador-3-landing.webp?v=3" />
+  <meta property="og:image" content="/rizador-automatico-giratorio/realizador-3-landing.webp?v=4" />
   <meta property="og:url" content="https://damvertex.com/rizador-automatico-giratorio/" />
   <meta property="og:type" content="website" />
   <script type="application/ld+json">
@@ -100,11 +100,11 @@
     /* ══ Rizador Automático Giratorio — theme rosa femenino ══ */
     :root {
       --riz-pink:      #FF2F6D;
-      --riz-pink-dk:   #D6155F;
+      --riz-pink-dk:   #C11154;
       --riz-cream:     #FFF0F5;
       --riz-text:      #1A1A1A;
       --riz-text-dim:  rgba(26,26,26,.68);
-      --riz-text-muted: rgba(26,26,26,.5);
+      --riz-text-muted: rgba(26,26,26,.62);
       --riz-border:    rgba(255,47,109,.22);
       --riz-card:      #ffffff;
       --riz-card2:     #ffe3ec;
@@ -114,44 +114,33 @@
     /* ── Nav ── */
     .theme-rizador .nav { background: rgba(255,240,245,.92); border-bottom: 1px solid var(--riz-border); backdrop-filter: blur(12px); }
     .theme-rizador .nav__logo { color: var(--riz-text); }
-    .theme-rizador .nav__logo span { opacity: .4; }
+    .theme-rizador .nav__logo span { opacity: .65; }
     .theme-rizador .nav__cta {
-      background: var(--riz-pink); color: #fff;
+      background: var(--riz-pink-dk); color: #fff;
       font-size: clamp(9px, 2.4vw, 12px); white-space: nowrap; gap: 5px; padding: 8px 12px;
     }
-    .theme-rizador .nav__cta:hover { background: var(--riz-pink-dk); }
+    .theme-rizador .nav__cta:hover { background: var(--riz-text); }
+    .theme-rizador .nav__cta:focus-visible,
+    .theme-rizador .btn-primary:focus-visible,
+    .color-swatch-riz:focus-visible {
+      outline: 3px solid var(--riz-pink-dk); outline-offset: 2px;
+    }
 
     /* ── Footer ── */
-    .theme-rizador .footer { color: rgba(26,26,26,.4); border-top: 1px solid var(--riz-border); }
+    .theme-rizador .footer { color: rgba(26,26,26,.62); border-top: 1px solid var(--riz-border); }
 
     /* ── Botón primario — mismo comportamiento/estilo que .btn-luna ── */
     .theme-rizador .btn-primary,
     .btn-riz {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--riz-pink); color: #fff; font-weight: 700;
+      background: var(--riz-pink-dk); color: #fff; font-weight: 700;
       padding: 15px 20px; border-radius: 8px; border: none; cursor: pointer;
       text-decoration: none; transition: background .2s, transform .15s;
       letter-spacing: .01em; width: 100%; max-width: 340px;
       font-size: clamp(11px, 3.1vw, 14px); white-space: nowrap;
     }
     .theme-rizador .btn-primary:hover,
-    .btn-riz:hover { background: var(--riz-pink-dk); transform: translateY(-1px); }
-
-    /* ── Placeholder de imagen (specs) ── */
-    .img-ph-riz {
-      width: 100%; border-radius: 12px;
-      background: var(--riz-card2);
-      border: 2px dashed rgba(255,47,109,.35);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 10px; text-align: center; padding: 24px;
-    }
-    .img-ph-riz__icon {
-      width: 50px; height: 50px; border-radius: 50%;
-      background: rgba(255,47,109,.12); border: 1.5px solid rgba(255,47,109,.3);
-      display: flex; align-items: center; justify-content: center; font-size: 21px;
-    }
-    .img-ph-riz__label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--riz-pink-dk); }
-    .img-ph-riz__file  { font-size: 10px; color: rgba(26,26,26,.4); font-family: monospace; }
+    .btn-riz:hover { background: var(--riz-text); transform: translateY(-1px); }
 
     /* ══ HERO ══ */
     .hero-riz { background: var(--riz-cream); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
@@ -177,8 +166,8 @@
 
     .hero-riz .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
     .hero-riz .price-main    { color: var(--riz-text); }
-    .hero-riz .price-compare { color: rgba(26,26,26,.4); }
-    .hero-riz .price-badge   { background: var(--riz-pink); color: #fff; border: none; }
+    .hero-riz .price-compare { color: rgba(26,26,26,.62); }
+    .hero-riz .price-badge   { background: var(--riz-pink-dk); color: #fff; border: none; }
     .hero-riz__proof { font-size: 13px; font-weight: 600; color: var(--riz-pink-dk); margin: 0 0 18px; }
 
     /* ── Selector de color (hero) ── */
@@ -210,13 +199,13 @@
     }
     .combo-preview-card .offer-qty  { color: var(--riz-text); font-size: 15px; font-weight: 600; }
     .combo-preview-card .offer-price { color: var(--riz-text); font-weight: 700; }
-    .combo-preview-card .offer-compare { color: rgba(26,26,26,.4); font-size: 13px; text-decoration: line-through; }
-    .combo-preview-card .offer-saving { color: #1a8a52; font-size: 12px; font-weight: 600; }
-    .combo-preview-card.combo-preview-card--active { border-color: var(--riz-pink); background: rgba(255,47,109,.06); }
+    .combo-preview-card .offer-compare { color: rgba(26,26,26,.62); font-size: 13px; text-decoration: line-through; }
+    .combo-preview-card .offer-saving { color: #166534; font-size: 12px; font-weight: 600; }
+    .combo-preview-card.combo-preview-card--active { border-color: var(--riz-pink-dk); background: rgba(255,47,109,.06); }
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
     .offer-foot .offer-saving { margin-top: 0; }
-    .combo-preview-card .offer-badge { position: static; background: var(--riz-pink); color: #fff; }
-    .combo-preview-card .offer-badge--best { background: var(--riz-pink-dk); color: #fff; }
+    .combo-preview-card .offer-badge { position: static; background: var(--riz-pink-dk); color: #fff; }
+    .combo-preview-card .offer-badge--best { background: var(--riz-text); color: #fff; }
 
     .hero-riz .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
     .hero-riz .db-badge { font-size: 11px; color: var(--riz-text); padding: 5px 10px; border-radius: 20px; background: rgba(255,47,109,.08); border: 1px solid rgba(255,47,109,.25); }
@@ -279,7 +268,7 @@
     .cierre-riz__sub { font-size: 14px; color: var(--riz-text-dim); line-height: 1.6; margin: 0 0 32px; }
     .cierre-riz .close-trust { margin: 30px auto 0; }
     .cierre-riz .close-trust .ct-item { color: var(--riz-text-dim); justify-content: center; }
-    .cierre-riz .close-trust .ct-ok { color: #1a8a52; }
+    .cierre-riz .close-trust .ct-ok { color: #166534; }
 
     /* ══ STICKY CTA ══ */
     .sticky-cta-bar {
@@ -305,11 +294,11 @@
     .theme-rizador .offer-option { background: #fff; border-color: rgba(255,47,109,.18); }
     .theme-rizador .offer-option .offer-qty,
     .theme-rizador .offer-option .offer-price { color: var(--riz-text); }
-    .theme-rizador .offer-option .offer-compare { color: rgba(26,26,26,.4); }
+    .theme-rizador .offer-option .offer-compare { color: rgba(26,26,26,.62); }
     .theme-rizador .offer-option.selected,
-    .theme-rizador .offer-option:has(input:checked) { border-color: var(--riz-pink); background: rgba(255,47,109,.06); }
-    .theme-rizador .offer-badge { position: static; background: var(--riz-pink); color: #fff; }
-    .theme-rizador .offer-badge--best { position: static; background: var(--riz-pink-dk); color: #fff; }
+    .theme-rizador .offer-option:has(input:checked) { border-color: var(--riz-pink-dk); background: rgba(255,47,109,.06); }
+    .theme-rizador .offer-badge { position: static; background: var(--riz-pink-dk); color: #fff; }
+    .theme-rizador .offer-badge--best { position: static; background: var(--riz-text); color: #fff; }
 
     /* Dropdown compacto de variante — debajo de los combos, discreto */
     .modal-variant-riz {
@@ -393,7 +382,7 @@
     .city-suggestions__item + .city-suggestions__item { border-top: 1px solid rgba(0,0,0,0.08) !important; }
     .city-suggestions__item:hover,
     .city-suggestions__item:focus,
-    .city-suggestions__item.touch-active { background-color: var(--riz-pink) !important; color: #ffffff !important; }
+    .city-suggestions__item.touch-active { background-color: var(--riz-pink-dk) !important; color: #ffffff !important; }
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
@@ -431,12 +420,12 @@
   <div class="hero-riz__inner">
 
     <div class="hero-riz__media">
-      <img src="/rizador-automatico-giratorio/realizador-3-landing.webp?v=3"
+      <img src="/rizador-automatico-giratorio/realizador-3-landing.webp?v=4"
            alt="Rizador Automático Giratorio"
            class="hero-riz__img"
            loading="eager"
            fetchpriority="high"
-           width="1080" height="1080">
+           width="840" height="840">
     </div>
 
     <div>
@@ -498,13 +487,13 @@
       <div class="color-select-riz" id="color-select-riz">
         <span class="color-select-riz__label">Elegí tu color</span>
         <div class="color-swatches-riz" id="color-swatches-riz">
-          <button type="button" class="color-swatch-riz color-swatch-riz--selected" data-color="Púrpura">
-            <span class="color-swatch-riz__dot" style="background:#9B59B6"></span>
+          <button type="button" class="color-swatch-riz color-swatch-riz--selected" data-color="Púrpura" aria-pressed="true" aria-label="Elegir color Púrpura, quedan 7 unidades">
+            <span class="color-swatch-riz__dot" style="background:#9B59B6" aria-hidden="true"></span>
             <span class="color-swatch-riz__name">Púrpura</span>
             <span class="color-swatch-riz__stock" data-stock-for="Púrpura">quedan 7</span>
           </button>
-          <button type="button" class="color-swatch-riz" data-color="Rosado">
-            <span class="color-swatch-riz__dot" style="background:#FF2F6D"></span>
+          <button type="button" class="color-swatch-riz" data-color="Rosado" aria-pressed="false" aria-label="Elegir color Rosado, quedan 3 unidades">
+            <span class="color-swatch-riz__dot" style="background:#FF2F6D" aria-hidden="true"></span>
             <span class="color-swatch-riz__name">Rosado</span>
             <span class="color-swatch-riz__stock" data-stock-for="Rosado">quedan 3</span>
           </button>
@@ -1092,9 +1081,11 @@
       var stock    = Number(colorStock[color]);
       var stockEl  = btn.querySelector('[data-stock-for="' + color + '"]');
       var agotado  = !(stock > 0);
-      if (stockEl) stockEl.textContent = agotado ? 'agotado' : ('quedan ' + stock);
+      var stockText = agotado ? 'agotado' : ('quedan ' + stock);
+      if (stockEl) stockEl.textContent = stockText;
       btn.classList.toggle('color-swatch-riz--disabled', agotado);
       btn.disabled = agotado;
+      btn.setAttribute('aria-label', 'Elegir color ' + color + ', ' + stockText);
     });
 
     /* Dropdown compacto del modal — mismas etiquetas/estado que los swatches */
@@ -1121,7 +1112,9 @@
     if (!(Number(colorStock[color]) > 0)) return;
     selectedColor = color;
     document.querySelectorAll('.color-swatch-riz').forEach(function(btn) {
-      btn.classList.toggle('color-swatch-riz--selected', btn.dataset.color === color);
+      var isSelected = btn.dataset.color === color;
+      btn.classList.toggle('color-swatch-riz--selected', isSelected);
+      btn.setAttribute('aria-pressed', String(isSelected));
     });
     var variantSelect = document.getElementById('m-variant-select');
     if (variantSelect && variantSelect.value !== color) variantSelect.value = color;
