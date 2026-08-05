@@ -300,15 +300,13 @@
     .theme-taza .offer-option.selected,
     .theme-taza .offer-option:has(input:checked) { border-color: var(--taza-brown); background: rgba(107,63,42,.06); }
 
-    /* Badge ENCIMA de la oferta, precio DEBAJO del badge */
-    .offer-badge-top-taza {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 10.5px; font-weight: 800; letter-spacing: .02em;
-      background: var(--taza-brown); color: #fff;
-      border-radius: 20px; padding: 3px 10px; margin-bottom: 10px;
-    }
-    .offer-badge-top-taza--best { background: var(--taza-brown-dk); }
     .theme-taza .offer-saving { display: block; margin-top: 6px; color: #1a8a52; font-size: 12px; font-weight: 600; }
+
+    /* Badge y ahorro agrupados abajo de la oferta — mismo patrón que rizador */
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
+    .offer-foot .offer-saving { margin-top: 0; }
+    .theme-taza .offer-badge { position: static; background: var(--taza-brown); color: #fff; }
+    .theme-taza .offer-badge--best { position: static; background: var(--taza-brown-dk); }
 
     /* Dropdown compacto de variante — debajo de los combos, discreto */
     .modal-variant-taza {
@@ -749,7 +747,6 @@
 
         <label class="offer-option">
           <input type="radio" name="offer" value="2">
-          <div class="offer-badge-top-taza">🔥 Más elegido</div>
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
             <div class="offer-prices">
@@ -757,12 +754,14 @@
               <span class="offer-price" id="offer-price-2">—</span>
             </div>
           </div>
-          <span class="offer-saving">Ahorrás Gs. 74.500</span>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 74.500</span>
+            <div class="offer-badge">🔥 Más elegido</div>
+          </div>
         </label>
 
         <label class="offer-option">
           <input type="radio" name="offer" value="3">
-          <div class="offer-badge-top-taza offer-badge-top-taza--best">⭐ Mayor ahorro</div>
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
             <div class="offer-prices">
@@ -770,7 +769,10 @@
               <span class="offer-price" id="offer-price-3">—</span>
             </div>
           </div>
-          <span class="offer-saving">Ahorrás Gs. 156.450</span>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 156.450</span>
+            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
+          </div>
         </label>
 
       </div>
