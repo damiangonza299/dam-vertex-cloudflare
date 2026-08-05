@@ -153,15 +153,12 @@
     .hero-riz__h em { font-style: normal; color: var(--riz-pink); }
     .hero-riz__sub { font-size: clamp(14px,2vw,16px); color: var(--riz-text-dim); line-height: 1.65; margin: 0 0 18px; }
 
-    .spi-riz { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; }
-    .spi-riz__stars { color: var(--riz-pink-dk); font-size: 14px; }
-    .spi-riz__text  { font-size: 12px; color: var(--riz-text-muted); font-weight: 600; }
-
-    .hero-riz__impact { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0 0 16px; }
+    .hero-riz__impact { display: flex; flex-wrap: nowrap; gap: 4px; margin: 0 0 16px; }
     .hero-riz__impact span {
-      font-size: 12px; font-weight: 700; color: var(--riz-pink-dk);
+      font-size: 9px; font-weight: 700; color: var(--riz-pink-dk); letter-spacing: -.01em;
       background: #fff; border: 1px solid rgba(255,47,109,.3);
-      border-radius: 20px; padding: 5px 11px; white-space: nowrap;
+      border-radius: 20px; padding: 3px 6px; white-space: nowrap;
+      flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis;
     }
 
     .hero-riz .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
@@ -432,10 +429,6 @@
       <p class="eyebrow-riz">Belleza / Cabello</p>
       <h1 class="hero-riz__h">Ondas y rulos de peluquería,<br><em>sin salir de tu casa.</em></h1>
       <p class="hero-riz__sub">El Rizador Automático Giratorio gira solo: metés el mechón y listo. Sin técnica, sin quemarte los dedos, sin peluquería.</p>
-      <div class="spi-riz">
-        <span class="spi-riz__stars">★★★★★</span>
-        <span class="spi-riz__text">Nuevo en Paraguay · Entrega en el día</span>
-      </div>
       <div class="hero-riz__impact">
         <span>✨ Rizos en 60 seg</span>
         <span>🙌 Sin quemarte</span>
