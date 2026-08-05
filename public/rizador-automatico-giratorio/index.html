@@ -942,21 +942,30 @@
       'Presidente Hayes': ['Villa Hayes','Benjamín Aceval','General José María Bruguez','José Falcón','Nanawa','Nueva Asunción','Pozo Colorado','Puerto Pinasco','Tte. 1ro Manuel Irala Fernández','Tte. Esteban Martínez'],
       'Alto Paraguay': ['Fuerte Olimpo','Bahía Negra','Carmelo Peralta','La Victoria'],
     };
-    var CITY_TO_DEPT = {};
-    Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
-      CITIES_BY_DEPT[dept].forEach(function(city) {
-        CITY_TO_DEPT[city.toLowerCase()] = dept;
-      });
-    });
+    /* CITY_TO_DEPT/CITY_LIST se construyen recién en el primer focus/input del
+       campo de ciudad (ensureCityIndex), no al cargar la página — evita que el
+       forEach/sort de ~250 ciudades cuente como long task en el load inicial
+       para la inmensa mayoría de visitas que nunca abren el modal. */
+    var CITY_TO_DEPT = null;
+    var CITY_LIST    = null;
 
-    var centralCities = CITIES_BY_DEPT['Central'].slice().sort(function(a, b) { return a.localeCompare(b, 'es'); });
-    var restCities = [];
-    Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
-      if (dept === 'Central') return;
-      CITIES_BY_DEPT[dept].forEach(function(city) { restCities.push(city); });
-    });
-    restCities.sort(function(a, b) { return a.localeCompare(b, 'es'); });
-    var CITY_LIST = centralCities.concat(restCities);
+    function ensureCityIndex() {
+      if (CITY_TO_DEPT) return;
+      CITY_TO_DEPT = {};
+      Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
+        CITIES_BY_DEPT[dept].forEach(function(city) {
+          CITY_TO_DEPT[city.toLowerCase()] = dept;
+        });
+      });
+      var centralCities = CITIES_BY_DEPT['Central'].slice().sort(function(a, b) { return a.localeCompare(b, 'es'); });
+      var restCities = [];
+      Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
+        if (dept === 'Central') return;
+        CITIES_BY_DEPT[dept].forEach(function(city) { restCities.push(city); });
+      });
+      restCities.sort(function(a, b) { return a.localeCompare(b, 'es'); });
+      CITY_LIST = centralCities.concat(restCities);
+    }
 
     var cityField = document.getElementById('m-city-input');
     var suggBox   = document.getElementById('m-city-suggestions');
@@ -964,6 +973,7 @@
     if (!cityField || !suggBox || !locInput) return;
 
     function applyCity(city) {
+      ensureCityIndex();
       var dept = CITY_TO_DEPT[city.toLowerCase()];
       if (!dept) return false;
       var coords = DEPT_COORDS[dept] || DEPT_COORDS['Central'];
