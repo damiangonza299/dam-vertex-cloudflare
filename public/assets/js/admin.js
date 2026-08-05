@@ -87,7 +87,7 @@ if (IS_DELIVERY) {
   const manualSaleBtn = document.getElementById('manual-sale-btn');
   if (manualSaleBtn) manualSaleBtn.style.display = 'none';
 
-  document.querySelectorAll('[data-tab="ads"], [data-tab="dashboard"], [data-tab="meta"], [data-tab="blocked"], [data-tab="insync"]').forEach(btn => {
+  document.querySelectorAll('[data-tab="ads"], [data-tab="dashboard"], [data-tab="meta"], [data-tab="blocked"], [data-tab="insync"], [data-tab="vh"]').forEach(btn => {
     btn.style.display = 'none';
   });
 
@@ -277,6 +277,7 @@ function renderLeads(leads) {
   allLeads = leads;
   updateStats(leads);
   applyFilters();
+  renderVHTable();
 }
 
 function updateStats(leads) {
@@ -301,6 +302,9 @@ function applyFilters() {
   const yestStr  = new Date(Date.now() - 86400000).toLocaleDateString('sv-SE');
 
   const filtered = allLeads.filter(l => {
+    /* V.H (Venta Hipnótica) se gestiona aparte, en su propia sección — nunca en Leads normal */
+    if (l.product_name === 'V.H') return false;
+
     const matchQ = !q
       || l.name?.toLowerCase().includes(q)
       || l.phone?.includes(q)
@@ -370,6 +374,7 @@ document.getElementById('msf-product')?.addEventListener('change', msfOnProductC
 function abbrevProduct(name) {
   if (!name) return '—';
   if (name.includes('Combo') && name.includes('Reloj')) return 'Combo Reloj';
+  if (name.includes('Luna Mini') || name.includes('Vibrador') || name.includes('Bala')) return 'Luna Mini';
   if (name.includes('Cepillo')) return 'Cepillo';
   if (name.includes('Lentes'))   return 'Lentes';
   if (name.includes('Imperial')) return 'Rel. Imperial';
@@ -468,6 +473,31 @@ function renderTable(leads) {
       <td class="col-status">${statusBadge(l)}${buildSourceBadges(l)}</td>
       <td class="col-date">${fmtDateShort(l.created_at)}</td>
       <td class="col-actions">${buildActions(l)}</td>
+    </tr>
+  `).join('');
+}
+
+/* ── V.H (Venta Hipnótica) — misma lógica de acciones que Leads, columnas propias ── */
+function renderVHTable() {
+  const tbody = document.getElementById('vh-tbody');
+  if (!tbody) return;
+
+  const leads = allLeads.filter(l => l.product_name === 'V.H');
+
+  if (!leads.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted)">Sin pedidos todavía</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = leads.map(l => `
+    <tr data-id="${l.id}">
+      <td title="${esc(l.name)}">${shortName(l.name)}</td>
+      <td>${esc(l.phone)}</td>
+      <td>${esc(l.product_name)}</td>
+      <td>${Number(l.value || 0).toLocaleString('es-PY')}</td>
+      <td>${statusBadge(l)}</td>
+      <td>${fmtDateShort(l.created_at)}</td>
+      <td>${buildActions(l)}</td>
     </tr>
   `).join('');
 }
@@ -724,7 +754,15 @@ async function submitEditLead() {
     ? Math.max(1, Math.floor(Number(document.getElementById('elm-extra-qty')?.value)) || 1)
     : null;
 
-  const variant = (document.getElementById('elm-variant')?.value || '').trim() || null;
+  // elm-variant muestra un string legible ("Rosado + Rosado") armado por fmtVariant()
+  // a partir del array JSON guardado en leads.variant. Si se reenvía tal cual, se pierde
+  // el formato de array que espera parseLeadVariants() en confirm-purchase.js, y el
+  // descuento de stock por color falla en cualquier pedido multi-unidad/multi-color.
+  // Se re-codifica a array JSON acá para preservar el formato original.
+  const variantText = (document.getElementById('elm-variant')?.value || '').trim();
+  const variant = variantText
+    ? JSON.stringify(variantText.split('+').map(s => s.trim()).filter(Boolean))
+    : null;
 
   if (!name) {
     errEl.textContent   = 'El nombre no puede estar vacío.';
@@ -989,6 +1027,7 @@ function switchAdminTab(tab) {
   const insyncSection    = document.getElementById('insync-section');
   const blockedSection   = document.getElementById('blocked-section');
   const shippingSection  = document.getElementById('shipping-section');
+  const vhSection        = document.getElementById('vh-section');
   leadsSection    && (leadsSection.style.display    = tab === 'leads'     ? '' : 'none');
   productsSection && (productsSection.style.display = tab === 'products'  ? '' : 'none');
   dashSection     && (dashSection.style.display     = tab === 'dashboard' ? '' : 'none');
@@ -997,6 +1036,7 @@ function switchAdminTab(tab) {
   insyncSection   && (insyncSection.style.display   = tab === 'insync'    ? '' : 'none');
   blockedSection  && (blockedSection.style.display  = tab === 'blocked'   ? '' : 'none');
   shippingSection && (shippingSection.style.display = tab === 'shipping'  ? '' : 'none');
+  vhSection       && (vhSection.style.display       = tab === 'vh'        ? '' : 'none');
   if (tab === 'products')  loadProducts();
   if (tab === 'dashboard') renderDashboard();
   if (tab === 'ads')       renderAdsTable();
@@ -1004,6 +1044,7 @@ function switchAdminTab(tab) {
   if (tab === 'insync')    loadInsyncReport();
   if (tab === 'blocked')   loadBlockedCustomers();
   if (tab === 'shipping')  loadShippingStats();
+  if (tab === 'vh')        renderVHTable();
 }
 
 /* ── DAM inSync Report ── */
@@ -1486,6 +1527,7 @@ let adsProductFilter = '';
 function formatProductShortName(name) {
   if (!name) return '—';
   if (name.includes('Combo') && name.includes('Reloj')) return 'Reloj + Cadena Apex';
+  if (name.includes('Luna Mini') || name.includes('Vibrador') || name.includes('Bala')) return 'Luna Mini';
   if (name.includes('Cadena') || name.includes('Apex')) return 'Apex';
   if (name.includes('Cepillo'))  return 'Cepillo';
   if (name.includes('Lentes'))   return 'Lentes';

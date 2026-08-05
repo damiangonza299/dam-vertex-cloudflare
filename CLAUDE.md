@@ -192,6 +192,19 @@ Nunca `new Date().toISOString()`. Siempre:
 new Intl.DateTimeFormat("en-CA", { timeZone: "America/Asuncion" }).format(new Date())
 ```
 
+---
+
+## VARIANTES DE COLOR — Regla de consistencia de formato
+
+**El campo que guarda el color en `leads.js`, el que muestra `admin.js` y el que descuenta `confirm-purchase.js` DEBEN usar exactamente el mismo key/nombre y el mismo formato (array JSON serializado, ej. `'["Rosado"]'`). Verificar esto en cada nueva landing que tenga variantes antes de deployar.**
+
+**Incidente 2026-08:** `admin.js` → `submitEditLead()` (función "Editar lead" del panel) leía `lead.variant` ya convertido a texto legible por `fmtVariant()` (ej. `"Rosado + Rosado"` para 2 unidades) y lo reenviaba **tal cual** al guardar, en vez de re-serializarlo como array JSON. `functions/api/admin-leads.js` (PUT) lo guardaba sin normalizar. Resultado: cualquier edición de un lead con más de 1 unidad o color rompía `parseLeadVariants()` en `confirm-purchase.js` — la validación de stock fallaba con "Modelo no encontrado" (bloqueando la confirmación) o, si el operador reescribía el campo a mano, el descuento de stock por color quedaba mal. Corregido re-serializando `elm-variant.value.split('+')` a `JSON.stringify([...])` antes de enviarlo.
+
+**Al agregar o tocar cualquier flujo que lea o escriba `leads.variant`:**
+- El valor almacenado en D1 siempre debe ser un array JSON serializado (`'["Color"]'` o `'["Color1","Color2"]'`), nunca texto plano unido con `" + "` u otro separador legible.
+- `parseLeadVariants()` (confirm-purchase.js, manual-whatsapp-sale.js) y `fmtVariant()` (admin.js) son las únicas funciones que deben transformar entre formato-array y formato-legible — cualquier código nuevo que edite `variant` debe volver a serializarlo como array antes de guardarlo, nunca guardar la versión legible de vuelta en D1.
+- El formulario "Venta manual" (`msf-` en admin.js, vía `msfGetVariantData()`) ya lo hace correctamente (`JSON.stringify(list)`) — usar como referencia.
+
 ## UMBRALES OFICIALES DAM VERTEX
 
 DAM VERTEX Paraguay — clasificación de compradores y eventos Meta CAPI. **Prohibido modificar sin decisión de negocio explícita documentada aquí.**
