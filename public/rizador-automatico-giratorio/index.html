@@ -520,7 +520,7 @@
     <div class="demo-riz__videos">
       <div class="demo-video-card">
         <div class="demo-video-wrap">
-          <video class="demo-video" muted loop playsinline preload="none" aria-hidden="true">
+          <video class="demo-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
             <source data-src="/assets/video/sin-quemarte-los-dedos.mp4" type="video/mp4">
           </video>
         </div>
@@ -528,7 +528,7 @@
       </div>
       <div class="demo-video-card">
         <div class="demo-video-wrap">
-          <video class="demo-video" muted loop playsinline preload="none" aria-hidden="true">
+          <video class="demo-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
             <source data-src="/assets/video/peluqueria-en-casa-2.mp4" type="video/mp4">
           </video>
         </div>
@@ -536,7 +536,7 @@
       </div>
       <div class="demo-video-card">
         <div class="demo-video-wrap">
-          <video class="demo-video" muted loop playsinline preload="none" aria-hidden="true">
+          <video class="demo-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
             <source data-src="/assets/video/resultado-en-60-segundos.mp4" type="video/mp4">
           </video>
         </div>
@@ -552,25 +552,30 @@
   </div>
 </section>
 <script defer>
-  /* Videos demo: below-the-fold, no compiten por ancho de banda con el LCP del hero.
-     preload="none" + carga diferida por IntersectionObserver — mismo patrón que luna-mini. */
+  /* Videos demo: autoplay al entrar en viewport, pausa al salir — mismo patrón
+     data-src + IntersectionObserver que /taza-mezcladora-automatica/, con
+     threshold 30% y pausa on-exit para no seguir decodificando video fuera
+     de pantalla. */
   (function() {
     var videos = document.querySelectorAll('.demo-video');
     if (!videos.length || typeof IntersectionObserver !== 'function') return;
     var obs = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
-        if (!entry.isIntersecting) return;
         var v = entry.target;
-        var source = v.querySelector('source');
-        if (source && source.dataset.src) {
-          source.src = source.dataset.src;
-          v.load();
+        if (entry.isIntersecting) {
+          var source = v.querySelector('source');
+          if (source && source.dataset.src) {
+            source.src = source.dataset.src;
+            source.removeAttribute('data-src');
+            v.load();
+          }
+          var p = v.play();
+          if (p && typeof p.catch === 'function') p.catch(function() {});
+        } else {
+          v.pause();
         }
-        var p = v.play();
-        if (p && typeof p.catch === 'function') p.catch(function() {});
-        obs.unobserve(v);
       });
-    }, { rootMargin: '200px' });
+    }, { threshold: 0.3 });
     videos.forEach(function(v) { obs.observe(v); });
   })();
 </script>
