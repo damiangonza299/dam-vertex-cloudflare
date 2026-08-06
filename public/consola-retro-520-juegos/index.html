@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preload" as="image" href="/consola-retro-520-juegos/consola-placeholder.svg" fetchpriority="high" type="image/svg+xml">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/js/tracking.js?v=59" as="script">
+  <meta name="description" content="Consola de Videojuegos Portátil Retro — 520 juegos integrados, pantalla propia, recargable por USB. Ideal para regalar. Entrega en el día en Paraguay. Gs. 159.000.">
+  <title>Consola Retro 520 Juegos — Regalos / Niños — Dam Vertex</title>
+  <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <meta property="og:title" content="Consola de Videojuegos Portátil Retro — Dam Vertex" />
+  <meta property="og:description" content="520 juegos integrados, pantalla propia, recargable por USB. El regalo favorito para el Día del Niño. Entrega en el día en Paraguay." />
+  <meta property="og:image" content="/consola-retro-520-juegos/consola-placeholder.svg" />
+  <meta property="og:url" content="https://damvertex.com/consola-retro-520-juegos/" />
+  <meta property="og:type" content="website" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Consola de Videojuegos Portátil Retro — 520 Juegos",
+  "description": "Consola de videojuegos portátil retro con 520 juegos integrados, pantalla LCD propia en el control estilo PS2, recargable por USB. Ideal para niños de 4 a 12 años.",
+  "brand": { "@type": "Brand", "name": "DAM Vertex" },
+  "url": "https://damvertex.com/consola-retro-520-juegos/",
+  "offers": {
+    "@type": "Offer",
+    "price": "159000",
+    "priceCurrency": "PYG",
+    "availability": "https://schema.org/InStock",
+    "seller": { "@type": "Organization", "name": "DAM Vertex" }
+  }
+}
+  </script>
+  <style>
+    /* ══ CRÍTICO ABOVE-THE-FOLD — extraído de styles.min.css ══
+       Necesario para nav/hero/precio sin FOUC mientras styles.min.css carga async.
+       Mismo patrón que luna-mini/rizador/taza — evita "se produjo un problema al
+       cargar este sitio web" en el primer ingreso desde Meta Ads (ver CLAUDE.md). */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 48px); height: 60px;
+      background: rgba(0,0,0,.88); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .nav__cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent); color: #fff; font-size: 13px; font-weight: 700;
+      letter-spacing: .02em; padding: 9px 20px; border-radius: var(--radius-sm);
+      transition: opacity .2s;
+    }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+    .price-badge {
+      font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green);
+      border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px;
+    }
+
+    /* ══ Consola Retro 520 Juegos — theme gaming verde/negro/dorado ══
+       Fondo negro reservado para la sección "problema" y franjas oscuras — coherente
+       con la estética de consola retro (control negro estilo PS2), no negro por defecto:
+       el hero y las secciones de producto/confianza usan fondos claros como el resto
+       del catálogo (ver CLAUDE.md — identidad visual del producto, no de otra landing). */
+    :root {
+      --cons-green:     #1a7a2e;
+      --cons-green-dk:  #0f4d1a;
+      --cons-black:     #0a0a0a;
+      --cons-gold:      #f5c518;
+      --cons-bg-light:  #f0f7f0;
+      --cons-text:      #0a0a0a;
+      --cons-text-dim:  rgba(10,10,10,.68);
+      --cons-text-muted: rgba(10,10,10,.5);
+      --cons-border:    rgba(26,122,46,.22);
+      --cons-card:      #ffffff;
+    }
+    body.theme-consola { background: #ffffff; color: var(--cons-text); }
+
+    /* ── Nav ── */
+    .theme-consola .nav { background: rgba(255,255,255,.92); border-bottom: 1px solid var(--cons-border); backdrop-filter: blur(12px); }
+    .theme-consola .nav__logo { color: var(--cons-text); }
+    .theme-consola .nav__logo span { opacity: .45; }
+    .theme-consola .nav__cta {
+      background: var(--cons-green); color: #fff;
+      font-size: clamp(9px, 2.4vw, 12px); white-space: nowrap; gap: 5px; padding: 8px 12px;
+    }
+    .theme-consola .nav__cta:hover { background: var(--cons-green-dk); }
+    .theme-consola .nav__cta:focus-visible,
+    .theme-consola .btn-primary:focus-visible {
+      outline: 3px solid var(--cons-green-dk); outline-offset: 2px;
+    }
+
+    /* ── Footer ── */
+    .theme-consola .footer { color: rgba(10,10,10,.45); border-top: 1px solid var(--cons-border); }
+
+    /* ── Botón primario ── */
+    .theme-consola .btn-primary,
+    .btn-cons {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--cons-green); color: #fff; font-weight: 700;
+      padding: 15px 20px; border-radius: 8px; border: none; cursor: pointer;
+      text-decoration: none; transition: background .2s, transform .15s;
+      letter-spacing: .01em; width: 100%; max-width: 340px;
+      font-size: clamp(11px, 3.1vw, 14px); white-space: nowrap;
+    }
+    .theme-consola .btn-primary:hover,
+    .btn-cons:hover { background: var(--cons-green-dk); transform: translateY(-1px); }
+
+    /* ══ HERO — fondo blanco ══ */
+    .hero-cons { background: #ffffff; padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-cons__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+    .hero-cons__media { max-width: 420px; margin: 0 auto; width: 100%; }
+    .hero-cons__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; background: var(--cons-black); }
+
+    .eyebrow-cons { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--cons-green-dk); margin: 0 0 12px; }
+    .hero-cons__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--cons-text); margin: 0 0 12px; }
+    .hero-cons__h em { font-style: normal; color: var(--cons-green); }
+    .hero-cons__sub { font-size: clamp(14px,2vw,16px); color: var(--cons-text-dim); line-height: 1.65; margin: 0 0 18px; }
+
+    .hero-cons__impact { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 16px; }
+    .hero-cons__impact span {
+      font-size: clamp(8px, 2.4vw, 10.5px); font-weight: 700; color: var(--cons-green-dk); letter-spacing: -.01em;
+      background: #fff; border: 1px solid rgba(26,122,46,.3);
+      border-radius: 20px; padding: 3px 6px; white-space: nowrap;
+      flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .hero-cons .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
+    .hero-cons .price-main    { color: var(--cons-text); font-size: clamp(18px,3vw,22px); }
+    .hero-cons .price-compare { color: rgba(10,10,10,.4); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
+    .hero-cons .price-badge   { background: var(--cons-green); color: #fff; border: none; }
+    .hero-cons__proof { font-size: 13px; font-weight: 600; color: var(--cons-green-dk); margin: 0 0 18px; }
+
+    /* ── Combos externos (preselección visual, sin tracking) ── */
+    .combo-preview { display: flex; flex-direction: column; gap: 8px; margin: 0 0 18px; }
+    .combo-preview-card {
+      display: block; border: 2px solid rgba(26,122,46,.2); border-radius: 10px;
+      padding: 12px 14px; cursor: pointer; position: relative;
+      transition: border-color .18s, background .18s; background: var(--cons-card); user-select: none;
+    }
+    .combo-preview-card .offer-qty  { color: var(--cons-text); font-size: 15px; font-weight: 600; }
+    .combo-preview-card .offer-price { color: var(--cons-text); font-weight: 700; }
+    .combo-preview-card .offer-compare { color: rgba(10,10,10,.4); font-size: 13px; text-decoration: line-through; }
+    .combo-preview-card .offer-saving { color: #166534; font-size: 12px; font-weight: 600; }
+    .combo-preview-card.combo-preview-card--active { border-color: var(--cons-green); background: rgba(26,122,46,.06); }
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
+    .offer-foot .offer-saving { margin-top: 0; }
+    .combo-preview-card .offer-badge { position: static; background: var(--cons-green); color: #fff; }
+    .combo-preview-card .offer-badge--best { background: #a3790f; color: #fff; }
+
+    .hero-cons .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+    .hero-cons .db-badge { font-size: 11px; color: var(--cons-text); padding: 5px 10px; border-radius: 20px; background: rgba(26,122,46,.08); border: 1px solid rgba(26,122,46,.25); }
+    .hero-cons .db-badge.db-green { background: rgba(26,122,46,.16); border-color: rgba(26,122,46,.4); color: var(--cons-green-dk); }
+
+    /* ══ SECCIÓN — línea decorativa / overline compartidos ══ */
+    .sec-overline-cons { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 14px; }
+    .sec-h-cons { font-size: clamp(20px,3.5vw,30px); font-weight: 800; line-height: 1.2; margin: 0; letter-spacing: -.01em; }
+    .line-cons { width: 40px; height: 2px; background: linear-gradient(90deg, var(--cons-gold), transparent); margin: 0 auto 18px; }
+
+    /* ══ PROBLEMA — fondo negro (estética consola retro, ver nota arriba) ══ */
+    .problema-cons { background: var(--cons-black); color: #fff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); }
+    .problema-cons__inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .problema-cons .sec-overline-cons { color: var(--cons-gold); text-align: center; }
+    .problema-cons .sec-h-cons { color: #fff; margin-bottom: 44px; }
+    .pain-grid-cons { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .pain-card-cons {
+      background: #141414; border: 1px solid rgba(245,197,24,.18); border-radius: 12px;
+      padding: 28px 20px; text-align: center;
+    }
+    .pain-card-cons__icon { font-size: 30px; margin-bottom: 12px; }
+    .pain-card-cons strong { display: block; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .pain-card-cons p { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.6; margin: 0; }
+
+    /* ══ PRODUCTO — fondo claro ══ */
+    .producto-cons { background: var(--cons-bg-light); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); }
+    .producto-cons__inner { max-width: 1000px; margin: 0 auto; }
+    .producto-cons__head { text-align: center; margin-bottom: 44px; }
+    .producto-cons .sec-overline-cons { color: var(--cons-green-dk); text-align: center; }
+    .producto-cons .sec-h-cons { color: var(--cons-text); }
+    .bene-grid-cons { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--cons-border); border-radius: 10px 10px 0 0; overflow: hidden; }
+    .bene-grid-cons-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--cons-border); border-radius: 0 0 10px 10px; overflow: hidden; margin-top: 1px; }
+    .bene-card-cons { background: var(--cons-card); padding: 30px 24px; }
+    .bene-card-cons strong { display: block; font-size: 15px; font-weight: 700; color: var(--cons-text); margin-bottom: 8px; }
+    .bene-card-cons p { font-size: 13px; color: var(--cons-text-muted); line-height: 1.6; margin: 0; }
+
+    /* ══ CONFIANZA — prueba social genérica (sin testimonios inventados, ver CLAUDE.md) ══ */
+    .confianza-cons { background: #ffffff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--cons-border); }
+    .confianza-cons__inner { max-width: 900px; margin: 0 auto; }
+    .confianza-cons__head { text-align: center; margin-bottom: 40px; }
+    .confianza-cons .sec-overline-cons { color: var(--cons-green-dk); text-align: center; }
+    .confianza-cons .sec-h-cons { color: var(--cons-text); }
+    .confianza-grid-cons { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .confianza-card-cons { text-align: center; padding: 24px 18px; border-radius: 12px; background: var(--cons-bg-light); border: 1px solid var(--cons-border); }
+    .confianza-card-cons__icon { font-size: 28px; margin-bottom: 10px; }
+    .confianza-card-cons strong { display: block; font-size: 14px; font-weight: 700; color: var(--cons-text); margin-bottom: 6px; }
+    .confianza-card-cons p { font-size: 12.5px; color: var(--cons-text-muted); line-height: 1.55; margin: 0; }
+
+    /* ══ URGENCIA — fondo verde oscuro, cierre de página ══ */
+    .urgencia-cons { background: linear-gradient(180deg, var(--cons-green-dk) 0%, var(--cons-black) 100%); padding: clamp(64px,12vw,100px) clamp(20px,5vw,64px); text-align: center; }
+    .urgencia-cons__inner { max-width: 540px; margin: 0 auto; }
+    .urgencia-cons__novedad {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--cons-black); background: var(--cons-gold);
+      padding: 7px 16px; border-radius: 20px; margin-bottom: 26px;
+    }
+    .urgencia-cons__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cons-black); animation: pulse-cons 2s ease-in-out infinite; will-change: opacity, transform; }
+    @keyframes pulse-cons { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.7); } }
+    .urgencia-cons__h { font-size: clamp(22px,4vw,34px); font-weight: 800; color: #fff; line-height: 1.18; letter-spacing: -.01em; margin: 0 0 14px; }
+    .urgencia-cons__sub { font-size: 14px; color: rgba(255,255,255,.8); line-height: 1.6; margin: 0 0 24px; }
+
+    /* Contador de stock visual */
+    .stock-bar-cons { margin: 0 0 30px; }
+    .stock-bar-cons__label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--cons-gold); margin-bottom: 8px; }
+    .stock-bar-cons__track { height: 10px; border-radius: 20px; background: rgba(255,255,255,.12); overflow: hidden; }
+    .stock-bar-cons__fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--cons-gold), #fff176); width: 60%; transition: width .4s ease; }
+
+    .urgencia-cons .close-trust { margin: 30px auto 0; }
+    .urgencia-cons .close-trust .ct-item { color: rgba(255,255,255,.9); justify-content: center; }
+    .urgencia-cons .close-trust .ct-ok { color: var(--cons-gold); }
+    .urgencia-cons .btn-primary { background: var(--cons-gold); color: var(--cons-black); }
+    .urgencia-cons .btn-primary:hover { background: #fff176; }
+
+    /* ══ STICKY CTA ══ */
+    .sticky-cta-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+      background: rgba(255,255,255,.97); border-top: 1px solid var(--cons-border);
+      padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width: 700px) {
+      .sticky-cta-bar { display: block; }
+      body:has(#order-modal.active) .sticky-cta-bar { display: none; }
+    }
+
+    /* ══ Modal — fondo claro con acento verde ══ */
+    .theme-consola .modal-box { background: #ffffff; border: 1px solid rgba(26,122,46,.25); }
+    .theme-consola .modal-title { color: var(--cons-text); }
+    .theme-consola .modal-subtitle { color: rgba(10,10,10,.65); }
+    .theme-consola .modal-section-label { color: rgba(10,10,10,.55); }
+    .theme-consola .modal-urgency { background: rgba(245,197,24,.15); border-color: rgba(245,197,24,.4); color: #7a5c00; }
+    .theme-consola .modal-close { background: rgba(26,122,46,.12); color: var(--cons-text); }
+    .theme-consola .modal-price-warning { color: #8a5a1f; }
+
+    .theme-consola .offer-option { background: #fff; border-color: rgba(26,122,46,.18); }
+    .theme-consola .offer-option .offer-qty,
+    .theme-consola .offer-option .offer-price { color: var(--cons-text); }
+    .theme-consola .offer-option .offer-compare { color: rgba(10,10,10,.4); }
+    .theme-consola .offer-option.selected,
+    .theme-consola .offer-option:has(input:checked) { border-color: var(--cons-green); background: rgba(26,122,46,.06); }
+    .theme-consola .offer-saving { display: block; margin-top: 6px; color: #166534; font-size: 12px; font-weight: 600; }
+    .theme-consola .offer-badge { position: static; background: var(--cons-green); color: #fff; }
+    .theme-consola .offer-badge--best { position: static; background: #a3790f; color: #fff; }
+
+    .theme-consola .form-group label { color: var(--cons-text); }
+    .theme-consola .form-group input,
+    .theme-consola .form-group select,
+    .theme-consola .city-search-input,
+    .theme-consola .city-manual-input { background: #fff; border-color: rgba(26,122,46,.25); color: var(--cons-text); }
+    .theme-consola .form-group input::placeholder,
+    .theme-consola .city-search-input::placeholder,
+    .theme-consola .city-manual-input::placeholder { color: #999999; }
+
+    .theme-consola .upsell-block { background: #fff; border-color: rgba(26,122,46,.16); }
+    .theme-consola .upsell-block.checked,
+    .theme-consola .upsell-block:has(input:checked) { border-color: var(--cons-green); background: rgba(26,122,46,.06); }
+    .theme-consola .upsell-title { color: var(--cons-text); }
+    .theme-consola .upsell-sub { color: rgba(10,10,10,.55); }
+
+    .theme-consola .confirm-intent { background: #fff; border-color: rgba(26,122,46,.16); }
+    .theme-consola .confirm-intent.checked,
+    .theme-consola .confirm-intent:has(input:checked) { border-color: var(--cons-green); background: rgba(26,122,46,.06); }
+    .theme-consola .confirm-text { color: var(--cons-text); }
+    .theme-consola .form-success p { color: rgba(10,10,10,.7); }
+
+    /* Autocomplete de ciudad — mismo patrón que rizador/taza/luna */
+    .city-input-wrap { position: relative; }
+    .city-suggestions {
+      display: none !important;
+      position: absolute !important; left: 0 !important; right: 0 !important; top: 100% !important;
+      margin-top: 4px !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
+      border: 1px solid rgba(0,0,0,0.1) !important;
+      border-radius: 8px !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      overscroll-behavior: contain !important;
+      touch-action: pan-y !important;
+      max-height: 240px !important;
+      z-index: 50 !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    .city-suggestions.open { display: block !important; }
+    .city-suggestions__item {
+      padding: 12px 16px !important;
+      min-height: 40px !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      align-items: center !important;
+      font-size: 14px !important;
+      color: #000000 !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
+      cursor: pointer !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    .city-suggestions__item + .city-suggestions__item { border-top: 1px solid rgba(0,0,0,0.08) !important; }
+    .city-suggestions__item:hover,
+    .city-suggestions__item:focus,
+    .city-suggestions__item.touch-active { background-color: var(--cons-green) !important; color: #ffffff !important; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 900px) {
+      .bene-grid-cons { grid-template-columns: 1fr; border-radius: 10px 10px 0 0; }
+      .bene-grid-cons-2 { grid-template-columns: 1fr; }
+      .pain-grid-cons { grid-template-columns: 1fr; }
+      .confianza-grid-cons { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .hero-cons__inner { grid-template-columns: 1fr; gap: 18px; }
+      .hero-cons__media { order: -1; max-width: 100%; }
+      .hero-cons { padding: 10px 16px 20px; }
+      .hero-cons .btn-primary { max-width: 100%; }
+    }
+  </style>
+</head>
+<body class="theme-consola">
+
+<!-- Sprite: icono WhatsApp (reusado de rizador/taza) -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <symbol id="ic-whatsapp" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </symbol>
+</svg>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
+</nav>
+
+<main>
+<!-- ══ HERO ══ -->
+<section class="hero-cons" id="section-hero" data-insync-section="hero">
+  <div class="hero-cons__inner">
+
+    <div class="hero-cons__media">
+      <!-- PLACEHOLDER — reemplazar por foto real del producto antes de correr tráfico pago -->
+      <img src="/consola-retro-520-juegos/consola-placeholder.svg"
+           alt="Consola de Videojuegos Portátil Retro — 520 juegos"
+           class="hero-cons__img"
+           loading="eager"
+           fetchpriority="high"
+           width="840" height="840">
+    </div>
+
+    <div>
+      <p class="eyebrow-cons">Regalos / Niños</p>
+      <h1 class="hero-cons__h">La consola que va a ser<br><em>el regalo favorito.</em></h1>
+      <p class="hero-cons__sub">520 juegos clásicos ya integrados, pantalla propia en el control estilo PS2 y batería recargable por USB. Se prende y se juega — sin wifi, sin cables, sin depender del celular.</p>
+      <div class="hero-cons__impact">
+        <span>🎮 520 Juegos incluidos</span>
+        <span>📺 Pantalla integrada</span>
+        <span>🔋 Recargable USB</span>
+      </div>
+      <div class="price-block">
+        <span class="price-main">Gs. 159.000</span>
+        <span class="price-compare">Gs. 199.000</span>
+        <span class="price-badge">20% OFF</span>
+      </div>
+      <p class="hero-cons__proof">Ideal para el Día del Niño — stock limitado</p>
+
+      <!-- Combos externos — preselección visual, sin tracking ni eventos -->
+      <div class="combo-preview" id="combo-preview">
+        <div class="combo-preview-card combo-preview-card--active" data-offer="1">
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price">Gs. 159.000</span>
+          </div>
+        </div>
+        <div class="combo-preview-card" data-offer="2">
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare">Gs. 318.000</span>
+              <span class="offer-price">Gs. 299.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 19.000</span>
+            <div class="offer-badge">🔥 Más elegido</div>
+          </div>
+        </div>
+        <div class="combo-preview-card" data-offer="3">
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare">Gs. 477.000</span>
+              <span class="offer-price">Gs. 429.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 48.000</span>
+            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </button>
+      <div class="delivery-badges">
+        <span class="db-badge db-green">🚚 Entrega en el día</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ PROBLEMA — fondo negro ══ -->
+<section class="problema-cons" id="section-problema" data-insync-section="problema">
+  <div class="problema-cons__inner">
+    <p class="sec-overline-cons">¿Te suena familiar?</p>
+    <h2 class="sec-h-cons">¿Todavía buscando el regalo perfecto?</h2>
+    <div class="pain-grid-cons" style="margin-top:44px">
+      <div class="pain-card-cons">
+        <div class="pain-card-cons__icon">📶</div>
+        <strong>Sin wifi necesario</strong>
+        <p>520 juegos ya integrados de fábrica — funciona en cualquier lado, sin internet.</p>
+      </div>
+      <div class="pain-card-cons">
+        <div class="pain-card-cons__icon">🔋</div>
+        <strong>No más recargas</strong>
+        <p>Batería propia recargable por USB — no depende del celular ni de pilas.</p>
+      </div>
+      <div class="pain-card-cons">
+        <div class="pain-card-cons__icon">⏱️</div>
+        <strong>Entretiene horas sin celular</strong>
+        <p>Menos pantalla de celular, más juego — ideal para viajes, visitas y tardes largas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRODUCTO — fondo claro ══ -->
+<section class="producto-cons" id="section-producto" data-insync-section="producto">
+  <div class="producto-cons__inner">
+    <div class="producto-cons__head">
+      <p class="sec-overline-cons">Características</p>
+      <div class="line-cons"></div>
+      <h2 class="sec-h-cons">Todo lo que trae la consola.</h2>
+    </div>
+
+    <div class="bene-grid-cons">
+      <div class="bene-card-cons">
+        <strong>520 juegos clásicos <span style="font-size:1em">🎮</span></strong>
+        <p>Ya integrados de fábrica — nada para descargar ni configurar.</p>
+      </div>
+      <div class="bene-card-cons">
+        <strong>Pantalla LCD integrada <span style="font-size:1em">📺</span></strong>
+        <p>El control tiene su propia pantalla — no necesita TV ni monitor.</p>
+      </div>
+      <div class="bene-card-cons">
+        <strong>Batería recargable USB <span style="font-size:1em">🔋</span></strong>
+        <p>Se carga con el mismo cable de cualquier celular.</p>
+      </div>
+    </div>
+    <div class="bene-grid-cons-2">
+      <div class="bene-card-cons">
+        <strong>Liviano y portátil <span style="font-size:1em">🎒</span></strong>
+        <p>Entra en cualquier mochila o cartera — para llevar a todos lados.</p>
+      </div>
+      <div class="bene-card-cons">
+        <strong>Ideal para niños de 4 a 12 años <span style="font-size:1em">🧒</span></strong>
+        <p>Controles simples y juegos clásicos pensados para esa edad.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <button class="btn btn-primary" data-scroll-form data-insync-cta="producto" style="display:inline-flex;max-width:340px">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONFIANZA — prueba social genérica (sin testimonios inventados) ══ -->
+<section class="confianza-cons" id="section-confianza" data-insync-section="confianza">
+  <div class="confianza-cons__inner">
+    <div class="confianza-cons__head">
+      <p class="sec-overline-cons">Por qué comprar en Dam Vertex</p>
+      <div class="line-cons"></div>
+      <h2 class="sec-h-cons">Pedidos activos en todo Paraguay.</h2>
+    </div>
+    <div class="confianza-grid-cons">
+      <div class="confianza-card-cons">
+        <div class="confianza-card-cons__icon">🚚</div>
+        <strong>Entrega en el día</strong>
+        <p>Central y Asunción reciben el mismo día del pedido.</p>
+      </div>
+      <div class="confianza-card-cons">
+        <div class="confianza-card-cons__icon">💳</div>
+        <strong>Pago al recibir</strong>
+        <p>Pagás cuando el pedido llega a tu puerta, sin adelantos en Central.</p>
+      </div>
+      <div class="confianza-card-cons">
+        <div class="confianza-card-cons__icon">📍</div>
+        <strong>Clientes en Central e Interior</strong>
+        <p>Pedidos activos en todo el país, coordinados por WhatsApp.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ URGENCIA — fondo verde oscuro, cierre ══ -->
+<section class="urgencia-cons" id="section-urgencia" data-insync-section="urgencia">
+  <div class="urgencia-cons__inner">
+    <div class="urgencia-cons__novedad">
+      <span class="urgencia-cons__dot"></span>
+      Día del Niño se acerca
+    </div>
+    <h2 class="urgencia-cons__h">Stock limitado.<br>Gs. 159.000. Hoy mismo.</h2>
+    <p class="urgencia-cons__sub">La Consola Retro 520 Juegos es de las más pedidas para el Día del Niño. Reservá la tuya antes de que se agote.</p>
+
+    <div class="stock-bar-cons">
+      <div class="stock-bar-cons__label">
+        <span id="stock-bar-text">Quedan pocas unidades</span>
+        <span id="stock-bar-pct"></span>
+      </div>
+      <div class="stock-bar-cons__track">
+        <div class="stock-bar-cons__fill" id="stock-bar-fill"></div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" data-scroll-form data-insync-cta="urgencia" style="display:inline-flex;max-width:380px">
+      LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+    </button>
+    <div class="close-trust">
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Entrega en el día · Central</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Pagás cuando lo recibís · Central</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Envío gratis</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MODAL PEDIDO — estructura de rizador/taza (sin variantes, sin mapa) ══ -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-cons">
+  <div class="modal-box">
+    <p class="modal-urgency">⏳ Día del Niño · Stock limitado</p>
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+    <h2 class="modal-title" id="modal-title-cons">Ya casi es tuya 🎮</h2>
+    <p class="modal-step">Tu Consola Retro · Entrega en el día 🚚</p>
+    <p class="modal-subtitle">Completá tus datos y te escribimos por WhatsApp en minutos para coordinar la entrega hoy mismo.</p>
+
+    <!-- Ofertas -->
+    <div class="modal-section">
+      <span class="modal-section-label">Elegí tu oferta</span>
+      <div class="offer-options">
+
+        <label class="offer-option selected">
+          <input type="radio" name="offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price" id="offer-price-1">—</span>
+          </div>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="2">
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-2">—</span>
+              <span class="offer-price" id="offer-price-2">—</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 19.000</span>
+            <div class="offer-badge">🔥 Más elegido</div>
+          </div>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="3">
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-3">—</span>
+              <span class="offer-price" id="offer-price-3">—</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 48.000</span>
+            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
+          </div>
+        </label>
+
+      </div>
+    </div>
+
+    <p class="modal-price-warning">🔒 Tus datos están seguros · Solo los usamos para coordinar tu entrega</p>
+
+    <!-- Formulario -->
+    <form class="modal-form" id="modal-form" novalidate>
+
+      <div class="form-group">
+        <label for="m-name">Nombre y apellido</label>
+        <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-phone">Teléfono (WhatsApp)</label>
+        <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group" id="location-group">
+        <label for="m-city-input">Ciudad</label>
+        <div class="city-input-wrap">
+          <input type="text" id="m-city-input" name="city_input" placeholder="¿De qué ciudad sos?" required autocomplete="off">
+          <div class="city-suggestions" id="m-city-suggestions"></div>
+        </div>
+        <input type="hidden" id="m-location" name="location_search_legacy">
+        <div style="margin-top:2px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(10,10,10,.35);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
+        <span class="form-error-msg"></span>
+      </div>
+      <input type="hidden" id="m-loc-address"  name="location_address">
+      <input type="hidden" id="m-loc-city"     name="location_city">
+      <input type="hidden" id="m-loc-lat"      name="location_lat">
+      <input type="hidden" id="m-loc-lng"      name="location_lng">
+      <input type="hidden" id="m-loc-maps-url" name="location_maps_url">
+      <input type="hidden" id="m-loc-place-id" name="location_place_id">
+
+      <div class="form-group" id="m-ref-group" style="display:none;margin-top:-4px">
+        <label for="m-ref">Referencia adicional</label>
+        <input type="text" id="m-ref" name="referencia" placeholder="piso, portón, referencia extra" style="margin-top:6px">
+      </div>
+
+      <div class="form-group" id="city-group" style="display:none">
+        <label for="m-city-search" style="font-size:12px;color:rgba(10,10,10,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
+        <div class="city-picker-wrap">
+          <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
+          <div class="city-dropdown" id="m-city-dropdown"></div>
+        </div>
+        <input type="hidden" id="m-city" name="city">
+        <div class="city-manual-wrap" id="city-manual-wrap" style="display:none">
+          <input type="text" id="m-city-manual" class="city-manual-input" placeholder="Escribí tu ciudad" autocomplete="off">
+        </div>
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-payment">Método de pago</label>
+        <select id="m-payment" name="payment">
+          <option value="">Seleccioná...</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Efectivo">Efectivo</option>
+        </select>
+        <span class="form-error-msg"></span>
+      </div>
+
+      <label class="upsell-block">
+        <input type="checkbox" id="m-express" name="express">
+        <div class="upsell-content">
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
+        </div>
+      </label>
+
+      <label class="upsell-block" id="m-invoice-block" style="margin-top:10px">
+        <input type="checkbox" id="m-invoice" name="invoice">
+        <div class="upsell-content">
+          <span class="upsell-title">🧾 Necesito factura</span>
+          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+        </div>
+      </label>
+      <div id="m-invoice-fields" style="display:none;margin-top:6px">
+        <div class="form-group">
+          <label for="m-invoice-ruc">RUC *</label>
+          <input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="m-invoice-name">Razón social / Nombre *</label>
+          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(10,10,10,.4)">(opcional)</span></label>
+          <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+        </div>
+      </div>
+
+      <label class="confirm-intent" style="display:none">
+        <input type="checkbox" id="m-confirm" name="confirm" checked>
+      </label>
+
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="modal-submit-btn">
+          Confirmar pedido por WhatsApp
+        </button>
+      </div>
+
+    </form>
+
+    <div class="form-success" id="modal-success">
+      <h3>¡Listo!</h3>
+      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
+      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
+      <div class="manual-wa">
+        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<footer class="footer">
+  &copy; 2026 Dam Vertex
+</footer>
+
+<!-- Scripts -->
+<script src="/assets/js/tracking.js?v=59" defer></script>
+<script src="/assets/js/products.js?v=60" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+
+<script defer>
+  /* Selector de ciudad sin Google Maps (patrón luna-mini/rizador/taza). products.js exige
+     #m-location._dvPlaceSelected=true + location_lat/city/maps_url no vacíos
+     para permitir el submit — se completan con coords aproximadas del depto. */
+  (function() {
+    var DEPT_COORDS = {
+      'Central':          [-25.3000, -57.5500],
+      'Alto Paraná':       [-25.5163, -54.6119],
+      'Itapúa':            [-27.3308, -55.8664],
+      'Cordillera':        [-25.3866, -57.1414],
+      'Paraguarí':         [-25.6294, -57.1519],
+      'Guairá':            [-25.7500, -56.4333],
+      'Caaguazú':          [-25.4500, -56.4500],
+      'Misiones':          [-26.6667, -57.1333],
+      'Ñeembucú':          [-26.8667, -58.3000],
+      'Amambay':           [-22.5500, -55.7333],
+      'Concepción':        [-23.4064, -57.4344],
+      'Canindeyú':         [-24.0667, -54.3333],
+      'San Pedro':         [-24.0833, -57.0833],
+      'Caazapá':           [-26.2000, -56.3833],
+      'Boquerón':          [-22.3500, -60.0333],
+      'Presidente Hayes':  [-25.0958, -57.5442],
+      'Alto Paraguay':     [-21.0333, -57.8667],
+    };
+
+    var CITIES_BY_DEPT = {
+      'Central': ['Asunción','San Lorenzo','Luque','Capiatá','Lambaré','Fernando de la Mora','Limpio','Ñemby','Villa Elisa','Mariano Roque Alonso','Itauguá','Areguá','Villeta','Nueva Italia','Guarambaré','Ypacaraí','San Antonio','Ypané','Tobatí','Emboscada','Altos','Compañía','Itá'],
+      'Alto Paraná': ['Ciudad del Este','Hernandarias','Minga Guazú','Presidente Franco','Minga Porã','Santa Rita','Los Cedrales','Naranjal','Juan León Mallorquín','Santa Rosa del Monday','Iruña','Itakyry',"Juan Emilio O'Leary",'Ñacunday','San Alberto','San Cristóbal','Santa Fe del Paraná','Tavapy','Yguazú','Doctor Raúl Peña','Domingo Martínez de Irala'],
+      'Itapúa': ['Encarnación','Cambyretá','Coronel Bogado','General Artigas','Hohenau','Bella Vista','Obligado','Capitán Miranda','Natalio','Edelira','Alto Verá','Capitán Meza','Carmen del Paraná','Fram','General Delgado','Jesús','La Paz','Mayor Otaño','Nueva Alborada','PJC Caballero Álvarez','Pirapó','San Cosme y Damián','San Juan del Paraná','San Pedro del Paraná','Tomás Romero Pereira','Trinidad','Yatytay'],
+      'Cordillera': ['Caacupé','Valenzuela','San Bernardino','Arroyos y Esteros','Caraguatay','Escobar','Isla Pucú','Juan de Mena','Loma Grande','Mbocayaty del Yhaguy','Nueva Colombia','Piribebuy','Primero de Marzo','San José Obrero','Santa Elena','Itacurubí de la Cordillera','Tacuara'],
+      'Paraguarí': ['Paraguarí','Acahay','Caapucú','Caballero','Carapeguá','General Bernardino Caballero','La Colmena','Mbuyapey','Pirayú','Quiindy','Quyquyhó','San Roque González de Santa Cruz','Sapucai','Tebicuarymí','Yaguarón','Ybycuí','Ybytymí'],
+      'Guairá': ['Villarrica','Borja','Capitán Mauricio José Troche','Colonia Independencia','Coronel Martínez','Dr. Bottrell','Félix Pérez Cardozo','General Eugenio A. Garay','Iturbe','José Fassardi','Mbocayaty','Natalicio Talavera','Ñumí','San Salvador','Tembiaporã','Tebicuary'],
+      'Caaguazú': ['Coronel Oviedo','Caaguazú','Carayaó','Dr. Juan Manuel Frutos','José Domingo Ocampo','Nueva Londres','R.I. 3 Corrales','Repatriación','San Joaquín','San José de los Arroyos','Simón Bolívar','Tres Corrales','Vaquería','Yhú','Mbutuy','Dr. Cecilio Báez','Dr. J. Eulogio Estigarribia','La Pastora','Mcal. Francisco Solano López','Nueva Toledo','Raúl Arsenio Oviedo','Santa Rosa del Mbutuy','3 de Febrero'],
+      'Misiones': ['San Juan Bautista','Ayolas','San Ignacio','San Miguel','San Patricio','Santa María','Santa Rosa','Santiago','Villa Florida','Yabebyry'],
+      'Ñeembucú': ['Pilar','Alberdi','Cerrito','Desmochados','General José Eduvigis Díaz','Guazú Cuá','Humaitá','Isla Umbú','Laureles','Mayor José J. Martínez','Paso de Patria','San Juan Bautista del Ñeembucú','Tacuaras','Villa Oliva','Villalbin'],
+      'Amambay': ['Pedro Juan Caballero','Bella Vista Norte','Capitán Bado','Cinturón','Paso Yobai','Zanja Pytá','Cerro Corá','Karapaí'],
+      'Concepción': ['Concepción','Belén','Horqueta','Loreto','San Carlos','San Lázaro','Yby Yaú',"Azote'y",'Sargento José Félix López','Paso Barreto'],
+      'Canindeyú': ['Salto del Guairá','Corpus Christi','Curuguaty','Igatimí','Itanará','Katueté','La Paloma','Maracayu','Mbaracayú','Nueva Esperanza','Villa Curuguaty','Ypejhú','Yby Pytã'],
+      'San Pedro': ['San Pedro de Ycuamandiyú','Antequera','Chore','General Elizardo Aquino','Guayaibí','Itacurubí del Rosario','Lima','Nueva Germania','San Estanislao','San Pablo','Tacuatí','Unión','Villa del Rosario','Yataity del Norte','25 de Diciembre','Capiibary','General Isidoro Resquín','Liberación','San Vicente Pancholo'],
+      'Caazapá': ['Caazapá','Abai','Buena Vista','Dr. Moisés Bertoni','Fulgencio Yegros','Gral. Higinio Morínigo','Maciel','San Juan Nepomuceno','Tavaí','Yuty','3 de Mayo'],
+      'Boquerón': ['Filadelfia','Loma Plata','Mariscal Estigarribia','Neuland','General Díaz'],
+      'Presidente Hayes': ['Villa Hayes','Benjamín Aceval','General José María Bruguez','José Falcón','Nanawa','Nueva Asunción','Pozo Colorado','Puerto Pinasco','Tte. 1ro Manuel Irala Fernández','Tte. Esteban Martínez'],
+      'Alto Paraguay': ['Fuerte Olimpo','Bahía Negra','Carmelo Peralta','La Victoria'],
+    };
+    var CITY_TO_DEPT = {};
+    Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
+      CITIES_BY_DEPT[dept].forEach(function(city) {
+        CITY_TO_DEPT[city.toLowerCase()] = dept;
+      });
+    });
+
+    var centralCities = CITIES_BY_DEPT['Central'].slice().sort(function(a, b) { return a.localeCompare(b, 'es'); });
+    var restCities = [];
+    Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
+      if (dept === 'Central') return;
+      CITIES_BY_DEPT[dept].forEach(function(city) { restCities.push(city); });
+    });
+    restCities.sort(function(a, b) { return a.localeCompare(b, 'es'); });
+    var CITY_LIST = centralCities.concat(restCities);
+
+    var cityField = document.getElementById('m-city-input');
+    var suggBox   = document.getElementById('m-city-suggestions');
+    var locInput  = document.getElementById('m-location');
+    if (!cityField || !suggBox || !locInput) return;
+
+    function applyCity(city) {
+      var dept = CITY_TO_DEPT[city.toLowerCase()];
+      if (!dept) return false;
+      var coords = DEPT_COORDS[dept] || DEPT_COORDS['Central'];
+      var cityHidden    = document.getElementById('m-city');
+      var locCityHidden = document.getElementById('m-loc-city');
+      var latHidden     = document.getElementById('m-loc-lat');
+      var lngHidden      = document.getElementById('m-loc-lng');
+      var mapsUrlHidden = document.getElementById('m-loc-maps-url');
+      if (cityHidden)    cityHidden.value    = city;
+      if (locCityHidden) locCityHidden.value = city;
+      if (latHidden)     latHidden.value     = coords[0];
+      if (lngHidden)      lngHidden.value     = coords[1];
+      if (mapsUrlHidden) mapsUrlHidden.value = 'https://www.google.com/maps?q=' + coords[0] + ',' + coords[1];
+      locInput.value             = city;
+      locInput._dvPlaceSelected  = true;
+      cityField.classList.remove('error');
+      var grp = cityField.closest('.form-group');
+      if (grp) {
+        var err = grp.querySelector('.form-error-msg');
+        if (err) err.classList.remove('visible');
+      }
+      return true;
+    }
+
+    function hideSuggestions() {
+      suggBox.classList.remove('open');
+      suggBox.innerHTML = '';
+    }
+
+    function renderSuggestions(matches) {
+      suggBox.innerHTML = '';
+      matches.forEach(function(city) {
+        var item = document.createElement('div');
+        item.className = 'city-suggestions__item';
+        item.textContent = city;
+        function pick() {
+          cityField.value = city;
+          applyCity(city);
+          hideSuggestions();
+        }
+        var touchStartY = null;
+        var touchMoved  = false;
+        item.addEventListener('touchstart', function(e) {
+          touchStartY = e.touches[0].clientY;
+          touchMoved  = false;
+          item.classList.add('touch-active');
+        }, { passive: true });
+        item.addEventListener('touchmove', function(e) {
+          if (touchStartY !== null && Math.abs(e.touches[0].clientY - touchStartY) > 8) {
+            touchMoved = true;
+            item.classList.remove('touch-active');
+          }
+        }, { passive: true });
+        item.addEventListener('touchend', function(e) {
+          item.classList.remove('touch-active');
+          if (!touchMoved) {
+            e.preventDefault();
+            pick();
+          }
+          touchStartY = null;
+        });
+        item.addEventListener('touchcancel', function() {
+          item.classList.remove('touch-active');
+          touchStartY = null;
+        });
+        item.addEventListener('mousedown', function(e) { e.preventDefault(); pick(); });
+        suggBox.appendChild(item);
+      });
+      suggBox.classList.add('open');
+    }
+
+    function onCityInput() {
+      var typed = cityField.value.trim();
+      if (!applyCity(typed)) locInput._dvPlaceSelected = false;
+      if (!typed) { hideSuggestions(); return; }
+      var typedLower = typed.toLowerCase();
+      var matches = CITY_LIST.filter(function(c) {
+        return c.toLowerCase().indexOf(typedLower) === 0;
+      }).slice(0, 6);
+      if (matches.length) renderSuggestions(matches);
+      else hideSuggestions();
+    }
+
+    cityField.addEventListener('input', onCityInput);
+    cityField.addEventListener('focus', onCityInput);
+    document.addEventListener('click', function(e) {
+      if (e.target !== cityField && !suggBox.contains(e.target)) hideSuggestions();
+    });
+  })();
+</script>
+
+<script defer>
+  const PRODUCT = {
+    name:  'Consola de Videojuegos Portátil Retro — 520 Juegos',
+    slug:  'consola-retro-520-juegos',
+    price: 159000,
+    /* Descuentos de combo fijos (no el 25%/35% estándar) — ver override en products.js */
+    comboPricing: { 2: 299000, 3: 429000 },
+    /* Sin variantes por ahora — un solo modelo. */
+    /* Sin mapa real — el link de Maps usa coords aproximadas del depto, se omite del WhatsApp. */
+    hideExactLocation: true,
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    DV.trackViewContent(PRODUCT);
+    DV.initForm(PRODUCT);
+
+    /* Click en mini card → preselecciona combo en modal */
+    document.querySelectorAll('.combo-preview-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        document.querySelectorAll('.combo-preview-card').forEach(function(c) { c.classList.remove('combo-preview-card--active'); });
+        card.classList.add('combo-preview-card--active');
+        var radio = document.querySelector('.offer-options input[name="offer"][value="' + card.dataset.offer + '"]');
+        if (!radio) return;
+        radio.checked = true;
+        document.querySelectorAll('.offer-option').forEach(function(opt) { opt.classList.remove('selected'); });
+        var parent = radio.closest('.offer-option');
+        if (parent) parent.classList.add('selected');
+        radio.dispatchEvent(new Event('change'));
+      });
+    });
+
+    /* Stock real desde D1 — barra de urgencia en la sección de cierre */
+    fetch('/api/product-stock?slug=' + PRODUCT.slug)
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (!data || !data.ok || !data.product) return;
+        var p       = data.product;
+        var stock   = Number(p.stock_total) || 0;
+        var minStock = Number(p.min_stock) || 5;
+        var fill    = document.getElementById('stock-bar-fill');
+        var text    = document.getElementById('stock-bar-text');
+        var pct     = document.getElementById('stock-bar-pct');
+        if (!fill || !text) return;
+        var pctVal = Math.max(6, Math.min(100, Math.round((stock / Math.max(stock, minStock * 4, 20)) * 100)));
+        fill.style.width = pctVal + '%';
+        text.textContent = stock > 0 ? ('Quedan ' + stock + ' unidades') : 'Últimas unidades';
+        if (pct) pct.textContent = pctVal <= 30 ? '¡Se agota pronto!' : '';
+      })
+      .catch(function() {});
+  });
+</script>
+
+<!-- CRO: Sticky bottom CTA — mobile only -->
+<div class="sticky-cta-bar" id="sticky-cta-bar">
+  <button class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;white-space:nowrap;font-size:clamp(12px,3.6vw,15px);padding:12px 10px">
+    LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+  </button>
+</div>
+
+<script src="/assets/js/protect.js?v=68" defer></script>
+</body>
+</html>

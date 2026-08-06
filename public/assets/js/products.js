@@ -57,7 +57,7 @@ function buildWAMsg(product, data, offerInfo) {
       ...(data.invoice_ruc  ? [`RUC: ${data.invoice_ruc}`]          : []),
       ...(data.invoice_name ? [`Razón social: ${data.invoice_name}`] : []),
     ] : []),
-    ...(data.location_maps_url ? [`Ubicación exacta: ${data.location_maps_url}`] : []),
+    ...(data.location_maps_url && !product.hideExactLocation ? [`Ubicación exacta: ${data.location_maps_url}`] : []),
     ...(data.referencia ? [`Referencia: ${data.referencia}`] : []),
     '',
     '¿Pueden ayudarme a coordinar el envío?',
@@ -86,7 +86,7 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
       ...(data.invoice_ruc  ? [`RUC: ${data.invoice_ruc}`]          : []),
       ...(data.invoice_name ? [`Razón social: ${data.invoice_name}`] : []),
     ] : []),
-    ...(data.location_maps_url ? [`Ubicación exacta: ${data.location_maps_url}`] : []),
+    ...(data.location_maps_url && !product.hideExactLocation ? [`Ubicación exacta: ${data.location_maps_url}`] : []),
     ...(data.referencia ? [`Referencia: ${data.referencia}`] : []),
     '',
     '¿Pueden confirmar el pedido?',
@@ -271,9 +271,9 @@ DV.initForm = function (product) {
 
   const p1price   = product.price;
   const p2compare = product.price * 2;
-  const p2real    = Math.round(product.price * 2 * 0.75);
+  const p2real    = (product.comboPricing && product.comboPricing[2] != null) ? product.comboPricing[2] : Math.round(product.price * 2 * 0.75);
   const p3compare = product.price * 3;
-  const p3real    = Math.round(product.price * 3 * 0.65);
+  const p3real    = (product.comboPricing && product.comboPricing[3] != null) ? product.comboPricing[3] : Math.round(product.price * 3 * 0.65);
 
   const el1 = document.getElementById('offer-price-1');
   const ec2 = document.getElementById('offer-compare-2');
@@ -307,6 +307,7 @@ DV.initForm = function (product) {
       e.preventDefault();
       if (!_atcFired) {
         DV.trackAddToCart(product);
+        DV.trackInitiateCheckout(product, null, 1);
         _atcFired = true;
       }
       openModal();
@@ -655,10 +656,6 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
         return;
       }
 
-      /* Tracking con value y num_items correctos */
-      const capiLead       = { ...commonData, phone: validPhone || '' };
-      const customProduct  = { ...product, price: customTotal };
-      DV.trackInitiateCheckout(customProduct, capiLead, customQty);
       if (typeof DV.saveLeadDataLocal === 'function') {
         DV.saveLeadDataLocal(validPhone || rawPhone, commonData.name, commonData.invoice_email || '');
       }
@@ -757,10 +754,6 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
         throw new Error('lead_error');
       }
 
-      /* 2â4 â Tracking (telÃ©fono normalizado o vacÃ­o para CAPI) */
-      const capiLead = { ...data, phone: validPhone || '' };
-      const trackProduct = { ...product, price: expressTotal };
-      DV.trackInitiateCheckout(trackProduct, capiLead, selectedQty);
       if (typeof DV.saveLeadDataLocal === 'function') {
         DV.saveLeadDataLocal(validPhone || rawPhone, data.name, data.invoice_email || '');
       }
