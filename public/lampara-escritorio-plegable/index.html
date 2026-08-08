@@ -3,32 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/consola-retro-520-juegos/consola-placeholder.svg" fetchpriority="high" type="image/svg+xml">
+  <link rel="preload" as="image" href="/lampara-escritorio-plegable/lampara-placeholder.svg" fetchpriority="high" type="image/svg+xml">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=59" as="script">
-  <meta name="description" content="Consola de Videojuegos Portátil Retro — 520 juegos integrados, pantalla propia, recargable por USB. Ideal para regalar. Entrega en el día en Paraguay. Gs. 159.000.">
-  <title>Consola Retro 520 Juegos — Regalos / Niños — Dam Vertex</title>
+  <meta name="description" content="Lámpara de Escritorio Plegable Recargable — 3 tonos de luz ajustables, control táctil, batería 1200mAh, soporte para celular integrado. Entrega en el día en Paraguay. Gs. 139.000.">
+  <title>Lámpara de Escritorio Plegable — Hogar / Oficina — Dam Vertex</title>
   <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
   <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
-  <meta property="og:title" content="Consola de Videojuegos Portátil Retro — Dam Vertex" />
-  <meta property="og:description" content="520 juegos integrados, pantalla propia, recargable por USB. El regalo favorito para el Día del Niño. Entrega en el día en Paraguay." />
-  <meta property="og:image" content="/consola-retro-520-juegos/consola-placeholder.svg" />
-  <meta property="og:url" content="https://damvertex.com/consola-retro-520-juegos/" />
+  <meta property="og:title" content="Lámpara de Escritorio Plegable Recargable — Dam Vertex" />
+  <meta property="og:description" content="3 tonos de luz ajustables, control táctil, batería recargable 1200mAh y soporte de celular integrado. Entrega en el día en Paraguay." />
+  <meta property="og:image" content="/lampara-escritorio-plegable/lampara-placeholder.svg" />
+  <meta property="og:url" content="https://damvertex.com/lampara-escritorio-plegable/" />
   <meta property="og:type" content="website" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Product",
-  "name": "Consola de Videojuegos Portátil Retro — 520 Juegos",
-  "description": "Consola de videojuegos portátil retro con 520 juegos integrados, pantalla LCD propia en el control estilo PS2, recargable por USB. Ideal para niños de 4 a 12 años.",
+  "name": "Lámpara de Escritorio Plegable Recargable",
+  "description": "Lámpara de escritorio plegable con 3 tonos de luz e intensidad ajustable por control táctil, batería recargable de 1200mAh (entrada DC 5V/1A), potencia 2.5W–10W, brazo flexible y soporte de celular integrado.",
   "brand": { "@type": "Brand", "name": "DAM Vertex" },
-  "url": "https://damvertex.com/consola-retro-520-juegos/",
+  "url": "https://damvertex.com/lampara-escritorio-plegable/",
   "offers": {
     "@type": "Offer",
-    "price": "159000",
+    "price": "139000",
     "priceCurrency": "PYG",
     "availability": "https://schema.org/InStock",
     "seller": { "@type": "Organization", "name": "DAM Vertex" }
@@ -68,174 +68,174 @@
       border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px;
     }
 
-    /* ══ Consola Retro 520 Juegos — theme gaming verde/negro/dorado ══
-       Fondo negro reservado para la sección "problema" y franjas oscuras — coherente
-       con la estética de consola retro (control negro estilo PS2), no negro por defecto:
-       el hero y las secciones de producto/confianza usan fondos claros como el resto
-       del catálogo (ver CLAUDE.md — identidad visual del producto, no de otra landing). */
+    /* ══ Lámpara de Escritorio Plegable — theme cálido navy/dorado ══
+       Fondo navy oscuro (#1a1a2e) reservado para "problema" y "urgencia" — la
+       lámpara glow (acento dorado) contrasta contra la oscuridad, reforzando el
+       beneficio central del producto (luz cálida en la oscuridad). Hero y
+       secciones de producto/confianza usan fondos claros, igual que el resto
+       del catálogo — no negro por defecto, elección justificada por el producto. */
     :root {
-      --cons-green:     #1a7a2e;
-      --cons-green-dk:  #0f4d1a;
-      --cons-black:     #0a0a0a;
-      --cons-gold:      #f5c518;
-      --cons-bg-light:  #f0f7f0;
-      --cons-text:      #0a0a0a;
-      --cons-text-dim:  rgba(10,10,10,.68);
-      --cons-text-muted: rgba(10,10,10,.5);
-      --cons-border:    rgba(26,122,46,.22);
-      --cons-card:      #ffffff;
+      --lamp-bg-dark:   #1a1a2e;
+      --lamp-accent:    #f5c518;
+      --lamp-accent2:   #e8a020;
+      --lamp-light:     #fdf8f0;
+      --lamp-text:      #1a1a2e;
+      --lamp-text-dim:  rgba(26,26,46,.68);
+      --lamp-text-muted: rgba(26,26,46,.5);
+      --lamp-border:    rgba(232,160,32,.22);
+      --lamp-card:      #ffffff;
     }
-    body.theme-consola { background: #ffffff; color: var(--cons-text); }
+    body.theme-lampara { background: #ffffff; color: var(--lamp-text); }
 
     /* ── Nav ── */
-    .theme-consola .nav { background: rgba(255,255,255,.92); border-bottom: 1px solid var(--cons-border); backdrop-filter: blur(12px); }
-    .theme-consola .nav__logo { color: var(--cons-text); }
-    .theme-consola .nav__logo span { opacity: .45; }
-    .theme-consola .nav__cta {
-      background: var(--cons-green); color: #fff;
+    .theme-lampara .nav { background: rgba(255,255,255,.92); border-bottom: 1px solid var(--lamp-border); backdrop-filter: blur(12px); }
+    .theme-lampara .nav__logo { color: var(--lamp-text); }
+    .theme-lampara .nav__logo span { opacity: .45; }
+    .theme-lampara .nav__cta {
+      background: var(--lamp-accent); color: var(--lamp-bg-dark);
       font-size: clamp(9px, 2.4vw, 12px); white-space: nowrap; gap: 5px; padding: 8px 12px;
     }
-    .theme-consola .nav__cta:hover { background: var(--cons-green-dk); }
-    .theme-consola .nav__cta:focus-visible,
-    .theme-consola .btn-primary:focus-visible {
-      outline: 3px solid var(--cons-green-dk); outline-offset: 2px;
+    .theme-lampara .nav__cta:hover { background: var(--lamp-accent2); }
+    .theme-lampara .nav__cta:focus-visible,
+    .theme-lampara .btn-primary:focus-visible {
+      outline: 3px solid var(--lamp-accent2); outline-offset: 2px;
     }
 
     /* ── Footer ── */
-    .theme-consola .footer { color: rgba(10,10,10,.45); border-top: 1px solid var(--cons-border); }
+    .theme-lampara .footer { color: rgba(26,26,46,.45); border-top: 1px solid var(--lamp-border); }
 
-    /* ── Botón primario ── */
-    .theme-consola .btn-primary,
-    .btn-cons {
+    /* ── Botón primario — texto oscuro sobre fondo amarillo (contraste) ── */
+    .theme-lampara .btn-primary,
+    .btn-lamp {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--cons-green); color: #fff; font-weight: 700;
+      background: var(--lamp-accent); color: var(--lamp-bg-dark); font-weight: 700;
       padding: 15px 20px; border-radius: 8px; border: none; cursor: pointer;
       text-decoration: none; transition: background .2s, transform .15s;
       letter-spacing: .01em; width: 100%; max-width: 340px;
       font-size: clamp(11px, 3.1vw, 14px); white-space: nowrap;
     }
-    .theme-consola .btn-primary:hover,
-    .btn-cons:hover { background: var(--cons-green-dk); transform: translateY(-1px); }
+    .theme-lampara .btn-primary:hover,
+    .btn-lamp:hover { background: var(--lamp-accent2); transform: translateY(-1px); }
 
     /* ══ HERO — fondo blanco ══ */
-    .hero-cons { background: #ffffff; padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
-    .hero-cons__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
-    .hero-cons__media { max-width: 420px; margin: 0 auto; width: 100%; }
-    .hero-cons__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; background: var(--cons-black); }
+    .hero-lamp { background: #ffffff; padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-lamp__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+    .hero-lamp__media { max-width: 420px; margin: 0 auto; width: 100%; }
+    .hero-lamp__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; background: var(--lamp-bg-dark); }
 
-    .eyebrow-cons { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--cons-green-dk); margin: 0 0 12px; }
-    .hero-cons__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--cons-text); margin: 0 0 12px; }
-    .hero-cons__h em { font-style: normal; color: var(--cons-green); }
-    .hero-cons__sub { font-size: clamp(14px,2vw,16px); color: var(--cons-text-dim); line-height: 1.65; margin: 0 0 18px; }
+    .eyebrow-lamp { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--lamp-accent2); margin: 0 0 12px; }
+    .hero-lamp__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--lamp-text); margin: 0 0 12px; }
+    .hero-lamp__h em { font-style: normal; color: var(--lamp-accent2); }
+    .hero-lamp__sub { font-size: clamp(14px,2vw,16px); color: var(--lamp-text-dim); line-height: 1.65; margin: 0 0 18px; }
 
-    .hero-cons__impact { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 16px; }
-    .hero-cons__impact span {
-      font-size: clamp(8px, 2.4vw, 10.5px); font-weight: 700; color: var(--cons-green-dk); letter-spacing: -.01em;
-      background: #fff; border: 1px solid rgba(26,122,46,.3);
+    .hero-lamp__impact { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 16px; }
+    .hero-lamp__impact span {
+      font-size: clamp(8px, 2.4vw, 10.5px); font-weight: 700; color: var(--lamp-accent2); letter-spacing: -.01em;
+      background: #fff; border: 1px solid rgba(232,160,32,.35);
       border-radius: 20px; padding: 3px 6px; white-space: nowrap;
       flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis;
     }
 
-    .hero-cons .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
-    .hero-cons .price-main    { color: var(--cons-text); font-size: clamp(18px,3vw,22px); }
-    .hero-cons .price-compare { color: rgba(10,10,10,.4); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
-    .hero-cons .price-badge   { background: var(--cons-green); color: #fff; border: none; }
-    .hero-cons__proof { font-size: 13px; font-weight: 600; color: var(--cons-green-dk); margin: 0 0 18px; }
+    .hero-lamp .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
+    .hero-lamp .price-main    { color: var(--lamp-text); font-size: clamp(18px,3vw,22px); }
+    .hero-lamp .price-compare { color: rgba(26,26,46,.4); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
+    .hero-lamp .price-badge   { background: var(--lamp-accent); color: var(--lamp-bg-dark); border: none; }
+    .hero-lamp__proof { font-size: 13px; font-weight: 600; color: var(--lamp-accent2); margin: 0 0 18px; }
 
     /* ── Combos externos (preselección visual, sin tracking) ── */
     .combo-preview { display: flex; flex-direction: column; gap: 8px; margin: 0 0 18px; }
     .combo-preview-card {
-      display: block; border: 2px solid rgba(26,122,46,.2); border-radius: 10px;
+      display: block; border: 2px solid rgba(232,160,32,.25); border-radius: 10px;
       padding: 12px 14px; cursor: pointer; position: relative;
-      transition: border-color .18s, background .18s; background: var(--cons-card); user-select: none;
+      transition: border-color .18s, background .18s; background: var(--lamp-card); user-select: none;
     }
-    .combo-preview-card .offer-qty  { color: var(--cons-text); font-size: 15px; font-weight: 600; }
-    .combo-preview-card .offer-price { color: var(--cons-text); font-weight: 700; }
-    .combo-preview-card .offer-compare { color: rgba(10,10,10,.4); font-size: 13px; text-decoration: line-through; }
+    .combo-preview-card .offer-qty  { color: var(--lamp-text); font-size: 15px; font-weight: 600; }
+    .combo-preview-card .offer-price { color: var(--lamp-text); font-weight: 700; }
+    .combo-preview-card .offer-compare { color: rgba(26,26,46,.4); font-size: 13px; text-decoration: line-through; }
     .combo-preview-card .offer-saving { color: #166534; font-size: 12px; font-weight: 600; }
-    .combo-preview-card.combo-preview-card--active { border-color: var(--cons-green); background: rgba(26,122,46,.06); }
+    .combo-preview-card.combo-preview-card--active { border-color: var(--lamp-accent2); background: rgba(232,160,32,.08); }
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
     .offer-foot .offer-saving { margin-top: 0; }
-    .combo-preview-card .offer-badge { position: static; background: var(--cons-green); color: #fff; }
-    .combo-preview-card .offer-badge--best { background: #a3790f; color: #fff; }
+    .combo-preview-card .offer-badge { position: static; background: var(--lamp-accent); color: var(--lamp-bg-dark); }
+    .combo-preview-card .offer-badge--best { background: var(--lamp-accent2); color: #fff; }
 
-    .hero-cons .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
-    .hero-cons .db-badge { font-size: 11px; color: var(--cons-text); padding: 5px 10px; border-radius: 20px; background: rgba(26,122,46,.08); border: 1px solid rgba(26,122,46,.25); }
-    .hero-cons .db-badge.db-green { background: rgba(26,122,46,.16); border-color: rgba(26,122,46,.4); color: var(--cons-green-dk); }
+    .hero-lamp .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+    .hero-lamp .db-badge { font-size: 11px; color: var(--lamp-text); padding: 5px 10px; border-radius: 20px; background: rgba(232,160,32,.08); border: 1px solid rgba(232,160,32,.3); }
+    .hero-lamp .db-badge.db-green { background: rgba(232,160,32,.16); border-color: rgba(232,160,32,.45); color: var(--lamp-accent2); }
 
     /* ══ SECCIÓN — línea decorativa / overline compartidos ══ */
-    .sec-overline-cons { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 14px; }
-    .sec-h-cons { font-size: clamp(20px,3.5vw,30px); font-weight: 800; line-height: 1.2; margin: 0; letter-spacing: -.01em; }
-    .line-cons { width: 40px; height: 2px; background: linear-gradient(90deg, var(--cons-gold), transparent); margin: 0 auto 18px; }
+    .sec-overline-lamp { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 14px; }
+    .sec-h-lamp { font-size: clamp(20px,3.5vw,30px); font-weight: 800; line-height: 1.2; margin: 0; letter-spacing: -.01em; }
+    .line-lamp { width: 40px; height: 2px; background: linear-gradient(90deg, var(--lamp-accent), transparent); margin: 0 auto 18px; }
 
-    /* ══ PROBLEMA — fondo negro (estética consola retro, ver nota arriba) ══ */
-    .problema-cons { background: var(--cons-black); color: #fff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); }
-    .problema-cons__inner { max-width: 900px; margin: 0 auto; text-align: center; }
-    .problema-cons .sec-overline-cons { color: var(--cons-gold); text-align: center; }
-    .problema-cons .sec-h-cons { color: #fff; margin-bottom: 44px; }
-    .pain-grid-cons { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
-    .pain-card-cons {
-      background: #141414; border: 1px solid rgba(245,197,24,.18); border-radius: 12px;
+    /* ══ PROBLEMA — fondo navy oscuro (ver nota arriba) ══ */
+    .problema-lamp { background: var(--lamp-bg-dark); color: #fff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); }
+    .problema-lamp__inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .problema-lamp .sec-overline-lamp { color: var(--lamp-accent); text-align: center; }
+    .problema-lamp .sec-h-lamp { color: #fff; margin-bottom: 44px; }
+    .pain-grid-lamp { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .pain-card-lamp {
+      background: #23233d; border: 1px solid rgba(245,197,24,.2); border-radius: 12px;
       padding: 28px 20px; text-align: center;
     }
-    .pain-card-cons__icon { font-size: 30px; margin-bottom: 12px; }
-    .pain-card-cons strong { display: block; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-    .pain-card-cons p { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.6; margin: 0; }
+    .pain-card-lamp__icon { font-size: 30px; margin-bottom: 12px; }
+    .pain-card-lamp strong { display: block; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .pain-card-lamp p { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.6; margin: 0; }
 
     /* ══ PRODUCTO — fondo claro ══ */
-    .producto-cons { background: var(--cons-bg-light); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); }
-    .producto-cons__inner { max-width: 1000px; margin: 0 auto; }
-    .producto-cons__head { text-align: center; margin-bottom: 44px; }
-    .producto-cons .sec-overline-cons { color: var(--cons-green-dk); text-align: center; }
-    .producto-cons .sec-h-cons { color: var(--cons-text); }
-    .bene-grid-cons { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--cons-border); border-radius: 10px 10px 0 0; overflow: hidden; }
-    .bene-grid-cons-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--cons-border); border-radius: 0 0 10px 10px; overflow: hidden; margin-top: 1px; }
-    .bene-card-cons { background: var(--cons-card); padding: 30px 24px; }
-    .bene-card-cons strong { display: block; font-size: 15px; font-weight: 700; color: var(--cons-text); margin-bottom: 8px; }
-    .bene-card-cons p { font-size: 13px; color: var(--cons-text-muted); line-height: 1.6; margin: 0; }
+    .producto-lamp { background: var(--lamp-light); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); }
+    .producto-lamp__inner { max-width: 1000px; margin: 0 auto; }
+    .producto-lamp__head { text-align: center; margin-bottom: 44px; }
+    .producto-lamp .sec-overline-lamp { color: var(--lamp-accent2); text-align: center; }
+    .producto-lamp .sec-h-lamp { color: var(--lamp-text); }
+    .bene-grid-lamp { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--lamp-border); border-radius: 10px 10px 0 0; overflow: hidden; }
+    .bene-grid-lamp + .bene-grid-lamp { border-radius: 0 0 10px 10px; margin-top: 1px; }
+    .bene-card-lamp { background: var(--lamp-card); padding: 30px 24px; }
+    .bene-card-lamp strong { display: block; font-size: 15px; font-weight: 700; color: var(--lamp-text); margin-bottom: 8px; }
+    .bene-card-lamp p { font-size: 13px; color: var(--lamp-text-muted); line-height: 1.6; margin: 0; }
 
     /* ══ CONFIANZA — prueba social genérica (sin testimonios inventados, ver CLAUDE.md) ══ */
-    .confianza-cons { background: #ffffff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--cons-border); }
-    .confianza-cons__inner { max-width: 900px; margin: 0 auto; }
-    .confianza-cons__head { text-align: center; margin-bottom: 40px; }
-    .confianza-cons .sec-overline-cons { color: var(--cons-green-dk); text-align: center; }
-    .confianza-cons .sec-h-cons { color: var(--cons-text); }
-    .confianza-grid-cons { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
-    .confianza-card-cons { text-align: center; padding: 24px 18px; border-radius: 12px; background: var(--cons-bg-light); border: 1px solid var(--cons-border); }
-    .confianza-card-cons__icon { font-size: 28px; margin-bottom: 10px; }
-    .confianza-card-cons strong { display: block; font-size: 14px; font-weight: 700; color: var(--cons-text); margin-bottom: 6px; }
-    .confianza-card-cons p { font-size: 12.5px; color: var(--cons-text-muted); line-height: 1.55; margin: 0; }
+    .confianza-lamp { background: #ffffff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--lamp-border); }
+    .confianza-lamp__inner { max-width: 900px; margin: 0 auto; }
+    .confianza-lamp__head { text-align: center; margin-bottom: 40px; }
+    .confianza-lamp .sec-overline-lamp { color: var(--lamp-accent2); text-align: center; }
+    .confianza-lamp .sec-h-lamp { color: var(--lamp-text); }
+    .confianza-grid-lamp { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .confianza-card-lamp { text-align: center; padding: 24px 18px; border-radius: 12px; background: var(--lamp-light); border: 1px solid var(--lamp-border); }
+    .confianza-card-lamp__icon { font-size: 28px; margin-bottom: 10px; }
+    .confianza-card-lamp strong { display: block; font-size: 14px; font-weight: 700; color: var(--lamp-text); margin-bottom: 6px; }
+    .confianza-card-lamp p { font-size: 12.5px; color: var(--lamp-text-muted); line-height: 1.55; margin: 0; }
 
-    /* ══ URGENCIA — fondo verde oscuro, cierre de página ══ */
-    .urgencia-cons { background: linear-gradient(180deg, var(--cons-green-dk) 0%, var(--cons-black) 100%); padding: clamp(64px,12vw,100px) clamp(20px,5vw,64px); text-align: center; }
-    .urgencia-cons__inner { max-width: 540px; margin: 0 auto; }
-    .urgencia-cons__novedad {
+    /* ══ URGENCIA — fondo navy oscuro, cierre de página ══ */
+    .urgencia-lamp { background: linear-gradient(180deg, var(--lamp-bg-dark) 0%, #0d0d1a 100%); padding: clamp(64px,12vw,100px) clamp(20px,5vw,64px); text-align: center; }
+    .urgencia-lamp__inner { max-width: 540px; margin: 0 auto; }
+    .urgencia-lamp__badge {
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-      color: var(--cons-black); background: var(--cons-gold);
+      color: var(--lamp-bg-dark); background: var(--lamp-accent);
       padding: 7px 16px; border-radius: 20px; margin-bottom: 26px;
     }
-    .urgencia-cons__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cons-black); animation: pulse-cons 2s ease-in-out infinite; will-change: opacity, transform; }
-    @keyframes pulse-cons { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.7); } }
-    .urgencia-cons__h { font-size: clamp(22px,4vw,34px); font-weight: 800; color: #fff; line-height: 1.18; letter-spacing: -.01em; margin: 0 0 14px; }
-    .urgencia-cons__sub { font-size: 14px; color: rgba(255,255,255,.8); line-height: 1.6; margin: 0 0 24px; }
+    .urgencia-lamp__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lamp-bg-dark); animation: pulse-lamp 2s ease-in-out infinite; will-change: opacity, transform; }
+    @keyframes pulse-lamp { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.7); } }
+    .urgencia-lamp__h { font-size: clamp(22px,4vw,34px); font-weight: 800; color: #fff; line-height: 1.18; letter-spacing: -.01em; margin: 0 0 14px; }
+    .urgencia-lamp__sub { font-size: 14px; color: rgba(255,255,255,.8); line-height: 1.6; margin: 0 0 24px; }
 
     /* Contador de stock visual */
-    .stock-bar-cons { margin: 0 0 30px; }
-    .stock-bar-cons__label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--cons-gold); margin-bottom: 8px; }
-    .stock-bar-cons__track { height: 10px; border-radius: 20px; background: rgba(255,255,255,.12); overflow: hidden; }
-    .stock-bar-cons__fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--cons-gold), #fff176); width: 60%; transition: width .4s ease; }
+    .stock-bar-lamp { margin: 0 0 30px; }
+    .stock-bar-lamp__label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--lamp-accent); margin-bottom: 8px; }
+    .stock-bar-lamp__track { height: 10px; border-radius: 20px; background: rgba(255,255,255,.12); overflow: hidden; }
+    .stock-bar-lamp__fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--lamp-accent2), var(--lamp-accent)); width: 60%; transition: width .4s ease; }
 
-    .urgencia-cons .close-trust { margin: 30px auto 0; }
-    .urgencia-cons .close-trust .ct-item { color: rgba(255,255,255,.9); justify-content: center; }
-    .urgencia-cons .close-trust .ct-ok { color: var(--cons-gold); }
-    .urgencia-cons .btn-primary { background: var(--cons-gold); color: var(--cons-black); }
-    .urgencia-cons .btn-primary:hover { background: #fff176; }
+    .urgencia-lamp .close-trust { margin: 30px auto 0; }
+    .urgencia-lamp .close-trust .ct-item { color: rgba(255,255,255,.9); justify-content: center; }
+    .urgencia-lamp .close-trust .ct-ok { color: var(--lamp-accent); }
+    .urgencia-lamp .btn-primary { background: var(--lamp-accent); color: var(--lamp-bg-dark); }
+    .urgencia-lamp .btn-primary:hover { background: #fff176; }
 
     /* ══ STICKY CTA ══ */
     .sticky-cta-bar {
       display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
-      background: rgba(255,255,255,.97); border-top: 1px solid var(--cons-border);
+      background: rgba(255,255,255,.97); border-top: 1px solid var(--lamp-border);
       padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
       backdrop-filter: blur(10px);
     }
@@ -244,45 +244,45 @@
       body:has(#order-modal.active) .sticky-cta-bar { display: none; }
     }
 
-    /* ══ Modal — fondo claro con acento verde ══ */
-    .theme-consola .modal-box { background: #ffffff; border: 1px solid rgba(26,122,46,.25); }
-    .theme-consola .modal-title { color: var(--cons-text); }
-    .theme-consola .modal-subtitle { color: rgba(10,10,10,.65); }
-    .theme-consola .modal-section-label { color: rgba(10,10,10,.55); }
-    .theme-consola .modal-urgency { background: rgba(245,197,24,.15); border-color: rgba(245,197,24,.4); color: #7a5c00; }
-    .theme-consola .modal-close { background: rgba(26,122,46,.12); color: var(--cons-text); }
-    .theme-consola .modal-price-warning { color: #8a5a1f; }
+    /* ══ Modal — fondo claro con acento dorado ══ */
+    .theme-lampara .modal-box { background: #ffffff; border: 1px solid rgba(232,160,32,.3); }
+    .theme-lampara .modal-title { color: var(--lamp-text); }
+    .theme-lampara .modal-subtitle { color: rgba(26,26,46,.65); }
+    .theme-lampara .modal-section-label { color: rgba(26,26,46,.55); }
+    .theme-lampara .modal-urgency { background: rgba(245,197,24,.18); border-color: rgba(245,197,24,.45); color: #7a5c00; }
+    .theme-lampara .modal-close { background: rgba(232,160,32,.14); color: var(--lamp-text); }
+    .theme-lampara .modal-price-warning { color: #8a5a1f; }
 
-    .theme-consola .offer-option { background: #fff; border-color: rgba(26,122,46,.18); }
-    .theme-consola .offer-option .offer-qty,
-    .theme-consola .offer-option .offer-price { color: var(--cons-text); }
-    .theme-consola .offer-option .offer-compare { color: rgba(10,10,10,.4); }
-    .theme-consola .offer-option.selected,
-    .theme-consola .offer-option:has(input:checked) { border-color: var(--cons-green); background: rgba(26,122,46,.06); }
-    .theme-consola .offer-saving { display: block; margin-top: 6px; color: #166534; font-size: 12px; font-weight: 600; }
-    .theme-consola .offer-badge { position: static; background: var(--cons-green); color: #fff; }
-    .theme-consola .offer-badge--best { position: static; background: #a3790f; color: #fff; }
+    .theme-lampara .offer-option { background: #fff; border-color: rgba(232,160,32,.2); }
+    .theme-lampara .offer-option .offer-qty,
+    .theme-lampara .offer-option .offer-price { color: var(--lamp-text); }
+    .theme-lampara .offer-option .offer-compare { color: rgba(26,26,46,.4); }
+    .theme-lampara .offer-option.selected,
+    .theme-lampara .offer-option:has(input:checked) { border-color: var(--lamp-accent2); background: rgba(232,160,32,.08); }
+    .theme-lampara .offer-saving { display: block; margin-top: 6px; color: #166534; font-size: 12px; font-weight: 600; }
+    .theme-lampara .offer-badge { position: static; background: var(--lamp-accent); color: var(--lamp-bg-dark); }
+    .theme-lampara .offer-badge--best { position: static; background: var(--lamp-accent2); color: #fff; }
 
-    .theme-consola .form-group label { color: var(--cons-text); }
-    .theme-consola .form-group input,
-    .theme-consola .form-group select,
-    .theme-consola .city-search-input,
-    .theme-consola .city-manual-input { background: #fff; border-color: rgba(26,122,46,.25); color: var(--cons-text); }
-    .theme-consola .form-group input::placeholder,
-    .theme-consola .city-search-input::placeholder,
-    .theme-consola .city-manual-input::placeholder { color: #999999; }
+    .theme-lampara .form-group label { color: var(--lamp-text); }
+    .theme-lampara .form-group input,
+    .theme-lampara .form-group select,
+    .theme-lampara .city-search-input,
+    .theme-lampara .city-manual-input { background: #fff; border-color: rgba(232,160,32,.3); color: var(--lamp-text); }
+    .theme-lampara .form-group input::placeholder,
+    .theme-lampara .city-search-input::placeholder,
+    .theme-lampara .city-manual-input::placeholder { color: #999999; }
 
-    .theme-consola .upsell-block { background: #fff; border-color: rgba(26,122,46,.16); }
-    .theme-consola .upsell-block.checked,
-    .theme-consola .upsell-block:has(input:checked) { border-color: var(--cons-green); background: rgba(26,122,46,.06); }
-    .theme-consola .upsell-title { color: var(--cons-text); }
-    .theme-consola .upsell-sub { color: rgba(10,10,10,.55); }
+    .theme-lampara .upsell-block { background: #fff; border-color: rgba(232,160,32,.2); }
+    .theme-lampara .upsell-block.checked,
+    .theme-lampara .upsell-block:has(input:checked) { border-color: var(--lamp-accent2); background: rgba(232,160,32,.08); }
+    .theme-lampara .upsell-title { color: var(--lamp-text); }
+    .theme-lampara .upsell-sub { color: rgba(26,26,46,.55); }
 
-    .theme-consola .confirm-intent { background: #fff; border-color: rgba(26,122,46,.16); }
-    .theme-consola .confirm-intent.checked,
-    .theme-consola .confirm-intent:has(input:checked) { border-color: var(--cons-green); background: rgba(26,122,46,.06); }
-    .theme-consola .confirm-text { color: var(--cons-text); }
-    .theme-consola .form-success p { color: rgba(10,10,10,.7); }
+    .theme-lampara .confirm-intent { background: #fff; border-color: rgba(232,160,32,.2); }
+    .theme-lampara .confirm-intent.checked,
+    .theme-lampara .confirm-intent:has(input:checked) { border-color: var(--lamp-accent2); background: rgba(232,160,32,.08); }
+    .theme-lampara .confirm-text { color: var(--lamp-text); }
+    .theme-lampara .form-success p { color: rgba(26,26,46,.7); }
 
     /* Autocomplete de ciudad — mismo patrón que rizador/taza/luna */
     .city-input-wrap { position: relative; }
@@ -323,24 +323,23 @@
     .city-suggestions__item + .city-suggestions__item { border-top: 1px solid rgba(0,0,0,0.08) !important; }
     .city-suggestions__item:hover,
     .city-suggestions__item:focus,
-    .city-suggestions__item.touch-active { background-color: var(--cons-green) !important; color: #ffffff !important; }
+    .city-suggestions__item.touch-active { background-color: var(--lamp-accent2) !important; color: #ffffff !important; }
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
-      .bene-grid-cons { grid-template-columns: 1fr; border-radius: 10px 10px 0 0; }
-      .bene-grid-cons-2 { grid-template-columns: 1fr; }
-      .pain-grid-cons { grid-template-columns: 1fr; }
-      .confianza-grid-cons { grid-template-columns: 1fr; }
+      .bene-grid-lamp { grid-template-columns: 1fr; border-radius: 10px 10px 0 0; }
+      .pain-grid-lamp { grid-template-columns: 1fr; }
+      .confianza-grid-lamp { grid-template-columns: 1fr; }
     }
     @media (max-width: 700px) {
-      .hero-cons__inner { grid-template-columns: 1fr; gap: 18px; }
-      .hero-cons__media { order: -1; max-width: 100%; }
-      .hero-cons { padding: 10px 16px 20px; }
-      .hero-cons .btn-primary { max-width: 100%; }
+      .hero-lamp__inner { grid-template-columns: 1fr; gap: 18px; }
+      .hero-lamp__media { order: -1; max-width: 100%; }
+      .hero-lamp { padding: 10px 16px 20px; }
+      .hero-lamp .btn-primary { max-width: 100%; }
     }
   </style>
 </head>
-<body class="theme-consola">
+<body class="theme-lampara">
 
 <!-- Sprite: icono WhatsApp (reusado de rizador/taza) -->
 <svg style="position:absolute;width:0;height:0" aria-hidden="true">
@@ -357,49 +356,49 @@
 
 <main>
 <!-- ══ HERO ══ -->
-<section class="hero-cons" id="section-hero" data-insync-section="hero">
-  <div class="hero-cons__inner">
+<section class="hero-lamp" id="section-hero" data-insync-section="hero">
+  <div class="hero-lamp__inner">
 
-    <div class="hero-cons__media">
+    <div class="hero-lamp__media">
       <!-- PLACEHOLDER — reemplazar por foto real del producto antes de correr tráfico pago -->
-      <img src="/consola-retro-520-juegos/consola-placeholder.svg"
-           alt="Consola de Videojuegos Portátil Retro — 520 juegos"
-           class="hero-cons__img"
+      <img src="/lampara-escritorio-plegable/lampara-placeholder.svg"
+           alt="Lámpara de Escritorio Plegable Recargable"
+           class="hero-lamp__img"
            loading="eager"
            fetchpriority="high"
            width="840" height="840">
     </div>
 
     <div>
-      <p class="eyebrow-cons">Regalos / Niños</p>
-      <h1 class="hero-cons__h">La consola que va a ser<br><em>el regalo favorito.</em></h1>
-      <p class="hero-cons__sub">520 juegos clásicos ya integrados, pantalla propia en el control estilo PS2 y batería recargable por USB. Se prende y se juega — sin wifi, sin cables, sin depender del celular.</p>
-      <div class="hero-cons__impact">
-        <span>🎮 520 Juegos incluidos</span>
-        <span>📺 Pantalla integrada</span>
-        <span>🔋 Recargable USB</span>
+      <p class="eyebrow-lamp">Hogar / Oficina</p>
+      <h1 class="hero-lamp__h">La lámpara que se adapta<br><em>a tu escritorio.</em></h1>
+      <p class="hero-lamp__sub">Flexible, con soporte de celular integrado y 3 tonos de luz que ajustás con un solo toque. Recargable — sin pilas, sin cables enredados.</p>
+      <div class="hero-lamp__impact">
+        <span>💡 3 Tonos de Luz</span>
+        <span>👆 Control Táctil</span>
+        <span>🔋 Batería Recargable</span>
       </div>
       <div class="price-block">
-        <span class="price-main">Gs. 159.000</span>
-        <span class="price-compare">Gs. 199.000</span>
-        <span class="price-badge">20% OFF</span>
+        <span class="price-main">Gs. 139.000</span>
+        <span class="price-compare">Gs. 179.000</span>
+        <span class="price-badge">22% OFF</span>
       </div>
-      <p class="hero-cons__proof">Ideal para el Día del Niño — stock limitado</p>
+      <p class="hero-lamp__proof">Ideal para estudiar, trabajar o leer hasta tarde</p>
 
       <!-- Combos externos — preselección visual, sin tracking ni eventos -->
       <div class="combo-preview" id="combo-preview">
         <div class="combo-preview-card combo-preview-card--active" data-offer="1">
           <div class="offer-content">
             <span class="offer-qty">1 unidad</span>
-            <span class="offer-price">Gs. 159.000</span>
+            <span class="offer-price">Gs. 139.000</span>
           </div>
         </div>
         <div class="combo-preview-card" data-offer="2">
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare">Gs. 318.000</span>
-              <span class="offer-price">Gs. 299.000</span>
+              <span class="offer-compare">Gs. 278.000</span>
+              <span class="offer-price">Gs. 259.000</span>
             </div>
           </div>
           <div class="offer-foot">
@@ -411,8 +410,8 @@
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare">Gs. 477.000</span>
-              <span class="offer-price">Gs. 429.000</span>
+              <span class="offer-compare">Gs. 417.000</span>
+              <span class="offer-price">Gs. 369.000</span>
             </div>
           </div>
           <div class="offer-foot">
@@ -436,62 +435,66 @@
   </div>
 </section>
 
-<!-- ══ PROBLEMA — fondo negro ══ -->
-<section class="problema-cons" id="section-problema" data-insync-section="problema">
-  <div class="problema-cons__inner">
-    <p class="sec-overline-cons">¿Te suena familiar?</p>
-    <h2 class="sec-h-cons">¿Todavía buscando el regalo perfecto?</h2>
-    <div class="pain-grid-cons" style="margin-top:44px">
-      <div class="pain-card-cons">
-        <div class="pain-card-cons__icon">📶</div>
-        <strong>Sin wifi necesario</strong>
-        <p>520 juegos ya integrados de fábrica — funciona en cualquier lado, sin internet.</p>
+<!-- ══ PROBLEMA — fondo navy oscuro ══ -->
+<section class="problema-lamp" id="section-problema" data-insync-section="problema">
+  <div class="problema-lamp__inner">
+    <p class="sec-overline-lamp">¿Te suena familiar?</p>
+    <h2 class="sec-h-lamp">¿Cansado de la luz mala de tu escritorio?</h2>
+    <div class="pain-grid-lamp" style="margin-top:44px">
+      <div class="pain-card-lamp">
+        <div class="pain-card-lamp__icon">👀</div>
+        <strong>Sin más vista cansada</strong>
+        <p>3 tonos de luz ajustables — elegís la intensidad justa y dejás de forzar la vista.</p>
       </div>
-      <div class="pain-card-cons">
-        <div class="pain-card-cons__icon">🔋</div>
-        <strong>No más recargas</strong>
-        <p>Batería propia recargable por USB — no depende del celular ni de pilas.</p>
+      <div class="pain-card-lamp">
+        <div class="pain-card-lamp__icon">🎚️</div>
+        <strong>Regulás la intensidad a tu gusto</strong>
+        <p>Control táctil con niveles de brillo — de suave para leer a intensa para trabajar.</p>
       </div>
-      <div class="pain-card-cons">
-        <div class="pain-card-cons__icon">⏱️</div>
-        <strong>Entretiene horas sin celular</strong>
-        <p>Menos pantalla de celular, más juego — ideal para viajes, visitas y tardes largas.</p>
+      <div class="pain-card-lamp">
+        <div class="pain-card-lamp__icon">🔌</div>
+        <strong>Sin cable siempre enredado</strong>
+        <p>Batería recargable de 1200mAh — la cargás y la usás donde quieras, sin cable fijo.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ══ PRODUCTO — fondo claro ══ -->
-<section class="producto-cons" id="section-producto" data-insync-section="producto">
-  <div class="producto-cons__inner">
-    <div class="producto-cons__head">
-      <p class="sec-overline-cons">Características</p>
-      <div class="line-cons"></div>
-      <h2 class="sec-h-cons">Todo lo que trae la consola.</h2>
+<section class="producto-lamp" id="section-producto" data-insync-section="producto">
+  <div class="producto-lamp__inner">
+    <div class="producto-lamp__head">
+      <p class="sec-overline-lamp">Características</p>
+      <div class="line-lamp"></div>
+      <h2 class="sec-h-lamp">Todo lo que trae la lámpara.</h2>
     </div>
 
-    <div class="bene-grid-cons">
-      <div class="bene-card-cons">
-        <strong>520 juegos clásicos <span style="font-size:1em">🎮</span></strong>
-        <p>Ya integrados de fábrica — nada para descargar ni configurar.</p>
+    <div class="bene-grid-lamp">
+      <div class="bene-card-lamp">
+        <strong>3 tonos de luz ajustables <span style="font-size:1em">💡</span></strong>
+        <p>Cálida, neutra o fría — elegís la intensidad justa para cada momento.</p>
       </div>
-      <div class="bene-card-cons">
-        <strong>Pantalla LCD integrada <span style="font-size:1em">📺</span></strong>
-        <p>El control tiene su propia pantalla — no necesita TV ni monitor.</p>
+      <div class="bene-card-lamp">
+        <strong>Control táctil <span style="font-size:1em">👆</span></strong>
+        <p>Un toque para cambiar de tono, sin botones ni interruptores duros.</p>
       </div>
-      <div class="bene-card-cons">
-        <strong>Batería recargable USB <span style="font-size:1em">🔋</span></strong>
-        <p>Se carga con el mismo cable de cualquier celular.</p>
+      <div class="bene-card-lamp">
+        <strong>Batería recargable 1200mAh <span style="font-size:1em">🔋</span></strong>
+        <p>Entrada DC 5V/1A · potencia 2.5W–10W — se carga con cualquier cargador USB.</p>
       </div>
     </div>
-    <div class="bene-grid-cons-2">
-      <div class="bene-card-cons">
-        <strong>Liviano y portátil <span style="font-size:1em">🎒</span></strong>
-        <p>Entra en cualquier mochila o cartera — para llevar a todos lados.</p>
+    <div class="bene-grid-lamp">
+      <div class="bene-card-lamp">
+        <strong>Flexible — se dobla y ajusta <span style="font-size:1em">➰</span></strong>
+        <p>Brazo flexible que apunta la luz exactamente donde la necesitás.</p>
       </div>
-      <div class="bene-card-cons">
-        <strong>Ideal para niños de 4 a 12 años <span style="font-size:1em">🧒</span></strong>
-        <p>Controles simples y juegos clásicos pensados para esa edad.</p>
+      <div class="bene-card-lamp">
+        <strong>Soporte de celular integrado <span style="font-size:1em">📱</span></strong>
+        <p>Apoyá el celular en la base mientras trabajás o mirás algo.</p>
+      </div>
+      <div class="bene-card-lamp">
+        <strong>Compacta para escritorio <span style="font-size:1em">📐</span></strong>
+        <p>Ocupa poco espacio — se pliega y guarda fácil cuando no la usás.</p>
       </div>
     </div>
 
@@ -504,26 +507,26 @@
 </section>
 
 <!-- ══ CONFIANZA — prueba social genérica (sin testimonios inventados) ══ -->
-<section class="confianza-cons" id="section-confianza" data-insync-section="confianza">
-  <div class="confianza-cons__inner">
-    <div class="confianza-cons__head">
-      <p class="sec-overline-cons">Por qué comprar en Dam Vertex</p>
-      <div class="line-cons"></div>
-      <h2 class="sec-h-cons">Pedidos activos en todo Paraguay.</h2>
+<section class="confianza-lamp" id="section-confianza" data-insync-section="confianza">
+  <div class="confianza-lamp__inner">
+    <div class="confianza-lamp__head">
+      <p class="sec-overline-lamp">Por qué comprar en Dam Vertex</p>
+      <div class="line-lamp"></div>
+      <h2 class="sec-h-lamp">Pedidos activos en todo Paraguay.</h2>
     </div>
-    <div class="confianza-grid-cons">
-      <div class="confianza-card-cons">
-        <div class="confianza-card-cons__icon">🚚</div>
+    <div class="confianza-grid-lamp">
+      <div class="confianza-card-lamp">
+        <div class="confianza-card-lamp__icon">🚚</div>
         <strong>Entrega en el día</strong>
         <p>Central y Asunción reciben el mismo día del pedido.</p>
       </div>
-      <div class="confianza-card-cons">
-        <div class="confianza-card-cons__icon">💳</div>
+      <div class="confianza-card-lamp">
+        <div class="confianza-card-lamp__icon">💳</div>
         <strong>Pago al recibir</strong>
         <p>Pagás cuando el pedido llega a tu puerta, sin adelantos en Central.</p>
       </div>
-      <div class="confianza-card-cons">
-        <div class="confianza-card-cons__icon">📍</div>
+      <div class="confianza-card-lamp">
+        <div class="confianza-card-lamp__icon">📍</div>
         <strong>Clientes en Central e Interior</strong>
         <p>Pedidos activos en todo el país, coordinados por WhatsApp.</p>
       </div>
@@ -531,23 +534,23 @@
   </div>
 </section>
 
-<!-- ══ URGENCIA — fondo verde oscuro, cierre ══ -->
-<section class="urgencia-cons" id="section-urgencia" data-insync-section="urgencia">
-  <div class="urgencia-cons__inner">
-    <div class="urgencia-cons__novedad">
-      <span class="urgencia-cons__dot"></span>
-      Día del Niño se acerca
+<!-- ══ URGENCIA — fondo navy oscuro, cierre ══ -->
+<section class="urgencia-lamp" id="section-urgencia" data-insync-section="urgencia">
+  <div class="urgencia-lamp__inner">
+    <div class="urgencia-lamp__badge">
+      <span class="urgencia-lamp__dot"></span>
+      Stock limitado
     </div>
-    <h2 class="urgencia-cons__h">Stock limitado.<br>Gs. 159.000. Hoy mismo.</h2>
-    <p class="urgencia-cons__sub">La Consola Retro 520 Juegos es de las más pedidas para el Día del Niño. Reservá la tuya antes de que se agote.</p>
+    <h2 class="urgencia-lamp__h">Iluminá tu escritorio.<br>Gs. 139.000. Hoy mismo.</h2>
+    <p class="urgencia-lamp__sub">La Lámpara de Escritorio Plegable es ideal para estudiar, trabajar o leer sin cansar la vista. Reservá la tuya antes de que se agote.</p>
 
-    <div class="stock-bar-cons">
-      <div class="stock-bar-cons__label">
+    <div class="stock-bar-lamp">
+      <div class="stock-bar-lamp__label">
         <span id="stock-bar-text">Quedan pocas unidades</span>
         <span id="stock-bar-pct"></span>
       </div>
-      <div class="stock-bar-cons__track">
-        <div class="stock-bar-cons__fill" id="stock-bar-fill"></div>
+      <div class="stock-bar-lamp__track">
+        <div class="stock-bar-lamp__fill" id="stock-bar-fill"></div>
       </div>
     </div>
 
@@ -563,12 +566,12 @@
 </section>
 
 <!-- ══ MODAL PEDIDO — estructura de rizador/taza (sin variantes, sin mapa) ══ -->
-<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-cons">
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-lamp">
   <div class="modal-box">
-    <p class="modal-urgency">⏳ Día del Niño · Stock limitado</p>
+    <p class="modal-urgency">⏳ Stock limitado</p>
     <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
-    <h2 class="modal-title" id="modal-title-cons">Ya casi es tuya 🎮</h2>
-    <p class="modal-step">Tu Consola Retro · Entrega en el día 🚚</p>
+    <h2 class="modal-title" id="modal-title-lamp">Ya casi es tuya 💡</h2>
+    <p class="modal-step">Tu Lámpara de Escritorio · Entrega en el día 🚚</p>
     <p class="modal-subtitle">Completá tus datos y te escribimos por WhatsApp en minutos para coordinar la entrega hoy mismo.</p>
 
     <!-- Ofertas -->
@@ -641,7 +644,7 @@
           <div class="city-suggestions" id="m-city-suggestions"></div>
         </div>
         <input type="hidden" id="m-location" name="location_search_legacy">
-        <div style="margin-top:2px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(10,10,10,.35);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
+        <div style="margin-top:2px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(26,26,46,.35);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
         <span class="form-error-msg"></span>
       </div>
       <input type="hidden" id="m-loc-address"  name="location_address">
@@ -657,7 +660,7 @@
       </div>
 
       <div class="form-group" id="city-group" style="display:none">
-        <label for="m-city-search" style="font-size:12px;color:rgba(10,10,10,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
+        <label for="m-city-search" style="font-size:12px;color:rgba(26,26,46,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
         <div class="city-picker-wrap">
           <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
           <div class="city-dropdown" id="m-city-dropdown"></div>
@@ -706,7 +709,7 @@
           <span class="form-error-msg"></span>
         </div>
         <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(10,10,10,.4)">(opcional)</span></label>
+          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(26,26,46,.4)">(opcional)</span></label>
           <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
         </div>
       </div>
@@ -905,11 +908,11 @@
 
 <script defer>
   const PRODUCT = {
-    name:  'Consola de Videojuegos Portátil Retro — 520 Juegos',
-    slug:  'consola-retro-520-juegos',
-    price: 159000,
+    name:  'Lámpara de Escritorio Plegable Recargable',
+    slug:  'lampara-escritorio-plegable',
+    price: 139000,
     /* Descuentos de combo fijos (no el 25%/35% estándar) — ver override en products.js */
-    comboPricing: { 2: 299000, 3: 429000 },
+    comboPricing: { 2: 259000, 3: 369000 },
     /* Sin variantes por ahora — un solo modelo. */
     /* Sin mapa real — el link de Maps usa coords aproximadas del depto, se omite del WhatsApp. */
     hideExactLocation: true,
