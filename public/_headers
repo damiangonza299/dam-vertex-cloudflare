@@ -38,3 +38,36 @@
 /favicon.ico
   ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
+
+# ── Rizador — imagen hero vive en la carpeta de la landing, no en /assets/img/
+#    (heredaba el no-store de /* de arriba) — cachear para siempre
+/rizador-automatico-giratorio/*.webp
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+
+# ── Imágenes .webp/.jpg/.png en cualquier ruta del sitio — cubre los heroes que
+#    viven en la carpeta de su propia landing (taza, luna-mini, lampara, etc.)
+#    en vez de /assets/img/, que si no heredan el no-store de /* de arriba.
+/*.webp
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.png
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+
+# ── Fuentes — cachear para siempre (preventiva, no hay .woff2 en uso todavía)
+/*.woff2
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+
+# ── API — nunca cachear, ni browser ni CDN edge. stock/leads deben ser
+#    siempre en tiempo real. Ya lo cubre el /* no-store de arriba — esta
+#    regla lo deja explícito para que no dependa de la herencia/orden.
+/api/*
+  ! Cache-Control
+  Cache-Control: no-store

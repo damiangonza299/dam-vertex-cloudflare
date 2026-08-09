@@ -279,6 +279,28 @@ Verifica wrangler.toml, ejecuta deploy correcto, prueba rutas automáticamente.
 
 ---
 
+## CACHÉ — importante
+
+`public/_headers` define `Cache-Control: public, max-age=31536000, immutable` (1 año) para:
+
+- `/assets/css/*.css`, `/assets/js/*.js`
+- `/*.webp`, `/*.jpg`, `/*.png` (cualquier ruta, incluye imágenes hero que viven dentro de la carpeta de su propia landing, ej. `/lampara-escritorio-plegable/hero-lampara.webp`)
+- `/*.woff2`
+- `/favicon.ico`
+
+El HTML (`/*`) y `/api/*` quedan siempre en `no-store` — nunca se cachean, ni en el browser ni en el edge de Cloudflare.
+
+**Regla obligatoria — romper caché al cambiar contenido:**
+
+Con `immutable` + 1 año, un archivo servido bajo estas reglas que cambia de contenido pero mantiene el mismo nombre/URL va a seguir sirviéndose viejo — cacheado en el browser del usuario y en el edge de Cloudflare — hasta por 1 año. Al modificar el contenido de un CSS, JS o imagen ya publicado:
+
+- Si el archivo se referencia con query string de versión (ej. `tracking.js?v=59`, `styles.min.css?v=55`) → bumpear el número (`?v=60`). Esto ya es la convención existente en todas las landings.
+- Si el archivo se referencia **sin** query string (ej. `hero-lampara.webp`, cualquier imagen hero nueva) → agregar `?v=2` a la referencia en el HTML, o cambiar el nombre del archivo. Nunca sobrescribir el archivo en el mismo path sin uno de los dos.
+
+No aplica a `/*` (HTML) ni `/api/*` — esos nunca se cachean, se sirven siempre frescos.
+
+---
+
 ## LANDINGS — REGLA CRÍTICA DE CREACIÓN
 
 ### Flujo obligatorio antes de escribir HTML
