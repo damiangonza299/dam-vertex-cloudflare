@@ -541,7 +541,10 @@ async function confirmPurchase(id) {
 
   const row  = document.querySelector(`tr[data-id="${id}"]`);
   const lead = allLeads.find(l => l.id === id);
+  const btn  = row?.querySelector('.btn-confirm');
+  const btnOriginalHTML = btn?.innerHTML;
   if (row) row.style.opacity = '.5';
+  if (btn) { btn.disabled = true; btn.textContent = 'Procesando...'; }
 
   try {
     /* Si el lead estaba cancelado, restaurar a pending primero */
@@ -567,10 +570,12 @@ async function confirmPurchase(id) {
     } else {
       alert('Error: ' + (data.error || 'desconocido'));
       if (row) row.style.opacity = '1';
+      if (btn) { btn.disabled = false; btn.innerHTML = btnOriginalHTML; }
     }
   } catch (_) {
     alert('Error de red');
     if (row) row.style.opacity = '1';
+    if (btn) { btn.disabled = false; btn.innerHTML = btnOriginalHTML; }
   }
 }
 

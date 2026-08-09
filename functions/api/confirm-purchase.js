@@ -158,6 +158,17 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     }
 
+    /* Claim atómico del lead — ANTES de mandar nada a Meta CAPI. Si dos requests
+       llegan casi simultáneas para el mismo id (doble click, retry de red), la
+       condición WHERE status != 'purchased' garantiza que solo una gana el UPDATE;
+       la otra ve changes=0 y aborta acá, sin disparar un segundo evento Purchase. */
+    const claim = await env.DB.prepare(
+      `UPDATE leads SET status = 'purchased', purchased_at = datetime('now') WHERE id = ? AND status != 'purchased'`
+    ).bind(id).run();
+    if (!claim.meta.changes) {
+      return json({ ok: false, error: 'Ya fue confirmado' }, 409);
+    }
+
     /* Preparar user_data hasheado */
     const user_data = {};
     if (lead.ip)         user_data.client_ip_address = lead.ip;
@@ -231,11 +242,6 @@ export async function onRequestPost({ request, env, waitUntil }) {
         console.log('PURCHASE_CAPI_OK lead_id=' + id, capiBody.events_received ?? '?');
       }
     }
-
-    /* Marcar como purchased */
-    await env.DB.prepare(
-      `UPDATE leads SET status = 'purchased', purchased_at = datetime('now') WHERE id = ?`
-    ).bind(id).run();
 
     /* Incrementar contador del panel PiP — KV, best-effort (no bloquea la confirmación) */
     if (env.COUNTER_KV && typeof waitUntil === 'function') {
@@ -492,13 +498,19 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     }
 
+    /* Venta Hipnótica (product_name='V.H') SÍ dispara webhook a Dam Finanzas (para que
+       aparezca en reportes/revenue — requiere el producto 'venta-hipnotica' ya registrado
+       ahí con unitCost:0 e isDigital:true). NO dispara factura por Telegram — pedido
+       explícito, se gestiona aparte en la sección V.H. */
+    const isVH = lead.product_name === 'V.H';
+
     const damNotifyPromise = notifyDamFinanzasSale(
       { lead, productSlug, saleQty, isCombo, requestedVariants, productRow, comboRelojRow, comboCadenaRow,
         extraSlug, extraVariant, extraQty, extraProductRow },
       env
     ).catch(e => console.warn('DAM_FINANZAS_NOTIFY_FAILED', String(lead.id), e?.message));
 
-    const tgInvoicePromise = (lead.invoice_requested && env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_INVOICE_CHAT_ID)
+    const tgInvoicePromise = (!isVH && lead.invoice_requested && env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_INVOICE_CHAT_ID)
       ? sendTelegramInvoice(lead, env).catch(e => console.warn('TG_INVOICE_WARN lead_id=' + lead.id, e?.message))
       : Promise.resolve();
 
