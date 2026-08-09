@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/lampara-escritorio-plegable/lampara-placeholder.svg" fetchpriority="high" type="image/svg+xml">
+  <link rel="preload" as="image" href="/lampara-escritorio-plegable/hero-lampara.webp" fetchpriority="high" type="image/webp">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
@@ -15,7 +15,7 @@
   <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
   <meta property="og:title" content="Lámpara de Escritorio Plegable Recargable — Dam Vertex" />
   <meta property="og:description" content="3 tonos de luz ajustables, control táctil, batería recargable 1200mAh y soporte de celular integrado. Entrega en el día en Paraguay." />
-  <meta property="og:image" content="/lampara-escritorio-plegable/lampara-placeholder.svg" />
+  <meta property="og:image" content="/lampara-escritorio-plegable/hero-lampara.webp" />
   <meta property="og:url" content="https://damvertex.com/lampara-escritorio-plegable/" />
   <meta property="og:type" content="website" />
   <script type="application/ld+json">
@@ -78,10 +78,16 @@
       --lamp-bg-dark:   #1a1a2e;
       --lamp-accent:    #f5c518;
       --lamp-accent2:   #e8a020;
+      /* --lamp-accent-dk: variante oscura de acento SOLO para texto sobre fondo
+         claro — --lamp-accent2 (#e8a020) da apenas 2.21:1 de contraste sobre
+         blanco (falla WCAG AA 4.5:1). #8a5a10 da ~5.9:1, pasa cómodo. Usar
+         --lamp-accent2 solo para fondos/bordes; texto siempre con esta. */
+      --lamp-accent-dk: #8a5a10;
       --lamp-light:     #fdf8f0;
       --lamp-text:      #1a1a2e;
       --lamp-text-dim:  rgba(26,26,46,.68);
-      --lamp-text-muted: rgba(26,26,46,.5);
+      /* .5 de opacidad daba 3.28:1 (falla 4.5:1 en texto normal) — .64 da ~5.1:1 */
+      --lamp-text-muted: rgba(26,26,46,.64);
       --lamp-border:    rgba(232,160,32,.22);
       --lamp-card:      #ffffff;
     }
@@ -90,7 +96,8 @@
     /* ── Nav ── */
     .theme-lampara .nav { background: rgba(255,255,255,.92); border-bottom: 1px solid var(--lamp-border); backdrop-filter: blur(12px); }
     .theme-lampara .nav__logo { color: var(--lamp-text); }
-    .theme-lampara .nav__logo span { opacity: .45; }
+    /* .45 daba 2.86:1 sobre fondo blanco (falla 4.5:1) — .65 pasa ~5.3:1 */
+    .theme-lampara .nav__logo span { opacity: .65; }
     .theme-lampara .nav__cta {
       background: var(--lamp-accent); color: var(--lamp-bg-dark);
       font-size: clamp(9px, 2.4vw, 12px); white-space: nowrap; gap: 5px; padding: 8px 12px;
@@ -102,7 +109,7 @@
     }
 
     /* ── Footer ── */
-    .theme-lampara .footer { color: rgba(26,26,46,.45); border-top: 1px solid var(--lamp-border); }
+    .theme-lampara .footer { color: rgba(26,26,46,.64); border-top: 1px solid var(--lamp-border); }
 
     /* ── Botón primario — texto oscuro sobre fondo amarillo (contraste) ── */
     .theme-lampara .btn-primary,
@@ -123,14 +130,14 @@
     .hero-lamp__media { max-width: 420px; margin: 0 auto; width: 100%; }
     .hero-lamp__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; background: var(--lamp-bg-dark); }
 
-    .eyebrow-lamp { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--lamp-accent2); margin: 0 0 12px; }
+    .eyebrow-lamp { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--lamp-accent-dk); margin: 0 0 12px; }
     .hero-lamp__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--lamp-text); margin: 0 0 12px; }
-    .hero-lamp__h em { font-style: normal; color: var(--lamp-accent2); }
+    .hero-lamp__h em { font-style: normal; color: var(--lamp-accent-dk); }
     .hero-lamp__sub { font-size: clamp(14px,2vw,16px); color: var(--lamp-text-dim); line-height: 1.65; margin: 0 0 18px; }
 
-    .hero-lamp__impact { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 16px; }
+    .hero-lamp__impact { display: flex; flex-wrap: nowrap; gap: 5px; margin: 0 0 16px; }
     .hero-lamp__impact span {
-      font-size: clamp(8px, 2.4vw, 10.5px); font-weight: 700; color: var(--lamp-accent2); letter-spacing: -.01em;
+      font-size: clamp(8px, 2.4vw, 10.5px); font-weight: 700; color: var(--lamp-accent-dk); letter-spacing: -.01em;
       background: #fff; border: 1px solid rgba(232,160,32,.35);
       border-radius: 20px; padding: 3px 6px; white-space: nowrap;
       flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis;
@@ -138,9 +145,9 @@
 
     .hero-lamp .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
     .hero-lamp .price-main    { color: var(--lamp-text); font-size: clamp(18px,3vw,22px); }
-    .hero-lamp .price-compare { color: rgba(26,26,46,.4); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
+    .hero-lamp .price-compare { color: rgba(26,26,46,.64); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
     .hero-lamp .price-badge   { background: var(--lamp-accent); color: var(--lamp-bg-dark); border: none; }
-    .hero-lamp__proof { font-size: 13px; font-weight: 600; color: var(--lamp-accent2); margin: 0 0 18px; }
+    .hero-lamp__proof { font-size: 13px; font-weight: 600; color: var(--lamp-accent-dk); margin: 0 0 18px; }
 
     /* ── Combos externos (preselección visual, sin tracking) ── */
     .combo-preview { display: flex; flex-direction: column; gap: 8px; margin: 0 0 18px; }
@@ -151,17 +158,19 @@
     }
     .combo-preview-card .offer-qty  { color: var(--lamp-text); font-size: 15px; font-weight: 600; }
     .combo-preview-card .offer-price { color: var(--lamp-text); font-weight: 700; }
-    .combo-preview-card .offer-compare { color: rgba(26,26,46,.4); font-size: 13px; text-decoration: line-through; }
+    .combo-preview-card .offer-compare { color: rgba(26,26,46,.64); font-size: 13px; text-decoration: line-through; }
     .combo-preview-card .offer-saving { color: #166534; font-size: 12px; font-weight: 600; }
     .combo-preview-card.combo-preview-card--active { border-color: var(--lamp-accent2); background: rgba(232,160,32,.08); }
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
     .offer-foot .offer-saving { margin-top: 0; }
     .combo-preview-card .offer-badge { position: static; background: var(--lamp-accent); color: var(--lamp-bg-dark); }
-    .combo-preview-card .offer-badge--best { background: var(--lamp-accent2); color: #fff; }
+    /* Verde fijo — misma convención que rizador/taza/luna-mini: "Mayor ahorro"
+       siempre en verde independientemente del acento de la landing. */
+    .combo-preview-card .offer-badge--best { background: #1a7a3e; color: #fff; }
 
     .hero-lamp .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
     .hero-lamp .db-badge { font-size: 11px; color: var(--lamp-text); padding: 5px 10px; border-radius: 20px; background: rgba(232,160,32,.08); border: 1px solid rgba(232,160,32,.3); }
-    .hero-lamp .db-badge.db-green { background: rgba(232,160,32,.16); border-color: rgba(232,160,32,.45); color: var(--lamp-accent2); }
+    .hero-lamp .db-badge.db-green { background: rgba(232,160,32,.16); border-color: rgba(232,160,32,.45); color: var(--lamp-accent-dk); }
 
     /* ══ SECCIÓN — línea decorativa / overline compartidos ══ */
     .sec-overline-lamp { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 14px; }
@@ -186,7 +195,7 @@
     .producto-lamp { background: var(--lamp-light); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); }
     .producto-lamp__inner { max-width: 1000px; margin: 0 auto; }
     .producto-lamp__head { text-align: center; margin-bottom: 44px; }
-    .producto-lamp .sec-overline-lamp { color: var(--lamp-accent2); text-align: center; }
+    .producto-lamp .sec-overline-lamp { color: var(--lamp-accent-dk); text-align: center; }
     .producto-lamp .sec-h-lamp { color: var(--lamp-text); }
     .bene-grid-lamp { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--lamp-border); border-radius: 10px 10px 0 0; overflow: hidden; }
     .bene-grid-lamp + .bene-grid-lamp { border-radius: 0 0 10px 10px; margin-top: 1px; }
@@ -198,7 +207,7 @@
     .confianza-lamp { background: #ffffff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--lamp-border); }
     .confianza-lamp__inner { max-width: 900px; margin: 0 auto; }
     .confianza-lamp__head { text-align: center; margin-bottom: 40px; }
-    .confianza-lamp .sec-overline-lamp { color: var(--lamp-accent2); text-align: center; }
+    .confianza-lamp .sec-overline-lamp { color: var(--lamp-accent-dk); text-align: center; }
     .confianza-lamp .sec-h-lamp { color: var(--lamp-text); }
     .confianza-grid-lamp { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
     .confianza-card-lamp { text-align: center; padding: 24px 18px; border-radius: 12px; background: var(--lamp-light); border: 1px solid var(--lamp-border); }
@@ -256,12 +265,14 @@
     .theme-lampara .offer-option { background: #fff; border-color: rgba(232,160,32,.2); }
     .theme-lampara .offer-option .offer-qty,
     .theme-lampara .offer-option .offer-price { color: var(--lamp-text); }
-    .theme-lampara .offer-option .offer-compare { color: rgba(26,26,46,.4); }
+    .theme-lampara .offer-option .offer-compare { color: rgba(26,26,46,.64); }
     .theme-lampara .offer-option.selected,
     .theme-lampara .offer-option:has(input:checked) { border-color: var(--lamp-accent2); background: rgba(232,160,32,.08); }
     .theme-lampara .offer-saving { display: block; margin-top: 6px; color: #166534; font-size: 12px; font-weight: 600; }
     .theme-lampara .offer-badge { position: static; background: var(--lamp-accent); color: var(--lamp-bg-dark); }
-    .theme-lampara .offer-badge--best { position: static; background: var(--lamp-accent2); color: #fff; }
+    /* Verde fijo — misma convención que rizador/taza/luna-mini: "Mayor ahorro"
+       siempre en verde independientemente del acento de la landing. */
+    .theme-lampara .offer-badge--best { position: static; background: #1a7a3e; color: #fff; }
 
     .theme-lampara .form-group label { color: var(--lamp-text); }
     .theme-lampara .form-group input,
@@ -323,7 +334,7 @@
     .city-suggestions__item + .city-suggestions__item { border-top: 1px solid rgba(0,0,0,0.08) !important; }
     .city-suggestions__item:hover,
     .city-suggestions__item:focus,
-    .city-suggestions__item.touch-active { background-color: var(--lamp-accent2) !important; color: #ffffff !important; }
+    .city-suggestions__item.touch-active { background-color: var(--lamp-accent-dk) !important; color: #ffffff !important; }
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
@@ -360,13 +371,20 @@
   <div class="hero-lamp__inner">
 
     <div class="hero-lamp__media">
-      <!-- PLACEHOLDER — reemplazar por foto real del producto antes de correr tráfico pago -->
-      <img src="/lampara-escritorio-plegable/lampara-placeholder.svg"
+      <!-- Foto real del producto — hero-lampara.webp (1080x1080, calidad 82, generada desde
+           public/assets/img/cables1080.jpg). Sin srcset 2x: la fuente original es 1254x1254
+           (solo ~16% más grande que 1080), insuficiente para un 2x real sin upscaling
+           artificial; a los 420px de ancho máximo del slot, este archivo de 1080px ya
+           cubre ~2.5x de densidad de píxel, así que un "2x" fabricado solo agregaría
+           peso sin detalle real. Si en el futuro se consigue una foto fuente de mayor
+           resolución, ahí sí vale agregar srcset con una variante @2x genuina. -->
+      <img src="/lampara-escritorio-plegable/hero-lampara.webp"
            alt="Lámpara de Escritorio Plegable Recargable"
            class="hero-lamp__img"
            loading="eager"
            fetchpriority="high"
-           width="840" height="840">
+           decoding="async"
+           width="1080" height="1080">
     </div>
 
     <div>
@@ -709,7 +727,7 @@
           <span class="form-error-msg"></span>
         </div>
         <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(26,26,46,.4)">(opcional)</span></label>
+          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(26,26,46,.64)">(opcional)</span></label>
           <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
         </div>
       </div>
