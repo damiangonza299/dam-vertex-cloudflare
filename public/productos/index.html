@@ -93,12 +93,11 @@ var DV_CARD_IMAGES = {
   'luna-mini-vibrador-bala-recargable': '/assets/img/segundaimagenlanding.webp',
   'rizador-automatico-giratorio': '/rizador-automatico-giratorio/rizador-principal.webp',
   'taza-mezcladora-automatica':   '/assets/img/batidora-landing.webp',
-  'lampara-escritorio-plegable':  '/lampara-escritorio-plegable/lampara-card.webp',
 };
 var DV_CARD_IMG_STYLE = {
   'lentes': 'object-position:right center',
-  'rizador-automatico-giratorio': 'object-position:-20px top',
-  'taza-mezcladora-automatica':   'object-fit:contain;width:100%;height:100%',
+  'rizador-automatico-giratorio': 'object-position:left top',
+  'taza-mezcladora-automatica':   'object-position:left top',
 };
 var DV_CARD_DIMS = {
   'reloj':   'width="1024" height="1118"',
@@ -108,7 +107,6 @@ var DV_CARD_DIMS = {
   'luna-mini-vibrador-bala-recargable': 'width="600" height="600"',
   'rizador-automatico-giratorio': 'width="1200" height="1200"',
   'taza-mezcladora-automatica':   'width="840"  height="748"',
-  'lampara-escritorio-plegable':  'width="400"  height="400"',
 };
 var DV_CARD_BTN = {
   'reloj': 'Ver colección →',
@@ -122,7 +120,7 @@ var DV_CARD_PRICES = {
   'luna-mini-vibrador-bala-recargable': { price: 229000, compare: 330000 },
 };
 /* ── Orden visual de productos ── */
-var DV_SLUG_ORDER = ['reloj', 'cadena', 'reloj-imperial-verde', 'luna-mini-vibrador-bala-recargable', 'lentes', 'cepillo'];
+var DV_SLUG_ORDER = ['reloj', 'cadena', 'reloj-imperial-verde', 'cepillo', 'lentes', 'luna-mini-vibrador-bala-recargable'];
 
 function buildCardHtml(p) {
   var fb       = DV_CARD_PRICES[p.slug] || {};
