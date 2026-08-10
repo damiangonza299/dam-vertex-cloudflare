@@ -5,8 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="description" content="Todos los productos DAM VERTEX. Envío gratis en el día en Paraguay.">
   <title>Productos — DAM VERTEX</title>
+  <style>
+    /* ══ CRÍTICO ABOVE-THE-FOLD ══ — extraído de styles.min.css. Necesario porque el
+       CSS externo ahora carga async (media=print swap, ver Fix 3 de rendimiento) y esta
+       página no tenía bloque crítico propio — sin esto el layout salta (CLS) cuando el
+       CSS completo termina de cargar. */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: #000; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #3b82f6; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius: 12px; --radius-sm: 6px; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(0,0,0,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .catalog-header { padding: clamp(40px,7vw,64px) clamp(20px,5vw,48px) clamp(20px,4vw,28px); text-align: center; background: #000; }
+    .catalog-header__title { font-size: clamp(26px,5vw,40px); font-weight: 800; color: #fff; letter-spacing: -.02em; margin-bottom: 10px; }
+    .catalog-header__sub { font-size: 14px; color: var(--muted); max-width: 380px; margin: 0 auto 22px; line-height: 1.6; }
+    .trust-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; padding: clamp(8px, 1.2vw, 16px) clamp(20px, 5vw, 48px) clamp(48px, 8vw, 80px); }
+    .product-card { background: #111; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .product-card__img { width: 100%; height: auto; aspect-ratio: 4/5; object-fit: cover; object-position: center top; background: #1a1a1a; }
+    .product-card__body { padding: 18px; }
+    .product-card__name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 7px; line-height: 1.3; }
+  </style>
   <script src="/assets/js/site-version.js?v=60"></script>
-  <script>document.write('<link rel="stylesheet" href="/assets/css/styles.min.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
+  <script>
+    (function() {
+      var l = document.createElement('link');
+      l.rel   = 'stylesheet';
+      l.href  = '/assets/css/styles.min.css?v=' + window.DAM_VERTEX_VERSION;
+      l.media = 'print';
+      l.onload = function() { l.media = 'all'; };
+      document.head.appendChild(l);
+    })();
+  </script>
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=60"></noscript>
+  <style>
+    /* Accesibilidad — corrige contraste WCAG AA insuficiente en clases compartidas de
+       styles.css (mismas fallas que en el home, en las clases que esta página sí usa:
+       nav__logo, nav__cta/product-card__btn vía --accent, footer). Override scoped a
+       esta página únicamente (no se toca el archivo compartido). */
+    :root { --accent: #1d4ed8; }
+    .nav__logo span { opacity: .65; }
+    .footer { color: rgba(255,255,255,.6); }
+  </style>
 </head>
 <body>
 
@@ -30,17 +72,17 @@
 <div class="products-grid" id="products-grid">
   <!-- Fallback estático (reemplazado por JS si el API responde) -->
   <a href="/reloj/" class="product-card" style="display:block;color:inherit">
-    <img src="/assets/img/reloj-black-caracteristicas.webp" alt="Reloj Blackout Minimal" class="product-card__img" width="1024" height="1118" loading="eager">
+    <img src="/assets/img/reloj-black-caracteristicas.webp" srcset="/assets/img/reloj-black-caracteristicas-400w.webp 400w, /assets/img/reloj-black-caracteristicas.webp 800w" sizes="(max-width: 600px) 400px, 800px" alt="Reloj Blackout Minimal" class="product-card__img" width="1024" height="1118" loading="eager">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Reloj Blackout Minimal</div>
       <div class="product-card__price">Gs. 189.000 <small>Gs. 250.000</small></div>
-      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:-7px;margin-bottom:9px">6 modelos disponibles</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:-7px;margin-bottom:9px">6 modelos disponibles</div>
       <span class="product-card__btn">Ver colección →</span>
     </div>
   </a>
   <a href="/cadena/" class="product-card" style="display:block;color:inherit">
-    <img src="/assets/img/cadena-hero.webp" alt="Cadena Apex" class="product-card__img" width="700" height="875" loading="eager">
+    <img src="/assets/img/cadena-hero.webp" srcset="/assets/img/cadena-hero-400w.webp 400w, /assets/img/cadena-hero.webp 800w" sizes="(max-width: 600px) 400px, 800px" alt="Cadena Apex" class="product-card__img" width="700" height="875" loading="eager">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Cadena Apex</div>
@@ -60,7 +102,7 @@
     </div>
   </a>
   <a href="/cepillo/" class="product-card" style="display:block;color:inherit">
-    <img src="/assets/img/cepillo-card.webp" alt="Cepillo Eléctrico Recargable" class="product-card__img" width="600" height="1066" loading="eager">
+    <img src="/assets/img/cepillo-card.webp" srcset="/assets/img/cepillo-card-400w.webp 400w, /assets/img/cepillo-card.webp 800w" sizes="(max-width: 600px) 400px, 800px" alt="Cepillo Eléctrico Recargable" class="product-card__img" width="600" height="1066" loading="eager">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Cepillo Eléctrico Recargable (4 Cabezales)</div>
@@ -69,7 +111,7 @@
     </div>
   </a>
   <a href="/lentes/" class="product-card" style="display:block;color:inherit">
-    <img src="/assets/img/lentes-card.webp" alt="Lentes Anti Luz Azul Rojos" class="product-card__img" style="object-position:right center" width="600" height="900" loading="eager">
+    <img src="/assets/img/lentes-card.webp" srcset="/assets/img/lentes-card-400w.webp 400w, /assets/img/lentes-card.webp 800w" sizes="(max-width: 600px) 400px, 800px" alt="Lentes Anti Luz Azul Rojos" class="product-card__img" style="object-position:right center" width="600" height="900" loading="eager">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Lentes Anti Luz Azul Rojos</div>
@@ -99,6 +141,16 @@ var DV_CARD_IMG_STYLE = {
   'lentes': 'object-position:right center',
   'taza-mezcladora-automatica': 'object-fit:contain;max-height:80%;width:auto',
 };
+/* srcset — solo para imágenes cuyo ancho real supera el ancho mostrado en la card
+   (~400px); taza/lampara/rizador ya vienen a 400px de origen, no necesitan variante. */
+var DV_CARD_SRCSET = {
+  'reloj':   '/assets/img/reloj-black-caracteristicas-400w.webp 400w, /assets/img/reloj-black-caracteristicas.webp 800w',
+  'cadena':  '/assets/img/cadena-hero-400w.webp 400w, /assets/img/cadena-hero.webp 800w',
+  'cepillo': '/assets/img/cepillo-card-400w.webp 400w, /assets/img/cepillo-card.webp 800w',
+  'lentes':  '/assets/img/lentes-card-400w.webp 400w, /assets/img/lentes-card.webp 800w',
+  'luna-mini-vibrador-bala-recargable': '/assets/img/segundaimagenlanding-400w.webp 400w, /assets/img/segundaimagenlanding.webp 800w',
+};
+var DV_CARD_SIZES = '(max-width: 600px) 400px, 800px';
 var DV_CARD_DIMS = {
   'reloj':   'width="1024" height="1118"',
   'cadena':  'width="700"  height="875"',
@@ -133,10 +185,12 @@ function buildCardHtml(p) {
   var imgUrl   = DV_CARD_IMAGES[p.slug];
   var imgStyle = DV_CARD_IMG_STYLE[p.slug] || '';
   var imgDims  = DV_CARD_DIMS[p.slug] || '';
+  var imgSrcset = DV_CARD_SRCSET[p.slug] || '';
   var btnText  = DV_CARD_BTN[p.slug] || 'Ver producto →';
   var imgHtml  = imgUrl
     ? '<img src="' + imgUrl + '" alt="' + p.name + '" class="product-card__img"' +
       (imgDims ? ' ' + imgDims : '') +
+      (imgSrcset ? ' srcset="' + imgSrcset + '" sizes="' + DV_CARD_SIZES + '"' : '') +
       (imgStyle ? ' style="' + imgStyle + '"' : '') + ' loading="eager">'
     : '<div class="product-card__img" style="background:linear-gradient(145deg,#1a1a2e,#16213e);' +
       'display:flex;align-items:center;justify-content:center">' +
