@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
-  <link rel="preload" href="/assets/js/tracking.js?v=59" as="script">
+  <link rel="preload" href="/assets/js/tracking.js?v=61" as="script">
   <meta name="description" content="Rizador Automático Giratorio — rulos y ondas de peluquería sin técnica ni riesgo de quemarte. Entrega en el día en Paraguay. Gs. 189.000.">
   <title>Rizador Automático Giratorio — Belleza / Cabello — Dam Vertex</title>
   <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
@@ -284,7 +284,9 @@
     .theme-rizador .modal-title { color: var(--riz-text); }
     .theme-rizador .modal-subtitle { color: rgba(26,26,26,.65); }
     .theme-rizador .modal-section-label { color: rgba(26,26,26,.55); }
-    .theme-rizador .modal-urgency { background: rgba(255,47,109,.1); border-color: rgba(255,47,109,.3); color: var(--riz-pink-dk); }
+    /* Contraste era 4.82:1 (al límite de WCAG AA 4.5:1, se leía "lavado") — bg más
+       saturado + texto más oscuro que --riz-pink-dk sube a ~6.97:1. */
+    .theme-rizador .modal-urgency { background: rgba(255,47,109,.16); border-color: rgba(255,47,109,.3); color: #8a0e40; }
     .theme-rizador .modal-close { background: rgba(255,47,109,.12); color: var(--riz-text); }
     .theme-rizador .modal-price-warning { color: #b45309; }
 
@@ -408,7 +410,7 @@
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rizador%20Autom%C3%A1tico%20Giratorio.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
 </nav>
 
 <main>
@@ -494,9 +496,9 @@
         <span class="color-select-riz__error" id="color-select-riz-error">Elegí un color antes de continuar.</span>
       </div>
 
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rizador%20Autom%C3%A1tico%20Giratorio.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
         LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </button>
+      </a>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
         <span class="db-badge db-green">✓ Envío gratis</span>
@@ -545,9 +547,9 @@
     </div>
 
     <div style="text-align:center;margin-top:40px">
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="demo" style="display:inline-flex;max-width:340px">
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="demo" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rizador%20Autom%C3%A1tico%20Giratorio.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
         LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </button>
+      </a>
     </div>
   </div>
 </section>
@@ -615,9 +617,9 @@
     </div>
 
     <div style="text-align:center;margin-top:40px">
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="beneficios" style="display:inline-flex;max-width:340px">
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="beneficios" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rizador%20Autom%C3%A1tico%20Giratorio.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
         LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </button>
+      </a>
     </div>
   </div>
 </section>
@@ -634,9 +636,9 @@
       <p class="specs-line-riz">Plástico ABS + cerámica · 30cm · menos de 500g</p>
 
       <div style="margin-top:28px">
-        <button class="btn btn-primary" data-scroll-form data-insync-cta="especificaciones" style="display:inline-flex;max-width:340px">
+        <a class="btn btn-primary" data-scroll-form data-insync-cta="especificaciones" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rizador%20Autom%C3%A1tico%20Giratorio.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
           LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-        </button>
+        </a>
       </div>
     </div>
   </div>
@@ -675,9 +677,9 @@
     </div>
     <h2 class="cierre-riz__h">Rulos de peluquería.<br>Gs. 189.000. Hoy mismo.</h2>
     <p class="cierre-riz__sub">Rizador Automático Giratorio — gira solo, no quema los dedos y da resultado profesional desde la primera vez. Entrega en el día mientras haya stock.</p>
-    <button class="btn btn-primary" data-scroll-form data-insync-cta="cierre" style="display:inline-flex;max-width:380px">
+    <a class="btn btn-primary" data-scroll-form data-insync-cta="cierre" style="display:inline-flex;max-width:380px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rizador%20Autom%C3%A1tico%20Giratorio.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
       LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-    </button>
+    </a>
     <div class="close-trust">
       <div class="ct-item"><span class="ct-ok">✓</span><span>Entrega en el día · Central</span></div>
       <div class="ct-item"><span class="ct-ok">✓</span><span>Pagás cuando lo recibís · Central</span></div>
@@ -881,8 +883,8 @@
 </footer>
 
 <!-- Scripts -->
-<script src="/assets/js/tracking.js?v=59" defer></script>
-<script src="/assets/js/products.js?v=59" defer></script>
+<script src="/assets/js/tracking.js?v=61" defer></script>
+<script src="/assets/js/products.js?v=61" defer></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
 
 <script defer>
@@ -1145,8 +1147,12 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    DV.trackViewContent(PRODUCT);
-    DV.initForm(PRODUCT);
+    /* Blindaje CTA: si tracking.js o products.js fallan en cargar (WiFi restrictivo,
+       firewall corporativo), cada try/catch aislado evita que un script roto tumbe al
+       otro. El botón igual funciona por el href de WhatsApp hardcodeado — ver
+       CLAUDE.md "CTA — BLINDADO CONTRA FALLOS DE RED". */
+    try { DV.trackViewContent(PRODUCT); } catch (_) {}
+    try { DV.initForm(PRODUCT); } catch (_) {}
 
     document.querySelectorAll('.color-swatch-riz').forEach(function(btn) {
       btn.addEventListener('click', function() { selectColor(btn.dataset.color); });
@@ -1211,9 +1217,9 @@
 
 <!-- CRO: Sticky bottom CTA — mobile only -->
 <div class="sticky-cta-bar" id="sticky-cta-bar">
-  <button class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;white-space:nowrap;font-size:clamp(12px,3.6vw,15px);padding:12px 10px">
+  <a class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;white-space:nowrap;font-size:clamp(12px,3.6vw,15px);padding:12px 10px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rizador%20Autom%C3%A1tico%20Giratorio.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
     LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-  </button>
+  </a>
 </div>
 
 <script src="/assets/js/protect.js?v=68" defer></script>

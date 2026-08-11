@@ -427,6 +427,57 @@ Después de aplicar el fix, confirmar que el Pixel (`ViewContent`) y el CAPI (`/
 
 ---
 
+## CTA — BLINDADO CONTRA FALLOS DE RED
+
+> **Incidente 2026-08:** el botón "LO QUIERO - PEDIR POR WHATSAPP" no respondía en algunas redes WiFi (firewall corporativo, WiFi público restrictivo, filtros DNS) pero sí funcionaba con datos móviles.
+
+### Causa exacta
+
+Los botones `[data-scroll-form]` no tenían `href` ni `onclick` nativo — dependían 100% de JS externo:
+
+1. `tracking.js` y `products.js` cargan con `defer`. Si cualquiera de los dos falla en cargar (bloqueado, timeout), `window.DV` queda incompleto o indefinido.
+2. El handler `DOMContentLoaded` de cada landing ejecutaba, sin try/catch: `DV.trackViewContent(PRODUCT); DV.initForm(PRODUCT);` — si la primera línea lanza excepción (`DV` o `DV.trackViewContent` no existe), la segunda línea **nunca se alcanza**.
+3. `DV.initForm` es la única función que hace `addEventListener('click', ...)` sobre los botones (`products.js`). Si nunca corre, ningún botón de la página tiene handler — sin error visible, simplemente no responde.
+4. El botón del nav era `<a href="#">` (navegación nula sin JS); el resto eran `<button>` sin ningún comportamiento nativo.
+
+Con datos móviles el request a Cloudflare pasa directo; en WiFi restrictivo el script se bloquea o cuelga y el botón queda mudo. El fetch a `/api/product-stock` (chequeo de stock) **no es la causa** — es async con `.catch(()=>{})`, no bloquea el `addEventListener`, que ya corrió antes de que esa promesa se resuelva.
+
+### El fix — obligatorio en toda landing nueva
+
+**1. Todo `[data-scroll-form]` debe tener `href` real de WhatsApp como fallback** (nunca `href="#"`, nunca un `<button>` sin comportamiento nativo — usar `<a>` con la clase `.btn`/`.btn-primary`, que ya se ve idéntica a un `<button>`):
+
+```html
+<a class="btn btn-primary" data-scroll-form data-insync-cta="hero"
+   href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20{Producto}.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+  LO QUIERO - PEDIR POR WHATSAPP
+</a>
+```
+
+Cuando `products.js` carga bien, su `addEventListener` sigue llamando `e.preventDefault()` y abre el modal normalmente — el `href` real solo actúa como red de seguridad cuando el listener nunca se adjuntó.
+
+**2. El `DOMContentLoaded` de cada landing debe aislar cada llamada a `DV.*` en su propio try/catch:**
+
+```js
+document.addEventListener('DOMContentLoaded', () => {
+  try { DV.trackViewContent(PRODUCT); } catch (_) {}
+  try { DV.initForm(PRODUCT); } catch (_) {}
+  ...
+});
+```
+
+Así, si `tracking.js` falla, `products.js` (si sí cargó) igual se ejecuta e inicializa el modal — un script roto no debe tumbar al resto.
+
+### Prohibido
+
+- `<button data-scroll-form>` sin `<a href>` de respaldo.
+- `href="#"` en el CTA del nav — debe ser el link real de WhatsApp.
+- Encadenar llamadas a `DV.*` sin try/catch en `DOMContentLoaded` — una excepción en la primera línea mata todas las siguientes.
+- Confundir esto con un problema de `/api/product-stock` — ese fetch ya es async y no bloqueante, no es la causa de un botón mudo.
+
+Referencia: `public/rizador-automatico-giratorio/index.html`, `public/taza-mezcladora-automatica/index.html`, `public/lampara-escritorio-plegable/index.html`.
+
+---
+
 ## PROTECCIÓN DE CONTENIDO EN LANDINGS
 
 Toda landing nueva debe incluir `<script src='/assets/js/protect.js?v=VERSION'></script>` antes de `</body>` (bumpear `VERSION` junto con `site-version.js`).

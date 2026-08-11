@@ -463,6 +463,16 @@ InSync usa `section[id]` para medir `section_view`, `section_time` y atribución
 
 ---
 
+## CTA DE WHATSAPP — Regla obligatoria en nuevas landings
+
+**Regla completa:** sección "CTA — BLINDADO CONTRA FALLOS DE RED" en `CLAUDE.md`.
+
+Todo botón `[data-scroll-form]` debe tener `href` real de WhatsApp hardcodeado como fallback (nunca `href="#"`, nunca un `<button>` sin `<a>` de respaldo) y el `DOMContentLoaded` debe aislar cada llamada `DV.*` en su propio try/catch. Sin esto, si `tracking.js` o `products.js` fallan en cargar (WiFi restrictivo, firewall corporativo), el botón queda completamente mudo — incidente real detectado 2026-08.
+
+**PROHIBIDO hacer deploy de una landing nueva sin este blindaje en el CTA.**
+
+---
+
 ## Prioridades del proyecto
 
 - Conversión de la landing

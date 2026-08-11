@@ -101,7 +101,7 @@ Referencia: `AI_SYSTEM/skills/lighthouse-geo-standards.md`
 ### Scripts de terceros — reglas obligatorias
 
 - **Google Maps / location-picker:** SIEMPRE lazy inject on user interaction (focus/click en el input). NUNCA preload, NUNCA dns-prefetch a maps.googleapis.com. Ver patrón en `lighthouse-geo-standards.md` ERROR 2.
-- **products.js:** SIEMPRE con `defer` al final del body, NUNCA con `<link rel="preload">` en head. Si el script contiene funciones llamadas en `DOMContentLoaded`, usar `defer` garantiza que esté disponible — el inject dinámico (async) NO lo garantiza.
+- **products.js:** SIEMPRE con `defer` al final del body, NUNCA con `<link rel="preload">` en head. Si el script contiene funciones llamadas en `DOMContentLoaded`, usar `defer` garantiza que esté disponible **si el script llega a cargar** — pero `defer` NO protege contra que el archivo falle en cargar (WiFi restrictivo, firewall corporativo, timeout). Ver "CTA — BLINDADO CONTRA FALLOS DE RED" en `CLAUDE.md`: el CTA de WhatsApp SIEMPRE necesita `href` real como fallback + cada llamada a `DV.*` en `DOMContentLoaded` en su propio try/catch, para que un script bloqueado no deje el botón mudo.
 - **Cualquier script >50KB:** evaluar si puede ser lazy. Si no es crítico para el LCP, no va en el critical path.
 - **Regla de oro:** `<link rel="preload">` solo para el hero image y el CSS principal. Nada más.
 
@@ -119,6 +119,8 @@ Referencia: `AI_SYSTEM/skills/lighthouse-geo-standards.md`
 - [ ] `styles.min.css` referenciado (no `styles.css` sin minificar)
 - [ ] QualifiedLead: NO tocar `functions/api/leads.js` sin autorización explícita
 - [ ] tracking.js: NO agregar eventos sin verificar deduplicación por `eventID`
+- [ ] Todo `[data-scroll-form]` tiene `href` real de WhatsApp como fallback (nunca `href="#"`, nunca `<button>` sin `<a>` de respaldo) — ver "CTA — BLINDADO CONTRA FALLOS DE RED" en `CLAUDE.md`
+- [ ] `DOMContentLoaded` aísla cada llamada `DV.*` en su propio try/catch
 
 ---
 
