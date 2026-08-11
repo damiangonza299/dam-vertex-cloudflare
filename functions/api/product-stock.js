@@ -5,7 +5,8 @@
    PATCH             → admin   — actualizar stock
    ========================================================= */
 
-import { verifyAdminToken } from '../_lib/adminAuth.js';
+import { verifyAdminToken }    from '../_lib/adminAuth.js';
+import { autoResyncToFinanzas } from '../_lib/damFinanzasSync.js';
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -41,7 +42,7 @@ export async function onRequestGet({ request, env }) {
   }
 }
 
-export async function onRequestPatch({ request, env }) {
+export async function onRequestPatch({ request, env, waitUntil }) {
   if (!(await verifyAdminToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
@@ -75,6 +76,11 @@ export async function onRequestPatch({ request, env }) {
     const row = await env.DB.prepare(
       'SELECT * FROM products WHERE slug = ?'
     ).bind(slug).first();
+
+    /* Re-sync automático a Dam Finanzas en background — best-effort, no bloquea
+       la respuesta. Ver functions/_lib/damFinanzasSync.js. */
+    if (typeof waitUntil === 'function') waitUntil(autoResyncToFinanzas(slug, env));
+
     return json({ ok: true, product: parseProduct(row) });
   } catch (err) {
     return json({ ok: false, error: err.message }, 500);

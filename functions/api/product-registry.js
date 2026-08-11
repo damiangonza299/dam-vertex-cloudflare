@@ -8,7 +8,8 @@
    PATCH ?slug=X         → update brief fields (partial)
    ========================================================= */
 
-import { verifyAdminToken } from '../_lib/adminAuth.js';
+import { verifyAdminToken }    from '../_lib/adminAuth.js';
+import { autoResyncToFinanzas } from '../_lib/damFinanzasSync.js';
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -86,7 +87,7 @@ export async function onRequestPost({ request, env }) {
 }
 
 /* ── PATCH ── */
-export async function onRequestPatch({ request, env }) {
+export async function onRequestPatch({ request, env, waitUntil }) {
   if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   const url  = new URL(request.url);
@@ -124,6 +125,10 @@ export async function onRequestPatch({ request, env }) {
     if (body.op_json) {
       const op = typeof body.op_json === 'string' ? JSON.parse(body.op_json) : body.op_json;
       await mirrorOpToProducts(slug, op, env);
+
+      /* Re-sync automático a Dam Finanzas en background — best-effort, no bloquea
+         la respuesta. Ver functions/_lib/damFinanzasSync.js. */
+      if (typeof waitUntil === 'function') waitUntil(autoResyncToFinanzas(slug, env));
     }
 
     const updated = await env.DB.prepare(

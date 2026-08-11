@@ -478,6 +478,34 @@ Referencia: `public/rizador-automatico-giratorio/index.html`, `public/taza-mezcl
 
 ---
 
+## STOCK — RE-SYNC AUTOMÁTICO A DAM FINANZAS
+
+> **Incidente 2026-08:** un ajuste manual de stock en D1 (vía Product Studio o el grid de Productos del Admin Panel) dejó Dam Finanzas desalineado (+1 unidad por color) hasta la próxima sincronización manual — ver diagnóstico completo del caso taza-mezcladora-automatica.
+
+### Causa
+
+`mirrorOpToProducts()` (Product Studio, `functions/api/product-registry.js`) y el `PATCH` de `functions/api/product-stock.js` (Admin Panel) escriben `stock_total`/`variants_json` directo en D1, pero nunca avisaban a Dam Finanzas. La única forma de propagar el cambio era apretar manualmente "Sincronizar con DAM Finanzas" en Product Studio.
+
+### El fix
+
+`functions/_lib/damFinanzasSync.js` exporta `autoResyncToFinanzas(slug, env)` — mismo endpoint y payload que el botón manual (`POST importProductFromVertex` con `x-dam-vertex-secret`), pero:
+
+- **Solo si el producto ya está vinculado** (`product_briefs.dam_finanzas_status === 'linked'`) — si nunca se sincronizó, no hace nada; eso sigue siendo una acción manual explícita.
+- **En background** (`waitUntil`), nunca bloquea ni hace fallar la respuesta del PATCH que guarda el stock — D1 ya quedó guardado antes de intentar el re-sync, y es la fuente de verdad.
+- Si el re-sync falla, marca `dam_finanzas_status='failed'` con una nota (mismo criterio que el sync manual) para que quede visible que hace falta re-sincronizar a mano.
+
+Se llama desde ambos puntos de ajuste manual:
+- `product-registry.js` → `onRequestPatch`, cuando el body incluye `op_json` (Product Studio, tab Inventario).
+- `product-stock.js` → `onRequestPatch` (Admin Panel, grid de Productos: `updateTotalStock`, `updateVariantStock`, `toggleProductActive` en `admin.js`).
+
+### Prohibido
+
+- Llamar a `autoResyncToFinanzas` de forma bloqueante (sin `waitUntil`) — un stock guardado en D1 no debe esperar ni depender de que Dam Finanzas responda.
+- Disparar el re-sync para productos con `dam_finanzas_status` distinto de `'linked'` — crearía un producto nuevo en Dam Finanzas sin que nadie lo haya pedido.
+- Duplicar esta lógica en cada endpoint — siempre importar desde `_lib/damFinanzasSync.js`.
+
+---
+
 ## PROTECCIÓN DE CONTENIDO EN LANDINGS
 
 Toda landing nueva debe incluir `<script src='/assets/js/protect.js?v=VERSION'></script>` antes de `</body>` (bumpear `VERSION` junto con `site-version.js`).
