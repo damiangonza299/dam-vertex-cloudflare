@@ -23,8 +23,13 @@ name: Dam Intelligence — Alertas Diarias Telegram
 #    como secrets de Cloudflare Pages, no como secrets de GitHub)
 
 on:
-  schedule:
-    - cron: '0 11 * * *'
+  # Cron diario desactivado (2026-08-12): las alertas automáticas de Dam
+  # Intelligence a Telegram quedaron anuladas a favor de la nueva alerta de
+  # deuda Meta Ads (meta-debt-alert-hourly.yml). El endpoint /send-alerts y
+  # su lógica siguen intactos — se puede reactivar descomentando el cron o
+  # disparar manualmente con workflow_dispatch.
+  # schedule:
+  #   - cron: '0 11 * * *'
   workflow_dispatch:
 
 jobs:
