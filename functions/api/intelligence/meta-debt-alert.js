@@ -35,7 +35,7 @@ const CORS = {
 
 const META_VERSION   = 'v21.0';
 const UMBRAL_ALERTA  = 700000;  // Gs. — a partir de acá se envía alerta
-const LIMITE_CUENTA  = 800000;  // Gs. — límite de cuenta informado en el mensaje
+const LIMITE_CUENTA  = 840000;  // Gs. — límite de cuenta informado en el mensaje
 const DEDUP_HOURS    = 6;
 
 export async function onRequestOptions() {
@@ -114,10 +114,10 @@ export async function onRequestPost({ request, env }) {
 
     const pct  = Math.round((deuda / LIMITE_CUENTA) * 100);
     const text = [
-      '🔴🔴🔴 ALERTA DE DEUDA META ADS 🔴🔴🔴',
+      '🚨 DEUDA META ADS 🚨',
       '',
       `💳 Deuda actual: Gs. ${fmtN(deuda)}`,
-      `⚠️ Límite de cuenta: Gs. ${fmtN(LIMITE_CUENTA)}`,
+      `🔴 Límite: Gs. ${fmtN(LIMITE_CUENTA)}`,
       `📊 Usado: ${pct}% del límite`,
       '',
       '⚡ ACCIÓN REQUERIDA: Pagar antes de que se bloqueen los anuncios',
