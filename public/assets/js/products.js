@@ -306,8 +306,8 @@ DV.initForm = function (product) {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       if (!_atcFired) {
-        DV.trackAddToCart(product);
-        DV.trackInitiateCheckout(product, null, 1);
+        DV.trackAddToCart(product, DV.getLeadDataLocal());
+        DV.trackInitiateCheckout(product, DV.getLeadDataLocal(), 1);
         _atcFired = true;
       }
       openModal();
@@ -641,6 +641,7 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
             location_maps_url: commonData.location_maps_url || null,
             location_place_id: commonData.location_place_id || null,
             session_id:        window.DV_INSYNC_SESSION     || null,
+            anon_id:           typeof DV.getOrCreateAnonId === 'function' ? DV.getOrCreateAnonId() : null,
             invoice_requested: commonData.invoice_requested ? 1 : 0,
             invoice_ruc:       commonData.invoice_ruc   || null,
             invoice_name:      commonData.invoice_name  || null,
@@ -742,6 +743,7 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
           location_maps_url: data.location_maps_url || null,
           location_place_id: data.location_place_id || null,
           session_id:        window.DV_INSYNC_SESSION || null,
+          anon_id:           typeof DV.getOrCreateAnonId === 'function' ? DV.getOrCreateAnonId() : null,
           invoice_requested: data.invoice_requested ? 1 : 0,
           invoice_ruc:       data.invoice_ruc   || null,
           invoice_name:      data.invoice_name  || null,

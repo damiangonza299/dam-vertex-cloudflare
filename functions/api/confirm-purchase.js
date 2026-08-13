@@ -184,6 +184,14 @@ export async function onRequestPost({ request, env, waitUntil }) {
       user_data.external_id = [phHash];
     }
 
+    /* external_id anónimo (_dv_anon_id de la sesión que originó el lead, ya hasheado
+       y guardado en anon_id_hashed) — si no hay teléfono real, es el external_id;
+       si ya hay uno por teléfono, se agrega como valor adicional del mismo array
+       para que Meta pueda unir la sesión anónima con esta compra. */
+    if (lead.anon_id_hashed) {
+      user_data.external_id = user_data.external_id ? [...user_data.external_id, lead.anon_id_hashed] : [lead.anon_id_hashed];
+    }
+
     const namePartsCP = (lead.name || '').trim().split(/\s+/);
     if (namePartsCP[0])           user_data.fn = [await sha256(normalizeForMeta(namePartsCP[0]))];
     if (namePartsCP.length > 1)   user_data.ln = [await sha256(normalizeForMeta(namePartsCP.slice(1).join(' ')))];

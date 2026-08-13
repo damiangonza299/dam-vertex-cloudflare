@@ -24,6 +24,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
       session_id,
       invoice_requested, invoice_ruc, invoice_name, invoice_email,
+      source, event_id, anon_id,
     } = body;
 
     /* Sanear inputs públicos antes de guardarlos/renderizarlos en el admin — evita XSS almacenado */
@@ -100,6 +101,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     // Capture Paraguay date ONCE — reused for both operational_date_py (D1) and onLeadsCountUpdate (Firebase).
     // Two separate calls near midnight can return different dates due to clock rollover between INSERT and webhook.
     const leadDate = getParaguayDateString();
+    const anonIdHashed = anon_id?.trim() ? await sha256QL(anon_id.trim()) : null;
 
     const bindArgs = [
       safeProductName,
@@ -152,6 +154,10 @@ export async function onRequestPost({ request, env, waitUntil }) {
       invoice_ruc?.trim()   || null,
       invoice_name?.trim()  || null,
       invoice_email?.trim() || null,
+      // source — canal de captura, ej. 'venta-hipnotica' (index 43)
+      source?.trim() || null,
+      // anon_id_hashed — ID anónimo de visita (hasheado), para unir con QualifiedLead/Purchase (index 44)
+      anonIdHashed,
     ];
 
     let result;
@@ -165,12 +171,28 @@ export async function onRequestPost({ request, env, waitUntil }) {
           operational_date_py, attribution_confidence,
           location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
           session_id,
-          invoice_requested, invoice_ruc, invoice_name, invoice_email
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          invoice_requested, invoice_ruc, invoice_name, invoice_email,
+          source, anon_id_hashed
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(...bindArgs).run();
     } catch (insertErr) {
       const msg = insertErr.message || '';
-      if (msg.includes('invoice_requested') || msg.includes('invoice_ruc') || msg.includes('invoice_name') || msg.includes('invoice_email')) {
+      if (msg.includes('source')) {
+        // source column not yet migrated (run migrate27.sql) — retry without it
+        console.error('LEAD_SCHEMA: run migrate27.sql for source column');
+        result = await env.DB.prepare(`
+          INSERT INTO leads (
+            product_name, name, phone, email, city, value, currency, fbp, fbc, user_agent, ip, quantity, variant,
+            fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+            campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name, landing_path, referrer,
+            address, payment_method, product_slug,
+            operational_date_py, attribution_confidence,
+            location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
+            session_id,
+            invoice_requested, invoice_ruc, invoice_name, invoice_email
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).bind(...bindArgs.slice(0, 43)).run();
+      } else if (msg.includes('invoice_requested') || msg.includes('invoice_ruc') || msg.includes('invoice_name') || msg.includes('invoice_email')) {
         // invoice columns not yet migrated (run migrate24.sql) — retry without them
         console.error('LEAD_SCHEMA: run migrate24.sql for invoice columns');
         result = await env.DB.prepare(`
@@ -258,8 +280,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     }
 
-    /* Telegram — background, no bloquea la respuesta */
+    /* Telegram — background, no bloquea la respuesta.
+       Venta Hipnótica (source='venta-hipnotica') se gestiona aparte en la sección V.H
+       del admin — sin notificación Telegram por pedido explícito. */
     waitUntil((async () => {
+      if (source === 'venta-hipnotica') return;
       if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
       try {
         const now         = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
@@ -307,7 +332,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       try {
         const ts  = Math.floor(Date.now() / 1000);
         const rnd = Math.random().toString(36).slice(2, 6);
-        const qlId = `ql_${product_slug || 'lead'}_${ts}_${rnd}`;
+        const qlId = event_id || `ql_${product_slug || 'lead'}_${ts}_${rnd}`;
         const ud = {};
         if (ip) ud.client_ip_address = ip;
         if (ua) ud.client_user_agent = ua;
@@ -319,6 +344,14 @@ export async function onRequestPost({ request, env, waitUntil }) {
           const phHash = await sha256QL(phQL);
           ud.ph          = [phHash];
           ud.external_id = [phHash];
+        }
+
+        /* external_id anónimo (_dv_anon_id, hasheado en el cliente) — si no hay
+           teléfono real, es el external_id; si ya hay uno por teléfono, se agrega
+           como valor adicional del mismo array (Meta acepta múltiples external_id
+           por evento) para unir la sesión anónima con este lead sin pisar el real. */
+        if (anonIdHashed) {
+          ud.external_id = ud.external_id ? [...ud.external_id, anonIdHashed] : [anonIdHashed];
         }
 
         const namePartsQL = safeName.split(/\s+/);
@@ -359,9 +392,12 @@ export async function onRequestPost({ request, env, waitUntil }) {
       } catch (_) {}
     })());
 
-    /* ── Notificar DAM Finanzas: actualizar shopifyOrdersTotal (Pedidos del día) ── */
+    /* ── Notificar DAM Finanzas: actualizar shopifyOrdersTotal (Pedidos del día) ──
+       Venta Hipnótica no dispara este webhook por pedido explícito — el contador se
+       recalcula igual la próxima vez que entre un lead de un producto que sí lo dispare. */
     // leadDate was captured at the top of the request handler — same value used for operational_date_py.
     const leadsCountPromise = (async () => {
+      if (source === 'venta-hipnotica') return;
       try {
         const startUTC = getParaguayDayStartUTC(leadDate);
         const endUTC   = new Date(startUTC.getTime() + 24 * 60 * 60 * 1000);

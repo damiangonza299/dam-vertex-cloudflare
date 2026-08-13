@@ -168,7 +168,7 @@ DV.trackViewContent = function (product) {
     currency:      'PYG',
   }, { eventID: event_id });
 
-  getExternalIdHashed().then(external_id_hashed => {
+  getExternalIdHashed().catch(() => null).then(external_id_hashed => {
     sendCAPI({
       event_name:  'ViewContent',
       event_id,
@@ -193,7 +193,7 @@ DV.trackAddToCart = function (product, lead_hashed) {
     currency:      'PYG',
   }, { eventID: event_id });
 
-  getExternalIdHashed().then(external_id_hashed => {
+  getExternalIdHashed().catch(() => null).then(external_id_hashed => {
     sendCAPI({
       event_name:  'AddToCart',
       event_id,
@@ -221,7 +221,7 @@ DV.trackInitiateCheckout = function (product, lead_hashed, qty) {
     num_items:     qty || 1,
   }, { eventID: event_id });
 
-  getExternalIdHashed().then(external_id_hashed => {
+  getExternalIdHashed().catch(() => null).then(external_id_hashed => {
     sendCAPI({
       event_name:  'InitiateCheckout',
       event_id,
@@ -302,5 +302,6 @@ function getAttribution() {
 }
 
 DV.getAttribution   = getAttribution;
+DV.getOrCreateAnonId = getOrCreateAnonId;
 DV.saveLeadDataLocal = saveLeadDataLocal;
 DV.getLeadDataLocal  = getLeadDataLocal;
