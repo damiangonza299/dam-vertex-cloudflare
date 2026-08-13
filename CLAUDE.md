@@ -568,4 +568,28 @@ Estos son límites del modelo de negocio (COD sin email), no bugs de código.
 
 ---
 
+## CAPI — user_data obligatorio en todos los eventos
+
+Todo evento enviado a Meta CAPI (`ViewContent`, `AddToCart`, `InitiateCheckout`, `QualifiedLead`, `Purchase`/`HighValuePurchase`/`VIPPurchase`/`FastBuyer`) DEBE incluir al menos un campo de identidad en `user_data` además de `client_ip_address` y `client_user_agent`. IP + user agent solos no le alcanzan a Meta para hacer atribución ni optimización de campaña — un evento sin ningún campo de identidad (`external_id`, `ph`, `em`, `fn`, `ln`) es señal débil y degrada la entrega.
+
+### Por momento del flujo
+
+**Eventos pre-formulario** (`ViewContent`, `AddToCart`, `InitiateCheckout`) — se disparan antes de que el usuario complete el formulario, así que no hay teléfono/nombre/email todavía. Usar:
+- `external_id_hashed` — SHA-256 de `_dv_anon_id`, un ID anónimo persistente en `localStorage` generado por `getOrCreateAnonId()` en `tracking.js`
+- `lead_hashed` (vía `DV.getLeadDataLocal()`) si el visitante ya completó un formulario en una visita anterior — tiene prioridad sobre el ID anónimo
+- `fbp`/`fbc` siempre que estén disponibles — no dependen del formulario, son complementarios a `external_id`, no sustitutos
+
+**Eventos post-formulario** (`QualifiedLead`, `Purchase`, `HighValuePurchase`, `VIPPurchase`, `FastBuyer`) — el usuario ya completó el formulario: usar los datos reales hasheados — teléfono (`ph` + `external_id`), nombre (`fn`/`ln`), email (`em`) si existe, ciudad (`ct`).
+
+### Prohibido
+
+- Mandar cualquier evento CAPI con `user_data` que tenga solo `client_ip_address`/`client_user_agent` (± `fbp`/`fbc`) sin ningún campo de identidad, cuando existe una fuente disponible para ese momento del flujo (ID anónimo antes del formulario, datos reales después).
+- Confundir esto con la regla de `fbp`/`fbc` de la sección anterior — son señales complementarias, no intercambiables: `external_id`/`lead_hashed` es sobre identidad, `fbp`/`fbc` es sobre atribución de click/sesión.
+
+### Antecedente
+
+Meta marcó el 12/08/2026 que `ViewContent`, `AddToCart` e `InitiateCheckout` se enviaban sin ningún campo de identidad útil (solo IP/UA), degradando atribución y optimización. Corregido el mismo día agregando `external_id_hashed` en `tracking.js` + `functions/api/meta-event.js`. **Aclaración importante:** este problema de señal NO es la causa confirmada de la caída de pedidos del 11-12/08 — esa caída se diagnosticó por separado (cruce Meta Ads + D1 + InSync) y su causa real fue la eliminación de 8 leads de D1 el día 11 antes de poder trabajarlos, no un problema de tracking. No repetir esa asociación causal sin evidencia — son dos hallazgos distintos del mismo período.
+
+---
+
 Para contexto completo del proyecto, skills y routing: leer `gemini.md`.

@@ -397,6 +397,17 @@ DAM VERTEX Paraguay — clasificación de compradores y eventos Meta CAPI. **Pro
 
 ---
 
+### CAPI — user_data obligatorio en todos los eventos
+
+Todo evento CAPI (`ViewContent`, `AddToCart`, `InitiateCheckout`, `QualifiedLead`, `Purchase`/`HighValuePurchase`/`VIPPurchase`/`FastBuyer`) DEBE llevar al menos un campo de identidad en `user_data` además de IP/user_agent — sin eso Meta no puede atribuir ni optimizar la entrega.
+
+- **Pre-formulario** (`ViewContent`, `AddToCart`, `InitiateCheckout`): `external_id_hashed` (SHA-256 de `_dv_anon_id`, ID anónimo persistente en `localStorage`, generado por `getOrCreateAnonId()` en `tracking.js`) + `lead_hashed` si el visitante ya compró antes (prioridad sobre el anónimo).
+- **Post-formulario** (`QualifiedLead`, `Purchase`, `HighValuePurchase`, `VIPPurchase`, `FastBuyer`): datos reales hasheados (`ph`, `fn`, `ln`, `em`, `ct`).
+
+Detectado por Meta el 12/08/2026 (los 3 eventos pre-formulario iban sin identidad útil) y corregido el mismo día en `tracking.js` + `functions/api/meta-event.js`. No es la causa confirmada de la caída de pedidos del 11-12/08 — esa fue por leads borrados de D1, un hallazgo separado. Detalle completo: ver "CAPI — user_data obligatorio en todos los eventos" en `CLAUDE.md`.
+
+---
+
 ### REGLA CRÍTICA DE DEPLOY — DAM VERTEX
 
 > **Incidente 2026-06:** `wrangler pages deploy .` (raíz) subió estáticos bajo `/public/reloj/`, `/public/cadena/` etc. Landings en 404 en producción.

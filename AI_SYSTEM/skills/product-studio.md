@@ -119,6 +119,7 @@ Referencia: `AI_SYSTEM/skills/lighthouse-geo-standards.md`
 - [ ] `styles.min.css` referenciado (no `styles.css` sin minificar)
 - [ ] QualifiedLead: NO tocar `functions/api/leads.js` sin autorización explícita
 - [ ] tracking.js: NO agregar eventos sin verificar deduplicación por `eventID`
+- [ ] Todo evento CAPI (`ViewContent`, `AddToCart`, `InitiateCheckout`, `QualifiedLead`, `Purchase`) lleva al menos un campo de identidad en `user_data` además de IP/user_agent — `external_id_hashed` antes del formulario, datos reales hasheados después. Ver "CAPI — user_data obligatorio en todos los eventos" en `CLAUDE.md`.
 - [ ] Todo `[data-scroll-form]` tiene `href` real de WhatsApp como fallback (nunca `href="#"`, nunca `<button>` sin `<a>` de respaldo) — ver "CTA — BLINDADO CONTRA FALLOS DE RED" en `CLAUDE.md`
 - [ ] `DOMContentLoaded` aísla cada llamada `DV.*` en su propio try/catch
 
