@@ -26,7 +26,11 @@ function genEventId(prefix, slug) {
 }
 
 function getCookie(name) {
-  return (document.cookie.split(';').find(c => c.trim().startsWith(name + '=')) || '').split('=')[1] || '';
+  const match = document.cookie.split(';')
+    .map(c => c.trim())
+    .find(c => c.startsWith(name + '='));
+  if (!match) return '';
+  return match.slice(name.length + 1);
 }
 
 function getFbc() {
@@ -110,6 +114,32 @@ function getLeadDataLocal() {
   } catch (_) { return null; }
 }
 
+/* ── ID anónimo de visita — external_id para ViewContent/AddToCart/InitiateCheckout ──
+   Estos 3 eventos se disparan ANTES de que el usuario llene el formulario, así que
+   no hay teléfono/nombre disponibles todavía. Un ID aleatorio persistente por
+   navegador (no PII, nunca se reusa como identificador visible) le da a Meta un
+   external_id estable para emparejar esas visitas — mejora el match quality que
+   Meta señaló como bajo. Se hashea con SHA-256 antes de salir del cliente, igual
+   que el resto de los campos de user_data. */
+const ANON_ID_KEY = '_dv_anon_id';
+
+function getOrCreateAnonId() {
+  try {
+    let id = localStorage.getItem(ANON_ID_KEY);
+    if (!id) {
+      id = (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`);
+      localStorage.setItem(ANON_ID_KEY, id);
+    }
+    return id;
+  } catch (_) { return null; }
+}
+
+async function getExternalIdHashed() {
+  const id = getOrCreateAnonId();
+  if (!id) return null;
+  return sha256Hex(id);
+}
+
 /* ── CAPI proxy ── */
 async function sendCAPI(payload) {
   try {
@@ -138,17 +168,20 @@ DV.trackViewContent = function (product) {
     currency:      'PYG',
   }, { eventID: event_id });
 
-  sendCAPI({
-    event_name:  'ViewContent',
-    event_id,
-    product,
-    client,
-    lead_hashed: leadHashed || undefined,
-    num_items:   1,
+  getExternalIdHashed().then(external_id_hashed => {
+    sendCAPI({
+      event_name:  'ViewContent',
+      event_id,
+      product,
+      client,
+      lead_hashed: leadHashed || undefined,
+      external_id_hashed: external_id_hashed || undefined,
+      num_items:   1,
+    });
   });
 };
 
-DV.trackAddToCart = function (product) {
+DV.trackAddToCart = function (product, lead_hashed) {
   const event_id = genEventId('atc', product.slug);
   const client   = getClientData();
 
@@ -160,18 +193,22 @@ DV.trackAddToCart = function (product) {
     currency:      'PYG',
   }, { eventID: event_id });
 
-  sendCAPI({
-    event_name:  'AddToCart',
-    event_id,
-    product,
-    client,
-    num_items:   1,
+  getExternalIdHashed().then(external_id_hashed => {
+    sendCAPI({
+      event_name:  'AddToCart',
+      event_id,
+      product,
+      client,
+      lead_hashed: lead_hashed || undefined,
+      external_id_hashed: external_id_hashed || undefined,
+      num_items:   1,
+    });
   });
 
   return event_id;
 };
 
-DV.trackInitiateCheckout = function (product, lead, qty) {
+DV.trackInitiateCheckout = function (product, lead_hashed, qty) {
   const event_id = genEventId('ic', product.slug);
   const client   = getClientData();
 
@@ -184,13 +221,16 @@ DV.trackInitiateCheckout = function (product, lead, qty) {
     num_items:     qty || 1,
   }, { eventID: event_id });
 
-  sendCAPI({
-    event_name:  'InitiateCheckout',
-    event_id,
-    product,
-    lead,
-    client,
-    num_items:   qty || 1,
+  getExternalIdHashed().then(external_id_hashed => {
+    sendCAPI({
+      event_name:  'InitiateCheckout',
+      event_id,
+      product,
+      lead_hashed: lead_hashed || undefined,
+      external_id_hashed: external_id_hashed || undefined,
+      client,
+      num_items:   qty || 1,
+    });
   });
 
   return event_id;
@@ -263,3 +303,4 @@ function getAttribution() {
 
 DV.getAttribution   = getAttribution;
 DV.saveLeadDataLocal = saveLeadDataLocal;
+DV.getLeadDataLocal  = getLeadDataLocal;

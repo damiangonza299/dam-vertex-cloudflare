@@ -10,7 +10,7 @@ const CORS = {
 
 /* Solo eventos de tracking pasivo pueden dispararse desde este proxy público sin auth.
    Purchase/HighValuePurchase/VIPPurchase deben originarse server-side desde confirm-purchase.js. */
-const ALLOWED_PUBLIC_EVENTS = new Set(['ViewContent', 'AddToCart', 'InitiateCheckout']);
+const ALLOWED_PUBLIC_EVENTS = new Set(['ViewContent', 'AddToCart', 'InitiateCheckout', 'Lead']);
 
 export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
@@ -19,7 +19,7 @@ export async function onRequestOptions() {
 export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
-    const { event_name, event_id, product, lead, lead_hashed, client, num_items } = body;
+    const { event_name, event_id, product, lead, lead_hashed, external_id_hashed, client, num_items } = body;
 
     if (!ALLOWED_PUBLIC_EVENTS.has(event_name)) {
       return json({ ok: false, error: 'evento no permitido' }, 400);
@@ -69,6 +69,13 @@ export async function onRequestPost({ request, env }) {
       if (lead_hashed.fn && !user_data.fn) user_data.fn = [lead_hashed.fn];
       if (lead_hashed.ln && !user_data.ln) user_data.ln = [lead_hashed.ln];
       if (lead_hashed.em && !user_data.em) user_data.em = [lead_hashed.em];
+    }
+
+    /* ID anónimo de visita (hasheado en el cliente, persistente en localStorage) —
+       cubre ViewContent/AddToCart/InitiateCheckout cuando todavía no hay teléfono
+       real (lead_hashed.ph). Nunca pisa un external_id ya derivado del teléfono. */
+    if (external_id_hashed && !user_data.external_id) {
+      user_data.external_id = [external_id_hashed];
     }
 
     /* Build custom_data */
