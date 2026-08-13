@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="840" viewBox="0 0 840 840" role="img" aria-label="Depilador Eléctrico Guard Wing">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE3ED"/>
+      <stop offset="100%" stop-color="#FF6B9D"/>
+    </linearGradient>
+    <linearGradient id="device" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#FFD9E6"/>
+    </linearGradient>
+  </defs>
+  <rect width="840" height="840" fill="url(#bg)"/>
+  <circle cx="420" cy="420" r="230" fill="#FFFFFF" opacity="0.18"/>
+  <!-- Silueta simplificada del depilador (placeholder — reemplazar por foto real del producto) -->
+  <g transform="translate(420,420) rotate(-25)">
+    <rect x="-38" y="-220" width="76" height="300" rx="38" fill="url(#device)" stroke="#C2185B" stroke-width="4"/>
+    <rect x="-24" y="-250" width="48" height="60" rx="18" fill="#C2185B"/>
+    <circle cx="0" cy="-260" r="10" fill="#FFFFFF"/>
+    <rect x="-14" y="40" width="28" height="14" rx="7" fill="#C2185B" opacity="0.55"/>
+  </g>
+  <text x="420" y="740" text-anchor="middle" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="28" font-weight="700" fill="#C2185B">Depilador Eléctrico Guard Wing</text>
+  <text x="420" y="778" text-anchor="middle" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-size="16" fill="#8a0e40" opacity="0.75">Imagen próximamente — placeholder</text>
+</svg>
