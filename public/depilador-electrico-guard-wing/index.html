@@ -211,7 +211,6 @@
       background: #262626; border: 1px solid rgba(255,107,157,.25); border-radius: 12px;
       padding: 28px 20px; text-align: center;
     }
-    .pain-card-dep__icon { font-size: 30px; margin-bottom: 12px; }
     .pain-card-dep strong { display: block; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
     .pain-card-dep p { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.6; margin: 0; }
 
@@ -240,16 +239,15 @@
       width: 32px; height: 32px; border-radius: 50%; background: var(--dep-pink-dk); color: #fff;
       font-weight: 800; font-size: 14px; margin-bottom: 12px;
     }
-    .paso-card-dep__icon { font-size: 26px; margin-bottom: 8px; }
     .paso-card-dep strong { display: block; font-size: 14.5px; font-weight: 700; color: var(--dep-text); margin-bottom: 6px; }
     .paso-card-dep p { font-size: 12.5px; color: var(--dep-text-muted); line-height: 1.55; margin: 0; }
 
-    /* ══ DEMO — video real, fondo rosa claro ══ */
-    .demo-dep { background: var(--dep-card2); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--dep-border); }
+    /* ══ DEMO — video real, fondo negro (2da sección, intercala con el hero rosa) ══ */
+    .demo-dep { background: var(--dep-dark); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--dep-border); }
     .demo-dep__inner { max-width: 640px; margin: 0 auto; }
     .demo-dep__head { text-align: center; margin-bottom: 40px; }
-    .demo-dep .sec-overline-dep { color: var(--dep-pink-dk); text-align: center; }
-    .demo-dep .sec-h-dep { color: var(--dep-text); }
+    .demo-dep .sec-overline-dep { color: var(--dep-pink); text-align: center; }
+    .demo-dep .sec-h-dep { color: #fff; }
     .demo-dep__videos { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; max-width: 520px; margin: 0 auto; }
     .demo-video-card-dep { text-align: center; }
     .demo-video-wrap-dep {
@@ -259,7 +257,7 @@
       margin-bottom: 12px;
     }
     .demo-video-wrap-dep video { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .demo-video-title-dep { font-size: 13px; font-weight: 700; color: var(--dep-text); line-height: 1.3; }
+    .demo-video-title-dep { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.3; }
 
     /* ══ CONFIANZA — prueba social genérica (sin testimonios inventados, ver CLAUDE.md) ══ */
     .confianza-dep { background: var(--dep-cream); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--dep-border); }
@@ -269,7 +267,6 @@
     .confianza-dep .sec-h-dep { color: var(--dep-text); }
     .confianza-grid-dep { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
     .confianza-card-dep { text-align: center; padding: 24px 18px; border-radius: 12px; background: var(--dep-card); border: 1px solid var(--dep-border); }
-    .confianza-card-dep__icon { font-size: 28px; margin-bottom: 10px; }
     .confianza-card-dep strong { display: block; font-size: 14px; font-weight: 700; color: var(--dep-text); margin-bottom: 6px; }
     .confianza-card-dep p { font-size: 12.5px; color: var(--dep-text-muted); line-height: 1.55; margin: 0; }
 
@@ -517,111 +514,6 @@
   </div>
 </section>
 
-<!-- ══ PROBLEMA — fondo gris oscuro ══ -->
-<section class="problema-dep" id="section-problema" data-insync-section="problema">
-  <div class="problema-dep__inner">
-    <p class="sec-overline-dep">¿Te suena familiar?</p>
-    <h2 class="sec-h-dep">¿Cansada de esconder el vello con maquillaje?</h2>
-    <div class="pain-grid-dep">
-      <div class="pain-card-dep">
-        <div class="pain-card-dep__icon">😳</div>
-        <strong>La vergüenza del bigote y las cejas</strong>
-        <p>Maquillaje que no lo tapa del todo, luz que lo delata. Un tema que no deberías cargar sola.</p>
-      </div>
-      <div class="pain-card-dep">
-        <div class="pain-card-dep__icon">💸</div>
-        <strong>El costo que se repite cada mes</strong>
-        <p>Cada visita al salón para depilación facial suma un gasto fijo que no para nunca.</p>
-      </div>
-      <div class="pain-card-dep">
-        <div class="pain-card-dep__icon">😖</div>
-        <strong>El dolor de la cera y la pinza</strong>
-        <p>Tirones, piel irritada, días de espera para volver a depilarte. Tiene que haber otra forma.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ PRODUCTO / CARACTERÍSTICAS — fondo rosa claro ══ -->
-<section class="producto-dep" id="section-producto" data-insync-section="producto">
-  <div class="producto-dep__inner">
-    <div class="producto-dep__head">
-      <p class="sec-overline-dep">Características</p>
-      <div class="line-dep"></div>
-      <h2 class="sec-h-dep">Todo lo que trae el Guard Wing.</h2>
-    </div>
-
-    <div class="bene-grid-dep">
-      <div class="bene-card-dep">
-        <strong>Cabezal de precisión <span style="font-size:1em">🎯</span></strong>
-        <p>Diseñado para zonas delicadas: cejas, bigote, labio, mejillas y barbilla.</p>
-      </div>
-      <div class="bene-card-dep">
-        <strong>Recargable USB <span style="font-size:1em">🔋</span></strong>
-        <p>Autonomía de 1 hora con una sola carga. Sin pilas que reponer.</p>
-      </div>
-      <div class="bene-card-dep">
-        <strong>Cabezal extraíble y lavable <span style="font-size:1em">🧼</span></strong>
-        <p>Se saca y se lava en segundos — higiene total en cada uso.</p>
-      </div>
-    </div>
-    <div class="bene-grid-dep">
-      <div class="bene-card-dep">
-        <strong>Motor silencioso <span style="font-size:1em">🔇</span></strong>
-        <p>2W de potencia silenciosa — usalo en cualquier momento sin llamar la atención.</p>
-      </div>
-      <div class="bene-card-dep">
-        <strong>Tamaño de bolso <span style="font-size:1em">👜</span></strong>
-        <p>12.5cm × 2.5cm, apenas 60g. Entra en cualquier cartera.</p>
-      </div>
-    </div>
-
-    <div style="text-align:center;margin-top:40px">
-      <a class="btn btn-primary" data-scroll-form data-insync-cta="producto" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Depilador%20El%C3%A9ctrico%20Guard%20Wing.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ══ CÓMO FUNCIONA — 3 pasos ══ -->
-<section class="funciona-dep" id="section-funciona" data-insync-section="funciona">
-  <div class="funciona-dep__inner">
-    <div class="funciona-dep__head">
-      <p class="sec-overline-dep">Así de fácil</p>
-      <div class="line-dep"></div>
-      <h2 class="sec-h-dep">3 pasos y listo.</h2>
-    </div>
-
-    <div class="pasos-grid-dep">
-      <div class="paso-card-dep">
-        <div class="paso-card-dep__num">1</div>
-        <div class="paso-card-dep__icon">🔌</div>
-        <strong>Cargá</strong>
-        <p>Conectá el cable USB incluido — 1 hora de carga te da autonomía completa.</p>
-      </div>
-      <div class="paso-card-dep">
-        <div class="paso-card-dep__num">2</div>
-        <div class="paso-card-dep__icon">✨</div>
-        <strong>Pasá por la zona</strong>
-        <p>Deslizá el cabezal de precisión por cejas, bigote o donde quieras — sin presión, sin dolor.</p>
-      </div>
-      <div class="paso-card-dep">
-        <div class="paso-card-dep__num">3</div>
-        <div class="paso-card-dep__icon">💗</div>
-        <strong>Piel lista</strong>
-        <p>Piel lisa al instante. Sin irritación, sin esperar a que sane.</p>
-      </div>
-    </div>
-
-    <div style="text-align:center;margin-top:40px">
-      <a class="btn btn-primary" data-scroll-form data-insync-cta="funciona" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Depilador%20El%C3%A9ctrico%20Guard%20Wing.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
 <!-- ══ DEMO — video real, autoplay al entrar en viewport ══ -->
 <section class="demo-dep" id="section-demo" data-insync-section="demo">
   <div class="demo-dep__inner">
@@ -686,6 +578,105 @@
   })();
 </script>
 
+<!-- ══ PROBLEMA — fondo gris oscuro ══ -->
+<section class="problema-dep" id="section-problema" data-insync-section="problema">
+  <div class="problema-dep__inner">
+    <p class="sec-overline-dep">¿Te suena familiar?</p>
+    <h2 class="sec-h-dep">¿Cansada de esconder el vello con maquillaje?</h2>
+    <div class="pain-grid-dep">
+      <div class="pain-card-dep">
+        <strong>La vergüenza del bigote y las cejas <span style="font-size:1em">😳</span></strong>
+        <p>Maquillaje que no lo tapa del todo, luz que lo delata. Un tema que no deberías cargar sola.</p>
+      </div>
+      <div class="pain-card-dep">
+        <strong>El costo que se repite cada mes <span style="font-size:1em">💸</span></strong>
+        <p>Cada visita al salón para depilación facial suma un gasto fijo que no para nunca.</p>
+      </div>
+      <div class="pain-card-dep">
+        <strong>El dolor de la cera y la pinza <span style="font-size:1em">😖</span></strong>
+        <p>Tirones, piel irritada, días de espera para volver a depilarte. Tiene que haber otra forma.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRODUCTO / CARACTERÍSTICAS — fondo rosa claro ══ -->
+<section class="producto-dep" id="section-producto" data-insync-section="producto">
+  <div class="producto-dep__inner">
+    <div class="producto-dep__head">
+      <p class="sec-overline-dep">Características</p>
+      <div class="line-dep"></div>
+      <h2 class="sec-h-dep">Todo lo que trae el Guard Wing.</h2>
+    </div>
+
+    <div class="bene-grid-dep">
+      <div class="bene-card-dep">
+        <strong>Cabezal de precisión <span style="font-size:1em">🎯</span></strong>
+        <p>Diseñado para zonas delicadas: cejas, bigote, labio, mejillas y barbilla.</p>
+      </div>
+      <div class="bene-card-dep">
+        <strong>Recargable USB <span style="font-size:1em">🔋</span></strong>
+        <p>Autonomía de 1 hora con una sola carga. Sin pilas que reponer.</p>
+      </div>
+      <div class="bene-card-dep">
+        <strong>Cabezal extraíble y lavable <span style="font-size:1em">🧼</span></strong>
+        <p>Se saca y se lava en segundos — higiene total en cada uso.</p>
+      </div>
+    </div>
+    <div class="bene-grid-dep">
+      <div class="bene-card-dep">
+        <strong>Motor silencioso <span style="font-size:1em">🔇</span></strong>
+        <p>2W de potencia silenciosa — usalo en cualquier momento sin llamar la atención.</p>
+      </div>
+      <div class="bene-card-dep">
+        <strong>Tamaño de bolso <span style="font-size:1em">👜</span></strong>
+        <p>12.5cm × 2.5cm, apenas 60g. Entra en cualquier cartera.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="producto" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Depilador%20El%C3%A9ctrico%20Guard%20Wing.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CÓMO FUNCIONA — 3 pasos ══ -->
+<section class="funciona-dep" id="section-funciona" data-insync-section="funciona">
+  <div class="funciona-dep__inner">
+    <div class="funciona-dep__head">
+      <p class="sec-overline-dep">Así de fácil</p>
+      <div class="line-dep"></div>
+      <h2 class="sec-h-dep">3 pasos y listo.</h2>
+    </div>
+
+    <div class="pasos-grid-dep">
+      <div class="paso-card-dep">
+        <div class="paso-card-dep__num">1</div>
+        <strong>Cargá <span style="font-size:1em">🔌</span></strong>
+        <p>Conectá el cable USB incluido — 1 hora de carga te da autonomía completa.</p>
+      </div>
+      <div class="paso-card-dep">
+        <div class="paso-card-dep__num">2</div>
+        <strong>Pasá por la zona <span style="font-size:1em">✨</span></strong>
+        <p>Deslizá el cabezal de precisión por cejas, bigote o donde quieras — sin presión, sin dolor.</p>
+      </div>
+      <div class="paso-card-dep">
+        <div class="paso-card-dep__num">3</div>
+        <strong>Piel lista <span style="font-size:1em">💗</span></strong>
+        <p>Piel lisa al instante. Sin irritación, sin esperar a que sane.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="funciona" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Depilador%20El%C3%A9ctrico%20Guard%20Wing.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ══ CONFIANZA — prueba social genérica ══ -->
 <section class="confianza-dep" id="section-confianza" data-insync-section="confianza">
   <div class="confianza-dep__inner">
@@ -696,18 +687,15 @@
     </div>
     <div class="confianza-grid-dep">
       <div class="confianza-card-dep">
-        <div class="confianza-card-dep__icon">🚚</div>
-        <strong>Entrega en el día</strong>
+        <strong>Entrega en el día <span style="font-size:1em">🚚</span></strong>
         <p>Central y Asunción reciben el mismo día del pedido.</p>
       </div>
       <div class="confianza-card-dep">
-        <div class="confianza-card-dep__icon">💳</div>
-        <strong>Pago al recibir</strong>
+        <strong>Pago al recibir <span style="font-size:1em">💳</span></strong>
         <p>Pagás cuando el pedido llega a tu puerta, sin adelantos en Central.</p>
       </div>
       <div class="confianza-card-dep">
-        <div class="confianza-card-dep__icon">📍</div>
-        <strong>Clientes en Central e Interior</strong>
+        <strong>Clientes en Central e Interior <span style="font-size:1em">📍</span></strong>
         <p>Pedidos activos en todo el país, coordinados por WhatsApp.</p>
       </div>
     </div>
