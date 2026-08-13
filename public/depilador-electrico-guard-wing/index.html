@@ -133,7 +133,7 @@
     }
 
     /* ── Footer ── */
-    .theme-depilador .footer { color: rgba(26,26,26,.64); border-top: 1px solid var(--dep-border); }
+    .theme-depilador .footer { background: var(--dep-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--dep-border); }
 
     /* ── Botón primario ── */
     .theme-depilador .btn-primary,
@@ -202,17 +202,17 @@
     .line-dep { width: 40px; height: 2px; background: linear-gradient(90deg, var(--dep-pink), transparent); margin: 0 auto 18px; }
 
     /* ══ PROBLEMA — fondo gris oscuro #1a1a1a (brief) ══ */
-    .problema-dep { background: var(--dep-dark); color: #fff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); }
+    .problema-dep { background: var(--dep-cream); color: var(--dep-text); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--dep-border); }
     .problema-dep__inner { max-width: 900px; margin: 0 auto; text-align: center; }
-    .problema-dep .sec-overline-dep { color: var(--dep-pink); text-align: center; }
-    .problema-dep .sec-h-dep { color: #fff; margin-bottom: 44px; }
+    .problema-dep .sec-overline-dep { color: var(--dep-pink-dk); text-align: center; }
+    .problema-dep .sec-h-dep { color: var(--dep-text); margin-bottom: 44px; }
     .pain-grid-dep { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
     .pain-card-dep {
-      background: #262626; border: 1px solid rgba(255,107,157,.25); border-radius: 12px;
+      background: var(--dep-card); border: 1px solid var(--dep-border); border-radius: 12px;
       padding: 28px 20px; text-align: center;
     }
-    .pain-card-dep strong { display: block; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-    .pain-card-dep p { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.6; margin: 0; }
+    .pain-card-dep strong { display: block; font-size: 15px; font-weight: 700; color: var(--dep-text); margin-bottom: 8px; }
+    .pain-card-dep p { font-size: 13px; color: var(--dep-text-muted); line-height: 1.6; margin: 0; }
 
     /* ══ PRODUCTO / CARACTERÍSTICAS — fondo rosa claro ══ */
     .producto-dep { background: var(--dep-card2); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); }
@@ -226,21 +226,21 @@
     .bene-card-dep strong { display: block; font-size: 15px; font-weight: 700; color: var(--dep-text); margin-bottom: 8px; }
     .bene-card-dep p { font-size: 13px; color: var(--dep-text-muted); line-height: 1.6; margin: 0; }
 
-    /* ══ CÓMO FUNCIONA — 3 pasos, fondo blanco ══ */
-    .funciona-dep { background: var(--dep-card); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--dep-border); }
+    /* ══ CÓMO FUNCIONA — 3 pasos, fondo negro (intercala) ══ */
+    .funciona-dep { background: var(--dep-dark); color: #fff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--dep-border); }
     .funciona-dep__inner { max-width: 1000px; margin: 0 auto; }
     .funciona-dep__head { text-align: center; margin-bottom: 40px; }
-    .funciona-dep .sec-overline-dep { color: var(--dep-pink-dk); text-align: center; }
-    .funciona-dep .sec-h-dep { color: var(--dep-text); }
+    .funciona-dep .sec-overline-dep { color: var(--dep-pink); text-align: center; }
+    .funciona-dep .sec-h-dep { color: #fff; }
     .pasos-grid-dep { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; max-width: 900px; margin: 0 auto; }
-    .paso-card-dep { text-align: center; padding: 26px 18px; background: var(--dep-card2); border-radius: 14px; }
+    .paso-card-dep { text-align: center; padding: 26px 18px; background: #262626; border: 1px solid var(--dep-border); border-radius: 14px; }
     .paso-card-dep__num {
       display: inline-flex; align-items: center; justify-content: center;
       width: 32px; height: 32px; border-radius: 50%; background: var(--dep-pink-dk); color: #fff;
       font-weight: 800; font-size: 14px; margin-bottom: 12px;
     }
-    .paso-card-dep strong { display: block; font-size: 14.5px; font-weight: 700; color: var(--dep-text); margin-bottom: 6px; }
-    .paso-card-dep p { font-size: 12.5px; color: var(--dep-text-muted); line-height: 1.55; margin: 0; }
+    .paso-card-dep strong { display: block; font-size: 14.5px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .paso-card-dep p { font-size: 12.5px; color: rgba(255,255,255,.65); line-height: 1.55; margin: 0; }
 
     /* ══ DEMO — video real, fondo negro (2da sección, intercala con el hero rosa) ══ */
     .demo-dep { background: var(--dep-dark); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--dep-border); }
