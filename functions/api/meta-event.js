@@ -69,6 +69,7 @@ export async function onRequestPost({ request, env }) {
       if (lead_hashed.fn && !user_data.fn) user_data.fn = [lead_hashed.fn];
       if (lead_hashed.ln && !user_data.ln) user_data.ln = [lead_hashed.ln];
       if (lead_hashed.em && !user_data.em) user_data.em = [lead_hashed.em];
+      if (lead_hashed.ct && !user_data.ct) user_data.ct = [lead_hashed.ct];
     }
 
     /* ID anónimo de visita (hasheado en el cliente, persistente en localStorage) —
@@ -114,6 +115,7 @@ export async function onRequestPost({ request, env }) {
     );
 
     const result = await res.json();
+    console.log('META_EVENT_CAPI', event_name, res.status, res.ok ? 'OK' : 'FAILED');
     return json({ ok: true, meta: result });
 
   } catch (err) {

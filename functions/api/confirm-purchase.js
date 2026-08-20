@@ -235,19 +235,23 @@ export async function onRequestPost({ request, env, waitUntil }) {
         ...(testCode && { test_event_code: testCode }),
       };
 
-      const capiRes  = await fetch(
-        `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`,
-        {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload),
-        },
-      );
-      const capiBody = await capiRes.json().catch(() => ({}));
-      if (!capiRes.ok) {
-        console.error('PURCHASE_CAPI_FAILED lead_id=' + id, capiRes.status, JSON.stringify(capiBody));
-      } else {
-        console.log('PURCHASE_CAPI_OK lead_id=' + id, capiBody.events_received ?? '?');
+      try {
+        const capiRes  = await fetch(
+          `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`,
+          {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(payload),
+          },
+        );
+        const capiBody = await capiRes.json().catch(() => ({}));
+        if (!capiRes.ok) {
+          console.error('PURCHASE_CAPI_FAILED lead_id=' + id, capiRes.status, JSON.stringify(capiBody));
+        } else {
+          console.log('PURCHASE_CAPI_OK lead_id=' + id, capiBody.events_received ?? '?');
+        }
+      } catch (capiErr) {
+        console.error('PURCHASE_CAPI_EXCEPTION lead_id=' + id, capiErr.message);
       }
     }
 

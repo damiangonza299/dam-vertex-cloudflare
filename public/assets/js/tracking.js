@@ -97,6 +97,10 @@ async function saveLeadDataLocal(phone, name, email) {
 
     if (email) data.em = await sha256Hex(normalizeForMetaClient(email));
 
+    let city = '';
+    try { city = localStorage.getItem('dv_city') || ''; } catch (_) {}
+    if (city) data.ct = await sha256Hex(normalizeForMetaClient(city));
+
     if (data.ph || data.fn || data.em) localStorage.setItem(LEAD_LOCAL_KEY, JSON.stringify(data));
   } catch (_) {}
 }
