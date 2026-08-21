@@ -237,16 +237,13 @@
     .demo-proy__inner { max-width: 640px; margin: 0 auto; }
     .demo-proy__head { text-align: center; margin-bottom: 40px; }
     .demo-proy .sec-overline-proy, .demo-proy .sec-h-proy { text-align: center; }
-    .demo-proy__videos { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; max-width: 520px; margin: 0 auto; }
+    .demo-proy__videos { display: grid; grid-template-columns: 1fr; gap: 18px; max-width: 340px; margin: 0 auto; }
     .demo-video-card-proy { text-align: center; }
     .demo-video-wrap-proy {
       aspect-ratio: 9/16; border-radius: 14px; overflow: hidden; position: relative;
-      /* Placeholder mientras no hay video real — reemplazar cuando llegue el footage */
       background: linear-gradient(160deg, var(--proy-purple-dk), var(--proy-navy));
       border: 1px solid var(--proy-border);
       margin-bottom: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 34px;
     }
     .demo-video-wrap-proy video { width: 100%; height: 100%; object-fit: cover; display: block; }
     .demo-video-title-proy { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.3; }
@@ -335,7 +332,7 @@
     }
 
     /* ══ Modal — fondo oscuro con acento púrpura/azul ══ */
-    .theme-proyector .modal-box { background: #1c2340; border: 1px solid var(--proy-border); }
+    .theme-proyector .modal-box { background: #12172a; border: 1px solid var(--proy-border); }
     .theme-proyector .modal-title { color: #fff; }
     .theme-proyector .modal-subtitle { color: rgba(240,244,255,.68); }
     .theme-proyector .modal-section-label { color: rgba(240,244,255,.55); }
@@ -343,15 +340,12 @@
     .theme-proyector .modal-close { background: rgba(108,63,197,.18); color: #fff; }
     .theme-proyector .modal-price-warning { color: #fbbf24; }
 
-    /* Cards de combo más claras que el fondo del modal (#1c2340) para que se
-       distingan mejor — sigue siendo paleta espacial, no blanco. Contraste
-       verificado: texto blanco ~12:1, offer-compare (opacity .62) ~5:1 sobre #262f57. */
-    .theme-proyector .offer-option { background: #262f57; border-color: var(--proy-border); }
+    .theme-proyector .offer-option { background: #0d1224; border-color: var(--proy-border); }
     .theme-proyector .offer-option .offer-qty,
     .theme-proyector .offer-option .offer-price { color: #fff; }
-    .theme-proyector .offer-option .offer-compare { color: rgba(240,244,255,.62); }
+    .theme-proyector .offer-option .offer-compare { color: rgba(240,244,255,.5); }
     .theme-proyector .offer-option.selected,
-    .theme-proyector .offer-option:has(input:checked) { border-color: var(--proy-purple); background: #303a68; }
+    .theme-proyector .offer-option:has(input:checked) { border-color: var(--proy-purple); background: rgba(108,63,197,.14); }
     /* .offer-foot: bare rule, mismo patrón que rizador/depilador — sin esto el
        badge cae como bloque a ancho completo en vez de píldora junto al ahorro. */
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
@@ -513,26 +507,8 @@
 
     <div class="demo-proy__videos">
       <div class="demo-video-card-proy">
-        <!--
-          VIDEO PENDIENTE — el archivo fuente (TRANSFORMACIÓN _ RESULTADO.mp4, 35.5 MiB)
-          excede el límite duro de 25 MiB por archivo de Cloudflare Pages y no hay
-          herramienta de compresión de video disponible en esta máquina (sin ffmpeg) para
-          bajarlo de tamaño. Comprimir externamente a <25MB (idealmente <5MB) y guardar en
-          /assets/video/proyector-transformacion-resultado.mp4, luego descomentar y borrar
-          el div .demo-video-wrap-proy con el emoji de abajo:
-
-          <div class="demo-video-wrap-proy">
-            <video class="demo-video-proy" autoplay muted loop playsinline preload="none" aria-hidden="true">
-              <source data-src="/assets/video/proyector-transformacion-resultado.mp4" type="video/mp4">
-            </video>
-          </div>
-        -->
-        <div class="demo-video-wrap-proy" aria-hidden="true">🌌</div>
-        <p class="demo-video-title-proy">Así se ve en tu techo</p>
-      </div>
-      <div class="demo-video-card-proy">
         <div class="demo-video-wrap-proy">
-          <video class="demo-video-proy" autoplay muted loop playsinline preload="none" aria-hidden="true">
+          <video class="demo-video-proy" autoplay muted loop playsinline preload="none" aria-hidden="true" width="1080" height="1920">
             <source data-src="/assets/video/proyector-curiosidad-fomo.mp4" type="video/mp4">
           </video>
         </div>
