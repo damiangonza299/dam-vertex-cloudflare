@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/proyector-astronauta-sistema-solar/hero-placeholder.svg" fetchpriority="high" type="image/svg+xml">
+  <link rel="preload" as="image" href="/proyector-astronauta-sistema-solar/hero-proyector.webp" imagesrcset="/proyector-astronauta-sistema-solar/hero-proyector-400w.webp 400w, /proyector-astronauta-sistema-solar/hero-proyector.webp 840w" imagesizes="(max-width: 600px) 400px, 840px" fetchpriority="high" type="image/webp">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
@@ -16,7 +16,7 @@
   <link rel="canonical" href="https://damvertex.com/proyector-astronauta-sistema-solar/">
   <meta property="og:title" content="Proyector Astronauta de Sistema Solar — Dam Vertex" />
   <meta property="og:description" content="Convertí tu habitación en tu propio universo — galaxias, nebulosas y estrellas, parlante Bluetooth y sonidos relajantes integrados." />
-  <meta property="og:image" content="/proyector-astronauta-sistema-solar/hero-placeholder.svg" />
+  <meta property="og:image" content="/proyector-astronauta-sistema-solar/hero-proyector.webp" />
   <meta property="og:url" content="https://damvertex.com/proyector-astronauta-sistema-solar/" />
   <meta property="og:type" content="website" />
   <script type="application/ld+json">
@@ -345,6 +345,10 @@
     .theme-proyector .offer-option .offer-compare { color: rgba(240,244,255,.5); }
     .theme-proyector .offer-option.selected,
     .theme-proyector .offer-option:has(input:checked) { border-color: var(--proy-purple); background: rgba(108,63,197,.14); }
+    /* .offer-foot: bare rule, mismo patrón que rizador/depilador — sin esto el
+       badge cae como bloque a ancho completo en vez de píldora junto al ahorro. */
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
+    .offer-foot .offer-saving { margin-top: 0; }
     .theme-proyector .offer-badge { position: static; background: var(--proy-purple); color: #fff; }
     /* Verde fijo obligatorio — "Mayor ahorro" nunca dorado ni negro (ver CLAUDE.md). */
     .theme-proyector .offer-badge--best { position: static; background: #1a7a3e; color: #fff; }
@@ -448,7 +452,9 @@
   <div class="hero-proy__inner">
 
     <div class="hero-proy__media">
-      <img src="/proyector-astronauta-sistema-solar/hero-placeholder.svg"
+      <img src="/proyector-astronauta-sistema-solar/hero-proyector.webp"
+           srcset="/proyector-astronauta-sistema-solar/hero-proyector-400w.webp 400w, /proyector-astronauta-sistema-solar/hero-proyector.webp 840w"
+           sizes="(max-width: 600px) 400px, 840px"
            alt="Proyector Astronauta de Sistema Solar"
            class="hero-proy__img"
            loading="eager"
@@ -495,28 +501,6 @@
   </div>
 </section>
 
-<!-- ══ PROBLEMA — azul marino profundo ══ -->
-<section class="problema-proy" id="section-problema" data-insync-section="problema">
-  <div class="problema-proy__inner">
-    <p class="sec-overline-proy">¿Te suena familiar?</p>
-    <h2 class="sec-h-proy">¿Tu cabeza no para cuando querés dormir?</h2>
-    <div class="pain-grid-proy">
-      <div class="pain-card-proy">
-        <strong>El estrés que no te deja dormir 😵‍💫</strong>
-        <p>Das vueltas en la cama con la cabeza llena de pensamientos que no paran.</p>
-      </div>
-      <div class="pain-card-proy">
-        <strong>Una habitación fría y sin vida 🛏️</strong>
-        <p>Cuatro paredes iguales todos los días, sin nada que te haga sentir en tu espacio.</p>
-      </div>
-      <div class="pain-card-proy">
-        <strong>Necesitás desconectarte del mundo 📵</strong>
-        <p>Después de un día completo, tu mente sigue encendida y no hay forma de bajar un cambio.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ══ DEMO — video real, negro espacio ══ -->
 <section class="demo-proy" id="section-demo" data-insync-section="demo">
   <div class="demo-proy__inner">
@@ -526,36 +510,31 @@
       <h2 class="sec-h-proy">Mirá lo que pasa cuando lo encendés.</h2>
     </div>
 
-    <!--
-      VIDEO PENDIENTE — placeholder comentado, listo para reemplazar.
-      Mismo patrón data-src + IntersectionObserver que taza-mezcladora-automatica
-      (autoplay al entrar en viewport, pausa al salir, threshold 30%). Descomentar
-      y agregar los 2 archivos en /assets/video/ cuando haya footage real.
-
-      <div class="demo-video-card-proy">
-        <div class="demo-video-wrap-proy">
-          <video class="demo-video-proy" autoplay muted loop playsinline preload="none" aria-hidden="true">
-            <source data-src="/assets/video/proyector-demo-1.mp4" type="video/mp4">
-          </video>
-        </div>
-        <p class="demo-video-title-proy">Así se ve en tu techo</p>
-      </div>
-      <div class="demo-video-card-proy">
-        <div class="demo-video-wrap-proy">
-          <video class="demo-video-proy" autoplay muted loop playsinline preload="none" aria-hidden="true">
-            <source data-src="/assets/video/proyector-demo-2.mp4" type="video/mp4">
-          </video>
-        </div>
-        <p class="demo-video-title-proy">Modos y colores</p>
-      </div>
-    -->
     <div class="demo-proy__videos">
       <div class="demo-video-card-proy">
+        <!--
+          VIDEO PENDIENTE — el archivo fuente (TRANSFORMACIÓN _ RESULTADO.mp4, 35.5 MiB)
+          excede el límite duro de 25 MiB por archivo de Cloudflare Pages y no hay
+          herramienta de compresión de video disponible en esta máquina (sin ffmpeg) para
+          bajarlo de tamaño. Comprimir externamente a <25MB (idealmente <5MB) y guardar en
+          /assets/video/proyector-transformacion-resultado.mp4, luego descomentar y borrar
+          el div .demo-video-wrap-proy con el emoji de abajo:
+
+          <div class="demo-video-wrap-proy">
+            <video class="demo-video-proy" autoplay muted loop playsinline preload="none" aria-hidden="true">
+              <source data-src="/assets/video/proyector-transformacion-resultado.mp4" type="video/mp4">
+            </video>
+          </div>
+        -->
         <div class="demo-video-wrap-proy" aria-hidden="true">🌌</div>
         <p class="demo-video-title-proy">Así se ve en tu techo</p>
       </div>
       <div class="demo-video-card-proy">
-        <div class="demo-video-wrap-proy" aria-hidden="true">🪐</div>
+        <div class="demo-video-wrap-proy">
+          <video class="demo-video-proy" autoplay muted loop playsinline preload="none" aria-hidden="true">
+            <source data-src="/assets/video/proyector-curiosidad-fomo.mp4" type="video/mp4">
+          </video>
+        </div>
         <p class="demo-video-title-proy">Modos y colores</p>
       </div>
     </div>
@@ -569,9 +548,8 @@
 </section>
 <script defer>
   /* Videos demo: autoplay al entrar en viewport, pausa al salir — mismo patrón
-     data-src + IntersectionObserver que taza-mezcladora-automatica. Sin efecto
-     mientras no haya elementos .demo-video-proy activos (ver placeholder
-     comentado arriba) — guard explícito, no hace nada hasta que se sumen videos reales. */
+     data-src + IntersectionObserver que taza-mezcladora-automatica, threshold 30%,
+     pausa on-exit para no seguir decodificando video fuera de pantalla. */
   (function() {
     var videos = document.querySelectorAll('.demo-video-proy');
     if (!videos.length || typeof IntersectionObserver !== 'function') return;
@@ -595,6 +573,28 @@
     videos.forEach(function(v) { obs.observe(v); });
   })();
 </script>
+
+<!-- ══ PROBLEMA — azul marino profundo ══ -->
+<section class="problema-proy" id="section-problema" data-insync-section="problema">
+  <div class="problema-proy__inner">
+    <p class="sec-overline-proy">¿Te suena familiar?</p>
+    <h2 class="sec-h-proy">¿Tu cabeza no para cuando querés dormir?</h2>
+    <div class="pain-grid-proy">
+      <div class="pain-card-proy">
+        <strong>El estrés que no te deja dormir 😵‍💫</strong>
+        <p>Das vueltas en la cama con la cabeza llena de pensamientos que no paran.</p>
+      </div>
+      <div class="pain-card-proy">
+        <strong>Una habitación fría y sin vida 🛏️</strong>
+        <p>Cuatro paredes iguales todos los días, sin nada que te haga sentir en tu espacio.</p>
+      </div>
+      <div class="pain-card-proy">
+        <strong>Necesitás desconectarte del mundo 📵</strong>
+        <p>Después de un día completo, tu mente sigue encendida y no hay forma de bajar un cambio.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ══ CARACTERÍSTICAS — púrpura oscuro ══ -->
 <section class="producto-proy" id="section-producto" data-insync-section="producto">
