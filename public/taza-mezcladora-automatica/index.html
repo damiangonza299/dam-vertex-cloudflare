@@ -167,7 +167,7 @@
       background: rgba(107,63,42,.08); border: 1px solid var(--taza-border); border-radius: 8px; padding: 10px 14px;
     }
 
-    .hero-taza .db-badge { font-size: 11px; color: var(--taza-text); padding: 5px 10px; border-radius: 20px; background: rgba(107,63,42,.08); border: 1px solid rgba(107,63,42,.25); }
+    .hero-taza .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--taza-text); padding: 5px 7px; border-radius: 20px; background: rgba(107,63,42,.08); border: 1px solid rgba(107,63,42,.25); white-space: nowrap; flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis; }
     .hero-taza .db-badge.db-green { background: rgba(107,63,42,.16); border-color: rgba(107,63,42,.4); color: var(--taza-brown-dk); }
 
     /* ── Selector de color (hero) ── */
@@ -191,7 +191,7 @@
     .color-select-taza__error { display: none; margin-top: 8px; font-size: 12px; font-weight: 600; color: #c0392b; }
     .color-select-taza__error.visible { display: block; }
 
-    .hero-taza .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+    .hero-taza .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 16px; }
 
     /* ══ DEMO — fondo blanco (2do eslabón de la alternancia) ══ */
     .demo-taza { background: #FFFFFF; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--taza-border); }
@@ -496,9 +496,8 @@
       </a>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
-        <span class="db-badge db-green">✓ Envío gratis</span>
         <span class="db-badge">💳 Pago al recibir · Central</span>
-        <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
       </div>
     </div>
 

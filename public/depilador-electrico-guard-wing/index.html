@@ -182,8 +182,8 @@
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
     .offer-foot .offer-saving { margin-top: 0; }
 
-    .hero-dep .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
-    .hero-dep .db-badge { font-size: 11px; color: var(--dep-text); padding: 5px 10px; border-radius: 20px; background: rgba(255,107,157,.1); border: 1px solid rgba(255,107,157,.3); }
+    .hero-dep .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 16px; }
+    .hero-dep .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--dep-text); padding: 5px 7px; border-radius: 20px; background: rgba(255,107,157,.1); border: 1px solid rgba(255,107,157,.3); white-space: nowrap; flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis; }
     .hero-dep .db-badge.db-green { background: rgba(255,107,157,.18); border-color: rgba(255,107,157,.5); color: var(--dep-pink-deep); }
 
     /* ══ SECCIÓN — overline / línea decorativa compartidos ══ */
@@ -460,8 +460,8 @@
       </a>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
-        <span class="db-badge db-green">✓ Envío gratis</span>
         <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
       </div>
     </div>
 
