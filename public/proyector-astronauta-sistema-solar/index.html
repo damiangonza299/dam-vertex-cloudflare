@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/proyector-astronauta-sistema-solar/hero-proyector.webp" imagesrcset="/proyector-astronauta-sistema-solar/hero-proyector-400w.webp 400w, /proyector-astronauta-sistema-solar/hero-proyector.webp 840w" imagesizes="(max-width: 600px) 400px, 840px" fetchpriority="high" type="image/webp">
+  <link rel="preload" as="image" href="/proyector-astronauta-sistema-solar/hero-proyector.webp" imagesrcset="/proyector-astronauta-sistema-solar/hero-proyector-400w.webp 400w, /proyector-astronauta-sistema-solar/hero-proyector-700w.webp 700w, /proyector-astronauta-sistema-solar/hero-proyector.webp 840w" imagesizes="(max-width: 600px) 400px, (max-width: 900px) 700px, 840px" fetchpriority="high" type="image/webp">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
@@ -311,7 +311,7 @@
     .stock-bar-proy { margin: 0 0 30px; }
     .stock-bar-proy__label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; }
     .stock-bar-proy__track { height: 10px; border-radius: 20px; background: rgba(255,255,255,.18); overflow: hidden; }
-    .stock-bar-proy__fill { height: 100%; border-radius: 20px; background: var(--proy-blue); width: 60%; transition: width .4s ease; }
+    .stock-bar-proy__fill { height: 100%; width: 100%; border-radius: 20px; background: var(--proy-blue); transform-origin: left center; transform: scaleX(.6); transition: transform .4s ease; will-change: transform; }
 
     .urgencia-proy .close-trust { margin: 30px auto 0; }
     .urgencia-proy .close-trust .ct-item { color: rgba(255,255,255,.92); justify-content: center; }
@@ -454,8 +454,8 @@
 
     <div class="hero-proy__media">
       <img src="/proyector-astronauta-sistema-solar/hero-proyector.webp"
-           srcset="/proyector-astronauta-sistema-solar/hero-proyector-400w.webp 400w, /proyector-astronauta-sistema-solar/hero-proyector.webp 840w"
-           sizes="(max-width: 600px) 400px, 840px"
+           srcset="/proyector-astronauta-sistema-solar/hero-proyector-400w.webp 400w, /proyector-astronauta-sistema-solar/hero-proyector-700w.webp 700w, /proyector-astronauta-sistema-solar/hero-proyector.webp 840w"
+           sizes="(max-width: 600px) 400px, (max-width: 900px) 700px, 840px"
            alt="Proyector Astronauta de Sistema Solar"
            class="hero-proy__img"
            loading="eager"
@@ -1114,7 +1114,7 @@
         var pct  = document.getElementById('stock-bar-pct');
         if (!fill || !text) return;
         var pctVal = Math.max(6, Math.min(100, Math.round((stock / Math.max(stock, minStock * 4, 20)) * 100)));
-        fill.style.width = pctVal + '%';
+        fill.style.transform = 'scaleX(' + (pctVal / 100) + ')';
         text.textContent = stock > 0 ? ('Quedan ' + stock + ' unidades') : 'Últimas unidades';
         if (pct) pct.textContent = pctVal <= 30 ? '¡Se agota pronto!' : '';
       })
