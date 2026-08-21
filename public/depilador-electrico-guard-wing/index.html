@@ -173,24 +173,14 @@
     .hero-dep .price-badge   { background: var(--dep-pink-dk); color: #fff; border: none; }
     .hero-dep__proof { font-size: 13px; font-weight: 600; color: var(--dep-pink-dk); margin: 0 0 18px; }
 
-    /* ── Combos externos (preselección visual, sin tracking) ── */
-    .combo-preview { display: flex; flex-direction: column; gap: 8px; margin: 0 0 18px; }
-    .combo-preview-card {
-      display: block; border: 2px solid rgba(255,107,157,.3); border-radius: 10px;
-      padding: 12px 14px; cursor: pointer; position: relative;
-      transition: border-color .18s, background .18s; background: var(--dep-card); user-select: none;
+    .hero-dep__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; }
+    .hero-dep__feature {
+      display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--dep-text);
+      background: rgba(255,107,157,.08); border: 1px solid var(--dep-border); border-radius: 8px; padding: 10px 14px;
     }
-    .combo-preview-card .offer-qty  { color: var(--dep-text); font-size: 15px; font-weight: 600; }
-    .combo-preview-card .offer-price { color: var(--dep-text); font-weight: 700; }
-    .combo-preview-card .offer-compare { color: rgba(26,26,26,.64); font-size: 13px; text-decoration: line-through; }
-    .combo-preview-card .offer-saving { color: #166534; font-size: 12px; font-weight: 600; }
-    .combo-preview-card.combo-preview-card--active { border-color: var(--dep-pink-dk); background: rgba(255,107,157,.08); }
+    /* .offer-foot/.offer-saving: bare rules, compartidas con el modal (offer-options) — no scopear a combo-preview-card. */
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
     .offer-foot .offer-saving { margin-top: 0; }
-    .combo-preview-card .offer-badge { position: static; background: var(--dep-pink-dk); color: #fff; }
-    /* Verde fijo — misma convención que el resto del catálogo: "Mayor ahorro"
-       siempre en verde, nunca negro ni dorado. */
-    .combo-preview-card .offer-badge--best { background: #1a7a3e; color: #fff; }
 
     .hero-dep .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
     .hero-dep .db-badge { font-size: 11px; color: var(--dep-text); padding: 5px 10px; border-radius: 20px; background: rgba(255,107,157,.1); border: 1px solid rgba(255,107,157,.3); }
@@ -464,40 +454,10 @@
       </div>
       <p class="hero-dep__proof">Sin dolor, sin cera, sin turnos de salón</p>
 
-      <!-- Combos externos — preselección visual, sin tracking ni eventos -->
-      <div class="combo-preview" id="combo-preview">
-        <div class="combo-preview-card combo-preview-card--active" data-offer="1">
-          <div class="offer-content">
-            <span class="offer-qty">1 unidad</span>
-            <span class="offer-price">Gs. 149.000</span>
-          </div>
-        </div>
-        <div class="combo-preview-card" data-offer="2">
-          <div class="offer-content">
-            <span class="offer-qty">2 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare">Gs. 298.000</span>
-              <span class="offer-price">Gs. 279.000</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 19.000</span>
-            <div class="offer-badge">🔥 Más elegido</div>
-          </div>
-        </div>
-        <div class="combo-preview-card" data-offer="3">
-          <div class="offer-content">
-            <span class="offer-qty">3 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare">Gs. 447.000</span>
-              <span class="offer-price">Gs. 399.000</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 48.000</span>
-            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
-          </div>
-        </div>
+      <div class="hero-dep__features">
+        <div class="hero-dep__feature">✨ Cabezal de precisión para cejas y bigote</div>
+        <div class="hero-dep__feature">💧 Cabezal lavable — higiene garantizada</div>
+        <div class="hero-dep__feature">🔋 Recargable USB — siempre lista</div>
       </div>
 
       <a class="btn btn-primary" data-scroll-form data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Depilador%20El%C3%A9ctrico%20Guard%20Wing.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
@@ -1123,21 +1083,6 @@
        CLAUDE.md "CTA — BLINDADO CONTRA FALLOS DE RED". */
     try { DV.trackViewContent(PRODUCT); } catch (_) {}
     try { DV.initForm(PRODUCT); } catch (_) {}
-
-    /* Click en mini card → preselecciona combo en modal */
-    document.querySelectorAll('.combo-preview-card').forEach(function(card) {
-      card.addEventListener('click', function() {
-        document.querySelectorAll('.combo-preview-card').forEach(function(c) { c.classList.remove('combo-preview-card--active'); });
-        card.classList.add('combo-preview-card--active');
-        var radio = document.querySelector('.offer-options input[name="offer"][value="' + card.dataset.offer + '"]');
-        if (!radio) return;
-        radio.checked = true;
-        document.querySelectorAll('.offer-option').forEach(function(opt) { opt.classList.remove('selected'); });
-        var parent = radio.closest('.offer-option');
-        if (parent) parent.classList.add('selected');
-        radio.dispatchEvent(new Event('change'));
-      });
-    });
 
     /* Stock real desde D1 — barra de urgencia en la sección de cierre */
     fetch('/api/product-stock?slug=' + PRODUCT.slug)

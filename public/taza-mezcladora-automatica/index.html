@@ -161,6 +161,11 @@
     .hero-taza .price-compare { color: rgba(42,24,16,.66); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
     .hero-taza .price-badge   { background: var(--taza-brown); color: #fff; border: none; }
     .hero-taza__proof { font-size: 13px; font-weight: 600; color: var(--taza-brown-dk); margin: 0 0 18px; }
+    .hero-taza__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; }
+    .hero-taza__feature {
+      display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--taza-text);
+      background: rgba(107,63,42,.08); border: 1px solid var(--taza-border); border-radius: 8px; padding: 10px 14px;
+    }
 
     .hero-taza .db-badge { font-size: 11px; color: var(--taza-text); padding: 5px 10px; border-radius: 20px; background: rgba(107,63,42,.08); border: 1px solid rgba(107,63,42,.25); }
     .hero-taza .db-badge.db-green { background: rgba(107,63,42,.16); border-color: rgba(107,63,42,.4); color: var(--taza-brown-dk); }
@@ -457,6 +462,12 @@
         <span class="price-badge">22% OFF</span>
       </div>
       <p class="hero-taza__proof">Envío gratis incluido — se paga sola con 3 salidas menos a la cafetería</p>
+
+      <div class="hero-taza__features">
+        <div class="hero-taza__feature">☕ Mezcla automática en segundos — sin cucharita</div>
+        <div class="hero-taza__feature">🔋 Batería recargable — sin cables</div>
+        <div class="hero-taza__feature">🌡️ Funciona con cualquier bebida caliente o fría</div>
+      </div>
 
       <div class="color-select-taza" id="color-select-taza">
         <span class="color-select-taza__label">Elegí tu color</span>
