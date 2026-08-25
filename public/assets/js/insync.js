@@ -7,17 +7,20 @@
 
   var SESSION_KEY = 'dv_insync_sid';
   var ENDPOINT    = '/api/insync';
-  var FLUSH_MS    = 8000;
+  var FLUSH_MS    = 2000;
   var MAX_BATCH   = 30;
 
-  /* ── Session ID (anonymous, no PII) ── */
+  /* ── Session ID (anonymous, no PII) ──
+     Vive solo en sessionStorage: expira al cerrar el browser/tab. No usar
+     localStorage acá — persistiría indefinidamente y se compartiría entre
+     todas las landings del sitio, causando atribución cruzada entre
+     productos distintos que comparten el mismo navegador. */
   function getSession() {
     try {
-      var id = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY);
+      var id = sessionStorage.getItem(SESSION_KEY);
       if (!id) {
         id = 'is_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
         try { sessionStorage.setItem(SESSION_KEY, id); } catch (_) {}
-        try { localStorage.setItem(SESSION_KEY, id); } catch (_) {}
       }
       return id;
     } catch (_) {
@@ -79,11 +82,14 @@
   });
   window.addEventListener('pagehide', flush);
 
-  /* ── Page view ── */
+  /* ── Page view — se manda de inmediato, sin esperar el batch de FLUSH_MS,
+     para no perderlo si el usuario se va antes de que corra el timer
+     (común en WebViews embebidos tipo Instagram/Facebook in-app browser). ── */
   push('page_view', null, null, {
     referrer: document.referrer ? (function () { try { return new URL(document.referrer).hostname; } catch (_) { return ''; } })() : '',
     mobile:   window.innerWidth < 768,
   });
+  flush();
 
   /* ── Scroll depth ── */
   var scrollHits = {};

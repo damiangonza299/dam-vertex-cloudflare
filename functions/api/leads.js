@@ -287,7 +287,6 @@ export async function onRequestPost({ request, env, waitUntil }) {
       if (source === 'venta-hipnotica') return;
       if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
       try {
-        const now         = new Date().toLocaleString('es-PY', { timeZone: 'America/Asuncion' });
         const variantText = formatVariantForTelegram(variant);
         const isComboTg   = product_slug === 'combo-reloj-cadena';
         const tgProductName = isComboTg
@@ -305,10 +304,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
           `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
           ...(!isComboTg && variantText ? [`Variante: ${variantText}`] : []),
           `Cantidad: ${quantity || 1}`,
-          `Fecha: ${now}`,
-          `Estado: pending`,
           ...(address ? [`Referencia: ${address}`] : []),
-          ...(location_maps_url ? [`Ubicacion: ${location_maps_url}`] : []),
         ].join('\n');
         const tgRes  = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
           method:  'POST',

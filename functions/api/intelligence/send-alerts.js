@@ -11,7 +11,7 @@
          info → 7d | media → 14d | alta → 30d
 
    Variables requeridas:
-     ADMIN_PASSWORD
+     SERVICE_SECRET
      TELEGRAM_BOT_TOKEN
      TELEGRAM_INTELLIGENCE_CHAT_ID
    Opcionales (para CPA/ROAS y filtro de activos):
@@ -23,7 +23,7 @@
    ========================================================= */
 
 import { generateAlerts } from './_alert-engine.js';
-import { verifyAdminToken } from '../../_lib/adminAuth.js';
+import { verifyServiceToken } from '../../_lib/adminAuth.js';
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -38,7 +38,7 @@ export async function onRequestOptions() {
 }
 
 export async function onRequestPost({ request, env }) {
-  if (!(await verifyAdminToken(request, env))) {
+  if (!(await verifyServiceToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

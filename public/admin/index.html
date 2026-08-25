@@ -191,10 +191,11 @@
     <div class="admin-tabs">
       <button class="admin-tab admin-tab--active" data-tab="leads" onclick="switchAdminTab('leads')">Lead</button>
       <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')">Productos</button>
-      <button class="admin-tab" data-tab="ads" onclick="switchAdminTab('ads')">Anuncios</button>
-      <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')">Flow</button>
-      <button class="admin-tab" data-tab="meta" onclick="switchAdminTab('meta')">Meta</button>
-      <button class="admin-tab" onclick="window.open('/intelligence/','_blank')" style="color:#818cf8;font-weight:700">INTEL</button>
+      <button class="admin-tab" data-tab="vh" id="vh-tab-btn" onclick="switchAdminTab('vh')" style="color:#f97316">V.H</button>
+      <button class="admin-tab" data-tab="ads" onclick="switchAdminTab('ads')" style="display:none">Anuncios</button>
+      <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')" style="display:none">Flow</button>
+      <button class="admin-tab" data-tab="meta" onclick="switchAdminTab('meta')" style="display:none">Meta</button>
+      <button class="admin-tab" onclick="window.open('/intelligence/','_blank')" style="display:none;color:#818cf8;font-weight:700">INTEL</button>
       <button class="admin-tab" data-tab="shipping" onclick="switchAdminTab('shipping')" style="display:none;color:#60a5fa">Envíos</button>
       <button class="admin-tab" data-tab="blocked" onclick="switchAdminTab('blocked')" style="color:#f87171">Block</button>
     </div>
@@ -525,6 +526,34 @@
         </table>
       </div>
     </div><!-- /blocked-section -->
+
+    <!-- V.H — Venta Hipnótica (libro digital) -->
+    <div id="vh-section" style="display:none">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap">
+        <button id="vh-refresh-btn" onclick="loadLeads()" style="background:#1a1a1a;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);cursor:pointer">
+          ↻ Actualizar
+        </button>
+        <span style="font-size:12px;color:var(--muted)">Pedidos del libro digital Venta Hipnótica — gestionados aparte de Leads.</span>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Producto</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="vh-tbody">
+            <tr><td colspan="7" style="text-align:center;padding:48px;color:var(--muted)">Iniciá sesión para ver los pedidos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /vh-section -->
 
     <!-- Delivery: Distribución de envíos -->
     <div id="shipping-section" style="display:none">

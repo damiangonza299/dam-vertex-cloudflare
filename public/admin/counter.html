@@ -191,8 +191,9 @@
         rawLeadsCount  = newLeads;
         purchasesCount = newPurchases;
 
-        /* Pedidos = leads del día que todavía no se confirmaron como venta */
-        var pending = Math.max(0, rawLeadsCount - purchasesCount);
+        /* leads_today ya viene como conteo de pendientes directo desde el backend
+           (COUNT status='pending' en D1) — no restar purchasesCount de nuevo acá. */
+        var pending = rawLeadsCount;
         numLeads.textContent     = pending;
         numPurchases.textContent = purchasesCount;
       })

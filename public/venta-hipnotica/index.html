@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preconnect" href="https://i.ytimg.com">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/js/tracking.js?v=73" as="script">
+  <meta name="description" content="Venta Hipnótica — el libro digital que enseña a cerrar ventas por WhatsApp sin rogar ni bajar el precio. Método probado en Paraguay. PDF instantáneo por Gs. 49.000.">
+  <title>Venta Hipnótica — DAM Vertex</title>
+  <script src="/assets/js/site-version.js?v=69"></script>
+  <link rel="stylesheet" href="/assets/css/styles.min.css?v=55">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Venta Hipnótica",
+    "description": "Libro digital en PDF que enseña el método para cerrar ventas por WhatsApp sin rogar ni bajar el precio. Probado en Paraguay.",
+    "brand": { "@type": "Brand", "name": "DAM Vertex" },
+    "url": "https://damvertex.com/venta-hipnotica/",
+    "offers": {
+      "@type": "Offer",
+      "price": "49000",
+      "priceCurrency": "PYG",
+      "availability": "https://schema.org/InStock",
+      "seller": { "@type": "Organization", "name": "DAM Vertex" }
+    }
+  }
+  </script>
+  <style>
+    /* ── Venta Hipnótica theme (acento naranja, alta energía) ── */
+    .theme-vh { --accent: #f97316; }
+    body.theme-vh { background: #0a0a0a; }
+    .theme-vh .btn-primary { background: #f97316; color: #fff; font-weight: 800; box-shadow: none; }
+    .theme-vh .btn-primary:hover { background: #ea6a0a; }
+
+    .vh-main { max-width: 560px; margin: 0 auto; padding: 0 20px; }
+
+    /* — HEADLINE — */
+    .vh-hero { padding: 36px 0 22px; text-align: center; }
+    .vh-hero__title {
+      font-size: clamp(30px, 9vw, 44px);
+      font-weight: 900;
+      color: #f97316;
+      letter-spacing: -.01em;
+      text-transform: uppercase;
+      line-height: 1.05;
+      margin: 0 0 12px;
+    }
+    .vh-hero__divider {
+      width: 64px;
+      height: 3px;
+      background: #f97316;
+      border-radius: 2px;
+      margin: 0 auto 18px;
+    }
+    .vh-hero__sub {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* — VIDEO — */
+    .vh-video-sec { padding: 8px 0 6px; }
+    .vh-video-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px dashed #f97316;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(249,115,22,.28), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(249,115,22,.28), transparent 55%),
+        #000;
+    }
+    #vh-player-wrap { position: absolute; inset: 0; }
+    #vh-player-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    /* — PROGRESO / URGENCIA — */
+    .vh-progress-wrap { margin: 16px 0 4px; }
+    .vh-progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      border-radius: 4px;
+      background: rgba(249,115,22,.15);
+      overflow: hidden;
+    }
+    .vh-progress-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #f97316, #fbbf24);
+      transition: width .2s linear;
+    }
+    .vh-progress-bar.vh-progress--sim { animation: vh-sim-progress 14s linear infinite; }
+    @keyframes vh-sim-progress { 0% { width: 0%; } 100% { width: 96%; } }
+
+    .vh-urgency-text {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #f97316;
+      margin: 12px 0 4px;
+      animation: vh-pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes vh-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+
+    /* — OFERTA (oculta hasta 'ended' del video) — */
+    .vh-offer {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 28px 0 60px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(18px) scale(.98);
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .vh-offer.vh-offer--visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      max-height: 800px;
+    }
+    .vh-offer__price { display: flex; align-items: baseline; justify-content: center; gap: 12px; margin: 0 0 22px; }
+    .vh-price-main { font-size: clamp(32px, 8vw, 44px); font-weight: 900; color: #f97316; }
+    .vh-price-compare { font-size: 18px; color: rgba(255,255,255,.4); text-decoration: line-through; }
+
+    .vh-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+    }
+    .vh-bullets li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: #e2e2e2; line-height: 1.42; }
+    .vh-check { color: #4ade80; font-weight: 800; flex-shrink: 0; }
+
+    .vh-form { display: flex; flex-direction: column; gap: 16px; align-items: stretch; text-align: left; }
+    .vh-form .form-group { width: 100%; }
+    .vh-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; }
+    @media (max-width: 480px) {
+      .vh-form-row { grid-template-columns: 1fr; }
+    }
+    .vh-form .form-group label {
+      display: block;
+      text-align: left;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+      letter-spacing: .5px;
+      margin-bottom: 6px;
+    }
+    .vh-form .form-group input {
+      background: #111;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    .vh-form .form-group input:focus { border-color: var(--accent); }
+    .vh-btn {
+      width: 100%;
+      max-width: 100%;
+      font-size: 18px;
+      padding: 18px 20px;
+      animation: vh-btn-pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes vh-btn-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,.5); }
+      50%      { box-shadow: 0 0 0 12px rgba(249,115,22,0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .vh-btn, .vh-urgency-text, .vh-progress-bar.vh-progress--sim { animation: none; }
+    }
+
+    @media (max-width: 400px) {
+      .vh-hero { padding: 28px 0 18px; }
+    }
+  </style>
+</head>
+<body class="theme-vh">
+
+<!-- Sprite: icono WhatsApp real del proyecto (reusado de public/index.html .wa-btn) -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <symbol id="ic-whatsapp" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </symbol>
+</svg>
+
+<main class="vh-main">
+
+  <!-- HEADLINE -->
+  <section class="vh-hero" id="section-hero">
+    <h1 class="vh-hero__title">Venta Hipnótica</h1>
+    <div class="vh-hero__divider"></div>
+    <p class="vh-hero__sub">El método que uso para cerrar ventas por WhatsApp sin rogar ni bajar el precio.</p>
+  </section>
+
+  <!-- VIDEO -->
+  <section class="vh-video-sec" id="section-video">
+    <div class="vh-video-wrap">
+      <div id="vh-player-wrap">
+        <div id="vh-player"></div>
+      </div>
+    </div>
+    <p style="text-align:center; font-size:12px; color:rgba(255,255,255,0.4); margin-top:8px;">
+      ⛶ Tocá el ícono de pantalla completa para mejor experiencia
+    </p>
+
+    <div class="vh-progress-wrap">
+      <div class="vh-progress-bar-bg">
+        <div class="vh-progress-bar vh-progress--sim" id="vh-progress-bar"></div>
+      </div>
+    </div>
+    <p class="vh-urgency-text">⏳ El precio especial aparece cuando termine el video</p>
+  </section>
+
+  <!-- OFERTA (oculta hasta 'ended' del video) -->
+  <section class="vh-offer" id="vh-offer">
+    <div class="vh-offer__price">
+      <span class="vh-price-main">Gs. 49.000</span>
+      <span class="vh-price-compare">Gs. 99.000</span>
+    </div>
+    <ul class="vh-bullets">
+      <li><span class="vh-check">✓</span>PDF instantáneo — lo recibís en menos de 5 minutos</li>
+      <li><span class="vh-check">✓</span>Probado en Paraguay con resultados reales</li>
+      <li><span class="vh-check">✓</span>Una sola vez — tuyo para siempre</li>
+    </ul>
+    <form class="vh-form" id="vh-form" novalidate>
+      <div class="vh-form-row">
+        <div class="form-group">
+          <label for="vh-name">Nombre</label>
+          <input type="text" id="vh-name" name="name" placeholder="Tu nombre" autocomplete="given-name">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group">
+          <label for="vh-lastname">Apellido</label>
+          <input type="text" id="vh-lastname" name="lastname" placeholder="Tu apellido" autocomplete="family-name">
+          <span class="form-error-msg"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="vh-phone">WhatsApp</label>
+        <input type="tel" id="vh-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <label class="upsell-block" id="vh-invoice-block">
+        <input type="checkbox" id="vh-invoice" name="invoice">
+        <div class="upsell-content">
+          <span class="upsell-title">🧾 Necesito factura</span>
+          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+        </div>
+      </label>
+      <div id="vh-invoice-fields" style="display:none">
+        <div class="form-group">
+          <label for="vh-invoice-ruc">RUC *</label>
+          <input type="text" id="vh-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="vh-invoice-name">Razón social / Nombre *</label>
+          <input type="text" id="vh-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+          <span class="form-error-msg"></span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary vh-btn" id="vh-submit-btn">
+        <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+        Quiero el libro ahora
+      </button>
+    </form>
+  </section>
+
+</main>
+
+<script src="/assets/js/tracking.js?v=73" defer></script>
+<script>
+  var PRODUCT = { name: 'Venta Hipnótica (Libro Digital)', slug: 'venta-hipnotica', price: 49000 };
+  var WA_NUMBER = '595993471550';
+
+  var vhPlayer, vhProgressInterval;
+
+  function vhRevealOffer() {
+    clearInterval(vhProgressInterval);
+    var progressBar = document.getElementById('vh-progress-bar');
+    var offer       = document.getElementById('vh-offer');
+    progressBar.classList.remove('vh-progress--sim');
+    progressBar.style.width = '100%';
+    offer.classList.add('vh-offer--visible');
+    offer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function vhStartProgressPolling() {
+    var progressBar = document.getElementById('vh-progress-bar');
+    vhProgressInterval = setInterval(function () {
+      if (!vhPlayer || typeof vhPlayer.getDuration !== 'function') return;
+      var duration = vhPlayer.getDuration();
+      var current  = vhPlayer.getCurrentTime();
+      if (duration > 0) {
+        progressBar.classList.remove('vh-progress--sim');
+        progressBar.style.width = (current / duration * 100) + '%';
+      }
+    }, 1000);
+  }
+
+  /* — YouTube IFrame API — cargada en idle, no en el critical path.
+     El iframe_api (+ el player real que arma) es pesado y consume main thread;
+     sacarlo del parse inicial deja pintar el H1/CSS primero (mismo criterio que
+     el patrón lazy-inject de location-picker.js — ver lighthouse-geo-standards.md).
+     requestIdleCallback dispara casi de inmediato en la práctica — el autoplay
+     percibido por el usuario no cambia, solo cuándo lo mide Lighthouse. */
+  function vhLoadYouTubeAPI() {
+    var vhYtTag = document.createElement('script');
+    vhYtTag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(vhYtTag);
+  }
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(vhLoadYouTubeAPI, { timeout: 1500 });
+  } else {
+    setTimeout(vhLoadYouTubeAPI, 200);
+  }
+
+  function onYouTubeIframeAPIReady() {
+    vhPlayer = new YT.Player('vh-player', {
+      videoId: '96_X8VJnLq0',
+      playerVars: {
+        autoplay:        1,
+        mute:             1,
+        controls:         1,
+        rel:              0,
+        modestbranding:   1,
+        playsinline:      1,
+        origin:           window.location.origin,
+      },
+      events: {
+        onReady: vhStartProgressPolling,
+        onStateChange: function (e) {
+          if (e.data === YT.PlayerState.ENDED) vhRevealOffer();
+        },
+        onError: function (e) {
+          console.error('VH_YT_PLAYER_ERROR', e.data);
+        },
+      },
+    });
+  }
+
+  /* Normaliza teléfono Paraguay → 595XXXXXXXXX (12 dígitos). null si no es válido.
+     Duplicado deliberadamente en vez de cargar products.js completo (no lo usa esta landing —
+     evita ~800 líneas de lógica de combos/variantes/city-picker que no aplican acá). */
+  function vhNormalizePhone(raw) {
+    var digits = (raw || '').replace(/\D/g, '');
+    var norm;
+    if      (digits.startsWith('595')) norm = digits;
+    else if (digits.startsWith('0'))   norm = '595' + digits.slice(1);
+    else if (digits.startsWith('9'))   norm = '595' + digits;
+    else return null;
+    return /^5959\d{8}$/.test(norm) ? norm : null;
+  }
+
+  function vhShowFieldError(input, msg) {
+    input.classList.add('error');
+    var err = input.closest('.form-group') && input.closest('.form-group').querySelector('.form-error-msg');
+    if (err) { err.textContent = msg; err.classList.add('visible'); }
+  }
+
+  function vhClearFieldErrors(form) {
+    form.querySelectorAll('.error').forEach(function (el) { el.classList.remove('error'); });
+    form.querySelectorAll('.form-error-msg.visible').forEach(function (el) { el.classList.remove('visible'); });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.DV && typeof DV.trackViewContent === 'function') DV.trackViewContent(PRODUCT);
+
+    var invoiceCb     = document.getElementById('vh-invoice');
+    var invoiceFields = document.getElementById('vh-invoice-fields');
+    if (invoiceCb && invoiceFields) {
+      invoiceCb.addEventListener('change', function () {
+        invoiceFields.style.display = invoiceCb.checked ? 'block' : 'none';
+      });
+    }
+
+    document.getElementById('vh-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var form = e.target;
+      vhClearFieldErrors(form);
+
+      var nameEl     = document.getElementById('vh-name');
+      var lastnameEl = document.getElementById('vh-lastname');
+      var phoneEl    = document.getElementById('vh-phone');
+
+      var nombre = nameEl.value.trim();
+      if (!nombre) {
+        vhShowFieldError(nameEl, 'Ingresá tu nombre');
+        nameEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      var apellido = lastnameEl.value.trim();
+      if (!apellido) {
+        vhShowFieldError(lastnameEl, 'Ingresá tu apellido');
+        lastnameEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      var nombreCompleto = (nombre + ' ' + apellido).trim();
+
+      var validPhone = vhNormalizePhone(phoneEl.value.trim());
+      if (!validPhone) {
+        vhShowFieldError(phoneEl, 'Ingresá un WhatsApp válido');
+        phoneEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      var invoiceChecked = invoiceCb.checked;
+      var invoiceRuc = '', invoiceName = '';
+      if (invoiceChecked) {
+        var rucEl  = document.getElementById('vh-invoice-ruc');
+        var razEl  = document.getElementById('vh-invoice-name');
+        invoiceRuc  = rucEl.value.trim();
+        invoiceName = razEl.value.trim();
+        var invErr = false;
+        if (!invoiceRuc)  { vhShowFieldError(rucEl, 'El RUC es obligatorio'); invErr = true; }
+        if (!invoiceName) { vhShowFieldError(razEl, 'La razón social es obligatoria'); invErr = true; }
+        if (invErr) { rucEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+      }
+
+      var qlEventId = typeof genEventId === 'function' ? genEventId('ql', PRODUCT.slug) : undefined;
+      var client    = typeof getClientData === 'function' ? getClientData() : {};
+      var attr      = (window.DV && typeof DV.getAttribution === 'function') ? DV.getAttribution() : {};
+
+      /* QualifiedLead — píxel (dedup vía eventID) + CAPI server-side (leads.js hashea
+         nombre/teléfono automáticamente, mismo mecanismo que el resto del sitio). */
+      fbq('trackCustom', 'QualifiedLead', {
+        content_name: 'Venta Hipnotica',
+        value:        49000,
+        currency:     'PYG',
+      }, { eventID: qlEventId });
+
+      var waMsg = '¡Hola! Soy ' + nombreCompleto + ' y quiero el libro Venta Hipnótica en PDF 📘 ¿Cuáles son los métodos de pago disponibles?';
+      var waUrl = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waMsg);
+
+      var submitBtn = document.getElementById('vh-submit-btn');
+      submitBtn.disabled = true;
+
+      fetch('/api/leads', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({}, attr, {
+          product_name:      'V.H',
+          product_slug:      PRODUCT.slug,
+          name:               nombreCompleto,
+          phone:              validPhone,
+          value:              49000,
+          currency:           'PYG',
+          fbp:                client.fbp || null,
+          fbc:                client.fbc || null,
+          user_agent:         navigator.userAgent,
+          source:             'venta-hipnotica',
+          event_id:           qlEventId,
+          invoice_requested:  invoiceChecked ? 1 : 0,
+          invoice_ruc:        invoiceChecked ? invoiceRuc  : null,
+          invoice_name:       invoiceChecked ? invoiceName : null,
+        })),
+      }).then(function (res) {
+        if (!res.ok) throw new Error('lead_error');
+        if (window.DV && typeof DV.saveLeadDataLocal === 'function') {
+          DV.saveLeadDataLocal(validPhone, nombreCompleto, '');
+        }
+        window.location.href = waUrl;
+      }).catch(function () {
+        submitBtn.disabled = false;
+        alert('Hubo un error al registrar el pedido. Intentá de nuevo.');
+      });
+    });
+  });
+</script>
+<script src="/assets/js/protect.js?v=69"></script>
+</body>
+</html>

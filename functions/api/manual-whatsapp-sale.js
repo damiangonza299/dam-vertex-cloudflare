@@ -173,6 +173,28 @@ export async function onRequestPost({ request, env, waitUntil }) {
       throw insertErr;
     }
 
+    /* Incrementar contadores del panel PiP — KV, best-effort (no bloquea el guardado de la venta).
+       Esta venta se crea directo como 'purchased' (status hardcodeado arriba) — no hay una
+       transición separada lead-pendiente → purchased como en leads.js / confirm-purchase.js,
+       así que ambos contadores suman en este mismo punto. */
+    if (env.COUNTER_KV && typeof waitUntil === 'function') {
+      const saleDate = getParaguayDateString();
+      waitUntil((async () => {
+        try {
+          const leadsKey     = `counter:leads:${saleDate}`;
+          const leadsCurrent = Number((await env.COUNTER_KV.get(leadsKey)) || 0);
+          await env.COUNTER_KV.put(leadsKey, String(leadsCurrent + 1));
+        } catch (_) {}
+      })());
+      waitUntil((async () => {
+        try {
+          const purchasesKey     = `counter:purchases:${saleDate}`;
+          const purchasesCurrent = Number((await env.COUNTER_KV.get(purchasesKey)) || 0);
+          await env.COUNTER_KV.put(purchasesKey, String(purchasesCurrent + 1));
+        } catch (_) {}
+      })());
+    }
+
     /* ── Descontar stock ── */
     let stockDeducted    = false;
     let stockDeductedAt  = null;

@@ -86,6 +86,25 @@ export async function verifyDeviceToken(request, env) {
   }
 }
 
+/* Verifica el secret de SERVICIO A SERVICIO (SERVICE_SECRET), para llamadas
+   entre sistemas sin sesión de usuario — ej. GitHub Actions crons llamando
+   a /api/intelligence/run-bqe, /send-alerts, /stale-scanner.
+   No es un JWT: token de larga vida propio, separado de ADMIN_PASSWORD y
+   de ADMIN_JWT_SECRET. Comparación constant-time para evitar timing attacks. */
+export async function verifyServiceToken(request, env) {
+  const auth  = request.headers.get('Authorization') || '';
+  const token = auth.replace('Bearer ', '').trim();
+  if (!token || !env.SERVICE_SECRET) return false;
+
+  const a = new TextEncoder().encode(token);
+  const b = new TextEncoder().encode(env.SERVICE_SECRET);
+  if (a.length !== b.length) return false;
+
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
+  return diff === 0;
+}
+
 /* ── Helpers base64url ── */
 function b64url(str) {
   return btoa(unescape(encodeURIComponent(str)))

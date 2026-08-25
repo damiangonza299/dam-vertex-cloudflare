@@ -704,23 +704,59 @@ const DESIRE_OPTIONS = [
 ];
 
 /* ──────────────────────────────────────────
-   Auth
+   Auth — JWT de sesión vía /api/admin-login (igual que admin.js / intelligence).
+   Antes esta pantalla mandaba la contraseña cruda como Bearer token, pero
+   /api/product-registry (y el resto de endpoints admin) exige un JWT firmado
+   con ADMIN_JWT_SECRET vía verifyAdminToken — por eso ninguna contraseña
+   funcionaba, sin importar si era correcta.
 ────────────────────────────────────────── */
+function isValidJWT(t) {
+  return typeof t === 'string' && t.split('.').length === 3;
+}
+
 async function doLogin() {
   const pw = document.getElementById('pw-input').value.trim();
   if (!pw) return;
-  const res = await fetch('/api/product-registry', {
-    headers: { Authorization: `Bearer ${pw}` },
-  });
-  if (res.status === 401) {
-    document.getElementById('login-error').textContent = 'Contraseña incorrecta';
-    return;
+  try {
+    const res = await fetch('/api/admin-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.token) {
+      document.getElementById('login-error').textContent = 'Contraseña incorrecta';
+      return;
+    }
+    TOKEN = data.token;
+    localStorage.setItem('ps_token', TOKEN);
+    if (data.deviceToken) localStorage.setItem('ps_device', data.deviceToken);
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    loadBriefs();
+  } catch (_) {
+    document.getElementById('login-error').textContent = 'Error de conexión';
   }
-  TOKEN = pw;
-  localStorage.setItem('ps_token', TOKEN);
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  loadBriefs();
+}
+
+/* Canjea el JWT de dispositivo (30 días) por una sesión nueva sin re-pedir contraseña. */
+async function tryDeviceRefresh() {
+  const deviceToken = localStorage.getItem('ps_device') || '';
+  if (!isValidJWT(deviceToken)) { localStorage.removeItem('ps_device'); return false; }
+  try {
+    const res  = await fetch('/api/admin-refresh', {
+      method:  'POST',
+      headers: { 'Authorization': `Bearer ${deviceToken}` },
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.token) {
+      TOKEN = data.token;
+      localStorage.setItem('ps_token', TOKEN);
+      return true;
+    }
+  } catch (_) {}
+  localStorage.removeItem('ps_device');
+  return false;
 }
 
 function authHeaders() {
@@ -3419,15 +3455,36 @@ function esc(s)      { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'
 ────────────────────────────────────────── */
 (function init() {
   const saved = localStorage.getItem('ps_token');
-  if (saved) {
+  if (isValidJWT(saved)) {
     TOKEN = saved;
     fetch('/api/product-registry', { headers: { Authorization: `Bearer ${saved}` } })
-      .then(r => {
-        if (r.status === 401) { localStorage.removeItem('ps_token'); return; }
+      .then(async r => {
+        if (r.status === 401) {
+          if (await tryDeviceRefresh()) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app').style.display          = 'flex';
+            loadBriefs();
+            return;
+          }
+          localStorage.removeItem('ps_token');
+          localStorage.removeItem('ps_device');
+          TOKEN = '';
+          return;
+        }
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app').style.display          = 'flex';
         loadBriefs();
       });
+  } else {
+    localStorage.removeItem('ps_token');
+    TOKEN = '';
+    tryDeviceRefresh().then(ok => {
+      if (ok) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display          = 'flex';
+        loadBriefs();
+      }
+    });
   }
   document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 

@@ -76,14 +76,27 @@ export async function onRequestGet({ request, env }) {
         "SELECT event_type, COUNT(*) AS cnt FROM behavior_events WHERE event_type IN ('stock_error','modal_error') AND landing LIKE ? AND ts >= ? GROUP BY event_type"
       ).bind(landingFilter, since),
 
-      /* 8 — Lead attribution (sessions linked to leads via session_id) */
+      /* 8 — Lead attribution (sessions linked to leads via session_id) —
+         el JOIN exige además que el lead pertenezca al mismo producto que la
+         landing del behavior_event: evita atribuir un lead de otro producto
+         que comparte session_id (localStorage/sessionStorage reusado). */
       env.DB.prepare(
-        'SELECT COUNT(DISTINCT be.session_id) AS attributed, COUNT(DISTINCT l.id) AS leads FROM behavior_events be JOIN leads l ON l.session_id = be.session_id WHERE be.landing LIKE ? AND be.ts >= ?'
+        "SELECT COUNT(DISTINCT be.session_id) AS attributed, COUNT(DISTINCT l.id) AS leads FROM behavior_events be JOIN leads l ON l.session_id = be.session_id AND be.landing LIKE '/' || l.product_slug || '/%' WHERE be.landing LIKE ? AND be.ts >= ?"
       ).bind(landingFilter, since),
 
-      /* 9 — Revenue attribution */
+      /* 9 — Revenue attribution — subquery deduplica por lead.id antes de sumar,
+         para no contar el mismo lead varias veces si tiene múltiples
+         behavior_events (ej. varias page_view/section_view en la misma sesión). */
       env.DB.prepare(
-        "SELECT COUNT(DISTINCT CASE WHEN l.status='purchased' THEN be.session_id END) AS purchased_sessions, COALESCE(SUM(CASE WHEN l.status='purchased' THEN CAST(l.value AS REAL) ELSE 0 END),0) AS revenue FROM behavior_events be JOIN leads l ON l.session_id = be.session_id WHERE be.landing LIKE ? AND be.ts >= ?"
+        `SELECT
+           COUNT(DISTINCT CASE WHEN status='purchased' THEN session_id END) AS purchased_sessions,
+           COALESCE(SUM(CASE WHEN status='purchased' THEN value ELSE 0 END), 0) AS revenue
+         FROM (
+           SELECT DISTINCT l.id, l.session_id, l.status, CAST(l.value AS REAL) AS value
+           FROM behavior_events be
+           JOIN leads l ON l.session_id = be.session_id AND be.landing LIKE '/' || l.product_slug || '/%'
+           WHERE be.landing LIKE ? AND be.ts >= ?
+         ) dedup`
       ).bind(landingFilter, since),
 
       /* 10 — Distinct landings (for dynamic selector) */

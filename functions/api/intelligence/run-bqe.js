@@ -5,7 +5,7 @@
    Procesa leads y escribe/actualiza lead_quality.
    NO modifica la tabla leads.
    NO envía eventos a Meta.
-   Auth: Bearer ADMIN_PASSWORD
+   Auth: Bearer SERVICE_SECRET
 
    Body (opcional):
      { lead_ids: [1,2,3] }   → procesa solo esos leads
@@ -13,7 +13,7 @@
    ========================================================= */
 
 import { scoreLeadBQE, scoreToLabel, slugify, normalizePhone, STALE_DAYS, SCORE_VERSION } from './_bqe-scorer.js';
-import { verifyAdminToken } from '../../_lib/adminAuth.js';
+import { verifyServiceToken } from '../../_lib/adminAuth.js';
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -26,7 +26,7 @@ export async function onRequestOptions() {
 }
 
 export async function onRequestPost({ request, env }) {
-  if (!(await verifyAdminToken(request, env))) {
+  if (!(await verifyServiceToken(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, 401);
   }
 

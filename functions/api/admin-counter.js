@@ -2,11 +2,14 @@
    /api/admin-counter — Contadores del día para el panel PiP
    GET → { leads_today, purchases_today }
 
-   Fuente: Cloudflare KV (plan Free — sin Durable Objects).
-   Los contadores se incrementan en leads.js / confirm-purchase.js
-   al momento de cada evento, con clave por fecha Paraguay
-   (counter:leads:{fecha} / counter:purchases:{fecha}) para que
-   reinicien solos cada día sin necesidad de un job de reset.
+   Fuente: D1, consulta directa (no KV).
+   leads_today     = COUNT leads con status='pending' creados hoy (Paraguay)
+   purchases_today = COUNT leads con status='purchased' confirmados hoy (Paraguay, por purchased_at)
+   Los nombres de las keys se mantienen por compatibilidad con counter.html,
+   pero ya no son "total leads del día" / "total compras del día" — son el
+   pendiente real y las confirmaciones reales de hoy, cada uno de su propia
+   cohorte (evita el problema de comparar leads creados hoy contra compras
+   confirmadas hoy de leads viejos, que con KV daba números inconsistentes).
    ========================================================= */
 
 import { verifyAdminToken } from '../_lib/adminAuth.js';
@@ -28,15 +31,28 @@ export async function onRequestGet({ request, env }) {
 
   try {
     const date = getParaguayDateString();
-    const [leadsVal, purchasesVal] = await Promise.all([
-      env.COUNTER_KV.get(`counter:leads:${date}`),
-      env.COUNTER_KV.get(`counter:purchases:${date}`),
+    const startUTC = getParaguayDayStartUTC(date);
+    const endUTC   = new Date(startUTC.getTime() + 24 * 60 * 60 * 1000);
+    const startStr = startUTC.toISOString().replace('T', ' ').slice(0, 19);
+    const endStr   = endUTC.toISOString().replace('T', ' ').slice(0, 19);
+
+    const [pendingRow, purchasesRow] = await Promise.all([
+      env.DB.prepare(
+        `SELECT COUNT(*) AS count FROM leads
+         WHERE status = 'pending'
+           AND ((operational_date_py = ?) OR (operational_date_py IS NULL AND created_at >= ? AND created_at < ?))`
+      ).bind(date, startStr, endStr).first(),
+      env.DB.prepare(
+        `SELECT COUNT(*) AS count FROM leads
+         WHERE status = 'purchased'
+           AND purchased_at >= ? AND purchased_at < ?`
+      ).bind(startStr, endStr).first(),
     ]);
 
     return json({
       ok: true,
-      leads_today:     Number(leadsVal || 0),
-      purchases_today: Number(purchasesVal || 0),
+      leads_today:     Number(pendingRow?.count || 0),
+      purchases_today: Number(purchasesRow?.count || 0),
     });
   } catch (err) {
     return json({ ok: false, error: err.message }, 500);
@@ -51,6 +67,24 @@ function getParaguayDateString(date = new Date()) {
   }).formatToParts(date);
   const p = Object.fromEntries(parts.filter(x => x.type !== 'literal').map(x => [x.type, x.value]));
   return `${p.year}-${p.month}-${p.day}`;
+}
+
+/* DST-safe: Paraguay es UTC-4 (abr-sep, PYT) o UTC-3 (oct-mar, PYST).
+   Mismo patrón que admin-leads-count.js — no asumir un offset fijo. */
+function getParaguayDayStartUTC(dateStr) {
+  for (const h of [3, 4]) {
+    const candidate = new Date(`${dateStr}T0${h}:00:00.000Z`);
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Asuncion',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false,
+    }).formatToParts(candidate);
+    const pp = Object.fromEntries(parts.filter(x => x.type !== 'literal').map(x => [x.type, x.value]));
+    if (`${pp.year}-${pp.month}-${pp.day}` === dateStr && pp.hour === '00' && pp.minute === '00') {
+      return candidate;
+    }
+  }
+  return new Date(`${dateStr}T04:00:00.000Z`); // fallback seguro
 }
 
 function json(data, status = 200) {

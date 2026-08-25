@@ -36,7 +36,16 @@ const PRODUCT = {
 
 ## 3. InSync — carga del script
 
-- [ ] `<script defer src="/assets/js/insync.js?vX">` está en el HTML antes de `</body>`
+- [ ] `<script defer src="/assets/js/insync.js?v=4">` (o versión más reciente) está en el HTML antes de `</body>` — **nunca `?vX` genérico ni una versión vieja copiada de otra landing**
+- [ ] `FLUSH_MS` en `public/assets/js/insync.js` es `2000`, nunca `8000` — el `page_view` se manda de inmediato (`flush()`), sin esperar el batch
+
+---
+
+## 3b. Protección de contenido
+
+- [ ] `<script src="/assets/js/protect.js?vX"></script>` está en el HTML antes de `</body>`
+- [ ] No se agrega en `public/admin/` ni en `public/intelligence/`
+- [ ] El script de protección solo aplica en desktop — en mobile se desactiva automáticamente por detección de userAgent y touch points.
 
 ---
 
