@@ -138,6 +138,12 @@
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
     .offer-foot .offer-saving { margin-top: 0; }
     .offer-foot .offer-badge  { position: static; flex-shrink: 0; }
+
+    /* Precio hero: tachado más grande que el principal, todo en una línea */
+    .hero .price-block   { flex-wrap: nowrap; align-items: baseline; gap: 6px 8px; }
+    .hero .price-compare { font-size: clamp(16px, 4vw, 19px); font-weight: 700; }
+    .hero .price-main    { font-size: clamp(14px, 3.6vw, 17px); }
+    .hero .price-savings { font-size: clamp(10px, 2.4vw, 12px); font-weight: 700; color: var(--green); white-space: nowrap; }
   </style>
 </head>
 <body class="theme-lentes">
@@ -156,9 +162,9 @@
       <h1 class="hero__h">Ojos cansados a la noche.<br>Esto los cambia.</h1>
       <p class="hero__sub">Anti luz azul real. Sin receta. Sin cambiar tu rutina.</p>
       <div class="price-block">
-        <span class="price-main">Gs. 250.000</span>
         <span class="price-compare">Gs. 300.000</span>
-        <span class="price-badge">17% OFF</span>
+        <span class="price-main">Gs. 250.000</span>
+        <span class="price-savings">Ahorrás Gs. 50.000</span>
       </div>
       <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">Pedir ahora con envío gratis →</button>
       <div class="delivery-badges">
@@ -373,8 +379,9 @@
     <p class="modal-step">Estás a un paso de recibir tu pedido 🚚</p>
     <p class="modal-subtitle">Completá tus datos y te contactamos al toque.</p>
 
-    <!-- Ofertas -->
-    <div class="modal-section">
+    <!-- Ofertas: único combo (1 unidad), ya preseleccionado — oculto visualmente,
+         sin romper el código que lee .offer-options input[name="offer"]:checked -->
+    <div class="modal-section" style="display:none">
       <span class="modal-section-label">Elegí tu oferta</span>
       <div class="offer-options">
 
