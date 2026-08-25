@@ -443,54 +443,20 @@
       </div>
       <p class="hero-riz__proof">Una sesión de peluquería cuesta más que esto</p>
 
-      <!-- Combos externos — preselección visual, sin tracking ni eventos -->
-      <div class="combo-preview" id="combo-preview">
-        <div class="combo-preview-card combo-preview-card--active" data-offer="1">
-          <div class="offer-content">
-            <span class="offer-qty">1 unidad</span>
-            <span class="offer-price" id="cpv-price-1">Gs. 189.000</span>
-          </div>
-        </div>
-        <div class="combo-preview-card" data-offer="2">
-          <div class="offer-content">
-            <span class="offer-qty">2 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="cpv-compare-2">Gs. 378.000</span>
-              <span class="offer-price" id="cpv-price-2">Gs. 283.500</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 94.500</span>
-            <div class="offer-badge">🔥 Más elegido</div>
-          </div>
-        </div>
-        <div class="combo-preview-card" data-offer="3">
-          <div class="offer-content">
-            <span class="offer-qty">3 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="cpv-compare-3">Gs. 567.000</span>
-              <span class="offer-price" id="cpv-price-3">Gs. 368.550</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 198.450</span>
-            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="color-select-riz" id="color-select-riz">
+      <!-- Oculto visualmente: solo queda stock de Rosado (Púrpura=0 en D1). No se borra
+           para no romper el código de variantes — selectedColor default ya es 'Rosado'. -->
+      <div class="color-select-riz" id="color-select-riz" style="display:none">
         <span class="color-select-riz__label">Elegí tu color</span>
         <div class="color-swatches-riz" id="color-swatches-riz">
-          <button type="button" class="color-swatch-riz color-swatch-riz--selected" data-color="Púrpura" aria-pressed="true" aria-label="Elegir color Púrpura, quedan 7 unidades">
+          <button type="button" class="color-swatch-riz" data-color="Púrpura" aria-pressed="false" aria-label="Elegir color Púrpura, agotado">
             <span class="color-swatch-riz__dot" style="background:#9B59B6" aria-hidden="true"></span>
             <span class="color-swatch-riz__name">Púrpura</span>
-            <span class="color-swatch-riz__stock" data-stock-for="Púrpura">quedan 7</span>
+            <span class="color-swatch-riz__stock" data-stock-for="Púrpura">agotado</span>
           </button>
-          <button type="button" class="color-swatch-riz" data-color="Rosado" aria-pressed="false" aria-label="Elegir color Rosado, quedan 3 unidades">
+          <button type="button" class="color-swatch-riz color-swatch-riz--selected" data-color="Rosado" aria-pressed="true" aria-label="Elegir color Rosado, quedan 1 unidades">
             <span class="color-swatch-riz__dot" style="background:#FF2F6D" aria-hidden="true"></span>
             <span class="color-swatch-riz__name">Rosado</span>
-            <span class="color-swatch-riz__stock" data-stock-for="Rosado">quedan 3</span>
+            <span class="color-swatch-riz__stock" data-stock-for="Rosado">quedan 1</span>
           </button>
         </div>
         <span class="color-select-riz__error" id="color-select-riz-error">Elegí un color antes de continuar.</span>
@@ -710,36 +676,6 @@
           </div>
         </label>
 
-        <label class="offer-option">
-          <input type="radio" name="offer" value="2">
-          <div class="offer-content">
-            <span class="offer-qty">2 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-2">—</span>
-              <span class="offer-price" id="offer-price-2">—</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 94.500</span>
-            <div class="offer-badge">🔥 Más elegido</div>
-          </div>
-        </label>
-
-        <label class="offer-option">
-          <input type="radio" name="offer" value="3">
-          <div class="offer-content">
-            <span class="offer-qty">3 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-3">—</span>
-              <span class="offer-price" id="offer-price-3">—</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 198.450</span>
-            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
-          </div>
-        </label>
-
       </div>
     </div>
 
@@ -747,8 +683,8 @@
     <div class="modal-variant-riz">
       <label for="m-variant-select" class="modal-variant-riz__label">Color elegido</label>
       <select id="m-variant-select" class="modal-variant-riz__select">
-        <option value="Púrpura">🟣 Púrpura — quedan 7</option>
-        <option value="Rosado">🌸 Rosado — quedan 3</option>
+        <option value="Rosado">🌸 Rosado — quedan 1</option>
+        <option value="Púrpura" disabled>🟣 Púrpura — agotado</option>
       </select>
     </div>
 
@@ -1070,8 +1006,8 @@
   /* ── Selector de color (hero) → sincronizado con el modal ──
      Stock inicial = el cargado en D1 al momento de crear la landing; se
      autocorrige apenas responde /api/product-stock (fuente de verdad real). */
-  var colorStock    = { 'Púrpura': 7, 'Rosado': 3 };
-  var selectedColor = 'Púrpura';
+  var colorStock    = { 'Púrpura': 0, 'Rosado': 1 };
+  var selectedColor = 'Rosado';
 
   var COLOR_ICONS = { 'Púrpura': '🟣', 'Rosado': '🌸' };
 
