@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/mascara-led-facial/hero-placeholder.svg" fetchpriority="high" type="image/svg+xml">
+  <link rel="preload" as="image" href="/mascara-led-facial/hero-mascara.webp" imagesrcset="/mascara-led-facial/hero-mascara-400w.webp 400w, /mascara-led-facial/hero-mascara.webp 1254w" imagesizes="(max-width: 600px) 400px, 1254px" fetchpriority="high" type="image/webp">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
@@ -16,7 +16,7 @@
   <link rel="canonical" href="https://damvertex.com/mascara-led-facial/">
   <meta property="og:title" content="Máscara LED Facial — Dam Vertex" />
   <meta property="og:description" content="7 colores de luz LED, sesiones de 15 minutos desde tu casa. Inalámbrica y recargable. Entrega en el día en Central." />
-  <meta property="og:image" content="/mascara-led-facial/hero-placeholder.svg" />
+  <meta property="og:image" content="/mascara-led-facial/hero-mascara.webp" />
   <meta property="og:url" content="https://damvertex.com/mascara-led-facial/" />
   <meta property="og:type" content="website" />
   <script type="application/ld+json">
@@ -171,15 +171,23 @@
     .demo-led .sec-overline-led { color: var(--led-purple); text-align: center; }
     .demo-led .sec-h-led { color: #fff; }
     .demo-led__videos { display: grid; grid-template-columns: 1fr; gap: 18px; max-width: 340px; margin: 0 auto; }
+    /* Fix: layout imagen + video lado a lado (Fix 2) */
+    .demo-led__row { display: flex; gap: 18px; max-width: 640px; margin: 0 auto; }
+    .demo-led__img-wrap, .demo-led__row .demo-video-wrap-led { flex: 1 1 0; aspect-ratio: 9/16; margin-bottom: 0; }
+    .demo-led__img-wrap { border-radius: 14px; overflow: hidden; border: 1px solid var(--led-border); }
+    .demo-led__img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    @media (max-width: 700px) {
+      .demo-led__row { flex-direction: column; }
+      /* flex-basis:0 (heredado de "flex:1 1 0") fija una altura definida de 0 en
+         modo columna, y aspect-ratio no la sobreescribe — solo rellena una
+         dimensión en auto. Sin este override la imagen/video quedan en ~2px. */
+      .demo-led__img-wrap, .demo-led__row .demo-video-wrap-led { flex: 0 0 auto; }
+    }
     .demo-video-card-led { text-align: center; }
     .demo-video-wrap-led {
       aspect-ratio: 9/16; border-radius: 14px; overflow: hidden; position: relative;
-      /* Placeholder mientras no hay video real — reemplazar cuando llegue el footage */
       background: linear-gradient(160deg, var(--led-purple-deep), var(--led-dark));
       border: 1px solid var(--led-border);
-      margin-bottom: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 34px;
     }
     .demo-video-wrap-led video { width: 100%; height: 100%; object-fit: cover; display: block; }
     .demo-video-title-led { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.3; }
@@ -390,13 +398,15 @@
   <div class="hero-led__inner">
 
     <div class="hero-led__media">
-      <img src="/mascara-led-facial/hero-placeholder.svg"
+      <img src="/mascara-led-facial/hero-mascara.webp"
+           srcset="/mascara-led-facial/hero-mascara-400w.webp 400w, /mascara-led-facial/hero-mascara.webp 1254w"
+           sizes="(max-width: 600px) 400px, 1254px"
            alt="Máscara LED Facial"
            class="hero-led__img"
            loading="eager"
            fetchpriority="high"
            decoding="async"
-           width="1080" height="1080">
+           width="1254" height="1254">
     </div>
 
     <div>
@@ -434,23 +444,18 @@
 <section class="demo-led" id="section-demo" data-insync-section="demo">
   <div class="demo-led__inner">
     <div class="demo-led__head">
-      <p class="sec-overline-led">Video</p>
       <div class="line-led"></div>
       <h2 class="sec-h-led">Mirá cómo transforma tu piel.</h2>
     </div>
 
-    <div class="demo-led__videos">
-      <div class="demo-video-card-led">
-        <!--
-          VIDEO PENDIENTE — reemplazar cuando llegue el footage real:
-          <div class="demo-video-wrap-led">
-            <video class="demo-video-led" autoplay muted loop playsinline preload="none" aria-hidden="true">
-              <source data-src="/assets/video/mascara-led-demo.mp4" type="video/mp4">
-            </video>
-          </div>
-        -->
-        <div class="demo-video-wrap-led" aria-hidden="true">💜</div>
-        <p class="demo-video-title-led">Así se ve en tu rutina diaria</p>
+    <div class="demo-led__row">
+      <div class="demo-led__img-wrap">
+        <img src="/mascara-led-facial/demo-mascara.webp" alt="Máscara LED Facial en uso" loading="lazy" decoding="async" width="1254" height="1254">
+      </div>
+      <div class="demo-video-wrap-led">
+        <video class="demo-video-led" autoplay muted loop playsinline preload="none" aria-hidden="true">
+          <source data-src="/mascara-led-facial/mascara-led-demo.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
 
@@ -464,8 +469,7 @@
 <script defer>
   /* Video demo: autoplay al entrar en viewport, pausa al salir — mismo patrón
      data-src + IntersectionObserver que taza-mezcladora-automatica /
-     rizador-automatico-giratorio, threshold 30%, pausa on-exit. muted obligatorio.
-     Sin efecto hasta que se agregue el <video> real (hoy solo hay placeholder). */
+     rizador-automatico-giratorio, threshold 30%, pausa on-exit. muted obligatorio. */
   (function() {
     var videos = document.querySelectorAll('.demo-video-led');
     if (!videos.length || typeof IntersectionObserver !== 'function') return;
