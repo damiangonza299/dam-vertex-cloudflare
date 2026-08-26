@@ -1115,22 +1115,26 @@ details summary::-webkit-details-marker { display: none; }
 /* Date filter bar */
 .admin-date-filters {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   align-items: center;
   margin-bottom: 10px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .date-btn {
   background: #1a1a1a;
   border: 1px solid rgba(255,255,255,.1);
   color: rgba(255,255,255,.65);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  padding: 7px 14px;
+  padding: 6px 9px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background .15s, border-color .15s, color .15s;
   font-family: inherit;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .date-btn:hover { background: rgba(255,255,255,.08); }
 .date-btn--active {
@@ -1142,14 +1146,15 @@ details summary::-webkit-details-marker { display: none; }
   background: #1a1a1a;
   border: 1px solid rgba(255,255,255,.1);
   border-radius: var(--radius-sm);
-  padding: 5px 8px;
-  font-size: 11px;
+  padding: 4px 6px;
+  font-size: 10px;
   color: #fff;
   outline: none;
   cursor: pointer;
   color-scheme: dark;
   margin-left: auto;
-  max-width: 128px;
+  max-width: 108px;
+  flex-shrink: 0;
 }
 .date-picker:focus { border-color: var(--accent); }
 
@@ -1164,13 +1169,13 @@ details summary::-webkit-details-marker { display: none; }
   .admin-stat__label { font-size: 10px; }
 
   /* Date filters */
-  .admin-date-filters { gap: 5px; margin-bottom: 6px; }
-  .date-btn { font-size: 11px; padding: 6px 10px; }
+  .admin-date-filters { gap: 3px; margin-bottom: 6px; flex-wrap: nowrap; }
+  .date-btn { font-size: 10px; padding: 5px 7px; }
   .date-picker {
-    font-size: 11px;
-    padding: 6px 8px;
-    width: 120px;
-    height: 30px;
+    font-size: 10px;
+    padding: 4px 6px;
+    width: 96px;
+    height: 27px;
     box-sizing: border-box;
     -webkit-appearance: none;
   }
