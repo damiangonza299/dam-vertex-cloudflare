@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preload" as="image" href="/mascara-led-facial/hero-placeholder.svg" fetchpriority="high" type="image/svg+xml">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/js/tracking.js?v=73" as="script">
+  <meta name="description" content="Máscara LED Facial — 7 colores de luz LED, sesiones de 15 minutos desde tu casa. Inalámbrica y recargable. Entrega en el día en Central. Gs. 289.000.">
+  <title>Máscara LED Facial — Belleza / Cuidado Facial — Dam Vertex</title>
+  <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <link rel="canonical" href="https://damvertex.com/mascara-led-facial/">
+  <meta property="og:title" content="Máscara LED Facial — Dam Vertex" />
+  <meta property="og:description" content="7 colores de luz LED, sesiones de 15 minutos desde tu casa. Inalámbrica y recargable. Entrega en el día en Central." />
+  <meta property="og:image" content="/mascara-led-facial/hero-placeholder.svg" />
+  <meta property="og:url" content="https://damvertex.com/mascara-led-facial/" />
+  <meta property="og:type" content="website" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "name": "Máscara LED Facial",
+      "description": "Máscara de fototerapia LED facial con 7 colores de luz, cada uno con un beneficio distinto. Control táctil, sesiones de 15 minutos, inalámbrica y recargable.",
+      "brand": { "@type": "Brand", "name": "DAM Vertex" },
+      "url": "https://damvertex.com/mascara-led-facial/",
+      "offers": {
+        "@type": "Offer",
+        "price": "289000",
+        "priceCurrency": "PYG",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "DAM Vertex" }
+      }
+    }
+  ]
+}
+  </script>
+  <style>
+    /* ══ CRÍTICO ABOVE-THE-FOLD — extraído de styles.min.css ══
+       Necesario para nav/hero/precio sin FOUC mientras styles.min.css carga async.
+       Mismo patrón que depilador/rizador/taza/lampara — evita "se produjo un problema
+       al cargar este sitio web" en el primer ingreso desde Meta Ads (ver CLAUDE.md). */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 48px); height: 60px;
+      background: rgba(0,0,0,.88); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .nav__cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent); color: #fff; font-size: 13px; font-weight: 700;
+      letter-spacing: .02em; padding: 9px 20px; border-radius: var(--radius-sm);
+      transition: opacity .2s;
+    }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+    .price-badge {
+      font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green);
+      border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px;
+    }
+
+    /* ══ Máscara LED Facial — theme violeta LED ══
+       Paleta del brief: fondo #0d0d1a, acento #c084fc, secundario #f0abfc,
+       rosa piel #fde8ff, blanco cálido #faf5ff, verde éxito #1a7a3e.
+       --led-purple-dk (#7e22ce) es una versión más oscura del acento, usada como
+       texto/botón sobre fondos claros — #c084fc solo (2.2:1 aprox. con blanco)
+       no pasa WCAG AA como texto; #7e22ce sí (~5.9:1). c084fc se usa tal cual
+       sobre fondos oscuros, donde el contraste es correcto (~8:1). */
+    :root {
+      --led-purple:      #c084fc;
+      --led-purple-dk:   #7e22ce;
+      --led-purple-deep: #581c87;
+      --led-lilac:       #f0abfc;
+      --led-skin:        #fde8ff;
+      --led-cream:       #faf5ff;
+      --led-dark:        #0d0d1a;
+      --led-dark2:       #13101f;
+      --led-text:        #1a1025;
+      --led-text-dim:    rgba(26,16,37,.68);
+      --led-text-muted:  rgba(26,16,37,.64);
+      --led-border:      rgba(192,132,252,.28);
+      --led-card:        #ffffff;
+      --led-card2:       #fde8ff;
+      --led-green:       #1a7a3e;
+    }
+    body.theme-mascara { background: var(--led-cream); color: var(--led-text); }
+
+    /* ── Nav ── */
+    .theme-mascara .nav { background: rgba(250,245,255,.92); border-bottom: 1px solid var(--led-border); backdrop-filter: blur(12px); }
+    .theme-mascara .nav__logo { color: var(--led-text); }
+    .theme-mascara .nav__logo span { opacity: .65; }
+    .theme-mascara .nav__cta {
+      background: var(--led-purple-dk); color: #fff;
+      font-size: clamp(9px, 2.4vw, 12px); white-space: nowrap; gap: 5px; padding: 8px 12px;
+    }
+    .theme-mascara .nav__cta:hover { background: var(--led-purple-deep); }
+    .theme-mascara .nav__cta:focus-visible,
+    .theme-mascara .btn-primary:focus-visible {
+      outline: 3px solid var(--led-purple-dk); outline-offset: 2px;
+    }
+
+    /* ── Footer ── */
+    .theme-mascara .footer { background: var(--led-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--led-border); }
+
+    /* ── Botón primario ── */
+    .theme-mascara .btn-primary,
+    .btn-led {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--led-purple-dk); color: #fff; font-weight: 700;
+      padding: 15px 20px; border-radius: 8px; border: none; cursor: pointer;
+      text-decoration: none; transition: background .2s, transform .15s;
+      letter-spacing: .01em; width: 100%; max-width: 340px;
+      font-size: clamp(11px, 3.1vw, 14px); white-space: nowrap;
+    }
+    .theme-mascara .btn-primary:hover,
+    .btn-led:hover { background: var(--led-purple-deep); transform: translateY(-1px); }
+
+    /* ══ HERO — degradado lila/blanco cálido ══ */
+    .hero-led { background: linear-gradient(180deg, var(--led-skin) 0%, var(--led-cream) 100%); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-led__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+    .hero-led__media { max-width: 420px; margin: 0 auto; width: 100%; }
+    .hero-led__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; background: var(--led-dark); }
+
+    .eyebrow-led { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--led-purple-dk); margin: 0 0 12px; }
+    .hero-led__h { font-size: clamp(28px,5vw,44px); font-weight: 800; line-height: 1.14; letter-spacing: -.01em; color: var(--led-text); margin: 0 0 12px; }
+    .hero-led__h em { font-style: normal; color: var(--led-purple-dk); }
+    .hero-led__sub { font-size: clamp(14px,2vw,16px); color: var(--led-text-dim); line-height: 1.65; margin: 0 0 18px; }
+
+    .hero-led .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
+    .hero-led .price-main    { color: var(--led-text); font-size: clamp(26px,5.5vw,36px); font-weight: 800; }
+    .hero-led .price-compare { color: rgba(26,16,37,.6); font-size: clamp(15px,2.6vw,18px); }
+    .hero-led .price-badge   { background: var(--led-purple-dk); color: #fff; border: none; }
+    .hero-led__proof { font-size: 13px; font-weight: 600; color: var(--led-purple-dk); margin: 0 0 18px; }
+
+    .hero-led__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; }
+    .hero-led__feature {
+      display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--led-text);
+      background: rgba(192,132,252,.10); border: 1px solid var(--led-border); border-radius: 8px; padding: 10px 14px;
+    }
+    /* .offer-foot/.offer-saving: bare rules, compartidas con el modal (offer-options) — no scopear a combo-preview-card. */
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
+    .offer-foot .offer-saving { margin-top: 0; }
+
+    .hero-led .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 16px; }
+    .hero-led .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--led-text); padding: 5px 7px; border-radius: 20px; background: rgba(192,132,252,.12); border: 1px solid rgba(192,132,252,.35); white-space: nowrap; flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis; }
+    .hero-led .db-badge.db-green { background: rgba(26,122,62,.12); border-color: rgba(26,122,62,.4); color: var(--led-green); }
+
+    /* ══ SECCIÓN — overline / línea decorativa compartidos ══ */
+    .sec-overline-led { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 14px; }
+    .sec-h-led { font-size: clamp(20px,3.5vw,30px); font-weight: 800; line-height: 1.2; margin: 0; letter-spacing: -.01em; }
+    .line-led { width: 40px; height: 2px; background: linear-gradient(90deg, var(--led-purple), transparent); margin: 0 auto 18px; }
+
+    /* ══ DEMO — video real, fondo #0d0d1a ══ */
+    .demo-led { background: var(--led-dark); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--led-border); }
+    .demo-led__inner { max-width: 640px; margin: 0 auto; }
+    .demo-led__head { text-align: center; margin-bottom: 40px; }
+    .demo-led .sec-overline-led { color: var(--led-purple); text-align: center; }
+    .demo-led .sec-h-led { color: #fff; }
+    .demo-led__videos { display: grid; grid-template-columns: 1fr; gap: 18px; max-width: 340px; margin: 0 auto; }
+    .demo-video-card-led { text-align: center; }
+    .demo-video-wrap-led {
+      aspect-ratio: 9/16; border-radius: 14px; overflow: hidden; position: relative;
+      /* Placeholder mientras no hay video real — reemplazar cuando llegue el footage */
+      background: linear-gradient(160deg, var(--led-purple-deep), var(--led-dark));
+      border: 1px solid var(--led-border);
+      margin-bottom: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 34px;
+    }
+    .demo-video-wrap-led video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .demo-video-title-led { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.3; }
+
+    /* ══ PROBLEMA — fondo violeta oscuro #13101f ══ */
+    .problema-led { background: var(--led-dark2); color: #fff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--led-border); }
+    .problema-led__inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .problema-led .sec-overline-led { color: var(--led-purple); text-align: center; }
+    .problema-led .sec-h-led { color: #fff; margin-bottom: 44px; }
+    .pain-grid-led { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .pain-card-led {
+      background: #1c1730; border: 1px solid var(--led-border); border-radius: 12px;
+      padding: 28px 20px; text-align: center;
+    }
+    .pain-card-led strong { display: block; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .pain-card-led p { font-size: 13px; color: rgba(255,255,255,.68); line-height: 1.6; margin: 0; }
+
+    /* ══ CÓMO FUNCIONA — 3 pasos, fondo #0d0d1a, número a la derecha del título ══ */
+    .funciona-led { background: var(--led-dark); color: #fff; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--led-border); }
+    .funciona-led__inner { max-width: 1000px; margin: 0 auto; }
+    .funciona-led__head { text-align: center; margin-bottom: 40px; }
+    .funciona-led .sec-overline-led { color: var(--led-purple); text-align: center; }
+    .funciona-led .sec-h-led { color: #fff; }
+    .pasos-grid-led { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; max-width: 900px; margin: 0 auto; }
+    .paso-card-led { text-align: center; padding: 26px 18px; background: #1c1730; border: 1px solid var(--led-border); border-radius: 14px; }
+    .paso-card-led strong { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14.5px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .paso-num-badge { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex-shrink: 0; border-radius: 50%; background: var(--led-purple-dk); color: #fff; font-size: 11px; font-weight: 800; }
+    .paso-card-led p { font-size: 12.5px; color: rgba(255,255,255,.65); line-height: 1.55; margin: 0; }
+
+    /* ══ LOS 7 COLORES — fondo lila muy claro #faf5ff ══ */
+    .colores-led { background: var(--led-cream); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); }
+    .colores-led__inner { max-width: 1040px; margin: 0 auto; }
+    .colores-led__head { text-align: center; margin-bottom: 44px; }
+    .colores-led .sec-overline-led { color: var(--led-purple-dk); text-align: center; }
+    .colores-led .sec-h-led { color: var(--led-text); }
+    .colores-grid-led { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+    .color-card-led { background: var(--led-card); border: 1px solid var(--led-border); border-radius: 12px; padding: 20px 14px; text-align: center; }
+    .color-card-led__dot { width: 22px; height: 22px; border-radius: 50%; margin: 0 auto 10px; border: 1px solid rgba(0,0,0,.1); }
+    .color-card-led strong { display: block; font-size: 13.5px; font-weight: 700; color: var(--led-text); margin-bottom: 6px; }
+    .color-card-led p { font-size: 12px; color: var(--led-text-muted); line-height: 1.5; margin: 0; }
+
+    /* ══ CONFIANZA — fondo #13101f, prueba social genérica ══ */
+    .confianza-led { background: var(--led-dark2); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid var(--led-border); }
+    .confianza-led__inner { max-width: 900px; margin: 0 auto; }
+    .confianza-led__head { text-align: center; margin-bottom: 40px; }
+    .confianza-led .sec-overline-led { color: var(--led-purple); text-align: center; }
+    .confianza-led .sec-h-led { color: #fff; }
+    .confianza-grid-led { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .confianza-card-led { text-align: center; padding: 24px 18px; border-radius: 12px; background: #1c1730; border: 1px solid var(--led-border); }
+    .confianza-card-led strong { display: block; font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .confianza-card-led p { font-size: 12.5px; color: rgba(255,255,255,.68); line-height: 1.55; margin: 0; }
+
+    /* ══ URGENCIA — degradado violeta/negro, cierre de página ══ */
+    .urgencia-led { background: linear-gradient(180deg, var(--led-purple-deep) 0%, var(--led-dark) 100%); padding: clamp(64px,12vw,100px) clamp(20px,5vw,64px); text-align: center; }
+    .urgencia-led__inner { max-width: 540px; margin: 0 auto; }
+    .urgencia-led__badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--led-purple-deep); background: #fff;
+      padding: 7px 16px; border-radius: 20px; margin-bottom: 26px;
+    }
+    .urgencia-led__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--led-purple-deep); animation: pulse-led 2s ease-in-out infinite; will-change: opacity, transform; }
+    @keyframes pulse-led { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.7); } }
+    .urgencia-led__h { font-size: clamp(22px,4vw,34px); font-weight: 800; color: #fff; line-height: 1.18; letter-spacing: -.01em; margin: 0 0 14px; }
+    .urgencia-led__sub { font-size: 14px; color: rgba(255,255,255,.88); line-height: 1.6; margin: 0 0 24px; }
+
+    /* Contador de stock visual */
+    .stock-bar-led { margin: 0 0 30px; }
+    .stock-bar-led__label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .stock-bar-led__track { height: 10px; border-radius: 20px; background: rgba(255,255,255,.22); overflow: hidden; }
+    .stock-bar-led__fill { height: 100%; border-radius: 20px; background: #ffffff; width: 60%; transition: width .4s ease; }
+
+    .urgencia-led .close-trust { margin: 30px auto 0; }
+    .urgencia-led .close-trust .ct-item { color: rgba(255,255,255,.92); justify-content: center; }
+    .urgencia-led .close-trust .ct-ok { color: #fff; }
+    .urgencia-led .btn-primary { background: #fff; color: var(--led-purple-deep); }
+    .urgencia-led .btn-primary:hover { background: var(--led-skin); }
+
+    /* ══ STICKY CTA ══ */
+    .sticky-cta-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+      background: rgba(250,245,255,.97); border-top: 1px solid var(--led-border);
+      padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width: 700px) {
+      .sticky-cta-bar { display: block; }
+      body:has(#order-modal.active) .sticky-cta-bar { display: none; }
+    }
+
+    /* ══ Modal — fondo claro con acento violeta ══ */
+    .theme-mascara .modal-box { background: var(--led-skin); border: 1px solid rgba(192,132,252,.35); }
+    .theme-mascara .modal-title { color: var(--led-text); }
+    .theme-mascara .modal-subtitle { color: rgba(26,16,37,.65); }
+    .theme-mascara .modal-section-label { color: rgba(26,16,37,.55); }
+    .theme-mascara .modal-urgency { background: rgba(192,132,252,.18); border-color: rgba(192,132,252,.4); color: var(--led-purple-deep); }
+    .theme-mascara .modal-close { background: rgba(192,132,252,.16); color: var(--led-text); }
+    .theme-mascara .modal-price-warning { color: #b45309; }
+
+    .theme-mascara .offer-option { background: #fff; border-color: rgba(192,132,252,.25); }
+    .theme-mascara .offer-option .offer-qty,
+    .theme-mascara .offer-option .offer-price { color: var(--led-text); }
+    .theme-mascara .offer-option .offer-compare { color: rgba(26,16,37,.64); }
+    .theme-mascara .offer-option.selected,
+    .theme-mascara .offer-option:has(input:checked) { border-color: var(--led-purple-dk); background: rgba(192,132,252,.10); }
+    /* Badges de combo: ambos verdes por especificación del brief — "Más elegido" en
+       verde estándar del sitio, "Mayor ahorro" en el verde de marca #1a7a3e (más oscuro),
+       para diferenciarlos sin romper la regla CLAUDE.md de que "Mayor ahorro" nunca es
+       dorado ni negro. */
+    .theme-mascara .offer-badge { position: static; background: #16a34a; color: #fff; }
+    .theme-mascara .offer-badge--best { position: static; background: var(--led-green); color: #fff; }
+
+    .theme-mascara .form-group label { color: var(--led-text); }
+    .theme-mascara .form-group input,
+    .theme-mascara .form-group select,
+    .theme-mascara .city-search-input,
+    .theme-mascara .city-manual-input { background: #fff; border-color: rgba(192,132,252,.35); color: var(--led-text); }
+    .theme-mascara .form-group input::placeholder,
+    .theme-mascara .city-search-input::placeholder,
+    .theme-mascara .city-manual-input::placeholder { color: #999999; }
+
+    .theme-mascara .upsell-block { background: #fff; border-color: rgba(192,132,252,.25); }
+    .theme-mascara .upsell-block.checked,
+    .theme-mascara .upsell-block:has(input:checked) { border-color: var(--led-purple); background: rgba(192,132,252,.10); }
+    .theme-mascara .upsell-title { color: var(--led-text); }
+    .theme-mascara .upsell-sub { color: rgba(26,16,37,.55); }
+
+    .theme-mascara .confirm-intent { background: #fff; border-color: rgba(192,132,252,.25); }
+    .theme-mascara .confirm-intent.checked,
+    .theme-mascara .confirm-intent:has(input:checked) { border-color: var(--led-purple); background: rgba(192,132,252,.10); }
+    .theme-mascara .confirm-text { color: var(--led-text); }
+    .theme-mascara .form-success p { color: rgba(26,16,37,.7); }
+
+    /* Autocomplete de ciudad — mismo patrón que el resto del catálogo, colores fijos */
+    .city-input-wrap { position: relative; }
+    .city-suggestions {
+      display: none !important;
+      position: absolute !important; left: 0 !important; right: 0 !important; top: 100% !important;
+      margin-top: 4px !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
+      border: 1px solid rgba(0,0,0,0.1) !important;
+      border-radius: 8px !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      overscroll-behavior: contain !important;
+      touch-action: pan-y !important;
+      max-height: 240px !important;
+      z-index: 50 !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    .city-suggestions.open { display: block !important; }
+    .city-suggestions__item {
+      padding: 12px 16px !important;
+      min-height: 40px !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      align-items: center !important;
+      font-size: 14px !important;
+      color: #000000 !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
+      cursor: pointer !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    .city-suggestions__item + .city-suggestions__item { border-top: 1px solid rgba(0,0,0,0.08) !important; }
+    .city-suggestions__item:hover,
+    .city-suggestions__item:focus,
+    .city-suggestions__item.touch-active { background-color: var(--led-purple-dk) !important; color: #ffffff !important; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 900px) {
+      .pain-grid-led { grid-template-columns: 1fr; }
+      .pasos-grid-led { grid-template-columns: 1fr; }
+      .confianza-grid-led { grid-template-columns: 1fr; }
+      .colores-grid-led { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 700px) {
+      .hero-led__inner { grid-template-columns: 1fr; gap: 18px; }
+      .hero-led__media { order: -1; max-width: 100%; }
+      .hero-led { padding: 10px 16px 20px; }
+      .hero-led .btn-primary { max-width: 100%; }
+    }
+  </style>
+</head>
+<body class="theme-mascara">
+
+<!-- Sprite: icono WhatsApp (reusado del resto del catálogo) -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <symbol id="ic-whatsapp" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </symbol>
+</svg>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
+</nav>
+
+<main>
+<!-- ══ HERO ══ -->
+<section class="hero-led" id="section-hero" data-insync-section="hero">
+  <div class="hero-led__inner">
+
+    <div class="hero-led__media">
+      <img src="/mascara-led-facial/hero-placeholder.svg"
+           alt="Máscara LED Facial"
+           class="hero-led__img"
+           loading="eager"
+           fetchpriority="high"
+           decoding="async"
+           width="1080" height="1080">
+    </div>
+
+    <div>
+      <p class="eyebrow-led">Belleza / Cuidado facial</p>
+      <h1 class="hero-led__h">Tu piel merece<br><em>más que cremas.</em></h1>
+      <p class="hero-led__sub">Tecnología LED profesional. 15 minutos. Desde tu casa.</p>
+      <div class="price-block">
+        <span class="price-main">Gs. 289.000</span>
+        <span class="price-compare">Gs. 379.000</span>
+        <span class="price-badge">24% OFF</span>
+      </div>
+      <p class="hero-led__proof">Lista para usar apenas la sacás de la caja</p>
+
+      <div class="hero-led__features">
+        <div class="hero-led__feature">🔴 Luz roja antienvejecimiento — colágeno desde adentro</div>
+        <div class="hero-led__feature">💜 7 colores LED — cada uno con su beneficio</div>
+        <div class="hero-led__feature">⚡ 15 minutos por día — mientras hacés otra cosa</div>
+        <div class="hero-led__feature">🔋 Inalámbrica y recargable — sin cables, sin límites</div>
+      </div>
+
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </a>
+      <div class="delivery-badges">
+        <span class="db-badge db-green">🚚 Entrega en el día</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ DEMO — video real, autoplay al entrar en viewport ══ -->
+<section class="demo-led" id="section-demo" data-insync-section="demo">
+  <div class="demo-led__inner">
+    <div class="demo-led__head">
+      <p class="sec-overline-led">Video</p>
+      <div class="line-led"></div>
+      <h2 class="sec-h-led">Mirá cómo transforma tu piel.</h2>
+    </div>
+
+    <div class="demo-led__videos">
+      <div class="demo-video-card-led">
+        <!--
+          VIDEO PENDIENTE — reemplazar cuando llegue el footage real:
+          <div class="demo-video-wrap-led">
+            <video class="demo-video-led" autoplay muted loop playsinline preload="none" aria-hidden="true">
+              <source data-src="/assets/video/mascara-led-demo.mp4" type="video/mp4">
+            </video>
+          </div>
+        -->
+        <div class="demo-video-wrap-led" aria-hidden="true">💜</div>
+        <p class="demo-video-title-led">Así se ve en tu rutina diaria</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="demo" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </a>
+    </div>
+  </div>
+</section>
+<script defer>
+  /* Video demo: autoplay al entrar en viewport, pausa al salir — mismo patrón
+     data-src + IntersectionObserver que taza-mezcladora-automatica /
+     rizador-automatico-giratorio, threshold 30%, pausa on-exit. muted obligatorio.
+     Sin efecto hasta que se agregue el <video> real (hoy solo hay placeholder). */
+  (function() {
+    var videos = document.querySelectorAll('.demo-video-led');
+    if (!videos.length || typeof IntersectionObserver !== 'function') return;
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        var v = entry.target;
+        if (entry.isIntersecting) {
+          var source = v.querySelector('source');
+          if (source && source.dataset.src) {
+            source.src = source.dataset.src;
+            source.removeAttribute('data-src');
+            v.load();
+          }
+          var p = v.play();
+          if (p && typeof p.catch === 'function') p.catch(function() {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.3 });
+    videos.forEach(function(v) { obs.observe(v); });
+  })();
+</script>
+
+<!-- ══ PROBLEMA — fondo violeta oscuro ══ -->
+<section class="problema-led" id="section-problema" data-insync-section="problema">
+  <div class="problema-led__inner">
+    <p class="sec-overline-led">¿Te suena familiar?</p>
+    <h2 class="sec-h-led">¿Las cremas solas no alcanzan?</h2>
+    <div class="pain-grid-led">
+      <div class="pain-card-led">
+        <strong>Piel apagada sin importar lo que uses <span style="font-size:1em">😔</span></strong>
+        <p>Cremas, sérums, rutinas completas — y la piel sigue sin ese brillo que buscás.</p>
+      </div>
+      <div class="pain-card-led">
+        <strong>Turnos en estética que cuestan una fortuna <span style="font-size:1em">💸</span></strong>
+        <p>Cada sesión profesional de luz LED suma un gasto fijo que no para nunca.</p>
+      </div>
+      <div class="pain-card-led">
+        <strong>Marcas de acné que no desaparecen <span style="font-size:1em">😞</span></strong>
+        <p>El maquillaje las tapa un rato, pero vuelven a aparecer apenas te lavás la cara.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CÓMO FUNCIONA — 3 pasos, número a la derecha del título ══ -->
+<section class="funciona-led" id="section-funciona" data-insync-section="funciona">
+  <div class="funciona-led__inner">
+    <div class="funciona-led__head">
+      <p class="sec-overline-led">Así de fácil</p>
+      <div class="line-led"></div>
+      <h2 class="sec-h-led">Tu ritual de 15 minutos.</h2>
+    </div>
+
+    <div class="pasos-grid-led">
+      <div class="paso-card-led">
+        <strong>Limpiá tu piel <span class="paso-num-badge">1</span></strong>
+        <p>2 minutos — piel limpia y seca antes de empezar, así la luz LED actúa mejor.</p>
+      </div>
+      <div class="paso-card-led">
+        <strong>Elegí tu color <span class="paso-num-badge">2</span></strong>
+        <p>15 minutos relajándote — elegí el color según lo que tu piel necesita hoy.</p>
+      </div>
+      <div class="paso-card-led">
+        <strong>Hidratá <span class="paso-num-badge">3</span></strong>
+        <p>Tu rutina de siempre — la máscara complementa tu crema o sérum, no los reemplaza.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="funciona" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ LOS 7 COLORES — fondo lila muy claro ══ -->
+<section class="colores-led" id="section-colores" data-insync-section="colores">
+  <div class="colores-led__inner">
+    <div class="colores-led__head">
+      <p class="sec-overline-led">7 colores, 7 beneficios</p>
+      <div class="line-led"></div>
+      <h2 class="sec-h-led">Un color para cada necesidad.</h2>
+    </div>
+
+    <div class="colores-grid-led">
+      <div class="color-card-led">
+        <span class="color-card-led__dot" style="background:#ff3b30"></span>
+        <strong>🔴 Rojo 630nm</strong>
+        <p>Favorece la producción de colágeno — ideal contra signos de la edad.</p>
+      </div>
+      <div class="color-card-led">
+        <span class="color-card-led__dot" style="background:#3b82f6"></span>
+        <strong>🔵 Azul 460nm</strong>
+        <p>Ayuda a controlar el brillo y afinar la apariencia de los poros.</p>
+      </div>
+      <div class="color-card-led">
+        <span class="color-card-led__dot" style="background:#22c55e"></span>
+        <strong>💚 Verde</strong>
+        <p>Ilumina el tono de la piel y favorece una sensación de calma.</p>
+      </div>
+      <div class="color-card-led">
+        <span class="color-card-led__dot" style="background:#facc15"></span>
+        <strong>💛 Amarillo</strong>
+        <p>Aporta luminosidad y una sensación de vitalidad a la piel.</p>
+      </div>
+      <div class="color-card-led">
+        <span class="color-card-led__dot" style="background:#c084fc"></span>
+        <strong>🟣 Violeta</strong>
+        <p>Combina relajación con estimulación suave — tu momento de calma.</p>
+      </div>
+      <div class="color-card-led">
+        <span class="color-card-led__dot" style="background:#f472b6"></span>
+        <strong>🩷 Rosa</strong>
+        <p>Favorece una piel de aspecto más suave y uniforme.</p>
+      </div>
+      <div class="color-card-led">
+        <span class="color-card-led__dot" style="background:#f4f4f5;border-color:rgba(0,0,0,.25)"></span>
+        <strong>⚪ Blanco</strong>
+        <p>Combina varios beneficios en un solo modo.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="colores" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONFIANZA — prueba social genérica ══ -->
+<section class="confianza-led" id="section-confianza" data-insync-section="confianza">
+  <div class="confianza-led__inner">
+    <div class="confianza-led__head">
+      <p class="sec-overline-led">Pedidos activos</p>
+      <div class="line-led"></div>
+      <h2 class="sec-h-led">Pedidos activos en Central.</h2>
+    </div>
+    <div class="confianza-grid-led">
+      <div class="confianza-card-led">
+        <strong>Entrega en el día <span style="font-size:1em">🚚</span></strong>
+        <p>Central y Asunción reciben el mismo día del pedido.</p>
+      </div>
+      <div class="confianza-card-led">
+        <strong>Pago al recibir <span style="font-size:1em">💳</span></strong>
+        <p>Pagás cuando el pedido llega a tu puerta, sin adelantos en Central.</p>
+      </div>
+      <div class="confianza-card-led">
+        <strong>Pedidos activos <span style="font-size:1em">📍</span></strong>
+        <p>Clientes en toda la zona Central, coordinados por WhatsApp.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ URGENCIA — degradado violeta/negro, cierre de página ══ -->
+<section class="urgencia-led" id="section-urgencia" data-insync-section="urgencia">
+  <div class="urgencia-led__inner">
+    <div class="urgencia-led__badge">
+      <span class="urgencia-led__dot"></span>
+      Stock limitado
+    </div>
+    <h2 class="urgencia-led__h">Piel luminosa, desde tu casa.<br>Gs. 289.000. Hoy mismo.</h2>
+    <p class="urgencia-led__sub">Traemos pocas unidades de la Máscara LED Facial. Reservá la tuya antes de que se agote.</p>
+
+    <div class="stock-bar-led">
+      <div class="stock-bar-led__label">
+        <span id="stock-bar-text">Quedan pocas unidades</span>
+        <span id="stock-bar-pct"></span>
+      </div>
+      <div class="stock-bar-led__track">
+        <div class="stock-bar-led__fill" id="stock-bar-fill"></div>
+      </div>
+    </div>
+
+    <a class="btn btn-primary" data-scroll-form data-insync-cta="urgencia" style="display:inline-flex;max-width:380px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+      LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+    </a>
+    <div class="close-trust">
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Entrega en el día · Central</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Pagás cuando lo recibís · Central</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Envío gratis</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MODAL PEDIDO — estructura de depilador/rizador/lampara (sin variantes, sin mapa) ══ -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-led">
+  <div class="modal-box">
+    <p class="modal-urgency">⏳ Stock limitado</p>
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+    <h2 class="modal-title" id="modal-title-led">Ya casi es tuya 💜</h2>
+    <p class="modal-step">Tu Máscara LED Facial · Entrega en el día 🚚</p>
+    <p class="modal-subtitle">Completá tus datos y te escribimos por WhatsApp en minutos para coordinar la entrega hoy mismo.</p>
+
+    <!-- Ofertas -->
+    <div class="modal-section">
+      <span class="modal-section-label">Elegí tu oferta</span>
+      <div class="offer-options">
+
+        <label class="offer-option selected">
+          <input type="radio" name="offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price" id="offer-price-1">—</span>
+          </div>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="2">
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-2">—</span>
+              <span class="offer-price" id="offer-price-2">—</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 29.000</span>
+            <div class="offer-badge">🔥 Más elegido</div>
+          </div>
+        </label>
+
+        <label class="offer-option">
+          <input type="radio" name="offer" value="3">
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare" id="offer-compare-3">—</span>
+              <span class="offer-price" id="offer-price-3">—</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 68.000</span>
+            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
+          </div>
+        </label>
+
+      </div>
+    </div>
+
+    <p class="modal-price-warning">🔒 Tus datos están seguros · Solo los usamos para coordinar tu entrega</p>
+
+    <!-- Formulario -->
+    <form class="modal-form" id="modal-form" novalidate>
+
+      <div class="form-group">
+        <label for="m-name">Nombre y apellido</label>
+        <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-phone">Teléfono (WhatsApp)</label>
+        <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group" id="location-group">
+        <label for="m-city-input">Ciudad</label>
+        <div class="city-input-wrap">
+          <input type="text" id="m-city-input" name="city_input" placeholder="¿De qué ciudad sos?" required autocomplete="off">
+          <div class="city-suggestions" id="m-city-suggestions"></div>
+        </div>
+        <input type="hidden" id="m-location" name="location_search_legacy">
+        <div style="margin-top:2px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(26,16,37,.35);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
+        <span class="form-error-msg"></span>
+      </div>
+      <input type="hidden" id="m-loc-address"  name="location_address">
+      <input type="hidden" id="m-loc-city"     name="location_city">
+      <input type="hidden" id="m-loc-lat"      name="location_lat">
+      <input type="hidden" id="m-loc-lng"      name="location_lng">
+      <input type="hidden" id="m-loc-maps-url" name="location_maps_url">
+      <input type="hidden" id="m-loc-place-id" name="location_place_id">
+
+      <div class="form-group" id="m-ref-group" style="display:none;margin-top:-4px">
+        <label for="m-ref">Referencia adicional</label>
+        <input type="text" id="m-ref" name="referencia" placeholder="piso, portón, referencia extra" style="margin-top:6px">
+      </div>
+
+      <div class="form-group" id="city-group" style="display:none">
+        <label for="m-city-search" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
+        <div class="city-picker-wrap">
+          <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
+          <div class="city-dropdown" id="m-city-dropdown"></div>
+        </div>
+        <input type="hidden" id="m-city" name="city">
+        <div class="city-manual-wrap" id="city-manual-wrap" style="display:none">
+          <input type="text" id="m-city-manual" class="city-manual-input" placeholder="Escribí tu ciudad" autocomplete="off">
+        </div>
+        <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="m-payment">Método de pago</label>
+        <select id="m-payment" name="payment">
+          <option value="">Seleccioná...</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Efectivo">Efectivo</option>
+        </select>
+        <span class="form-error-msg"></span>
+      </div>
+
+      <label class="upsell-block">
+        <input type="checkbox" id="m-express" name="express">
+        <div class="upsell-content">
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
+        </div>
+      </label>
+
+      <label class="upsell-block" id="m-invoice-block" style="margin-top:10px">
+        <input type="checkbox" id="m-invoice" name="invoice">
+        <div class="upsell-content">
+          <span class="upsell-title">🧾 Necesito factura</span>
+          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+        </div>
+      </label>
+      <div id="m-invoice-fields" style="display:none;margin-top:6px">
+        <div class="form-group">
+          <label for="m-invoice-ruc">RUC *</label>
+          <input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="m-invoice-name">Razón social / Nombre *</label>
+          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+          <span class="form-error-msg"></span>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(255,255,255,.4)">(opcional)</span></label>
+          <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+        </div>
+      </div>
+
+      <label class="confirm-intent" style="display:none">
+        <input type="checkbox" id="m-confirm" name="confirm" checked>
+      </label>
+
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="modal-submit-btn">
+          Confirmar pedido por WhatsApp
+        </button>
+      </div>
+
+    </form>
+
+    <div class="form-success" id="modal-success">
+      <h3>¡Listo!</h3>
+      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
+      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
+      <div class="manual-wa">
+        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<footer class="footer">
+  &copy; 2026 Dam Vertex
+</footer>
+
+<!-- Scripts -->
+<script src="/assets/js/tracking.js?v=73" defer></script>
+<script src="/assets/js/products.js?v=62" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+
+<script defer>
+  /* Selector de ciudad sin Google Maps (patrón luna-mini / rizador / lampara / depilador).
+     products.js exige #m-location._dvPlaceSelected=true + location_lat/city/maps_url
+     no vacíos para permitir el submit — se completan con coords aproximadas del depto. */
+  (function() {
+    var DEPT_COORDS = {
+      'Central':          [-25.3000, -57.5500],
+      'Alto Paraná':       [-25.5163, -54.6119],
+      'Itapúa':            [-27.3308, -55.8664],
+      'Cordillera':        [-25.3866, -57.1414],
+      'Paraguarí':         [-25.6294, -57.1519],
+      'Guairá':            [-25.7500, -56.4333],
+      'Caaguazú':          [-25.4500, -56.4500],
+      'Misiones':          [-26.6667, -57.1333],
+      'Ñeembucú':          [-26.8667, -58.3000],
+      'Amambay':           [-22.5500, -55.7333],
+      'Concepción':        [-23.4064, -57.4344],
+      'Canindeyú':         [-24.0667, -54.3333],
+      'San Pedro':         [-24.0833, -57.0833],
+      'Caazapá':           [-26.2000, -56.3833],
+      'Boquerón':          [-22.3500, -60.0333],
+      'Presidente Hayes':  [-25.0958, -57.5442],
+      'Alto Paraguay':     [-21.0333, -57.8667],
+    };
+
+    var CITIES_BY_DEPT = {
+      'Central': ['Asunción','San Lorenzo','Luque','Capiatá','Lambaré','Fernando de la Mora','Limpio','Ñemby','Villa Elisa','Mariano Roque Alonso','Itauguá','Areguá','Villeta','Nueva Italia','Guarambaré','Ypacaraí','San Antonio','Ypané','Tobatí','Emboscada','Altos','Compañía','Itá'],
+      'Alto Paraná': ['Ciudad del Este','Hernandarias','Minga Guazú','Presidente Franco','Minga Porã','Santa Rita','Los Cedrales','Naranjal','Juan León Mallorquín','Santa Rosa del Monday','Iruña','Itakyry',"Juan Emilio O'Leary",'Ñacunday','San Alberto','San Cristóbal','Santa Fe del Paraná','Tavapy','Yguazú','Doctor Raúl Peña','Domingo Martínez de Irala'],
+      'Itapúa': ['Encarnación','Cambyretá','Coronel Bogado','General Artigas','Hohenau','Bella Vista','Obligado','Capitán Miranda','Natalio','Edelira','Alto Verá','Capitán Meza','Carmen del Paraná','Fram','General Delgado','Jesús','La Paz','Mayor Otaño','Nueva Alborada','PJC Caballero Álvarez','Pirapó','San Cosme y Damián','San Juan del Paraná','San Pedro del Paraná','Tomás Romero Pereira','Trinidad','Yatytay'],
+      'Cordillera': ['Caacupé','Valenzuela','San Bernardino','Arroyos y Esteros','Caraguatay','Escobar','Isla Pucú','Juan de Mena','Loma Grande','Mbocayaty del Yhaguy','Nueva Colombia','Piribebuy','Primero de Marzo','San José Obrero','Santa Elena','Itacurubí de la Cordillera','Tacuara'],
+      'Paraguarí': ['Paraguarí','Acahay','Caapucú','Caballero','Carapeguá','General Bernardino Caballero','La Colmena','Mbuyapey','Pirayú','Quiindy','Quyquyhó','San Roque González de Santa Cruz','Sapucai','Tebicuarymí','Yaguarón','Ybycuí','Ybytymí'],
+      'Guairá': ['Villarrica','Borja','Capitán Mauricio José Troche','Colonia Independencia','Coronel Martínez','Dr. Bottrell','Félix Pérez Cardozo','General Eugenio A. Garay','Iturbe','José Fassardi','Mbocayaty','Natalicio Talavera','Ñumí','San Salvador','Tembiaporã','Tebicuary'],
+      'Caaguazú': ['Coronel Oviedo','Caaguazú','Carayaó','Dr. Juan Manuel Frutos','José Domingo Ocampo','Nueva Londres','R.I. 3 Corrales','Repatriación','San Joaquín','San José de los Arroyos','Simón Bolívar','Tres Corrales','Vaquería','Yhú','Mbutuy','Dr. Cecilio Báez','Dr. J. Eulogio Estigarribia','La Pastora','Mcal. Francisco Solano López','Nueva Toledo','Raúl Arsenio Oviedo','Santa Rosa del Mbutuy','3 de Febrero'],
+      'Misiones': ['San Juan Bautista','Ayolas','San Ignacio','San Miguel','San Patricio','Santa María','Santa Rosa','Santiago','Villa Florida','Yabebyry'],
+      'Ñeembucú': ['Pilar','Alberdi','Cerrito','Desmochados','General José Eduvigis Díaz','Guazú Cuá','Humaitá','Isla Umbú','Laureles','Mayor José J. Martínez','Paso de Patria','San Juan Bautista del Ñeembucú','Tacuaras','Villa Oliva','Villalbin'],
+      'Amambay': ['Pedro Juan Caballero','Bella Vista Norte','Capitán Bado','Cinturón','Paso Yobai','Zanja Pytá','Cerro Corá','Karapaí'],
+      'Concepción': ['Concepción','Belén','Horqueta','Loreto','San Carlos','San Lázaro','Yby Yaú',"Azote'y",'Sargento José Félix López','Paso Barreto'],
+      'Canindeyú': ['Salto del Guairá','Corpus Christi','Curuguaty','Igatimí','Itanará','Katueté','La Paloma','Maracayu','Mbaracayú','Nueva Esperanza','Villa Curuguaty','Ypejhú','Yby Pytã'],
+      'San Pedro': ['San Pedro de Ycuamandiyú','Antequera','Chore','General Elizardo Aquino','Guayaibí','Itacurubí del Rosario','Lima','Nueva Germania','San Estanislao','San Pablo','Tacuatí','Unión','Villa del Rosario','Yataity del Norte','25 de Diciembre','Capiibary','General Isidoro Resquín','Liberación','San Vicente Pancholo'],
+      'Caazapá': ['Caazapá','Abai','Buena Vista','Dr. Moisés Bertoni','Fulgencio Yegros','Gral. Higinio Morínigo','Maciel','San Juan Nepomuceno','Tavaí','Yuty','3 de Mayo'],
+      'Boquerón': ['Filadelfia','Loma Plata','Mariscal Estigarribia','Neuland','General Díaz'],
+      'Presidente Hayes': ['Villa Hayes','Benjamín Aceval','General José María Bruguez','José Falcón','Nanawa','Nueva Asunción','Pozo Colorado','Puerto Pinasco','Tte. 1ro Manuel Irala Fernández','Tte. Esteban Martínez'],
+      'Alto Paraguay': ['Fuerte Olimpo','Bahía Negra','Carmelo Peralta','La Victoria'],
+    };
+    var CITY_TO_DEPT = null;
+    var CITY_LIST    = null;
+
+    function ensureCityIndex() {
+      if (CITY_TO_DEPT) return;
+      CITY_TO_DEPT = {};
+      Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
+        CITIES_BY_DEPT[dept].forEach(function(city) {
+          CITY_TO_DEPT[city.toLowerCase()] = dept;
+        });
+      });
+      var centralCities = CITIES_BY_DEPT['Central'].slice().sort(function(a, b) { return a.localeCompare(b, 'es'); });
+      var restCities = [];
+      Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
+        if (dept === 'Central') return;
+        CITIES_BY_DEPT[dept].forEach(function(city) { restCities.push(city); });
+      });
+      restCities.sort(function(a, b) { return a.localeCompare(b, 'es'); });
+      CITY_LIST = centralCities.concat(restCities);
+    }
+
+    var cityField = document.getElementById('m-city-input');
+    var suggBox   = document.getElementById('m-city-suggestions');
+    var locInput  = document.getElementById('m-location');
+    if (!cityField || !suggBox || !locInput) return;
+
+    function applyCity(city) {
+      ensureCityIndex();
+      var dept = CITY_TO_DEPT[city.toLowerCase()];
+      if (!dept) return false;
+      var coords = DEPT_COORDS[dept] || DEPT_COORDS['Central'];
+      var cityHidden    = document.getElementById('m-city');
+      var locCityHidden = document.getElementById('m-loc-city');
+      var latHidden     = document.getElementById('m-loc-lat');
+      var lngHidden      = document.getElementById('m-loc-lng');
+      var mapsUrlHidden = document.getElementById('m-loc-maps-url');
+      if (cityHidden)    cityHidden.value    = city;
+      if (locCityHidden) locCityHidden.value = city;
+      if (latHidden)     latHidden.value     = coords[0];
+      if (lngHidden)      lngHidden.value     = coords[1];
+      if (mapsUrlHidden) mapsUrlHidden.value = 'https://www.google.com/maps?q=' + coords[0] + ',' + coords[1];
+      locInput.value             = city;
+      locInput._dvPlaceSelected  = true;
+      cityField.classList.remove('error');
+      var grp = cityField.closest('.form-group');
+      if (grp) {
+        var err = grp.querySelector('.form-error-msg');
+        if (err) err.classList.remove('visible');
+      }
+      return true;
+    }
+
+    function hideSuggestions() {
+      suggBox.classList.remove('open');
+      suggBox.innerHTML = '';
+    }
+
+    function renderSuggestions(matches) {
+      suggBox.innerHTML = '';
+      matches.forEach(function(city) {
+        var item = document.createElement('div');
+        item.className = 'city-suggestions__item';
+        item.textContent = city;
+        function pick() {
+          cityField.value = city;
+          applyCity(city);
+          hideSuggestions();
+        }
+        var touchStartY = null;
+        var touchMoved  = false;
+        item.addEventListener('touchstart', function(e) {
+          touchStartY = e.touches[0].clientY;
+          touchMoved  = false;
+          item.classList.add('touch-active');
+        }, { passive: true });
+        item.addEventListener('touchmove', function(e) {
+          if (touchStartY !== null && Math.abs(e.touches[0].clientY - touchStartY) > 8) {
+            touchMoved = true;
+            item.classList.remove('touch-active');
+          }
+        }, { passive: true });
+        item.addEventListener('touchend', function(e) {
+          item.classList.remove('touch-active');
+          if (!touchMoved) {
+            e.preventDefault();
+            pick();
+          }
+          touchStartY = null;
+        });
+        item.addEventListener('touchcancel', function() {
+          item.classList.remove('touch-active');
+          touchStartY = null;
+        });
+        item.addEventListener('mousedown', function(e) { e.preventDefault(); pick(); });
+        suggBox.appendChild(item);
+      });
+      suggBox.classList.add('open');
+    }
+
+    function onCityInput() {
+      var typed = cityField.value.trim();
+      if (!applyCity(typed)) locInput._dvPlaceSelected = false;
+      if (!typed) { hideSuggestions(); return; }
+      var typedLower = typed.toLowerCase();
+      var matches = CITY_LIST.filter(function(c) {
+        return c.toLowerCase().indexOf(typedLower) === 0;
+      }).slice(0, 6);
+      if (matches.length) renderSuggestions(matches);
+      else hideSuggestions();
+    }
+
+    cityField.addEventListener('input', onCityInput);
+    cityField.addEventListener('focus', onCityInput);
+    document.addEventListener('click', function(e) {
+      if (e.target !== cityField && !suggBox.contains(e.target)) hideSuggestions();
+    });
+  })();
+</script>
+
+<script defer>
+  const PRODUCT = {
+    name:  'Máscara LED Facial',
+    slug:  'mascara-led-facial',
+    price: 289000,
+    /* Descuentos de combo fijos (no el 25%/35% estándar) — ver override en products.js */
+    comboPricing: { 2: 549000, 3: 799000 },
+    /* Sin variantes. */
+    /* Sin mapa real — el link de Maps usa coords aproximadas del depto, se omite del WhatsApp. */
+    hideExactLocation: true,
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    /* Blindaje CTA: si tracking.js o products.js fallan en cargar (WiFi restrictivo,
+       firewall corporativo), cada try/catch aislado evita que un script roto tumbe al
+       otro. El botón igual funciona por el href de WhatsApp hardcodeado — ver
+       CLAUDE.md "CTA — BLINDADO CONTRA FALLOS DE RED". */
+    try { DV.trackViewContent(PRODUCT); } catch (_) {}
+    try { DV.initForm(PRODUCT); } catch (_) {}
+
+    /* Stock real desde D1 — barra de urgencia en la sección de cierre */
+    fetch('/api/product-stock?slug=' + PRODUCT.slug)
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (!data || !data.ok || !data.product) return;
+        var p        = data.product;
+        var stock    = Number(p.stock_total) || 0;
+        var minStock = Number(p.min_stock) || 5;
+        var fill = document.getElementById('stock-bar-fill');
+        var text = document.getElementById('stock-bar-text');
+        var pct  = document.getElementById('stock-bar-pct');
+        if (!fill || !text) return;
+        var pctVal = Math.max(6, Math.min(100, Math.round((stock / Math.max(stock, minStock * 4, 20)) * 100)));
+        fill.style.width = pctVal + '%';
+        text.textContent = stock > 0 ? ('Quedan ' + stock + ' unidades') : 'Últimas unidades';
+        if (pct) pct.textContent = pctVal <= 30 ? '¡Se agota pronto!' : '';
+      })
+      .catch(function() {});
+  });
+</script>
+
+<!-- CRO: Sticky bottom CTA — mobile only -->
+<div class="sticky-cta-bar" id="sticky-cta-bar">
+  <a class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;white-space:nowrap;font-size:clamp(12px,3.6vw,15px);padding:12px 10px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+    LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+  </a>
+</div>
+
+<script src="/assets/js/protect.js?v=68" defer></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="Máscara LED Facial — placeholder">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="42%" r="65%">
+      <stop offset="0%" stop-color="#2a1a45"/>
+      <stop offset="100%" stop-color="#0d0d1a"/>
+    </radialGradient>
+    <linearGradient id="maskGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#f0abfc"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#bgGlow)"/>
+  <!-- Silueta de rostro -->
+  <ellipse cx="540" cy="560" rx="230" ry="290" fill="#1a1030" opacity="0.9"/>
+  <!-- Máscara LED -->
+  <path d="M 340 430 Q 540 370 740 430 L 730 660 Q 540 730 350 660 Z" fill="url(#maskGrad)" opacity="0.92"/>
+  <!-- Luces LED -->
+  <circle cx="430" cy="480" r="16" fill="#ff5566"/>
+  <circle cx="540" cy="465" r="16" fill="#5ac8fa"/>
+  <circle cx="650" cy="480" r="16" fill="#facc15"/>
+  <circle cx="400" cy="560" r="16" fill="#4ade80"/>
+  <circle cx="540" cy="575" r="16" fill="#ffffff"/>
+  <circle cx="680" cy="560" r="16" fill="#f472b6"/>
+  <circle cx="540" cy="650" r="16" fill="#c084fc"/>
+  <!-- Brillo decorativo -->
+  <circle cx="540" cy="540" r="340" fill="none" stroke="#c084fc" stroke-width="2" opacity="0.25"/>
+  <circle cx="540" cy="540" r="390" fill="none" stroke="#f0abfc" stroke-width="1.5" opacity="0.15"/>
+</svg>
