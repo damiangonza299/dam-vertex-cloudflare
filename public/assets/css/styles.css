@@ -1142,13 +1142,14 @@ details summary::-webkit-details-marker { display: none; }
   background: #1a1a1a;
   border: 1px solid rgba(255,255,255,.1);
   border-radius: var(--radius-sm);
-  padding: 7px 10px;
-  font-size: 12px;
+  padding: 5px 8px;
+  font-size: 11px;
   color: #fff;
   outline: none;
   cursor: pointer;
   color-scheme: dark;
   margin-left: auto;
+  max-width: 128px;
 }
 .date-picker:focus { border-color: var(--accent); }
 

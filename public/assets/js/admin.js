@@ -422,6 +422,25 @@ function fmtVariantCell(l) {
   return '<br><span style="font-size:10px;color:rgba(255,255,255,.45)" title="' + esc(full) + '">' + esc(abbrev) + '</span>';
 }
 
+const DELIVERY_WA_NUMBER = '595982176956';
+
+function sendToDeliveryWA(id) {
+  const l = allLeads.find(x => x.id === id);
+  if (!l) return;
+  const text = [
+    `Total: Gs. ${Number(l.value || 0).toLocaleString('es-PY')}`,
+    `Producto: ${l.product_name || ''}`,
+    `Nombre: ${l.name || ''}`,
+    `Teléfono: ${l.phone || ''}`,
+    `Método de pago: ${l.payment_method || '—'}`,
+    `Ciudad: ${l.city || '—'}`,
+    `Cantidad: ${l.quantity || 1}`,
+    '',
+    'Número delivery: +' + DELIVERY_WA_NUMBER,
+  ].join('\n');
+  window.open(`https://wa.me/${DELIVERY_WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
+}
+
 function buildActions(l) {
   const canConfirm = l.status !== 'purchased';
 
@@ -446,6 +465,7 @@ function buildActions(l) {
     <button class="btn-menu" onclick="toggleMenu(event,this,'${menuId}')">&#8942;</button>
     <div class="action-menu" id="${menuId}">
       <button onclick="openEditLeadModal(${l.id});closeMenus()">Editar lead</button>
+      <button onclick="sendToDeliveryWA(${l.id});closeMenus()">Enviar a delivery</button>
       ${blockBtn}
       <button class="danger" onclick="deleteLead(${l.id},'${l.status}');closeMenus()">Eliminar</button>
       <button class="danger" style="font-size:10px;opacity:.8" onclick="deleteLeadInternal(${l.id},'${l.status}');closeMenus()">Eliminar internamente</button>
