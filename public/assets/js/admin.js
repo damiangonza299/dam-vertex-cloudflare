@@ -91,14 +91,6 @@ if (IS_DELIVERY) {
     btn.style.display = 'none';
   });
 
-  /* Mostrar tab Envíos en modo delivery */
-  const shippingTabBtn = document.querySelector('[data-tab="shipping"]');
-  if (shippingTabBtn) shippingTabBtn.style.display = '';
-
-  /* Ocultar botón Envíos del filtro de fecha (solo para admin normal) */
-  const shippingQuickBtn = document.getElementById('date-shipping-btn');
-  if (shippingQuickBtn) shippingQuickBtn.style.display = 'none';
-
   initShippingPanel();
 
   // 🔒 Bloquear edición en productos (solo visual)
@@ -311,7 +303,10 @@ function applyFilters() {
       || l.city?.toLowerCase().includes(q);
     const matchProd = !product || l.product_name === product;
     let matchStatus;
-    if (!status) {
+    if (activeDateFilter === 'purchased-today') {
+      /* "Comprados hoy" ya exige status='purchased' — el filtro de estado no aplica */
+      matchStatus = true;
+    } else if (!status) {
       matchStatus = true;
     } else if (status === 'expired') {
       matchStatus = !!l.is_dead_lead || l.status === 'cancelled';
@@ -322,7 +317,13 @@ function applyFilters() {
     }
 
     let matchDate = true;
-    if (activeDateFilter !== 'all') {
+    if (activeDateFilter === 'purchased-today') {
+      /* Leads comprados HOY sin importar cuándo se creó el lead originalmente */
+      const purchasedDate = l.purchased_at
+        ? new Date(l.purchased_at + 'Z').toLocaleDateString('sv-SE')
+        : '';
+      matchDate = l.status === 'purchased' && purchasedDate === todayStr;
+    } else if (activeDateFilter !== 'all') {
       const leadDate = l.created_at
         ? new Date(l.created_at + 'Z').toLocaleDateString('sv-SE')
         : '';
@@ -346,11 +347,11 @@ function applyFilters() {
 
 function setDateFilter(val) {
   activeDateFilter = val;
-  ['date-all', 'date-today', 'date-yesterday'].forEach(id => {
+  ['date-all', 'date-today', 'date-yesterday', 'date-purchased-today'].forEach(id => {
     const key = id.slice(5); // remove 'date-' prefix
     document.getElementById(id)?.classList.toggle('date-btn--active', val === key);
   });
-  if (['all', 'today', 'yesterday'].includes(val)) {
+  if (['all', 'today', 'yesterday', 'purchased-today'].includes(val)) {
     const dp = document.getElementById('date-picker');
     if (dp) dp.value = '';
   }
@@ -366,6 +367,7 @@ document.querySelector('.admin-table-wrap')?.addEventListener('scroll', closeMen
 document.getElementById('date-all')?.addEventListener('click', () => setDateFilter('all'));
 document.getElementById('date-today')?.addEventListener('click', () => setDateFilter('today'));
 document.getElementById('date-yesterday')?.addEventListener('click', () => setDateFilter('yesterday'));
+document.getElementById('date-purchased-today')?.addEventListener('click', () => setDateFilter('purchased-today'));
 document.getElementById('date-picker')?.addEventListener('change', e => { setDateFilter(e.target.value || 'all'); });
 document.getElementById('manual-sale-btn')?.addEventListener('click', openManualSaleModal);
 document.getElementById('manual-sale-modal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeManualSaleModal(); });

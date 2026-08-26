@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Admin — Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=60"></script>
+  <script src="/assets/js/site-version.js?v=61"></script>
   <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
   <style>
     /* ── Dashboard ── */
@@ -191,12 +191,12 @@
     <div class="admin-tabs">
       <button class="admin-tab admin-tab--active" data-tab="leads" onclick="switchAdminTab('leads')">Lead</button>
       <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')">Productos</button>
-      <button class="admin-tab" data-tab="vh" id="vh-tab-btn" onclick="switchAdminTab('vh')" style="color:#f97316">V.H</button>
+      <button class="admin-tab" data-tab="vh" id="vh-tab-btn" onclick="switchAdminTab('vh')" style="display:none;color:#f97316">V.H</button>
       <button class="admin-tab" data-tab="ads" onclick="switchAdminTab('ads')" style="display:none">Anuncios</button>
       <button class="admin-tab" data-tab="dashboard" onclick="switchAdminTab('dashboard')" style="display:none">Flow</button>
       <button class="admin-tab" data-tab="meta" onclick="switchAdminTab('meta')" style="display:none">Meta</button>
       <button class="admin-tab" onclick="window.open('/intelligence/','_blank')" style="display:none;color:#818cf8;font-weight:700">INTEL</button>
-      <button class="admin-tab" data-tab="shipping" onclick="switchAdminTab('shipping')" style="display:none;color:#60a5fa">Envíos</button>
+      <button class="admin-tab" data-tab="shipping" onclick="switchAdminTab('shipping')" style="color:#60a5fa">Envíos</button>
       <button class="admin-tab" data-tab="blocked" onclick="switchAdminTab('blocked')" style="color:#f87171">Block</button>
     </div>
 
@@ -208,7 +208,7 @@
       <button class="date-btn date-btn--active" id="date-all">Todas</button>
       <button class="date-btn" id="date-today">Hoy</button>
       <button class="date-btn" id="date-yesterday">Ayer</button>
-      <button class="date-btn" id="date-shipping-btn" onclick="switchAdminTab('shipping')" style="color:#60a5fa">Envíos</button>
+      <button class="date-btn" id="date-purchased-today">Comprados hoy</button>
       <input type="date" id="date-picker" class="date-picker">
     </div>
 

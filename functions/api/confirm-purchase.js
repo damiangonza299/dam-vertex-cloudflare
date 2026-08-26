@@ -169,6 +169,23 @@ export async function onRequestPost({ request, env, waitUntil }) {
       return json({ ok: false, error: 'Ya fue confirmado' }, 409);
     }
 
+    /* Desbloqueo automático — si el teléfono del lead tiene un bloqueo activo en
+       blocked_customers, se levanta como parte de confirmar la compra. Misma
+       operación que unblockCustomer() en admin.js (DELETE /api/blocked-customers),
+       en reversa: active=0 + unblocked_at. Best-effort — nunca debe frenar la
+       confirmación ni el envío de CAPI si falla. */
+    if (lead.phone) {
+      try {
+        const normPhoneUnblock = normalizePhone(lead.phone) || lead.phone;
+        await env.DB.prepare(
+          `UPDATE blocked_customers SET active = 0, unblocked_at = datetime('now')
+           WHERE phone IN (?, ?) AND active = 1`
+        ).bind(lead.phone, normPhoneUnblock).run();
+      } catch (err) {
+        console.error('AUTO_UNBLOCK_ERROR lead_id=' + id, err.message);
+      }
+    }
+
     /* Preparar user_data hasheado */
     const user_data = {};
     if (lead.ip)         user_data.client_ip_address = lead.ip;
