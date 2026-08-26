@@ -159,6 +159,9 @@
     .gancho-led { padding: clamp(40px,10vw,72px) clamp(20px,5vw,48px); text-align: center; }
     .gancho-led__text { font-size: clamp(22px,5.5vw,38px); font-weight: 800; color: #fff; line-height: 1.25; margin: 0; max-width: 720px; margin-inline: auto; }
     .gancho-led--rojo    { background: #c0392b; }
+    /* Texto de gancho 1 es más largo que los otros dos — clamp propio para que
+       entre en una sola línea desde 320px sin recortarse. */
+    .gancho-led--rojo .gancho-led__text { font-size: clamp(12px, 4vw, 34px); }
     .gancho-led--negro   { background: #0a0a0a; }
     .gancho-led--violeta { background: #6d28d9; }
 
@@ -300,7 +303,7 @@
 <section class="hero-led" id="section-hero" data-insync-section="hero">
   <div class="hero-led__inner">
 
-    <h1 class="hero-led__h">Tu piel merece más que cremas.</h1>
+    <h1 class="hero-led__h">Piel luminosa. 15 minutos. Sin salir de casa.</h1>
 
     <div class="hero-led__media">
       <img src="/mascara-led-facial/hero-mascara.webp"
@@ -367,7 +370,7 @@
 
 <!-- ══ GANCHO 3 — violeta, transformación/identidad/exclusividad ══ -->
 <section class="gancho-led gancho-led--violeta" id="section-gancho3" data-insync-section="gancho3">
-  <p class="gancho-led__text">15 minutos por día. Solo tuyas.</p>
+  <p class="gancho-led__text">Tecnología LED profesional. Ahora en tus manos.</p>
 </section>
 
 <!-- ══ SECCIÓN 4 — imagen de cierre, ancho completo ══ -->
