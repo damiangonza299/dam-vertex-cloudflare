@@ -1157,6 +1157,10 @@ details summary::-webkit-details-marker { display: none; }
   flex-shrink: 0;
 }
 .date-picker:focus { border-color: var(--accent); }
+/* Oculta el año en el texto cerrado del picker (Chrome/Edge/Safari — Firefox
+   no soporta estos pseudo-elementos, no tiene efecto ahí). Solo cosmético,
+   el value/año seleccionado sigue intacto. */
+#date-picker::-webkit-datetime-edit-year-field { display: none; }
 
 /* ── Responsive ── */
 @media (max-width: 700px) {
