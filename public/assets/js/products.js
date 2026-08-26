@@ -48,6 +48,7 @@ function buildWAMsg(product, data, offerInfo) {
     `Nombre: ${data.name}`,
     `Método de Pago: ${data.payment || 'No especificado'}`,
     ...(data.city ? [`Ciudad: ${data.city}`] : []),
+    ...(data.horario ? [`Horario: ${data.horario}`] : []),
     `WhatsApp: ${data.phone}`,
     ...(colorLine ? [colorLine] : []),
     ...(data.invoice_requested ? [
@@ -58,7 +59,7 @@ function buildWAMsg(product, data, offerInfo) {
     ...(data.location_maps_url && !product.hideExactLocation ? [`Ubicación exacta: ${data.location_maps_url}`] : []),
     ...(data.referencia ? [`Referencia: ${data.referencia}`] : []),
     '',
-    '¡Nuevo pedido Dam Vertex! 🛍️',
+    'Dam Vertex — Confirmación de pedido',
   ];
   return encodeURIComponent(lines.join('\n'));
 }
@@ -74,6 +75,7 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
     `Nombre: ${data.name}`,
     `Método de Pago: ${data.payment || 'No especificado'}`,
     ...(data.city ? [`Ciudad: ${data.city}`] : []),
+    ...(data.horario ? [`Horario: ${data.horario}`] : []),
     `WhatsApp: ${data.phone}`,
     `Cantidad: ${qty} unidades`,
     ...(colorLine ? [colorLine] : []),
@@ -85,7 +87,7 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
     ...(data.location_maps_url && !product.hideExactLocation ? [`Ubicación exacta: ${data.location_maps_url}`] : []),
     ...(data.referencia ? [`Referencia: ${data.referencia}`] : []),
     '',
-    '¡Nuevo pedido Dam Vertex! 🛍️',
+    'Dam Vertex — Confirmación de pedido',
   ];
   return encodeURIComponent(lines.join('\n'));
 }
@@ -557,6 +559,7 @@ if (submitBtn)          submitBtn.textContent             = 'Confirmar pedido po
       name:       document.getElementById('m-name')?.value.trim() || '',
       phone:      rawPhone,
       city:       document.getElementById('m-city')?.value.trim() || '',
+      horario:    document.getElementById('horario')?.value.trim() || '',
       referencia: document.getElementById('m-ref')?.value.trim() || '',
       payment:    document.getElementById('m-payment')?.value || '',
       location_address:  document.getElementById('m-loc-address')?.value  || '',
@@ -621,6 +624,7 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
             phone:             validPhone || rawPhone,
             email:             '',
             city:              commonData.city,
+            horario:           commonData.horario || null,
             value:             customTotal,
             currency:          'PYG',
             quantity:          customQty,
@@ -723,6 +727,7 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
           phone:             validPhone || rawPhone,
           email:             '',
           city:              data.city,
+          horario:           data.horario || null,
           value:             expressTotal,
           currency:          'PYG',
           quantity:          selectedQty,

@@ -20,7 +20,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       fbclid, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
       campaign_id, adset_id, ad_id, campaign_name, adset_name, ad_name,
       landing_path, referrer,
-      address, payment_method,
+      address, payment_method, horario,
       location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
       session_id,
       invoice_requested, invoice_ruc, invoice_name, invoice_email,
@@ -300,11 +300,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
           `Teléfono: ${phone.trim()}`,
           ...(payment_method ? [`Método de pago: ${payment_method}`] : []),
           ...(tgCity ? [`Ciudad: ${tgCity}`] : []),
+          ...(horario?.trim() ? [`Horario: ${horario.trim()}`] : []),
           `Cantidad: ${quantity || 1}`,
           ...(!isComboTg && variantText ? [`Variante: ${variantText}`] : []),
           ...(address ? [`Referencia: ${address}`] : []),
           '',
-          'Nuevo pedido Dam Vertex 🛍️',
         ].join('\n');
         const tgRes  = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
           method:  'POST',

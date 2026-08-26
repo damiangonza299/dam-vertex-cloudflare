@@ -347,6 +347,7 @@ Toda landing nueva debe cumplir estos 4 puntos en su modal de pedido. **No decla
 3. **Badges de combo** — colores coherentes con el color de acento de la landing.
 4. **Espaciado consistente** — todos los bloques secundarios (Envío express, Necesito factura, futuros upsells) deben tener el mismo margen entre sí. Prohibido `margin-top` distinto por bloque.
 5. **Ahorro en Gs. exactos, nunca porcentaje** — en combos de 2 y 3 unidades (mismo producto), el texto de descuento siempre muestra el monto real: `Ahorrás Gs. 32.250`. Prohibido `"25% OFF"` / `"Ahorrás 25%"` en ese tipo de combo. Cálculo: `(precio unitario × cantidad) − precio del combo`, formateado con puntos de miles. No aplica a combos cruzados de productos distintos (ej. Reloj + Cadena) ni a badges de precio de 1 unidad — esos sí pueden usar porcentaje.
+6. **Campo "Horario"** — el modal siempre debe incluir el campo `horario` (`<input id="horario" name="horario">`) debajo del teléfono. Opcional, no bloquea el envío. Se lee en `products.js` (`commonData.horario`) y viaja al mensaje de WhatsApp del cliente y al Telegram (`functions/api/leads.js`) después de Ciudad — solo se muestra la línea si el cliente lo completó.
 
 ---
 
