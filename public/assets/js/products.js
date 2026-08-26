@@ -43,15 +43,13 @@ function buildWAMsg(product, data, offerInfo) {
     ? `Colores: ${offerInfo.colors.map(c => VARIANT_DISPLAY_NAMES[c] || c).join(' + ')}`
     : null;
   const lines = [
-    '¡Hola! Acabo de realizar un pedido en Dam Vertex y quiero confirmar los detalles:',
-    '',
-    `Nombre: ${data.name}`,
-    `Producto: ${product.name} (${qtyLabel})${express}`,
-    ...(colorLine ? [colorLine] : []),
     `Total: ${fmt(offerInfo.total)}`,
+    `Producto: ${product.name} (${qtyLabel})${express}`,
+    `Nombre: ${data.name}`,
     `Método de Pago: ${data.payment || 'No especificado'}`,
     ...(data.city ? [`Ciudad: ${data.city}`] : []),
     `WhatsApp: ${data.phone}`,
+    ...(colorLine ? [colorLine] : []),
     ...(data.invoice_requested ? [
       'Factura: Sí',
       ...(data.invoice_ruc  ? [`RUC: ${data.invoice_ruc}`]          : []),
@@ -60,7 +58,7 @@ function buildWAMsg(product, data, offerInfo) {
     ...(data.location_maps_url && !product.hideExactLocation ? [`Ubicación exacta: ${data.location_maps_url}`] : []),
     ...(data.referencia ? [`Referencia: ${data.referencia}`] : []),
     '',
-    '¿Pueden ayudarme a coordinar el envío?',
+    '¡Nuevo pedido Dam Vertex! 🛍️',
   ];
   return encodeURIComponent(lines.join('\n'));
 }
@@ -71,16 +69,14 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
     : (!product.customNoVariants ? 'Colores/variantes: a coordinar por WhatsApp' : null);
 
   const lines = [
-    '¡Hola! Acabo de realizar un pedido en Dam Vertex:',
-    '',
-    `Nombre: ${data.name}`,
-    `Producto: ${product.name}`,
-    `Cantidad: ${qty} unidades`,
-    ...(colorLine ? [colorLine] : []),
     `Total: ${fmt(total)}`,
+    `Producto: ${product.name}`,
+    `Nombre: ${data.name}`,
     `Método de Pago: ${data.payment || 'No especificado'}`,
     ...(data.city ? [`Ciudad: ${data.city}`] : []),
     `WhatsApp: ${data.phone}`,
+    `Cantidad: ${qty} unidades`,
+    ...(colorLine ? [colorLine] : []),
     ...(data.invoice_requested ? [
       'Factura: Sí',
       ...(data.invoice_ruc  ? [`RUC: ${data.invoice_ruc}`]          : []),
@@ -89,7 +85,7 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
     ...(data.location_maps_url && !product.hideExactLocation ? [`Ubicación exacta: ${data.location_maps_url}`] : []),
     ...(data.referencia ? [`Referencia: ${data.referencia}`] : []),
     '',
-    '¿Pueden confirmar el pedido?',
+    '¡Nuevo pedido Dam Vertex! 🛍️',
   ];
   return encodeURIComponent(lines.join('\n'));
 }

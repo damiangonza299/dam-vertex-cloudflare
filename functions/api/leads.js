@@ -294,17 +294,17 @@ export async function onRequestPost({ request, env, waitUntil }) {
           : safeProductName;
         const tgCity = effectiveCity || '';
         const text = [
-          'Nuevo pedido Dam Vertex',
-          '',
+          `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
           `Producto: ${tgProductName}`,
           `Nombre: ${safeName}`,
-          `Telefono: ${phone.trim()}`,
-          ...(payment_method ? [`Metodo de pago: ${payment_method}`] : []),
+          `Teléfono: ${phone.trim()}`,
+          ...(payment_method ? [`Método de pago: ${payment_method}`] : []),
           ...(tgCity ? [`Ciudad: ${tgCity}`] : []),
-          `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
-          ...(!isComboTg && variantText ? [`Variante: ${variantText}`] : []),
           `Cantidad: ${quantity || 1}`,
+          ...(!isComboTg && variantText ? [`Variante: ${variantText}`] : []),
           ...(address ? [`Referencia: ${address}`] : []),
+          '',
+          'Nuevo pedido Dam Vertex 🛍️',
         ].join('\n');
         const tgRes  = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
           method:  'POST',
