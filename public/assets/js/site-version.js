@@ -1,1 +1,1 @@
-window.DAM_VERTEX_VERSION = "75";
+window.DAM_VERTEX_VERSION = "76";

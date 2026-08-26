@@ -87,6 +87,9 @@ if (IS_DELIVERY) {
   const manualSaleBtn = document.getElementById('manual-sale-btn');
   if (manualSaleBtn) manualSaleBtn.style.display = 'none';
 
+  const statsBar = document.querySelector('.admin-stats');
+  if (statsBar) statsBar.style.display = 'none';
+
   document.querySelectorAll('[data-tab="ads"], [data-tab="dashboard"], [data-tab="meta"], [data-tab="blocked"], [data-tab="insync"], [data-tab="vh"]').forEach(btn => {
     btn.style.display = 'none';
   });
