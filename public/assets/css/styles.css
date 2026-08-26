@@ -1157,9 +1157,30 @@ details summary::-webkit-details-marker { display: none; }
   flex-shrink: 0;
 }
 .date-picker:focus { border-color: var(--accent); }
-/* #date-picker (filtro de leads) es nativo pero invisible — el botón
-   #date-picker-btn es lo que se ve, mismo lugar que antes ocupaba el input. */
-#date-picker-btn { margin-left: auto; }
+
+/* #date-picker (filtro de leads) — input real superpuesto (opacity:0) sobre
+   el botón visible, para que el click abra el calendario nativo del browser
+   de forma confiable (un input oculto con visibility:hidden/width:0 no lo
+   abre en todos los navegadores). El texto mostrado ("D mes.", sin año) lo
+   arma admin.js en #date-picker-btn a partir del value del input. */
+.date-picker-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.date-picker-wrapper .date-btn { width: 100%; }
+.date-picker-input {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color-scheme: dark;
+}
 
 /* ── Responsive ── */
 @media (max-width: 700px) {
