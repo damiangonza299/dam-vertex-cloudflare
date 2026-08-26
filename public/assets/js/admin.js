@@ -348,6 +348,30 @@ function applyFilters() {
   updateStats(filtered);
 }
 
+const MONTH_ABBR_ES = ['ene.','feb.','mar.','abr.','may.','jun.','jul.','ago.','sep.','oct.','nov.','dic.'];
+
+/* Botón custom que reemplaza el texto nativo del <input type="date"> (que
+   siempre incluye el año) — muestra solo "día mes.", sin año. El input sigue
+   siendo el nativo del navegador, solo oculto visualmente. */
+function updateDatePickerBtnLabel() {
+  const dp  = document.getElementById('date-picker');
+  const btn = document.getElementById('date-picker-btn');
+  if (!btn) return;
+  const val = dp?.value || '';
+  if (!val) { btn.textContent = 'Fecha'; return; }
+  const [, m, d] = val.split('-').map(Number);
+  btn.textContent = `${d} ${MONTH_ABBR_ES[m - 1]}`;
+}
+
+document.getElementById('date-picker-btn')?.addEventListener('click', () => {
+  const dp = document.getElementById('date-picker');
+  if (!dp) return;
+  if (typeof dp.showPicker === 'function') {
+    try { dp.showPicker(); return; } catch (_) {}
+  }
+  dp.click();
+});
+
 function setDateFilter(val) {
   activeDateFilter = val;
   ['date-all', 'date-today', 'date-yesterday', 'date-purchased-today'].forEach(id => {
@@ -358,6 +382,7 @@ function setDateFilter(val) {
     const dp = document.getElementById('date-picker');
     if (dp) dp.value = '';
   }
+  updateDatePickerBtnLabel();
   applyFilters();
 }
 

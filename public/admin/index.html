@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Admin — Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=68"></script>
+  <script src="/assets/js/site-version.js?v=69"></script>
   <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
   <style>
     /* ── Dashboard ── */
@@ -209,7 +209,8 @@
       <button class="date-btn" id="date-today">Hoy</button>
       <button class="date-btn" id="date-yesterday">Ayer</button>
       <button class="date-btn" id="date-purchased-today">Comprados hoy</button>
-      <input type="date" id="date-picker" class="date-picker">
+      <button type="button" class="date-btn" id="date-picker-btn">Fecha</button>
+      <input type="date" id="date-picker" class="date-picker" style="position:absolute;width:0;height:0;padding:0;border:0;visibility:hidden">
     </div>
 
     <!-- Filters -->
