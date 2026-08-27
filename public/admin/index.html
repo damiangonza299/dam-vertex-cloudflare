@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Admin — Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=72"></script>
+  <script src="/assets/js/site-version.js?v=73"></script>
   <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
   <style>
     /* ── Dashboard ── */
@@ -252,11 +252,12 @@
         <span id="pts-total" style="font-size:15px;font-weight:700;color:#4ade80">Gs. 0</span>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
-        <span style="font-size:13px;color:var(--muted)">🚚 Costo delivery</span>
-        <input type="number" id="pts-delivery-cost" min="0" step="1000" placeholder="0" style="width:140px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);color:#fff;font-size:13px;padding:6px 10px;border-radius:6px;text-align:right;font-family:inherit">
+        <span style="font-size:13px;color:var(--muted)">🚚 Costo delivery total</span>
+        <span id="pts-delivery-total" style="font-size:15px;font-weight:700;color:#f87171">Gs. 0</span>
       </div>
+      <div id="pts-manual-breakdown"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0 4px;border-top:1px solid rgba(255,255,255,.08);margin-top:4px">
-        <span style="font-size:13px;color:var(--muted)">📋 Monto a rendir</span>
+        <span style="font-size:13px;color:var(--muted)">📋 A cobrar al delivery</span>
         <span id="pts-profit" style="font-size:15px;font-weight:700;color:#60a5fa">Gs. 0</span>
       </div>
     </div>

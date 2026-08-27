@@ -352,7 +352,29 @@ function applyFilters() {
 /* Panel de resumen del día — solo con "Comprados hoy" activo. Local al
    navegador (localStorage), no toca D1 ni Dam Finanzas: es un cálculo
    rápido de referencia, no reemplaza el reporte oficial de Ganancia. */
-let _ptsTotal = 0;
+const DELIVERY_PRECIOS = {
+  'lambare': 20000,
+  'asuncion': 25000, 'villa elisa': 25000, 'fdo de la mora': 25000,
+  'fernando de la mora': 25000, 'nemby': 25000,
+  'san lorenzo': 30000, 'san antonio': 30000, 'mariano r. alonso': 30000,
+  'mariano roque alonso': 30000, 'luque': 30000,
+  'capiata': 35000,
+  'ypane': 40000,
+  'limpio': 45000, 'aregua': 45000, 'guarambare': 45000, 'itaugua': 45000,
+  'villeta': 50000,
+};
+
+function normalizeCityKey(s) {
+  return (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+}
+
+function ptsManualKey(leadId) {
+  return `dam_delivery_manual_${leadId}_${new Date().toLocaleDateString('sv-SE')}`;
+}
+
+let _ptsTotal       = 0; // facturado hoy
+let _ptsAutoCost    = 0; // suma de precios automáticos (ciudades reconocidas)
+let _ptsManualLeads = []; // leads con ciudad no reconocida (Interior)
 
 function updatePurchasedTodayUI(filtered) {
   const isActive  = activeDateFilter === 'purchased-today';
@@ -362,28 +384,45 @@ function updatePurchasedTodayUI(filtered) {
   if (panel)     panel.style.display     = isActive ? '' : 'none';
   if (!isActive) return;
 
-  _ptsTotal = filtered.reduce((sum, l) => sum + (Number(l.value) || 0), 0);
+  _ptsTotal       = filtered.reduce((sum, l) => sum + (Number(l.value) || 0), 0);
+  _ptsAutoCost    = 0;
+  _ptsManualLeads = [];
+  filtered.forEach(l => {
+    const price = DELIVERY_PRECIOS[normalizeCityKey(l.city)];
+    if (price != null) _ptsAutoCost += price;
+    else _ptsManualLeads.push(l);
+  });
 
-  const todayStr  = new Date().toLocaleDateString('sv-SE');
-  const costInput = document.getElementById('pts-delivery-cost');
-  if (costInput && document.activeElement !== costInput) {
-    costInput.value = localStorage.getItem(`dam_delivery_cost_${todayStr}`) || '';
-  }
   renderPurchasedTodaySummary();
 }
 
 function renderPurchasedTodaySummary() {
-  const cost    = Number(document.getElementById('pts-delivery-cost')?.value) || 0;
-  const profit  = _ptsTotal - cost;
-  const totalEl = document.getElementById('pts-total');
-  const profitEl = document.getElementById('pts-profit');
-  if (totalEl)  totalEl.textContent  = 'Gs. ' + _ptsTotal.toLocaleString('es-PY');
-  if (profitEl) profitEl.textContent = 'Gs. ' + profit.toLocaleString('es-PY');
+  const breakdown = document.getElementById('pts-manual-breakdown');
+  if (breakdown) {
+    breakdown.innerHTML = _ptsManualLeads.map(l => `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;gap:8px">
+        <span style="font-size:11px;color:rgba(255,255,255,.45);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px">${esc(l.name || '')} · ${esc(l.city || 'Sin ciudad')}</span>
+        <input type="number" data-pts-manual="${l.id}" min="0" step="1000" placeholder="Interior - Gs" value="${localStorage.getItem(ptsManualKey(l.id)) || ''}"
+          style="width:120px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);color:#fff;font-size:12px;padding:4px 8px;border-radius:6px;text-align:right;font-family:inherit">
+      </div>`).join('');
+  }
+
+  const manualCost   = _ptsManualLeads.reduce((sum, l) => sum + (Number(localStorage.getItem(ptsManualKey(l.id))) || 0), 0);
+  const deliveryTotal = _ptsAutoCost + manualCost;
+  const charge         = _ptsTotal - deliveryTotal;
+
+  const totalEl    = document.getElementById('pts-total');
+  const deliveryEl = document.getElementById('pts-delivery-total');
+  const chargeEl   = document.getElementById('pts-profit');
+  if (totalEl)    totalEl.textContent    = 'Gs. ' + _ptsTotal.toLocaleString('es-PY');
+  if (deliveryEl) deliveryEl.textContent = 'Gs. ' + deliveryTotal.toLocaleString('es-PY');
+  if (chargeEl)   chargeEl.textContent   = 'Gs. ' + charge.toLocaleString('es-PY');
 }
 
-document.getElementById('pts-delivery-cost')?.addEventListener('input', e => {
-  const todayStr = new Date().toLocaleDateString('sv-SE');
-  localStorage.setItem(`dam_delivery_cost_${todayStr}`, e.target.value || '');
+document.getElementById('pts-manual-breakdown')?.addEventListener('input', e => {
+  const id = e.target?.dataset?.ptsManual;
+  if (!id) return;
+  localStorage.setItem(ptsManualKey(id), e.target.value || '0');
   renderPurchasedTodaySummary();
 });
 
