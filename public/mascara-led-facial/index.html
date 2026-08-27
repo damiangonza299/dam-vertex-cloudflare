@@ -138,8 +138,8 @@
     .hero-led__h { font-size: clamp(28px,6vw,42px); font-weight: 800; line-height: 1.16; letter-spacing: -.01em; color: var(--led-text); margin: 0 0 20px; }
 
     .hero-led .price-block { display: flex; align-items: baseline; justify-content: center; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 20px; }
-    .hero-led .price-main    { color: var(--led-text); font-size: clamp(26px,5.5vw,36px); font-weight: 800; }
-    .hero-led .price-compare { color: rgba(26,16,37,.6); font-size: clamp(15px,2.6vw,18px); }
+    .hero-led .price-compare { color: rgba(26,16,37,.6); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
+    .hero-led .price-main    { color: var(--led-text); font-size: clamp(18px,3vw,22px); font-weight: 800; }
     .hero-led .price-badge   { background: var(--led-purple-dk); color: #fff; border: none; }
 
     .hero-led__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; text-align: left; }
@@ -303,7 +303,7 @@
 <section class="hero-led" id="section-hero" data-insync-section="hero">
   <div class="hero-led__inner">
 
-    <h1 class="hero-led__h">Piel luminosa. 15 minutos. Sin salir de casa.</h1>
+    <h1 class="hero-led__h">Lo que gastás en una sesión de estética,<br>te dura para siempre.</h1>
 
     <div class="hero-led__media">
       <img src="/mascara-led-facial/hero-mascara.webp"
@@ -358,7 +358,7 @@
 
 <!-- ══ GANCHO 2 — negro, autoridad/certeza/fuerza ══ -->
 <section class="gancho-led gancho-led--negro" id="section-gancho2" data-insync-section="gancho2">
-  <p class="gancho-led__text">7 luces. Un ritual. Resultados que se ven.</p>
+  <p class="gancho-led__text">7 luces. Un ritual.<br>Resultados que se ven.</p>
 </section>
 
 <!-- ══ SECCIÓN 3 — imagen, ancho completo, sin texto ══ -->
@@ -476,6 +476,11 @@
         <label for="m-phone">Teléfono (WhatsApp)</label>
         <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
         <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="horario">¿En qué horario podés recibir?</label>
+        <input type="text" name="horario" id="horario" placeholder="Ej: de 9:00 a 17:00hs" maxlength="100">
       </div>
 
       <div class="form-group" id="location-group">

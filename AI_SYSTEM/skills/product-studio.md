@@ -178,6 +178,21 @@ Blueprint V3 define exactamente qué va en cada sección. No improvisar.
 
 ---
 
+## Modal — Campo Horario (obligatorio en toda landing)
+
+Todo modal de pedido debe incluir el campo `horario` debajo del teléfono:
+
+```html
+<div class="form-group">
+  <label for="horario">¿En qué horario podés recibir?</label>
+  <input type="text" name="horario" id="horario" placeholder="Ej: de 9:00 a 17:00hs" maxlength="100">
+</div>
+```
+
+Opcional — no bloquea el envío. Se lee en `products.js` (`commonData.horario`) y viaja al mensaje de WhatsApp del cliente y al Telegram (`functions/api/leads.js`) después de Ciudad — solo se muestra la línea si el cliente lo completó. Regla completa: `CLAUDE.md`, sección "Modal — reglas de coherencia visual", punto 6.
+
+---
+
 ## InSync — Instrumentación Obligatoria (triple atributo)
 
 Regla completa: `AI_SYSTEM/execution/landing-insync-instrumentation.md`

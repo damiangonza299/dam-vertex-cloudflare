@@ -484,6 +484,14 @@ Todo botón `[data-scroll-form]` debe tener `href` real de WhatsApp hardcodeado 
 
 ---
 
+## CAMPO HORARIO — Regla obligatoria en el modal de toda landing
+
+**Regla completa:** sección "Modal — reglas de coherencia visual" (punto 6) en `CLAUDE.md`.
+
+Todo modal de pedido debe incluir el campo `horario` (`<input id="horario" name="horario">`) debajo del teléfono. Opcional, no bloquea el envío. Viaja al mensaje de WhatsApp del cliente y al Telegram (`functions/api/leads.js`) después de Ciudad — solo se muestra la línea si el cliente lo completó.
+
+---
+
 ## Prioridades del proyecto
 
 - Conversión de la landing
