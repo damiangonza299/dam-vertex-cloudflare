@@ -346,7 +346,46 @@ function applyFilters() {
 
   renderTable(filtered);
   updateStats(filtered);
+  updatePurchasedTodayUI(filtered);
 }
+
+/* Panel de resumen del día — solo con "Comprados hoy" activo. Local al
+   navegador (localStorage), no toca D1 ni Dam Finanzas: es un cálculo
+   rápido de referencia, no reemplaza el reporte oficial de Ganancia. */
+let _ptsTotal = 0;
+
+function updatePurchasedTodayUI(filtered) {
+  const isActive  = activeDateFilter === 'purchased-today';
+  const statusSel = document.getElementById('filter-status');
+  const panel     = document.getElementById('purchased-today-summary');
+  if (statusSel) statusSel.style.display = isActive ? 'none' : '';
+  if (panel)     panel.style.display     = isActive ? '' : 'none';
+  if (!isActive) return;
+
+  _ptsTotal = filtered.reduce((sum, l) => sum + (Number(l.value) || 0), 0);
+
+  const todayStr  = new Date().toLocaleDateString('sv-SE');
+  const costInput = document.getElementById('pts-delivery-cost');
+  if (costInput && document.activeElement !== costInput) {
+    costInput.value = localStorage.getItem(`dam_delivery_cost_${todayStr}`) || '';
+  }
+  renderPurchasedTodaySummary();
+}
+
+function renderPurchasedTodaySummary() {
+  const cost    = Number(document.getElementById('pts-delivery-cost')?.value) || 0;
+  const profit  = _ptsTotal - cost;
+  const totalEl = document.getElementById('pts-total');
+  const profitEl = document.getElementById('pts-profit');
+  if (totalEl)  totalEl.textContent  = 'Gs. ' + _ptsTotal.toLocaleString('es-PY');
+  if (profitEl) profitEl.textContent = 'Gs. ' + profit.toLocaleString('es-PY');
+}
+
+document.getElementById('pts-delivery-cost')?.addEventListener('input', e => {
+  const todayStr = new Date().toLocaleDateString('sv-SE');
+  localStorage.setItem(`dam_delivery_cost_${todayStr}`, e.target.value || '');
+  renderPurchasedTodaySummary();
+});
 
 const MONTH_ABBR_ES = ['ene.','feb.','mar.','abr.','may.','jun.','jul.','ago.','sep.','oct.','nov.','dic.'];
 
