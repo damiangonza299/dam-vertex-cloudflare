@@ -137,10 +137,10 @@
 
     .hero-led__h { font-size: clamp(28px,6vw,42px); font-weight: 800; line-height: 1.16; letter-spacing: -.01em; color: var(--led-text); margin: 0 0 20px; }
 
-    .hero-led .price-block { display: flex; align-items: baseline; justify-content: center; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 20px; }
-    .hero-led .price-compare { color: rgba(26,16,37,.6); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
-    .hero-led .price-main    { color: var(--led-text); font-size: clamp(18px,3vw,22px); font-weight: 800; }
-    .hero-led .price-badge   { background: var(--led-purple-dk); color: #fff; border: none; }
+    .hero-led .price-block   { display: flex; align-items: baseline; justify-content: center; flex-wrap: nowrap; gap: 6px 8px; margin: 0 0 20px; }
+    .hero-led .price-compare { color: rgba(26,16,37,.6); font-size: clamp(16px, 4vw, 19px); font-weight: 700; }
+    .hero-led .price-main    { color: var(--led-text); font-size: clamp(14px, 3.6vw, 17px); font-weight: 800; }
+    .hero-led .price-savings { font-size: clamp(10px, 2.4vw, 12px); font-weight: 700; color: var(--led-green); white-space: nowrap; }
 
     .hero-led__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; text-align: left; }
     .hero-led__feature {
@@ -303,7 +303,7 @@
 <section class="hero-led" id="section-hero" data-insync-section="hero">
   <div class="hero-led__inner">
 
-    <h1 class="hero-led__h">Lo que gastás en una sesión de estética,<br>te dura para siempre.</h1>
+    <h1 class="hero-led__h">Tu piel merece más que cremas que no funcionan.</h1>
 
     <div class="hero-led__media">
       <img src="/mascara-led-facial/hero-mascara.webp"
@@ -318,9 +318,9 @@
     </div>
 
     <div class="price-block">
-      <span class="price-main">Gs. 289.000</span>
       <span class="price-compare">Gs. 379.000</span>
-      <span class="price-badge">24% OFF</span>
+      <span class="price-main">Gs. 289.000</span>
+      <span class="price-savings">Ahorrás Gs. 90.000</span>
     </div>
 
     <div class="hero-led__features">
