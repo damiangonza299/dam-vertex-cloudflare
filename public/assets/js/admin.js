@@ -142,6 +142,10 @@ if (IS_DELIVERY) {
   // Refrescar leads cada 90 s cuando el tab está visible (sincroniza todos los dispositivos tras el scan)
   setInterval(() => { if (!document.hidden && AUTH_TOKEN) loadLeads(); }, 90000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden && AUTH_TOKEN) { loadLeads(); _scanIntelligence(); } });
+  /* Algunos navegadores mobile restauran la página desde bfcache al volver
+     con "atrás" (ej. después de abrir wa.me) mostrando el DOM congelado tal
+     como quedó — forzar un refresh de datos evita que quede en blanco/vacío. */
+  window.addEventListener('pageshow', e => { if (e.persisted && AUTH_TOKEN) loadLeads(); });
 });
 
 /* ── Login ── */
@@ -553,7 +557,7 @@ function sendToDeliveryWA(id) {
     '',
     'Dam Vertex — Confirmación de pedido',
   ].join('\n');
-  window.open(`https://wa.me/${DELIVERY_WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
+  window.open(`https://wa.me/${DELIVERY_WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
 }
 
 function buildActions(l) {
@@ -2359,7 +2363,7 @@ async function submitManualSale(sendCapi, force) {
     'Dam Vertex — Confirmación de pedido',
   ].join('\n');
   const waPhone = normalizePhone(phone) || phone.replace(/\D/g, '');
-  window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(waText)}`, '_blank');
+  window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(waText)}`, '_blank', 'noopener');
 
   closeManualSaleModal();
   loadLeads();
