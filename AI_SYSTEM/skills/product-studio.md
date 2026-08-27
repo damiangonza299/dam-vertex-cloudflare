@@ -193,6 +193,22 @@ Opcional — no bloquea el envío. Se lee en `products.js` (`commonData.horario`
 
 ---
 
+## Bloque de Precio — "Ahorrás Gs. X" siempre arriba (obligatorio en toda landing)
+
+El texto "Ahorrás Gs. X" siempre va en línea propia **arriba** del bloque de precios — nunca en la misma línea. Esto es psicología de precio: el cliente ve primero el ahorro, después el precio, lo que hace que el precio final se perciba más chico.
+
+```html
+<p class="price-savings-top">Ahorrás Gs. 60.000</p>
+<div class="price-block">
+  <span class="price-compare">Gs. 259.000</span>
+  <span class="price-main">Gs. 199.000</span>
+</div>
+```
+
+Referencia: `public/cepillo-secador-moldeador-aguacate/index.html`. Regla completa: `CLAUDE.md`, sección "Modal — reglas de coherencia visual", punto 7.
+
+---
+
 ## Nombres Abreviados — obligatorio al registrar un producto nuevo
 
 Al registrar un producto nuevo en D1 y en `leads.js`, agregar siempre el nombre abreviado en `PRODUCT_SHORT_NAMES` — máximo 3 palabras, sin artículos innecesarios. Duplicado en dos archivos por ser contextos distintos sin módulo compartido:
