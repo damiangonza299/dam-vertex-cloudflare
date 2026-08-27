@@ -293,6 +293,15 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     }
 
+    /* Guardar horario (columna migrate32.sql) — best-effort, no bloquea el
+       guardado del lead si la migración todavía no corrió en algún entorno. */
+    if (horario?.trim() && result?.meta?.last_row_id) {
+      try {
+        await env.DB.prepare('UPDATE leads SET horario = ? WHERE id = ?')
+          .bind(horario.trim(), result.meta.last_row_id).run();
+      } catch (_) {}
+    }
+
     /* Telegram — background, no bloquea la respuesta.
        Venta Hipnótica (source='venta-hipnotica') se gestiona aparte en la sección V.H
        del admin — sin notificación Telegram por pedido explícito. */

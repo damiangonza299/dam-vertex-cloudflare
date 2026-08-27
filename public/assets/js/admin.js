@@ -84,8 +84,6 @@ if (IS_DELIVERY) {
 
   const exportBtn = document.getElementById('export-csv-btn');
   if (exportBtn) exportBtn.style.display = 'none';
-  const manualSaleBtn = document.getElementById('manual-sale-btn');
-  if (manualSaleBtn) manualSaleBtn.style.display = 'none';
 
   const statsBar = document.querySelector('.admin-stats');
   if (statsBar) statsBar.style.display = 'none';
@@ -167,7 +165,7 @@ async function loadActiveProducts() {
     const data = await res.json();
     _activeProducts = data.products || [];
     populateProdFilters(_activeProducts);
-    MANUAL_PRODUCTS = _activeProducts.map(p => ({ slug: p.slug, name: p.name }));
+    MANUAL_PRODUCTS = _activeProducts.map(p => ({ slug: p.slug, name: p.name, price: p.default_price || 0 }));
   } catch (_) {}
 }
 
@@ -550,9 +548,10 @@ function sendToDeliveryWA(id) {
     `Teléfono: ${l.phone || ''}`,
     `Método de pago: ${l.payment_method || '—'}`,
     `Ciudad: ${l.city || '—'}`,
+    ...(l.horario?.trim() ? [`Horario: ${l.horario.trim()}`] : []),
     `Cantidad: ${l.quantity || 1}`,
     '',
-    'Número delivery: +' + DELIVERY_WA_NUMBER,
+    'Dam Vertex — Confirmación de pedido',
   ].join('\n');
   window.open(`https://wa.me/${DELIVERY_WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
 }
@@ -2066,7 +2065,59 @@ function openManualSaleModal() {
   if (attrBody) attrBody.style.display = 'none';
   const errEl = document.getElementById('msf-error');
   if (errEl) { errEl.textContent = ''; errEl.style.display = 'none'; }
+  const extraLines = document.getElementById('msf-extra-lines');
+  if (extraLines) extraLines.innerHTML = '';
+  msfRecalcTotal();
   modal.style.display = 'flex';
+}
+
+/* ── Líneas de productos adicionales (venta manual con más de un producto) ──
+   Cada línea es simple (producto + cantidad + precio unitario, sin variantes)
+   a diferencia de la línea principal de arriba, que sí soporta variantes.
+   Al guardar, cada línea crea su propio lead vía /api/manual-whatsapp-sale
+   (ver submitManualSale) — reutiliza 100% la lógica de stock/CAPI/Dam
+   Finanzas existente, sin tocar el backend. */
+function msfAddExtraLine() {
+  const container = document.getElementById('msf-extra-lines');
+  if (!container) return;
+  const row = document.createElement('div');
+  row.className = 'msf-extra-row';
+  row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;align-items:center';
+  row.innerHTML = `
+    <select class="msf-input msf-extra-product" style="flex:2;height:36px;padding:6px 10px" onchange="msfExtraLineChanged(this)">
+      <option value="">Producto...</option>
+      ${MANUAL_PRODUCTS.map(p => `<option value="${esc(p.slug)}" data-name="${esc(p.name)}" data-price="${p.price || 0}">${esc(p.name)}</option>`).join('')}
+    </select>
+    <input type="number" class="msf-input msf-extra-qty" min="1" value="1" style="width:52px;height:36px;padding:6px 4px;text-align:center" oninput="msfRecalcTotal()">
+    <input type="number" class="msf-input msf-extra-price" min="0" step="1000" placeholder="Precio unit." style="width:100px;height:36px;padding:6px 8px" oninput="msfRecalcTotal()">
+    <button type="button" onclick="this.closest('.msf-extra-row').remove();msfRecalcTotal()" style="background:none;border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:6px;cursor:pointer;font-size:18px;line-height:1;padding:0;height:36px;width:32px;font-family:inherit;flex-shrink:0" title="Quitar">&times;</button>
+  `;
+  container.appendChild(row);
+}
+
+function msfExtraLineChanged(sel) {
+  const opt   = sel.selectedOptions[0];
+  const row   = sel.closest('.msf-extra-row');
+  const priceInput = row?.querySelector('.msf-extra-price');
+  if (priceInput && !priceInput.value && opt?.dataset.price) priceInput.value = opt.dataset.price;
+  msfRecalcTotal();
+}
+
+function msfGetExtraLines() {
+  return [...document.querySelectorAll('#msf-extra-lines .msf-extra-row')].map(row => {
+    const sel   = row.querySelector('.msf-extra-product');
+    const opt   = sel?.selectedOptions[0];
+    const qty   = Math.max(1, parseInt(row.querySelector('.msf-extra-qty')?.value) || 1);
+    const price = Number(row.querySelector('.msf-extra-price')?.value) || 0;
+    return { slug: sel?.value || '', name: opt?.dataset.name || '', qty, price, lineTotal: qty * price };
+  }).filter(l => l.slug);
+}
+
+function msfRecalcTotal() {
+  const base    = Number(document.getElementById('msf-value')?.value) || 0;
+  const extra   = msfGetExtraLines().reduce((sum, l) => sum + l.lineTotal, 0);
+  const totalEl = document.getElementById('msf-total-val');
+  if (totalEl) totalEl.textContent = 'Gs. ' + (base + extra).toLocaleString('es-PY');
 }
 
 function closeManualSaleModal() {
@@ -2179,6 +2230,33 @@ function msfGetVariantData() {
   };
 }
 
+/* POST de UNA línea a /api/manual-whatsapp-sale, con el mismo manejo de
+   duplicado (confirm + retry con force) que tenía el flujo de un solo
+   producto — ahora reutilizado por línea dentro de submitManualSale. */
+async function msfPostLine(payload, force) {
+  const res = await fetch('/api/manual-whatsapp-sale', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    body:    JSON.stringify({ ...payload, force: !!force }),
+  });
+  const data = await res.json();
+  if (!data.ok && data.duplicate_warning) {
+    const ids = (data.duplicate_ids || []).join(', ');
+    const proceed = confirm(
+      `Posible duplicado detectado para "${payload.product_name}".\n\nLead(s) #${ids} ya registrados con el mismo teléfono, producto y valor en las últimas 2 horas.\n\n¿Querés guardar igual?`
+    );
+    if (proceed) return msfPostLine(payload, true);
+    return { ok: false, cancelled: true };
+  }
+  return data;
+}
+
+/* Venta manual con uno o más productos. Decisión: CADA producto crea su
+   propio lead en D1 vía /api/manual-whatsapp-sale (una llamada por línea,
+   secuencial) — reutiliza sin cambios el stock/CAPI/Dam Finanzas que ya
+   existían para una sola venta, en vez de rearmar ese endpoint para un
+   carrito multi-item. Al terminar, arma UN mensaje de WhatsApp combinado
+   con todos los productos y lo abre para el teléfono del cliente. */
 async function submitManualSale(sendCapi, force) {
   const errEl = document.getElementById('msf-error');
   if (errEl) { errEl.style.display = 'none'; }
@@ -2210,75 +2288,81 @@ async function submitManualSale(sendCapi, force) {
   if (sendCapi && !confirmed)            return showMsfError('Confirmá que la compra fue real y pagada para enviar a Meta');
   if (msfVariantNames.length && !variant) return showMsfError('Seleccioná al menos una variante');
 
+  const extraLines = msfGetExtraLines();
+  for (const l of extraLines) {
+    if (!l.price || l.price <= 0) return showMsfError(`Precio inválido para "${l.name}"`);
+  }
+
   const productObj   = MANUAL_PRODUCTS.find(p => p.slug === productSlug);
   const product_name = productObj ? productObj.name : productSlug;
+
+  const sharedFields = {
+    name, phone, payment_method: paymentMethod,
+    source_type: sourceType, confirmed, send_capi: sendCapi,
+    deduct_stock: deductStock,
+    city: city || undefined, observation: observation || undefined,
+    campaign_id:   campaignId   || undefined,
+    campaign_name: campaignName || undefined,
+    adset_id:      adsetId      || undefined,
+    adset_name:    adsetName    || undefined,
+    ad_id:         adId         || undefined,
+    ad_name:       adName       || undefined,
+  };
+
+  const lines = [
+    { product_name, product_slug: productSlug, value, quantity, variant: variant || undefined },
+    ...extraLines.map(l => ({ product_name: l.name, product_slug: l.slug, value: l.lineTotal, quantity: l.qty, variant: undefined })),
+  ];
 
   const btnId = sendCapi ? 'msf-btn-capi' : 'msf-btn-save';
   const btn   = document.getElementById(btnId);
   if (btn) { btn.disabled = true; btn.textContent = 'Guardando...'; }
 
+  const results = [];
   try {
-    const res = await fetch('/api/manual-whatsapp-sale', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${AUTH_TOKEN}` },
-      body: JSON.stringify({
-        name, phone, product_name, product_slug: productSlug,
-        value, payment_method: paymentMethod,
-        source_type: sourceType, confirmed, send_capi: sendCapi,
-        force: !!force, deduct_stock: deductStock,
-        quantity, variant: variant || undefined,
-        city: city || undefined, observation: observation || undefined,
-        campaign_id:   campaignId   || undefined,
-        campaign_name: campaignName || undefined,
-        adset_id:      adsetId      || undefined,
-        adset_name:    adsetName    || undefined,
-        ad_id:         adId         || undefined,
-        ad_name:       adName       || undefined,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!data.ok && data.duplicate_warning) {
-      const ids = (data.duplicate_ids || []).join(', ');
-      const proceed = confirm(
-        `Posible duplicado detectado.\n\nLead(s) #${ids} ya registrados con el mismo teléfono, producto y valor en las últimas 2 horas.\n\n¿Querés guardar igual?`
-      );
-      if (proceed) submitManualSale(sendCapi, true);
-      return;
+    for (const line of lines) {
+      const data = await msfPostLine({ ...sharedFields, ...line }, force);
+      if (data.cancelled) return;
+      if (!data.ok) { showMsfError(`"${line.product_name}": ${data.error || 'Error desconocido'}`); return; }
+      results.push(data);
     }
-
-    if (!data.ok) {
-      showMsfError(data.error || 'Error desconocido');
-      return;
-    }
-
-    let msg = `Venta #${data.sale_id} registrada.`;
-    if (data.stock_deducted) {
-      msg += '\nStock descontado correctamente.';
-    } else if (data.stock_error) {
-      msg += `\nStock NO descontado: ${data.stock_error}`;
-    }
-    if (sendCapi) {
-      if (data.capi_status === 'sent') {
-        msg += '\nPurchase enviado a Meta correctamente.';
-      } else if (data.capi_status !== 'skipped') {
-        msg += `\nCAPI: ${data.capi_status}`;
-        if (data.capi_error) msg += `\n${data.capi_error.slice(0, 120)}`;
-      }
-    }
-    alert(msg);
-    closeManualSaleModal();
-    loadLeads();
-
   } catch (_) {
     showMsfError('Error de red — verificá la conexión');
+    return;
   } finally {
     if (btn) {
       btn.disabled    = false;
       btn.textContent = sendCapi ? 'Guardar + Enviar CAPI' : 'Solo guardar';
     }
   }
+
+  const grandTotal = lines.reduce((s, l) => s + (Number(l.value) || 0), 0);
+  let msg = `${results.length} venta(s) registrada(s) (#${results.map(r => r.sale_id).join(', #')}).`;
+  const stockErr = results.find(r => r.stock_error);
+  if (stockErr) msg += `\nAlgún producto no descontó stock: ${stockErr.stock_error}`;
+  if (sendCapi) {
+    const capiErr = results.find(r => r.capi_status === 'error');
+    msg += capiErr ? `\nCAPI con error en algún producto: ${(capiErr.capi_error || '').slice(0, 120)}` : '\nPurchase enviado a Meta correctamente.';
+  }
+  alert(msg);
+
+  /* Mensaje de WhatsApp combinado — al teléfono del cliente registrado */
+  const waText = [
+    `Total: Gs. ${grandTotal.toLocaleString('es-PY')}`,
+    'Productos:',
+    ...lines.map(l => `- ${l.product_name} x${l.quantity}: Gs. ${Number(l.value).toLocaleString('es-PY')}`),
+    `Nombre: ${name}`,
+    `Teléfono: ${phone}`,
+    `Método de pago: ${paymentMethod}`,
+    ...(city ? [`Ciudad: ${city}`] : []),
+    '',
+    'Dam Vertex — Confirmación de pedido',
+  ].join('\n');
+  const waPhone = normalizePhone(phone) || phone.replace(/\D/g, '');
+  window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(waText)}`, '_blank');
+
+  closeManualSaleModal();
+  loadLeads();
 }
 
 function renderProductRanking(leads) {

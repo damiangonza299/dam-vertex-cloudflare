@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Admin — Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=74"></script>
+  <script src="/assets/js/site-version.js?v=75"></script>
   <script>document.write('<link rel="stylesheet" href="/assets/css/styles.css?v='+window.DAM_VERTEX_VERSION+'">');</script>
   <style>
     /* ── Dashboard ── */
@@ -822,7 +822,7 @@
       <div class="msf-grid-2">
         <div>
           <label class="msf-label">Valor total pagado (Gs.) *</label>
-          <input id="msf-value" type="number" min="1" placeholder="ej: 400000" class="msf-input">
+          <input id="msf-value" type="number" min="1" placeholder="ej: 400000" class="msf-input" oninput="msfRecalcTotal()">
         </div>
         <div>
           <label class="msf-label">Método de pago *</label>
@@ -835,6 +835,18 @@
             <option value="Otro">Otro</option>
           </select>
         </div>
+      </div>
+
+      <!-- Productos adicionales — cada uno crea su propio lead/venta en D1,
+           igual que el producto principal de arriba (ver commit para detalle) -->
+      <div id="msf-extra-lines" style="margin-bottom:6px"></div>
+      <button type="button" id="msf-add-line-btn" onclick="msfAddExtraLine()"
+        style="margin-bottom:10px;background:none;border:1px dashed rgba(255,255,255,.15);color:rgba(255,255,255,.4);font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;font-family:inherit;width:100%">
+        + Agregar otro producto
+      </button>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;margin-bottom:14px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:var(--muted)">
+        <span>Total (todos los productos)</span>
+        <strong id="msf-total-val" style="color:#4ade80;font-size:15px">Gs. 0</strong>
       </div>
 
       <!-- Ciudad / Fuente -->
