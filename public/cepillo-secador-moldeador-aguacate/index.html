@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/cepillo-secador-moldeador-aguacate/hero-cep.svg" fetchpriority="high" type="image/svg+xml">
+  <link rel="preload" as="image" href="/cepillo-secador-moldeador-aguacate/cep-img-hero.webp" imagesrcset="/cepillo-secador-moldeador-aguacate/cep-img-hero-400w.webp 400w, /cepillo-secador-moldeador-aguacate/cep-img-hero.webp 1254w" imagesizes="(max-width: 600px) 400px, 1254px" fetchpriority="high" type="image/webp">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
@@ -16,7 +16,7 @@
   <link rel="canonical" href="https://damvertex.com/cepillo-secador-moldeador-aguacate/">
   <meta property="og:title" content="Cepillo Secador Moldeador AguaCate — Dam Vertex" />
   <meta property="og:description" content="2 en 1, seca y modela al mismo tiempo. 3000W, tecnología 3D Power. Entrega en el día en Central." />
-  <meta property="og:image" content="/cepillo-secador-moldeador-aguacate/hero-cep.svg" />
+  <meta property="og:image" content="/cepillo-secador-moldeador-aguacate/cep-img-hero.webp" />
   <meta property="og:url" content="https://damvertex.com/cepillo-secador-moldeador-aguacate/" />
   <meta property="og:type" content="website" />
   <script type="application/ld+json">
@@ -74,32 +74,34 @@
       border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px;
     }
 
-    /* ══ Cepillo Secador Moldeador AguaCate — theme verde aguacate ══
-       Paleta del brief: verde aguacate #2d6a4f, verde claro #74c69d, crema/nude
-       #f8f4e3, negro profundo #0d0d0d, dorado suave #c9a84c.
-       --cep-green (#2d6a4f) es el color de texto/botón sobre fondo claro — pasa
-       WCAG AA (~6.5:1 con blanco). --cep-green-light (#74c69d) y --cep-gold
-       (#c9a84c) son decorativos (fondos, bordes, iconos) — no se usan como texto
-       sobre fondo claro porque no pasan 4.5:1. */
+    /* ══ Cepillo Secador Moldeador AguaCate — theme rojo (producto real es rojo) ══
+       Paleta actualizada: rojo fuerte #c0392b, rojo claro #e74c3c, crema cálida
+       #fff5f5, negro profundo #0d0d0d. --cep-green (nombre de variable sin
+       cambiar, valor sí — ahora #c0392b) es el color de texto/botón sobre fondo
+       claro — pasa WCAG AA (~5.9:1 con blanco). --cep-green-light (#e74c3c) es
+       decorativo (fondos, bordes, iconos) — no se usa como texto sobre fondo
+       claro porque no pasa 4.5:1. Los badges verdes (.db-green, .offer-badge,
+       --cep-badge-green) NO cambian — son convención del sitio, no parte de
+       esta paleta de producto. */
     :root {
-      --cep-green:       #2d6a4f;
-      --cep-green-light: #74c69d;
-      --cep-green-deep:  #1b4332;
-      --cep-cream:       #f8f4e3;
+      --cep-green:       #c0392b;
+      --cep-green-light: #e74c3c;
+      --cep-green-deep:  #7b241c;
+      --cep-cream:       #fff5f5;
       --cep-dark:        #0d0d0d;
       --cep-dark2:       #161616;
-      --cep-gold:        #c9a84c;
+      --cep-gold:        #e74c3c;
       --cep-text:        #14231c;
       --cep-text-dim:    rgba(20,35,28,.68);
       --cep-text-muted:  rgba(20,35,28,.64);
-      --cep-border:      rgba(45,106,79,.25);
+      --cep-border:      rgba(192,57,43,.25);
       --cep-card:        #ffffff;
       --cep-badge-green: #1a7a3e;
     }
     body.theme-cep { background: var(--cep-cream); color: var(--cep-text); }
 
     /* ── Nav ── */
-    .theme-cep .nav { background: rgba(248,244,227,.92); border-bottom: 1px solid var(--cep-border); backdrop-filter: blur(12px); }
+    .theme-cep .nav { background: rgba(255,245,245,.92); border-bottom: 1px solid var(--cep-border); backdrop-filter: blur(12px); }
     .theme-cep .nav__logo { color: var(--cep-text); }
     .theme-cep .nav__logo span { opacity: .65; }
     .theme-cep .nav__cta {
@@ -152,14 +154,14 @@
     .hero-cep__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; text-align: left; }
     .hero-cep__feature {
       display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--cep-text);
-      background: rgba(45,106,79,.08); border: 1px solid var(--cep-border); border-radius: 8px; padding: 10px 14px;
+      background: rgba(192,57,43,.08); border: 1px solid var(--cep-border); border-radius: 8px; padding: 10px 14px;
     }
     /* .offer-foot/.offer-saving: bare rules, compartidas con el modal (offer-options). */
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
     .offer-foot .offer-saving { margin-top: 0; }
 
     .hero-cep .delivery-badges { display: flex; flex-wrap: nowrap; justify-content: center; gap: 5px; margin-top: 16px; }
-    .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--cep-text); padding: 5px 7px; border-radius: 20px; background: rgba(45,106,79,.08); border: 1px solid rgba(45,106,79,.3); white-space: nowrap; flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis; }
+    .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--cep-text); padding: 5px 7px; border-radius: 20px; background: rgba(192,57,43,.08); border: 1px solid rgba(192,57,43,.3); white-space: nowrap; flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis; }
     .db-badge.db-green { background: rgba(26,122,62,.1); border-color: rgba(26,122,62,.4); color: var(--cep-badge-green); }
 
     /* ══ GANCHOS — bloque de impacto entre imágenes, una línea, tipografía grande ══ */
@@ -194,7 +196,7 @@
     /* ══ STICKY CTA ══ */
     .sticky-cta-bar {
       display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
-      background: rgba(248,244,227,.97); border-top: 1px solid var(--cep-border);
+      background: rgba(255,245,245,.97); border-top: 1px solid var(--cep-border);
       padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
       backdrop-filter: blur(10px);
     }
@@ -204,20 +206,20 @@
     }
 
     /* ══ Modal — fondo claro con acento verde aguacate ══ */
-    .theme-cep .modal-box { background: var(--cep-cream); border: 1px solid rgba(45,106,79,.3); }
+    .theme-cep .modal-box { background: var(--cep-cream); border: 1px solid rgba(192,57,43,.3); }
     .theme-cep .modal-title { color: var(--cep-text); }
     .theme-cep .modal-subtitle { color: rgba(20,35,28,.65); }
     .theme-cep .modal-section-label { color: rgba(20,35,28,.55); }
-    .theme-cep .modal-urgency { background: rgba(45,106,79,.14); border-color: rgba(45,106,79,.35); color: var(--cep-green-deep); }
-    .theme-cep .modal-close { background: rgba(45,106,79,.14); color: var(--cep-text); }
+    .theme-cep .modal-urgency { background: rgba(192,57,43,.14); border-color: rgba(192,57,43,.35); color: var(--cep-green-deep); }
+    .theme-cep .modal-close { background: rgba(192,57,43,.14); color: var(--cep-text); }
     .theme-cep .modal-price-warning { color: #8a5a1f; }
 
-    .theme-cep .offer-option { background: #fff; border-color: rgba(45,106,79,.2); }
+    .theme-cep .offer-option { background: #fff; border-color: rgba(192,57,43,.2); }
     .theme-cep .offer-option .offer-qty,
     .theme-cep .offer-option .offer-price { color: var(--cep-text); }
     .theme-cep .offer-option .offer-compare { color: rgba(20,35,28,.55); }
     .theme-cep .offer-option.selected,
-    .theme-cep .offer-option:has(input:checked) { border-color: var(--cep-green); background: rgba(45,106,79,.08); }
+    .theme-cep .offer-option:has(input:checked) { border-color: var(--cep-green); background: rgba(192,57,43,.08); }
     /* Badge "Más elegido" en verde estándar del sitio, "Mayor ahorro" en el
        verde de marca #1a7a3e — regla CLAUDE.md, nunca dorado ni negro. */
     .theme-cep .offer-badge { position: static; background: #16a34a; color: #fff; }
@@ -227,20 +229,20 @@
     .theme-cep .form-group input,
     .theme-cep .form-group select,
     .theme-cep .city-search-input,
-    .theme-cep .city-manual-input { background: #fff; border-color: rgba(45,106,79,.3); color: var(--cep-text); }
+    .theme-cep .city-manual-input { background: #fff; border-color: rgba(192,57,43,.3); color: var(--cep-text); }
     .theme-cep .form-group input::placeholder,
     .theme-cep .city-search-input::placeholder,
     .theme-cep .city-manual-input::placeholder { color: #999999; }
 
-    .theme-cep .upsell-block { background: #fff; border-color: rgba(45,106,79,.2); }
+    .theme-cep .upsell-block { background: #fff; border-color: rgba(192,57,43,.2); }
     .theme-cep .upsell-block.checked,
-    .theme-cep .upsell-block:has(input:checked) { border-color: var(--cep-green); background: rgba(45,106,79,.08); }
+    .theme-cep .upsell-block:has(input:checked) { border-color: var(--cep-green); background: rgba(192,57,43,.08); }
     .theme-cep .upsell-title { color: var(--cep-text); }
     .theme-cep .upsell-sub { color: rgba(20,35,28,.55); }
 
-    .theme-cep .confirm-intent { background: #fff; border-color: rgba(45,106,79,.2); }
+    .theme-cep .confirm-intent { background: #fff; border-color: rgba(192,57,43,.2); }
     .theme-cep .confirm-intent.checked,
-    .theme-cep .confirm-intent:has(input:checked) { border-color: var(--cep-green); background: rgba(45,106,79,.08); }
+    .theme-cep .confirm-intent:has(input:checked) { border-color: var(--cep-green); background: rgba(192,57,43,.08); }
     .theme-cep .confirm-text { color: var(--cep-text); }
     .theme-cep .form-success p { color: rgba(20,35,28,.7); }
 
@@ -310,13 +312,15 @@
     <h1 class="hero-cep__h">Secás y modelás al mismo tiempo.<br>Tu peluquería en casa.</h1>
 
     <div class="hero-cep__media">
-      <img src="/cepillo-secador-moldeador-aguacate/hero-cep.svg"
+      <img src="/cepillo-secador-moldeador-aguacate/cep-img-hero.webp"
+           srcset="/cepillo-secador-moldeador-aguacate/cep-img-hero-400w.webp 400w, /cepillo-secador-moldeador-aguacate/cep-img-hero.webp 1254w"
+           sizes="(max-width: 600px) 400px, 1254px"
            alt="Cepillo Secador Moldeador AguaCate"
            class="hero-cep__img"
            loading="eager"
            fetchpriority="high"
            decoding="async"
-           width="1080" height="1080">
+           width="1254" height="1254">
     </div>
 
     <div class="price-block">
@@ -351,9 +355,11 @@
 
 <!-- ══ SECCIÓN 2 — imagen, ancho completo, sin texto ══ -->
 <section class="img-full-cep" id="section-img1" data-insync-section="img1">
-  <img src="/cepillo-secador-moldeador-aguacate/cep-img1.svg"
+  <img src="/cepillo-secador-moldeador-aguacate/cep-img1.webp"
+       srcset="/cepillo-secador-moldeador-aguacate/cep-img1-400w.webp 400w, /cepillo-secador-moldeador-aguacate/cep-img1.webp 1254w"
+       sizes="100vw"
        alt="Cepillo Secador Moldeador AguaCate — antes y después"
-       loading="lazy" decoding="async" width="1080" height="1080">
+       loading="lazy" decoding="async" width="1254" height="1254">
 </section>
 
 <!-- ══ GANCHO 2 — verde aguacate, 2 en 1 ══ -->
@@ -363,9 +369,11 @@
 
 <!-- ══ SECCIÓN 3 — imagen, ancho completo, sin texto ══ -->
 <section class="img-full-cep" id="section-img2" data-insync-section="img2">
-  <img src="/cepillo-secador-moldeador-aguacate/cep-img2.svg"
+  <img src="/cepillo-secador-moldeador-aguacate/cep-img2.webp"
+       srcset="/cepillo-secador-moldeador-aguacate/cep-img2-400w.webp 400w, /cepillo-secador-moldeador-aguacate/cep-img2.webp 1254w"
+       sizes="100vw"
        alt="Cepillo Secador Moldeador AguaCate — características"
-       loading="lazy" decoding="async" width="1080" height="1080">
+       loading="lazy" decoding="async" width="1254" height="1254">
 </section>
 
 <!-- ══ GANCHO 3 — negro, transformación ══ -->
@@ -375,9 +383,11 @@
 
 <!-- ══ SECCIÓN 4 — imagen de cierre, ancho completo ══ -->
 <section class="img-full-cep" id="section-img3" data-insync-section="img3">
-  <img src="/cepillo-secador-moldeador-aguacate/cep-img3.svg"
+  <img src="/cepillo-secador-moldeador-aguacate/cep-img3.webp"
+       srcset="/cepillo-secador-moldeador-aguacate/cep-img3-400w.webp 400w, /cepillo-secador-moldeador-aguacate/cep-img3.webp 1254w"
+       sizes="100vw"
        alt="Cepillo Secador Moldeador AguaCate"
-       loading="lazy" decoding="async" width="1080" height="1080">
+       loading="lazy" decoding="async" width="1254" height="1254">
 </section>
 
 <!-- ══ CIERRE FINAL — barra de stock + CTA + badges ══ -->
