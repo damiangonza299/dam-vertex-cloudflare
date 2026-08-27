@@ -8,6 +8,19 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+/* Nombres abreviados para mensajes de Telegram/WhatsApp — máximo 3 palabras,
+   sin artículos innecesarios. Al registrar un producto nuevo, agregar acá su
+   entrada (ver CLAUDE.md / GEMINI.md / AI_SYSTEM/skills/product-studio.md). */
+const PRODUCT_SHORT_NAMES = {
+  'proyector-astronauta-sistema-solar': 'Proyector Astronauta',
+  'lampara-escritorio-plegable':        'Lámpara Plegable',
+  'taza-mezcladora-automatica':         'Taza Automática',
+  'rizador-automatico-giratorio':       'Rizador Automático',
+  'depilador-electrico-guard-wing':     'Depilador Guard Wing',
+  'mascara-led-facial':                 'Máscara LED Facial',
+  'luna-mini-vibrador-bala-recargable': 'Luna Mini',
+};
+
 export async function onRequestOptions() {
   return new Response(null, { headers: CORS });
 }
@@ -291,7 +304,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
         const isComboTg   = product_slug === 'combo-reloj-cadena';
         const tgProductName = isComboTg
           ? (safeProductName || ('Combo Cadena Apex + Reloj ' + (variantText || '').trim()))
-          : safeProductName;
+          : (PRODUCT_SHORT_NAMES[product_slug] || safeProductName);
         const tgCity = effectiveCity || '';
         const text = [
           `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,

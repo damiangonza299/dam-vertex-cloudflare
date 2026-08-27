@@ -13,6 +13,21 @@ const VARIANT_DISPLAY_NAMES = {
   'Plateado Negro':     'Plateado',
 };
 
+/* Nombres abreviados para mensajes de Telegram/WhatsApp — máximo 3 palabras,
+   sin artículos innecesarios. Al registrar un producto nuevo, agregar acá su
+   entrada (ver CLAUDE.md / GEMINI.md / AI_SYSTEM/skills/product-studio.md).
+   Duplicado de functions/api/leads.js — contextos distintos (browser vs
+   Worker), sin módulo compartido entre ambos. */
+const PRODUCT_SHORT_NAMES = {
+  'proyector-astronauta-sistema-solar': 'Proyector Astronauta',
+  'lampara-escritorio-plegable':        'Lámpara Plegable',
+  'taza-mezcladora-automatica':         'Taza Automática',
+  'rizador-automatico-giratorio':       'Rizador Automático',
+  'depilador-electrico-guard-wing':     'Depilador Guard Wing',
+  'mascara-led-facial':                 'Máscara LED Facial',
+  'luna-mini-vibrador-bala-recargable': 'Luna Mini',
+};
+
 /* iOS zoom prevention on focus */
 document.addEventListener('focusin', function (e) {
   if (window.innerWidth < 768) {
@@ -22,6 +37,10 @@ document.addEventListener('focusin', function (e) {
 
 function fmt(n) {
   return 'Gs. ' + Number(n).toLocaleString('es-PY');
+}
+
+function shortName(product) {
+  return PRODUCT_SHORT_NAMES[product.slug] || product.name;
 }
 
 /* Normaliza telÃ©fono Paraguay â 595XXXXXXXXX (12 dÃ­gitos).
@@ -44,7 +63,7 @@ function buildWAMsg(product, data, offerInfo) {
     : null;
   const lines = [
     `Total: ${fmt(offerInfo.total)}`,
-    `Producto: ${product.name} (${qtyLabel})${express}`,
+    `Producto: ${shortName(product)} (${qtyLabel})${express}`,
     `Nombre: ${data.name}`,
     `Método de Pago: ${data.payment || 'No especificado'}`,
     ...(data.city ? [`Ciudad: ${data.city}`] : []),
@@ -71,7 +90,7 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
 
   const lines = [
     `Total: ${fmt(total)}`,
-    `Producto: ${product.name}`,
+    `Producto: ${shortName(product)}`,
     `Nombre: ${data.name}`,
     `Método de Pago: ${data.payment || 'No especificado'}`,
     ...(data.city ? [`Ciudad: ${data.city}`] : []),

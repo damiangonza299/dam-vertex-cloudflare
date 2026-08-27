@@ -158,6 +158,7 @@ No se considera terminado hasta verificar:
 13. Aparece en Home y /productos/ sin deploy manual. ← **automático** (carga dinámica desde API)
 14. Aparece en filtros Admin sin código manual. ← **automático** (carga dinámica tras login)
 15. Aparece en Intelligence/InSync sin código manual. ← **automático** (carga dinámica tras auth)
+16. Tiene nombre abreviado en `PRODUCT_SHORT_NAMES` (`functions/api/leads.js` y `public/assets/js/products.js`) — máximo 3 palabras, sin artículos innecesarios. Se usa en el mensaje de Telegram y en el de WhatsApp del cliente; si el slug no está en el mapa, cae al nombre completo como fallback.
 
 ### Regla permanente — PRODUCT COMPLETION CHECKLIST
 

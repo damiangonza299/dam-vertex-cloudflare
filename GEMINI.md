@@ -492,6 +492,12 @@ Todo modal de pedido debe incluir el campo `horario` (`<input id="horario" name=
 
 ---
 
+## NOMBRES ABREVIADOS — Regla obligatoria al registrar un producto nuevo
+
+Al registrar un producto nuevo en D1 y en `leads.js`, agregar siempre el nombre abreviado en `PRODUCT_SHORT_NAMES` (`functions/api/leads.js` y `public/assets/js/products.js`, duplicado por ser contextos distintos sin módulo compartido) — máximo 3 palabras, sin artículos innecesarios. Se usa en el mensaje de Telegram y en el de WhatsApp del cliente en vez del nombre completo; si el slug no está en el mapa, cae al nombre completo como fallback.
+
+---
+
 ## Prioridades del proyecto
 
 - Conversión de la landing

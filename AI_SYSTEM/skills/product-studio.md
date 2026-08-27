@@ -193,6 +193,17 @@ Opcional — no bloquea el envío. Se lee en `products.js` (`commonData.horario`
 
 ---
 
+## Nombres Abreviados — obligatorio al registrar un producto nuevo
+
+Al registrar un producto nuevo en D1 y en `leads.js`, agregar siempre el nombre abreviado en `PRODUCT_SHORT_NAMES` — máximo 3 palabras, sin artículos innecesarios. Duplicado en dos archivos por ser contextos distintos sin módulo compartido:
+
+- `functions/api/leads.js` — mensaje de Telegram
+- `public/assets/js/products.js` (función `shortName`) — mensaje de WhatsApp del cliente
+
+Si el slug no está en el mapa, cae al nombre completo como fallback — no bloquea nada, pero un producto nuevo no está completo hasta tener su entrada. Regla completa: `CLAUDE.md`, checklist de producto nuevo, punto 16.
+
+---
+
 ## InSync — Instrumentación Obligatoria (triple atributo)
 
 Regla completa: `AI_SYSTEM/execution/landing-insync-instrumentation.md`
