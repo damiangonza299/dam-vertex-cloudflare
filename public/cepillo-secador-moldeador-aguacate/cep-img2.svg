@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="Características del cepillo — placeholder">
+  <rect width="1080" height="1080" fill="#f8f4e3"/>
+  <text x="540" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="54" font-weight="800" fill="#1b4332">2 EN 1, LISTO EN</text>
+  <text x="540" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="54" font-weight="800" fill="#2d6a4f">MINUTOS</text>
+
+  <!-- Cuerpo central del cepillo -->
+  <ellipse cx="540" cy="530" rx="150" ry="200" fill="#74c69d"/>
+  <ellipse cx="540" cy="545" rx="60" ry="80" fill="#c9a84c"/>
+  <rect x="518" y="700" width="44" height="140" rx="22" fill="#0d0d0d"/>
+
+  <!-- 4 callouts en las esquinas -->
+  <circle cx="220" cy="330" r="34" fill="#2d6a4f"/>
+  <text x="220" y="342" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" fill="#ffffff">1</text>
+  <text x="150" y="410" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#1b4332">2 EN 1</text>
+  <text x="150" y="442" font-family="Arial, sans-serif" font-size="18" fill="#3a3a3a">Seca y modela a la vez</text>
+
+  <circle cx="860" cy="330" r="34" fill="#2d6a4f"/>
+  <text x="860" y="342" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" fill="#ffffff">2</text>
+  <text x="800" y="410" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#1b4332">3000W</text>
+  <text x="770" y="442" font-family="Arial, sans-serif" font-size="18" fill="#3a3a3a">Potencia profesional</text>
+
+  <circle cx="220" cy="760" r="34" fill="#2d6a4f"/>
+  <text x="220" y="772" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" fill="#ffffff">3</text>
+  <text x="115" y="840" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#1b4332">3D POWER</text>
+  <text x="90" y="872" font-family="Arial, sans-serif" font-size="18" fill="#3a3a3a">Aire envolvente parejo</text>
+
+  <circle cx="860" cy="760" r="34" fill="#2d6a4f"/>
+  <text x="860" y="772" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" fill="#ffffff">4</text>
+  <text x="775" y="840" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#1b4332">CERO FRIZZ</text>
+  <text x="755" y="872" font-family="Arial, sans-serif" font-size="18" fill="#3a3a3a">Brillo desde el primer uso</text>
+
+  <rect x="140" y="960" width="800" height="80" rx="16" fill="none" stroke="#2d6a4f" stroke-width="2"/>
+  <text x="540" y="1010" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#2d6a4f">LIVIANO · ERGONÓMICO · SIN CABLES ENREDADOS</text>
+</svg>

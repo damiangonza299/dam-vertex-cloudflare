@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/mascara-led-facial/hero-mascara.webp" imagesrcset="/mascara-led-facial/hero-mascara-400w.webp 400w, /mascara-led-facial/hero-mascara.webp 1254w" imagesizes="(max-width: 600px) 400px, 1254px" fetchpriority="high" type="image/webp">
+  <link rel="preload" as="image" href="/cepillo-secador-moldeador-aguacate/hero-cep.svg" fetchpriority="high" type="image/svg+xml">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=73" as="script">
-  <meta name="description" content="Máscara LED Facial — 7 colores de luz LED, sesiones de 15 minutos desde tu casa. Inalámbrica y recargable. Entrega en el día en Central. Gs. 289.000.">
-  <title>Máscara LED Facial — Belleza / Cuidado Facial — Dam Vertex</title>
+  <meta name="description" content="Cepillo Secador Moldeador AguaCate — 2 en 1, seca y modela al mismo tiempo. 3000W, tecnología 3D Power. Entrega en el día en Central. Gs. 199.000.">
+  <title>Cepillo Secador Moldeador AguaCate — Belleza / Cuidado Capilar — Dam Vertex</title>
   <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
   <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
-  <link rel="canonical" href="https://damvertex.com/mascara-led-facial/">
-  <meta property="og:title" content="Máscara LED Facial — Dam Vertex" />
-  <meta property="og:description" content="7 colores de luz LED, sesiones de 15 minutos desde tu casa. Inalámbrica y recargable. Entrega en el día en Central." />
-  <meta property="og:image" content="/mascara-led-facial/hero-mascara.webp" />
-  <meta property="og:url" content="https://damvertex.com/mascara-led-facial/" />
+  <link rel="canonical" href="https://damvertex.com/cepillo-secador-moldeador-aguacate/">
+  <meta property="og:title" content="Cepillo Secador Moldeador AguaCate — Dam Vertex" />
+  <meta property="og:description" content="2 en 1, seca y modela al mismo tiempo. 3000W, tecnología 3D Power. Entrega en el día en Central." />
+  <meta property="og:image" content="/cepillo-secador-moldeador-aguacate/hero-cep.svg" />
+  <meta property="og:url" content="https://damvertex.com/cepillo-secador-moldeador-aguacate/" />
   <meta property="og:type" content="website" />
   <script type="application/ld+json">
 {
@@ -25,13 +25,13 @@
   "@graph": [
     {
       "@type": "Product",
-      "name": "Máscara LED Facial",
-      "description": "Máscara de fototerapia LED facial con 7 colores de luz, cada uno con un beneficio distinto. Control táctil, sesiones de 15 minutos, inalámbrica y recargable.",
+      "name": "Cepillo Secador Moldeador AguaCate",
+      "description": "Cepillo secador y moldeador 2 en 1 con diseño de aguacate. 3000W de potencia, tecnología 3D Power de flujo de aire envolvente. Reduce el frizz y da brillo.",
       "brand": { "@type": "Brand", "name": "DAM Vertex" },
-      "url": "https://damvertex.com/mascara-led-facial/",
+      "url": "https://damvertex.com/cepillo-secador-moldeador-aguacate/",
       "offers": {
         "@type": "Offer",
-        "price": "289000",
+        "price": "199000",
         "priceCurrency": "PYG",
         "availability": "https://schema.org/InStock",
         "seller": { "@type": "Organization", "name": "DAM Vertex" }
@@ -43,8 +43,9 @@
   <style>
     /* ══ CRÍTICO ABOVE-THE-FOLD — extraído de styles.min.css ══
        Necesario para nav/hero/precio sin FOUC mientras styles.min.css carga async.
-       Mismo patrón que depilador/rizador/taza/lampara — evita "se produjo un problema
-       al cargar este sitio web" en el primer ingreso desde Meta Ads (ver CLAUDE.md). */
+       Mismo patrón que mascara-led-facial/depilador/rizador/taza — evita "se produjo
+       un problema al cargar este sitio web" en el primer ingreso desde Meta Ads (ver
+       CLAUDE.md). */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
     img { max-width: 100%; display: block; }
@@ -73,130 +74,127 @@
       border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px;
     }
 
-    /* ══ Máscara LED Facial — theme violeta LED ══
-       Paleta del brief: fondo #0d0d1a, acento #c084fc, secundario #f0abfc,
-       rosa piel #fde8ff, blanco cálido #faf5ff, verde éxito #1a7a3e.
-       --led-purple-dk (#7e22ce) es una versión más oscura del acento, usada como
-       texto/botón sobre fondos claros — #c084fc solo (2.2:1 aprox. con blanco)
-       no pasa WCAG AA como texto; #7e22ce sí (~5.9:1). c084fc se usa tal cual
-       sobre fondos oscuros, donde el contraste es correcto (~8:1). */
+    /* ══ Cepillo Secador Moldeador AguaCate — theme verde aguacate ══
+       Paleta del brief: verde aguacate #2d6a4f, verde claro #74c69d, crema/nude
+       #f8f4e3, negro profundo #0d0d0d, dorado suave #c9a84c.
+       --cep-green (#2d6a4f) es el color de texto/botón sobre fondo claro — pasa
+       WCAG AA (~6.5:1 con blanco). --cep-green-light (#74c69d) y --cep-gold
+       (#c9a84c) son decorativos (fondos, bordes, iconos) — no se usan como texto
+       sobre fondo claro porque no pasan 4.5:1. */
     :root {
-      --led-purple:      #c084fc;
-      --led-purple-dk:   #7e22ce;
-      --led-purple-deep: #581c87;
-      --led-lilac:       #f0abfc;
-      --led-skin:        #fde8ff;
-      --led-cream:       #faf5ff;
-      --led-dark:        #0d0d1a;
-      --led-dark2:       #13101f;
-      --led-text:        #1a1025;
-      --led-text-dim:    rgba(26,16,37,.68);
-      --led-text-muted:  rgba(26,16,37,.64);
-      --led-border:      rgba(192,132,252,.28);
-      --led-card:        #ffffff;
-      --led-card2:       #fde8ff;
-      --led-green:       #1a7a3e;
+      --cep-green:       #2d6a4f;
+      --cep-green-light: #74c69d;
+      --cep-green-deep:  #1b4332;
+      --cep-cream:       #f8f4e3;
+      --cep-dark:        #0d0d0d;
+      --cep-dark2:       #161616;
+      --cep-gold:        #c9a84c;
+      --cep-text:        #14231c;
+      --cep-text-dim:    rgba(20,35,28,.68);
+      --cep-text-muted:  rgba(20,35,28,.64);
+      --cep-border:      rgba(45,106,79,.25);
+      --cep-card:        #ffffff;
+      --cep-badge-green: #1a7a3e;
     }
-    body.theme-mascara { background: var(--led-cream); color: var(--led-text); }
+    body.theme-cep { background: var(--cep-cream); color: var(--cep-text); }
 
     /* ── Nav ── */
-    .theme-mascara .nav { background: rgba(250,245,255,.92); border-bottom: 1px solid var(--led-border); backdrop-filter: blur(12px); }
-    .theme-mascara .nav__logo { color: var(--led-text); }
-    .theme-mascara .nav__logo span { opacity: .65; }
-    .theme-mascara .nav__cta {
-      background: var(--led-purple-dk); color: #fff;
+    .theme-cep .nav { background: rgba(248,244,227,.92); border-bottom: 1px solid var(--cep-border); backdrop-filter: blur(12px); }
+    .theme-cep .nav__logo { color: var(--cep-text); }
+    .theme-cep .nav__logo span { opacity: .65; }
+    .theme-cep .nav__cta {
+      background: var(--cep-green); color: #fff;
       font-size: clamp(9px, 2.4vw, 12px); white-space: nowrap; gap: 5px; padding: 8px 12px;
     }
-    .theme-mascara .nav__cta:hover { background: var(--led-purple-deep); }
-    .theme-mascara .nav__cta:focus-visible,
-    .theme-mascara .btn-primary:focus-visible {
-      outline: 3px solid var(--led-purple-dk); outline-offset: 2px;
+    .theme-cep .nav__cta:hover { background: var(--cep-green-deep); }
+    .theme-cep .nav__cta:focus-visible,
+    .theme-cep .btn-primary:focus-visible {
+      outline: 3px solid var(--cep-green); outline-offset: 2px;
     }
 
     /* ── Footer ── */
-    .theme-mascara .footer { background: var(--led-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--led-border); }
+    .theme-cep .footer { background: var(--cep-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--cep-border); }
 
     /* ── Botón primario ── */
-    .theme-mascara .btn-primary,
-    .btn-led {
+    .theme-cep .btn-primary,
+    .btn-cep {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--led-purple-dk); color: #fff; font-weight: 700;
+      background: var(--cep-green); color: #fff; font-weight: 700;
       padding: 15px 20px; border-radius: 8px; border: none; cursor: pointer;
       text-decoration: none; transition: background .2s, transform .15s;
       letter-spacing: .01em; width: 100%; max-width: 340px;
       font-size: clamp(11px, 3.1vw, 14px); white-space: nowrap;
     }
-    .theme-mascara .btn-primary:hover,
-    .btn-led:hover { background: var(--led-purple-deep); transform: translateY(-1px); }
+    .theme-cep .btn-primary:hover,
+    .btn-cep:hover { background: var(--cep-green-deep); transform: translateY(-1px); }
 
-    /* ══ HERO — vertical, título arriba de la imagen (video ya vendió, la landing solo cierra) ══ */
-    .hero-led { background: linear-gradient(180deg, var(--led-skin) 0%, var(--led-cream) 100%); padding: clamp(20px,5vw,40px) clamp(20px,5vw,48px) clamp(28px,5vw,48px); }
-    .hero-led__inner { max-width: 480px; margin: 0 auto; text-align: center; }
-    .hero-led__media { max-width: 420px; margin: 0 auto 20px; width: 100%; }
-    .hero-led__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; background: var(--led-dark); }
+    /* ══ HERO — vertical, título arriba de la imagen ══ */
+    .hero-cep { background: linear-gradient(180deg, #ffffff 0%, var(--cep-cream) 100%); padding: clamp(20px,5vw,40px) clamp(20px,5vw,48px) clamp(28px,5vw,48px); }
+    .hero-cep__inner { max-width: 480px; margin: 0 auto; text-align: center; }
+    .hero-cep__media { max-width: 420px; margin: 0 auto 20px; width: 100%; }
+    .hero-cep__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; background: var(--cep-dark); }
 
-    .hero-led__h { font-size: clamp(28px,6vw,42px); font-weight: 800; line-height: 1.16; letter-spacing: -.01em; color: var(--led-text); margin: 0 0 20px; }
+    .hero-cep__h { font-size: clamp(26px,5.5vw,40px); font-weight: 800; line-height: 1.18; letter-spacing: -.01em; color: var(--cep-text); margin: 0 0 20px; }
 
-    .hero-led .price-block   { display: flex; align-items: baseline; justify-content: flex-start; text-align: left; flex-wrap: nowrap; gap: 4px; margin: 0 0 20px; }
-    .hero-led .price-compare { color: rgba(26,16,37,.6); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
-    .hero-led .price-main    { color: var(--led-text); font-size: clamp(18px,3vw,22px); }
-    .hero-led .price-savings { font-size: clamp(8px, 1.8vw, 11px); font-weight: 700; color: var(--led-green); white-space: nowrap; margin-left: 2px; }
-    .hero-led .price-savings .ps-short { display: none; }
+    .hero-cep .price-block   { display: flex; align-items: baseline; justify-content: flex-start; text-align: left; flex-wrap: nowrap; gap: 4px; margin: 0 0 20px; }
+    .hero-cep .price-compare { color: rgba(20,35,28,.55); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
+    .hero-cep .price-main    { color: var(--cep-text); font-size: clamp(18px,3vw,22px); }
+    .hero-cep .price-savings { font-size: clamp(8px, 1.8vw, 11px); font-weight: 700; color: var(--cep-badge-green); white-space: nowrap; margin-left: 2px; }
+    .hero-cep .price-savings .ps-short { display: none; }
     @media (max-width: 360px) {
-      .hero-led .price-compare { font-size: 20px; }
-      .hero-led .price-main    { font-size: 14px; }
-      .hero-led .price-savings { font-size: 8px; }
-      .hero-led .price-savings .ps-full  { display: none; }
-      .hero-led .price-savings .ps-short { display: inline; }
+      .hero-cep .price-compare { font-size: 20px; }
+      .hero-cep .price-main    { font-size: 14px; }
+      .hero-cep .price-savings { font-size: 8px; }
+      .hero-cep .price-savings .ps-full  { display: none; }
+      .hero-cep .price-savings .ps-short { display: inline; }
     }
 
-    .hero-led__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; text-align: left; }
-    .hero-led__feature {
-      display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--led-text);
-      background: rgba(192,132,252,.10); border: 1px solid var(--led-border); border-radius: 8px; padding: 10px 14px;
+    .hero-cep__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; text-align: left; }
+    .hero-cep__feature {
+      display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--cep-text);
+      background: rgba(45,106,79,.08); border: 1px solid var(--cep-border); border-radius: 8px; padding: 10px 14px;
     }
-    /* .offer-foot/.offer-saving: bare rules, compartidas con el modal (offer-options) — no scopear a combo-preview-card. */
+    /* .offer-foot/.offer-saving: bare rules, compartidas con el modal (offer-options). */
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
     .offer-foot .offer-saving { margin-top: 0; }
 
-    .hero-led .delivery-badges { display: flex; flex-wrap: nowrap; justify-content: center; gap: 5px; margin-top: 16px; }
-    .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--led-text); padding: 5px 7px; border-radius: 20px; background: rgba(192,132,252,.12); border: 1px solid rgba(192,132,252,.35); white-space: nowrap; flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis; }
-    .db-badge.db-green { background: rgba(26,122,62,.12); border-color: rgba(26,122,62,.4); color: var(--led-green); }
+    .hero-cep .delivery-badges { display: flex; flex-wrap: nowrap; justify-content: center; gap: 5px; margin-top: 16px; }
+    .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--cep-text); padding: 5px 7px; border-radius: 20px; background: rgba(45,106,79,.08); border: 1px solid rgba(45,106,79,.3); white-space: nowrap; flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis; }
+    .db-badge.db-green { background: rgba(26,122,62,.1); border-color: rgba(26,122,62,.4); color: var(--cep-badge-green); }
 
     /* ══ GANCHOS — bloque de impacto entre imágenes, una línea, tipografía grande ══ */
-    .gancho-led { padding: clamp(40px,10vw,72px) clamp(20px,5vw,48px); text-align: center; }
-    .gancho-led__text { font-size: clamp(22px,5.5vw,38px); font-weight: 800; color: #fff; line-height: 1.25; margin: 0; max-width: 720px; margin-inline: auto; }
-    .gancho-led--rojo    { background: #c0392b; }
-    /* Texto de gancho 1 es más largo que los otros dos — clamp propio para que
-       entre en una sola línea desde 320px sin recortarse. */
-    .gancho-led--rojo .gancho-led__text { font-size: clamp(12px, 4vw, 34px); }
-    .gancho-led--negro   { background: #0a0a0a; }
-    .gancho-led--violeta { background: #6d28d9; }
+    .gancho-cep { padding: clamp(40px,10vw,72px) clamp(20px,5vw,48px); text-align: center; }
+    .gancho-cep__text { font-size: clamp(22px,5.5vw,38px); font-weight: 800; color: #fff; line-height: 1.25; margin: 0; max-width: 720px; margin-inline: auto; }
+    .gancho-cep--negro { background: var(--cep-dark); }
+    .gancho-cep--verde { background: var(--cep-green); }
+    /* Gancho 1 tiene el texto más largo — clamp propio para que entre en una
+       sola línea desde 320px sin recortarse. */
+    .gancho-cep--negro.gancho-cep--tight .gancho-cep__text { font-size: clamp(14px, 4.4vw, 34px); }
 
     /* ══ SECCIONES DE IMAGEN — ancho completo, sin texto, la imagen habla sola ══ */
-    .img-full-led { background: var(--led-dark); }
-    .img-full-led img { width: 100%; height: auto; display: block; }
+    .img-full-cep { background: var(--cep-dark); }
+    .img-full-cep img { width: 100%; height: auto; display: block; }
 
     /* ══ CIERRE FINAL — barra de stock + CTA + badges ══ */
-    .cierre-led { background: linear-gradient(180deg, var(--led-purple-deep) 0%, var(--led-dark) 100%); padding: clamp(48px,10vw,80px) clamp(20px,5vw,48px); text-align: center; }
-    .cierre-led__inner { max-width: 480px; margin: 0 auto; }
+    .cierre-cep { background: linear-gradient(180deg, var(--cep-green-deep) 0%, var(--cep-dark) 100%); padding: clamp(48px,10vw,80px) clamp(20px,5vw,48px); text-align: center; }
+    .cierre-cep__inner { max-width: 480px; margin: 0 auto; }
 
     /* Contador de stock visual */
-    .stock-bar-led { margin: 0 0 26px; }
-    .stock-bar-led__label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-    .stock-bar-led__track { height: 10px; border-radius: 20px; background: rgba(255,255,255,.22); overflow: hidden; }
-    .stock-bar-led__fill { height: 100%; border-radius: 20px; background: #ffffff; width: 60%; transition: width .4s ease; }
+    .stock-bar-cep { margin: 0 0 26px; }
+    .stock-bar-cep__label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .stock-bar-cep__track { height: 10px; border-radius: 20px; background: rgba(255,255,255,.22); overflow: hidden; }
+    .stock-bar-cep__fill { height: 100%; border-radius: 20px; background: #ffffff; width: 60%; transition: width .4s ease; }
 
-    .cierre-led .btn-primary { background: #fff; color: var(--led-purple-deep); }
-    .cierre-led .btn-primary:hover { background: var(--led-skin); }
-    .cierre-led .delivery-badges { display: flex; flex-wrap: nowrap; justify-content: center; gap: 5px; margin-top: 20px; }
-    .cierre-led .db-badge { color: #fff; background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.3); }
-    .cierre-led .db-badge.db-green { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.5); color: #fff; }
+    .cierre-cep .btn-primary { background: #fff; color: var(--cep-green-deep); }
+    .cierre-cep .btn-primary:hover { background: var(--cep-cream); }
+    .cierre-cep .delivery-badges { display: flex; flex-wrap: nowrap; justify-content: center; gap: 5px; margin-top: 20px; }
+    .cierre-cep .db-badge { color: #fff; background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.3); }
+    .cierre-cep .db-badge.db-green { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.5); color: #fff; }
 
     /* ══ STICKY CTA ══ */
     .sticky-cta-bar {
       display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
-      background: rgba(250,245,255,.97); border-top: 1px solid var(--led-border);
+      background: rgba(248,244,227,.97); border-top: 1px solid var(--cep-border);
       padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
       backdrop-filter: blur(10px);
     }
@@ -205,48 +203,46 @@
       body:has(#order-modal.active) .sticky-cta-bar { display: none; }
     }
 
-    /* ══ Modal — fondo claro con acento violeta ══ */
-    .theme-mascara .modal-box { background: var(--led-skin); border: 1px solid rgba(192,132,252,.35); }
-    .theme-mascara .modal-title { color: var(--led-text); }
-    .theme-mascara .modal-subtitle { color: rgba(26,16,37,.65); }
-    .theme-mascara .modal-section-label { color: rgba(26,16,37,.55); }
-    .theme-mascara .modal-urgency { background: rgba(192,132,252,.18); border-color: rgba(192,132,252,.4); color: var(--led-purple-deep); }
-    .theme-mascara .modal-close { background: rgba(192,132,252,.16); color: var(--led-text); }
-    .theme-mascara .modal-price-warning { color: #b45309; }
+    /* ══ Modal — fondo claro con acento verde aguacate ══ */
+    .theme-cep .modal-box { background: var(--cep-cream); border: 1px solid rgba(45,106,79,.3); }
+    .theme-cep .modal-title { color: var(--cep-text); }
+    .theme-cep .modal-subtitle { color: rgba(20,35,28,.65); }
+    .theme-cep .modal-section-label { color: rgba(20,35,28,.55); }
+    .theme-cep .modal-urgency { background: rgba(45,106,79,.14); border-color: rgba(45,106,79,.35); color: var(--cep-green-deep); }
+    .theme-cep .modal-close { background: rgba(45,106,79,.14); color: var(--cep-text); }
+    .theme-cep .modal-price-warning { color: #8a5a1f; }
 
-    .theme-mascara .offer-option { background: #fff; border-color: rgba(192,132,252,.25); }
-    .theme-mascara .offer-option .offer-qty,
-    .theme-mascara .offer-option .offer-price { color: var(--led-text); }
-    .theme-mascara .offer-option .offer-compare { color: rgba(26,16,37,.64); }
-    .theme-mascara .offer-option.selected,
-    .theme-mascara .offer-option:has(input:checked) { border-color: var(--led-purple-dk); background: rgba(192,132,252,.10); }
-    /* Badges de combo: ambos verdes por especificación del brief — "Más elegido" en
-       verde estándar del sitio, "Mayor ahorro" en el verde de marca #1a7a3e (más oscuro),
-       para diferenciarlos sin romper la regla CLAUDE.md de que "Mayor ahorro" nunca es
-       dorado ni negro. */
-    .theme-mascara .offer-badge { position: static; background: #16a34a; color: #fff; }
-    .theme-mascara .offer-badge--best { position: static; background: var(--led-green); color: #fff; }
+    .theme-cep .offer-option { background: #fff; border-color: rgba(45,106,79,.2); }
+    .theme-cep .offer-option .offer-qty,
+    .theme-cep .offer-option .offer-price { color: var(--cep-text); }
+    .theme-cep .offer-option .offer-compare { color: rgba(20,35,28,.55); }
+    .theme-cep .offer-option.selected,
+    .theme-cep .offer-option:has(input:checked) { border-color: var(--cep-green); background: rgba(45,106,79,.08); }
+    /* Badge "Más elegido" en verde estándar del sitio, "Mayor ahorro" en el
+       verde de marca #1a7a3e — regla CLAUDE.md, nunca dorado ni negro. */
+    .theme-cep .offer-badge { position: static; background: #16a34a; color: #fff; }
+    .theme-cep .offer-badge--best { position: static; background: var(--cep-badge-green); color: #fff; }
 
-    .theme-mascara .form-group label { color: var(--led-text); }
-    .theme-mascara .form-group input,
-    .theme-mascara .form-group select,
-    .theme-mascara .city-search-input,
-    .theme-mascara .city-manual-input { background: #fff; border-color: rgba(192,132,252,.35); color: var(--led-text); }
-    .theme-mascara .form-group input::placeholder,
-    .theme-mascara .city-search-input::placeholder,
-    .theme-mascara .city-manual-input::placeholder { color: #999999; }
+    .theme-cep .form-group label { color: var(--cep-text); }
+    .theme-cep .form-group input,
+    .theme-cep .form-group select,
+    .theme-cep .city-search-input,
+    .theme-cep .city-manual-input { background: #fff; border-color: rgba(45,106,79,.3); color: var(--cep-text); }
+    .theme-cep .form-group input::placeholder,
+    .theme-cep .city-search-input::placeholder,
+    .theme-cep .city-manual-input::placeholder { color: #999999; }
 
-    .theme-mascara .upsell-block { background: #fff; border-color: rgba(192,132,252,.25); }
-    .theme-mascara .upsell-block.checked,
-    .theme-mascara .upsell-block:has(input:checked) { border-color: var(--led-purple); background: rgba(192,132,252,.10); }
-    .theme-mascara .upsell-title { color: var(--led-text); }
-    .theme-mascara .upsell-sub { color: rgba(26,16,37,.55); }
+    .theme-cep .upsell-block { background: #fff; border-color: rgba(45,106,79,.2); }
+    .theme-cep .upsell-block.checked,
+    .theme-cep .upsell-block:has(input:checked) { border-color: var(--cep-green); background: rgba(45,106,79,.08); }
+    .theme-cep .upsell-title { color: var(--cep-text); }
+    .theme-cep .upsell-sub { color: rgba(20,35,28,.55); }
 
-    .theme-mascara .confirm-intent { background: #fff; border-color: rgba(192,132,252,.25); }
-    .theme-mascara .confirm-intent.checked,
-    .theme-mascara .confirm-intent:has(input:checked) { border-color: var(--led-purple); background: rgba(192,132,252,.10); }
-    .theme-mascara .confirm-text { color: var(--led-text); }
-    .theme-mascara .form-success p { color: rgba(26,16,37,.7); }
+    .theme-cep .confirm-intent { background: #fff; border-color: rgba(45,106,79,.2); }
+    .theme-cep .confirm-intent.checked,
+    .theme-cep .confirm-intent:has(input:checked) { border-color: var(--cep-green); background: rgba(45,106,79,.08); }
+    .theme-cep .confirm-text { color: var(--cep-text); }
+    .theme-cep .form-success p { color: rgba(20,35,28,.7); }
 
     /* Autocomplete de ciudad — mismo patrón que el resto del catálogo, colores fijos */
     .city-input-wrap { position: relative; }
@@ -287,11 +283,11 @@
     .city-suggestions__item + .city-suggestions__item { border-top: 1px solid rgba(0,0,0,0.08) !important; }
     .city-suggestions__item:hover,
     .city-suggestions__item:focus,
-    .city-suggestions__item.touch-active { background-color: var(--led-purple-dk) !important; color: #ffffff !important; }
+    .city-suggestions__item.touch-active { background-color: var(--cep-green) !important; color: #ffffff !important; }
 
   </style>
 </head>
-<body class="theme-mascara">
+<body class="theme-cep">
 
 <!-- Sprite: icono WhatsApp (reusado del resto del catálogo) -->
 <svg style="position:absolute;width:0;height:0" aria-hidden="true">
@@ -303,42 +299,40 @@
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Cepillo%20Secador%20Moldeador%20AguaCate.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
 </nav>
 
 <main>
 <!-- ══ HERO ══ -->
-<section class="hero-led" id="section-hero" data-insync-section="hero">
-  <div class="hero-led__inner">
+<section class="hero-cep" id="section-hero" data-insync-section="hero">
+  <div class="hero-cep__inner">
 
-    <h1 class="hero-led__h">Tu piel merece más que cremas que no funcionan.</h1>
+    <h1 class="hero-cep__h">Secás y modelás al mismo tiempo.<br>Tu peluquería en casa.</h1>
 
-    <div class="hero-led__media">
-      <img src="/mascara-led-facial/hero-mascara.webp"
-           srcset="/mascara-led-facial/hero-mascara-400w.webp 400w, /mascara-led-facial/hero-mascara.webp 1254w"
-           sizes="(max-width: 600px) 400px, 1254px"
-           alt="Máscara LED Facial"
-           class="hero-led__img"
+    <div class="hero-cep__media">
+      <img src="/cepillo-secador-moldeador-aguacate/hero-cep.svg"
+           alt="Cepillo Secador Moldeador AguaCate"
+           class="hero-cep__img"
            loading="eager"
            fetchpriority="high"
            decoding="async"
-           width="1254" height="1254">
+           width="1080" height="1080">
     </div>
 
     <div class="price-block">
-      <span class="price-compare">Gs. 379.000</span>
-      <span class="price-main">Gs. 289.000</span>
-      <span class="price-savings"><span class="ps-full">Ahorrás Gs. 90.000</span><span class="ps-short">Ahorrás 90k Gs</span></span>
+      <span class="price-compare">Gs. 259.000</span>
+      <span class="price-main">Gs. 199.000</span>
+      <span class="price-savings"><span class="ps-full">Ahorrás Gs. 60.000</span><span class="ps-short">Ahorrás 60k Gs</span></span>
     </div>
 
-    <div class="hero-led__features">
-      <div class="hero-led__feature">🔴 Luz roja antienvejecimiento — colágeno desde adentro</div>
-      <div class="hero-led__feature">💜 7 colores LED — cada uno con su beneficio</div>
-      <div class="hero-led__feature">⚡ 15 minutos por día — mientras hacés otra cosa</div>
-      <div class="hero-led__feature">🔋 Inalámbrica y recargable — sin cables, sin límites</div>
+    <div class="hero-cep__features">
+      <div class="hero-cep__feature">🥑 Diseño AguaCate — aesthetic y único</div>
+      <div class="hero-cep__feature">⚡ 2 en 1 — seca y modela a la vez</div>
+      <div class="hero-cep__feature">💨 3000W — resultado en minutos</div>
+      <div class="hero-cep__feature">✨ Cero frizz — brillo profesional</div>
     </div>
 
-    <a class="btn btn-primary" data-scroll-form data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+    <a class="btn btn-primary" data-scroll-form data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Cepillo%20Secador%20Moldeador%20AguaCate.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
       LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
     </a>
     <div class="delivery-badges">
@@ -350,60 +344,56 @@
   </div>
 </section>
 
-<!-- ══ GANCHO 1 — rojo, urgencia/atención/dolor ══ -->
-<section class="gancho-led gancho-led--rojo" id="section-gancho1" data-insync-section="gancho1">
-  <p class="gancho-led__text">¿Tu piel refleja cómo te sentís por dentro?</p>
+<!-- ══ GANCHO 1 — negro, dolor del gasto en peluquería ══ -->
+<section class="gancho-cep gancho-cep--negro gancho-cep--tight" id="section-gancho1" data-insync-section="gancho1">
+  <p class="gancho-cep__text">¿Cuánto gastás en peluquería por mes?</p>
 </section>
 
 <!-- ══ SECCIÓN 2 — imagen, ancho completo, sin texto ══ -->
-<section class="img-full-led" id="section-img1" data-insync-section="img1">
-  <img src="/mascara-led-facial/mascara-img1.webp"
-       srcset="/mascara-led-facial/mascara-img1-400w.webp 400w, /mascara-led-facial/mascara-img1.webp 1254w"
-       sizes="100vw"
-       alt="Máscara LED Facial — beneficios"
-       loading="lazy" decoding="async" width="1254" height="1254">
-</section>
-
-<!-- ══ GANCHO 2 — negro, autoridad/certeza/fuerza ══ -->
-<section class="gancho-led gancho-led--negro" id="section-gancho2" data-insync-section="gancho2">
-  <p class="gancho-led__text">7 luces. Un ritual.<br>Resultados que se ven.</p>
-</section>
-
-<!-- ══ SECCIÓN 3 — imagen, ancho completo, sin texto ══ -->
-<section class="img-full-led" id="section-img2" data-insync-section="img2">
-  <img src="/mascara-led-facial/demo-mascara.webp"
-       alt="Máscara LED Facial — antes y después"
+<section class="img-full-cep" id="section-img1" data-insync-section="img1">
+  <img src="/cepillo-secador-moldeador-aguacate/cep-img1.svg"
+       alt="Cepillo Secador Moldeador AguaCate — antes y después"
        loading="lazy" decoding="async" width="1080" height="1080">
 </section>
 
-<!-- ══ GANCHO 3 — violeta, transformación/identidad/exclusividad ══ -->
-<section class="gancho-led gancho-led--violeta" id="section-gancho3" data-insync-section="gancho3">
-  <p class="gancho-led__text">Tecnología LED profesional. Ahora en tus manos.</p>
+<!-- ══ GANCHO 2 — verde aguacate, 2 en 1 ══ -->
+<section class="gancho-cep gancho-cep--verde" id="section-gancho2" data-insync-section="gancho2">
+  <p class="gancho-cep__text">2 en 1. Un solo aparato.<br>Resultado profesional.</p>
+</section>
+
+<!-- ══ SECCIÓN 3 — imagen, ancho completo, sin texto ══ -->
+<section class="img-full-cep" id="section-img2" data-insync-section="img2">
+  <img src="/cepillo-secador-moldeador-aguacate/cep-img2.svg"
+       alt="Cepillo Secador Moldeador AguaCate — características"
+       loading="lazy" decoding="async" width="1080" height="1080">
+</section>
+
+<!-- ══ GANCHO 3 — negro, transformación ══ -->
+<section class="gancho-cep gancho-cep--negro" id="section-gancho3" data-insync-section="gancho3">
+  <p class="gancho-cep__text">Tu cabello. Tu momento.<br>Tu transformación.</p>
 </section>
 
 <!-- ══ SECCIÓN 4 — imagen de cierre, ancho completo ══ -->
-<section class="img-full-led" id="section-img3" data-insync-section="img3">
-  <img src="/mascara-led-facial/mascara-img3.webp"
-       srcset="/mascara-led-facial/mascara-img3-400w.webp 400w, /mascara-led-facial/mascara-img3.webp 1254w"
-       sizes="100vw"
-       alt="Máscara LED Facial"
-       loading="lazy" decoding="async" width="1254" height="1254">
+<section class="img-full-cep" id="section-img3" data-insync-section="img3">
+  <img src="/cepillo-secador-moldeador-aguacate/cep-img3.svg"
+       alt="Cepillo Secador Moldeador AguaCate"
+       loading="lazy" decoding="async" width="1080" height="1080">
 </section>
 
 <!-- ══ CIERRE FINAL — barra de stock + CTA + badges ══ -->
-<section class="cierre-led" id="section-cierre" data-insync-section="cierre">
-  <div class="cierre-led__inner">
-    <div class="stock-bar-led">
-      <div class="stock-bar-led__label">
+<section class="cierre-cep" id="section-cierre" data-insync-section="cierre">
+  <div class="cierre-cep__inner">
+    <div class="stock-bar-cep">
+      <div class="stock-bar-cep__label">
         <span id="stock-bar-text">Quedan pocas unidades</span>
         <span id="stock-bar-pct"></span>
       </div>
-      <div class="stock-bar-led__track">
-        <div class="stock-bar-led__fill" id="stock-bar-fill"></div>
+      <div class="stock-bar-cep__track">
+        <div class="stock-bar-cep__fill" id="stock-bar-fill"></div>
       </div>
     </div>
 
-    <a class="btn btn-primary" data-scroll-form data-insync-cta="cierre" style="display:inline-flex;max-width:380px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+    <a class="btn btn-primary" data-scroll-form data-insync-cta="cierre" style="display:inline-flex;max-width:380px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Cepillo%20Secador%20Moldeador%20AguaCate.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
       LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
     </a>
     <div class="delivery-badges">
@@ -414,13 +404,13 @@
   </div>
 </section>
 
-<!-- ══ MODAL PEDIDO — estructura de depilador/rizador/lampara (sin variantes, sin mapa) ══ -->
-<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-led">
+<!-- ══ MODAL PEDIDO — estructura de mascara-led-facial (sin variantes, sin mapa) ══ -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-cep">
   <div class="modal-box">
     <p class="modal-urgency">⏳ Stock limitado</p>
     <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
-    <h2 class="modal-title" id="modal-title-led">Ya casi es tuya 💜</h2>
-    <p class="modal-step">Tu Máscara LED Facial · Entrega en el día 🚚</p>
+    <h2 class="modal-title" id="modal-title-cep">Ya casi es tuyo 🥑</h2>
+    <p class="modal-step">Tu Cepillo Secador Moldeador AguaCate · Entrega en el día 🚚</p>
     <p class="modal-subtitle">Completá tus datos y te escribimos por WhatsApp en minutos para coordinar la entrega hoy mismo.</p>
 
     <!-- Ofertas -->
@@ -446,7 +436,7 @@
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 29.000</span>
+            <span class="offer-saving">Ahorrás Gs. 19.000</span>
             <div class="offer-badge">🔥 Más elegido</div>
           </div>
         </label>
@@ -461,7 +451,7 @@
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 68.000</span>
+            <span class="offer-saving">Ahorrás Gs. 48.000</span>
             <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           </div>
         </label>
@@ -498,7 +488,7 @@
           <div class="city-suggestions" id="m-city-suggestions"></div>
         </div>
         <input type="hidden" id="m-location" name="location_search_legacy">
-        <div style="margin-top:2px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(26,16,37,.35);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
+        <div style="margin-top:2px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(20,35,28,.35);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
         <span class="form-error-msg"></span>
       </div>
       <input type="hidden" id="m-loc-address"  name="location_address">
@@ -604,9 +594,10 @@
 <script defer src="/assets/js/insync.js?v=4"></script>
 
 <script defer>
-  /* Selector de ciudad sin Google Maps (patrón luna-mini / rizador / lampara / depilador).
-     products.js exige #m-location._dvPlaceSelected=true + location_lat/city/maps_url
-     no vacíos para permitir el submit — se completan con coords aproximadas del depto. */
+  /* Selector de ciudad sin Google Maps (patrón mascara-led-facial / luna-mini /
+     rizador / lampara / depilador). products.js exige
+     #m-location._dvPlaceSelected=true + location_lat/city/maps_url no vacíos
+     para permitir el submit — se completan con coords aproximadas del depto. */
   (function() {
     var DEPT_COORDS = {
       'Central':          [-25.3000, -57.5500],
@@ -768,11 +759,11 @@
 
 <script defer>
   const PRODUCT = {
-    name:  'Máscara LED Facial',
-    slug:  'mascara-led-facial',
-    price: 289000,
+    name:  'Cepillo Secador Moldeador AguaCate',
+    slug:  'cepillo-secador-moldeador-aguacate',
+    price: 199000,
     /* Descuentos de combo fijos (no el 25%/35% estándar) — ver override en products.js */
-    comboPricing: { 2: 549000, 3: 799000 },
+    comboPricing: { 2: 379000, 3: 549000 },
     /* Sin variantes. */
     /* Sin mapa real — el link de Maps usa coords aproximadas del depto, se omite del WhatsApp. */
     hideExactLocation: true,
@@ -809,7 +800,7 @@
 
 <!-- CRO: Sticky bottom CTA — mobile only -->
 <div class="sticky-cta-bar" id="sticky-cta-bar">
-  <a class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;white-space:nowrap;font-size:clamp(12px,3.6vw,15px);padding:12px 10px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20M%C3%A1scara%20LED%20Facial.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+  <a class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;white-space:nowrap;font-size:clamp(12px,3.6vw,15px);padding:12px 10px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Cepillo%20Secador%20Moldeador%20AguaCate.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
     LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
   </a>
 </div>

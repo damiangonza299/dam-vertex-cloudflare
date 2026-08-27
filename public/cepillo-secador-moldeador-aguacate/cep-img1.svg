@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="Antes y después — placeholder">
+  <defs>
+    <linearGradient id="cepBeforeBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a2a2a"/>
+      <stop offset="100%" stop-color="#0d0d0d"/>
+    </linearGradient>
+    <linearGradient id="cepAfterBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2d6a4f"/>
+      <stop offset="100%" stop-color="#1b4332"/>
+    </linearGradient>
+  </defs>
+  <rect width="540" height="1080" fill="url(#cepBeforeBg)"/>
+  <rect x="540" width="540" height="1080" fill="url(#cepAfterBg)"/>
+  <text x="60" y="100" font-family="Arial, sans-serif" font-size="52" font-weight="800" fill="#ffffff">ANTES</text>
+  <rect x="60" y="130" width="330" height="44" fill="#3a3a3a"/>
+  <text x="72" y="162" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#ffffff">FRIZZ SIN CONTROL</text>
+  <g fill="none" stroke="#8a8a8a" stroke-width="3" stroke-linecap="round">
+    <path d="M120 300 Q160 260 120 220 Q80 180 120 140"/>
+    <path d="M220 320 Q260 280 220 240 Q180 200 220 160"/>
+    <path d="M320 300 Q360 260 320 220 Q280 180 320 140"/>
+    <path d="M420 320 Q460 280 420 240 Q380 200 420 160"/>
+  </g>
+  <text x="60" y="1000" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,.7)">Dos horas de peluquería.</text>
+  <text x="60" y="1032" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,.7)">Sin garantía de que dure.</text>
+
+  <text x="620" y="100" font-family="Arial, sans-serif" font-size="52" font-weight="800" fill="#ffffff">DESPUÉS</text>
+  <rect x="620" y="130" width="360" height="44" fill="#c9a84c"/>
+  <text x="632" y="162" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#1b4332">LISO Y BRILLANTE</text>
+  <g fill="none" stroke="#f8f4e3" stroke-width="4" stroke-linecap="round">
+    <line x1="660" y1="220" x2="660" y2="320"/>
+    <line x1="720" y1="210" x2="720" y2="330"/>
+    <line x1="780" y1="220" x2="780" y2="320"/>
+    <line x1="840" y1="210" x2="840" y2="330"/>
+    <line x1="900" y1="220" x2="900" y2="320"/>
+    <line x1="960" y1="210" x2="960" y2="330"/>
+  </g>
+  <text x="620" y="1000" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,.85)">15 minutos, en tu casa.</text>
+  <text x="620" y="1032" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,.85)">Con un solo aparato.</text>
+
+  <line x1="540" y1="0" x2="540" y2="1080" stroke="#f8f4e3" stroke-width="4"/>
+</svg>

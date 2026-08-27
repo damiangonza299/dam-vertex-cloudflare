@@ -19,6 +19,7 @@ const PRODUCT_SHORT_NAMES = {
   'depilador-electrico-guard-wing':     'Depilador Guard Wing',
   'mascara-led-facial':                 'Máscara LED Facial',
   'luna-mini-vibrador-bala-recargable': 'Luna Mini',
+  'cepillo-secador-moldeador-aguacate': 'Cepillo AguaCate',
 };
 
 export async function onRequestOptions() {

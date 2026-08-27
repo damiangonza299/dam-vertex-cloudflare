@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="Cepillo Secador Moldeador AguaCate — placeholder">
+  <defs>
+    <radialGradient id="bgGlowCep" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#74c69d"/>
+      <stop offset="100%" stop-color="#f8f4e3"/>
+    </radialGradient>
+    <linearGradient id="avoBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#74c69d"/>
+      <stop offset="100%" stop-color="#2d6a4f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#bgGlowCep)"/>
+  <!-- Cuerpo tipo aguacate del cepillo -->
+  <ellipse cx="540" cy="470" rx="230" ry="290" fill="url(#avoBody)"/>
+  <ellipse cx="540" cy="470" rx="230" ry="290" fill="none" stroke="#1b4332" stroke-width="6" opacity="0.35"/>
+  <!-- "Carozo" dorado -->
+  <ellipse cx="540" cy="500" rx="90" ry="110" fill="#c9a84c"/>
+  <ellipse cx="540" cy="500" rx="90" ry="110" fill="none" stroke="#0d0d0d" stroke-width="3" opacity="0.15"/>
+  <!-- Mango -->
+  <rect x="505" y="760" width="70" height="220" rx="35" fill="#0d0d0d"/>
+  <!-- Cerdas / flujo de aire -->
+  <g stroke="#f8f4e3" stroke-width="6" stroke-linecap="round" opacity="0.85">
+    <line x1="430" y1="380" x2="410" y2="340"/>
+    <line x1="470" y1="330" x2="460" y2="285"/>
+    <line x1="540" y1="310" x2="540" y2="260"/>
+    <line x1="610" y1="330" x2="620" y2="285"/>
+    <line x1="650" y1="380" x2="670" y2="340"/>
+  </g>
+  <!-- Anillos de aire envolvente -->
+  <circle cx="540" cy="490" r="330" fill="none" stroke="#2d6a4f" stroke-width="2" opacity="0.25"/>
+  <circle cx="540" cy="490" r="380" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.2"/>
+</svg>
