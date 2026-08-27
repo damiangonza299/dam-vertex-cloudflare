@@ -371,6 +371,9 @@ function normalizeCityKey(s) {
 function ptsManualKey(leadId) {
   return `dam_delivery_manual_${leadId}_${new Date().toLocaleDateString('sv-SE')}`;
 }
+function ptsTypeKey(leadId) {
+  return `dam_delivery_manual_type_${leadId}_${new Date().toLocaleDateString('sv-SE')}`;
+}
 
 let _ptsTotal       = 0; // facturado hoy
 let _ptsAutoCost    = 0; // suma de precios automáticos (ciudades reconocidas)
@@ -399,12 +402,20 @@ function updatePurchasedTodayUI(filtered) {
 function renderPurchasedTodaySummary() {
   const breakdown = document.getElementById('pts-manual-breakdown');
   if (breakdown) {
-    breakdown.innerHTML = _ptsManualLeads.map(l => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;gap:8px">
-        <span style="font-size:11px;color:rgba(255,255,255,.45);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px">${esc(l.name || '')} · ${esc(l.city || 'Sin ciudad')}</span>
-        <input type="number" data-pts-manual="${l.id}" min="0" step="1000" placeholder="Interior - Gs" value="${localStorage.getItem(ptsManualKey(l.id)) || ''}"
-          style="width:120px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);color:#fff;font-size:12px;padding:4px 8px;border-radius:6px;text-align:right;font-family:inherit">
-      </div>`).join('');
+    breakdown.innerHTML = _ptsManualLeads.map(l => {
+      const isEncomienda = localStorage.getItem(ptsTypeKey(l.id)) === 'encomienda';
+      const placeholder  = isEncomienda ? 'Costo encomienda - Gs' : 'Interior - Gs';
+      return `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;gap:6px">
+        <span style="font-size:11px;color:rgba(255,255,255,.45);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px">${esc(l.name || '')} · ${esc(l.city || 'Sin ciudad')}</span>
+        <label style="display:flex;align-items:center;gap:3px;font-size:10px;color:rgba(255,255,255,.5);white-space:nowrap;cursor:pointer">
+          <input type="checkbox" data-pts-type="${l.id}" ${isEncomienda ? 'checked' : ''} style="cursor:pointer">
+          Encomienda
+        </label>
+        <input type="number" data-pts-manual="${l.id}" min="0" step="1000" placeholder="${placeholder}" value="${localStorage.getItem(ptsManualKey(l.id)) || ''}"
+          style="width:110px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);color:#fff;font-size:12px;padding:4px 8px;border-radius:6px;text-align:right;font-family:inherit">
+      </div>`;
+    }).join('');
   }
 
   const manualCost   = _ptsManualLeads.reduce((sum, l) => sum + (Number(localStorage.getItem(ptsManualKey(l.id))) || 0), 0);
@@ -423,6 +434,13 @@ document.getElementById('pts-manual-breakdown')?.addEventListener('input', e => 
   const id = e.target?.dataset?.ptsManual;
   if (!id) return;
   localStorage.setItem(ptsManualKey(id), e.target.value || '0');
+  renderPurchasedTodaySummary();
+});
+
+document.getElementById('pts-manual-breakdown')?.addEventListener('change', e => {
+  const id = e.target?.dataset?.ptsType;
+  if (!id) return;
+  localStorage.setItem(ptsTypeKey(id), e.target.checked ? 'encomienda' : 'delivery');
   renderPurchasedTodaySummary();
 });
 
@@ -541,12 +559,6 @@ function sendToDeliveryWA(id) {
 
 function buildActions(l) {
   const canConfirm = l.status !== 'purchased';
-
-  if (IS_DELIVERY) {
-    if (!canConfirm) return '<span class="act-done">&#10003;</span>';
-    return `<button class="btn-confirm btn-icon" onclick="confirmPurchase(${l.id})" title="Confirmar pago">&#10003;</button>`;
-  }
-
   const confirmBtn = canConfirm
     ? `<button class="btn-confirm btn-icon" onclick="confirmPurchase(${l.id})" title="Confirmar pago">&#10003;</button>`
     : '<span class="act-done">&#10003;</span>';
@@ -557,6 +569,11 @@ function buildActions(l) {
     ? `<button disabled style="opacity:.4;cursor:not-allowed">Cliente bloqueado</button>`
     : `<button onclick="blockCustomer(${l.id});closeMenus()">Bloquear cliente</button>`;
 
+  /* Eliminar / Eliminar internamente — solo admin normal, nunca en delivery */
+  const deleteBtns = IS_DELIVERY ? '' : `
+      <button class="danger" onclick="deleteLead(${l.id},'${l.status}');closeMenus()">Eliminar</button>
+      <button class="danger" style="font-size:10px;opacity:.8" onclick="deleteLeadInternal(${l.id},'${l.status}');closeMenus()">Eliminar internamente</button>`;
+
   const menuId = `menu-${l.id}`;
   return `<div class="actions-cell">
     ${confirmBtn}
@@ -564,9 +581,7 @@ function buildActions(l) {
     <div class="action-menu" id="${menuId}">
       <button onclick="openEditLeadModal(${l.id});closeMenus()">Editar lead</button>
       <button onclick="sendToDeliveryWA(${l.id});closeMenus()">Enviar a delivery</button>
-      ${blockBtn}
-      <button class="danger" onclick="deleteLead(${l.id},'${l.status}');closeMenus()">Eliminar</button>
-      <button class="danger" style="font-size:10px;opacity:.8" onclick="deleteLeadInternal(${l.id},'${l.status}');closeMenus()">Eliminar internamente</button>
+      ${blockBtn}${deleteBtns}
     </div>
   </div>`;
 }
