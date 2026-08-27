@@ -385,8 +385,10 @@ function updatePurchasedTodayUI(filtered) {
   const isActive  = activeDateFilter === 'purchased-today';
   const statusSel = document.getElementById('filter-status');
   const panel     = document.getElementById('purchased-today-summary');
+  const tableWrap = document.getElementById('leads-table-wrap');
   if (statusSel) statusSel.style.display = isActive ? 'none' : '';
   if (panel)     panel.style.display     = isActive ? '' : 'none';
+  if (tableWrap) tableWrap.classList.toggle('hide-date-col', isActive);
   if (!isActive) return;
 
   _ptsTotal       = filtered.reduce((sum, l) => sum + (Number(l.value) || 0), 0);
