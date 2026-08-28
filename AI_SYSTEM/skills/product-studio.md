@@ -125,6 +125,30 @@ Referencia: `AI_SYSTEM/skills/lighthouse-geo-standards.md`
 
 ---
 
+## FLUJO DE EVENTOS META — Nuevas landings (vigente desde 27/08/2026)
+
+Toda landing nueva hereda automáticamente este flujo vía tracking.js/products.js —
+no requiere código adicional por landing salvo que se aparte del patrón estándar.
+
+| Evento | Momento | Dato obligatorio para que llegue completo |
+|---|---|---|
+| ViewContent | Carga de la landing | ninguno (usa external_id anónimo) |
+| AddToCart | Primer clic en cualquier CTA | ninguno |
+| InitiateCheckout | Mismo clic que AddToCart | ninguno |
+| **Purchase** | **Al crear el lead** (submit del formulario), en `leads.js` — NO al confirmar entrega | Nombre, teléfono, ciudad — los 3 ya son obligatorios en `validateModalForm()`, no requieren nada extra |
+
+**Configuración de campaña en Meta:** optimizar por evento `Purchase` a nivel ad set
+(`promoted_object: { pixel_id, custom_event_type: 'PURCHASE' }` o el objetivo estándar
+de conversión Purchase). Como Purchase ahora se dispara al crear el lead — antes de
+saber si esa venta se va a confirmar y cobrar — el volumen de Purchase que ve Meta va
+a ser mayor al de ventas reales entregadas. Ver "FLUJO DE EVENTOS META — IMPORTANTE"
+en CLAUDE.md para el detalle completo de esa decisión y sus consecuencias.
+
+**QualifiedLead ya no existe** — no usarlo como referencia al armar nuevas campañas
+ni al leer documentación vieja de otras landings.
+
+---
+
 ## Blueprint V3 — Estructura de Landing Profesional
 
 Blueprint V3 define exactamente qué va en cada sección. No improvisar.

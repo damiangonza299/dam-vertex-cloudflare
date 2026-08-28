@@ -385,6 +385,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
         const cityQL = normForMetaQL(effectiveCity || '');
         if (cityQL) ud.ct = [await sha256QL(cityQL)];
 
+        const deptQL = getDepartmentForCity(effectiveCity || '');
+        if (deptQL) ud.st = [await sha256QL(normForMetaQL(deptQL))];
+
         ud.country = [await sha256QL('py')];
         await fetch(
           `https://graph.facebook.com/v20.0/${env.META_PIXEL_ID}/events?access_token=${env.META_ACCESS_TOKEN}`,
@@ -405,6 +408,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
                   content_type: 'product',
                   value:        value  || 0,
                   currency:     currency || 'PYG',
+                  num_items:    quantity || 1,
+                  order_id:     String(result.meta?.last_row_id || ''),
                 },
               }],
               ...(env.META_TEST_EVENT_CODE && { test_event_code: env.META_TEST_EVENT_CODE }),
@@ -506,6 +511,41 @@ function getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source,
   if (fbclid || (fbc && fbc.startsWith('fb.1.'))) return 'fbc_only';
   if (utm_source || utm_campaign)       return 'utm_only';
   return 'none';
+}
+
+/* ── Tabla ciudad → departamento — misma data usada en el selector de ciudad
+   client-side (ver public/depilador-electrico-guard-wing/index.html y demás
+   landings, bloque CITIES_BY_DEPT), para derivar `st` en Purchase sin inventar
+   nada — es el mismo dato de ciudad que ya se recolecta, solo agregado. ── */
+const CITIES_BY_DEPT = {
+  'Central': ['Asunción','San Lorenzo','Luque','Capiatá','Lambaré','Fernando de la Mora','Limpio','Ñemby','Villa Elisa','Mariano Roque Alonso','Itauguá','Areguá','Villeta','Nueva Italia','Guarambaré','Ypacaraí','San Antonio','Ypané','Tobatí','Emboscada','Altos','Compañía','Itá'],
+  'Alto Paraná': ['Ciudad del Este','Hernandarias','Minga Guazú','Presidente Franco','Minga Porã','Santa Rita','Los Cedrales','Naranjal','Juan León Mallorquín','Santa Rosa del Monday','Iruña','Itakyry',"Juan Emilio O'Leary",'Ñacunday','San Alberto','San Cristóbal','Santa Fe del Paraná','Tavapy','Yguazú','Doctor Raúl Peña','Domingo Martínez de Irala'],
+  'Itapúa': ['Encarnación','Cambyretá','Coronel Bogado','General Artigas','Hohenau','Bella Vista','Obligado','Capitán Miranda','Natalio','Edelira','Alto Verá','Capitán Meza','Carmen del Paraná','Fram','General Delgado','Jesús','La Paz','Mayor Otaño','Nueva Alborada','PJC Caballero Álvarez','Pirapó','San Cosme y Damián','San Juan del Paraná','San Pedro del Paraná','Tomás Romero Pereira','Trinidad','Yatytay'],
+  'Cordillera': ['Caacupé','Valenzuela','San Bernardino','Arroyos y Esteros','Caraguatay','Escobar','Isla Pucú','Juan de Mena','Loma Grande','Mbocayaty del Yhaguy','Nueva Colombia','Piribebuy','Primero de Marzo','San José Obrero','Santa Elena','Itacurubí de la Cordillera','Tacuara'],
+  'Paraguarí': ['Paraguarí','Acahay','Caapucú','Caballero','Carapeguá','General Bernardino Caballero','La Colmena','Mbuyapey','Pirayú','Quiindy','Quyquyhó','San Roque González de Santa Cruz','Sapucai','Tebicuarymí','Yaguarón','Ybycuí','Ybytymí'],
+  'Guairá': ['Villarrica','Borja','Capitán Mauricio José Troche','Colonia Independencia','Coronel Martínez','Dr. Bottrell','Félix Pérez Cardozo','General Eugenio A. Garay','Iturbe','José Fassardi','Mbocayaty','Natalicio Talavera','Ñumí','San Salvador','Tembiaporã','Tebicuary'],
+  'Caaguazú': ['Coronel Oviedo','Caaguazú','Carayaó','Dr. Juan Manuel Frutos','José Domingo Ocampo','Nueva Londres','R.I. 3 Corrales','Repatriación','San Joaquín','San José de los Arroyos','Simón Bolívar','Tres Corrales','Vaquería','Yhú','Mbutuy','Dr. Cecilio Báez','Dr. J. Eulogio Estigarribia','La Pastora','Mcal. Francisco Solano López','Nueva Toledo','Raúl Arsenio Oviedo','Santa Rosa del Mbutuy','3 de Febrero'],
+  'Misiones': ['San Juan Bautista','Ayolas','San Ignacio','San Miguel','San Patricio','Santa María','Santa Rosa','Santiago','Villa Florida','Yabebyry'],
+  'Ñeembucú': ['Pilar','Alberdi','Cerrito','Desmochados','General José Eduvigis Díaz','Guazú Cuá','Humaitá','Isla Umbú','Laureles','Mayor José J. Martínez','Paso de Patria','San Juan Bautista del Ñeembucú','Tacuaras','Villa Oliva','Villalbin'],
+  'Amambay': ['Pedro Juan Caballero','Bella Vista Norte','Capitán Bado','Cinturón','Paso Yobai','Zanja Pytá','Cerro Corá','Karapaí'],
+  'Concepción': ['Concepción','Belén','Horqueta','Loreto','San Carlos','San Lázaro','Yby Yaú',"Azote'y",'Sargento José Félix López','Paso Barreto'],
+  'Canindeyú': ['Salto del Guairá','Corpus Christi','Curuguaty','Igatimí','Itanará','Katueté','La Paloma','Maracayu','Mbaracayú','Nueva Esperanza','Villa Curuguaty','Ypejhú','Yby Pytã'],
+  'San Pedro': ['San Pedro de Ycuamandiyú','Antequera','Chore','General Elizardo Aquino','Guayaibí','Itacurubí del Rosario','Lima','Nueva Germania','San Estanislao','San Pablo','Tacuatí','Unión','Villa del Rosario','Yataity del Norte','25 de Diciembre','Capiibary','General Isidoro Resquín','Liberación','San Vicente Pancholo'],
+  'Caazapá': ['Caazapá','Abai','Buena Vista','Dr. Moisés Bertoni','Fulgencio Yegros','Gral. Higinio Morínigo','Maciel','San Juan Nepomuceno','Tavaí','Yuty','3 de Mayo'],
+  'Boquerón': ['Filadelfia','Loma Plata','Mariscal Estigarribia','Neuland','General Díaz'],
+  'Presidente Hayes': ['Villa Hayes','Benjamín Aceval','General José María Bruguez','José Falcón','Nanawa','Nueva Asunción','Pozo Colorado','Puerto Pinasco','Tte. 1ro Manuel Irala Fernández','Tte. Esteban Martínez'],
+  'Alto Paraguay': ['Fuerte Olimpo','Bahía Negra','Carmelo Peralta','La Victoria'],
+};
+let _cityToDept = null;
+function getDepartmentForCity(city) {
+  if (!city) return null;
+  if (!_cityToDept) {
+    _cityToDept = {};
+    for (const dept in CITIES_BY_DEPT) {
+      for (const c of CITIES_BY_DEPT[dept]) _cityToDept[c.toLowerCase()] = dept;
+    }
+  }
+  return _cityToDept[city.trim().toLowerCase()] || null;
 }
 
 /* ── CAPI helpers (QualifiedLead) ── */
