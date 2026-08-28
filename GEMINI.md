@@ -65,8 +65,8 @@ Antes de cualquier creación o modificación de campaña, ejecutar en orden:
 
 1. Analizar campañas históricas (performance, ROAS, estructura).
 2. Analizar ROAS real (D1 `purchased_manual` / gasto Meta — NO Meta Purchase).
-3. Analizar Purchase real (ventas confirmadas en admin panel, no pixel).
-4. Analizar QualifiedLead real (leads que entraron al Admin Panel).
+3. Analizar Purchase real (ventas confirmadas en admin panel — `status='purchased'` en D1 —, no el evento CAPI, que desde el 27/08/2026 se dispara al crear el lead, no al confirmar).
+4. Analizar leads reales que entraron al Admin Panel (QualifiedLead como evento CAPI fue eliminado el 27/08/2026 — usar conteo de leads en D1).
 5. Proponer cambios concretos con justificación en datos reales.
 6. Esperar aprobación explícita del usuario antes de ejecutar.
 
@@ -96,9 +96,9 @@ Cuando el Strict Mode está activo, estas reglas son obligatorias:
 3. **Separar creatividad, métrica y decisión** — no mezclar análisis de creativo con análisis de ROAS en la misma conclusión
 4. **No optimizar por CTR/CPC si no hay compras o señales fuertes** — CTR sin conversión es vanidad
 5. **Priorizar caja real, compras reales y cierre real por WhatsApp** — el KPI final es revenue, no métricas intermedias
-6. **Purchase es manual** — no existe Purchase automático; se marca a mano en admin panel después de la entrega
-7. **QualifiedLead ocurre cuando el pedido entra al Admin Panel** — no antes, no con el submit del form
-8. **No mezclar InitiateCheckout con QualifiedLead** — son eventos distintos que miden etapas distintas del funnel
+6. **Purchase se dispara al crear el lead** (desde el 27/08/2026 — ver "FLUJO DE EVENTOS META — IMPORTANTE" más abajo). `status='purchased'` en D1 sigue siendo manual, vía Admin Panel, y sigue siendo la única fuente de verdad para ROAS real — pero ya no dispara ningún evento a Meta.
+7. **QualifiedLead fue eliminado del sistema** (27/08/2026) — no usarlo como referencia en análisis nuevos.
+8. ~~No mezclar InitiateCheckout con QualifiedLead~~ — regla obsoleta, QualifiedLead ya no existe.
 9. **No tocar tracking** — nunca modificar Pixel, CAPI, Purchase, InitiateCheckout sin pedido explícito confirmado
 
 **Reglas completas en:** `AI_SYSTEM/meta-ads/meta-strict-mode.md` — sección Regla 6
@@ -268,7 +268,7 @@ NUNCA tomar decisión de presupuesto basada solo en Ads Manager.
 
 **Botón Admin Panel:** `INTEL` → abre `/intelligence/` (reemplazó a `Sync`)
 **InSync dentro de Dam Intelligence:** tab `Sync` reutiliza `/api/insync-report`
-**Eventos CAPI nuevos agregados:** `FastBuyer` (compra <24h), `ComboBuyer` (compra combo)
+**Eventos CAPI:** `FastBuyer`/`ComboBuyer` eliminados el 27/08/2026 (ver "FLUJO DE EVENTOS META — IMPORTANTE") — la clasificación sigue existiendo en D1 (`buyer_type`), sin señal a Meta.
 **Eventos negativos:** NO enviados a Meta todavía. Uso interno en lead_quality.
 
 **Endpoints:**
@@ -297,7 +297,7 @@ NUNCA tomar decisión de presupuesto basada solo en Ads Manager.
 
 ### DAM Vertex — Responsable de
 
-Leads · Pedidos · Admin Panel · Delivery Panel · Inventario comercial · WhatsApp · Telegram · Meta Ads · Pixel · CAPI · Purchase manual · QualifiedLead · Gestión operativa · **Dam Intelligence**
+Leads · Pedidos · Admin Panel · Delivery Panel · Inventario comercial · WhatsApp · Telegram · Meta Ads · Pixel · CAPI · Purchase (dispara al crear el lead desde 27/08/2026 — ver "FLUJO DE EVENTOS META — IMPORTANTE") · Gestión operativa · **Dam Intelligence**
 
 ### Dam Finanzas — Responsable de
 
@@ -376,35 +376,47 @@ Campos OBLIGATORIOS para que la UI lo reconozca:
 
 ### UMBRALES OFICIALES DAM VERTEX
 
-DAM VERTEX Paraguay — clasificación de compradores y eventos Meta CAPI. **Prohibido modificar sin decisión de negocio explícita documentada en este archivo.**
+DAM VERTEX Paraguay — clasificación interna de compradores (D1 / Dam Intelligence). **Prohibido modificar sin decisión de negocio explícita documentada en este archivo.**
+
+> **Cambio 27/08/2026:** `HighValuePurchase`, `VIPPurchase` y `FastBuyer` fueron **eliminados como eventos CAPI** — ya no se envían a Meta desde ningún archivo (antes vivían en `confirm-purchase.js`, ahora removidos por completo). Los umbrales de abajo siguen usándose **solo para `buyer_type` interno en D1** (Dam Intelligence / `_bqe-scorer.js`), sin ninguna señal correspondiente hacia Meta.
 
 | Clasificación | Umbral | Evento CAPI | buyer_type D1 |
 |---|---|---|---|
-| Alto valor | >= 199.000 Gs | `HighValuePurchase` | `alto_valor` |
-| VIP | >= 300.000 Gs | `HighValuePurchase` + `VIPPurchase` | `vip` |
-| Ultra VIP | >= 500.000 Gs | `HighValuePurchase` + `VIPPurchase` (sin CAPI dedicado) | `ultra_vip` |
-| Fast Buyer | compra en < 24h | `FastBuyer` (solo server-side CAPI, nunca Pixel) | `rapido` |
+| Alto valor | >= 199.000 Gs | ~~`HighValuePurchase`~~ eliminado | `alto_valor` |
+| VIP | >= 300.000 Gs | ~~`HighValuePurchase` + `VIPPurchase`~~ eliminado | `vip` |
+| Ultra VIP | >= 500.000 Gs | ~~sin CAPI dedicado~~ | `ultra_vip` |
+| Fast Buyer | compra en < 24h | ~~`FastBuyer`~~ eliminado | `rapido` |
 
-**Mapping explícito CAPI ↔ DAM Intelligence:**
-- `HighValuePurchase` Meta = Alto Valor DAM VERTEX (>= Gs. 199.000)
-- `VIPPurchase` Meta = VIP DAM VERTEX (>= Gs. 300.000)
-- `FastBuyer` Meta = Fast Buyer DAM VERTEX (confirmación < 24h)
-- `Purchase` Meta = toda compra confirmada, sin umbral de valor
+**Justificación (histórica, sigue aplicando al `buyer_type` interno):** Precio base reloj Gs. 189.000. Con envío express: Gs. 199.000 → intención de compra superior → clasificación Alto Valor.
 
-**Justificación:** Precio base reloj Gs. 189.000. Con envío express: Gs. 199.000 → intención de compra superior → clasificación Alto Valor.
-
-**Archivos:** `_bqe-scorer.js` (constantes `ALTO_VALOR_PYG`, `VIP_PYG`, `ULTRA_VIP_PYG`) · `confirm-purchase.js` (condiciones `HighValuePurchase`, `VIPPurchase`)
+**Archivos:** `_bqe-scorer.js` (constantes `ALTO_VALOR_PYG`, `VIP_PYG`, `ULTRA_VIP_PYG` — sin cambios, siguen clasificando en D1). `confirm-purchase.js` ya **no** contiene ninguna condición de `HighValuePurchase`/`VIPPurchase` — ver "FLUJO DE EVENTOS META — IMPORTANTE" abajo.
 
 ---
 
 ### CAPI — user_data obligatorio en todos los eventos
 
-Todo evento CAPI (`ViewContent`, `AddToCart`, `InitiateCheckout`, `QualifiedLead`, `Purchase`/`HighValuePurchase`/`VIPPurchase`/`FastBuyer`) DEBE llevar al menos un campo de identidad en `user_data` además de IP/user_agent — sin eso Meta no puede atribuir ni optimizar la entrega.
+Todo evento CAPI (`ViewContent`, `AddToCart`, `InitiateCheckout`, `Purchase`) DEBE llevar al menos un campo de identidad en `user_data` además de IP/user_agent — sin eso Meta no puede atribuir ni optimizar la entrega.
 
 - **Pre-formulario** (`ViewContent`, `AddToCart`, `InitiateCheckout`): `external_id_hashed` (SHA-256 de `_dv_anon_id`, ID anónimo persistente en `localStorage`, generado por `getOrCreateAnonId()` en `tracking.js`) + `lead_hashed` si el visitante ya compró antes (prioridad sobre el anónimo).
-- **Post-formulario** (`QualifiedLead`, `Purchase`, `HighValuePurchase`, `VIPPurchase`, `FastBuyer`): datos reales hasheados (`ph`, `fn`, `ln`, `em`, `ct`).
+- **`Purchase`** (desde el 27/08/2026, se dispara al crear el lead — ver "FLUJO DE EVENTOS META — IMPORTANTE" abajo): datos reales hasheados (`ph`, `fn`, `ln`, `em`, `ct`) tomados del formulario recién enviado, más `anon_id_hashed` como valor adicional de `external_id`.
 
 Detectado por Meta el 12/08/2026 (los 3 eventos pre-formulario iban sin identidad útil) y corregido el mismo día en `tracking.js` + `functions/api/meta-event.js`. No es la causa confirmada de la caída de pedidos del 11-12/08 — esa fue por leads borrados de D1, un hallazgo separado. Detalle completo: ver "CAPI — user_data obligatorio en todos los eventos" en `CLAUDE.md`.
+
+---
+
+### FLUJO DE EVENTOS META — IMPORTANTE
+
+**Cambio de flujo crítico, 27/08/2026 — decisión de negocio explícita del usuario, con autorización confirmada tras advertencia de riesgo.**
+
+- **`Purchase` se dispara cuando el lead SE CREA**, en `functions/api/leads.js` (al caer el pedido desde la landing) — no más al confirmar entrega. Mismos parámetros que tenía antes en `confirm-purchase.js`: `value`, `currency='PYG'`, `event_id = pur_{slug}_{timestamp}_{random}`, `user_data` con `ph`/`fn`/`ln`/`ct`/`country` hasheados + `external_id` (real si hay teléfono, `anon_id_hashed` como valor adicional). Best-effort en `waitUntil` — si falla, no rompe la creación del lead.
+- **`confirm-purchase.js` NO envía ningún evento a Meta.** El botón "Confirmar compra" del Admin Panel sigue existiendo y sigue haciendo todo lo demás — `UPDATE` de `status` en D1, descuento de stock, webhook a Dam Finanzas, desbloqueo de cliente — pero es 100% interno, sin ninguna señal hacia Meta.
+- **`QualifiedLead` fue eliminado del sistema** — ya no se dispara desde ningún archivo.
+- **`HighValuePurchase`, `VIPPurchase`, `FastBuyer`, `ComboBuyer` fueron eliminados del sistema** — ya no se disparan desde ningún archivo. Los umbrales que los definían siguen usándose solo para `buyer_type` interno en D1 (ver "UMBRALES OFICIALES DAM VERTEX").
+- **`ViewContent`, `AddToCart`, `InitiateCheckout` no cambiaron** — siguen disparándose igual desde `tracking.js`, con el mismo `event_id` compartido Pixel↔CAPI.
+
+**Consecuencia asumida explícitamente por el usuario:** Meta ahora recibe `Purchase` para el 100% de los leads que caen (incluyendo los que después quedan `pending`, se cancelan o nunca se cobran) — no solo para las ventas confirmadas y entregadas. El algoritmo de Meta va a optimizar la entrega hacia "gente que llena el formulario", no hacia compradores reales confirmados. `status='purchased'` en D1 sigue siendo la única fuente de verdad para ROAS real y reportes — el evento Purchase que le llega a Meta ya no representa lo mismo que esa columna.
+
+**Este cambio es irreversible en la práctica una vez deployado** — cada `Purchase` ya enviado a Meta queda permanentemente en el historial de conversiones de la cuenta de anuncios, sin forma de retirarlo. **No revertir el código a "Purchase en confirm-purchase.js" sin autorización explícita del usuario** — y si se revierte, tener en cuenta que la cuenta de Meta va a tener mezclados en su historial: eventos Purchase-por-lead (de este período) y eventos Purchase-por-confirmación (de antes y de después de revertir).
 
 ---
 

@@ -186,91 +186,10 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     }
 
-    /* Preparar user_data hasheado */
-    const user_data = {};
-    if (lead.ip)         user_data.client_ip_address = lead.ip;
-    if (lead.user_agent) user_data.client_user_agent = lead.user_agent;
-    if (lead.fbp)   user_data.fbp = lead.fbp;
-    if (lead.fbc)   user_data.fbc = lead.fbc;
-    if (lead.email) user_data.em  = [await sha256(lead.email)];
-
-    const phCP = normalizePhone(lead.phone);
-    if (phCP) {
-      const phHash = await sha256(phCP);
-      user_data.ph          = [phHash];
-      user_data.external_id = [phHash];
-    }
-
-    /* external_id anónimo (_dv_anon_id de la sesión que originó el lead, ya hasheado
-       y guardado en anon_id_hashed) — si no hay teléfono real, es el external_id;
-       si ya hay uno por teléfono, se agrega como valor adicional del mismo array
-       para que Meta pueda unir la sesión anónima con esta compra. */
-    if (lead.anon_id_hashed) {
-      user_data.external_id = user_data.external_id ? [...user_data.external_id, lead.anon_id_hashed] : [lead.anon_id_hashed];
-    }
-
-    const namePartsCP = (lead.name || '').trim().split(/\s+/);
-    if (namePartsCP[0])           user_data.fn = [await sha256(normalizeForMeta(namePartsCP[0]))];
-    if (namePartsCP.length > 1)   user_data.ln = [await sha256(normalizeForMeta(namePartsCP.slice(1).join(' ')))];
-
-    const cityCP = normalizeForMeta(lead.location_city || lead.city || '');
-    if (cityCP) user_data.ct = [await sha256(cityCP)];
-
-    user_data.country = [await sha256('py')];
-
-    /* Evento Purchase */
-    const event_id = `pur_${lead.id}_${Math.floor(Date.now() / 1000)}_${Math.random().toString(36).slice(2, 6)}`;
-
-    const origin         = new URL(request.url).origin;
-    const landingPath    = (lead.landing_path || '').split('?')[0] || ('/' + productSlug);
-    const eventSourceUrl = origin + landingPath;
-
-    const event = {
-      event_name:       'Purchase',
-      event_time:       Math.floor(Date.now() / 1000),
-      event_id,
-      action_source:    'website',
-      event_source_url: eventSourceUrl,
-      user_data,
-      custom_data: {
-        content_name: lead.product_name,
-        content_type: 'product',
-        value:        lead.value || 0,
-        currency:     lead.currency || 'PYG',
-        contents:     buildContents({ isCombo, productSlug, saleQty, extraSlug, extraQty, totalValue: lead.value || 0 }),
-        num_items:    isCombo ? 2 : saleQty + (extraSlug ? extraQty : 0),
-      },
-    };
-
-    const pixelId     = env.META_PIXEL_ID;
-    const accessToken = env.META_ACCESS_TOKEN;
-    const testCode    = env.META_TEST_EVENT_CODE;
-
-    if (pixelId && accessToken) {
-      const payload = {
-        data: [event],
-        ...(testCode && { test_event_code: testCode }),
-      };
-
-      try {
-        const capiRes  = await fetch(
-          `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`,
-          {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify(payload),
-          },
-        );
-        const capiBody = await capiRes.json().catch(() => ({}));
-        if (!capiRes.ok) {
-          console.error('PURCHASE_CAPI_FAILED lead_id=' + id, capiRes.status, JSON.stringify(capiBody));
-        } else {
-          console.log('PURCHASE_CAPI_OK lead_id=' + id, capiBody.events_received ?? '?');
-        }
-      } catch (capiErr) {
-        console.error('PURCHASE_CAPI_EXCEPTION lead_id=' + id, capiErr.message);
-      }
-    }
+    /* FLUJO DE EVENTOS META — IMPORTANTE (ver CLAUDE.md/GEMINI.md):
+       Este endpoint YA NO envía ningún evento a Meta CAPI. Purchase se dispara
+       en functions/api/leads.js, al crear el lead. Confirmar la compra acá
+       es una operación 100% interna: D1, stock, Dam Finanzas, desbloqueo. */
 
     /* Incrementar contador del panel PiP — KV, best-effort (no bloquea la confirmación) */
     if (env.COUNTER_KV && typeof waitUntil === 'function') {
@@ -396,137 +315,6 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     }
 
-    /* HighValuePurchase / VIPPurchase — server-side only, no browser counterpart
-       DAM VERTEX PY — UMBRALES OFICIALES
-       HighValuePurchase: >= 199.000 Gs  (alto_valor + vip + ultra_vip)
-       VIPPurchase:       >= 300.000 Gs  (vip + ultra_vip)
-       Ultra VIP (500k+): cubierto por VIPPurchase; sin evento CAPI dedicado por ahora */
-    const saleValue = lead.value || 0;
-    if (saleValue >= 199000 && pixelId && accessToken) {
-      const ts           = Math.floor(Date.now() / 1000);
-      const customEvents = [];
-
-      customEvents.push({
-        event_name:       'HighValuePurchase',
-        event_time:       ts,
-        event_id:         `hvp_${lead.id}_${ts}`,
-        action_source:    'website',
-        event_source_url: eventSourceUrl,
-        user_data,
-        custom_data: {
-          content_name: lead.product_name,
-          content_type: 'product',
-          value:        saleValue,
-          currency:     lead.currency || 'PYG',
-          contents:     buildContents({ isCombo, productSlug, saleQty, extraSlug, extraQty, totalValue: saleValue }),
-          num_items:    isCombo ? 2 : saleQty + (extraSlug ? extraQty : 0),
-        },
-      });
-
-      if (saleValue >= 300000) {
-        customEvents.push({
-          event_name:       'VIPPurchase',
-          event_time:       ts,
-          event_id:         `vip_${lead.id}_${ts}`,
-          action_source:    'website',
-          event_source_url: eventSourceUrl,
-          user_data,
-          custom_data: {
-            content_name: lead.product_name,
-            content_type: 'product',
-            value:        saleValue,
-            currency:     lead.currency || 'PYG',
-            contents:     buildContents({ isCombo, productSlug, saleQty, extraSlug, extraQty, totalValue: saleValue }),
-            num_items:    isCombo ? 2 : saleQty + (extraSlug ? extraQty : 0),
-          },
-        });
-      }
-
-      const customRes  = await fetch(
-        `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`,
-        {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({
-            data: customEvents,
-            ...(testCode && { test_event_code: testCode }),
-          }),
-        },
-      );
-      const customBody = await customRes.json().catch(() => ({}));
-      if (!customRes.ok) {
-        console.error('CUSTOM_EVENTS_CAPI_FAILED lead_id=' + id, customRes.status, JSON.stringify(customBody));
-      } else {
-        console.log('CUSTOM_EVENTS_CAPI_OK lead_id=' + id, 'events_received=' + (customBody.events_received ?? '?'), 'events=' + customEvents.map(e => e.event_name).join(','));
-      }
-    }
-
-    /* FastBuyer / ComboBuyer — eventos CAPI positivos adicionales, no modifican Purchase */
-    if (pixelId && accessToken && lead.created_at) {
-      try {
-        const purchasedAtMs = Date.now();
-        const createdAtMs   = new Date(lead.created_at).getTime();
-        const timeToH       = (purchasedAtMs - createdAtMs) / 3600000;
-        const extraEvents   = [];
-        const tsExtra       = Math.floor(purchasedAtMs / 1000);
-
-        if (timeToH < 24) {
-          extraEvents.push({
-            event_name:    'FastBuyer',
-            event_time:    tsExtra,
-            event_id:      `fb_${lead.id}_${tsExtra}`,
-            action_source: 'website',
-            event_source_url: eventSourceUrl,
-            user_data,
-            custom_data: {
-              content_name: lead.product_name,
-              content_ids:  isCombo ? ['reloj', 'cadena'] : [productSlug],
-              content_type: 'product',
-              value:        saleValue,
-              currency:     lead.currency || 'PYG',
-              time_to_purchase_h: Math.round(timeToH * 10) / 10,
-            },
-          });
-        }
-
-        if (isCombo) {
-          extraEvents.push({
-            event_name:    'ComboBuyer',
-            event_time:    tsExtra,
-            event_id:      `cb_${lead.id}_${tsExtra}`,
-            action_source: 'website',
-            event_source_url: eventSourceUrl,
-            user_data,
-            custom_data: {
-              content_name: lead.product_name,
-              content_ids:  ['reloj', 'cadena'],
-              content_type: 'product',
-              value:        saleValue,
-              currency:     lead.currency || 'PYG',
-            },
-          });
-        }
-
-        if (extraEvents.length > 0) {
-          await fetch(
-            `https://graph.facebook.com/v20.0/${pixelId}/events?access_token=${accessToken}`,
-            {
-              method:  'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body:    JSON.stringify({
-                data: extraEvents,
-                ...(testCode && { test_event_code: testCode }),
-              }),
-            },
-          ).then(r => r.json())
-            .then(b => console.log('EXTRA_EVENTS_OK lead_id=' + id, extraEvents.map(e=>e.event_name).join(','), b.events_received ?? '?'))
-            .catch(e => console.warn('EXTRA_EVENTS_WARN lead_id=' + id, e.message));
-        }
-      } catch (extraErr) {
-        console.warn('EXTRA_EVENTS_SKIP lead_id=' + id, extraErr.message);
-      }
-    }
-
     /* Venta Hipnótica (product_name='V.H') SÍ dispara webhook a Dam Finanzas (para que
        aparezca en reportes/revenue — requiere el producto 'venta-hipnotica' ya registrado
        ahí con unitCost:0 e isDigital:true). NO dispara factura por Telegram — pedido
@@ -550,7 +338,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
         tgInvoicePromise,
       ]));
     }
-    return json({ ok: true, name: lead.name, event_id });
+    return json({ ok: true, name: lead.name });
 
   } catch (err) {
     return json({ ok: false, error: err.message }, 500);

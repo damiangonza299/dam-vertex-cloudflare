@@ -676,8 +676,12 @@ function closeMenus() {
 document.addEventListener('click', closeMenus);
 
 /* ── Confirm purchase ── */
+/* FLUJO DE EVENTOS META — IMPORTANTE (ver CLAUDE.md/GEMINI.md):
+   Este botón YA NO dispara ningún evento a Meta CAPI — Purchase se dispara al
+   crear el lead (functions/api/leads.js), no acá. Confirmar la compra es una
+   operación 100% interna: D1, stock, Dam Finanzas, desbloqueo de cliente. */
 async function confirmPurchase(id) {
-  if (!confirm(`¿Confirmar compra para lead #${id}? Esto enviará el evento Purchase a Meta.`)) return;
+  if (!confirm(`¿Confirmar compra para lead #${id}? Esto actualiza stock y Dam Finanzas — no envía nada a Meta.`)) return;
 
   const row  = document.querySelector(`tr[data-id="${id}"]`);
   const lead = allLeads.find(l => l.id === id);

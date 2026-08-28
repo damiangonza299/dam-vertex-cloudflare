@@ -345,13 +345,16 @@ export async function onRequestPost({ request, env, waitUntil }) {
       }
     })());
 
-    /* CAPI QualifiedLead — background, no bloquea la respuesta */
+    /* CAPI Purchase — background, no bloquea la respuesta.
+       FLUJO DE EVENTOS META (ver CLAUDE.md/GEMINI.md "FLUJO DE EVENTOS META — IMPORTANTE"):
+       Purchase se dispara ACÁ, al crear el lead — ya no en confirm-purchase.js.
+       QualifiedLead fue eliminado del sistema. */
     waitUntil((async () => {
       if (!env.META_PIXEL_ID || !env.META_ACCESS_TOKEN) return;
       try {
         const ts  = Math.floor(Date.now() / 1000);
         const rnd = Math.random().toString(36).slice(2, 6);
-        const qlId = event_id || `ql_${product_slug || 'lead'}_${ts}_${rnd}`;
+        const purId = event_id || `pur_${product_slug || 'lead'}_${ts}_${rnd}`;
         const ud = {};
         if (ip) ud.client_ip_address = ip;
         if (ua) ud.client_user_agent = ua;
@@ -390,8 +393,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               data: [{
-                event_name:       'QualifiedLead',
-                event_id:         qlId,
+                event_name:       'Purchase',
+                event_id:         purId,
                 event_time:       ts,
                 action_source:    'website',
                 event_source_url: landing_path ? `https://damvertex.com${landing_path}` : 'https://damvertex.com',
