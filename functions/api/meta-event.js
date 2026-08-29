@@ -45,10 +45,11 @@ export async function onRequestPost({ request, env }) {
     if (client?.fbc) user_data.fbc = client.fbc;
     if (lead?.email) user_data.em  = [await sha256(lead.email)];
 
+    /* ph nunca se manda en estos 3 eventos (ver bloque lead_hashed más abajo) —
+       el hash del teléfono solo se usa como external_id. */
     const phME = normPhone(lead?.phone);
     if (phME) {
       const phHash = await sha256(phME);
-      user_data.ph          = [phHash];
       user_data.external_id = [phHash];
     }
 
@@ -65,7 +66,12 @@ export async function onRequestPost({ request, env }) {
        localStorage) — ya vienen en SHA-256 desde el cliente, no rehashear.
        Solo completan lo que no vino ya de `lead` en este mismo evento. */
     if (lead_hashed) {
-      if (lead_hashed.ph && !user_data.ph) { user_data.ph = [lead_hashed.ph]; user_data.external_id = [lead_hashed.ph]; }
+      /* ph NUNCA se manda en ViewContent/AddToCart/InitiateCheckout (los únicos
+         event_name que llegan a este archivo — Purchase no pasa por acá, se
+         arma directo en leads.js). El hash del teléfono sigue usándose como
+         external_id (identidad fuerte para visitante repetido), solo que ya
+         no viaja también como campo `ph` dedicado. */
+      if (lead_hashed.ph && !user_data.external_id) { user_data.external_id = [lead_hashed.ph]; }
       if (lead_hashed.fn && !user_data.fn) user_data.fn = [lead_hashed.fn];
       if (lead_hashed.ln && !user_data.ln) user_data.ln = [lead_hashed.ln];
       if (lead_hashed.em && !user_data.em) user_data.em = [lead_hashed.em];
