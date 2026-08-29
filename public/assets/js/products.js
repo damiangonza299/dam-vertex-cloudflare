@@ -749,6 +749,7 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
           city:              data.city,
           horario:           data.horario || null,
           value:             expressTotal,
+          express:           express,
           currency:          'PYG',
           quantity:          selectedQty,
           variant:           colors.length ? JSON.stringify(colors) : null,

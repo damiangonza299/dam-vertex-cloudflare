@@ -38,7 +38,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       location_address, location_city, location_lat, location_lng, location_maps_url, location_place_id,
       session_id,
       invoice_requested, invoice_ruc, invoice_name, invoice_email,
-      source, event_id, anon_id,
+      source, event_id, anon_id, express,
     } = body;
 
     /* Sanear inputs públicos antes de guardarlos/renderizarlos en el admin — evita XSS almacenado */
@@ -300,6 +300,17 @@ export async function onRequestPost({ request, env, waitUntil }) {
       try {
         await env.DB.prepare('UPDATE leads SET horario = ? WHERE id = ?')
           .bind(horario.trim(), result.meta.last_row_id).run();
+      } catch (_) {}
+    }
+
+    /* Guardar express_amount (columna migrate34.sql) — best-effort. Gs. 10.000
+       fijo, mismo monto que suma products.js al total cuando express está
+       marcado. Permite separar subtotal producto vs. envío express en el
+       mensaje de factura (confirm-purchase.js → sendTelegramInvoice). */
+    if (express && result?.meta?.last_row_id) {
+      try {
+        await env.DB.prepare('UPDATE leads SET express_amount = ? WHERE id = ?')
+          .bind(10000, result.meta.last_row_id).run();
       } catch (_) {}
     }
 

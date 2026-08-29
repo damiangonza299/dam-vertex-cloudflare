@@ -402,6 +402,13 @@ async function sendTelegramInvoice(lead, env) {
     else if (typeof parsed === 'string' && parsed) variants = ' — ' + parsed;
   } catch (_) {}
 
+  /* La factura solo corresponde al producto — el extra de envío express
+     (Gs. 10.000, columna express_amount vía migrate34.sql) se muestra
+     aparte y se resta del total facturable. Ver CLAUDE.md, incidente
+     factura+express 2026-08. */
+  const expressAmount  = Number(lead.express_amount) || 0;
+  const invoiceSubtotal = Number(lead.value || 0) - expressAmount;
+
   const lines = [
     '🧾 FACTURA SOLICITADA',
     '',
@@ -409,7 +416,14 @@ async function sendTelegramInvoice(lead, env) {
     `Cliente: ${lead.name || ''}`,
     `Teléfono: ${lead.phone || ''}`,
     `Producto: ${lead.product_name || ''}${variants}`,
-    `Total cobrado: Gs. ${fmtNum(lead.value)}`,
+    ...(expressAmount > 0
+      ? [
+          `Subtotal producto: Gs. ${fmtNum(invoiceSubtotal)}`,
+          `Envío express: Gs. ${fmtNum(expressAmount)}`,
+          `Total cobrado: Gs. ${fmtNum(lead.value)}`,
+          `Total facturable (sin express): Gs. ${fmtNum(invoiceSubtotal)}`,
+        ]
+      : [`Total cobrado: Gs. ${fmtNum(lead.value)}`]),
     `RUC: ${lead.invoice_ruc || ''}`,
     `Razón social: ${lead.invoice_name || ''}`,
     `Email: ${lead.invoice_email || 'No proporcionado'}`,
