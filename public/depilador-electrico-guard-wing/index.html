@@ -262,7 +262,7 @@
     .faq-dep .faq-a { color: var(--dep-text-dim); }
 
     /* ══ URGENCIA — verde urgencia #1a7a3e (site-wide, ver CLAUDE.md), cierre de página ══ */
-    .urgencia-dep { background: linear-gradient(180deg, #1f9a4d 0%, var(--dep-pink-deep) 100%); padding: clamp(64px,12vw,100px) clamp(20px,5vw,64px); text-align: center; }
+    .urgencia-dep { background: #2c2c2c; padding: clamp(64px,12vw,100px) clamp(20px,5vw,64px); text-align: center; }
     .urgencia-dep__inner { max-width: 540px; margin: 0 auto; }
     .urgencia-dep__badge {
       display: inline-flex; align-items: center; gap: 8px;
@@ -287,17 +287,8 @@
     .urgencia-dep .btn-primary { background: #fff; color: var(--dep-pink-deep); }
     .urgencia-dep .btn-primary:hover { background: #ece3d4; }
 
-    /* ══ STICKY CTA ══ */
-    .sticky-cta-bar {
-      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
-      background: rgba(250,250,250,.97); border-top: 1px solid var(--dep-border);
-      padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
-      backdrop-filter: blur(10px);
-    }
-    @media (max-width: 700px) {
-      .sticky-cta-bar { display: block; }
-      body:has(#order-modal.active) .sticky-cta-bar { display: none; }
-    }
+    /* ══ CTA PLACEHOLDER — botones vaciados, el dueño coloca los suyos ══ */
+    .cta-placeholder { min-height: 48px; max-width: 340px; margin: 0 auto; }
 
     /* ══ Modal — fondo claro con acento rosa ══ */
     .theme-depilador .modal-box { background: #faf6ee; border: 1px solid rgba(139,115,85,.3); }
@@ -410,7 +401,7 @@
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Tabla%20de%20Picar%20de%20M%C3%A1rmol%20Ovalada.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
+  <div class="nav__cta">✓ Envío gratis</div>
 </nav>
 
 <main>
@@ -445,9 +436,7 @@
         <div class="hero-dep__feature">📐 38×27cm — tamaño ideal para uso diario</div>
       </div>
 
-      <a class="btn btn-primary" data-scroll-form data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Tabla%20de%20Picar%20de%20M%C3%A1rmol%20Ovalada.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </a>
+      <div class="cta-placeholder"></div>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
         <span class="db-badge">💳 Pago al recibir · Central</span>
@@ -486,6 +475,31 @@
   <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMDgwJyBoZWlnaHQ9JzEwODAnIHZpZXdCb3g9JzAgMCAxMDgwIDEwODAnPgogICAgPGRlZnM+CiAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0nZycgeDE9JzAnIHkxPScwJyB4Mj0nMScgeTI9JzEnPgogICAgICAgIDxzdG9wIG9mZnNldD0nMCcgc3RvcC1jb2xvcj0nI2Y1ZjBlOCcvPgogICAgICAgIDxzdG9wIG9mZnNldD0nMScgc3RvcC1jb2xvcj0nI2U0ZDljNicvPgogICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPC9kZWZzPgogICAgPHJlY3Qgd2lkdGg9JzEwODAnIGhlaWdodD0nMTA4MCcgZmlsbD0ndXJsKCNnKScvPgogICAgPGcgc3Ryb2tlPScjOGI3MzU1JyBzdHJva2Utd2lkdGg9JzInIG9wYWNpdHk9JzAuMjInPgogICAgICA8cGF0aCBkPSdNMCAyNjAgTDEwODAgNDYwJy8+CiAgICAgIDxwYXRoIGQ9J00wIDYyMCBMMTA4MCAzODAnLz4KICAgICAgPHBhdGggZD0nTTAgODYwIEwxMDgwIDcwMCcvPgogICAgICA8cGF0aCBkPSdNMTgwIDAgTDQyMCAxMDgwJy8+CiAgICAgIDxwYXRoIGQ9J003NjAgMCBMOTgwIDEwODAnLz4KICAgIDwvZz4KICAgIDxlbGxpcHNlIGN4PSc1NDAnIGN5PSc1NDAnIHJ4PSczMDAnIHJ5PScyMTAnIGZpbGw9JyNmZmZmZmYnIG9wYWNpdHk9JzAuNTUnLz4KICAgIDx0ZXh0IHg9JzU0MCcgeT0nNTE1JyBmb250LWZhbWlseT0nQXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWYnIGZvbnQtc2l6ZT0nNTQnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMyYzJjMmMnPvCfqqg8L3RleHQ+CiAgICA8dGV4dCB4PSc1NDAnIHk9JzU4NScgZm9udC1mYW1pbHk9J0FyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmJyBmb250LXNpemU9JzMwJyBmb250LXdlaWdodD0nNzAwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjMmMyYzJjJz5UdSBjb2NpbmEsIGRpc3RpbnRhPC90ZXh0PgogIDwvc3ZnPg=="
        alt="Tabla de Picar de Mármol Ovalada — en tu cocina"
        loading="lazy" decoding="async" width="1080" height="1080">
+</section>
+
+<!-- ══ CONFIANZA — prueba social genérica ══ -->
+<section class="confianza-dep" id="section-confianza" data-insync-section="confianza">
+  <div class="confianza-dep__inner">
+    <div class="confianza-dep__head">
+      <p class="sec-overline-dep">Pedidos activos</p>
+      <div class="line-dep"></div>
+      <h2 class="sec-h-dep">Pedidos activos en todo Paraguay.</h2>
+    </div>
+    <div class="confianza-grid-dep">
+      <div class="confianza-card-dep">
+        <strong>Entrega en el día <span style="font-size:1em">🚚</span></strong>
+        <p>Central y Asunción reciben el mismo día del pedido.</p>
+      </div>
+      <div class="confianza-card-dep">
+        <strong>Pago al recibir <span style="font-size:1em">💳</span></strong>
+        <p>Pagás cuando el pedido llega a tu puerta, sin adelantos en Central.</p>
+      </div>
+      <div class="confianza-card-dep">
+        <strong>Clientes en Central e Interior <span style="font-size:1em">📍</span></strong>
+        <p>Pedidos activos en todo el país, coordinados por WhatsApp.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ══ PROBLEMA — fondo cream ══ -->
@@ -545,9 +559,7 @@
     </div>
 
     <div style="text-align:center;margin-top:40px">
-      <a class="btn btn-primary" data-scroll-form data-insync-cta="producto" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Tabla%20de%20Picar%20de%20M%C3%A1rmol%20Ovalada.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </a>
+      <div class="cta-placeholder"></div>
     </div>
   </div>
 </section>
@@ -577,34 +589,7 @@
     </div>
 
     <div style="text-align:center;margin-top:40px">
-      <a class="btn btn-primary" data-scroll-form data-insync-cta="funciona" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Tabla%20de%20Picar%20de%20M%C3%A1rmol%20Ovalada.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ══ CONFIANZA — prueba social genérica ══ -->
-<section class="confianza-dep" id="section-confianza" data-insync-section="confianza">
-  <div class="confianza-dep__inner">
-    <div class="confianza-dep__head">
-      <p class="sec-overline-dep">Pedidos activos</p>
-      <div class="line-dep"></div>
-      <h2 class="sec-h-dep">Pedidos activos en todo Paraguay.</h2>
-    </div>
-    <div class="confianza-grid-dep">
-      <div class="confianza-card-dep">
-        <strong>Entrega en el día <span style="font-size:1em">🚚</span></strong>
-        <p>Central y Asunción reciben el mismo día del pedido.</p>
-      </div>
-      <div class="confianza-card-dep">
-        <strong>Pago al recibir <span style="font-size:1em">💳</span></strong>
-        <p>Pagás cuando el pedido llega a tu puerta, sin adelantos en Central.</p>
-      </div>
-      <div class="confianza-card-dep">
-        <strong>Clientes en Central e Interior <span style="font-size:1em">📍</span></strong>
-        <p>Pedidos activos en todo el país, coordinados por WhatsApp.</p>
-      </div>
+      <div class="cta-placeholder"></div>
     </div>
   </div>
 </section>
@@ -653,9 +638,7 @@
       </div>
     </div>
 
-    <a class="btn btn-primary" data-scroll-form data-insync-cta="urgencia" style="display:inline-flex;max-width:380px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Tabla%20de%20Picar%20de%20M%C3%A1rmol%20Ovalada.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-      LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-    </a>
+    <div class="cta-placeholder"></div>
     <div class="close-trust">
       <div class="ct-item"><span class="ct-ok">✓</span><span>Entrega en el día · Central</span></div>
       <div class="ct-item"><span class="ct-ok">✓</span><span>Pagás cuando lo recibís · Central</span></div>
@@ -1051,13 +1034,6 @@
       .catch(function() {});
   });
 </script>
-
-<!-- CRO: Sticky bottom CTA — mobile only -->
-<div class="sticky-cta-bar" id="sticky-cta-bar">
-  <a class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;white-space:nowrap;font-size:clamp(12px,3.6vw,15px);padding:12px 10px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Tabla%20de%20Picar%20de%20M%C3%A1rmol%20Ovalada.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-    LO QUIERO - PEDIR POR WHATSAPP <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-  </a>
-</div>
 
 <script src="/assets/js/protect.js?v=68" defer></script>
 </body>
