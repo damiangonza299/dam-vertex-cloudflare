@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="preconnect" href="https://mnpbwoknqwsjtiyrrxbm.supabase.co" crossorigin>
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=73" as="script">
   <meta name="description" content="Tabla de Picar de Mármol Ovalada 38×27cm — superficie no porosa, no absorbe olores ni bacterias, fácil de limpiar. Entrega en el día en Paraguay. Gs. 169.000.">
@@ -318,8 +319,9 @@
     .theme-depilador .modal-title { color: var(--dep-text); }
     /* Achicado para que el emoji 🚚 no quede solo en su propia línea junto al título (Fix 6). */
     .theme-depilador .modal-step { font-size: 13px; }
-    .theme-depilador .modal-subtitle { color: rgba(44,44,44,.65); }
-    .theme-depilador .modal-section-label { color: rgba(44,44,44,.55); }
+    /* Contraste WCAG AA: rgba(.65) da ~4.2:1 en fondo claro — fail. Usar opaco. */
+    .theme-depilador .modal-subtitle { color: #555555; }
+    .theme-depilador .modal-section-label { color: #666666; }
     /* Texto oscuro (verde urgencia #1a7a3e, buen contraste sobre este bg) — mismo
        criterio que el fix de contraste aplicado en rizador/taza/lampara: nunca
        depender solo de la opacidad del acento base. */
@@ -330,7 +332,7 @@
     .theme-depilador .offer-option { background: #fff; border-color: rgba(139,115,85,.22); }
     .theme-depilador .offer-option .offer-qty,
     .theme-depilador .offer-option .offer-price { color: var(--dep-text); }
-    .theme-depilador .offer-option .offer-compare { color: rgba(44,44,44,.64); }
+    .theme-depilador .offer-option .offer-compare { color: #767676; }
     .theme-depilador .offer-option.selected,
     .theme-depilador .offer-option:has(input:checked) { border-color: var(--dep-pink-dk); background: rgba(139,115,85,.08); }
     .theme-depilador .offer-badge { position: static; background: var(--dep-pink-dk); color: #fff; }
@@ -482,6 +484,7 @@
            alt="Tabla de Picar de Mármol Ovalada"
            class="hero-dep__img"
            loading="eager"
+           fetchpriority="high"
            decoding="async"
            width="1080" height="1080">
     </div>
@@ -691,17 +694,17 @@
 
         <div class="form-group">
           <label for="m-name">Nombre y apellido</label>
-          <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
+          <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name" required aria-required="true">
         </div>
 
         <div class="form-group">
           <label for="m-phone">Teléfono (WhatsApp)</label>
-          <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
+          <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel" required aria-required="true">
         </div>
 
         <div class="form-group">
           <label for="m-city">Ciudad</label>
-          <input type="text" id="m-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off">
+          <input type="text" id="m-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required aria-required="true">
         </div>
 
 

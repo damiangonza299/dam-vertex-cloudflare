@@ -136,8 +136,9 @@
     .theme-estante .modal-box { position: relative; background: #fff; border: 1px solid rgba(74,111,165,.3); border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; }
     .theme-estante .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(74,111,165,.14); color: var(--est-text); font-size: 15px; cursor: pointer; }
     .theme-estante .modal-title { font-size: 20px; font-weight: 800; color: var(--est-text); margin: 0 0 4px; }
-    .theme-estante .modal-subtitle { font-size: 13px; color: rgba(26,32,44,.65); margin: 0 0 18px; line-height: 1.5; }
-    .theme-estante .modal-section-label { display: block; font-size: 12px; font-weight: 700; color: rgba(26,32,44,.55); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 10px; }
+    /* Contraste WCAG AA: rgba(.65/.55) en fondo blanco modal — fail. Usar opaco. */
+    .theme-estante .modal-subtitle { font-size: 13px; color: #555555; margin: 0 0 18px; line-height: 1.5; }
+    .theme-estante .modal-section-label { display: block; font-size: 12px; font-weight: 700; color: #666666; text-transform: uppercase; letter-spacing: .04em; margin: 0 0 10px; }
     .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
     .theme-estante .offer-option { position: relative; display: block; border: 1.5px solid rgba(74,111,165,.22); border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
     .offer-option input { position: absolute; opacity: 0; }
@@ -147,7 +148,8 @@
     .theme-estante .offer-option .offer-price { color: var(--est-text); font-weight: 800; }
     .offer-qty { font-weight: 700; font-size: 14px; }
     .offer-price { font-weight: 800; font-size: 15px; }
-    .theme-estante .offer-option .offer-compare { color: rgba(26,32,44,.5); }
+    /* #767676 = mínimo WCAG AA (4.55:1) sobre fondo blanco del modal. */
+    .theme-estante .offer-option .offer-compare { color: #767676; }
     .offer-compare { font-size: 12px; text-decoration: line-through; margin-right: 6px; }
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
     .theme-estante .offer-saving { color: var(--est-green); font-weight: 700; font-size: 12px; }
@@ -215,7 +217,7 @@
            sizes="(max-width: 600px) 400px, 1254px"
            alt="Estante Organizador de Aluminio"
            class="hero-est__img"
-           loading="eager" decoding="async" width="1254" height="1254">
+           loading="eager" fetchpriority="high" decoding="async" width="1254" height="1254">
     </div>
 
     <div>
@@ -254,7 +256,7 @@
   <img src="/estante-aluminio-bano/estante-img1.webp"
        srcset="/estante-aluminio-bano/estante-img1-400w.webp 400w, /estante-aluminio-bano/estante-img1.webp 1254w"
        sizes="(max-width: 600px) 400px, 1254px"
-       alt="Estante Organizador de Aluminio"
+       alt="Estante organizador de aluminio instalado en baño — vista lateral"
        loading="lazy" decoding="async" width="1254" height="1254">
 </section>
 
@@ -266,7 +268,7 @@
   <img src="/estante-aluminio-bano/estante-img2.webp"
        srcset="/estante-aluminio-bano/estante-img2-400w.webp 400w, /estante-aluminio-bano/estante-img2.webp 1254w"
        sizes="(max-width: 600px) 400px, 1254px"
-       alt="Estante Organizador de Aluminio"
+       alt="Detalle de instalación sin perforar — adhesivo del estante de aluminio"
        loading="lazy" decoding="async" width="1254" height="1254">
 </section>
 
@@ -278,7 +280,7 @@
   <img src="/estante-aluminio-bano/estante-img3.webp"
        srcset="/estante-aluminio-bano/estante-img3-400w.webp 400w, /estante-aluminio-bano/estante-img3.webp 1254w"
        sizes="(max-width: 600px) 400px, 1254px"
-       alt="Estante Organizador de Aluminio"
+       alt="Estante organizador Winsem con productos de baño organizados"
        loading="lazy" decoding="async" width="1254" height="1254">
 </section>
 
