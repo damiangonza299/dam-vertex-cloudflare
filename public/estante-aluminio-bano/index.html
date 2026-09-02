@@ -71,18 +71,25 @@
     .theme-estante .nav { background: rgba(240,244,248,.92); border-bottom: 1px solid var(--est-border); backdrop-filter: blur(12px); }
     .theme-estante .nav__logo { color: var(--est-text); }
     .theme-estante .nav__logo span { opacity: .65; }
-    .theme-estante .nav__cta { font-size: 12px; font-weight: 700; color: var(--est-text); background: rgba(26,122,62,.12); border: 1px solid rgba(26,122,62,.3); padding: 8px 14px; border-radius: 20px; }
     .theme-estante .footer { background: var(--est-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--est-border); }
 
+    /* Rojo vivo — mismo criterio que el CTA agregado en tabla-marmol,
+       no el acento acero apagado. */
     .btn-est {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--est-steel); color: #fff; font-weight: 700;
-      padding: 15px 20px; border-radius: 8px; border: none; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      background: #ff1717; color: #fff; font-weight: 800;
+      padding: 15px 14px; border-radius: 999px; border: 3px solid #b91c1c; cursor: pointer;
       text-decoration: none; transition: background .2s, transform .15s;
-      letter-spacing: .01em; width: 100%; max-width: 340px;
-      font-size: clamp(11px, 3.1vw, 14px);
+      letter-spacing: 0; width: 100%; max-width: 340px; white-space: nowrap;
+      font-size: clamp(10px, 3.4vw, 14px); box-shadow: 0 4px 14px rgba(255,23,23,.35);
     }
-    .btn-est:hover { background: var(--est-dark2); transform: translateY(-1px); }
+    .btn-est:hover { background: #e01414; transform: translateY(-1px); }
+    .nav__cta-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #ff1717; color: #fff; font-weight: 800; font-size: 12px;
+      padding: 8px 14px; border-radius: 999px; border: 2px solid #b91c1c; cursor: pointer;
+      white-space: nowrap;
+    }
 
     /* ══ HERO ══ */
     .hero-est { background: linear-gradient(180deg, #f7fafc 0%, var(--est-cream) 100%); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
@@ -111,46 +118,69 @@
     .img-full-est { background: var(--est-dark); }
     .img-full-est img { width: 100%; height: auto; display: block; }
 
-    /* ══ CIERRE — urgencia liviana, mismo verde site-wide ══ */
-    .urgencia-est { background: var(--est-green); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); text-align: center; }
+    /* ══ CIERRE — fondo oscuro de la landing (el verde rompía visualmente) ══ */
+    .urgencia-est { background: var(--est-dark); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); text-align: center; }
     .urgencia-est__inner { max-width: 480px; margin: 0 auto; }
     .urgencia-est__h { font-size: clamp(20px,4vw,28px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0 0 12px; }
     .urgencia-est__sub { font-size: 14px; color: rgba(255,255,255,.9); line-height: 1.6; margin: 0 0 22px; }
-    .urgencia-est .btn-est { background: #fff; color: var(--est-green); }
-    .urgencia-est .btn-est:hover { background: #eafbf0; }
 
-    /* ══ MODAL DCANP — fondo claro, acento acero ══ */
+    /* ══ MODAL DCANP — estructura y especificidad calcadas de tabla-marmol
+       (.theme-X .offer-option .offer-price, etc.) — evita que styles.min.css,
+       que carga async DESPUÉS de este <style> inline, pise estas reglas con
+       una regla propia de igual o menor especificidad (esa era la causa real
+       de precios/placeholders "invisibles": bare .offer-price/.form-group
+       input perdían contra la cascada una vez que styles.min.css terminaba
+       de cargar). Ver CLAUDE.md. ══ */
     .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(26,32,44,.6); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
     .modal-overlay.active { display: flex; }
-    .modal-box { position: relative; background: #fff; border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; }
-    .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(74,111,165,.14); color: var(--est-text); font-size: 15px; cursor: pointer; }
-    .modal-title { font-size: 20px; font-weight: 800; color: var(--est-text); margin: 0 0 4px; }
-    .modal-subtitle { font-size: 13px; color: rgba(26,32,44,.65); margin: 0 0 18px; line-height: 1.5; }
-    .modal-section-label { display: block; font-size: 12px; font-weight: 700; color: rgba(26,32,44,.55); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 10px; }
+    .theme-estante .modal-box { position: relative; background: #fff; border: 1px solid rgba(74,111,165,.3); border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; }
+    .theme-estante .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(74,111,165,.14); color: var(--est-text); font-size: 15px; cursor: pointer; }
+    .theme-estante .modal-title { font-size: 20px; font-weight: 800; color: var(--est-text); margin: 0 0 4px; }
+    .theme-estante .modal-subtitle { font-size: 13px; color: rgba(26,32,44,.65); margin: 0 0 18px; line-height: 1.5; }
+    .theme-estante .modal-section-label { display: block; font-size: 12px; font-weight: 700; color: rgba(26,32,44,.55); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 10px; }
     .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-    .offer-option { position: relative; display: block; border: 1.5px solid rgba(74,111,165,.22); border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
+    .theme-estante .offer-option { position: relative; display: block; border: 1.5px solid rgba(74,111,165,.22); border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
     .offer-option input { position: absolute; opacity: 0; }
-    .offer-option.selected { border-color: var(--est-steel); background: rgba(74,111,165,.08); }
+    .theme-estante .offer-option.selected { border-color: var(--est-steel); background: rgba(74,111,165,.08); }
     .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
-    .offer-qty { font-weight: 700; font-size: 14px; color: var(--est-text); }
-    .offer-price { font-weight: 800; font-size: 15px; color: var(--est-text); }
-    .offer-compare { font-size: 12px; color: rgba(26,32,44,.5); text-decoration: line-through; margin-right: 6px; }
+    .theme-estante .offer-option .offer-qty,
+    .theme-estante .offer-option .offer-price { color: var(--est-text); font-weight: 800; }
+    .offer-qty { font-weight: 700; font-size: 14px; }
+    .offer-price { font-weight: 800; font-size: 15px; }
+    .theme-estante .offer-option .offer-compare { color: rgba(26,32,44,.5); }
+    .offer-compare { font-size: 12px; text-decoration: line-through; margin-right: 6px; }
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
-    .offer-saving { font-size: 12px; font-weight: 700; color: var(--est-green); }
-    .offer-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; background: var(--est-steel); color: #fff; }
-    .offer-badge--best { background: #1a7a3e; }
+    .theme-estante .offer-saving { color: var(--est-green); font-weight: 700; font-size: 12px; }
+    .theme-estante .offer-badge { position: static; background: var(--est-steel); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+    .theme-estante .offer-badge--best { background: #1a7a3e; color: #fff; }
     .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--est-text); margin-bottom: 6px; }
-    .form-group input, .form-group select, .form-group textarea {
+    .theme-estante .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--est-text); margin-bottom: 6px; }
+    .theme-estante .form-group input,
+    .theme-estante .form-group select,
+    .theme-estante .form-group textarea {
       width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid rgba(74,111,165,.3);
       background: #fff; color: var(--est-text); font-size: 14px; font-family: inherit;
     }
+    .theme-estante .form-group input::placeholder,
+    .theme-estante .form-group textarea::placeholder { color: #666666; }
     .form-submit { margin-top: 18px; }
     .form-submit .btn-est { max-width: none; }
-    .dcanp-success { display: none; text-align: center; padding: 12px 4px 4px; }
-    .dcanp-success.visible { display: block; }
-    .dcanp-success h2 { font-size: 22px; color: var(--est-text); margin: 0 0 12px; }
-    .dcanp-success p { font-size: 14px; color: rgba(26,32,44,.75); line-height: 1.6; margin: 0 0 8px; }
+    .theme-estante .form-success { display: none; text-align: center; padding: 12px 4px 4px; }
+    .theme-estante .form-success.visible { display: block; }
+    .theme-estante .form-success h3 { font-size: 22px; color: var(--est-text); margin: 0 0 12px; }
+    .theme-estante .form-success p { font-size: 14px; color: rgba(26,32,44,.75); line-height: 1.6; margin: 0 0 8px; }
+
+    /* ══ STICKY CTA — patrón lampara-escritorio-plegable ══ */
+    .sticky-cta-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+      background: rgba(240,244,248,.97); border-top: 1px solid var(--est-border);
+      padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width: 700px) {
+      .sticky-cta-bar { display: block; }
+      body:has(#order-modal.active) .sticky-cta-bar { display: none; }
+    }
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 700px) {
@@ -165,7 +195,7 @@
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <div class="nav__cta">✓ Envío gratis</div>
+  <button type="button" class="nav__cta-btn" data-open-modal>Pedir ahora</button>
 </nav>
 
 <main>
@@ -200,7 +230,7 @@
         <div class="hero-est__feature">🚿 Ideal para baño, cocina y lavadero</div>
       </div>
 
-      <button type="button" class="btn-est" id="cta-open-modal">LO QUIERO — PEDIR AHORA</button>
+      <button type="button" class="btn-est" id="cta-open-modal" data-open-modal>LO QUIERO — PEDIR AHORA</button>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
         <span class="db-badge">💳 Pago al recibir · Central</span>
@@ -225,7 +255,7 @@
 
 <!-- ══ GANCHO 2 (fondo azul acero) + IMAGEN 2 ══ -->
 <section class="gancho-est gancho-est--steel" id="section-gancho2" data-insync-section="gancho2">
-  <p class="gancho-est__text">Sin romper paredes. Sin herramientas.<br>En su lugar en minutos.</p>
+  <p class="gancho-est__text">Sin romper paredes<br>Sin herramientas<br>En minutos</p>
 </section>
 <section class="img-full-est" id="section-img2" data-insync-section="img2">
   <img src="/estante-aluminio-bano/estante-img2.webp"
@@ -237,7 +267,7 @@
 
 <!-- ══ GANCHO 3 (fondo oscuro) + IMAGEN 3 ══ -->
 <section class="gancho-est gancho-est--negro" id="section-gancho3" data-insync-section="gancho3">
-  <p class="gancho-est__text">Poco espacio. Muchos productos.<br>Una solución.</p>
+  <p class="gancho-est__text">Poco espacio, muchos productos.<br>Una solución.</p>
 </section>
 <section class="img-full-est" id="section-img3" data-insync-section="img3">
   <img src="/estante-aluminio-bano/estante-img3.webp"
@@ -252,7 +282,7 @@
   <div class="urgencia-est__inner">
     <h2 class="urgencia-est__h">Ordená tu baño hoy mismo</h2>
     <p class="urgencia-est__sub">Gs. 149.000 · Entrega en el día · Pagás al recibir</p>
-    <button type="button" class="btn-est" data-insync-cta="urgencia" id="cta-open-modal-2">LO QUIERO — PEDIR AHORA</button>
+    <button type="button" class="btn-est" data-insync-cta="urgencia" id="cta-open-modal-2" data-open-modal>LO QUIERO — PEDIR AHORA</button>
   </div>
 </section>
 
@@ -280,7 +310,10 @@
           <input type="radio" name="offer" value="2">
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
-            <span class="offer-price">Gs. 279.000</span>
+            <div class="offer-prices">
+              <span class="offer-compare">Gs. 298.000</span>
+              <span class="offer-price">Gs. 279.000</span>
+            </div>
           </div>
           <div class="offer-foot">
             <span class="offer-saving">Ahorrás Gs. 19.000</span>
@@ -291,7 +324,10 @@
           <input type="radio" name="offer" value="3">
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
-            <span class="offer-price">Gs. 399.000</span>
+            <div class="offer-prices">
+              <span class="offer-compare">Gs. 447.000</span>
+              <span class="offer-price">Gs. 399.000</span>
+            </div>
           </div>
           <div class="offer-foot">
             <span class="offer-saving">Ahorrás Gs. 48.000</span>
@@ -331,8 +367,8 @@
       </form>
     </div>
 
-    <div class="dcanp-success" id="dcanp-success">
-      <h2>¡Pedido recibido! 🎉</h2>
+    <div class="form-success" id="dcanp-success">
+      <h3>¡Pedido recibido! 🎉</h3>
       <p>Gracias por tu confianza. Nuestro equipo de logística se va a comunicar con vos para coordinar la entrega.</p>
       <p>✓ Envío gratis &nbsp; ✓ Pagás al recibir</p>
     </div>
@@ -340,8 +376,13 @@
 </div>
 
 <footer class="footer">
-  &copy; 2026 Dam Vertex
+  &copy; Dam Vertex
 </footer>
+
+<!-- CRO: Sticky bottom CTA — mobile only -->
+<div class="sticky-cta-bar" id="sticky-cta-bar">
+  <button type="button" class="btn-est" style="width:100%;margin:0" data-open-modal>LO QUIERO — PEDIR AHORA</button>
+</div>
 
 <!-- Scripts -->
 <script src="/assets/js/tracking.js?v=73" defer></script>
@@ -362,7 +403,7 @@
     try { DV.trackViewContent(PRODUCT); } catch (_) {}
 
     const modal      = document.getElementById('order-modal');
-    const openBtns    = [document.getElementById('cta-open-modal'), document.getElementById('cta-open-modal-2')];
+    const openBtns    = document.querySelectorAll('[data-open-modal]');
     const closeBtn    = document.getElementById('modal-close');
     const form        = document.getElementById('dcanp-form');
     const formWrap     = document.getElementById('modal-form-wrap');

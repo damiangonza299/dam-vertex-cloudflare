@@ -235,7 +235,7 @@
 
     /* ══ GANCHO + IMAGEN — 3 bloques alternados dark/mostaza (patrón cepillo-secador) ══ */
     .gancho-dep { padding: clamp(40px,10vw,72px) clamp(20px,5vw,48px); text-align: center; }
-    .gancho-dep__text { font-size: clamp(22px,5.5vw,38px); font-weight: 800; color: #fff; line-height: 1.25; margin: 0; max-width: 720px; margin-inline: auto; }
+    .gancho-dep__text { font-size: clamp(13px,4vw,38px); font-weight: 800; color: #fff; line-height: 1.3; margin: 0; max-width: 720px; margin-inline: auto; }
     .gancho-dep--negro   { background: var(--dep-dark); }
     .gancho-dep--mostaza { background: var(--dep-pink); }
     .img-full-dep { background: var(--dep-dark); }
@@ -295,6 +295,23 @@
 
     /* ══ CTA PLACEHOLDER — botones vaciados, el dueño coloca los suyos ══ */
     .cta-placeholder { min-height: 48px; max-width: 340px; margin: 0 auto; }
+    .nav__cta-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #ff1717; color: #fff; font-weight: 800; font-size: 12px;
+      padding: 8px 14px; border-radius: 999px; border: 2px solid #b91c1c; cursor: pointer;
+      white-space: nowrap;
+    }
+    /* ══ STICKY CTA — patrón lampara-escritorio-plegable ══ */
+    .sticky-cta-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+      background: rgba(250,250,250,.97); border-top: 1px solid var(--dep-border);
+      padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width: 700px) {
+      .sticky-cta-bar { display: block; }
+      body:has(#order-modal[style*="flex"]) .sticky-cta-bar { display: none; }
+    }
 
     /* ══ Modal — fondo claro con acento rosa ══ */
     .theme-depilador .modal-box { background: #faf6ee; border: 1px solid rgba(139,115,85,.3); }
@@ -409,7 +426,7 @@
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <div class="nav__cta">✓ Envío gratis</div>
+  <button type="button" class="nav__cta-btn" onclick="document.getElementById('order-modal').style.display='flex'; document.body.style.overflow='hidden';">Pedir ahora</button>
 </nav>
 
 <main>
@@ -448,7 +465,7 @@
   <button
     type="button"
     onclick="document.getElementById('order-modal').style.display='flex'; document.body.style.overflow='hidden';"
-    style="width:100%;max-width:340px;margin:0 auto;display:block;border:4px solid #b91c1c;border-radius:999px;background:#ff1717;color:#ffffff;padding:14px 16px;font-size:18px;font-weight:900;box-shadow:0 4px 14px rgba(255,23,23,0.35);cursor:pointer;"
+    style="width:100%;max-width:340px;margin:0 auto;display:block;border:4px solid #b91c1c;border-radius:999px;background:#ff1717;color:#ffffff;padding:13px 10px;font-size:clamp(11px,3.6vw,16px);white-space:nowrap;font-weight:900;box-shadow:0 4px 14px rgba(255,23,23,0.35);cursor:pointer;"
   >
     <div>👉 PEDILO AQUI Y PAGA EN CASA 👈</div>
     <div style="font-size:11px;margin-top:3px;font-weight:600;">PAGÁS EN TU CASA AL RECIBIR</div>
@@ -545,7 +562,7 @@
   <button
     type="button"
     onclick="document.getElementById('order-modal').style.display='flex'; document.body.style.overflow='hidden';"
-    style="width:100%;max-width:340px;margin:0 auto;display:block;border:4px solid #b91c1c;border-radius:999px;background:#ff1717;color:#ffffff;padding:14px 16px;font-size:18px;font-weight:900;box-shadow:0 4px 14px rgba(255,23,23,0.35);cursor:pointer;"
+    style="width:100%;max-width:340px;margin:0 auto;display:block;border:4px solid #b91c1c;border-radius:999px;background:#ff1717;color:#ffffff;padding:13px 10px;font-size:clamp(11px,3.6vw,16px);white-space:nowrap;font-weight:900;box-shadow:0 4px 14px rgba(255,23,23,0.35);cursor:pointer;"
   >
     <div>👉 PEDILO AQUI Y PAGA EN CASA 👈</div>
     <div style="font-size:11px;margin-top:3px;font-weight:600;">PAGÁS EN TU CASA AL RECIBIR</div>
@@ -683,8 +700,13 @@
 </main>
 
 <footer class="footer">
-  &copy; 2026 Dam Vertex
+  &copy; Dam Vertex
 </footer>
+
+<!-- CRO: Sticky bottom CTA — mobile only -->
+<div class="sticky-cta-bar" id="sticky-cta-bar">
+  <button type="button" class="btn btn-primary" style="width:100%;margin:0;border:4px solid #b91c1c;border-radius:999px;background:#ff1717;color:#fff;font-weight:900;font-size:clamp(11px,3.6vw,15px);white-space:nowrap;padding:12px 10px" onclick="document.getElementById('order-modal').style.display='flex'; document.body.style.overflow='hidden';">👉 PEDILO AQUI Y PAGA EN CASA 👈</button>
+</div>
 
 <!-- Scripts — flujo DCANP: sin products.js (WhatsApp/leads.js), submit propio
      hacia /api/dcanp-lead. Ver CLAUDE.md "DCANP GROUP — Flujo especial". -->

@@ -1334,9 +1334,7 @@ async function loadProducts() {
       headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
     });
     const data = await res.json();
-    /* Productos DCANP GROUP no van al admin panel — solo Product Studio
-       (ver CLAUDE.md "DCANP GROUP — Flujo especial"). */
-    allProducts = (data.products || []).filter(p => p.platform !== 'DCANP_GROUP');
+    allProducts = data.products || [];
     renderProducts();
   } catch (_) {
     if (grid) grid.innerHTML = '<p style="color:var(--red);padding:20px 0">Error al cargar productos</p>';
@@ -1353,15 +1351,25 @@ function renderProducts() {
   }
 
   grid.innerHTML = allProducts.map(p => {
+    /* Productos DCANP GROUP: se listan para poder activar/desactivar, pero
+       sin controles de stock (+/-) — el stock de estos productos no se
+       gestiona ni se descuenta desde acá, ver CLAUDE.md "DCANP GROUP —
+       Flujo especial". */
+    const isDcanp = p.platform === 'DCANP_GROUP';
+    const readOnlyStock = IS_DELIVERY || isDcanp;
+
     const stockBadge = p.stock_total === 0
       ? '<span class="badge badge-cancelled">Agotado</span>'
       : `<span class="badge badge-purchased">${p.stock_total} en stock</span>`;
+    const dcanpBadge = isDcanp
+      ? ' <span style="display:inline-block;font-size:9px;font-weight:700;letter-spacing:.03em;padding:1px 6px;border-radius:4px;background:rgba(59,130,246,.14);color:#3b82f6;vertical-align:middle;margin-left:4px">DCANP</span>'
+      : '';
 
     const variantRows = p.variants
       ? Object.entries(p.variants).map(([color, qty]) => `
           <div class="stock-row">
             <span class="stock-color">${esc(color)}</span>
-            ${IS_DELIVERY
+            ${readOnlyStock
               ? `<span class="stock-qty">${qty}</span>`
               : `<input type="number" class="stock-input" min="0" value="${qty > 0 ? qty : ''}" placeholder="0"
                    data-slug="${esc(p.slug)}" data-variant="${esc(color)}"
@@ -1381,12 +1389,12 @@ function renderProducts() {
     return `
       <div class="product-card" id="pc-${esc(p.slug)}">
         <div class="product-card__header">
-          <span class="product-card__name">${esc(p.name)}</span>
+          <span class="product-card__name">${esc(p.name)}${dcanpBadge}</span>
           ${stockBadge}
         </div>
         <div class="stock-row">
           <span class="stock-label">Stock total</span>
-          ${IS_DELIVERY
+          ${readOnlyStock
             ? `<span class="stock-qty">${p.stock_total}</span>`
             : `<input type="number" class="stock-input" min="0" value="${p.stock_total > 0 ? p.stock_total : ''}" placeholder="0"
                  data-slug="${esc(p.slug)}" data-field="total"
