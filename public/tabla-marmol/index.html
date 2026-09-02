@@ -371,7 +371,10 @@
     .theme-depilador .offer-price { font-size: 15px; }
     .theme-depilador .offer-compare { font-size: 12px; margin-right: 6px; }
     .theme-depilador .offer-badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; }
-    .theme-depilador .form-group { margin-bottom: 14px; }
+    /* .modal-form ya trae gap:12px (styles.min.css) entre cada .form-group — el
+       margin-bottom:14px que tenía este selector se sumaba a ese gap y quedaba
+       26px entre campos. Sacado; ahora achicamos el gap del form directo. */
+    .theme-depilador .modal-form { gap: 8px; }
     .theme-depilador .form-group label { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
     .theme-depilador .form-submit { margin-top: 18px; }
 
