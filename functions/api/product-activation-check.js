@@ -87,22 +87,28 @@ export async function onRequestGet({ request, env }) {
         `Gs. ${cost.toLocaleString('es-PY')}`, null));
     }
 
-    /* ── 5. Dam Finanzas vinculado ── */
-    const brief = await env.DB.prepare(
-      'SELECT dam_finanzas_status, dam_finanzas_id FROM product_briefs WHERE product_slug = ?'
-    ).bind(slug).first();
-
-    if (!brief) {
-      checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'FAIL',
-        `No existe brief en product_briefs para "${slug}"`,
-        `Abrir Product Studio y completar el brief del producto`));
-    } else if (brief.dam_finanzas_status !== 'linked') {
-      checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'FAIL',
-        `dam_finanzas_status = "${brief.dam_finanzas_status || 'null'}"`,
-        `Product Studio → Tab Sync → Sincronizar con DAM Finanzas`));
-    } else {
+    /* ── 5. Dam Finanzas vinculado (N/A para DCANP — sin admin panel ni
+       sync a Dam Finanzas, ver CLAUDE.md "DCANP GROUP — Flujo especial") ── */
+    if (product.platform === 'DCANP_GROUP') {
       checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'PASS',
-        `linked, id=${brief.dam_finanzas_id}`, null));
+        'N/A — producto DCANP_GROUP, no usa Dam Finanzas', null));
+    } else {
+      const brief = await env.DB.prepare(
+        'SELECT dam_finanzas_status, dam_finanzas_id FROM product_briefs WHERE product_slug = ?'
+      ).bind(slug).first();
+
+      if (!brief) {
+        checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'FAIL',
+          `No existe brief en product_briefs para "${slug}"`,
+          `Abrir Product Studio y completar el brief del producto`));
+      } else if (brief.dam_finanzas_status !== 'linked') {
+        checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'FAIL',
+          `dam_finanzas_status = "${brief.dam_finanzas_status || 'null'}"`,
+          `Product Studio → Tab Sync → Sincronizar con DAM Finanzas`));
+      } else {
+        checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'PASS',
+          `linked, id=${brief.dam_finanzas_id}`, null));
+      }
     }
 
     /* ── 6. Slug collision ── */
@@ -156,7 +162,7 @@ export async function onRequestGet({ request, env }) {
       `HTTP 200 · ${Math.round(landingHtml.length / 1024)}KB`, null));
 
     /* ── Content checks sobre el HTML real ── */
-    verifyLandingHtml(landingHtml, slug, price, checks);
+    verifyLandingHtml(landingHtml, slug, price, checks, product.platform === 'DCANP_GROUP');
 
     return json(result(slug, checks));
 
@@ -166,7 +172,7 @@ export async function onRequestGet({ request, env }) {
 }
 
 /* ── Verifica el contenido HTML de la landing ── */
-function verifyLandingHtml(html, slug, price, checks) {
+function verifyLandingHtml(html, slug, price, checks, isDcanp) {
 
   /* PRODUCT.slug correcto */
   const hasSlug = html.includes(`'${slug}'`) || html.includes(`"${slug}"`);
@@ -199,11 +205,18 @@ function verifyLandingHtml(html, slug, price, checks) {
     hasVC ? 'Encontrado' : 'No encontrado',
     hasVC ? null : `Agregar DV.trackViewContent(PRODUCT) en DOMContentLoaded`));
 
-  /* DV.initForm */
+  /* DV.initForm — N/A para DCANP: el modal no usa products.js/DV.initForm,
+     tiene su propio submit handler hacia /api/dcanp-lead (ver CLAUDE.md
+     "DCANP GROUP — Flujo especial"). */
   const hasForm = html.includes('DV.initForm') || html.includes('initForm');
-  checks.push(check('tracking_initform', 'DV.initForm presente', hasForm ? 'PASS' : 'FAIL',
-    hasForm ? 'Encontrado' : 'No encontrado',
-    hasForm ? null : `Agregar DV.initForm(PRODUCT) en DOMContentLoaded`));
+  if (isDcanp) {
+    checks.push(check('tracking_initform', 'DV.initForm presente', 'PASS',
+      'N/A — producto DCANP_GROUP, usa submit handler propio', null));
+  } else {
+    checks.push(check('tracking_initform', 'DV.initForm presente', hasForm ? 'PASS' : 'FAIL',
+      hasForm ? 'Encontrado' : 'No encontrado',
+      hasForm ? null : `Agregar DV.initForm(PRODUCT) en DOMContentLoaded`));
+  }
 
   /* Modal #order-modal */
   const hasModal = html.includes('id="order-modal"') || html.includes("id='order-modal'");
@@ -211,22 +224,34 @@ function verifyLandingHtml(html, slug, price, checks) {
     hasModal ? 'Encontrado' : 'No encontrado',
     hasModal ? null : `Agregar div#order-modal a la landing`));
 
-  /* WhatsApp link */
+  /* WhatsApp link — N/A para DCANP (sin WhatsApp del cliente, pantalla de
+     agradecimiento en su lugar) */
   const hasWA = html.includes('wa.me/') || html.includes('api.whatsapp.com');
-  checks.push(check('whatsapp_present', 'WhatsApp link presente', hasWA ? 'PASS' : 'FAIL',
-    hasWA ? 'Encontrado' : 'No encontrado',
-    hasWA ? null : `Agregar link wa.me/... en al menos un CTA de la landing`));
+  if (isDcanp) {
+    checks.push(check('whatsapp_present', 'WhatsApp link presente', 'PASS',
+      'N/A — producto DCANP_GROUP, sin WhatsApp del cliente', null));
+  } else {
+    checks.push(check('whatsapp_present', 'WhatsApp link presente', hasWA ? 'PASS' : 'FAIL',
+      hasWA ? 'Encontrado' : 'No encontrado',
+      hasWA ? null : `Agregar link wa.me/... en al menos un CTA de la landing`));
+  }
 
-  /* /api/leads wired — acepta llamada directa o via tracking.js + DV.initForm */
+  /* /api/leads wired — para DCANP el endpoint correcto es /api/dcanp-lead,
+     NO /api/leads (ver CLAUDE.md) */
   const hasDirectLeads = html.includes('/api/leads');
   const hasViaTracking = html.includes('DV.initForm') && html.includes('tracking.js');
-  const hasLeads       = hasDirectLeads || hasViaTracking;
-  const leadEvidence   = hasDirectLeads ? '/api/leads encontrado directamente'
+  const hasDcanpLead   = html.includes('/api/dcanp-lead');
+  const hasLeads       = isDcanp ? hasDcanpLead : (hasDirectLeads || hasViaTracking);
+  const leadEvidence   = isDcanp
+    ? (hasDcanpLead ? '/api/dcanp-lead encontrado' : 'No encontrado')
+    : hasDirectLeads ? '/api/leads encontrado directamente'
     : hasViaTracking ? 'tracking.js + DV.initForm encontrados (maneja /api/leads internamente)'
     : 'No encontrado';
-  checks.push(check('lead_endpoint_wired', '/api/leads conectado', hasLeads ? 'PASS' : 'FAIL',
+  checks.push(check('lead_endpoint_wired', isDcanp ? '/api/dcanp-lead conectado' : '/api/leads conectado', hasLeads ? 'PASS' : 'FAIL',
     leadEvidence,
-    hasLeads ? null : `Verificar que el modal llama a /api/leads o que tracking.js + DV.initForm estén presentes`));
+    hasLeads ? null : isDcanp
+      ? `Verificar que el modal hace POST a /api/dcanp-lead`
+      : `Verificar que el modal llama a /api/leads o que tracking.js + DV.initForm estén presentes`));
 
   /* InSync sections — FAIL si ninguna sección tiene data-insync-section */
   const hasInsyncSection = html.includes('data-insync-section');

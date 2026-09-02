@@ -320,9 +320,11 @@
     .theme-depilador .form-group label { color: var(--dep-text); }
     .theme-depilador .form-group input,
     .theme-depilador .form-group select,
+    .theme-depilador .form-group textarea,
     .theme-depilador .city-search-input,
-    .theme-depilador .city-manual-input { background: #fff; border-color: rgba(139,115,85,.3); color: var(--dep-text); }
+    .theme-depilador .city-manual-input { background: #fff; border-color: rgba(139,115,85,.3); color: var(--dep-text); font-family: inherit; }
     .theme-depilador .form-group input::placeholder,
+    .theme-depilador .form-group textarea::placeholder,
     .theme-depilador .city-search-input::placeholder,
     .theme-depilador .city-manual-input::placeholder { color: #999999; }
 
@@ -575,8 +577,9 @@
     <button class="modal-close" id="modal-close" aria-label="Cerrar" onclick="document.getElementById('order-modal').style.display='none'; document.body.style.overflow='';">✕</button>
     <h2 class="modal-title" id="modal-title-dep">Ya casi es tuya 🪨</h2>
     <p class="modal-step">Tu Tabla de Mármol · Entrega en el día 🚚</p>
-    <p class="modal-subtitle">Completá tus datos y te escribimos por WhatsApp en minutos para coordinar la entrega hoy mismo.</p>
+    <p class="modal-subtitle">Completá tus datos y coordinamos la entrega. Pagás al recibir.</p>
 
+    <div id="modal-form-wrap">
     <!-- Ofertas -->
     <div class="modal-section">
       <span class="modal-section-label">Elegí tu oferta</span>
@@ -586,7 +589,7 @@
           <input type="radio" name="offer" value="1" checked>
           <div class="offer-content">
             <span class="offer-qty">1 unidad</span>
-            <span class="offer-price" id="offer-price-1">—</span>
+            <span class="offer-price">Gs. 169.000</span>
           </div>
         </label>
 
@@ -595,8 +598,8 @@
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-2">—</span>
-              <span class="offer-price" id="offer-price-2">—</span>
+              <span class="offer-compare">Gs. 338.000</span>
+              <span class="offer-price">Gs. 319.000</span>
             </div>
           </div>
           <div class="offer-foot">
@@ -610,8 +613,8 @@
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-3">—</span>
-              <span class="offer-price" id="offer-price-3">—</span>
+              <span class="offer-compare">Gs. 507.000</span>
+              <span class="offer-price">Gs. 459.000</span>
             </div>
           </div>
           <div class="offer-foot">
@@ -625,117 +628,53 @@
 
     <p class="modal-price-warning">🔒 Tus datos están seguros · Solo los usamos para coordinar tu entrega</p>
 
-    <!-- Formulario -->
-    <form class="modal-form" id="modal-form" novalidate>
+    <!-- Formulario DCANP — sin horario, sin método de pago, sin WhatsApp
+         (ver CLAUDE.md "DCANP GROUP — Flujo especial") -->
+      <form class="modal-form" id="modal-form" novalidate>
 
-      <div class="form-group">
-        <label for="m-name">Nombre y apellido</label>
-        <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
-        <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="m-phone">Teléfono (WhatsApp)</label>
-        <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
-        <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group" id="location-group">
-        <label for="m-city-input">Ciudad</label>
-        <div class="city-input-wrap">
-          <input type="text" id="m-city-input" name="city_input" placeholder="¿De qué ciudad sos?" required autocomplete="off">
-          <div class="city-suggestions" id="m-city-suggestions"></div>
-        </div>
-        <input type="hidden" id="m-location" name="location_search_legacy">
-        <div style="margin-top:2px"><button type="button" onclick="document.getElementById('m-ref-group').style.display='block';this.style.display='none'" style="background:none;border:none;padding:0;color:rgba(44,44,44,.35);font-size:11px;letter-spacing:.02em;cursor:pointer;text-decoration:underline">+ Agregar referencia</button></div>
-        <span class="form-error-msg"></span>
-      </div>
-      <input type="hidden" id="m-loc-address"  name="location_address">
-      <input type="hidden" id="m-loc-city"     name="location_city">
-      <input type="hidden" id="m-loc-lat"      name="location_lat">
-      <input type="hidden" id="m-loc-lng"      name="location_lng">
-      <input type="hidden" id="m-loc-maps-url" name="location_maps_url">
-      <input type="hidden" id="m-loc-place-id" name="location_place_id">
-
-      <div class="form-group" id="m-ref-group" style="display:none;margin-top:-4px">
-        <label for="m-ref">Referencia adicional</label>
-        <input type="text" id="m-ref" name="referencia" placeholder="piso, portón, referencia extra" style="margin-top:6px">
-      </div>
-
-      <div class="form-group" id="city-group" style="display:none">
-        <label for="m-city-search" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
-        <div class="city-picker-wrap">
-          <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
-          <div class="city-dropdown" id="m-city-dropdown"></div>
-        </div>
-        <input type="hidden" id="m-city" name="city">
-        <div class="city-manual-wrap" id="city-manual-wrap" style="display:none">
-          <input type="text" id="m-city-manual" class="city-manual-input" placeholder="Escribí tu ciudad" autocomplete="off">
-        </div>
-        <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="m-payment">Método de pago</label>
-        <select id="m-payment" name="payment">
-          <option value="">Seleccioná...</option>
-          <option value="Transferencia">Transferencia</option>
-          <option value="Efectivo">Efectivo</option>
-        </select>
-        <span class="form-error-msg"></span>
-      </div>
-
-      <label class="upsell-block">
-        <input type="checkbox" id="m-express" name="express">
-        <div class="upsell-content">
-          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
-          <span class="upsell-sub">Recibí antes que los demás</span>
-        </div>
-      </label>
-
-      <label class="upsell-block" id="m-invoice-block" style="margin-top:10px">
-        <input type="checkbox" id="m-invoice" name="invoice">
-        <div class="upsell-content">
-          <span class="upsell-title">🧾 Necesito factura</span>
-          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
-        </div>
-      </label>
-      <div id="m-invoice-fields" style="display:none;margin-top:6px">
         <div class="form-group">
-          <label for="m-invoice-ruc">RUC *</label>
-          <input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
-          <span class="form-error-msg"></span>
+          <label for="m-name">Nombre completo</label>
+          <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
         </div>
-        <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-name">Razón social / Nombre *</label>
-          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
-          <span class="form-error-msg"></span>
+
+        <div class="form-group">
+          <label for="m-phone">Teléfono (WhatsApp)</label>
+          <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
         </div>
-        <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(255,255,255,.4)">(opcional)</span></label>
-          <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+
+        <div class="form-group">
+          <label for="m-city">Ciudad</label>
+          <input type="text" id="m-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off">
         </div>
-      </div>
 
-      <label class="confirm-intent" style="display:none">
-        <input type="checkbox" id="m-confirm" name="confirm" checked>
-      </label>
+        <div class="form-group">
+          <label for="m-street">Calle / Dirección</label>
+          <input type="text" id="m-street" name="street" placeholder="Calle y número" autocomplete="off">
+        </div>
 
-      <div class="form-submit">
-        <button type="submit" class="btn btn-primary" id="modal-submit-btn">
-          Confirmar pedido por WhatsApp
-        </button>
-      </div>
+        <div class="form-group">
+          <label for="m-ref">Referencia <span style="font-weight:400">(opcional)</span></label>
+          <input type="text" id="m-ref" name="referencia" placeholder="piso, portón, referencia extra" autocomplete="off">
+        </div>
 
-    </form>
+        <div class="form-group">
+          <label for="m-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
+          <textarea id="m-nota" name="nota" rows="2" placeholder="color, variante, instrucción especial"></textarea>
+        </div>
+
+        <div class="form-submit">
+          <button type="submit" class="btn btn-primary" id="modal-submit-btn">
+            Confirmar pedido
+          </button>
+        </div>
+
+      </form>
+    </div>
 
     <div class="form-success" id="modal-success">
-      <h3>¡Listo!</h3>
-      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
-      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
-      <div class="manual-wa">
-        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
-      </div>
+      <h3>¡Pedido recibido! 🎉</h3>
+      <p>Gracias por tu confianza. Nuestro equipo de logística se va a comunicar con vos para coordinar la entrega.</p>
+      <p>✓ Envío gratis &nbsp; ✓ Pagás al recibir</p>
     </div>
 
   </div>
@@ -747,193 +686,25 @@
   &copy; 2026 Dam Vertex
 </footer>
 
-<!-- Scripts -->
+<!-- Scripts — flujo DCANP: sin products.js (WhatsApp/leads.js), submit propio
+     hacia /api/dcanp-lead. Ver CLAUDE.md "DCANP GROUP — Flujo especial". -->
 <script src="/assets/js/tracking.js?v=73" defer></script>
-<script src="/assets/js/products.js?v=66" defer></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
 
-<script defer>
-  /* Selector de ciudad sin Google Maps (patrón luna-mini / rizador / lampara).
-     products.js exige #m-location._dvPlaceSelected=true + location_lat/city/maps_url
-     no vacíos para permitir el submit — se completan con coords aproximadas del depto. */
-  (function() {
-    var DEPT_COORDS = {
-      'Central':          [-25.3000, -57.5500],
-      'Alto Paraná':       [-25.5163, -54.6119],
-      'Itapúa':            [-27.3308, -55.8664],
-      'Cordillera':        [-25.3866, -57.1414],
-      'Paraguarí':         [-25.6294, -57.1519],
-      'Guairá':            [-25.7500, -56.4333],
-      'Caaguazú':          [-25.4500, -56.4500],
-      'Misiones':          [-26.6667, -57.1333],
-      'Ñeembucú':          [-26.8667, -58.3000],
-      'Amambay':           [-22.5500, -55.7333],
-      'Concepción':        [-23.4064, -57.4344],
-      'Canindeyú':         [-24.0667, -54.3333],
-      'San Pedro':         [-24.0833, -57.0833],
-      'Caazapá':           [-26.2000, -56.3833],
-      'Boquerón':          [-22.3500, -60.0333],
-      'Presidente Hayes':  [-25.0958, -57.5442],
-      'Alto Paraguay':     [-21.0333, -57.8667],
-    };
-
-    var CITIES_BY_DEPT = {
-      'Central': ['Asunción','San Lorenzo','Luque','Capiatá','Lambaré','Fernando de la Mora','Limpio','Ñemby','Villa Elisa','Mariano Roque Alonso','Itauguá','Areguá','Villeta','Nueva Italia','Guarambaré','Ypacaraí','San Antonio','Ypané','Tobatí','Emboscada','Altos','Compañía','Itá'],
-      'Alto Paraná': ['Ciudad del Este','Hernandarias','Minga Guazú','Presidente Franco','Minga Porã','Santa Rita','Los Cedrales','Naranjal','Juan León Mallorquín','Santa Rosa del Monday','Iruña','Itakyry',"Juan Emilio O'Leary",'Ñacunday','San Alberto','San Cristóbal','Santa Fe del Paraná','Tavapy','Yguazú','Doctor Raúl Peña','Domingo Martínez de Irala'],
-      'Itapúa': ['Encarnación','Cambyretá','Coronel Bogado','General Artigas','Hohenau','Bella Vista','Obligado','Capitán Miranda','Natalio','Edelira','Alto Verá','Capitán Meza','Carmen del Paraná','Fram','General Delgado','Jesús','La Paz','Mayor Otaño','Nueva Alborada','PJC Caballero Álvarez','Pirapó','San Cosme y Damián','San Juan del Paraná','San Pedro del Paraná','Tomás Romero Pereira','Trinidad','Yatytay'],
-      'Cordillera': ['Caacupé','Valenzuela','San Bernardino','Arroyos y Esteros','Caraguatay','Escobar','Isla Pucú','Juan de Mena','Loma Grande','Mbocayaty del Yhaguy','Nueva Colombia','Piribebuy','Primero de Marzo','San José Obrero','Santa Elena','Itacurubí de la Cordillera','Tacuara'],
-      'Paraguarí': ['Paraguarí','Acahay','Caapucú','Caballero','Carapeguá','General Bernardino Caballero','La Colmena','Mbuyapey','Pirayú','Quiindy','Quyquyhó','San Roque González de Santa Cruz','Sapucai','Tebicuarymí','Yaguarón','Ybycuí','Ybytymí'],
-      'Guairá': ['Villarrica','Borja','Capitán Mauricio José Troche','Colonia Independencia','Coronel Martínez','Dr. Bottrell','Félix Pérez Cardozo','General Eugenio A. Garay','Iturbe','José Fassardi','Mbocayaty','Natalicio Talavera','Ñumí','San Salvador','Tembiaporã','Tebicuary'],
-      'Caaguazú': ['Coronel Oviedo','Caaguazú','Carayaó','Dr. Juan Manuel Frutos','José Domingo Ocampo','Nueva Londres','R.I. 3 Corrales','Repatriación','San Joaquín','San José de los Arroyos','Simón Bolívar','Tres Corrales','Vaquería','Yhú','Mbutuy','Dr. Cecilio Báez','Dr. J. Eulogio Estigarribia','La Pastora','Mcal. Francisco Solano López','Nueva Toledo','Raúl Arsenio Oviedo','Santa Rosa del Mbutuy','3 de Febrero'],
-      'Misiones': ['San Juan Bautista','Ayolas','San Ignacio','San Miguel','San Patricio','Santa María','Santa Rosa','Santiago','Villa Florida','Yabebyry'],
-      'Ñeembucú': ['Pilar','Alberdi','Cerrito','Desmochados','General José Eduvigis Díaz','Guazú Cuá','Humaitá','Isla Umbú','Laureles','Mayor José J. Martínez','Paso de Patria','San Juan Bautista del Ñeembucú','Tacuaras','Villa Oliva','Villalbin'],
-      'Amambay': ['Pedro Juan Caballero','Bella Vista Norte','Capitán Bado','Cinturón','Paso Yobai','Zanja Pytá','Cerro Corá','Karapaí'],
-      'Concepción': ['Concepción','Belén','Horqueta','Loreto','San Carlos','San Lázaro','Yby Yaú',"Azote'y",'Sargento José Félix López','Paso Barreto'],
-      'Canindeyú': ['Salto del Guairá','Corpus Christi','Curuguaty','Igatimí','Itanará','Katueté','La Paloma','Maracayu','Mbaracayú','Nueva Esperanza','Villa Curuguaty','Ypejhú','Yby Pytã'],
-      'San Pedro': ['San Pedro de Ycuamandiyú','Antequera','Chore','General Elizardo Aquino','Guayaibí','Itacurubí del Rosario','Lima','Nueva Germania','San Estanislao','San Pablo','Tacuatí','Unión','Villa del Rosario','Yataity del Norte','25 de Diciembre','Capiibary','General Isidoro Resquín','Liberación','San Vicente Pancholo'],
-      'Caazapá': ['Caazapá','Abai','Buena Vista','Dr. Moisés Bertoni','Fulgencio Yegros','Gral. Higinio Morínigo','Maciel','San Juan Nepomuceno','Tavaí','Yuty','3 de Mayo'],
-      'Boquerón': ['Filadelfia','Loma Plata','Mariscal Estigarribia','Neuland','General Díaz'],
-      'Presidente Hayes': ['Villa Hayes','Benjamín Aceval','General José María Bruguez','José Falcón','Nanawa','Nueva Asunción','Pozo Colorado','Puerto Pinasco','Tte. 1ro Manuel Irala Fernández','Tte. Esteban Martínez'],
-      'Alto Paraguay': ['Fuerte Olimpo','Bahía Negra','Carmelo Peralta','La Victoria'],
-    };
-    var CITY_TO_DEPT = null;
-    var CITY_LIST    = null;
-
-    function ensureCityIndex() {
-      if (CITY_TO_DEPT) return;
-      CITY_TO_DEPT = {};
-      Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
-        CITIES_BY_DEPT[dept].forEach(function(city) {
-          CITY_TO_DEPT[city.toLowerCase()] = dept;
-        });
-      });
-      var centralCities = CITIES_BY_DEPT['Central'].slice().sort(function(a, b) { return a.localeCompare(b, 'es'); });
-      var restCities = [];
-      Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
-        if (dept === 'Central') return;
-        CITIES_BY_DEPT[dept].forEach(function(city) { restCities.push(city); });
-      });
-      restCities.sort(function(a, b) { return a.localeCompare(b, 'es'); });
-      CITY_LIST = centralCities.concat(restCities);
-    }
-
-    var cityField = document.getElementById('m-city-input');
-    var suggBox   = document.getElementById('m-city-suggestions');
-    var locInput  = document.getElementById('m-location');
-    if (!cityField || !suggBox || !locInput) return;
-
-    function applyCity(city) {
-      ensureCityIndex();
-      var dept = CITY_TO_DEPT[city.toLowerCase()];
-      if (!dept) return false;
-      var coords = DEPT_COORDS[dept] || DEPT_COORDS['Central'];
-      var cityHidden    = document.getElementById('m-city');
-      var locCityHidden = document.getElementById('m-loc-city');
-      var latHidden     = document.getElementById('m-loc-lat');
-      var lngHidden      = document.getElementById('m-loc-lng');
-      var mapsUrlHidden = document.getElementById('m-loc-maps-url');
-      if (cityHidden)    cityHidden.value    = city;
-      if (locCityHidden) locCityHidden.value = city;
-      if (latHidden)     latHidden.value     = coords[0];
-      if (lngHidden)      lngHidden.value     = coords[1];
-      if (mapsUrlHidden) mapsUrlHidden.value = 'https://www.google.com/maps?q=' + coords[0] + ',' + coords[1];
-      locInput.value             = city;
-      locInput._dvPlaceSelected  = true;
-      cityField.classList.remove('error');
-      var grp = cityField.closest('.form-group');
-      if (grp) {
-        var err = grp.querySelector('.form-error-msg');
-        if (err) err.classList.remove('visible');
-      }
-      return true;
-    }
-
-    function hideSuggestions() {
-      suggBox.classList.remove('open');
-      suggBox.innerHTML = '';
-    }
-
-    function renderSuggestions(matches) {
-      suggBox.innerHTML = '';
-      matches.forEach(function(city) {
-        var item = document.createElement('div');
-        item.className = 'city-suggestions__item';
-        item.textContent = city;
-        function pick() {
-          cityField.value = city;
-          applyCity(city);
-          hideSuggestions();
-        }
-        var touchStartY = null;
-        var touchMoved  = false;
-        item.addEventListener('touchstart', function(e) {
-          touchStartY = e.touches[0].clientY;
-          touchMoved  = false;
-          item.classList.add('touch-active');
-        }, { passive: true });
-        item.addEventListener('touchmove', function(e) {
-          if (touchStartY !== null && Math.abs(e.touches[0].clientY - touchStartY) > 8) {
-            touchMoved = true;
-            item.classList.remove('touch-active');
-          }
-        }, { passive: true });
-        item.addEventListener('touchend', function(e) {
-          item.classList.remove('touch-active');
-          if (!touchMoved) {
-            e.preventDefault();
-            pick();
-          }
-          touchStartY = null;
-        });
-        item.addEventListener('touchcancel', function() {
-          item.classList.remove('touch-active');
-          touchStartY = null;
-        });
-        item.addEventListener('mousedown', function(e) { e.preventDefault(); pick(); });
-        suggBox.appendChild(item);
-      });
-      suggBox.classList.add('open');
-    }
-
-    function onCityInput() {
-      var typed = cityField.value.trim();
-      if (!applyCity(typed)) locInput._dvPlaceSelected = false;
-      if (!typed) { hideSuggestions(); return; }
-      var typedLower = typed.toLowerCase();
-      var matches = CITY_LIST.filter(function(c) {
-        return c.toLowerCase().indexOf(typedLower) === 0;
-      }).slice(0, 6);
-      if (matches.length) renderSuggestions(matches);
-      else hideSuggestions();
-    }
-
-    cityField.addEventListener('input', onCityInput);
-    cityField.addEventListener('focus', onCityInput);
-    document.addEventListener('click', function(e) {
-      if (e.target !== cityField && !suggBox.contains(e.target)) hideSuggestions();
-    });
-  })();
-</script>
 
 <script defer>
+  /* Producto DCANP — flujo independiente, NO usa products.js/DV.initForm
+     (esos están cableados a /api/leads + apertura de WhatsApp). Ver
+     CLAUDE.md "DCANP GROUP — Flujo especial". */
   const PRODUCT = {
     name:  'Tabla de Picar de Mármol Ovalada',
     slug:  'tabla-marmol',
     price: 169000,
-    /* Descuentos de combo fijos (no el 25%/35% estándar) — ver override en products.js */
-    comboPricing: { 2: 319000, 3: 459000 },
-    /* Sin variantes. */
-    /* Sin mapa real — el link de Maps usa coords aproximadas del depto, se omite del WhatsApp. */
-    hideExactLocation: true,
+    comboPricing: { 1: 169000, 2: 319000, 3: 459000 },
   };
 
   document.addEventListener('DOMContentLoaded', () => {
-    /* Blindaje CTA: si tracking.js o products.js fallan en cargar (WiFi restrictivo,
-       firewall corporativo), cada try/catch aislado evita que un script roto tumbe al
-       otro. El botón igual funciona por el href de WhatsApp hardcodeado — ver
-       CLAUDE.md "CTA — BLINDADO CONTRA FALLOS DE RED". */
     try { DV.trackViewContent(PRODUCT); } catch (_) {}
-    try { DV.initForm(PRODUCT); } catch (_) {}
 
     /* Stock real desde D1 — barra de urgencia en la sección de cierre */
     fetch('/api/product-stock?slug=' + PRODUCT.slug)
@@ -953,6 +724,56 @@
         if (pct) pct.textContent = pctVal <= 30 ? '¡Se agota pronto!' : '';
       })
       .catch(function() {});
+
+    /* Submit DCANP — POST a /api/dcanp-lead, sin WhatsApp, pantalla de
+       agradecimiento en su lugar. */
+    var form      = document.getElementById('modal-form');
+    var formWrap  = document.getElementById('modal-form-wrap');
+    var successBox = document.getElementById('modal-success');
+    var submitBtn = document.getElementById('modal-submit-btn');
+    if (!form) return;
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var qty   = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
+      var value = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      var data = {
+        name:         (document.getElementById('m-name').value || '').trim(),
+        phone:        (document.getElementById('m-phone').value || '').trim(),
+        city:         (document.getElementById('m-city').value || '').trim(),
+        street:       (document.getElementById('m-street').value || '').trim(),
+        referencia:   (document.getElementById('m-ref').value || '').trim(),
+        nota:         (document.getElementById('m-nota').value || '').trim(),
+        quantity:     qty,
+        product_slug: PRODUCT.slug,
+        product_name: PRODUCT.name,
+        value:        value,
+      };
+      if (!data.name || !data.phone || !data.city) {
+        alert('Completá nombre, teléfono y ciudad para continuar.');
+        return;
+      }
+      try {
+        var client = typeof getClientData === 'function' ? getClientData() : {};
+        data.fbp = client.fbp || null;
+        data.fbc = client.fbc || null;
+      } catch (_) {}
+
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando...'; }
+      try {
+        var res = await fetch('/api/dcanp-lead', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(data),
+        });
+        await res.json().catch(function() { return {}; });
+      } catch (err) {
+        console.error('DCANP_SUBMIT_ERROR', err && err.message);
+      }
+      if (formWrap) formWrap.style.display = 'none';
+      if (successBox) successBox.classList.add('visible');
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Confirmar pedido'; }
+    });
   });
 </script>
 
