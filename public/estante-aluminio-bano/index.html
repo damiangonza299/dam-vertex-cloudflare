@@ -165,10 +165,16 @@
     .theme-estante .form-group textarea::placeholder { color: #666666; }
     .form-submit { margin-top: 18px; }
     .form-submit .btn-est { max-width: none; }
-    .theme-estante .form-success { display: none; text-align: center; padding: 12px 4px 4px; }
-    .theme-estante .form-success.visible { display: block; }
-    .theme-estante .form-success h3 { font-size: 22px; color: var(--est-text); margin: 0 0 12px; }
-    .theme-estante .form-success p { font-size: 14px; color: rgba(26,32,44,.75); line-height: 1.6; margin: 0 0 8px; }
+    /* Pantalla de agradecimiento DCANP — fondo rojo suave. Selectores con
+       .theme-estante (alta especificidad) para que no los pise
+       styles.min.css al terminar de cargar, ver CLAUDE.md. */
+    .theme-estante .dcanp-success { display: none; background: #fff5f5; border: 1px solid #feb2b2; border-radius: 16px; padding: 32px 24px; text-align: center; }
+    .theme-estante .dcanp-success.visible { display: block; }
+    .theme-estante .dcanp-success__icon { width: 56px; height: 56px; background: #e53e3e; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .theme-estante .dcanp-success h2 { color: #c53030; font-size: 22px; margin-bottom: 12px; }
+    .theme-estante .dcanp-success p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .theme-estante .dcanp-success__tip { font-weight: 600; }
+    .theme-estante .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: #1a7a3e; font-weight: 700; }
 
     /* ══ STICKY CTA — patrón lampara-escritorio-plegable ══ */
     .sticky-cta-bar {
@@ -295,7 +301,7 @@
 
     <div id="modal-form-wrap">
       <h2 class="modal-title" id="modal-title-est">Completá tu pedido</h2>
-      <p class="modal-subtitle">Coordinamos la entrega y pagás al recibir.</p>
+      <p class="modal-subtitle">Completá tus datos y nos comunicamos para coordinar tu entrega.</p>
 
       <span class="modal-section-label">Elegí tu oferta</span>
       <div class="offer-options">
@@ -367,10 +373,15 @@
       </form>
     </div>
 
-    <div class="form-success" id="dcanp-success">
-      <h3>¡Pedido recibido! 🎉</h3>
-      <p>Gracias por tu confianza. Nuestro equipo de logística se va a comunicar con vos para coordinar la entrega.</p>
-      <p>✓ Envío gratis &nbsp; ✓ Pagás al recibir</p>
+    <div class="dcanp-success" id="dcanp-success">
+      <div class="dcanp-success__icon">✓</div>
+      <h2>¡Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p class="dcanp-success__tip">📱 Quedate atento a tu número — te vamos a contactar pronto.</p>
+      <div class="dcanp-success__badges">
+        <span>✓ Envío gratis</span>
+        <span>✓ Pagás al recibir</span>
+      </div>
     </div>
   </div>
 </div>

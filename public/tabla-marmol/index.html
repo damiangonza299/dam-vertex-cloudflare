@@ -355,7 +355,17 @@
     .theme-depilador .confirm-intent.checked,
     .theme-depilador .confirm-intent:has(input:checked) { border-color: var(--dep-pink); background: rgba(139,115,85,.08); }
     .theme-depilador .confirm-text { color: var(--dep-text); }
-    .theme-depilador .form-success p { color: rgba(44,44,44,.7); }
+
+    /* Pantalla de agradecimiento DCANP — fondo rojo suave. Selectores con
+       .theme-depilador (alta especificidad) para que no los pise
+       styles.min.css al terminar de cargar, ver CLAUDE.md. */
+    .theme-depilador .dcanp-success { display: none; background: #fff5f5; border: 1px solid #feb2b2; border-radius: 16px; padding: 32px 24px; text-align: center; }
+    .theme-depilador .dcanp-success.visible { display: block; }
+    .theme-depilador .dcanp-success__icon { width: 56px; height: 56px; background: #e53e3e; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .theme-depilador .dcanp-success h2 { color: #c53030; font-size: 22px; margin-bottom: 12px; }
+    .theme-depilador .dcanp-success p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .theme-depilador .dcanp-success__tip { font-weight: 600; }
+    .theme-depilador .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: #1a7a3e; font-weight: 700; }
 
     /* Autocomplete de ciudad — mismo patrón que el resto del catálogo, colores fijos */
     .city-input-wrap { position: relative; }
@@ -593,8 +603,8 @@
     <p class="modal-urgency">⏳ Stock limitado</p>
     <button class="modal-close" id="modal-close" aria-label="Cerrar" onclick="document.getElementById('order-modal').style.display='none'; document.body.style.overflow='';">✕</button>
     <h2 class="modal-title" id="modal-title-dep">Ya casi es tuya 🪨</h2>
-    <p class="modal-step">Tu Tabla de Mármol · Entrega en el día 🚚</p>
-    <p class="modal-subtitle">Completá tus datos y coordinamos la entrega. Pagás al recibir.</p>
+    <p class="modal-step">Tu Tabla de Mármol · Coordinamos tu entrega 🚚</p>
+    <p class="modal-subtitle">Completá tus datos y nos comunicamos para coordinar tu entrega.</p>
 
     <div id="modal-form-wrap">
     <!-- Ofertas -->
@@ -688,10 +698,15 @@
       </form>
     </div>
 
-    <div class="form-success" id="modal-success">
-      <h3>¡Pedido recibido! 🎉</h3>
-      <p>Gracias por tu confianza. Nuestro equipo de logística se va a comunicar con vos para coordinar la entrega.</p>
-      <p>✓ Envío gratis &nbsp; ✓ Pagás al recibir</p>
+    <div class="dcanp-success" id="modal-success">
+      <div class="dcanp-success__icon">✓</div>
+      <h2>¡Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p class="dcanp-success__tip">📱 Quedate atento a tu número — te vamos a contactar pronto.</p>
+      <div class="dcanp-success__badges">
+        <span>✓ Envío gratis</span>
+        <span>✓ Pagás al recibir</span>
+      </div>
     </div>
 
   </div>
