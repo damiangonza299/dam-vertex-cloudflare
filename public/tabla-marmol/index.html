@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
-  <link rel="preconnect" href="https://mnpbwoknqwsjtiyrrxbm.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://ov-1d104299d2a447049cdc73700c9309f7.ecs.us-west-2.on.aws">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=73" as="script">
   <meta name="description" content="Tabla de Picar de Mármol Ovalada 38×27cm — superficie no porosa, no absorbe olores ni bacterias, fácil de limpiar. Entrega en el día en Paraguay. Gs. 169.000.">
@@ -286,7 +286,7 @@
     .stock-bar-dep { margin: 0 0 30px; }
     .stock-bar-dep__label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; }
     .stock-bar-dep__track { height: 10px; border-radius: 20px; background: rgba(255,255,255,.22); overflow: hidden; }
-    .stock-bar-dep__fill { height: 100%; border-radius: 20px; background: #ffffff; width: 60%; transition: width .4s ease; }
+    .stock-bar-dep__fill { height: 100%; border-radius: 20px; background: #ffffff; width: 100%; transform: scaleX(0.6); transform-origin: left; transition: transform .4s ease; }
 
     .urgencia-dep .close-trust { margin: 30px auto 0; }
     .urgencia-dep .close-trust .ct-item { color: rgba(255,255,255,.92); justify-content: center; }
@@ -481,8 +481,8 @@
 
     <div class="hero-dep__media">
       <img src="/tabla-marmol/tabla-img1.webp"
-           srcset="/tabla-marmol/tabla-img1-400w.webp 400w, /tabla-marmol/tabla-img1.webp 1080w"
-           sizes="(max-width: 600px) 400px, 1080px"
+           srcset="/tabla-marmol/tabla-img1-400w.webp 400w, /tabla-marmol/tabla-img1.webp 900w"
+           sizes="(max-width: 600px) 400px, 900px"
            alt="Tabla de Picar de Mármol Ovalada"
            class="hero-dep__img"
            loading="eager"
@@ -534,10 +534,10 @@
 </section>
 <section class="img-full-dep" id="section-img2" data-insync-section="img2">
   <img src="/tabla-marmol/tabla-img2.webp"
-       srcset="/tabla-marmol/tabla-img2-400w.webp 400w, /tabla-marmol/tabla-img2.webp 1254w"
-       sizes="(max-width: 600px) 400px, 1254px"
+       srcset="/tabla-marmol/tabla-img2-400w.webp 400w, /tabla-marmol/tabla-img2.webp 900w"
+       sizes="(max-width: 600px) 400px, 900px"
        alt="Tabla de Picar de Mármol Ovalada — superficie no porosa"
-       loading="lazy" decoding="async" width="1254" height="1254">
+       loading="lazy" decoding="async" width="900" height="900">
 </section>
 
 <!-- ══ GANCHO 3 (fondo oscuro) + IMAGEN 3 ══ -->
@@ -546,21 +546,21 @@
 </section>
 <section class="img-full-dep" id="section-img3" data-insync-section="img3">
   <img src="/tabla-marmol/tabla-img3.webp"
-       srcset="/tabla-marmol/tabla-img3-400w.webp 400w, /tabla-marmol/tabla-img3.webp 1254w"
-       sizes="(max-width: 600px) 400px, 1254px"
+       srcset="/tabla-marmol/tabla-img3-400w.webp 400w, /tabla-marmol/tabla-img3.webp 900w"
+       sizes="(max-width: 600px) 400px, 900px"
        alt="Tabla de Picar de Mármol Ovalada — en tu cocina"
-       loading="lazy" decoding="async" width="1254" height="1254">
+       loading="lazy" decoding="async" width="900" height="900">
 </section>
 
 <!-- ══ SECCIÓN 4 — Identidad/cierre, fondo crema ══ -->
 <section class="identidad-dep" id="section-img4" data-insync-section="img4">
   <div class="identidad-dep__inner">
     <img src="/tabla-marmol/tabla-img4.webp"
-         srcset="/tabla-marmol/tabla-img4-400w.webp 400w, /tabla-marmol/tabla-img4.webp 1254w"
-         sizes="(max-width: 600px) 400px, 1254px"
+         srcset="/tabla-marmol/tabla-img4-400w.webp 400w, /tabla-marmol/tabla-img4.webp 900w"
+         sizes="(max-width: 600px) 400px, 900px"
          alt="Tabla de Picar de Mármol Ovalada — identidad de cocina"
          class="identidad-dep__img"
-         loading="lazy" decoding="async" width="1254" height="1254">
+         loading="lazy" decoding="async" width="900" height="900">
     <p class="identidad-dep__text">Tu cocina. Elegancia, resistencia y practicidad en un solo elemento.</p>
   </div>
 </section>
@@ -825,7 +825,7 @@
         var pct  = document.getElementById('stock-bar-pct');
         if (!fill || !text) return;
         var pctVal = Math.max(6, Math.min(100, Math.round((stock / Math.max(stock, minStock * 4, 20)) * 100)));
-        fill.style.width = pctVal + '%';
+        fill.style.transform = 'scaleX(' + (pctVal / 100) + ')';
         text.textContent = stock > 0 ? ('Quedan ' + stock + ' unidades') : 'Últimas unidades';
         if (pct) pct.textContent = pctVal <= 30 ? '¡Se agota pronto!' : '';
       })
