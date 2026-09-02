@@ -20,6 +20,8 @@ const PRODUCT_SHORT_NAMES = {
   'mascara-led-facial':                 'Máscara LED Facial',
   'luna-mini-vibrador-bala-recargable': 'Luna Mini',
   'cepillo-secador-moldeador-aguacate': 'Cepillo AguaCate',
+  'cadena':                             'Cadena Apex',
+  'combo-reloj-cadena':                 'Cadena + Reloj',
 };
 
 export async function onRequestOptions() {
