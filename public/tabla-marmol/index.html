@@ -316,6 +316,8 @@
     /* ══ Modal — fondo claro con acento rosa ══ */
     .theme-depilador .modal-box { background: #faf6ee; border: 1px solid rgba(139,115,85,.3); }
     .theme-depilador .modal-title { color: var(--dep-text); }
+    /* Achicado para que el emoji 🚚 no quede solo en su propia línea junto al título (Fix 6). */
+    .theme-depilador .modal-step { font-size: 13px; }
     .theme-depilador .modal-subtitle { color: rgba(44,44,44,.65); }
     .theme-depilador .modal-section-label { color: rgba(44,44,44,.55); }
     /* Texto oscuro (verde urgencia #1a7a3e, buen contraste sobre este bg) — mismo
@@ -335,15 +337,43 @@
     .theme-depilador .offer-badge--best { position: static; background: #1a7a3e; color: #fff; }
 
     .theme-depilador .form-group label { color: var(--dep-text); }
+    /* styles.min.css solo define .form-group input — el <textarea> de Nota del
+       pedido caía al padding/border-radius default del navegador y el texto
+       chocaba con el borde. Mismo padding/radius/tamaño que el resto de los
+       campos del form (11px 12px, radius 8px — igual que estante-aluminio-bano,
+       ver Fix 5 CLAUDE.md). */
+    .theme-depilador .form-group textarea { width: 100%; resize: vertical; }
     .theme-depilador .form-group input,
     .theme-depilador .form-group select,
     .theme-depilador .form-group textarea,
     .theme-depilador .city-search-input,
-    .theme-depilador .city-manual-input { background: #fff; border-color: rgba(139,115,85,.3); color: var(--dep-text); font-family: inherit; }
+    .theme-depilador .city-manual-input {
+      background: #fff; border: 1px solid rgba(139,115,85,.3); color: var(--dep-text); font-family: inherit;
+      padding: 11px 12px; border-radius: 8px; font-size: 14px;
+    }
     .theme-depilador .form-group input::placeholder,
     .theme-depilador .form-group textarea::placeholder,
     .theme-depilador .city-search-input::placeholder,
     .theme-depilador .city-manual-input::placeholder { color: #999999; }
+
+    /* ══ Fix 5 — estructura visual del modal igual a estante-aluminio-bano:
+       modal más angosto/compacto, badges en pill, offer-content en baseline.
+       Mismo mecanismo de apertura (inline style.display), solo cambia CSS. ══ */
+    .theme-depilador .modal-box { max-width: 440px; padding: 28px 24px; }
+    .theme-depilador .modal-close { top: 14px; right: 14px; width: 30px; height: 30px; }
+    .theme-depilador .modal-title { font-size: 20px; padding-right: 0; }
+    .theme-depilador .modal-subtitle { margin: 0 0 18px; }
+    .theme-depilador .modal-section-label { font-size: 12px; margin: 0 0 10px; }
+    .theme-depilador .offer-options { gap: 10px; }
+    .theme-depilador .offer-option { border-width: 1.5px; }
+    .theme-depilador .offer-content { align-items: baseline; }
+    .theme-depilador .offer-qty { font-size: 14px; font-weight: 700; }
+    .theme-depilador .offer-price { font-size: 15px; }
+    .theme-depilador .offer-compare { font-size: 12px; margin-right: 6px; }
+    .theme-depilador .offer-badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; }
+    .theme-depilador .form-group { margin-bottom: 14px; }
+    .theme-depilador .form-group label { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    .theme-depilador .form-submit { margin-top: 18px; }
 
     .theme-depilador .upsell-block { background: #fff; border-color: rgba(139,115,85,.2); }
     .theme-depilador .upsell-block.checked,
@@ -599,7 +629,7 @@
   <div class="modal-box">
     <p class="modal-urgency">⏳ Stock limitado</p>
     <button class="modal-close" id="modal-close" aria-label="Cerrar" onclick="document.getElementById('order-modal').style.display='none'; document.body.style.overflow='';">✕</button>
-    <h2 class="modal-title" id="modal-title-dep">Ya casi es tuya 🪨</h2>
+    <h2 class="modal-title" id="modal-title-dep">Ya casi es tuya</h2>
     <p class="modal-step">Tu Tabla de Mármol · Coordinamos tu entrega 🚚</p>
     <p class="modal-subtitle">Completá tus datos y nos comunicamos para coordinar tu entrega.</p>
 
@@ -657,7 +687,7 @@
       <form class="modal-form" id="modal-form" novalidate>
 
         <div class="form-group">
-          <label for="m-name">Nombre completo</label>
+          <label for="m-name">Nombre y apellido</label>
           <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
         </div>
 
