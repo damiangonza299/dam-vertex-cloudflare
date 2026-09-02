@@ -297,9 +297,9 @@
     .cta-placeholder { min-height: 48px; max-width: 340px; margin: 0 auto; }
     .nav__cta-btn {
       display: inline-flex; align-items: center; justify-content: center;
-      background: #ff1717; color: #fff; font-weight: 800; font-size: 12px;
-      padding: 8px 14px; border-radius: 999px; border: 2px solid #b91c1c; cursor: pointer;
-      white-space: nowrap;
+      background: #ff1717; color: #fff; font-weight: 800; font-size: clamp(7px,2.6vw,12px);
+      padding: 8px 10px; border-radius: 999px; border: 2px solid rgba(0,0,0,0.15); cursor: pointer;
+      white-space: nowrap; max-width: 62vw;
     }
     /* ══ STICKY CTA — patrón lampara-escritorio-plegable ══ */
     .sticky-cta-bar {
@@ -436,7 +436,7 @@
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <button type="button" class="nav__cta-btn" onclick="document.getElementById('order-modal').style.display='flex'; document.body.style.overflow='hidden';">Pedir ahora</button>
+  <button type="button" class="nav__cta-btn" onclick="document.getElementById('order-modal').style.display='flex'; document.body.style.overflow='hidden';">Pedilo aquí — Pagás al recibir</button>
 </nav>
 
 <main>
@@ -454,7 +454,6 @@
     </div>
 
     <div>
-      <p class="eyebrow-dep">Cocina / Hogar</p>
       <h1 class="hero-dep__h">Tu cocina merece más que una tabla que absorbe suciedad</h1>
       <p class="hero-dep__sub">La Tabla de Picar de Mármol Ovalada 38×27cm no absorbe olores ni bacterias, se limpia con un solo pasado y le da a tu cocina un aire distinto.</p>
       <p class="price-savings-top">Ahorrás Gs. 45.000</p>
@@ -475,10 +474,9 @@
   <button
     type="button"
     onclick="document.getElementById('order-modal').style.display='flex'; document.body.style.overflow='hidden';"
-    style="width:100%;max-width:340px;margin:0 auto;display:block;border:4px solid #b91c1c;border-radius:999px;background:#ff1717;color:#ffffff;padding:13px 10px;font-size:clamp(11px,3.6vw,16px);white-space:nowrap;font-weight:900;box-shadow:0 4px 14px rgba(255,23,23,0.35);cursor:pointer;"
+    style="width:100%;max-width:340px;margin:0 auto;display:block;border:2px solid rgba(0,0,0,0.15);border-radius:999px;background:#ff1717;color:#ffffff;padding:13px 10px;font-size:clamp(10px,3.2vw,15px);white-space:nowrap;font-weight:900;box-shadow:0 4px 14px rgba(255,23,23,0.35);cursor:pointer;"
   >
-    <div>👉 PEDILO AQUI Y PAGA EN CASA 👈</div>
-    <div style="font-size:11px;margin-top:3px;font-weight:600;">PAGÁS EN TU CASA AL RECIBIR</div>
+    <div>Pedilo aquí — Pagás al recibir</div>
   </button>
 </div>
 
@@ -572,10 +570,9 @@
   <button
     type="button"
     onclick="document.getElementById('order-modal').style.display='flex'; document.body.style.overflow='hidden';"
-    style="width:100%;max-width:340px;margin:0 auto;display:block;border:4px solid #b91c1c;border-radius:999px;background:#ff1717;color:#ffffff;padding:13px 10px;font-size:clamp(11px,3.6vw,16px);white-space:nowrap;font-weight:900;box-shadow:0 4px 14px rgba(255,23,23,0.35);cursor:pointer;"
+    style="width:100%;max-width:340px;margin:0 auto;display:block;border:2px solid rgba(0,0,0,0.15);border-radius:999px;background:#ff1717;color:#ffffff;padding:13px 10px;font-size:clamp(10px,3.2vw,15px);white-space:nowrap;font-weight:900;box-shadow:0 4px 14px rgba(255,23,23,0.35);cursor:pointer;"
   >
-    <div>👉 PEDILO AQUI Y PAGA EN CASA 👈</div>
-    <div style="font-size:11px;margin-top:3px;font-weight:600;">PAGÁS EN TU CASA AL RECIBIR</div>
+    <div>Pedilo aquí — Pagás al recibir</div>
   </button>
 </div>
 
@@ -720,7 +717,7 @@
 
 <!-- CRO: Sticky bottom CTA — mobile only -->
 <div class="sticky-cta-bar" id="sticky-cta-bar">
-  <button type="button" class="btn btn-primary" style="width:100%;margin:0;border:4px solid #b91c1c;border-radius:999px;background:#ff1717;color:#fff;font-weight:900;font-size:clamp(11px,3.6vw,15px);white-space:nowrap;padding:12px 10px" onclick="document.getElementById('order-modal').style.display='flex'; document.body.style.overflow='hidden';">👉 PEDILO AQUI Y PAGA EN CASA 👈</button>
+  <button type="button" class="btn btn-primary" style="width:100%;margin:0;border:2px solid rgba(0,0,0,0.15);border-radius:999px;background:#ff1717;color:#fff;font-weight:900;font-size:clamp(10px,3.2vw,15px);white-space:nowrap;padding:12px 10px" onclick="document.getElementById('order-modal').style.display='flex'; document.body.style.overflow='hidden';">Pedilo aquí — Pagás al recibir</button>
 </div>
 
 <!-- Scripts — flujo DCANP: sin products.js (WhatsApp/leads.js), submit propio
