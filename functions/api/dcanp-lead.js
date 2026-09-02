@@ -60,10 +60,10 @@ export async function onRequestPost({ request, env, waitUntil }) {
           ...(nota ? [`Nota: ${sanitize(nota, 300)}`] : []),
           ...(payment ? [`Método: ${sanitize(payment, 50)}`] : []),
           ...(invoice ? [
-            '\n🧾 FACTURA SOLICITADA',
-            ...(invoice_ruc   ? [`RUC: ${sanitize(invoice_ruc, 50)}`]     : []),
+            '🧾 Factura: Sí',
+            ...(invoice_ruc   ? [`RUC: ${sanitize(invoice_ruc, 50)}`]           : []),
             ...(invoice_name  ? [`Razón social: ${sanitize(invoice_name, 100)}`] : []),
-            ...(invoice_email ? [`Email: ${sanitize(invoice_email, 100)}`] : []),
+            ...(invoice_email ? [`Email: ${sanitize(invoice_email, 100)}`]       : []),
           ] : []),
         ].join('\n');
         await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {

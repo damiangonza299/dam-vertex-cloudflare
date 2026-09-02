@@ -315,6 +315,16 @@ Columna `products.platform` (`DAM_VERTEX` default | `DCANP_GROUP`, migrate35.sql
 - Al activar un producto DCANP, verificar que `DCANP_SHEETS_WEBHOOK_URL` esté configurada (`wrangler secret list` o probar un POST de prueba a `/api/dcanp-lead`) antes de considerarlo listo — sin esa variable, los pedidos nunca llegan al Sheet.
 - `/api/product-activation-check` salta o adapta, cuando `platform='DCANP_GROUP'`, los checks que no aplican a este flujo: `whatsapp_present` (N/A, sin WhatsApp del cliente), `dam_finanzas` (N/A, sin sync a Dam Finanzas), `tracking_initform` (N/A, sin `DV.initForm`/products.js — modal propio) y `lead_endpoint_wired` (busca `/api/dcanp-lead` en vez de `/api/leads`). El resto de los checks (D1, stock, precio, landing viva, tracking.js/insync.js, `#order-modal`, instrumentación InSync) sigue aplicando igual.
 
+## Modal DCANP — reglas de espaciado y bloques obligatorios
+
+- Referencia de espaciado: usar SIEMPRE como base el modal de `public/estante-aluminio-bano/index.html`
+- Bloque "Envío express +10.000 Gs" — obligatorio en todas las landings DCANP
+- Bloque "Necesito factura" — obligatorio en todas las landings DCANP
+- Cuando factura=true → datos de factura aparecen en Telegram dentro del mensaje de pedidos normal (no en grupo separado)
+- NO crear grupo separado de facturas para DCANP
+- Separación entre express y factura: `margin-top: 12px` en el bloque de factura
+- Separación entre factura y botón confirmar: copiar del estante (`public/estante-aluminio-bano/index.html`)
+
 ---
 
 ## Archivos Clave a Verificar Antes de Tocar PS
