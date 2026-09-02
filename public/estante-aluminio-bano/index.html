@@ -165,6 +165,10 @@
     }
     .theme-estante .form-group input::placeholder,
     .theme-estante .form-group textarea::placeholder { color: #666666; }
+    .theme-estante .upsell-block { background: #fff; border-color: rgba(74,111,165,.2); }
+    .theme-estante .upsell-block:has(input:checked) { border-color: var(--est-steel); background: rgba(74,111,165,.08); }
+    .theme-estante .upsell-title { color: var(--est-text); }
+    .theme-estante .upsell-sub { color: rgba(26,32,44,.55); }
     .form-submit { margin-top: 18px; }
     .form-submit .btn-est { max-width: none; }
     /* Pantalla de agradecimiento DCANP — fondo rojo suave. Selectores con
@@ -372,7 +376,7 @@
         </div>
       </label>
 
-      <label class="upsell-block" id="d-invoice-block" style="margin-top:10px">
+      <label class="upsell-block" id="d-invoice-block" style="margin-top:6px">
         <input type="checkbox" id="d-invoice" name="invoice">
         <div class="upsell-content">
           <span class="upsell-title">🧾 Necesito factura</span>
@@ -384,11 +388,11 @@
           <label for="d-invoice-ruc">RUC *</label>
           <input type="text" id="d-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
         </div>
-        <div class="form-group" style="margin-top:14px">
+        <div class="form-group" style="margin-top:6px">
           <label for="d-invoice-name">Razón social / Nombre *</label>
           <input type="text" id="d-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
         </div>
-        <div class="form-group" style="margin-top:14px">
+        <div class="form-group" style="margin-top:6px">
           <label for="d-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
           <input type="email" id="d-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
         </div>
