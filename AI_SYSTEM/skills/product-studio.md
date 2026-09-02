@@ -301,6 +301,21 @@ Ver: `AI_SYSTEM/execution/PRODUCT_COMPLETION_CHECKLIST.md`
 
 ---
 
+## DCANP GROUP — Flujo especial
+
+Columna `products.platform` (`DAM_VERTEX` default | `DCANP_GROUP`, migrate35.sql). Los checklists de arriba (Admin Panel, venta manual WhatsApp, `/api/leads`) **no aplican** a productos `DCANP_GROUP`:
+
+- Productos DCANP no van al admin panel.
+- Pedidos van a Google Sheets + Telegram + Meta CAPI — vía `/api/dcanp-lead`, **NO** `/api/leads`.
+- NO disparar leads normales — el flujo DCANP es completamente independiente y no escribe en D1 (`leads` ni `products` en tiempo de pedido).
+- Sin admin panel, sin WhatsApp del cliente (no se abre WhatsApp al enviar el formulario) — pantalla de agradecimiento en su lugar.
+- Google Sheets vía webhook (Apps Script) en la variable de entorno `DCANP_SHEETS_WEBHOOK_URL` — si falta, `functions/api/dcanp-lead.js` loguea el error y sigue sin romper el flujo (siempre responde `{ ok: true }`).
+- Campo **Horario NO aplica** en landings DCANP — el modal no lo incluye.
+- En Product Studio: badge `[DCANP]` azul junto al nombre del producto cuando `platform='DCANP_GROUP'` (sidebar, ver `renderSidebar()` en `public/product-studio/index.html`) + filtro por plataforma (`#platform-filter`).
+- Al activar un producto DCANP, verificar que `DCANP_SHEETS_WEBHOOK_URL` esté configurada (`wrangler secret list` o probar un POST de prueba a `/api/dcanp-lead`) antes de considerarlo listo — sin esa variable, los pedidos nunca llegan al Sheet.
+
+---
+
 ## Archivos Clave a Verificar Antes de Tocar PS
 
 ```

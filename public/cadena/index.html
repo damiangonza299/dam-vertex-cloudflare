@@ -81,6 +81,11 @@
       line-height: 1.7;
       margin: 0 0 8px;
     }
+    .hero__features { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 20px; }
+    .hero__feature {
+      display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #fff;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 10px 14px;
+    }
 
     /* — SECCIÓN: EL EFECTO — */
     .efecto {
@@ -578,24 +583,6 @@
     .spi-stars { color: #fbbf24; font-size: 14px; line-height: 1; }
     .spi-text  { font-size: 12px; color: rgba(255,255,255,.5); font-weight: 600; }
 
-    /* Combos externos — replica visual del modal, solo preselección */
-    .combo-preview { display: flex; flex-direction: column; gap: 8px; margin: 0 0 4px; }
-    .combo-preview-card {
-      display: block;
-      border: 2px solid rgba(255,255,255,.08);
-      border-radius: 10px;
-      padding: 12px 14px;
-      cursor: pointer;
-      position: relative;
-      transition: border-color .18s, background .18s;
-      background: #1a1a1a;
-      user-select: none;
-    }
-    .combo-preview-card.combo-preview-card--active {
-      border-color: var(--accent);
-      background: rgba(59,130,246,.07);
-    }
-
     /* Badge modal: fila inferior junto a offer-saving */
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
     .offer-foot .offer-saving { margin-top: 0; }
@@ -692,7 +679,7 @@
       "url": "https://damvertex.com/cadena/",
       "offers": {
         "@type": "Offer",
-        "price": "129000",
+        "price": "99000",
         "priceCurrency": "PYG",
         "availability": "https://schema.org/InStock",
         "seller": { "@type": "Organization", "name": "DAM Vertex" }
@@ -732,7 +719,7 @@
 <!-- Sticky CTA mobile -->
 <div class="sticky-cta" id="sticky-cta">
   <div class="sticky-cta__left">
-    <span class="sticky-cta__price">Gs. 129.000</span>
+    <span class="sticky-cta__price">Gs. 99.000</span>
     <span class="sticky-cta__note">Entrega hoy · Pago al recibir</span>
   </div>
   <button class="btn btn-primary sticky-cta__btn" data-scroll-form data-insync-cta="sticky">Pedí por WhatsApp</button>
@@ -756,8 +743,13 @@
       <p class="eyebrow">CADENA APEX · +50 entregas en Asunción</p>
       <h1 class="hero__h">Tu outfit no está mal.<br>Se ve incompleto.</h1>
       <div class="price-block" style="display:flex;align-items:baseline;gap:12px;flex-wrap:nowrap">
-        <span class="price-main">Gs. 129.000</span>
+        <span class="price-main">Gs. 99.000</span>
         <span class="price-compare">Gs. 169.000</span>
+      </div>
+      <div class="hero__features">
+        <div class="hero__feature">😔 Ese "algo le falta" que no sabías nombrar</div>
+        <div class="hero__feature">✨ De outfit básico a con presencia — al instante</div>
+        <div class="hero__feature">🖤 Acero inoxidable negro — tu sello, no se opaca</div>
       </div>
       <div class="evergreen-timer" id="evergreen-timer">
         <div class="evergreen-timer__line1">Este precio cierra en <strong class="evergreen-timer__time">07:00</strong></div>
@@ -769,41 +761,6 @@
         <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
       </div>
       <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">Quiero la Cadena Apex hoy →</button>
-      <!-- Combos externos — preselección visual, sin tracking ni eventos -->
-      <div class="combo-preview" id="combo-preview">
-        <div class="combo-preview-card combo-preview-card--active" data-offer="1">
-          <div class="offer-content">
-            <span class="offer-qty">1 unidad</span>
-            <span class="offer-price" id="cpv-price-1">Gs. 129.000</span>
-          </div>
-        </div>
-        <div class="combo-preview-card" data-offer="2">
-          <div class="offer-content">
-            <span class="offer-qty">2 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="cpv-compare-2">Gs. 258.000</span>
-              <span class="offer-price" id="cpv-price-2">Gs. 193.500</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 64.500</span>
-            <div class="offer-badge">🔥 Más elegido</div>
-          </div>
-        </div>
-        <div class="combo-preview-card" data-offer="3">
-          <div class="offer-content">
-            <span class="offer-qty">3 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="cpv-compare-3">Gs. 387.000</span>
-              <span class="offer-price" id="cpv-price-3">Gs. 251.550</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 135.450</span>
-            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -1103,7 +1060,7 @@
 <!-- Modal Pedido (reutilizado del reloj — sin variantes) -->
 <div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-cadena">
   <div class="modal-box">
-    <p class="modal-urgency">🔒 Antes Gs. 169.000 — hoy solo Gs. 129.000</p>
+    <p class="modal-urgency">🔒 Antes Gs. 169.000 — hoy solo Gs. 99.000</p>
     <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
     <h2 class="modal-title" id="modal-title-cadena">Hacé tu pedido</h2>
     <p class="modal-step">Estás a un paso de recibir tu cadena 🚚</p>
@@ -1132,7 +1089,7 @@
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 64.500</span>
+            <span class="offer-saving">Ahorrás Gs. 49.500</span>
             <div class="offer-badge">🔥 Más elegido</div>
           </div>
         </label>
@@ -1147,7 +1104,7 @@
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 135.450</span>
+            <span class="offer-saving">Ahorrás Gs. 103.950</span>
             <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           </div>
         </label>
@@ -1200,6 +1157,11 @@
         <label for="m-phone">Teléfono (WhatsApp)</label>
         <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
         <span class="form-error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="horario">¿En qué horario podés recibir?</label>
+        <input type="text" name="horario" id="horario" placeholder="Ej: de 9:00 a 17:00hs" maxlength="100">
       </div>
 
       <!-- Ubicación exacta (Google Places) -->
@@ -1509,7 +1471,7 @@
   const PRODUCT = {
     name:             'Cadena Apex',
     slug:             'cadena',
-    price:            129000,
+    price:            99000,
     customNoVariants: true,
   };
 
@@ -1577,31 +1539,6 @@
       );
       obs.observe(heroSec);
     }
-
-    /* Precios de combos externos */
-    (function() {
-      var p   = PRODUCT.price;
-      var fmt = function(n) { return 'Gs. ' + Math.round(n).toLocaleString('es-PY'); };
-      var e1  = document.getElementById('cpv-price-1');
-      var e2  = document.getElementById('cpv-price-2');
-      var e3  = document.getElementById('cpv-price-3');
-      var c2  = document.getElementById('cpv-compare-2');
-      var c3  = document.getElementById('cpv-compare-3');
-      if (e1) e1.textContent = fmt(p);
-      if (e2) e2.textContent = fmt(Math.round(p * 2 * 0.75));
-      if (e3) e3.textContent = fmt(Math.round(p * 3 * 0.65));
-      if (c2) c2.textContent = fmt(p * 2);
-      if (c3) c3.textContent = fmt(p * 3);
-    })();
-
-    /* Click en mini card → preselecciona combo en modal */
-    document.querySelectorAll('.combo-preview-card').forEach(function(card) {
-      card.addEventListener('click', function() {
-        document.querySelectorAll('.combo-preview-card').forEach(function(c) { c.classList.remove('combo-preview-card--active'); });
-        card.classList.add('combo-preview-card--active');
-        preSelectOffer(card.dataset.offer);
-      });
-    });
 
     /* ── Combo Cadena Apex + Reloj Blackout ── */
     (function() {

@@ -505,6 +505,20 @@ Se llama desde ambos puntos de ajuste manual:
 
 ---
 
+## DCANP GROUP — Flujo especial
+
+Columna `products.platform` (`DAM_VERTEX` default | `DCANP_GROUP`, `migrate35.sql`) distingue el catálogo normal de los productos del sub-brand DCANP GROUP.
+
+- **Landings DCANP usan `/api/dcanp-lead` — NO `/api/leads`.** Endpoint completamente independiente, no escribe en D1 (ni `leads` ni `products`).
+- **Sin admin panel, sin WhatsApp del cliente, con pantalla de agradecimiento** — el modal DCANP no abre WhatsApp al enviar; muestra un bloque `.dcanp-success` en su lugar. Los pedidos DCANP nunca aparecen en el Admin Panel de leads.
+- Notificación equivalente a `leads.js` pero con prefijo `[DCANP GROUP]` en Telegram, más Meta CAPI Purchase (mismos campos hasheados) y una fila en Google Sheets.
+- **Google Sheets via webhook en variable `DCANP_SHEETS_WEBHOOK_URL`** (Apps Script, no Sheets API v4 + Service Account) — si falta, loguea error y sigue sin romper el flujo; `/api/dcanp-lead` siempre responde `{ ok: true }`.
+- **Campo Horario NO aplica en landings DCANP** — el modal DCANP no lo incluye (ver AI_SYSTEM/skills/product-studio.md "Modal — Campo Horario", que sí es obligatorio para el resto del catálogo).
+- Product Studio muestra badge `[DCANP]` azul junto al nombre cuando `platform='DCANP_GROUP'`, con filtro por plataforma en el sidebar.
+- Referencia: `public/tabla-marmol/index.html` y `public/estante-aluminio-bano/index.html`, `functions/api/dcanp-lead.js`.
+
+---
+
 ## PROTECCIÓN DE CONTENIDO EN LANDINGS
 
 Toda landing nueva debe incluir `<script src='/assets/js/protect.js?v=VERSION'></script>` antes de `</body>` (bumpear `VERSION` junto con `site-version.js`).

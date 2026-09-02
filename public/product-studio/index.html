@@ -56,6 +56,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .badge-archived{background:rgba(248,113,113,.08);color:var(--red)}
 .badge-linked{background:rgba(74,222,128,.1);color:var(--green)}
 .badge-failed{background:rgba(248,113,113,.12);color:var(--red)}
+.badge-dcanp{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.03em;padding:1px 6px;border-radius:4px;background:rgba(59,130,246,.14);color:#3b82f6;vertical-align:middle;margin-left:4px}
 
 /* ── Main area ── */
 #main{flex:1;display:flex;flex-direction:column;height:100%;overflow:hidden;background:var(--bg)}
@@ -236,6 +237,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <p>Dam Vertex</p>
     </div>
     <button id="new-product-btn" onclick="openNewProduct()">+ Nuevo producto</button>
+    <select id="platform-filter" onchange="renderSidebar()" style="width:100%;margin:0 0 8px;padding:6px 8px;font-size:11px;background:var(--bg2,#1a1a1a);color:inherit;border:1px solid var(--border,#333);border-radius:6px">
+      <option value="">Todas las plataformas</option>
+      <option value="DAM_VERTEX">DAM_VERTEX</option>
+      <option value="DCANP_GROUP">DCANP GROUP</option>
+    </select>
     <div id="product-list"></div>
   </div>
 
@@ -775,15 +781,17 @@ async function loadBriefs() {
 }
 
 function renderSidebar() {
-  const list = document.getElementById('product-list');
-  if (!briefs.length) {
+  const list   = document.getElementById('product-list');
+  const filter = document.getElementById('platform-filter')?.value || '';
+  const shown  = filter ? briefs.filter(b => (b.platform || 'DAM_VERTEX') === filter) : briefs;
+  if (!shown.length) {
     list.innerHTML = '<p style="padding:12px;font-size:11px;color:var(--muted)">Sin productos todavía.</p>';
     return;
   }
-  list.innerHTML = briefs.map(b => `
+  list.innerHTML = shown.map(b => `
     <div class="product-item ${b.product_slug === currentSlug ? 'active' : ''}"
          onclick="loadBrief('${b.product_slug}')">
-      <div class="pi-name">${esc(b.name || b.product_slug)}</div>
+      <div class="pi-name">${esc(b.name || b.product_slug)} ${b.platform === 'DCANP_GROUP' ? '<span class="badge-dcanp">DCANP</span>' : ''}</div>
       <div class="pi-meta">
         <span class="badge badge-${b.status}">${statusLabel(b.status)}</span>
         ${b.dam_finanzas_status === 'linked' ? '<span class="badge badge-linked">DF</span>' : ''}

@@ -46,7 +46,7 @@ export async function onRequestGet({ request, env }) {
       `SELECT pb.id, pb.product_slug, pb.status, pb.landing_status,
               pb.dam_finanzas_id, pb.dam_finanzas_status, pb.created_at, pb.updated_at,
               pb.op_json, pb.insights_json,
-              p.name, p.stock_total, p.active
+              p.name, p.stock_total, p.active, p.platform
        FROM product_briefs pb
        LEFT JOIN products p ON p.slug = pb.product_slug
        ORDER BY pb.updated_at DESC`
@@ -443,6 +443,7 @@ function parseBriefSummary(row) {
     dam_finanzas_id:     row.dam_finanzas_id || null,
     stock_total:         row.stock_total || 0,
     active:              row.active || 0,
+    platform:            row.platform || 'DAM_VERTEX',
     price:               op.price || 0,
     updated_at:          row.updated_at,
     insights_json:       parseJson(row.insights_json, { insync: null, landing_intelligence: null }),
