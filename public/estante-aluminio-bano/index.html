@@ -169,6 +169,7 @@
     .theme-estante .upsell-block:has(input:checked) { border-color: var(--est-steel); background: rgba(74,111,165,.08); }
     .theme-estante .upsell-title { color: var(--est-text); }
     .theme-estante .upsell-sub { color: rgba(26,32,44,.55); }
+    #d-total-line:empty { display:none; }
     .form-submit { margin-top: 18px; }
     .form-submit .btn-est { max-width: none; }
     /* Pantalla de agradecimiento DCANP — fondo rojo suave. Selectores con
@@ -376,7 +377,7 @@
         </div>
       </label>
 
-      <label class="upsell-block" id="d-invoice-block" style="margin-top:6px">
+      <label class="upsell-block" id="d-invoice-block" style="margin-top:12px">
         <input type="checkbox" id="d-invoice" name="invoice">
         <div class="upsell-content">
           <span class="upsell-title">🧾 Necesito factura</span>
