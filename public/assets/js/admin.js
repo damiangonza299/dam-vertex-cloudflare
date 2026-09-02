@@ -1334,7 +1334,9 @@ async function loadProducts() {
       headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
     });
     const data = await res.json();
-    allProducts = data.products || [];
+    /* Productos DCANP GROUP no van al admin panel — solo Product Studio
+       (ver CLAUDE.md "DCANP GROUP — Flujo especial"). */
+    allProducts = (data.products || []).filter(p => p.platform !== 'DCANP_GROUP');
     renderProducts();
   } catch (_) {
     if (grid) grid.innerHTML = '<p style="color:var(--red);padding:20px 0">Error al cargar productos</p>';

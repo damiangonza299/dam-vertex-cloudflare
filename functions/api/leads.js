@@ -16,7 +16,7 @@ const PRODUCT_SHORT_NAMES = {
   'lampara-escritorio-plegable':        'Lámpara Plegable',
   'taza-mezcladora-automatica':         'Taza Automática',
   'rizador-automatico-giratorio':       'Rizador Automático',
-  'depilador-electrico-guard-wing':     'Depilador Guard Wing',
+  'tabla-marmol':                       'Tabla de Mármol',
   'mascara-led-facial':                 'Máscara LED Facial',
   'luna-mini-vibrador-bala-recargable': 'Luna Mini',
   'cepillo-secador-moldeador-aguacate': 'Cepillo AguaCate',
@@ -525,9 +525,9 @@ function getAttributionConfidence({ campaign_id, ad_id, fbclid, fbc, utm_source,
 }
 
 /* ── Tabla ciudad → departamento — misma data usada en el selector de ciudad
-   client-side (ver public/depilador-electrico-guard-wing/index.html y demás
-   landings, bloque CITIES_BY_DEPT), para derivar `st` en Purchase sin inventar
-   nada — es el mismo dato de ciudad que ya se recolecta, solo agregado. ── */
+   client-side (ver public/tabla-marmol/index.html y demás landings, bloque
+   CITIES_BY_DEPT), para derivar `st` en Purchase sin inventar nada — es el
+   mismo dato de ciudad que ya se recolecta, solo agregado. ── */
 const CITIES_BY_DEPT = {
   'Central': ['Asunción','San Lorenzo','Luque','Capiatá','Lambaré','Fernando de la Mora','Limpio','Ñemby','Villa Elisa','Mariano Roque Alonso','Itauguá','Areguá','Villeta','Nueva Italia','Guarambaré','Ypacaraí','San Antonio','Ypané','Tobatí','Emboscada','Altos','Compañía','Itá'],
   'Alto Paraná': ['Ciudad del Este','Hernandarias','Minga Guazú','Presidente Franco','Minga Porã','Santa Rita','Los Cedrales','Naranjal','Juan León Mallorquín','Santa Rosa del Monday','Iruña','Itakyry',"Juan Emilio O'Leary",'Ñacunday','San Alberto','San Cristóbal','Santa Fe del Paraná','Tavapy','Yguazú','Doctor Raúl Peña','Domingo Martínez de Irala'],

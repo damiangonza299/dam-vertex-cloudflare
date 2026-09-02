@@ -23,7 +23,7 @@ const PRODUCT_SHORT_NAMES = {
   'lampara-escritorio-plegable':        'Lámpara Plegable',
   'taza-mezcladora-automatica':         'Taza Automática',
   'rizador-automatico-giratorio':       'Rizador Automático',
-  'depilador-electrico-guard-wing':     'Depilador Guard Wing',
+  'tabla-marmol':                       'Tabla de Mármol',
   'mascara-led-facial':                 'Máscara LED Facial',
   'luna-mini-vibrador-bala-recargable': 'Luna Mini',
   'cepillo-secador-moldeador-aguacate': 'Cepillo AguaCate',

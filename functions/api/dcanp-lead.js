@@ -130,9 +130,19 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const webhookUrl = env.DCANP_SHEETS_WEBHOOK_URL;
     if (webhookUrl) {
       try {
+        /* redirect:'manual' — Apps Script /exec responde 302 a un content-echo
+           en script.googleusercontent.com, pero la fila ya se escribe en el
+           Sheet ANTES de emitir ese redirect (verificado con curl -D-: el
+           doPost corre en el hit inicial). Dejar que fetch() siga ese 302
+           agrega un segundo hop de red innecesario y, por el spec de fetch,
+           reintenta como GET sin body — un timeout/hiccup en ese segundo hop
+           tira la promesa entera al catch aunque la fila ya se haya guardado.
+           AbortSignal.timeout evita que un webhook lento cuelgue la respuesta. */
         await fetch(webhookUrl, {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
+          redirect: 'manual',
+          signal:  AbortSignal.timeout(8000),
           body: JSON.stringify({
             fecha:      new Date().toLocaleString('es-PY'),
             nombre:     safeName,
