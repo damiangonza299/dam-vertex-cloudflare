@@ -23,6 +23,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       name, phone, city, street, referencia, nota, payment,
       quantity, product_slug, product_name, value,
       fbp, fbc, event_id,
+      express, invoice, invoice_ruc, invoice_name, invoice_email,
     } = body;
 
     const sanitize = (s, maxLen) => (s || '').toString().replace(/[<>"'\\/]/g, '').trim().slice(0, maxLen);
@@ -38,6 +39,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const ua = request.headers.get('User-Agent') || '';
     const qty = Number(quantity) || 1;
     const amount = Number(value) || 0;
+    const effectiveAmount = amount + (express ? 10000 : 0);
     const fmtNum = n => Number(n || 0).toLocaleString('es-PY');
 
     /* ── Telegram — background, no bloquea la respuesta ── */
@@ -46,7 +48,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
       try {
         const text = [
           '[DCANP GROUP] 📦',
-          `Total: Gs. ${fmtNum(amount)}`,
+          `Total: Gs. ${fmtNum(effectiveAmount)}`,
+          ...(express ? ['🚀 Envío express: +Gs. 10.000'] : []),
           `Producto: ${safeProd}`,
           `Nombre: ${safeName}`,
           `Teléfono: ${phone.trim()}`,
@@ -56,6 +59,12 @@ export async function onRequestPost({ request, env, waitUntil }) {
           `Cantidad: ${qty}`,
           ...(nota ? [`Nota: ${sanitize(nota, 300)}`] : []),
           ...(payment ? [`Método: ${sanitize(payment, 50)}`] : []),
+          ...(invoice ? [
+            '\n🧾 FACTURA SOLICITADA',
+            ...(invoice_ruc   ? [`RUC: ${sanitize(invoice_ruc, 50)}`]     : []),
+            ...(invoice_name  ? [`Razón social: ${sanitize(invoice_name, 100)}`] : []),
+            ...(invoice_email ? [`Email: ${sanitize(invoice_email, 100)}`] : []),
+          ] : []),
         ].join('\n');
         await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
           method:  'POST',
@@ -109,7 +118,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
                   content_name: safeProd,
                   content_ids:  [product_slug || ''],
                   content_type: 'product',
-                  value:        amount,
+                  value:        effectiveAmount,
                   currency:     'PYG',
                   num_items:    qty,
                 },
@@ -152,7 +161,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
             cantidad:   qty,
             referencia: referencia ? sanitize(referencia, 150) : '',
             calle:      street ? sanitize(street, 150) : '',
-            monto:      'Gs. ' + fmtNum(amount),
+            monto:      'Gs. ' + fmtNum(effectiveAmount),
             nota:       nota ? sanitize(nota, 300) : '',
           }),
         });

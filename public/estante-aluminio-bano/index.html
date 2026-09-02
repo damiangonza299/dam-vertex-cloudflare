@@ -364,6 +364,38 @@
           <label for="d-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
           <textarea id="d-nota" name="nota" rows="2" placeholder="color, variante, instrucción especial"></textarea>
         </div>
+      <label class="upsell-block">
+        <input type="checkbox" id="d-express" name="express">
+        <div class="upsell-content">
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
+        </div>
+      </label>
+
+      <label class="upsell-block" id="d-invoice-block" style="margin-top:10px">
+        <input type="checkbox" id="d-invoice" name="invoice">
+        <div class="upsell-content">
+          <span class="upsell-title">🧾 Necesito factura</span>
+          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+        </div>
+      </label>
+      <div id="d-invoice-fields" style="display:none;margin-top:6px">
+        <div class="form-group">
+          <label for="d-invoice-ruc">RUC *</label>
+          <input type="text" id="d-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="d-invoice-name">Razón social / Nombre *</label>
+          <input type="text" id="d-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="d-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+          <input type="email" id="d-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+        </div>
+      </div>
+
+      <p id="d-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:var(--est-text)"></p>
+
         <div class="form-submit">
           <button type="submit" class="btn-est" id="dcanp-submit-btn">Confirmar pedido</button>
         </div>
@@ -435,13 +467,38 @@
       input.addEventListener('change', () => {
         document.querySelectorAll('.offer-option').forEach(opt => opt.classList.remove('selected'));
         input.closest('.offer-option').classList.add('selected');
+        updateEstTotalLine();
       });
     });
 
+    /* Invoice toggle */
+    const invoiceChkD    = document.getElementById('d-invoice');
+    const invoiceFieldsD = document.getElementById('d-invoice-fields');
+    const totalLineD     = document.getElementById('d-total-line');
+    if (invoiceChkD && invoiceFieldsD) {
+      invoiceChkD.addEventListener('change', function() {
+        invoiceFieldsD.style.display = this.checked ? 'block' : 'none';
+      });
+    }
+
+    function updateEstTotalLine() {
+      if (!totalLineD) return;
+      const qty   = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      const base  = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const isExp = document.getElementById('d-express')?.checked;
+      const total = base + (isExp ? 10000 : 0);
+      totalLineD.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    }
+    const expChkD = document.getElementById('d-express');
+    if (expChkD) expChkD.addEventListener('change', updateEstTotalLine);
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const qty = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
-      const value = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      const base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const express = document.getElementById('d-express')?.checked || false;
+      const invoice = document.getElementById('d-invoice')?.checked || false;
+      const value   = base + (express ? 10000 : 0);
       const data = {
         name:         document.getElementById('d-name').value.trim(),
         phone:        document.getElementById('d-phone').value.trim(),
@@ -452,6 +509,11 @@
         product_slug: PRODUCT.slug,
         product_name: PRODUCT.name,
         value:        value,
+        express:      express,
+        invoice:      invoice,
+        invoice_ruc:  invoice ? (document.getElementById('d-invoice-ruc')?.value || '').trim() : '',
+        invoice_name: invoice ? (document.getElementById('d-invoice-name')?.value || '').trim() : '',
+        invoice_email:invoice ? (document.getElementById('d-invoice-email')?.value || '').trim() : '',
       };
       if (!data.name || !data.phone || !data.city) {
         alert('Completá nombre, teléfono y ciudad para continuar.');

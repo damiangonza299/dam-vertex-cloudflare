@@ -480,7 +480,9 @@
   <div class="hero-dep__inner">
 
     <div class="hero-dep__media">
-      <img src="https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/landing-media/armandogonza299@gmail.com/blocks/8f01a7e3-a81c-4dc0-96ea-37809ce65436/gallery/1788059507945-27d1326c-c006-47c5-9891-3239e31ac486-tabla1.png"
+      <img src="/tabla-marmol/tabla-img1.webp"
+           srcset="/tabla-marmol/tabla-img1-400w.webp 400w, /tabla-marmol/tabla-img1.webp 1080w"
+           sizes="(max-width: 600px) 400px, 1080px"
            alt="Tabla de Picar de Mármol Ovalada"
            class="hero-dep__img"
            loading="eager"
@@ -531,7 +533,9 @@
   <p class="gancho-dep__text">Madera: se raya, mancha y acumula.<br>Mármol: limpia en segundos, dura años.</p>
 </section>
 <section class="img-full-dep" id="section-img2" data-insync-section="img2">
-  <img src="https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/landing-media/armandogonza299@gmail.com/blocks/8f01a7e3-a81c-4dc0-96ea-37809ce65436/gallery/1788059511489-d583a1a5-80e0-4d62-b27b-3ef93622ff5a-tabla2.png.png"
+  <img src="/tabla-marmol/tabla-img2.webp"
+       srcset="/tabla-marmol/tabla-img2-400w.webp 400w, /tabla-marmol/tabla-img2.webp 1254w"
+       sizes="(max-width: 600px) 400px, 1254px"
        alt="Tabla de Picar de Mármol Ovalada — superficie no porosa"
        loading="lazy" decoding="async" width="1254" height="1254">
 </section>
@@ -541,7 +545,9 @@
   <p class="gancho-dep__text">Una tabla. Múltiples beneficios.<br>Diseñada para tu cocina de todos los días.</p>
 </section>
 <section class="img-full-dep" id="section-img3" data-insync-section="img3">
-  <img src="https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/landing-media/armandogonza299@gmail.com/blocks/8f01a7e3-a81c-4dc0-96ea-37809ce65436/gallery/1788059514060-3c625599-bf3a-44dd-8557-720a0629c3a8-tabla3.png.png"
+  <img src="/tabla-marmol/tabla-img3.webp"
+       srcset="/tabla-marmol/tabla-img3-400w.webp 400w, /tabla-marmol/tabla-img3.webp 1254w"
+       sizes="(max-width: 600px) 400px, 1254px"
        alt="Tabla de Picar de Mármol Ovalada — en tu cocina"
        loading="lazy" decoding="async" width="1254" height="1254">
 </section>
@@ -549,7 +555,9 @@
 <!-- ══ SECCIÓN 4 — Identidad/cierre, fondo crema ══ -->
 <section class="identidad-dep" id="section-img4" data-insync-section="img4">
   <div class="identidad-dep__inner">
-    <img src="https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/landing-media/armandogonza299@gmail.com/blocks/8f01a7e3-a81c-4dc0-96ea-37809ce65436/gallery/1788059517168-a1512e75-f05c-4212-a0aa-828c5e7d1959-tabla4.png.png.jpg"
+    <img src="/tabla-marmol/tabla-img4.webp"
+         srcset="/tabla-marmol/tabla-img4-400w.webp 400w, /tabla-marmol/tabla-img4.webp 1254w"
+         sizes="(max-width: 600px) 400px, 1254px"
          alt="Tabla de Picar de Mármol Ovalada — identidad de cocina"
          class="identidad-dep__img"
          loading="lazy" decoding="async" width="1254" height="1254">
@@ -718,6 +726,38 @@
           <textarea id="m-nota" name="nota" rows="2" placeholder="color, variante, instrucción especial"></textarea>
         </div>
 
+      <label class="upsell-block">
+        <input type="checkbox" id="m-express" name="express">
+        <div class="upsell-content">
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
+        </div>
+      </label>
+
+      <label class="upsell-block" id="m-invoice-block" style="margin-top:10px">
+        <input type="checkbox" id="m-invoice" name="invoice">
+        <div class="upsell-content">
+          <span class="upsell-title">🧾 Necesito factura</span>
+          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+        </div>
+      </label>
+      <div id="m-invoice-fields" style="display:none;margin-top:6px">
+        <div class="form-group">
+          <label for="m-invoice-ruc">RUC *</label>
+          <input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="m-invoice-name">Razón social / Nombre *</label>
+          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label for="m-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+          <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+        </div>
+      </div>
+
+      <p id="m-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:var(--dep-text)"></p>
+
         <div class="form-submit">
           <button type="submit" class="btn btn-primary" id="modal-submit-btn">
             Confirmar pedido
@@ -799,10 +839,35 @@
     var submitBtn = document.getElementById('modal-submit-btn');
     if (!form) return;
 
+    /* Invoice toggle */
+    var invoiceChk    = document.getElementById('m-invoice');
+    var invoiceFields = document.getElementById('m-invoice-fields');
+    var totalLine     = document.getElementById('m-total-line');
+    if (invoiceChk && invoiceFields) {
+      invoiceChk.addEventListener('change', function() {
+        invoiceFields.style.display = this.checked ? 'block' : 'none';
+      });
+    }
+
+    function updateTotalLine() {
+      if (!totalLine) return;
+      var qty    = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
+      var base   = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      var isExp  = document.getElementById('m-express') && document.getElementById('m-express').checked;
+      var total  = base + (isExp ? 10000 : 0);
+      totalLine.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    }
+    document.querySelectorAll('input[name="offer"]').forEach(function(r) { r.addEventListener('change', updateTotalLine); });
+    var expChk = document.getElementById('m-express');
+    if (expChk) expChk.addEventListener('change', updateTotalLine);
+
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      var qty   = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
-      var value = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      var qty     = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
+      var base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      var express = document.getElementById('m-express') && document.getElementById('m-express').checked;
+      var invoice = document.getElementById('m-invoice') && document.getElementById('m-invoice').checked;
+      var value   = base + (express ? 10000 : 0);
       var data = {
         name:         (document.getElementById('m-name').value || '').trim(),
         phone:        (document.getElementById('m-phone').value || '').trim(),
@@ -814,6 +879,11 @@
         product_slug: PRODUCT.slug,
         product_name: PRODUCT.name,
         value:        value,
+        express:      express,
+        invoice:      invoice,
+        invoice_ruc:  invoice ? (document.getElementById('m-invoice-ruc').value || '').trim() : '',
+        invoice_name: invoice ? (document.getElementById('m-invoice-name').value || '').trim() : '',
+        invoice_email:invoice ? (document.getElementById('m-invoice-email').value || '').trim() : '',
       };
       if (!data.name || !data.phone || !data.city) {
         alert('Completá nombre, teléfono y ciudad para continuar.');
