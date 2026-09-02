@@ -7,7 +7,7 @@
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=73" as="script">
-  <meta name="description" content="Estante Organizador Winsem de Aluminio — sin perforar la pared, instalación en segundos, resistente al óxido. Ideal para baño, cocina y lavadero. Gs. 149.000.">
+  <meta name="description" content="Estante Organizador Winsem de Aluminio — sin perforar la pared, instalación en segundos, resistente al óxido. Ideal para baño, cocina y lavadero. Gs. 169.000.">
   <title>Estante Organizador de Aluminio — Hogar / Baño — Dam Vertex</title>
   <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
   <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -223,8 +223,8 @@
       <p class="hero-est__sub">El Estante Organizador Winsem de Aluminio se instala sin perforar la pared y ordena baño, cocina o lavadero en minutos.</p>
       <p class="price-savings-top">Ahorrás Gs. 50.000</p>
       <div class="price-block">
-        <span class="price-main">Gs. 149.000</span>
-        <span class="price-compare">Gs. 199.000</span>
+        <span class="price-main">Gs. 169.000</span>
+        <span class="price-compare">Gs. 219.000</span>
       </div>
       <p class="hero-est__proof">Aluminio resistente al óxido, no plástico</p>
 
@@ -286,7 +286,7 @@
 <section class="urgencia-est" id="section-urgencia" data-insync-section="urgencia">
   <div class="urgencia-est__inner">
     <h2 class="urgencia-est__h">Ordená tu baño hoy mismo</h2>
-    <p class="urgencia-est__sub">Gs. 149.000 · Entrega en el día · Pagás al recibir</p>
+    <p class="urgencia-est__sub">Gs. 169.000 · Entrega en el día · Pagás al recibir</p>
     <button type="button" class="btn-est" data-insync-cta="urgencia" id="cta-open-modal-2" data-open-modal>Pedir ahora — Pagás al recibir</button>
   </div>
 </section>
@@ -308,7 +308,7 @@
           <input type="radio" name="offer" value="1" checked>
           <div class="offer-content">
             <span class="offer-qty">1 unidad</span>
-            <span class="offer-price">Gs. 149.000</span>
+            <span class="offer-price">Gs. 169.000</span>
           </div>
         </label>
         <label class="offer-option">
@@ -316,8 +316,8 @@
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare">Gs. 298.000</span>
-              <span class="offer-price">Gs. 279.000</span>
+              <span class="offer-compare">Gs. 338.000</span>
+              <span class="offer-price">Gs. 319.000</span>
             </div>
           </div>
           <div class="offer-foot">
@@ -330,8 +330,8 @@
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare">Gs. 447.000</span>
-              <span class="offer-price">Gs. 399.000</span>
+              <span class="offer-compare">Gs. 507.000</span>
+              <span class="offer-price">Gs. 459.000</span>
             </div>
           </div>
           <div class="offer-foot">
@@ -406,7 +406,7 @@
     name: 'Estante Organizador de Aluminio',
     slug: 'estante-aluminio-bano',
     price: 149000,
-    comboPricing: { 1: 149000, 2: 279000, 3: 399000 },
+    comboPricing: { 1: 169000, 2: 319000, 3: 459000 },
   };
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -458,6 +458,10 @@
       };
       if (!data.name || !data.phone || !data.city) {
         alert('Completá nombre, teléfono y ciudad para continuar.');
+        return;
+      }
+      if (!/^[\d\s+\-]{7,}$/.test(data.phone) || data.phone.replace(/\D/g,'').length < 7) {
+        alert('Ingresá un número de teléfono válido.');
         return;
       }
       try {

@@ -7,7 +7,7 @@
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=73" as="script">
-  <meta name="description" content="Tabla de Picar de Mármol Ovalada 38×27cm — superficie no porosa, no absorbe olores ni bacterias, fácil de limpiar. Entrega en el día en Paraguay. Gs. 169.000.">
+  <meta name="description" content="Tabla de Picar de Mármol Ovalada 38×27cm — superficie no porosa, no absorbe olores ni bacterias, fácil de limpiar. Entrega en el día en Paraguay. Gs. 189.000.">
   <title>Tabla de Picar de Mármol Ovalada — Cocina / Hogar — Dam Vertex</title>
   <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
   <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -489,10 +489,10 @@
     <div>
       <h1 class="hero-dep__h">Tu cocina merece más que una tabla que absorbe suciedad</h1>
       <p class="hero-dep__sub">La Tabla de Picar de Mármol Ovalada 38×27cm no absorbe olores ni bacterias, se limpia con un solo pasado y le da a tu cocina un aire distinto.</p>
-      <p class="price-savings-top">Ahorrás Gs. 45.000</p>
+      <p class="price-savings-top">Ahorrás Gs. 60.000</p>
       <div class="price-block">
-        <span class="price-main">Gs. 169.000</span>
-        <span class="price-compare">Gs. 214.000</span>
+        <span class="price-main">Gs. 189.000</span>
+        <span class="price-compare">Gs. 249.000</span>
       </div>
       <p class="hero-dep__proof">Mármol real, no imitación plástica</p>
 
@@ -586,7 +586,7 @@
       <span class="urgencia-dep__dot"></span>
       Stock limitado
     </div>
-    <h2 class="urgencia-dep__h">Tu cocina, distinta.<br>Gs. 169.000. Hoy mismo.</h2>
+    <h2 class="urgencia-dep__h">Tu cocina, distinta.<br>Gs. 189.000. Hoy mismo.</h2>
     <p class="urgencia-dep__sub">La Tabla de Picar de Mármol Ovalada es la forma más simple de tener una cocina más higiénica y con otra presencia. Reservá la tuya antes de que se agote.</p>
 
     <div class="stock-bar-dep">
@@ -646,7 +646,7 @@
           <input type="radio" name="offer" value="1" checked>
           <div class="offer-content">
             <span class="offer-qty">1 unidad</span>
-            <span class="offer-price">Gs. 169.000</span>
+            <span class="offer-price">Gs. 189.000</span>
           </div>
         </label>
 
@@ -655,8 +655,8 @@
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare">Gs. 338.000</span>
-              <span class="offer-price">Gs. 319.000</span>
+              <span class="offer-compare">Gs. 378.000</span>
+              <span class="offer-price">Gs. 359.000</span>
             </div>
           </div>
           <div class="offer-foot">
@@ -670,8 +670,8 @@
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare">Gs. 507.000</span>
-              <span class="offer-price">Gs. 459.000</span>
+              <span class="offer-compare">Gs. 567.000</span>
+              <span class="offer-price">Gs. 519.000</span>
             </div>
           </div>
           <div class="offer-foot">
@@ -767,7 +767,7 @@
     name:  'Tabla de Picar de Mármol Ovalada',
     slug:  'tabla-marmol',
     price: 169000,
-    comboPricing: { 1: 169000, 2: 319000, 3: 459000 },
+    comboPricing: { 1: 189000, 2: 359000, 3: 519000 },
   };
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -818,6 +818,10 @@
       };
       if (!data.name || !data.phone || !data.city) {
         alert('Completá nombre, teléfono y ciudad para continuar.');
+        return;
+      }
+      if (!/^[\d\s+\-]{7,}$/.test(data.phone) || data.phone.replace(/\D/g,'').length < 7) {
+        alert('Ingresá un número de teléfono válido.');
         return;
       }
       try {
