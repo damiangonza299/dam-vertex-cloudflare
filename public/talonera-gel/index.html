@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/js/tracking.js?v=73" as="script">
+  <link rel="preload" as="image" href="/talonera-gel/talo-1.webp" fetchpriority="high">
+  <meta name="description" content="Talonera de Gel — alivia el dolor de talón desde el primer uso, absorbe impactos, lavable y reutilizable. Entrega en el día en Paraguay. Gs. 139.000.">
+  <title>Talonera de Gel — Alivio de Talón — Dam Vertex</title>
+  <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <link rel="canonical" href="https://damvertex.com/talonera-gel/">
+  <meta property="og:title" content="Talonera de Gel — Dam Vertex" />
+  <meta property="og:description" content="Alivia el dolor de talón desde el primer uso. Gel de alta calidad, lavable y reutilizable." />
+  <meta property="og:url" content="https://damvertex.com/talonera-gel/" />
+  <meta property="og:type" content="website" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "name": "Talonera de Gel",
+      "description": "Talonera de gel de alta calidad. Alivia el dolor de talón, absorbe impactos, lavable y reutilizable.",
+      "brand": { "@type": "Brand", "name": "DAM Vertex" },
+      "url": "https://damvertex.com/talonera-gel/",
+      "offers": {
+        "@type": "Offer",
+        "price": "139000",
+        "priceCurrency": "PYG",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "DAM Vertex" }
+      }
+    }
+  ]
+}
+  </script>
+  <style>
+    /* ══ CRÍTICO ABOVE-THE-FOLD — ver CLAUDE.md "CARGA CRÍTICA — CSS NO BLOQUEANTE" ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #1e40af; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(0,0,0,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+
+    /* ══ Talonera de Gel — theme azul médico / confianza ══ */
+    :root {
+      --tal-blue:      #1e40af;
+      --tal-blue-lt:   #3b82f6;
+      --tal-dark:      #1e293b;
+      --tal-cream:     #f0f4ff;
+      --tal-green:     #1a7a3e;
+      --tal-text:      #1e293b;
+      --tal-text-dim:  rgba(30,41,59,.68);
+      --tal-border:    rgba(30,64,175,.28);
+      --tal-card:      #ffffff;
+      --tal-card2:     #dbeafe;
+    }
+    body.theme-talonera { background: var(--tal-cream); color: var(--tal-text); }
+    .theme-talonera .nav { background: rgba(240,244,255,.92); border-bottom: 1px solid var(--tal-border); backdrop-filter: blur(12px); }
+    .theme-talonera .nav__logo { color: var(--tal-text); }
+    .theme-talonera .nav__logo span { opacity: .65; }
+    .theme-talonera .footer { background: var(--tal-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--tal-border); }
+
+    .btn-tal {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      background: var(--tal-blue); color: #fff; font-weight: 800;
+      padding: 15px 14px; border-radius: 999px; border: 3px solid #1e3a8a; cursor: pointer;
+      text-decoration: none; transition: background .2s, transform .15s;
+      letter-spacing: 0; width: 100%; max-width: 340px; white-space: nowrap;
+      font-size: clamp(10px, 3.4vw, 14px); box-shadow: 0 4px 14px rgba(30,64,175,.35);
+    }
+    .btn-tal:hover { background: #1e3a8a; transform: translateY(-1px); }
+    .nav__cta-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--tal-blue); color: #fff; font-weight: 800; font-size: clamp(7px,2.6vw,12px);
+      padding: 8px 10px; border-radius: 999px; border: 2px solid #1e3a8a; cursor: pointer;
+      white-space: nowrap; max-width: 62vw;
+    }
+
+    /* ══ HERO ══ */
+    .hero-tal { background: linear-gradient(180deg, #e8f0fe 0%, var(--tal-cream) 100%); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-tal__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+    .hero-tal__media { max-width: 420px; margin: 0 auto; width: 100%; }
+    .hero-tal__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; background: var(--tal-card2); }
+    .eyebrow-tal { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--tal-blue); margin: 0 0 12px; }
+    .hero-tal__h { font-size: clamp(20px,6vw,40px); font-weight: 800; line-height: 1.2; letter-spacing: -.01em; color: var(--tal-text); margin: 0 0 12px; }
+    .hero-tal__sub { font-size: clamp(14px,2vw,16px); color: var(--tal-text-dim); line-height: 1.65; margin: 0 0 18px; }
+    .hero-tal .price-savings-top { font-size: 13px; font-weight: 700; color: var(--tal-green); margin: 0 0 6px; }
+    .hero-tal .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
+    .hero-tal .price-main { color: var(--tal-text); font-size: clamp(18px,3vw,22px); }
+    .hero-tal .price-compare { color: rgba(30,41,59,.64); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
+    .hero-tal__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; }
+    .hero-tal__feature { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--tal-text); background: rgba(30,64,175,.08); border: 1px solid var(--tal-border); border-radius: 8px; padding: 10px 14px; }
+    .hero-tal .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 16px; }
+    .hero-tal .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--tal-text); padding: 5px 7px; border-radius: 20px; background: rgba(30,64,175,.1); border: 1px solid rgba(30,64,175,.3); white-space: nowrap; flex: 0 1 auto; }
+    .hero-tal .db-badge.db-green { background: rgba(26,122,62,.12); border-color: rgba(26,122,62,.35); color: var(--tal-green); }
+
+    /* ══ GANCHO + IMAGEN ══ */
+    .gancho-tal { padding: clamp(40px,10vw,72px) clamp(20px,5vw,48px); text-align: center; }
+    .gancho-tal__text { font-size: clamp(22px,5.5vw,38px); font-weight: 800; color: #fff; line-height: 1.25; margin: 0; max-width: 720px; margin-inline: auto; }
+    .gancho-tal--negro { background: var(--tal-dark); }
+    .gancho-tal--blue  { background: var(--tal-blue); }
+    .img-full-tal { background: var(--tal-dark); }
+    .img-full-tal img { width: 100%; height: auto; display: block; }
+
+    /* ══ CIERRE ══ */
+    .urgencia-tal { background: var(--tal-dark); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); text-align: center; }
+    .urgencia-tal__inner { max-width: 480px; margin: 0 auto; }
+    .urgencia-tal__h { font-size: clamp(20px,4vw,28px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0 0 12px; }
+    .urgencia-tal__sub { font-size: 14px; color: rgba(255,255,255,.9); line-height: 1.6; margin: 0 0 22px; }
+
+    /* ══ MODAL DCANP ══ */
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(30,41,59,.6); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
+    .modal-overlay.active { display: flex; }
+    .theme-talonera .modal-box { position: relative; background: #fff; border: 1px solid rgba(30,64,175,.3); border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; }
+    .theme-talonera .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(30,64,175,.14); color: var(--tal-text); font-size: 15px; cursor: pointer; }
+    .theme-talonera .modal-title { font-size: 20px; font-weight: 800; color: var(--tal-text); margin: 0 0 4px; }
+    .theme-talonera .modal-subtitle { font-size: 13px; color: #555555; margin: 0 0 18px; line-height: 1.5; }
+    .theme-talonera .modal-section-label { display: block; font-size: 12px; font-weight: 700; color: #666666; text-transform: uppercase; letter-spacing: .04em; margin: 0 0 10px; }
+    .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .theme-talonera .offer-option { position: relative; display: block; border: 1.5px solid rgba(30,64,175,.22); border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
+    .offer-option input { position: absolute; opacity: 0; }
+    .theme-talonera .offer-option.selected { border-color: var(--tal-blue); background: rgba(30,64,175,.08); }
+    .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    .theme-talonera .offer-option .offer-qty,
+    .theme-talonera .offer-option .offer-price { color: var(--tal-text); font-weight: 800; }
+    .offer-qty { font-weight: 700; font-size: 14px; }
+    .offer-price { font-weight: 800; font-size: 15px; }
+    .theme-talonera .offer-option .offer-compare { color: #767676; }
+    .offer-compare { font-size: 12px; text-decoration: line-through; margin-right: 6px; }
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .theme-talonera .offer-saving { color: var(--tal-green); font-weight: 700; font-size: 12px; }
+    .theme-talonera .offer-badge { position: static; background: var(--tal-blue); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+    .theme-talonera .offer-badge--best { background: var(--tal-green); color: #fff; }
+    .form-group { margin-bottom: 14px; }
+    .theme-talonera .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--tal-text); margin-bottom: 6px; }
+    .theme-talonera .form-group input,
+    .theme-talonera .form-group select,
+    .theme-talonera .form-group textarea {
+      width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid rgba(30,64,175,.3);
+      background: #fff; color: var(--tal-text); font-size: 14px; font-family: inherit;
+    }
+    .theme-talonera .form-group input::placeholder,
+    .theme-talonera .form-group textarea::placeholder { color: #666666; }
+    .theme-talonera .upsell-block { background: #fff; border-color: rgba(30,64,175,.2); }
+    .theme-talonera .upsell-block:has(input:checked) { border-color: var(--tal-blue); background: rgba(30,64,175,.08); }
+    .theme-talonera .upsell-title { color: var(--tal-text); }
+    .theme-talonera .upsell-sub { color: rgba(30,41,59,.55); }
+    #t-total-line:empty { display:none; }
+    .form-submit { margin-top: 18px; }
+    .form-submit .btn-tal { max-width: none; }
+    .theme-talonera .dcanp-success { display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; padding: 32px 24px; text-align: center; }
+    .theme-talonera .dcanp-success.visible { display: block; }
+    .theme-talonera .dcanp-success__icon { width: 56px; height: 56px; background: var(--tal-blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .theme-talonera .dcanp-success h2 { color: var(--tal-blue); font-size: 22px; margin-bottom: 12px; }
+    .theme-talonera .dcanp-success p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .theme-talonera .dcanp-success__tip { font-weight: 600; }
+    .theme-talonera .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: var(--tal-green); font-weight: 700; }
+
+    /* ══ STICKY CTA ══ */
+    .sticky-cta-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+      background: rgba(240,244,255,.97); border-top: 1px solid var(--tal-border);
+      padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width: 700px) {
+      .sticky-cta-bar { display: block; }
+      body:has(#order-modal.active) .sticky-cta-bar { display: none; }
+    }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 700px) {
+      .hero-tal__inner { grid-template-columns: 1fr; gap: 18px; }
+      .hero-tal__media { order: -1; max-width: 100%; }
+      .hero-tal { padding: 10px 16px 20px; }
+    }
+  </style>
+</head>
+<body class="theme-talonera">
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <button type="button" class="nav__cta-btn" data-open-modal>Pedir ahora — Pagás al recibir</button>
+</nav>
+
+<main>
+<!-- ══ HERO ══ -->
+<section class="hero-tal" id="section-hero" data-insync-section="hero">
+  <div class="hero-tal__inner">
+
+    <div class="hero-tal__media">
+      <img src="/talonera-gel/talo-1.webp"
+           srcset="/talonera-gel/talo-1-400w.webp 400w, /talonera-gel/talo-1.webp 800w"
+           sizes="(max-width: 600px) 400px, 800px"
+           alt="Talonera de Gel — alivio de talón"
+           class="hero-tal__img"
+           loading="eager" fetchpriority="high" decoding="async" width="800" height="800">
+    </div>
+
+    <div>
+      <p class="eyebrow-tal">Alivio inmediato · Sin medicamentos</p>
+      <h1 class="hero-tal__h">¿Cada paso duele? Tu talón no debería frenarte.</h1>
+      <p class="hero-tal__sub">La Talonera de Gel absorbe el impacto en cada paso y alivia el dolor desde el primer uso. Para quien entrena, trabaja de pie o simplemente quiere caminar sin pensar en los pies.</p>
+      <p class="price-savings-top">Ahorrás Gs. 50.000</p>
+      <div class="price-block">
+        <span class="price-main">Gs. 139.000</span>
+        <span class="price-compare">Gs. 189.000</span>
+      </div>
+
+      <div class="hero-tal__features">
+        <div class="hero-tal__feature">🦶 Gel de alta calidad — alivio desde el primer uso</div>
+        <div class="hero-tal__feature">💪 Absorbe impactos — protege talones, rodillas y espalda</div>
+        <div class="hero-tal__feature">🔄 Lavable y reutilizable — dura años</div>
+      </div>
+
+      <button type="button" class="btn-tal" id="cta-open-modal" data-open-modal>Pedir ahora — Pagás al recibir</button>
+      <div class="delivery-badges">
+        <span class="db-badge db-green">🚚 Entrega en el día</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ GANCHO 1 (fondo oscuro) + IMAGEN 2 ══ -->
+<section class="gancho-tal gancho-tal--negro" id="section-gancho1" data-insync-section="gancho1">
+  <p class="gancho-tal__text">El dolor en el talón no es normal. Tampoco es para siempre.</p>
+</section>
+<section class="img-full-tal" id="section-img1" data-insync-section="img1">
+  <img src="/talonera-gel/talo-2.webp"
+       srcset="/talonera-gel/talo-2-400w.webp 400w, /talonera-gel/talo-2.webp 800w"
+       sizes="(max-width: 600px) 400px, 800px"
+       alt="Talonera de Gel en uso — vista lateral"
+       loading="lazy" decoding="async" width="800" height="800">
+</section>
+
+<!-- ══ GANCHO 2 (fondo azul) + IMAGEN 3 ══ -->
+<section class="gancho-tal gancho-tal--blue" id="section-gancho2" data-insync-section="gancho2">
+  <p class="gancho-tal__text">Antes: dolor en cada paso.<br>Después: caminás sin pensar en los pies.</p>
+</section>
+<section class="img-full-tal" id="section-img2" data-insync-section="img2">
+  <img src="/talonera-gel/talo-3.webp"
+       srcset="/talonera-gel/talo-3-400w.webp 400w, /talonera-gel/talo-3.webp 800w"
+       sizes="(max-width: 600px) 400px, 800px"
+       alt="Talonera de Gel — detalle del material"
+       loading="lazy" decoding="async" width="800" height="800">
+</section>
+
+<!-- ══ GANCHO 3 (fondo oscuro) + IMAGEN 4 ══ -->
+<section class="gancho-tal gancho-tal--negro" id="section-gancho3" data-insync-section="gancho3">
+  <p class="gancho-tal__text">Para los que entrenan, trabajan de pie, caminan mucho — o simplemente quieren vivir sin dolor.</p>
+</section>
+<section class="img-full-tal" id="section-img3" data-insync-section="img3">
+  <img src="/talonera-gel/talo-4.webp"
+       srcset="/talonera-gel/talo-4-400w.webp 400w, /talonera-gel/talo-4.webp 800w"
+       sizes="(max-width: 600px) 400px, 800px"
+       alt="Talonera de Gel — múltiples usos"
+       loading="lazy" decoding="async" width="800" height="800">
+</section>
+
+<!-- ══ CIERRE ══ -->
+<section class="urgencia-tal" id="section-urgencia" data-insync-section="urgencia">
+  <div class="urgencia-tal__inner">
+    <h2 class="urgencia-tal__h">Empezá a caminar sin dolor hoy mismo</h2>
+    <p class="urgencia-tal__sub">Gs. 139.000 · Entrega en el día · Pagás al recibir</p>
+    <button type="button" class="btn-tal" data-insync-cta="urgencia" id="cta-open-modal-2" data-open-modal>Pedir ahora — Pagás al recibir</button>
+  </div>
+</section>
+
+</main>
+
+<!-- ══ MODAL DCANP — sin WhatsApp, sin horario, POST a /api/dcanp-lead ══ -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-tal">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+
+    <div id="modal-form-wrap">
+      <h2 class="modal-title" id="modal-title-tal">Completá tu pedido</h2>
+      <p class="modal-subtitle">Completá tus datos y nos comunicamos para coordinar tu entrega.</p>
+
+      <span class="modal-section-label">Elegí tu oferta</span>
+      <div class="offer-options">
+        <label class="offer-option selected">
+          <input type="radio" name="offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price">Gs. 139.000</span>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="offer" value="2">
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare">Gs. 278.000</span>
+              <span class="offer-price">Gs. 259.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 19.000</span>
+            <div class="offer-badge">🔥 Más elegido</div>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="offer" value="3">
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare">Gs. 417.000</span>
+              <span class="offer-price">Gs. 369.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 48.000</span>
+            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
+          </div>
+        </label>
+      </div>
+
+      <form id="dcanp-form" novalidate>
+        <div class="form-group">
+          <label for="t-name">Nombre completo</label>
+          <input type="text" id="t-name" name="name" placeholder="Nombre y apellido" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label for="t-phone">Teléfono (WhatsApp)</label>
+          <input type="tel" id="t-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel" required>
+        </div>
+        <div class="form-group">
+          <label for="t-city">Ciudad</label>
+          <input type="text" id="t-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="t-ref">Referencia <span style="font-weight:400">(opcional)</span></label>
+          <input type="text" id="t-ref" name="referencia" placeholder="esquina, edificio, referencia extra" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="t-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
+          <textarea id="t-nota" name="nota" rows="2" placeholder="talla, instrucción especial"></textarea>
+        </div>
+
+        <label class="upsell-block">
+          <input type="checkbox" id="t-express" name="express">
+          <div class="upsell-content">
+            <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+            <span class="upsell-sub">Recibí antes que los demás</span>
+          </div>
+        </label>
+
+        <label class="upsell-block" id="t-invoice-block" style="margin-top:12px">
+          <input type="checkbox" id="t-invoice" name="invoice">
+          <div class="upsell-content">
+            <span class="upsell-title">🧾 Necesito factura</span>
+            <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="t-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group">
+            <label for="t-invoice-ruc">RUC *</label>
+            <input type="text" id="t-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="t-invoice-name">Razón social / Nombre *</label>
+            <input type="text" id="t-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="t-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+            <input type="email" id="t-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+          </div>
+        </div>
+
+        <p id="t-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:var(--tal-text)"></p>
+
+        <div class="form-submit">
+          <button type="submit" class="btn-tal" id="dcanp-submit-btn">Confirmar pedido</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="dcanp-success" id="dcanp-success">
+      <div class="dcanp-success__icon">✓</div>
+      <h2>¡Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p class="dcanp-success__tip">📱 Quedate atento a tu número — te vamos a contactar pronto.</p>
+      <div class="dcanp-success__badges">
+        <span>✓ Envío gratis</span>
+        <span>✓ Pagás al recibir</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  &copy; Dam Vertex
+</footer>
+
+<!-- CRO: Sticky bottom CTA — mobile only -->
+<div class="sticky-cta-bar" id="sticky-cta-bar">
+  <button type="button" class="btn-tal" style="width:100%;margin:0" data-open-modal>Pedir ahora — Pagás al recibir</button>
+</div>
+
+<!-- Scripts -->
+<script src="/assets/js/tracking.js?v=73" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+
+<script defer>
+  const PRODUCT = {
+    name: 'Talonera de Gel',
+    slug: 'talonera-gel',
+    price: 139000,
+    comboPricing: { 1: 139000, 2: 259000, 3: 369000 },
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    try { DV.trackViewContent(PRODUCT); } catch (_) {}
+
+    const modal      = document.getElementById('order-modal');
+    const openBtns   = document.querySelectorAll('[data-open-modal]');
+    const closeBtn   = document.getElementById('modal-close');
+    const form       = document.getElementById('dcanp-form');
+    const formWrap   = document.getElementById('modal-form-wrap');
+    const successBox = document.getElementById('dcanp-success');
+    const submitBtn  = document.getElementById('dcanp-submit-btn');
+    const offerInputs = document.querySelectorAll('input[name="offer"]');
+
+    function openModal() {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    openBtns.forEach(btn => btn && btn.addEventListener('click', openModal));
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    offerInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        document.querySelectorAll('.offer-option').forEach(opt => opt.classList.remove('selected'));
+        input.closest('.offer-option').classList.add('selected');
+        updateTotalLine();
+      });
+    });
+
+    const invoiceChk    = document.getElementById('t-invoice');
+    const invoiceFields = document.getElementById('t-invoice-fields');
+    const totalLine     = document.getElementById('t-total-line');
+    if (invoiceChk && invoiceFields) {
+      invoiceChk.addEventListener('change', function() {
+        invoiceFields.style.display = this.checked ? 'block' : 'none';
+      });
+    }
+
+    function updateTotalLine() {
+      if (!totalLine) return;
+      const qty   = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      const base  = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const isExp = document.getElementById('t-express')?.checked;
+      const total = base + (isExp ? 10000 : 0);
+      totalLine.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    }
+    const expChk = document.getElementById('t-express');
+    if (expChk) expChk.addEventListener('change', updateTotalLine);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      const base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const express = document.getElementById('t-express')?.checked || false;
+      const invoice = document.getElementById('t-invoice')?.checked || false;
+      const value   = base + (express ? 10000 : 0);
+      const data = {
+        name:         document.getElementById('t-name').value.trim(),
+        phone:        document.getElementById('t-phone').value.trim(),
+        city:         document.getElementById('t-city').value.trim(),
+        referencia:   document.getElementById('t-ref').value.trim(),
+        nota:         document.getElementById('t-nota').value.trim(),
+        quantity:     qty,
+        product_slug: PRODUCT.slug,
+        product_name: PRODUCT.name,
+        value:        value,
+        express:      express,
+        invoice:      invoice,
+        invoice_ruc:  invoice ? (document.getElementById('t-invoice-ruc')?.value || '').trim() : '',
+        invoice_name: invoice ? (document.getElementById('t-invoice-name')?.value || '').trim() : '',
+        invoice_email:invoice ? (document.getElementById('t-invoice-email')?.value || '').trim() : '',
+      };
+      if (!data.name || !data.phone || !data.city) {
+        alert('Completá nombre, teléfono y ciudad para continuar.');
+        return;
+      }
+      if (!/^[\d\s+\-]{7,}$/.test(data.phone) || data.phone.replace(/\D/g,'').length < 7) {
+        alert('Ingresá un número de teléfono válido.');
+        return;
+      }
+      try {
+        const client = typeof getClientData === 'function' ? getClientData() : {};
+        data.fbp = client.fbp || null;
+        data.fbc = client.fbc || null;
+      } catch (_) {}
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+      try {
+        const res = await fetch('/api/dcanp-lead', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(data),
+        });
+        await res.json().catch(() => ({}));
+      } catch (err) {
+        console.error('DCANP_SUBMIT_ERROR', err?.message);
+      }
+      formWrap.style.display = 'none';
+      successBox.classList.add('visible');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Confirmar pedido';
+    });
+  });
+</script>
+
+<script src="/assets/js/protect.js?v=68" defer></script>
+</body>
+</html>
