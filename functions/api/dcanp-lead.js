@@ -51,6 +51,54 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const effectiveAmount = amount;
     const fmtNum = n => Number(n || 0).toLocaleString('es-PY');
 
+    const phoneTrim = phone.trim();
+    const slugTrim  = (product_slug || '').trim();
+
+    /* ── Bloqueo de clientes — D1 blocked_customers. Si está bloqueado: no se
+       registra nada (ni Telegram ni Sheets ni CAPI). El cliente ve la pantalla
+       de agradecimiento igual. Best-effort: un fallo de D1 no corta el flujo. ── */
+    try {
+      if (env.DB && phoneTrim) {
+        const blocked = await env.DB
+          .prepare('SELECT active FROM blocked_customers WHERE phone = ? AND active = 1')
+          .bind(phoneTrim)
+          .first();
+        if (blocked) {
+          console.log('DCANP_BLOCKED', phoneTrim);
+          return json({ ok: true, message: '¡Pedido recibido!' });
+        }
+      }
+    } catch (e) {
+      console.error('DCANP_BLOCK_CHECK_SKIP', e.message);
+    }
+
+    /* ── Filtro de duplicados — mismo teléfono + slug en los últimos 30 min (KV).
+       Si ya existe: avisar por Telegram con ⚠️ y responder ok sin escribir en Sheets. ── */
+    try {
+      if (env.COUNTER_KV && phoneTrim && slugTrim) {
+        const dupKey = `dcanp_dup_${phoneTrim}_${slugTrim}`;
+        if (await env.COUNTER_KV.get(dupKey)) {
+          waitUntil((async () => {
+            if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
+            try {
+              await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({
+                  chat_id: env.TELEGRAM_CHAT_ID,
+                  text:    `[DCANP GROUP] ⚠️ PEDIDO DUPLICADO — ${safeName} ${phoneTrim} ${safeProd}`,
+                }),
+              });
+            } catch (e) { console.error('DCANP_DUP_TELEGRAM_ERROR', e.message); }
+          })());
+          return json({ ok: true, message: '¡Pedido recibido!' });
+        }
+        await env.COUNTER_KV.put(dupKey, '1', { expirationTtl: 1800 });
+      }
+    } catch (e) {
+      console.error('DCANP_DUP_CHECK_SKIP', e.message);
+    }
+
     /* ── Telegram — background, no bloquea la respuesta ── */
     waitUntil((async () => {
       if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
