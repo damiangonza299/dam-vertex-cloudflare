@@ -39,7 +39,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const ua = request.headers.get('User-Agent') || '';
     const qty = Number(quantity) || 1;
     const amount = Number(value) || 0;
-    const effectiveAmount = amount + (express ? 10000 : 0);
+    const effectiveAmount = amount;
     const fmtNum = n => Number(n || 0).toLocaleString('es-PY');
 
     /* ── Telegram — background, no bloquea la respuesta ── */
