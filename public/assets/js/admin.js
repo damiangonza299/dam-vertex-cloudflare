@@ -73,7 +73,9 @@ async function tryDeviceRefresh() {
 let AUTH_TOKEN       = loadToken();
 let allLeads         = [];
 let _blockedPhones   = new Set();
-let activeDateFilter = 'all';
+let activeDateFilter    = 'all';
+let activeDateRangeFrom = '';
+let activeDateRangeTo   = '';
 let _activeProducts  = [];
 
 /* ── Bootstrap ── */
@@ -338,6 +340,9 @@ function applyFilters() {
         matchDate = leadDate === todayStr;
       } else if (activeDateFilter === 'yesterday') {
         matchDate = leadDate === yestStr;
+      } else if (activeDateFilter === 'range') {
+        if (activeDateRangeFrom) matchDate = matchDate && leadDate >= activeDateRangeFrom;
+        if (activeDateRangeTo)   matchDate = matchDate && leadDate <= activeDateRangeTo;
       } else {
         matchDate = leadDate === activeDateFilter;
       }
@@ -459,22 +464,38 @@ function updateDatePickerBtnLabel() {
   const btn = document.getElementById('date-picker-btn');
   if (!btn) return;
   const val = dp?.value || '';
-  if (!val) { btn.textContent = 'Fecha'; return; }
+  if (!val) { btn.textContent = 'Desde'; return; }
+  const [, m, d] = val.split('-').map(Number);
+  btn.textContent = `${d} ${MONTH_ABBR_ES[m - 1]}`;
+}
+
+function updateDateToBtnLabel() {
+  const dt  = document.getElementById('date-to');
+  const btn = document.getElementById('date-to-btn');
+  if (!btn) return;
+  const val = dt?.value || '';
+  if (!val) { btn.textContent = 'Hasta'; return; }
   const [, m, d] = val.split('-').map(Number);
   btn.textContent = `${d} ${MONTH_ABBR_ES[m - 1]}`;
 }
 
 function setDateFilter(val) {
-  activeDateFilter = val;
+  activeDateFilter    = val;
+  activeDateRangeFrom = '';
+  activeDateRangeTo   = '';
   ['date-all', 'date-today', 'date-yesterday', 'date-purchased-today'].forEach(id => {
     const key = id.slice(5); // remove 'date-' prefix
     document.getElementById(id)?.classList.toggle('date-btn--active', val === key);
   });
+  document.getElementById('date-range-apply')?.classList.remove('date-btn--active');
   if (['all', 'today', 'yesterday', 'purchased-today'].includes(val)) {
     const dp = document.getElementById('date-picker');
     if (dp) dp.value = '';
+    const dt = document.getElementById('date-to');
+    if (dt) dt.value = '';
   }
   updateDatePickerBtnLabel();
+  updateDateToBtnLabel();
   applyFilters();
 }
 
@@ -489,6 +510,19 @@ document.getElementById('date-today')?.addEventListener('click', () => setDateFi
 document.getElementById('date-yesterday')?.addEventListener('click', () => setDateFilter('yesterday'));
 document.getElementById('date-purchased-today')?.addEventListener('click', () => setDateFilter('purchased-today'));
 document.getElementById('date-picker')?.addEventListener('change', e => { setDateFilter(e.target.value || 'all'); });
+document.getElementById('date-to')?.addEventListener('change', updateDateToBtnLabel);
+document.getElementById('date-range-apply')?.addEventListener('click', () => {
+  const from = document.getElementById('date-picker')?.value || '';
+  const to   = document.getElementById('date-to')?.value   || '';
+  if (!from && !to) { setDateFilter('all'); return; }
+  activeDateRangeFrom = from;
+  activeDateRangeTo   = to;
+  activeDateFilter    = 'range';
+  ['date-all','date-today','date-yesterday','date-purchased-today'].forEach(id =>
+    document.getElementById(id)?.classList.remove('date-btn--active'));
+  document.getElementById('date-range-apply')?.classList.add('date-btn--active');
+  applyFilters();
+});
 document.getElementById('manual-sale-btn')?.addEventListener('click', openManualSaleModal);
 document.getElementById('manual-sale-modal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeManualSaleModal(); });
 document.getElementById('msf-product')?.addEventListener('change', msfOnProductChange);

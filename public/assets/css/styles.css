@@ -1167,10 +1167,17 @@ details summary::-webkit-details-marker { display: none; }
 .date-picker-wrapper {
   position: relative;
   display: inline-block;
-  margin-left: auto;
   flex-shrink: 0;
 }
 .date-picker-wrapper .date-btn { width: 100%; }
+.date-range-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.date-range-sep { color: rgba(255,255,255,.3); font-size: 11px; flex-shrink: 0; }
 .date-picker-input {
   position: absolute;
   top: 0; left: 0;

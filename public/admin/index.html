@@ -209,9 +209,17 @@
       <button class="date-btn" id="date-today">Hoy</button>
       <button class="date-btn" id="date-yesterday">Ayer</button>
       <button class="date-btn" id="date-purchased-today">Comprados hoy</button>
-      <div class="date-picker-wrapper">
-        <button type="button" class="date-btn" id="date-picker-btn" tabindex="-1">Fecha</button>
-        <input type="date" id="date-picker" class="date-picker-input">
+      <div class="date-range-group">
+        <div class="date-picker-wrapper">
+          <button type="button" class="date-btn" id="date-picker-btn" tabindex="-1">Desde</button>
+          <input type="date" id="date-picker" class="date-picker-input">
+        </div>
+        <span class="date-range-sep">—</span>
+        <div class="date-picker-wrapper">
+          <button type="button" class="date-btn" id="date-to-btn" tabindex="-1">Hasta</button>
+          <input type="date" id="date-to" class="date-picker-input">
+        </div>
+        <button class="date-btn" id="date-range-apply">Aplicar</button>
       </div>
     </div>
 
