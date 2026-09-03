@@ -6,6 +6,14 @@
    "DCANP GROUP — Flujo especial".
    ========================================================= */
 
+/* Nombres cortos por slug — deben aparecer EXACTAMENTE así en Telegram y Google Sheets.
+   Si el slug no está acá, cae al product_name del body y luego al slug. */
+const PRODUCT_SHORT_NAMES = {
+  'estante-aluminio-bano': '🧴 Estante Organizador Winsen de Aluminio',
+  'talonera-gel':          'TALONERA EN GEL',
+  'tabla-marmol':          'Tabla de Picar de Mármol',
+};
+
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -29,7 +37,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const sanitize = (s, maxLen) => (s || '').toString().replace(/[<>"'\\/]/g, '').trim().slice(0, maxLen);
     const safeName  = sanitize(name, 100);
     const safeCity  = sanitize(city, 100);
-    const safeProd  = sanitize(product_name || product_slug, 100);
+    const shortName = PRODUCT_SHORT_NAMES[(product_slug || '').trim()];
+    const safeProd  = shortName || sanitize(product_name || product_slug, 100);
 
     if (!safeName || !phone?.trim()) {
       return json({ ok: false, error: 'Campos requeridos: name, phone' }, 400);
