@@ -11,7 +11,7 @@
 const PRODUCT_SHORT_NAMES = {
   'estante-aluminio-bano': '🧴 Estante Organizador Winsen de Aluminio',
   'talonera-gel':          'TALONERA EN GEL',
-  'tabla-marmol':          'Tabla de Picar de Mármol',
+  'tabla-marmol':          'TABLA DE PICAR DE MARMOL OVALADO 38X27CM',
 };
 
 const CORS = {
