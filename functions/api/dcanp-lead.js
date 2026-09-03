@@ -14,6 +14,79 @@ const PRODUCT_SHORT_NAMES = {
   'tabla-marmol':          'TABLA DE PICAR DE MARMOL OVALADO 38X27CM',
 };
 
+/* Normalización de ciudad — comparación sin tildes y case-insensitive.
+   Si la ciudad no está en el mapa se usa tal como la escribió el cliente. */
+const CITY_NORMALIZE = {
+  'asuncion': 'Asuncion', 'asu': 'Asuncion',
+  'lambare': 'Lambare', 'lamb': 'Lambare',
+  'san lorenzo': 'San Lorenzo', 'sl': 'San Lorenzo',
+  'fernando de la mora': 'Fernando de la Mora', 'fdm': 'Fernando de la Mora', 'fernando': 'Fernando de la Mora',
+  'luque': 'Luque',
+  'capiata': 'Capiata', 'capia': 'Capiata',
+  'nemby': 'Ñemby', 'ñemby': 'Ñemby',
+  'villa elisa': 'Villa Elisa',
+  'mariano roque alonso': 'Mariano Roque Alonso', 'mra': 'Mariano Roque Alonso', 'mariano': 'Mariano Roque Alonso',
+  'limpio': 'Limpio',
+  'san antonio': 'San Antonio',
+  'itaugua': 'Itaugua', 'itaugua': 'Itaugua',
+  'aregua': 'Aregua', 'aregua': 'Aregua',
+  'guarambare': 'Guarambare', 'guarambare': 'Guarambare',
+  'ita': 'Ita', 'ita': 'Ita',
+  'villeta': 'Villeta',
+  'ypane': 'Ypane', 'ypane': 'Ypane',
+  'j. augusto saldivar': 'J. Augusto Saldívar', 'saldivar': 'J. Augusto Saldívar',
+  'ciudad del este': 'Ciudad del Este', 'cde': 'Ciudad del Este',
+  'hernandarias': 'Hernandarias',
+  'minga guazu': 'Minga Guazu', 'minga': 'Minga Guazu',
+  'presidente franco': 'Presidente Franco', 'pfranco': 'Presidente Franco',
+  'colonia yguazu': 'Colonia Yguazu',
+  'santa rita': 'Santa Rita',
+  'san alberto': 'San Alberto',
+  'juan leon mallorquin': 'Juan Leon Mallorquin',
+  'yguazu': 'Yguazu',
+  'coronel oviedo': 'Coronel Oviedo', 'cnel oviedo': 'Coronel Oviedo', 'oviedo': 'Coronel Oviedo',
+  'caaguazu': 'Caaguazú', 'caaguazu': 'Caaguazú',
+  'repatriacion': 'Repatriación', 'repa': 'Repatriación',
+  'natalicio talavera': 'Natalicio Talavera',
+  'felix perez cardozo': 'Félix Pérez Cardozo',
+  'mauricio jose troche': 'Mauricio José Troche',
+  'san jose de los arroyos': 'San José de los Arroyos',
+  'yataity del norte': 'Yataity del Norte',
+  'caacupe': 'Caacupé', 'caacupe': 'Caacupé',
+  'san bernardino': 'San Bernardino', 'san berni': 'San Bernardino',
+  'ypacarai': 'Ypacaraí', 'ypacarai': 'Ypacaraí',
+  'altos': 'Altos',
+  'atyra': 'Atyrá', 'atyra': 'Atyrá',
+  'emboscada': 'Emboscada',
+  'eusebio ayala': 'Eusebio Ayala',
+  'itacurubi de la cordillera': 'Itacurubí de la Cordillera',
+  'karaguatay': 'Karaguatay',
+  'loma grande': 'Loma Grande',
+  'nueva italia': 'Nueva Italia',
+  'piribebuy': 'Piribebuy',
+  'santa elena': 'Santa Elena',
+  'tobati': 'Tobatí', 'tobati': 'Tobatí',
+  'paraguari': 'Paraguarí', 'paraguari': 'Paraguarí',
+  'yaguaron': 'Yaguarón', 'yaguaron': 'Yaguarón',
+  'carapegua': 'Carapeguá', 'carapegua': 'Carapeguá',
+  'escobar': 'Escobar',
+  'gral bernardino caballero': 'General Bernardino Caballero',
+  'pirayu': 'Pirayú', 'pirayu': 'Pirayú',
+  'sapucai': 'Sapucaí', 'sapucai': 'Sapucaí',
+  'villarrica': 'Villarrica',
+  'mbocayaty': 'Mbocayaty',
+  'villa hayes': 'Villa Hayes',
+  'benjamin aceval': 'Benjamín Aceval',
+  'remansito': 'Remansito',
+  'pedro juan caballero': 'Pedro Juan Caballero', 'pjc': 'Pedro Juan Caballero',
+};
+
+function normalizeCity(raw) {
+  if (!raw) return raw;
+  const key = raw.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  return CITY_NORMALIZE[key] || raw.trim();
+}
+
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -36,7 +109,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     const sanitize = (s, maxLen) => (s || '').toString().replace(/[<>"'\\/]/g, '').trim().slice(0, maxLen);
     const safeName  = sanitize(name, 100);
-    const safeCity  = sanitize(city, 100);
+    const safeCity  = normalizeCity(sanitize(city, 100));
     const shortName = PRODUCT_SHORT_NAMES[(product_slug || '').trim()];
     const safeProd  = shortName || sanitize(product_name || product_slug, 100);
 
