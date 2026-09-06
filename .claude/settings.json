@@ -21,7 +21,8 @@
       "CronList(*)",
       "EnterPlanMode(*)",
       "ExitPlanMode(*)",
-      "ToolSearch(*)"
+      "ToolSearch(*)",
+      "Bash(git commit -m 'fix: precios tabla-marmol y estante + validación teléfono modals DCANP *)"
     ],
     "deny": [
       "Bash(rm -rf *)",
@@ -29,14 +30,11 @@
       "PowerShell(*Remove-Item*-Recurse*-Force*)",
       "PowerShell(*Remove-Item*-Force*-Recurse*)",
       "PowerShell(*rd /s*)",
-
       "Bash(*d1 execute*--remote*DROP TABLE*)",
       "Bash(*d1 execute*--remote*TRUNCATE*)",
-
       "Bash(*secret*set *)",
       "Bash(*secret*delete*)",
       "Bash(*secrets:set *)",
-
       "Bash(curl * -X POST *graph.facebook.com*/campaigns*)",
       "Bash(curl * -X POST *graph.facebook.com*/adsets*)",
       "Bash(curl * -X POST *graph.facebook.com*/ads *)",
