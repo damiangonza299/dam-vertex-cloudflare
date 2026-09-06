@@ -81,10 +81,35 @@ const CITY_NORMALIZE = {
   'pedro juan caballero': 'Pedro Juan Caballero', 'pjc': 'Pedro Juan Caballero',
 };
 
+function cleanCityInput(raw) {
+  if (!raw) return raw;
+  return raw.split(/[,\-]|zona |barrio |sector |b°/i)[0].trim();
+}
+
+function levenshtein(a, b) {
+  const m = [];
+  for (let i = 0; i <= b.length; i++) m[i] = [i];
+  for (let j = 0; j <= a.length; j++) m[0][j] = j;
+  for (let i = 1; i <= b.length; i++)
+    for (let j = 1; j <= a.length; j++)
+      m[i][j] = b[i-1] === a[j-1] ? m[i-1][j-1] : Math.min(m[i-1][j-1]+1, m[i][j-1]+1, m[i-1][j]+1);
+  return m[b.length][a.length];
+}
+
+function fuzzyCity(normalized) {
+  let best = null, bestDist = 999;
+  for (const key of Object.keys(CITY_NORMALIZE)) {
+    const dist = levenshtein(normalized, key);
+    if (dist < bestDist && dist <= 3) { bestDist = dist; best = key; }
+  }
+  return best ? CITY_NORMALIZE[best] : null;
+}
+
 function normalizeCity(raw) {
   if (!raw) return raw;
-  const key = raw.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-  return CITY_NORMALIZE[key] || raw.trim();
+  const cleaned = cleanCityInput(raw);
+  const normalized = cleaned.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  return CITY_NORMALIZE[normalized] || fuzzyCity(normalized) || cleaned;
 }
 
 const CORS = {
