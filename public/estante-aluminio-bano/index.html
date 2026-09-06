@@ -143,6 +143,7 @@
     .theme-estante .offer-option { position: relative; display: block; border: 1.5px solid rgba(74,111,165,.22); border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
     .offer-option input { position: absolute; opacity: 0; }
     .theme-estante .offer-option.selected { border-color: var(--est-steel); background: rgba(74,111,165,.08); }
+    .theme-estante .offer-option.selected:has(.offer-badge:not(.offer-badge--best)) { border-width: 2.5px; border-color: var(--est-steel); background: rgba(74,111,165,.13); }
     .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
     .theme-estante .offer-option .offer-qty,
     .theme-estante .offer-option .offer-price { color: var(--est-text); font-weight: 800; }
@@ -153,7 +154,7 @@
     .offer-compare { font-size: 12px; text-decoration: line-through; margin-right: 6px; }
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
     .theme-estante .offer-saving { color: var(--est-green); font-weight: 700; font-size: 12px; }
-    .theme-estante .offer-badge { position: static; background: var(--est-steel); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+    .theme-estante .offer-badge { position: static; background: var(--est-steel); color: #fff; font-size: 13px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
     .theme-estante .offer-badge--best { background: #1a7a3e; color: #fff; }
     .form-group { margin-bottom: 14px; }
     .theme-estante .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--est-text); margin-bottom: 6px; }
@@ -183,6 +184,13 @@
     .theme-estante .dcanp-success__tip { font-weight: 600; }
     .theme-estante .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: #1a7a3e; font-weight: 700; }
 
+    /* ══ URGENCY BAR ══ */
+    .urgency-bar {
+      background: #c53030; color: #fff; text-align: center;
+      font-size: 13px; font-weight: 700; padding: 8px 16px;
+      position: sticky; top: 0; z-index: 200; letter-spacing: .02em;
+    }
+
     /* ══ STICKY CTA — patrón lampara-escritorio-plegable ══ */
     .sticky-cta-bar {
       display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
@@ -205,6 +213,8 @@
 </head>
 <body class="theme-estante">
 
+<div class="urgency-bar">🔴 Stock limitado &nbsp;·&nbsp; Envío gratis &nbsp;·&nbsp; Pagás al recibir</div>
+
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
@@ -226,7 +236,7 @@
     </div>
 
     <div>
-      <h1 class="hero-est__h">Tu baño parece un desastre<br>este organizador lo cambia en 5 minutos</h1>
+      <h1 class="hero-est__h">Sin taladro. Sin perforar.<br>Acero negro que dura años.</h1>
       <p class="hero-est__sub">El Estante Organizador Winsem de Aluminio se instala sin perforar la pared y ordena baño, cocina o lavadero en minutos.</p>
       <p class="price-savings-top">Ahorrás Gs. 50.000</p>
       <div class="price-block">
@@ -236,10 +246,10 @@
       <p class="hero-est__proof">Aluminio resistente al óxido, no plástico</p>
 
       <div class="hero-est__features">
-        <div class="hero-est__feature">🔩 Sin perforar la pared — instalación en segundos</div>
-        <div class="hero-est__feature">💪 Aluminio resistente al óxido — dura años</div>
-        <div class="hero-est__feature">📐 Diseño moderno y minimalista — queda elegante</div>
-        <div class="hero-est__feature">🚿 Ideal para baño, cocina y lavadero</div>
+        <div class="hero-est__feature">🖤 Acero inoxidable negro — resistente al óxido</div>
+        <div class="hero-est__feature">🔩 Sin taladro ni herramientas — instalás en minutos</div>
+        <div class="hero-est__feature">💨 Diseño hueco ventilado — todo organizado y visible</div>
+        <div class="hero-est__feature">🚿 Para champús, accesorios y más — baño, cocina, lavadero</div>
       </div>
 
       <button type="button" class="btn-est" id="cta-open-modal" data-open-modal>Pedir ahora — Pagás al recibir</button>
@@ -255,7 +265,7 @@
 
 <!-- ══ GANCHO 1 (fondo oscuro) + IMAGEN 1 ══ -->
 <section class="gancho-est gancho-est--negro" id="section-gancho1" data-insync-section="gancho1">
-  <p class="gancho-est__text">¿Tu shampoo, acondicionador y jabón tirados por todos lados?</p>
+  <p class="gancho-est__text">¿Cuántos agujeros en la pared por un simple estante?</p>
 </section>
 <section class="img-full-est" id="section-img1" data-insync-section="img1">
   <img src="/estante-aluminio-bano/estante-img1.webp"
@@ -307,6 +317,7 @@
 
     <div id="modal-form-wrap">
       <h2 class="modal-title" id="modal-title-est">Completá tu pedido</h2>
+      <p class="modal-stock-alert" style="text-align:center;font-size:12px;font-weight:700;color:#c53030;margin:-4px 0 14px;">⚡ Quedan pocas unidades — pedidos se procesan hoy</p>
       <p class="modal-subtitle">Completá tus datos y nos comunicamos para coordinar tu entrega.</p>
 
       <span class="modal-section-label">Elegí tu oferta</span>
