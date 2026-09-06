@@ -718,11 +718,6 @@
 
 
         <div class="form-group">
-          <label for="m-ref">Referencia <span style="font-weight:400">(opcional)</span></label>
-          <input type="text" id="m-ref" name="referencia" placeholder="piso, portón, referencia extra" autocomplete="off">
-        </div>
-
-        <div class="form-group">
           <label for="m-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
           <textarea id="m-nota" name="nota" rows="2" placeholder="color, variante, instrucción especial"></textarea>
         </div>
@@ -873,8 +868,6 @@
         name:         (document.getElementById('m-name').value || '').trim(),
         phone:        (document.getElementById('m-phone').value || '').trim(),
         city:         (document.getElementById('m-city').value || '').trim(),
-
-        referencia:   (document.getElementById('m-ref').value || '').trim(),
         nota:         (document.getElementById('m-nota').value || '').trim(),
         quantity:     qty,
         product_slug: PRODUCT.slug,

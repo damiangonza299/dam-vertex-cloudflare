@@ -346,10 +346,6 @@
           <input type="text" id="t-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
         </div>
         <div class="form-group">
-          <label for="t-ref">Referencia <span style="font-weight:400">(opcional)</span></label>
-          <input type="text" id="t-ref" name="referencia" placeholder="esquina, edificio, referencia extra" autocomplete="off">
-        </div>
-        <div class="form-group">
           <label for="t-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
           <textarea id="t-nota" name="nota" rows="2" placeholder="talla, instrucción especial"></textarea>
         </div>
@@ -489,7 +485,6 @@
         name:         document.getElementById('t-name').value.trim(),
         phone:        document.getElementById('t-phone').value.trim(),
         city:         document.getElementById('t-city').value.trim(),
-        referencia:   document.getElementById('t-ref').value.trim(),
         nota:         document.getElementById('t-nota').value.trim(),
         quantity:     qty,
         product_slug: PRODUCT.slug,

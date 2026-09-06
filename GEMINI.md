@@ -613,3 +613,11 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 4. Tarea landing → `skills/pagina-ventas.md` + `landing-cro/` según necesidad
 5. Nunca improvisar si existe un skill adecuado en `skills/`
 6. Máximo 4 skills por sesión — no cargar el sistema completo
+
+## DCANP GROUP — Normalización de ciudades
+- El campo ciudad en landings DCANP es siempre texto libre
+- dcanp-lead.js normaliza automáticamente antes de enviar a Sheets y Telegram
+- Si la ciudad no está en el mapa → se guarda tal como la escribió el cliente
+- El modal DCANP no incluye campo Referencia — solo Nota del pedido.
+- Para agregar nuevas ciudades → editar CITY_NORMALIZE en dcanp-lead.js
+- Referencia de ciudades por departamento: ver CITY_NORMALIZE en dcanp-lead.js
