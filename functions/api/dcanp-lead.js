@@ -15,26 +15,34 @@ const PRODUCT_SHORT_NAMES = {
 };
 
 /* Normalización de ciudad — comparación sin tildes y case-insensitive.
-   Si la ciudad no está en el mapa se usa tal como la escribió el cliente. */
+   Si la ciudad no está en el mapa se usa el texto limpio tal como vino. */
 const CITY_NORMALIZE = {
-  'asuncion': 'Asuncion', 'asu': 'Asuncion',
-  'lambare': 'Lambare', 'lamb': 'Lambare',
+  // ══ CENTRAL ══
+  'asuncion': 'Asunción', 'asu': 'Asunción',
+  'lambare': 'Lambaré', 'lamb': 'Lambaré',
   'san lorenzo': 'San Lorenzo', 'sl': 'San Lorenzo',
-  'fernando de la mora': 'Fernando de la Mora', 'fdm': 'Fernando de la Mora', 'fernando': 'Fernando de la Mora',
+  'fernando de la mora': 'Fernando de la Mora', 'fdm': 'Fernando de la Mora',
+  'fdo de la mora': 'Fernando de la Mora', 'fdo mora': 'Fernando de la Mora',
+  'fernando mora': 'Fernando de la Mora',
   'luque': 'Luque',
-  'capiata': 'Capiata', 'capia': 'Capiata',
-  'nemby': 'Ñemby', 'ñemby': 'Ñemby',
+  'capiata': 'Capiatá',
+  'nemby': 'Ñemby', 'nembi': 'Ñemby',
   'villa elisa': 'Villa Elisa',
-  'mariano roque alonso': 'Mariano Roque Alonso', 'mra': 'Mariano Roque Alonso', 'mariano': 'Mariano Roque Alonso',
+  'mariano roque alonso': 'Mariano Roque Alonso', 'mra': 'Mariano Roque Alonso',
+  'mariano': 'Mariano Roque Alonso',
   'limpio': 'Limpio',
   'san antonio': 'San Antonio',
-  'itaugua': 'Itaugua', 'itaugua': 'Itaugua',
-  'aregua': 'Aregua', 'aregua': 'Aregua',
-  'guarambare': 'Guarambare', 'guarambare': 'Guarambare',
-  'ita': 'Ita', 'ita': 'Ita',
+  'itaugua': 'Itauguá',
+  'aregua': 'Areguá',
+  'guarambare': 'Guarambaré',
+  'ita': 'Itá',
   'villeta': 'Villeta',
-  'ypane': 'Ypane', 'ypane': 'Ypane',
-  'j. augusto saldivar': 'J. Augusto Saldívar', 'saldivar': 'J. Augusto Saldívar',
+  'ypane': 'Ypané',
+  'j augusto saldivar': 'J. Augusto Saldívar',
+  'j. augusto saldivar': 'J. Augusto Saldívar',
+  'augusto saldivar': 'J. Augusto Saldívar', 'saldivar': 'J. Augusto Saldívar',
+
+  // ══ ALTO PARANÁ ══
   'ciudad del este': 'Ciudad del Este', 'cde': 'Ciudad del Este',
   'hernandarias': 'Hernandarias',
   'minga guazu': 'Minga Guazu', 'minga': 'Minga Guazu',
@@ -44,19 +52,23 @@ const CITY_NORMALIZE = {
   'san alberto': 'San Alberto',
   'juan leon mallorquin': 'Juan Leon Mallorquin',
   'yguazu': 'Yguazu',
+
+  // ══ CAAGUAZÚ ══
   'coronel oviedo': 'Coronel Oviedo', 'cnel oviedo': 'Coronel Oviedo', 'oviedo': 'Coronel Oviedo',
-  'caaguazu': 'Caaguazú', 'caaguazu': 'Caaguazú',
+  'caaguazu': 'Caaguazú',
   'repatriacion': 'Repatriación', 'repa': 'Repatriación',
   'natalicio talavera': 'Natalicio Talavera',
   'felix perez cardozo': 'Félix Pérez Cardozo',
   'mauricio jose troche': 'Mauricio José Troche',
   'san jose de los arroyos': 'San José de los Arroyos',
   'yataity del norte': 'Yataity del Norte',
-  'caacupe': 'Caacupé', 'caacupe': 'Caacupé',
+
+  // ══ CORDILLERA ══
+  'caacupe': 'Caacupé',
   'san bernardino': 'San Bernardino', 'san berni': 'San Bernardino',
-  'ypacarai': 'Ypacaraí', 'ypacarai': 'Ypacaraí',
+  'ypacarai': 'Ypacaraí',
   'altos': 'Altos',
-  'atyra': 'Atyrá', 'atyra': 'Atyrá',
+  'atyra': 'Atyrá',
   'emboscada': 'Emboscada',
   'eusebio ayala': 'Eusebio Ayala',
   'itacurubi de la cordillera': 'Itacurubí de la Cordillera',
@@ -65,19 +77,28 @@ const CITY_NORMALIZE = {
   'nueva italia': 'Nueva Italia',
   'piribebuy': 'Piribebuy',
   'santa elena': 'Santa Elena',
-  'tobati': 'Tobatí', 'tobati': 'Tobatí',
-  'paraguari': 'Paraguarí', 'paraguari': 'Paraguarí',
-  'yaguaron': 'Yaguarón', 'yaguaron': 'Yaguarón',
-  'carapegua': 'Carapeguá', 'carapegua': 'Carapeguá',
+  'tobati': 'Tobatí',
+
+  // ══ PARAGUARÍ ══
+  'paraguari': 'Paraguarí',
+  'yaguaron': 'Yaguarón',
+  'carapegua': 'Carapeguá',
   'escobar': 'Escobar',
+  'general bernardino caballero': 'General Bernardino Caballero',
   'gral bernardino caballero': 'General Bernardino Caballero',
-  'pirayu': 'Pirayú', 'pirayu': 'Pirayú',
-  'sapucai': 'Sapucaí', 'sapucai': 'Sapucaí',
+  'pirayu': 'Pirayú',
+  'sapucai': 'Sapucaí',
+
+  // ══ GUAIRÁ ══
   'villarrica': 'Villarrica',
   'mbocayaty': 'Mbocayaty',
+
+  // ══ PRESIDENTE HAYES ══
   'villa hayes': 'Villa Hayes',
   'benjamin aceval': 'Benjamín Aceval',
   'remansito': 'Remansito',
+
+  // ══ AMAMBAY ══
   'pedro juan caballero': 'Pedro Juan Caballero', 'pjc': 'Pedro Juan Caballero',
 };
 
@@ -86,30 +107,11 @@ function cleanCityInput(raw) {
   return raw.split(/[,\-]|zona |barrio |sector |b°/i)[0].trim();
 }
 
-function levenshtein(a, b) {
-  const m = [];
-  for (let i = 0; i <= b.length; i++) m[i] = [i];
-  for (let j = 0; j <= a.length; j++) m[0][j] = j;
-  for (let i = 1; i <= b.length; i++)
-    for (let j = 1; j <= a.length; j++)
-      m[i][j] = b[i-1] === a[j-1] ? m[i-1][j-1] : Math.min(m[i-1][j-1]+1, m[i][j-1]+1, m[i-1][j]+1);
-  return m[b.length][a.length];
-}
-
-function fuzzyCity(normalized) {
-  let best = null, bestDist = 999;
-  for (const key of Object.keys(CITY_NORMALIZE)) {
-    const dist = levenshtein(normalized, key);
-    if (dist < bestDist && dist <= 3) { bestDist = dist; best = key; }
-  }
-  return best ? CITY_NORMALIZE[best] : null;
-}
-
 function normalizeCity(raw) {
   if (!raw) return raw;
   const cleaned = cleanCityInput(raw);
   const normalized = cleaned.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-  return CITY_NORMALIZE[normalized] || fuzzyCity(normalized) || cleaned;
+  return CITY_NORMALIZE[normalized] || cleaned;
 }
 
 const CORS = {
