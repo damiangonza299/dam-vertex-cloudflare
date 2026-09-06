@@ -299,7 +299,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
         const sheetsRes = await fetch(webhookUrl, {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          redirect: 'follow',
+          redirect: 'manual',
           signal:  AbortSignal.timeout(12000),
           body: JSON.stringify({
             fecha:      new Date().toLocaleString('es-PY'),
