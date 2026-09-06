@@ -76,7 +76,7 @@
     /* Rojo vivo — mismo criterio que el CTA agregado en tabla-marmol,
        no el acento acero apagado. */
     .btn-est {
-      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
       background: #ff1717; color: #fff; font-weight: 800;
       padding: 15px 14px; border-radius: 999px; border: 3px solid #b91c1c; cursor: pointer;
       text-decoration: none; transition: background .2s, transform .15s;
@@ -213,7 +213,7 @@
 </head>
 <body class="theme-estante">
 
-<div class="urgency-bar">🔴 Stock limitado &nbsp;·&nbsp; Envío gratis &nbsp;·&nbsp; Pagás al recibir</div>
+<div class="urgency-bar">Stock limitado &nbsp;·&nbsp; Envío gratis &nbsp;·&nbsp; Pagás al recibir</div>
 
 <!-- Nav -->
 <nav class="nav">
@@ -252,7 +252,10 @@
         <div class="hero-est__feature">🚿 Para champús, accesorios y más — baño, cocina, lavadero</div>
       </div>
 
-      <button type="button" class="btn-est" id="cta-open-modal" data-open-modal>Pedir ahora — Pagás al recibir</button>
+      <button type="button" class="btn-est" id="cta-open-modal" data-open-modal>
+        Pedir ahora — Pagás al recibir
+        <div style="font-size:11px;font-weight:500;margin-top:3px;opacity:0.9;">✓ Garantía de 90 días</div>
+      </button>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
         <span class="db-badge">💳 Pago al recibir · Central</span>
@@ -304,7 +307,10 @@
   <div class="urgencia-est__inner">
     <h2 class="urgencia-est__h">Ordená tu baño hoy mismo</h2>
     <p class="urgencia-est__sub">Gs. 149.000 · Entrega en el día · Pagás al recibir</p>
-    <button type="button" class="btn-est" data-insync-cta="urgencia" id="cta-open-modal-2" data-open-modal>Pedir ahora — Pagás al recibir</button>
+    <button type="button" class="btn-est" data-insync-cta="urgencia" id="cta-open-modal-2" data-open-modal>
+      Pedir ahora — Pagás al recibir
+      <div style="font-size:11px;font-weight:500;margin-top:3px;opacity:0.9;">✓ Garantía de 90 días</div>
+    </button>
   </div>
 </section>
 
@@ -317,7 +323,7 @@
 
     <div id="modal-form-wrap">
       <h2 class="modal-title" id="modal-title-est">Completá tu pedido</h2>
-      <p class="modal-stock-alert" style="text-align:center;font-size:12px;font-weight:700;color:#c53030;margin:-4px 0 14px;">⚡ Quedan pocas unidades — pedidos se procesan hoy</p>
+      <p class="modal-stock-alert" style="text-align:center;font-size:11px;font-weight:700;color:#c53030;margin:-4px 0 14px;">⚡ Quedan pocas unidades — pedidos se procesan hoy</p>
       <p class="modal-subtitle">Completá tus datos y nos comunicamos para coordinar tu entrega.</p>
 
       <span class="modal-section-label">Elegí tu oferta</span>
@@ -433,7 +439,10 @@
 
 <!-- CRO: Sticky bottom CTA — mobile only -->
 <div class="sticky-cta-bar" id="sticky-cta-bar">
-  <button type="button" class="btn-est" style="width:100%;margin:0" data-open-modal>Pedir ahora — Pagás al recibir</button>
+  <button type="button" class="btn-est" style="width:100%;margin:0" data-open-modal>
+    Pedir ahora — Pagás al recibir
+    <div style="font-size:11px;font-weight:500;margin-top:3px;opacity:0.9;">✓ Garantía de 90 días</div>
+  </button>
 </div>
 
 <!-- Scripts -->
