@@ -379,6 +379,10 @@
           <input type="text" id="d-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
         </div>
         <div class="form-group">
+          <label for="d-calle">Calle principal y secundaria <span style="font-weight:400">(opcional)</span></label>
+          <input type="text" id="d-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address">
+        </div>
+        <div class="form-group">
           <label for="d-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
           <textarea id="d-nota" name="nota" rows="2" placeholder="color, variante, instrucción especial"></textarea>
         </div>
@@ -527,6 +531,7 @@
         name:         document.getElementById('d-name').value.trim(),
         phone:        document.getElementById('d-phone').value.trim(),
         city:         document.getElementById('d-city').value.trim(),
+        street:       document.getElementById('d-calle').value.trim(),
         nota:         document.getElementById('d-nota').value.trim(),
         quantity:     qty,
         product_slug: PRODUCT.slug,
