@@ -379,8 +379,8 @@
           <input type="text" id="d-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
         </div>
         <div class="form-group">
-          <label for="d-calle">Calle principal y secundaria <span style="font-weight:400">(opcional)</span></label>
-          <input type="text" id="d-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address">
+          <label for="d-calle">Calle principal y secundaria</label>
+          <input type="text" id="d-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address" required>
         </div>
         <div class="form-group">
           <label for="d-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
@@ -543,7 +543,7 @@
         invoice_name: invoice ? (document.getElementById('d-invoice-name')?.value || '').trim() : '',
         invoice_email:invoice ? (document.getElementById('d-invoice-email')?.value || '').trim() : '',
       };
-      if (!data.name || !data.phone || !data.city) {
+      if (!data.name || !data.phone || !data.city || !data.street) {
         alert('Completá nombre, teléfono y ciudad para continuar.');
         return;
       }
