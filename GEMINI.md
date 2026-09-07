@@ -618,6 +618,7 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 - El campo ciudad en landings DCANP es siempre texto libre
 - dcanp-lead.js normaliza automáticamente antes de enviar a Sheets y Telegram
 - Si la ciudad no está en el mapa → se guarda tal como la escribió el cliente
-- El modal DCANP no incluye campo Referencia. Campos en orden: Nombre y apellido → Teléfono → Ciudad → Dirección exacta (calle principal y secundaria, opcional) → Nota del pedido (opcional) → Envío express → Necesito factura.
+- El modal DCANP no incluye campo Referencia. Campos en orden: Nombre y apellido → Teléfono → Ciudad → Dirección exacta (calle principal y secundaria, obligatorio) → Nota del pedido (opcional) → Envío express → Necesito factura.
+- El placeholder de Nota del pedido en modales DCANP es siempre: "Ej: Frente al edificio Torres, portón azul"
 - Para agregar nuevas ciudades → editar CITY_NORMALIZE en dcanp-lead.js
 - Referencia de ciudades por departamento: ver CITY_NORMALIZE en dcanp-lead.js
