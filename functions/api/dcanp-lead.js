@@ -146,7 +146,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     const ip = request.headers.get('CF-Connecting-IP') || '';
     const ua = request.headers.get('User-Agent') || '';
-    const qty = Number(quantity) || 1;
+    const qty = parseInt(quantity) || 1;
     const amount = Number(value) || 0;
     const effectiveAmount = amount;
     const fmtNum = n => Number(n || 0).toLocaleString('es-PY');
@@ -299,7 +299,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
         const sheetsRes = await fetch(webhookUrl, {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          redirect: 'manual',
+          redirect: 'follow',
           signal:  AbortSignal.timeout(12000),
           body: JSON.stringify({
             fecha:      new Date().toLocaleString('es-PY'),
