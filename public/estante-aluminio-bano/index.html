@@ -171,6 +171,13 @@
     .theme-estante .upsell-title { color: var(--est-text); }
     .theme-estante .upsell-sub { color: rgba(26,32,44,.55); }
     #d-total-line:empty { display:none; }
+    /* Autocomplete de ciudad */
+    .city-input-wrap { position: relative; }
+    .city-suggestions { display:none; position:absolute; left:0; right:0; top:100%; margin-top:4px; background:#fff; border:1px solid rgba(0,0,0,.1); border-radius:8px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; max-height:240px; z-index:999; -webkit-user-select:none; user-select:none; }
+    .city-suggestions.open { display:block; }
+    .city-suggestions__item { padding:11px 14px; font-size:14px; color:#1a202c; background:#fff; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .city-suggestions__item + .city-suggestions__item { border-top:1px solid rgba(0,0,0,.07); }
+    .city-suggestions__item:hover, .city-suggestions__item.touch-active { background:#f0f4ff; }
     .form-submit { margin-top: 18px; }
     .form-submit .btn-est { max-width: none; }
     /* Pantalla de agradecimiento DCANP — fondo rojo suave. Selectores con
@@ -381,7 +388,10 @@
         </div>
         <div class="form-group">
           <label for="d-city">Ciudad</label>
-          <input type="text" id="d-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
+          <div class="city-input-wrap">
+            <input type="text" id="d-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
+            <div class="city-suggestions" id="d-city-sugg"></div>
+          </div>
         </div>
         <div class="form-group">
           <label for="d-calle">Calle principal y secundaria</label>
@@ -459,6 +469,7 @@
 
 <!-- Scripts -->
 <script src="/assets/js/tracking.js?v=73" defer></script>
+<script src="/assets/js/dcanp-cities.js?v=1" defer></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
 
 <script defer>
@@ -583,6 +594,7 @@
       submitBtn.disabled = false;
       submitBtn.textContent = 'Confirmar pedido';
     });
+    if (window.initDcanpCitySelector) initDcanpCitySelector('d-city', 'd-city-sugg');
   });
 </script>
 

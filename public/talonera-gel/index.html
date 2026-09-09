@@ -159,6 +159,13 @@
     .theme-talonera .upsell-sub { color: rgba(30,41,59,.55); }
     #t-total-line:empty { display:none; }
     .form-submit { margin-top: 18px; }
+    /* Autocomplete de ciudad */
+    .city-input-wrap { position: relative; }
+    .city-suggestions { display:none; position:absolute; left:0; right:0; top:100%; margin-top:4px; background:#fff; border:1px solid rgba(0,0,0,.1); border-radius:8px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; max-height:240px; z-index:999; -webkit-user-select:none; user-select:none; }
+    .city-suggestions.open { display:block; }
+    .city-suggestions__item { padding:11px 14px; font-size:14px; color:#1a202c; background:#fff; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .city-suggestions__item + .city-suggestions__item { border-top:1px solid rgba(0,0,0,.07); }
+    .city-suggestions__item:hover, .city-suggestions__item.touch-active { background:#f0f4ff; }
     .form-submit .btn-tal { max-width: none; }
     .theme-talonera .dcanp-success { display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; padding: 32px 24px; text-align: center; }
     .theme-talonera .dcanp-success.visible { display: block; }
@@ -343,7 +350,10 @@
         </div>
         <div class="form-group">
           <label for="t-city">Ciudad</label>
-          <input type="text" id="t-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
+          <div class="city-input-wrap">
+            <input type="text" id="t-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
+            <div class="city-suggestions" id="t-city-sugg"></div>
+          </div>
         </div>
         <div class="form-group">
           <label for="t-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
@@ -412,6 +422,7 @@
 
 <!-- Scripts -->
 <script src="/assets/js/tracking.js?v=73" defer></script>
+<script src="/assets/js/dcanp-cities.js?v=1" defer></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
 
 <script defer>
@@ -527,6 +538,7 @@
       submitBtn.disabled = false;
       submitBtn.textContent = 'Confirmar pedido';
     });
+    if (window.initDcanpCitySelector) initDcanpCitySelector('t-city', 't-city-sugg');
   });
 </script>
 

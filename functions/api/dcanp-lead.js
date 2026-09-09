@@ -102,6 +102,44 @@ const CITY_NORMALIZE = {
   'pedro juan caballero': 'Pedro Juan Caballero', 'pjc': 'Pedro Juan Caballero',
 };
 
+/* Ciudad → departamento — para línea en Telegram */
+const CITY_TO_DEPT = (() => {
+  const raw = {
+    'Asunción':        ['Asunción'],
+    'Central':         ['Areguá','Capiatá','Fernando de la Mora','Guarambaré','Itá','Itauguá','J. Augusto Saldívar','Lambaré','Limpio','Luque','Mariano Roque Alonso','Ñemby','Nueva Italia','San Antonio','San Lorenzo','Villa Elisa','Villeta','Ypané'],
+    'Alto Paraná':     ['Ciudad del Este','Colonia Yguazú','Domingo Martínez de Irala','Hernandarias','Iruña',"Juan E. O'Leary",'Juan León Mallorquín','Los Cedrales','Mbaracayú','Minga Guazú','Minga Porã','Naranjal','Presidente Franco','San Alberto','San Cristóbal','Santa Fe del Paraná','Santa Rita','Santa Rosa del Monday','Tavapy','Ñacunday','Yguazú'],
+    'Caaguazú':        ['Caaguazú','Carayaó','Coronel Oviedo','Dr. Cecilio Báez','Dr. Eulogio Estigarribia','Dr. Juan Manuel Frutos','Félix Pérez Cardozo','José Domingo Ocampos','La Pastora','Mauricio José Troche','Mbutuy','Natalicio Talavera','Nueva Londres','R.I. 3 Corrales','Raúl Arsenio Oviedo','Repatriación','San Joaquín','San José de los Arroyos','Santa Rosa del Mbutuy','Simón Bolívar','Tembiaporã','Vaquería','Yhú','Yataity del Norte'],
+    'Cordillera':      ['Altos','Arroyos y Esteros','Atyrá','Caacupé','Caraguatay','Emboscada','Eusebio Ayala','Isla Pucú','Itacurubí de la Cordillera','Juan de Mena','Loma Grande','Mbocayaty del Yhaguy','Nueva Colombia','Piribebuy','Primero de Marzo','San Bernardino','San José Obrero','Santa Elena','Tobatí','Ypacaraí'],
+    'Paraguarí':       ['Acahay','Caapucú','Carapeguá','Escobar','General Bernardino Caballero','La Colmena','Mbuyapey','Paraguarí','Pirayú','Quiindy','Quyquyhó','San Roque González de Santa Cruz','Sapucaí','Tebicuarymí','Ybycuí','Yaguarón','Ñumi'],
+    'Guairá':          ['Borja','Colonia Independencia','Dr. Bottrell','Félix Pérez Cardozo','General Eugenio A. Garay','Iturbe','Mbocayaty','Natalicio Talavera','Ñumí','Pedro P. Peña','San Salvador','Step','Tebicuary','Villarrica','Yataity'],
+    'Itapúa':          ['Alto Verá','Bella Vista Sur','Cambyretá','Capitán Meza','Capitán Miranda','Carlos Antonio López','Carmen del Paraná','Coronel Bogado','Edelira','Encarnación','Fram','General Artigas','General Delgado','Hohenau','Itapúa Poty','Jesús','José Leandro Oviedo','Kolonia Volendam','La Paz','Mayor Otaño','Natalio','Nueva Alborada','Obligado','Pirapó','San Cosme y Damián','San Juan del Paraná','San Pedro del Paraná','Santa María de Fe','Tomás Romero Pereira','Trinidad','Yatytay'],
+    'Misiones':        ['Ayolas','San Ignacio','San Juan Bautista','San Miguel','San Patricio','Santa María','Santa Rosa','Santiago','Villa Florida','Yabebyry'],
+    'Caazapá':         ['Abaí','Buena Vista','Caazapá','Dr. Moisés Bertoni','Fulgencio Yegros','Gral. Higinio Morínigo','Maciel','San Juan Nepomuceno','Tavaí','Yuty','3 de Mayo'],
+    'Ñeembucú':        ['Alberdi','Cerrito','Desmochados','General José Eduvigis Díaz','Guazú Cuá','Humaitá','Isla Umbú','Laureles','Mayor Martínez','Paso de Patria','Pilar','San Juan Bautista del Ñeembucú','Tacuaras','Villa Franca','Villa Oliva','Villalbín'],
+    'Amambay':         ['Bella Vista Norte','Capitán Bado','Pedro Juan Caballero','Zanja Pytã'],
+    'Concepción':      ['Azotey','Belén','Concepción','Horqueta','Loreto','Paso Barreto','San Alfredo','San Carlos del Apa','San Lázaro','Sargento José Félix López','Yby Yaú'],
+    'San Pedro':       ['Antequera','Capiibary','Choré','General Elizardo Aquino','Guayaibí','Itacurubí del Rosario','Lima','Nueva Germania','Río Verde','San Estanislao','San Pedro del Ycuamandyyú','San Pablo','Santa Rosa del Aguaray','Tacuatí','Unión','Villa del Rosario','Yataity del Norte','Yrybucuá','Yvyrarovana'],
+    'Canindeyú':       ['Corpus Christi','Curuguaty','Itanará','Katueté','La Paloma','Nueva Esperanza','Salto del Guairá','Villa Ygatimí','Ypejhú','Yby Pytã','Yby Pororô','Yvypytã'],
+    'Presidente Hayes':['Benjamín Aceval','Nanawa','Puerto Pinasco','Remansito','Villa Hayes'],
+    'Alto Paraguay':   ['Bahía Negra','Carmelo Peralta','Fuerte Olimpo','Puerto Casado'],
+    'Boquerón':        ['Doctor Pedro P. Peña','Filadelfia','Loma Plata','Mariscal José Félix Estigarribia'],
+  };
+  const m = {};
+  for (const [dept, cities] of Object.entries(raw)) {
+    for (const c of cities) m[c] = dept;
+  }
+  return m;
+})();
+
+function normalizarTelefono(raw) {
+  if (!raw) return raw;
+  let tel = String(raw).replace(/[\s\-\(\)\.]/g, '');
+  if (tel.startsWith('+595'))      tel = '0' + tel.slice(4);
+  else if (tel.startsWith('595'))  tel = '0' + tel.slice(3);
+  else if (tel.startsWith('59') && tel.length > 10) tel = '0' + tel.slice(2);
+  return tel;
+}
+
 function cleanCityInput(raw) {
   if (!raw) return raw;
   return raw.split(/[,\-]|zona |barrio |sector |b°/i)[0].trim();
@@ -151,7 +189,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const effectiveAmount = amount;
     const fmtNum = n => Number(n || 0).toLocaleString('es-PY');
 
-    const phoneTrim = phone.trim();
+    const phoneTrim = normalizarTelefono(phone) || '';
     const slugTrim  = (product_slug || '').trim();
 
     /* ── Bloqueo de clientes — D1 blocked_customers. Si está bloqueado: no se
@@ -209,8 +247,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
           ...(express ? ['🚀 Envío express: +Gs. 10.000'] : []),
           `Producto: ${safeProd}`,
           `Nombre: ${safeName}`,
-          `Teléfono: ${phone.trim()}`,
+          `Teléfono: ${phoneTrim}`,
           ...(safeCity ? [`Ciudad: ${safeCity}`] : []),
+          ...(safeCity && CITY_TO_DEPT[safeCity] ? [`Departamento: ${CITY_TO_DEPT[safeCity]}`] : []),
           ...(street ? [`Calle: ${sanitize(street, 150)}`] : []),
           ...(referencia ? [`Referencia: ${sanitize(referencia, 150)}`] : []),
           `Cantidad: ${qty}`,
