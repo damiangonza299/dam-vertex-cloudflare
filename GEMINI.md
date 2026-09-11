@@ -621,6 +621,8 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 - El modal DCANP no incluye campo Referencia. Campos en orden: Nombre y apellido → Teléfono → Ciudad → Dirección exacta (calle principal y secundaria, obligatorio) → Nota del pedido (opcional) → Envío express → Necesito factura.
 - El placeholder de Nota del pedido en modales DCANP es siempre: "Ej: Frente al edificio Torres, portón azul"
 - Los modales DCANP usan siempre el selector de ciudad completo de Paraguay con autocomplete (dcanp-cities.js?v=1). No usar campo de texto libre para ciudad. El selector incluye todas las ciudades con su departamento — muestra "Ciudad (Departamento)" en el dropdown, guarda solo el nombre de la ciudad.
+- El campo ciudad en modales DCANP es selector estricto — no permite texto libre. La ciudad debe seleccionarse de la lista. Si el usuario intenta enviar sin seleccionar una ciudad válida de CIUDADES_PY, el submit queda bloqueado: se hace scroll al campo, se pone borde rojo y se muestra el mensaje "Por favor seleccioná tu ciudad de la lista". La validación es contra window.CIUDADES_PY.some() al momento del submit, no con flag.
+- El campo teléfono en modales DCANP tiene valor inicial "09" y placeholder "981 234 567". Al enfocar el cursor queda al final. Al enviar, se limpian los espacios con .replace(/\s/g, '').
 - El teléfono se normaliza automáticamente en dcanp-lead.js — se quita el prefijo internacional +595 o 595 antes de guardar en Sheets y Telegram.
 - El mensaje de Telegram incluye "Departamento: X" después de "Ciudad: X" cuando la ciudad se reconoce en CITY_TO_DEPT.
 - Para agregar nuevas ciudades → editar CITY_NORMALIZE en dcanp-lead.js

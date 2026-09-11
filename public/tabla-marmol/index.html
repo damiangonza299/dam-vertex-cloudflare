@@ -384,9 +384,9 @@
     .city-input-wrap { position: relative; }
     .city-suggestions { display:none; position:absolute; left:0; right:0; top:100%; margin-top:4px; background:#fff; border:1px solid rgba(0,0,0,.1); border-radius:8px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; max-height:240px; z-index:999; -webkit-user-select:none; user-select:none; }
     .city-suggestions.open { display:block; }
-    .city-suggestions__item { padding:11px 14px; font-size:14px; color:#1a202c; background:#fff; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-    .city-suggestions__item + .city-suggestions__item { border-top:1px solid rgba(0,0,0,.07); }
-    .city-suggestions__item:hover, .city-suggestions__item.touch-active { background:#f0f4ff; }
+    .city-suggestions__item { padding:11px 14px; font-size:14px; color:#ffffff; background:#c0392b; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .city-suggestions__item + .city-suggestions__item { border-top:1px solid rgba(255,255,255,.15); }
+    .city-suggestions__item:hover, .city-suggestions__item.touch-active { background:#a93226; color:#ffffff; }
 
     .theme-depilador .upsell-block { background: #fff; border-color: rgba(139,115,85,.2); }
     .theme-depilador .upsell-block.checked,
@@ -438,18 +438,18 @@
       display: flex !important;
       align-items: center !important;
       font-size: 14px !important;
-      color: #000000 !important;
-      background-color: #ffffff !important;
+      color: #ffffff !important;
+      background-color: #c0392b !important;
       background-image: none !important;
       cursor: pointer !important;
       -webkit-user-select: none !important;
       user-select: none !important;
       -webkit-tap-highlight-color: transparent !important;
     }
-    .city-suggestions__item + .city-suggestions__item { border-top: 1px solid rgba(0,0,0,0.08) !important; }
+    .city-suggestions__item + .city-suggestions__item { border-top: 1px solid rgba(255,255,255,0.15) !important; }
     .city-suggestions__item:hover,
     .city-suggestions__item:focus,
-    .city-suggestions__item.touch-active { background-color: var(--dep-pink-dk) !important; color: #ffffff !important; }
+    .city-suggestions__item.touch-active { background-color: #a93226 !important; color: #ffffff !important; }
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
@@ -715,7 +715,7 @@
 
         <div class="form-group">
           <label for="m-phone">Teléfono (WhatsApp)</label>
-          <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel" required aria-required="true">
+          <input type="tel" id="m-phone" name="phone" placeholder="981 234 567" value="09" autocomplete="tel" required aria-required="true">
         </div>
 
         <div class="form-group">
@@ -724,6 +724,7 @@
             <input type="text" id="m-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required aria-required="true">
             <div class="city-suggestions" id="m-city-sugg"></div>
           </div>
+          <p id="m-city-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
         </div>
 
 
@@ -868,6 +869,17 @@
     var expChk = document.getElementById('m-express');
     if (expChk) expChk.addEventListener('change', updateTotalLine);
 
+    var mPhone = document.getElementById('m-phone');
+    if (mPhone && !mPhone.value) mPhone.value = '09';
+    if (mPhone) mPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
+
+    var mCityInput = document.getElementById('m-city');
+    var mCityError = document.getElementById('m-city-error');
+    if (mCityInput) mCityInput.addEventListener('input', function() {
+      mCityInput.style.borderColor = '';
+      if (mCityError) { mCityError.textContent = ''; mCityError.style.display = 'none'; }
+    });
+
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       var qty     = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
@@ -877,7 +889,7 @@
       var value   = base + (express ? 10000 : 0);
       var data = {
         name:         (document.getElementById('m-name').value || '').trim(),
-        phone:        (document.getElementById('m-phone').value || '').trim(),
+        phone:        (document.getElementById('m-phone').value || '').replace(/\s/g, ''),
         city:         (document.getElementById('m-city').value || '').trim(),
         nota:         (document.getElementById('m-nota').value || '').trim(),
         quantity:     qty,
@@ -896,6 +908,12 @@
       }
       if (!/^[\d\s+\-]{7,}$/.test(data.phone) || data.phone.replace(/\D/g,'').length < 7) {
         alert('Ingresá un número de teléfono válido.');
+        return;
+      }
+      var mCityOk = window.CIUDADES_PY && window.CIUDADES_PY.some(function(c) { return c.ciudad.toLowerCase() === data.city.toLowerCase(); });
+      if (!mCityOk) {
+        if (mCityInput) { mCityInput.style.borderColor = '#c0392b'; mCityInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        if (mCityError) { mCityError.textContent = 'Por favor seleccioná tu ciudad de la lista'; mCityError.style.display = 'block'; }
         return;
       }
       try {

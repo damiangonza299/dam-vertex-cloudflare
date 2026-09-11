@@ -175,9 +175,9 @@
     .city-input-wrap { position: relative; }
     .city-suggestions { display:none; position:absolute; left:0; right:0; top:100%; margin-top:4px; background:#fff; border:1px solid rgba(0,0,0,.1); border-radius:8px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; max-height:240px; z-index:999; -webkit-user-select:none; user-select:none; }
     .city-suggestions.open { display:block; }
-    .city-suggestions__item { padding:11px 14px; font-size:14px; color:#1a202c; background:#fff; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-    .city-suggestions__item + .city-suggestions__item { border-top:1px solid rgba(0,0,0,.07); }
-    .city-suggestions__item:hover, .city-suggestions__item.touch-active { background:#f0f4ff; }
+    .city-suggestions__item { padding:11px 14px; font-size:14px; color:#ffffff; background:#c0392b; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .city-suggestions__item + .city-suggestions__item { border-top:1px solid rgba(255,255,255,.15); }
+    .city-suggestions__item:hover, .city-suggestions__item.touch-active { background:#a93226; color:#ffffff; }
     .form-submit { margin-top: 18px; }
     .form-submit .btn-est { max-width: none; }
     /* Pantalla de agradecimiento DCANP — fondo rojo suave. Selectores con
@@ -384,7 +384,7 @@
         </div>
         <div class="form-group">
           <label for="d-phone">Teléfono (WhatsApp)</label>
-          <input type="tel" id="d-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel" required>
+          <input type="tel" id="d-phone" name="phone" placeholder="981 234 567" value="09" autocomplete="tel" required>
         </div>
         <div class="form-group">
           <label for="d-city">Ciudad</label>
@@ -392,6 +392,7 @@
             <input type="text" id="d-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
             <div class="city-suggestions" id="d-city-sugg"></div>
           </div>
+          <p id="d-city-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
         </div>
         <div class="form-group">
           <label for="d-calle">Calle principal y secundaria</label>
@@ -536,6 +537,17 @@
     const expChkD = document.getElementById('d-express');
     if (expChkD) expChkD.addEventListener('change', updateEstTotalLine);
 
+    const dPhone = document.getElementById('d-phone');
+    if (dPhone && !dPhone.value) dPhone.value = '09';
+    if (dPhone) dPhone.addEventListener('focus', function() { const l = this.value.length; this.setSelectionRange(l, l); });
+
+    const dCityInput = document.getElementById('d-city');
+    const dCityError = document.getElementById('d-city-error');
+    if (dCityInput) dCityInput.addEventListener('input', () => {
+      dCityInput.style.borderColor = '';
+      if (dCityError) { dCityError.textContent = ''; dCityError.style.display = 'none'; }
+    });
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
@@ -545,7 +557,7 @@
       const value   = base + (express ? 10000 : 0);
       const data = {
         name:         document.getElementById('d-name').value.trim(),
-        phone:        document.getElementById('d-phone').value.trim(),
+        phone:        document.getElementById('d-phone').value.replace(/\s/g, ''),
         city:         document.getElementById('d-city').value.trim(),
         street:       document.getElementById('d-calle').value.trim(),
         nota:         document.getElementById('d-nota').value.trim(),
@@ -565,6 +577,12 @@
       }
       if (!/^[\d\s+\-]{7,}$/.test(data.phone) || data.phone.replace(/\D/g,'').length < 7) {
         alert('Ingresá un número de teléfono válido.');
+        return;
+      }
+      const dCityOk = window.CIUDADES_PY && window.CIUDADES_PY.some(c => c.ciudad.toLowerCase() === data.city.toLowerCase());
+      if (!dCityOk) {
+        if (dCityInput) { dCityInput.style.borderColor = '#c0392b'; dCityInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        if (dCityError) { dCityError.textContent = 'Por favor seleccioná tu ciudad de la lista'; dCityError.style.display = 'block'; }
         return;
       }
       try {

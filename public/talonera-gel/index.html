@@ -163,9 +163,9 @@
     .city-input-wrap { position: relative; }
     .city-suggestions { display:none; position:absolute; left:0; right:0; top:100%; margin-top:4px; background:#fff; border:1px solid rgba(0,0,0,.1); border-radius:8px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; max-height:240px; z-index:999; -webkit-user-select:none; user-select:none; }
     .city-suggestions.open { display:block; }
-    .city-suggestions__item { padding:11px 14px; font-size:14px; color:#1a202c; background:#fff; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-    .city-suggestions__item + .city-suggestions__item { border-top:1px solid rgba(0,0,0,.07); }
-    .city-suggestions__item:hover, .city-suggestions__item.touch-active { background:#f0f4ff; }
+    .city-suggestions__item { padding:11px 14px; font-size:14px; color:#ffffff; background:#c0392b; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .city-suggestions__item + .city-suggestions__item { border-top:1px solid rgba(255,255,255,.15); }
+    .city-suggestions__item:hover, .city-suggestions__item.touch-active { background:#a93226; color:#ffffff; }
     .form-submit .btn-tal { max-width: none; }
     .theme-talonera .dcanp-success { display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; padding: 32px 24px; text-align: center; }
     .theme-talonera .dcanp-success.visible { display: block; }
@@ -346,7 +346,7 @@
         </div>
         <div class="form-group">
           <label for="t-phone">Teléfono (WhatsApp)</label>
-          <input type="tel" id="t-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel" required>
+          <input type="tel" id="t-phone" name="phone" placeholder="981 234 567" value="09" autocomplete="tel" required>
         </div>
         <div class="form-group">
           <label for="t-city">Ciudad</label>
@@ -354,6 +354,7 @@
             <input type="text" id="t-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
             <div class="city-suggestions" id="t-city-sugg"></div>
           </div>
+          <p id="t-city-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
         </div>
         <div class="form-group">
           <label for="t-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
@@ -485,6 +486,17 @@
     const expChk = document.getElementById('t-express');
     if (expChk) expChk.addEventListener('change', updateTotalLine);
 
+    const tPhone = document.getElementById('t-phone');
+    if (tPhone && !tPhone.value) tPhone.value = '09';
+    if (tPhone) tPhone.addEventListener('focus', function() { const l = this.value.length; this.setSelectionRange(l, l); });
+
+    const tCityInput = document.getElementById('t-city');
+    const tCityError = document.getElementById('t-city-error');
+    if (tCityInput) tCityInput.addEventListener('input', () => {
+      tCityInput.style.borderColor = '';
+      if (tCityError) { tCityError.textContent = ''; tCityError.style.display = 'none'; }
+    });
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
@@ -494,7 +506,7 @@
       const value   = base + (express ? 10000 : 0);
       const data = {
         name:         document.getElementById('t-name').value.trim(),
-        phone:        document.getElementById('t-phone').value.trim(),
+        phone:        document.getElementById('t-phone').value.replace(/\s/g, ''),
         city:         document.getElementById('t-city').value.trim(),
         nota:         document.getElementById('t-nota').value.trim(),
         quantity:     qty,
@@ -513,6 +525,12 @@
       }
       if (!/^[\d\s+\-]{7,}$/.test(data.phone) || data.phone.replace(/\D/g,'').length < 7) {
         alert('Ingresá un número de teléfono válido.');
+        return;
+      }
+      const tCityOk = window.CIUDADES_PY && window.CIUDADES_PY.some(c => c.ciudad.toLowerCase() === data.city.toLowerCase());
+      if (!tCityOk) {
+        if (tCityInput) { tCityInput.style.borderColor = '#c0392b'; tCityInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        if (tCityError) { tCityError.textContent = 'Por favor seleccioná tu ciudad de la lista'; tCityError.style.display = 'block'; }
         return;
       }
       try {
