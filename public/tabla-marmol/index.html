@@ -729,8 +729,12 @@
 
 
         <div class="form-group">
+          <label for="m-calle">Calle principal y secundaria</label>
+          <input type="text" id="m-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address">
+        </div>
+        <div class="form-group">
           <label for="m-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
-          <textarea id="m-nota" name="nota" rows="2" placeholder="color, variante, instrucción especial"></textarea>
+          <textarea id="m-nota" name="nota" rows="2" placeholder="Ej: Frente al edificio Torres, portón azul"></textarea>
         </div>
 
       <label class="upsell-block" style="margin-top:4px">
@@ -891,6 +895,7 @@
         name:         (document.getElementById('m-name').value || '').trim(),
         phone:        (document.getElementById('m-phone').value || '').replace(/\s/g, ''),
         city:         (document.getElementById('m-city').value || '').trim(),
+        street:       (document.getElementById('m-calle').value || '').trim(),
         nota:         (document.getElementById('m-nota').value || '').trim(),
         quantity:     qty,
         product_slug: PRODUCT.slug,
