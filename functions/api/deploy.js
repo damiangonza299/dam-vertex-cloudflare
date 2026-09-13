@@ -34,44 +34,63 @@ export async function onRequestPost(ctx) {
   }
 
   const ACCOUNT_ID   = env.CLOUDFLARE_ACCOUNT_ID?.trim().replace(/^﻿/, '');
-  const API_TOKEN    = env.CLOUDFLARE_API_TOKEN;
+  const API_TOKEN    = env.CLOUDFLARE_API_TOKEN?.trim().replace(/^﻿/, '');
   const PROJECT_NAME = 'dam-vertex-cloudflare';
 
   if (!ACCOUNT_ID || !API_TOKEN) {
     return Response.json({ ok: false, error: 'Secrets de Cloudflare no configurados' }, { status: 500 });
   }
 
-  console.log('HTML length:', html.length);
-  console.log('Slug:', slug);
-  console.log('HTML_PREVIEW:', html.substring(0, 500));
+  console.log('Slug:', slug, '| HTML length:', html.length);
 
-  const formData = new FormData();
-  formData.append(
-    `public/${slug}/index.html`,
-    new Blob([html], { type: 'text/html' }),
-    'index.html'
-  );
-
+  /* Paso 1 — Crear deployment */
   const deployRes = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/deployments`,
     {
       method:  'POST',
+      headers: { 'Authorization': `Bearer ${API_TOKEN}`, 'Content-Type': 'application/json' },
+      body:    JSON.stringify({}),
+    }
+  );
+  const deploy = await deployRes.json();
+  console.log('Paso 1 status:', deployRes.status, '| success:', deploy.success);
+  console.log('Paso 1 result:', JSON.stringify(deploy).substring(0, 400));
+
+  if (!deploy.success) {
+    return Response.json({ ok: false, step: 1, error: JSON.stringify(deploy.errors) }, { status: 502 });
+  }
+
+  const deploymentId = deploy.result?.id;
+  if (!deploymentId) {
+    return Response.json({ ok: false, step: 1, error: 'No deploymentId en respuesta' }, { status: 502 });
+  }
+
+  /* Paso 2 — Subir archivo */
+  const formData = new FormData();
+  formData.append(
+    'files',
+    new Blob([html], { type: 'text/html' }),
+    `public/${slug}/index.html`
+  );
+
+  const uploadRes = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/deployments/${deploymentId}/files`,
+    {
+      method:  'PUT',
       headers: { 'Authorization': `Bearer ${API_TOKEN}` },
       body:    formData,
     }
   );
+  const upload = await uploadRes.json().catch(() => ({}));
+  console.log('Paso 2 status:', uploadRes.status, '| result:', JSON.stringify(upload).substring(0, 300));
 
-  const result = await deployRes.json();
-  console.log('CF deploy status:', deployRes.status);
-  console.log('CF deploy result:', JSON.stringify(result).substring(0, 300));
-
-  if (result.success) {
+  if (uploadRes.ok) {
     return Response.json({
       ok:      true,
       message: '✅ Deployado en Cloudflare — cambios en vivo en segundos',
-      url:     result.result?.url,
+      deployment_id: deploymentId,
     });
   }
 
-  return Response.json({ ok: false, error: JSON.stringify(result.errors) }, { status: 502 });
+  return Response.json({ ok: false, step: 2, error: JSON.stringify(upload) }, { status: 502 });
 }
