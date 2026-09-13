@@ -65,13 +65,15 @@ export async function onRequestPost(ctx) {
     return Response.json({ ok: false, step: 1, error: 'No deploymentId en respuesta' }, { status: 502 });
   }
 
-  /* Paso 2 — Subir archivo */
+  /* Paso 2 — Subir archivo con manifest */
+  const encoded    = new TextEncoder().encode(html);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
+  const hashHex    = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+  const filePath   = `/${slug}/index.html`;
+
   const formData = new FormData();
-  formData.append(
-    'files',
-    new Blob([html], { type: 'text/html' }),
-    `public/${slug}/index.html`
-  );
+  formData.append('manifest', JSON.stringify({ [filePath]: hashHex }));
+  formData.append(filePath, new Blob([html], { type: 'text/html' }), 'index.html');
 
   const uploadRes = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/deployments/${deploymentId}/files`,
