@@ -1,10 +1,16 @@
 (function() {
-  // Saltar toda protección cuando la landing se carga dentro del Editor Visual
-  // (iframe same-origin desde /product-studio/)
-  try {
-    if (window.top !== window.self &&
-        window.parent.location.pathname.startsWith('/product-studio')) return;
-  } catch(_) {}
+  // Si estamos dentro de un iframe desde product-studio — no aplicar ninguna protección
+  if (window !== window.top) {
+    try {
+      var parentPath = window.parent.location.pathname;
+      if (parentPath.indexOf('/product-studio') !== -1) {
+        throw new Error('exit');
+      }
+    } catch(e) {
+      if (e.message === 'exit') return; // salida limpia: es el editor, no ejecutar nada
+      return; // cross-origin u otro error — también salir para no bloquear el iframe
+    }
+  }
 
   // Solo activar protección en desktop — en mobile no hay DevTools
   var isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent)
