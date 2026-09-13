@@ -268,8 +268,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <h1>Product Studio</h1>
       <p>Dam Vertex</p>
     </div>
-    <button id="new-product-btn" onclick="openNewProduct()">+ Nuevo producto</button>
-    <select id="platform-filter" onchange="renderSidebar()" style="width:100%;margin:0 0 8px;padding:6px 8px;font-size:11px;background:var(--bg2,#1a1a1a);color:inherit;border:1px solid var(--border,#333);border-radius:6px">
+    <button id="new-product-btn" onclick="openNewProduct()" style="display:none">+ Nuevo producto</button>
+    <select id="platform-filter" onchange="renderSidebar()" style="width:calc(100% - 20px);margin:8px 10px 4px;padding:4px 6px;font-size:10px;background:var(--bg2,#1a1a1a);color:inherit;border:1px solid var(--border,#333);border-radius:4px">
       <option value="">Todas las plataformas</option>
       <option value="DAM_VERTEX">DAM_VERTEX</option>
       <option value="DCANP_GROUP">DCANP GROUP</option>
@@ -293,19 +293,19 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       </div>
 
       <div id="tab-nav">
-        <button class="tab-btn active" data-tab="tab-producto" onclick="switchTab('tab-producto')">Producto</button>
-        <button class="tab-btn" data-tab="tab-inventario" onclick="switchTab('tab-inventario')">Inventario</button>
-        <button class="tab-btn" data-tab="tab-investigacion" onclick="switchTab('tab-investigacion')">Investigación</button>
-        <button class="tab-btn" data-tab="tab-estrategia" onclick="switchTab('tab-estrategia')">Estrategia</button>
-        <button class="tab-btn" data-tab="tab-visual" onclick="switchTab('tab-visual')">Visual</button>
-        <button class="tab-btn" data-tab="tab-landing" onclick="switchTab('tab-landing')">Landing</button>
+        <button class="tab-btn" data-tab="tab-producto" onclick="switchTab('tab-producto')" style="display:none">Producto</button>
+        <button class="tab-btn" data-tab="tab-inventario" onclick="switchTab('tab-inventario')" style="display:none">Inventario</button>
+        <button class="tab-btn" data-tab="tab-investigacion" onclick="switchTab('tab-investigacion')" style="display:none">Investigación</button>
+        <button class="tab-btn" data-tab="tab-estrategia" onclick="switchTab('tab-estrategia')" style="display:none">Estrategia</button>
+        <button class="tab-btn" data-tab="tab-visual" onclick="switchTab('tab-visual')" style="display:none">Visual</button>
+        <button class="tab-btn active" data-tab="tab-landing" onclick="switchTab('tab-landing')">Editor</button>
         <button class="tab-btn" data-tab="tab-sync" onclick="switchTab('tab-sync')">Sync</button>
       </div>
 
-      <div id="tab-content">
+      <div id="tab-content" class="is-editor">
 
         <!-- TAB: Producto -->
-        <div class="tab-pane active" id="tab-producto">
+        <div class="tab-pane" id="tab-producto">
           <div class="form-section">
             <h3>Identificación</h3>
             <div class="form-row">
@@ -587,7 +587,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         </div><!-- /tab-visual -->
 
         <!-- TAB: Editor Visual -->
-        <div class="tab-pane" id="tab-landing">
+        <div class="tab-pane active" id="tab-landing">
           <div class="editor-layout">
 
             <!-- Left: panel de control -->
@@ -859,6 +859,7 @@ async function loadBrief(slug) {
   renderInsyncPanel(b.insights_json);
   renderLandingStatus(b);
   renderChecklist(b);
+  switchTab('tab-landing');
 }
 
 /* ──────────────────────────────────────────
@@ -3618,8 +3619,15 @@ function renderEditorSections() {
   let doc;
   try { doc = iframe.contentDocument; } catch(_) { return; }
 
-  let sections = [...doc.querySelectorAll('[data-insync-section]')];
-  if (!sections.length) sections = [...doc.querySelectorAll('section, .hero, .modal-overlay, header, footer')];
+  /* Detection priority: data attrs → <section> → class keywords */
+  let sections = [...doc.querySelectorAll('[data-insync-section], [data-section]')];
+  if (!sections.length) sections = [...doc.querySelectorAll('section')];
+  if (!sections.length) {
+    sections = [...doc.querySelectorAll('div,header,footer,main,article')].filter(el => {
+      const cls = (el.className || '').toLowerCase();
+      return /\b(section|block|gancho|hero|modal|banner|features|testimonial|faq|footer|header|cta|price|trust|urgency)\b/.test(cls);
+    });
+  }
 
   if (!sections.length) {
     container.innerHTML = '<p style="font-size:11px;color:var(--muted);padding:8px 4px">No se detectaron secciones.</p>';

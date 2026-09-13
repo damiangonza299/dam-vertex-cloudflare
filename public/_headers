@@ -3,8 +3,17 @@
 /*
   Cache-Control: no-store
   X-Content-Type-Options: nosniff
-  X-Frame-Options: DENY
+  X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
+
+# ── Paneles admin — nunca embebibles desde fuera
+/admin/*
+  ! X-Frame-Options
+  X-Frame-Options: DENY
+
+/intelligence/*
+  ! X-Frame-Options
+  X-Frame-Options: DENY
 
 # ── CSS versionado — cachear para siempre (el ?v= invalida automáticamente)
 # ! Cache-Control limpia el no-store heredado de /* antes de fijar el valor real
