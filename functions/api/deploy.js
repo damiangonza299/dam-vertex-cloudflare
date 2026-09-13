@@ -7,22 +7,10 @@ export async function onRequestPost(ctx) {
     return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-  console.log('GITHUB_TOKEN presente:', !!env.GITHUB_TOKEN);
-  console.log('GITHUB_TOKEN primeros 4 chars:', env.GITHUB_TOKEN?.slice(0, 4));
-
-  const GITHUB_TOKEN = env.GITHUB_TOKEN || '';
-  if (!GITHUB_TOKEN) {
-    return Response.json({ ok: false, error: 'GITHUB_TOKEN no configurado' }, { status: 500 });
-  }
-
   let body;
   try { body = await request.json(); } catch (_) {
     return Response.json({ ok: false, error: 'Body inválido' }, { status: 400 });
   }
-
-  console.log('HTML length:', body?.html?.length);
-  console.log('Slug:', body?.slug);
-  console.log('HTML_PREVIEW:', body?.html?.substring(0, 500));
 
   const { html, slug } = body;
   if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
@@ -32,48 +20,45 @@ export async function onRequestPost(ctx) {
     return Response.json({ ok: false, error: 'html vacío' }, { status: 400 });
   }
 
-  const REPO   = 'damiangonza299/dam-vertex-cloudflare';
-  const PATH   = `public/${slug}/index.html`;
-  const BRANCH = 'main';
-  const HEADERS = {
-    'Authorization': `Bearer ${GITHUB_TOKEN}`,
-    'Content-Type':  'application/json',
-    'User-Agent':    'dam-vertex-product-studio',
-  };
+  const ACCOUNT_ID   = env.CLOUDFLARE_ACCOUNT_ID;
+  const API_TOKEN    = env.CLOUDFLARE_API_TOKEN;
+  const PROJECT_NAME = 'dam-vertex-cloudflare';
 
-  /* Obtener SHA del archivo actual */
-  const fileRes  = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, { headers: HEADERS });
-  const fileData = await fileRes.json().catch(() => ({}));
-  if (!fileRes.ok && fileRes.status !== 404) {
-    return Response.json({ ok: false, error: `GitHub getfile error: ${fileData.message || fileRes.status}` }, { status: 502 });
+  if (!ACCOUNT_ID || !API_TOKEN) {
+    return Response.json({ ok: false, error: 'Secrets de Cloudflare no configurados' }, { status: 500 });
   }
-  const sha = fileData.sha || undefined;
-  console.log('SHA obtenido:', sha);
 
-  /* Encode HTML como base64 */
-  const content = btoa(unescape(encodeURIComponent(html)));
+  console.log('HTML length:', html.length);
+  console.log('Slug:', slug);
+  console.log('HTML_PREVIEW:', html.substring(0, 500));
 
-  /* Commit */
-  const commitRes  = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
-    method:  'PUT',
-    headers: HEADERS,
-    body:    JSON.stringify({
-      message: `product-studio: update landing ${slug}`,
-      content,
-      branch: BRANCH,
-      ...(sha ? { sha } : {}),
-    }),
-  });
-  const result = await commitRes.json().catch(() => ({}));
-  console.log('GitHub PUT status:', commitRes.status);
+  const formData = new FormData();
+  formData.append(
+    `public/${slug}/index.html`,
+    new Blob([html], { type: 'text/html' }),
+    'index.html'
+  );
 
-  if (result.commit) {
+  const deployRes = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/deployments`,
+    {
+      method:  'POST',
+      headers: { 'Authorization': `Bearer ${API_TOKEN}` },
+      body:    formData,
+    }
+  );
+
+  const result = await deployRes.json();
+  console.log('CF deploy status:', deployRes.status);
+  console.log('CF deploy result:', JSON.stringify(result).substring(0, 300));
+
+  if (result.success) {
     return Response.json({
       ok:      true,
-      message: '✅ Deployado en GitHub — Cloudflare Pages building automáticamente',
-      commit:  result.commit.sha?.slice(0, 7),
+      message: '✅ Deployado en Cloudflare — cambios en vivo en segundos',
+      url:     result.result?.url,
     });
   }
 
-  return Response.json({ ok: false, error: result.message || JSON.stringify(result) }, { status: 502 });
+  return Response.json({ ok: false, error: JSON.stringify(result.errors) }, { status: 502 });
 }
