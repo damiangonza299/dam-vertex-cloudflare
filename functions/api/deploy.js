@@ -43,10 +43,24 @@ export async function onRequestPost(ctx) {
 
   console.log('Slug:', slug, '| HTML length:', html.length);
 
-  const boundary   = '----FormBoundary' + Math.random().toString(36).slice(2);
-  const multipart  = [
+  /* Hash SHA-256 como key del asset */
+  const encoded    = new TextEncoder().encode(html);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
+  const hashHex    = Array.from(new Uint8Array(hashBuffer))
+    .map(b => b.toString(16).padStart(2, '0')).join('');
+
+  const filePath  = `/${slug}/index.html`;
+  const manifest  = JSON.stringify({ [filePath]: hashHex });
+
+  const boundary  = '----FormBoundary' + Math.random().toString(36).slice(2);
+  const multipart = [
     `--${boundary}`,
-    `Content-Disposition: form-data; name="file"; filename="${slug}/index.html"`,
+    `Content-Disposition: form-data; name="manifest"`,
+    `Content-Type: application/json`,
+    ``,
+    manifest,
+    `--${boundary}`,
+    `Content-Disposition: form-data; name="${hashHex}"; filename="index.html"`,
     `Content-Type: text/html`,
     ``,
     html,
