@@ -1,5 +1,18 @@
 import { verifyAdminToken } from '../_lib/adminAuth.js';
 
+export async function onRequestGet(ctx) {
+  const { request, env } = ctx;
+  if (new URL(request.url).searchParams.get('verify')) {
+    const token = env.CLOUDFLARE_API_TOKEN?.trim().replace(/^﻿/, '');
+    const res   = await fetch('https://api.cloudflare.com/client/v4/user/tokens/verify', {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    const data = await res.json();
+    return Response.json({ token_preview: token?.slice(0, 8), verify: data });
+  }
+  return Response.json({ ok: false, error: 'Method not allowed' }, { status: 405 });
+}
+
 export async function onRequestPost(ctx) {
   const { request, env } = ctx;
 
