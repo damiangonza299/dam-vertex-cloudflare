@@ -10,7 +10,7 @@
   <title class="">Estante Organizador de Aluminio — Hogar / Baño — Dam Vertex</title>
   <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
   <link rel="stylesheet" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'" >
-  <noscript>&lt;link rel="stylesheet" href="/assets/css/styles.min.css?v=55"&gt;</noscript>
+  <noscript>&amp;lt;link rel="stylesheet" href="/assets/css/styles.min.css?v=55"&amp;gt;</noscript>
   <link rel="canonical" href="https://damvertex.com/estante-aluminio-bano/" >
   <meta property="og:title" content="Estante Organizador de Aluminio — Dam Vertex" >
   <meta property="og:description" content="Sin perforar la pared, instalación en segundos, resistente al óxido. Ideal para baño, cocina y lavadero." >
@@ -125,7 +125,7 @@
 
     /* ══ MODAL DCANP — estructura y especificidad calcadas de tabla-marmol
        (.theme-X .offer-option .offer-price, etc.) — evita que styles.min.css,
-       que carga async DESPUÉS de este &lt;style&gt; inline, pise estas reglas con
+       que carga async DESPUÉS de este &amp;lt;style&amp;gt; inline, pise estas reglas con
        una regla propia de igual o menor especificidad (esa era la causa real
        de precios/placeholders "invisibles": bare .offer-price/.form-group
        input perdían contra la cascada una vez que styles.min.css terminaba
@@ -216,7 +216,7 @@
       .hero-est { padding: 10px 16px 20px; }
     }
   </style>
-<script async="" src="https://connect.facebook.net/en_US/fbevents.js"></script><script async="" src="https://connect.facebook.net/en_US/fbevents.js"></script></head>
+<script async="" src="https://connect.facebook.net/en_US/fbevents.js"></script><script async="" src="https://connect.facebook.net/en_US/fbevents.js"></script><script async="" src="https://connect.facebook.net/en_US/fbevents.js"></script></head>
 <body class="theme-estante">
 
 <div class="urgency-bar">Stock limitado  ·  Envío gratis  ·  Pagás al recibir</div>
@@ -238,7 +238,7 @@
 
     <div>
       <h1 class="hero-est__h">Sin taladro. Sin perforar.<br >Acero negro que dura años.</h1>
-      <p class="hero-est__sub" style="">El Estante Organizador Winsem de Aluminio se instala sin perforar la pared y ordena baño, cocina o lavadero en minutos.</p>
+      <p class="hero-est__sub" style="">El Estante Organizador Winsem de Aluminio se instala sin perforar la pared y ordena baño, cocina o lavadero en minutosssss.</p>
       <div class="price-block" style="align-items:flex-end;gap:4px 24px;">
         <div style="display:flex;flex-direction:column;gap:2px;">
           <span style="font-size:12px;font-weight:700;color:var(--est-steel);" class="">1 unidad</span>
@@ -466,7 +466,7 @@
     comboPricing: { 1: 149000, 2: 279000, 3: 399000 },
   };
 
-  document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.addEventListener('DOMContentLoaded', () =&amp;gt; {
     try { DV.trackViewContent(PRODUCT); } catch (_) {}
 
     const modal      = document.getElementById('order-modal');
@@ -486,13 +486,13 @@
       modal.classList.remove('active');
       document.body.style.overflow = '';
     }
-    openBtns.forEach(btn =&gt; btn &amp;&amp; btn.addEventListener('click', openModal));
+    openBtns.forEach(btn =&amp;gt; btn &amp;amp;&amp;amp; btn.addEventListener('click', openModal));
     closeBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) =&gt; { if (e.target === modal) closeModal(); });
+    modal.addEventListener('click', (e) =&amp;gt; { if (e.target === modal) closeModal(); });
 
-    offerInputs.forEach(input =&gt; {
-      input.addEventListener('change', () =&gt; {
-        document.querySelectorAll('.offer-option').forEach(opt =&gt; opt.classList.remove('selected'));
+    offerInputs.forEach(input =&amp;gt; {
+      input.addEventListener('change', () =&amp;gt; {
+        document.querySelectorAll('.offer-option').forEach(opt =&amp;gt; opt.classList.remove('selected'));
         input.closest('.offer-option').classList.add('selected');
         updateEstTotalLine();
       });
@@ -502,7 +502,7 @@
     const invoiceChkD    = document.getElementById('d-invoice');
     const invoiceFieldsD = document.getElementById('d-invoice-fields');
     const totalLineD     = document.getElementById('d-total-line');
-    if (invoiceChkD &amp;&amp; invoiceFieldsD) {
+    if (invoiceChkD &amp;amp;&amp;amp; invoiceFieldsD) {
       invoiceChkD.addEventListener('change', function() {
         invoiceFieldsD.style.display = this.checked ? 'block' : 'none';
       });
@@ -520,17 +520,17 @@
     if (expChkD) expChkD.addEventListener('change', updateEstTotalLine);
 
     const dPhone = document.getElementById('d-phone');
-    if (dPhone &amp;&amp; !dPhone.value) dPhone.value = '09';
+    if (dPhone &amp;amp;&amp;amp; !dPhone.value) dPhone.value = '09';
     if (dPhone) dPhone.addEventListener('focus', function() { const l = this.value.length; this.setSelectionRange(l, l); });
 
     const dCityInput = document.getElementById('d-city');
     const dCityError = document.getElementById('d-city-error');
-    if (dCityInput) dCityInput.addEventListener('input', () =&gt; {
+    if (dCityInput) dCityInput.addEventListener('input', () =&amp;gt; {
       dCityInput.style.borderColor = '';
       if (dCityError) { dCityError.textContent = ''; dCityError.style.display = 'none'; }
     });
 
-    form.addEventListener('submit', async (e) =&gt; {
+    form.addEventListener('submit', async (e) =&amp;gt; {
       e.preventDefault();
       const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
       const base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
@@ -557,11 +557,11 @@
         alert('Completá nombre, teléfono y ciudad para continuar.');
         return;
       }
-      if (!/^[\d\s+\-]{7,}$/.test(data.phone) || data.phone.replace(/\D/g,'').length &lt; 7) {
+      if (!/^[\d\s+\-]{7,}$/.test(data.phone) || data.phone.replace(/\D/g,'').length &amp;lt; 7) {
         alert('Ingresá un número de teléfono válido.');
         return;
       }
-      const dCityOk = window.CIUDADES_PY &amp;&amp; window.CIUDADES_PY.some(c =&gt; c.ciudad.toLowerCase() === data.city.toLowerCase());
+      const dCityOk = window.CIUDADES_PY &amp;amp;&amp;amp; window.CIUDADES_PY.some(c =&amp;gt; c.ciudad.toLowerCase() === data.city.toLowerCase());
       if (!dCityOk) {
         if (dCityInput) { dCityInput.style.borderColor = '#c0392b'; dCityInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
         if (dCityError) { dCityError.textContent = 'Por favor seleccioná tu ciudad de la lista'; dCityError.style.display = 'block'; }
@@ -581,7 +581,7 @@
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify(data),
         });
-        await res.json().catch(() =&gt; ({}));
+        await res.json().catch(() =&amp;gt; ({}));
       } catch (err) {
         console.error('DCANP_SUBMIT_ERROR', err?.message);
       }
