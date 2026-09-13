@@ -3877,15 +3877,21 @@ function editorGetCleanHtml() {
   const iframe = document.getElementById('editor-iframe');
   try {
     const doc = iframe.contentDocument;
-    /* Temporarily strip editor artifacts */
-    doc.getElementById('__dv_bridge__')?.remove();
-    doc.getElementById('__dv_bridge_style__')?.remove();
-    doc.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
-    doc.querySelectorAll('.__dv_text').forEach(el => el.classList.remove('__dv_text'));
-    doc.querySelectorAll('.__dv_img').forEach(img => { img.classList.remove('__dv_img'); img.style.cursor=''; img.removeAttribute('title'); });
-    const html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
-    if (editorState.editMode) setTimeout(() => injectEditorBridge(iframe), 100);
-    return html;
+    /* Clone — never mutate the live DOM */
+    const clone = doc.documentElement.cloneNode(true);
+    /* Remove bridge injections */
+    clone.querySelector('#__dv_bridge__')?.remove();
+    clone.querySelector('#__dv_bridge_style__')?.remove();
+    clone.querySelector('#__dv_cp_btn__')?.remove();
+    clone.querySelectorAll('[id^="__dv_"]').forEach(el => el.remove());
+    /* Strip editor attributes */
+    clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+    clone.querySelectorAll('[spellcheck]').forEach(el => el.removeAttribute('spellcheck'));
+    clone.querySelectorAll('.__dv_text').forEach(el => el.classList.remove('__dv_text'));
+    clone.querySelectorAll('.__dv_img').forEach(el => { el.classList.remove('__dv_img'); el.style.cursor=''; el.removeAttribute('title'); });
+    /* Clear outline inline styles left by focus handlers */
+    clone.querySelectorAll('[style]').forEach(el => { el.style.outline=''; el.style.outlineOffset=''; });
+    return '<!DOCTYPE html>\n' + clone.outerHTML;
   } catch(_) { return null; }
 }
 
