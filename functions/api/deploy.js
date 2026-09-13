@@ -33,62 +33,43 @@ export async function onRequestPost(ctx) {
     return Response.json({ ok: false, error: 'html vacío' }, { status: 400 });
   }
 
-  const ACCOUNT_ID   = env.CLOUDFLARE_ACCOUNT_ID?.trim().replace(/^﻿/, '');
-  const API_TOKEN    = env.CLOUDFLARE_API_TOKEN?.trim().replace(/^﻿/, '');
-  const PROJECT_NAME = 'dam-vertex-cloudflare';
-
-  if (!ACCOUNT_ID || !API_TOKEN) {
-    return Response.json({ ok: false, error: 'Secrets de Cloudflare no configurados' }, { status: 500 });
+  const GITHUB_TOKEN = env.GITHUB_TOKEN;
+  if (!GITHUB_TOKEN) {
+    return Response.json({ ok: false, error: 'GITHUB_TOKEN no configurado' }, { status: 500 });
   }
 
-  console.log('Slug:', slug, '| HTML length:', html.length);
+  const REPO    = 'damiangonza299/dam-vertex-cloudflare';
+  const PATH    = `public/${slug}/index.html`;
+  const HEADERS = {
+    'Authorization': `Bearer ${GITHUB_TOKEN}`,
+    'Content-Type':  'application/json',
+    'User-Agent':    'dam-vertex',
+  };
 
-  /* Hash SHA-256 como key del asset */
-  const encoded    = new TextEncoder().encode(html);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
-  const hashHex    = Array.from(new Uint8Array(hashBuffer))
-    .map(b => b.toString(16).padStart(2, '0')).join('');
+  /* Obtener SHA del archivo actual */
+  const fileRes  = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, { headers: HEADERS });
+  const fileData = await fileRes.json().catch(() => ({}));
+  const sha      = fileData.sha;
+  if (!sha) {
+    return Response.json({ ok: false, error: `No SHA: ${JSON.stringify(fileData).slice(0, 200)}` }, { status: 502 });
+  }
 
-  const filePath  = `/${slug}/index.html`;
-  const manifest  = JSON.stringify({ [filePath]: hashHex });
+  /* Commit */
+  const content   = btoa(unescape(encodeURIComponent(html)));
+  const commitRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+    method:  'PUT',
+    headers: HEADERS,
+    body:    JSON.stringify({ message: `product-studio: update ${slug}`, content, sha, branch: 'main' }),
+  });
+  const result = await commitRes.json().catch(() => ({}));
 
-  const boundary  = '----FormBoundary' + Math.random().toString(36).slice(2);
-  const multipart = [
-    `--${boundary}`,
-    `Content-Disposition: form-data; name="manifest"`,
-    `Content-Type: application/json`,
-    ``,
-    manifest,
-    `--${boundary}`,
-    `Content-Disposition: form-data; name="${hashHex}"; filename="index.html"`,
-    `Content-Type: text/html`,
-    ``,
-    html,
-    `--${boundary}--`,
-  ].join('\r\n');
-
-  const deployRes  = await fetch(
-    `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/deployments`,
-    {
-      method:  'POST',
-      headers: {
-        'Authorization': `Bearer ${API_TOKEN}`,
-        'Content-Type':  `multipart/form-data; boundary=${boundary}`,
-      },
-      body: multipart,
-    }
-  );
-  const deployData = await deployRes.json().catch(() => ({}));
-  console.log('Deploy status:', deployRes.status);
-  console.log('Deploy result:', JSON.stringify(deployData));
-
-  if (deployData.success) {
+  if (result.commit) {
     return Response.json({
       ok:      true,
-      message: '✅ Deployado en Cloudflare — cambios en vivo en segundos',
-      url:     deployData.result?.url,
+      message: '✅ Commiteado en GitHub — los cambios aparecen cuando hagas wrangler deploy',
+      commit:  result.commit.sha?.slice(0, 7),
     });
   }
 
-  return Response.json({ ok: false, status: deployRes.status, error: JSON.stringify(deployData) }, { status: 502 });
+  return Response.json({ ok: false, error: JSON.stringify(result) }, { status: 502 });
 }

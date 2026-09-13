@@ -234,7 +234,7 @@ DAM VERTEX Paraguay — clasificación interna de compradores (D1 / Dam Intellig
 ### Único comando correcto — producción
 
 ```powershell
-& "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true
+& "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=main --commit-dirty=true
 ```
 
 ### PROHIBIDO usar
@@ -242,7 +242,7 @@ DAM VERTEX Paraguay — clasificación interna de compradores (D1 / Dam Intellig
 - `wrangler pages deploy .` — deploya desde raíz, rompe todas las rutas
 - `wrangler pages deploy` — sin directorio explícito usa raíz
 - `npx wrangler pages deploy .` — ídem
-- Deploy sin `--branch=dam-vertex-cloudflare` → va a preview, no producción
+- Deploy sin `--branch=main` → va a preview (`dam-vertex-cloudflare` branch), no producción
 - Deploy sin verificar `pages_build_output_dir = "public"` en wrangler.toml
 
 ### Checklist pre-deploy
