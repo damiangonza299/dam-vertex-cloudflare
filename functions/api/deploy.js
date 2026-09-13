@@ -22,6 +22,7 @@ export async function onRequestPost(ctx) {
 
   console.log('HTML length:', body?.html?.length);
   console.log('Slug:', body?.slug);
+  console.log('HTML_PREVIEW:', body?.html?.substring(0, 500));
 
   const { html, slug } = body;
   if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
