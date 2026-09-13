@@ -43,56 +43,58 @@ export async function onRequestPost(ctx) {
 
   console.log('Slug:', slug, '| HTML length:', html.length);
 
-  /* Paso 1 — Crear deployment */
-  const deployRes = await fetch(
+  /* Paso 1 — Obtener JWT de upload */
+  const tokenRes  = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/upload-token`,
+    { headers: { 'Authorization': `Bearer ${API_TOKEN}` } }
+  );
+  const tokenData = await tokenRes.json();
+  console.log('Paso 1 status:', tokenRes.status, '| success:', tokenData.success);
+  if (!tokenData.success) {
+    return Response.json({ ok: false, step: 1, error: JSON.stringify(tokenData.errors) }, { status: 502 });
+  }
+  const jwt = tokenData.result?.jwt;
+
+  /* Paso 2 — Hash SHA-256 truncado a 32 chars (MD5 no disponible en crypto.subtle) */
+  const encoded    = new TextEncoder().encode(html);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
+  const hashHex    = Array.from(new Uint8Array(hashBuffer))
+    .map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 32);
+  console.log('Paso 2 hash:', hashHex);
+
+  /* Paso 3 — Subir archivo con JWT */
+  const base64Content = btoa(unescape(encodeURIComponent(html)));
+  const uploadRes     = await fetch('https://api.cloudflare.com/client/v4/pages/assets/upload', {
+    method:  'POST',
+    headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+    body:    JSON.stringify([{ key: hashHex, value: base64Content, base64: true, metadata: { contentType: 'text/html' } }]),
+  });
+  const uploadData = await uploadRes.json().catch(() => ({}));
+  console.log('Paso 3 status:', uploadRes.status, '| result:', JSON.stringify(uploadData).substring(0, 200));
+  if (!uploadRes.ok) {
+    return Response.json({ ok: false, step: 3, error: JSON.stringify(uploadData) }, { status: 502 });
+  }
+
+  /* Paso 4 — Crear deployment con manifest */
+  const deployRes  = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/deployments`,
     {
       method:  'POST',
-      headers: { 'Authorization': `Bearer ${API_TOKEN}`, 'Content-Type': 'application/json' },
-      body:    JSON.stringify({}),
+      headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ manifest: { [`/${slug}/index.html`]: hashHex } }),
     }
   );
-  const deploy = await deployRes.json();
-  console.log('Paso 1 status:', deployRes.status, '| success:', deploy.success);
-  console.log('Paso 1 result:', JSON.stringify(deploy).substring(0, 400));
+  const deployData = await deployRes.json().catch(() => ({}));
+  console.log('Paso 4 status:', deployRes.status, '| success:', deployData.success);
+  console.log('Paso 4 result:', JSON.stringify(deployData).substring(0, 300));
 
-  if (!deploy.success) {
-    return Response.json({ ok: false, step: 1, error: JSON.stringify(deploy.errors) }, { status: 502 });
-  }
-
-  const deploymentId = deploy.result?.id;
-  if (!deploymentId) {
-    return Response.json({ ok: false, step: 1, error: 'No deploymentId en respuesta' }, { status: 502 });
-  }
-
-  /* Paso 2 — Subir archivo con manifest */
-  const encoded    = new TextEncoder().encode(html);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
-  const hashHex    = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-  const filePath   = `/${slug}/index.html`;
-
-  const formData = new FormData();
-  formData.append('manifest', JSON.stringify({ [filePath]: hashHex }));
-  formData.append(filePath, new Blob([html], { type: 'text/html' }), 'index.html');
-
-  const uploadRes = await fetch(
-    `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/deployments/${deploymentId}/files`,
-    {
-      method:  'PUT',
-      headers: { 'Authorization': `Bearer ${API_TOKEN}` },
-      body:    formData,
-    }
-  );
-  const upload = await uploadRes.json().catch(() => ({}));
-  console.log('Paso 2 status:', uploadRes.status, '| result:', JSON.stringify(upload).substring(0, 300));
-
-  if (uploadRes.ok) {
+  if (deployData.success) {
     return Response.json({
       ok:      true,
       message: '✅ Deployado en Cloudflare — cambios en vivo en segundos',
-      deployment_id: deploymentId,
+      url:     deployData.result?.url,
     });
   }
 
-  return Response.json({ ok: false, step: 2, error: JSON.stringify(upload) }, { status: 502 });
+  return Response.json({ ok: false, step: 4, error: JSON.stringify(deployData.errors) }, { status: 502 });
 }
