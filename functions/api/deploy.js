@@ -20,7 +20,7 @@ export async function onRequestPost(ctx) {
     return Response.json({ ok: false, error: 'html vacío' }, { status: 400 });
   }
 
-  const ACCOUNT_ID   = env.CLOUDFLARE_ACCOUNT_ID;
+  const ACCOUNT_ID   = env.CLOUDFLARE_ACCOUNT_ID?.trim().replace(/^﻿/, '');
   const API_TOKEN    = env.CLOUDFLARE_API_TOKEN;
   const PROJECT_NAME = 'dam-vertex-cloudflare';
 
