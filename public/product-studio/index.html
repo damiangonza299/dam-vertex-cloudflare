@@ -611,7 +611,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
               <div class="editor-actions">
                 <div class="editor-actions-label">ACCIONES</div>
-                <button class="sync-btn" onclick="editorDownloadHtml()" id="editor-download-btn" disabled>⬇ Descargar HTML</button>
                 <button class="sync-btn" onclick="editorDeploy()">🚀 Deployar</button>
                 <button class="sync-btn" onclick="editorSpeed()" id="editor-speed-btn" disabled>⚡ Velocidad</button>
                 <button class="sync-btn" onclick="editorUndo()" id="editor-undo-btn" disabled>↩ Deshacer</button>
@@ -3784,14 +3783,17 @@ function editorUndo() {
   const iframe = document.getElementById('editor-iframe');
   try {
     const prev = editorState.undoStack.pop();
+    /* Suspend onload so document.write() doesn't reset editor status */
+    iframe.onload = null;
     iframe.contentDocument.open();
     iframe.contentDocument.write(prev);
     iframe.contentDocument.close();
+    /* Re-sync UI */
     const btn = document.getElementById('editor-undo-btn');
     if (btn) btn.disabled = !editorState.undoStack.length;
     if (editorState.editMode) setTimeout(() => injectEditorBridge(iframe), 150);
     renderEditorSections();
-    setEditorStatus('Cambio deshecho');
+    setEditorStatus('↩ Cambio deshecho (' + editorState.undoStack.length + ' restantes)');
   } catch(_) {}
 }
 

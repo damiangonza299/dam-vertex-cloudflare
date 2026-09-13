@@ -1,4 +1,11 @@
 (function() {
+  // Saltar toda protección cuando la landing se carga dentro del Editor Visual
+  // (iframe same-origin desde /product-studio/)
+  try {
+    if (window.top !== window.self &&
+        window.parent.location.pathname.startsWith('/product-studio')) return;
+  } catch(_) {}
+
   // Solo activar protección en desktop — en mobile no hay DevTools
   var isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent)
     || ('ontouchstart' in window && navigator.maxTouchPoints > 1);
