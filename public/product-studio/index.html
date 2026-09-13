@@ -759,6 +759,8 @@ async function loadBriefs() {
   if (!data.ok) { console.error(data); return; }
   briefs = data.briefs || [];
   renderSidebar();
+  /* Auto-select first product on initial load */
+  if (briefs.length && !currentSlug) loadBrief(briefs[0].product_slug);
 }
 
 function renderSidebar() {
