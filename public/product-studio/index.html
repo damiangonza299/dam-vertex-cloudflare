@@ -204,6 +204,38 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-overlay{display:none;position:absolute;inset:0;background:rgba(10,10,15,.7);align-items:center;justify-content:center;z-index:50;border-radius:var(--radius)}
 
+/* ── Visual Editor ── */
+#tab-content.is-editor{padding:0!important;overflow:hidden!important}
+#tab-landing.active{display:flex!important;flex-direction:column;height:100%}
+.editor-layout{display:flex;height:100%;overflow:hidden}
+.editor-left{width:300px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;overflow:hidden}
+.editor-right{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;background:#0e0e1a}
+.editor-toolbar{display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0}
+.editor-header{padding:14px 12px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.editor-header-name{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.editor-btn-row{display:flex;gap:6px}
+.editor-sections-head{padding:8px 8px 4px;border-bottom:1px solid var(--border);flex-shrink:0;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+.editor-sections-list{flex:1;overflow-y:auto;padding:4px 6px}
+.es-section{border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.es-section:hover{background:var(--bg3)}
+.es-header{display:flex;align-items:center;gap:6px;padding:7px 8px}
+.es-chevron{font-size:9px;color:var(--muted);flex-shrink:0}
+.es-name{font-size:12px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.es-moves{display:flex;gap:2px;flex-shrink:0}
+.es-moves button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:1px 4px;border-radius:3px;line-height:1}
+.es-moves button:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.es-children{list-style:none;padding:0 8px 7px 20px}
+.es-child{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px}
+.editor-actions{padding:10px 12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.editor-actions-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:2px}
+.editor-insync{padding:8px 12px 10px;border-top:1px solid var(--border);flex-shrink:0}
+.editor-insync-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
+.editor-insync-label button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:0}
+.editor-insync-label button:hover{color:var(--accent)}
+.editor-no-landing{display:flex;flex:1;align-items:center;justify-content:center;color:var(--muted);flex-direction:column;gap:10px}
+.editor-speed-overlay{display:none;position:absolute;bottom:16px;right:16px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 16px;min-width:240px;box-shadow:0 4px 24px rgba(0,0,0,.6);z-index:50}
+.btn-edit-active{background:rgba(248,113,113,.15)!important;border-color:rgba(248,113,113,.4)!important;color:var(--red)!important}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -554,86 +586,67 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
           </div>
         </div><!-- /tab-visual -->
 
-        <!-- TAB: Landing -->
+        <!-- TAB: Editor Visual -->
         <div class="tab-pane" id="tab-landing">
-          <div class="notice notice-warn" id="landing-unsaved-warn" style="display:none;margin-bottom:12px">
-            ⚠ El producto no está guardado. El brief y el blueprint se generarán pero no se persistirán hasta que presiones <strong>Guardar</strong>.
-          </div>
-          <div class="landing-grid">
-            <div class="landing-panel">
-              <h4>InSync — Performance de landing <button class="topbar-btn" onclick="refreshInsync()" style="float:right;margin-top:-2px" id="refresh-insync-btn">↻ Actualizar</button></h4>
-              <div id="insync-panel">
-                <p style="font-size:12px;color:var(--muted)">No hay datos de InSync para este producto todavía.</p>
-              </div>
-              <div id="landing-intelligence-panel" style="display:none;margin-top:12px">
-                <h4 style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Landing Intelligence (futuro)</h4>
-                <p style="font-size:11px;color:var(--muted)">Cuando Landing Intelligence esté disponible, aparecerá aquí.</p>
-              </div>
-            </div>
+          <div class="editor-layout">
 
-            <div class="landing-panel">
-              <h4>Brief para Claude Code <span id="landing-status-badge" class="badge badge-draft" style="float:right;margin-top:-1px;text-transform:none;font-weight:400;letter-spacing:0">Sin brief</span></h4>
-
-              <div class="notice notice-info" style="margin-bottom:10px;font-size:11px;line-height:1.7">
-                <strong>SKILLS VISUALES OBLIGATORIAS:</strong> Antes de generar cualquier landing, Claude Code debe cargar y aplicar:<br>
-                &bull; <code>AI_SYSTEM/skills/frontend-design.md</code> → Diseño moderno y responsive<br>
-                &bull; <code>AI_SYSTEM/skills/ui-ux-pro-max.md</code> → UI/UX profesional que convierte<br>
-                &bull; <code>AI_SYSTEM/skills/animate.md</code> → Animaciones y microinteracciones<br>
-                &bull; <code>AI_SYSTEM/skills/web-design-guidelines.md</code> → Consistencia visual y jerarquía
-              </div>
-
-              <!-- Estándar de calidad obligatorio -->
-              <div style="background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.25);border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:11px;line-height:1.6">
-                <div style="font-weight:700;color:rgba(251,146,60,.9);letter-spacing:.04em;margin-bottom:4px">⚡ ESTÁNDAR DE CALIDAD OBLIGATORIO</div>
-                <div style="color:var(--muted)">Toda landing debe cumplir Lighthouse 90+/90+/96+/100</div>
-                <div style="color:rgba(255,255,255,.35);font-size:10px;margin-top:3px">Ver: AI_SYSTEM/skills/lighthouse-geo-standards.md</div>
-                <ul style="margin:6px 0 0 12px;color:var(--muted);list-style:disc">
-                  <li>Imágenes: WebP únicamente, con width/height declarados</li>
-                  <li>Scripts: defer siempre, nunca document.write</li>
-                  <li>HTML: &lt;main&gt;, viewport sin user-scalable=no</li>
-                  <li>SEO: title único, meta description, JSON-LD schema</li>
-                  <li>GEO: FAQPage schema, contenido semántico para IA</li>
-                </ul>
-              </div>
-
-              <!-- Acciones principales del Brief -->
-              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-                <button class="sync-btn primary" onclick="generateBrief()">Generar Brief</button>
-                <button class="sync-btn" id="copy-brief-btn" onclick="copyBrief()" disabled>Copiar Brief</button>
-                <button class="sync-btn" id="download-brief-btn" onclick="downloadBrief()" disabled>Descargar .md</button>
-              </div>
-              <div id="brief-status" style="font-size:11px;color:var(--muted);min-height:16px;margin-bottom:8px"></div>
-              <textarea id="brief-preview" class="brief-preview" readonly placeholder="Presioná 'Generar Brief' para construir el brief completo con todos los datos del producto..." style="display:none"></textarea>
-
-              <!-- Blueprint experimental — colapsado por defecto -->
-              <details style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px">
-                <summary style="cursor:pointer;user-select:none;list-style:none;display:flex;align-items:center;gap:8px;outline:none">
-                  <span style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(251,146,60,.8);background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:3px;padding:2px 7px">EXPERIMENTAL</span>
-                  <span style="font-size:10px;color:var(--muted)">Blueprint auto-generado — no usar en producción</span>
-                  <span style="font-size:9px;color:rgba(255,255,255,.2);margin-left:auto">▸</span>
-                </summary>
-                <div style="margin-top:10px">
-                  <div class="form-group" style="margin-bottom:8px">
-                    <select id="bp-landing-base" class="form-input" style="font-size:11px">
-                      <option value="apex">Apex (mejor rendimiento)</option>
-                      <option value="blackout">Blackout</option>
-                      <option value="lentes">Lentes</option>
-                      <option value="cepillo">Cepillo</option>
-                    </select>
-                  </div>
-                  <div style="display:flex;gap:6px;flex-wrap:wrap">
-                    <button class="sync-btn" style="font-size:10px" onclick="showBlueprintPlan()">Ver plan</button>
-                    <button class="sync-btn" id="confirm-generate-btn" onclick="generateBlueprint()" disabled style="display:none;font-size:10px">Confirmar y generar</button>
-                    <button class="sync-btn" id="preview-blueprint-btn" onclick="previewBlueprint()" disabled style="font-size:10px">Ver preview</button>
-                    <button class="sync-btn" id="download-blueprint-btn" onclick="downloadBlueprint()" disabled style="font-size:10px">Descargar HTML</button>
-                  </div>
-                  <div id="bp-plan-panel" style="display:none;margin-top:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:11px;line-height:1.9"></div>
-                  <div id="blueprint-preview-area" style="display:none;margin-top:10px">
-                    <iframe id="blueprint-iframe" class="blueprint-preview" sandbox="allow-scripts" srcdoc=""></iframe>
-                  </div>
+            <!-- Left: panel de control -->
+            <div class="editor-left">
+              <div class="editor-header">
+                <div class="editor-header-name">
+                  <span>📄</span>
+                  <span id="editor-landing-name">—</span>
                 </div>
-              </details>
+                <div class="editor-btn-row">
+                  <button class="topbar-btn primary" id="editor-edit-btn" onclick="toggleEditorMode()" style="flex:1" disabled>✏ Editar</button>
+                  <button class="topbar-btn" id="editor-save-btn" onclick="editorSave()" style="flex:1" disabled>💾 Guardar</button>
+                </div>
+                <div id="editor-status" style="font-size:10px;color:var(--muted);margin-top:6px;min-height:14px"></div>
+              </div>
+
+              <div class="editor-sections-head">SECCIONES</div>
+              <div id="editor-sections" class="editor-sections-list">
+                <p style="font-size:11px;color:var(--muted);padding:8px 4px">Cargá una landing para ver sus secciones.</p>
+              </div>
+
+              <div class="editor-actions">
+                <div class="editor-actions-label">ACCIONES</div>
+                <button class="sync-btn" onclick="editorDownloadHtml()" id="editor-download-btn" disabled>⬇ Descargar HTML</button>
+                <button class="sync-btn" onclick="editorDeploy()">🚀 Deployar</button>
+                <button class="sync-btn" onclick="editorSpeed()" id="editor-speed-btn" disabled>⚡ Velocidad</button>
+                <button class="sync-btn" onclick="editorUndo()" id="editor-undo-btn" disabled>↩ Deshacer</button>
+              </div>
+
+              <div class="editor-insync">
+                <div class="editor-insync-label">
+                  INSYNC
+                  <button onclick="refreshInsync()" id="refresh-insync-btn" title="Actualizar InSync">↻</button>
+                </div>
+                <div id="insync-panel" style="font-size:11px;color:var(--muted);max-height:160px;overflow-y:auto">Sin datos de InSync todavía.</div>
+              </div>
             </div>
+
+            <!-- Right: iframe preview -->
+            <div class="editor-right">
+              <div class="editor-toolbar">
+                <span id="editor-url-bar" style="font-size:11px;color:var(--muted);font-family:monospace;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span>
+                <button class="topbar-btn" onclick="editorReload()" title="Recargar">↻</button>
+                <button class="topbar-btn" onclick="editorOpenExternal()" title="Abrir en nueva pestaña">↗</button>
+              </div>
+              <div id="editor-no-landing" class="editor-no-landing">
+                <span style="font-size:40px;opacity:.25">🖼</span>
+                <span style="font-size:13px">Seleccioná un producto para editar su landing</span>
+              </div>
+              <iframe id="editor-iframe" style="display:none;flex:1;width:100%;border:none;height:100%"></iframe>
+              <div id="editor-speed-overlay" class="editor-speed-overlay">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                  <span style="font-size:12px;font-weight:700">⚡ PageSpeed</span>
+                  <button onclick="document.getElementById('editor-speed-overlay').style.display='none'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1">✕</button>
+                </div>
+                <div id="editor-speed-results" style="font-size:12px;color:var(--muted)">—</div>
+              </div>
+            </div>
+
           </div>
         </div><!-- /tab-landing -->
 
@@ -1759,13 +1772,15 @@ async function generateBlueprint() {
   var html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
   window._blueprintHtml = html;
 
-  document.getElementById('preview-blueprint-btn').disabled  = false;
-  document.getElementById('download-blueprint-btn').disabled = false;
+  var _pbp = document.getElementById('preview-blueprint-btn');
+  var _dbp = document.getElementById('download-blueprint-btn');
+  if (_pbp) _pbp.disabled = false;
+  if (_dbp) _dbp.disabled = false;
 
   var area   = document.getElementById('blueprint-preview-area');
   var iframe = document.getElementById('blueprint-iframe');
-  area.style.display = 'block';
-  iframe.srcdoc = html;
+  if (area) area.style.display = 'block';
+  if (iframe) iframe.srcdoc = html;
 
   if (confirmBtn) { confirmBtn.textContent = 'Confirmar y generar'; confirmBtn.disabled = false; }
 
@@ -2621,9 +2636,9 @@ function previewBlueprint() {
   if (!window._blueprintHtml) return;
   const area   = document.getElementById('blueprint-preview-area');
   const iframe = document.getElementById('blueprint-iframe');
-  area.style.display = 'block';
-  iframe.srcdoc = window._blueprintHtml;
-  area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if (area)   area.style.display = 'block';
+  if (iframe) iframe.srcdoc = window._blueprintHtml;
+  if (area)   area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function downloadBlueprint() {
@@ -3012,16 +3027,9 @@ function downloadBrief() {
 }
 
 function renderLandingStatus(b) {
-  const badge = document.getElementById('landing-status-badge');
-  if (!badge) return;
-  const s = b.landing_status || 'none';
-  badge.className = `badge badge-${s === 'active' ? 'active' : s === 'draft' ? 'pending' : 'draft'}`;
-  badge.textContent = { none: 'Sin blueprint', draft: 'Blueprint draft', active: 'Landing activa' }[s] || s;
-  if (b.landing_html) {
-    window._blueprintHtml = b.landing_html;
-    document.getElementById('preview-blueprint-btn').disabled = false;
-    document.getElementById('download-blueprint-btn').disabled = false;
-  }
+  /* If the editor tab is currently active, refresh it with new brief data */
+  const active = document.querySelector('[data-tab="tab-landing"].active');
+  if (active) initEditor(b?.product_slug || currentSlug);
 }
 
 /* ──────────────────────────────────────────
@@ -3401,10 +3409,12 @@ function switchTab(tabId) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(tabId)?.classList.add('active');
   document.querySelector(`[data-tab="${tabId}"]`)?.classList.add('active');
-  /* Warn in Landing tab if product not saved yet */
+  const tc = document.getElementById('tab-content');
   if (tabId === 'tab-landing') {
-    const warn = document.getElementById('landing-unsaved-warn');
-    if (warn) warn.style.display = isNew ? 'block' : 'none';
+    tc?.classList.add('is-editor');
+    initEditor(currentSlug);
+  } else {
+    tc?.classList.remove('is-editor');
   }
 }
 
@@ -3426,17 +3436,12 @@ function clearForm() {
   document.getElementById('variants-list').innerHTML = '';
   document.getElementById('sync-log').textContent = '';
   document.getElementById('sync-log').style.display = 'none';
-  window._blueprintHtml = null;
-  document.getElementById('preview-blueprint-btn').disabled = true;
-  document.getElementById('download-blueprint-btn').disabled = true;
-  document.getElementById('blueprint-preview-area').style.display = 'none';
-  var bpPlan = document.getElementById('bp-plan-panel');
-  var bpConf = document.getElementById('confirm-generate-btn');
-  if (bpPlan) { bpPlan.innerHTML = ''; bpPlan.style.display = 'none'; }
-  if (bpConf) { bpConf.style.display = 'none'; bpConf.disabled = true; }
   document.getElementById('research-result').style.display = 'none';
   document.getElementById('research-history').innerHTML = '';
-  document.getElementById('insync-panel').innerHTML = '<p style="font-size:12px;color:var(--muted)">Sin datos de InSync todavía.</p>';
+  var insyncEl = document.getElementById('insync-panel');
+  if (insyncEl) insyncEl.innerHTML = 'Sin datos de InSync todavía.';
+  /* Reset editor state */
+  editorReset();
   tagState.objections = [];
 }
 
@@ -3509,6 +3514,434 @@ function esc(s)      { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'
     }
   });
 })();
+
+/* ══════════════════════════════════════════════
+   VISUAL EDITOR
+═══════════════════════════════════════════════ */
+
+const editorState = {
+  editMode: false,
+  slug: null,
+  hasChanges: false,
+  undoStack: [],   /* max 10 outerHTML snapshots */
+};
+
+function editorReset() {
+  editorState.editMode = false;
+  editorState.slug = null;
+  editorState.hasChanges = false;
+  editorState.undoStack = [];
+  const iframe = document.getElementById('editor-iframe');
+  if (iframe) { iframe.style.display = 'none'; iframe.src = 'about:blank'; }
+  const noLanding = document.getElementById('editor-no-landing');
+  if (noLanding) noLanding.style.display = 'flex';
+  const editBtn = document.getElementById('editor-edit-btn');
+  if (editBtn) { editBtn.textContent = '✏ Editar'; editBtn.disabled = true; editBtn.className = editBtn.className.replace(' btn-edit-active',''); }
+  const saveBtn = document.getElementById('editor-save-btn');
+  if (saveBtn) saveBtn.disabled = true;
+  const dlBtn = document.getElementById('editor-download-btn');
+  if (dlBtn) dlBtn.disabled = true;
+  const undoBtn = document.getElementById('editor-undo-btn');
+  if (undoBtn) undoBtn.disabled = true;
+  const speedBtn = document.getElementById('editor-speed-btn');
+  if (speedBtn) speedBtn.disabled = true;
+  const nameEl = document.getElementById('editor-landing-name');
+  if (nameEl) nameEl.textContent = '—';
+  const urlBar = document.getElementById('editor-url-bar');
+  if (urlBar) urlBar.textContent = '—';
+  const sections = document.getElementById('editor-sections');
+  if (sections) sections.innerHTML = '<p style="font-size:11px;color:var(--muted);padding:8px 4px">Cargá una landing para ver sus secciones.</p>';
+  setEditorStatus('');
+}
+
+function initEditor(slug) {
+  if (!slug) { editorReset(); return; }
+
+  /* Avoid reload if same slug already loaded */
+  const iframe = document.getElementById('editor-iframe');
+  if (editorState.slug === slug && iframe && iframe.src && !iframe.src.endsWith('about:blank')) return;
+
+  editorState.slug = slug;
+  editorState.editMode = false;
+  editorState.hasChanges = false;
+  editorState.undoStack = [];
+
+  const name = currentBrief?.op_json?.name || slug;
+  const url  = '/' + slug + '/';
+
+  const nameEl  = document.getElementById('editor-landing-name');
+  const urlBar  = document.getElementById('editor-url-bar');
+  const editBtn = document.getElementById('editor-edit-btn');
+  const saveBtn = document.getElementById('editor-save-btn');
+  const dlBtn   = document.getElementById('editor-download-btn');
+  const speedBtn = document.getElementById('editor-speed-btn');
+  const undoBtn = document.getElementById('editor-undo-btn');
+  const noLanding = document.getElementById('editor-no-landing');
+
+  if (nameEl)  nameEl.textContent  = name;
+  if (urlBar)  urlBar.textContent  = url;
+  if (editBtn) { editBtn.textContent = '✏ Editar'; editBtn.disabled = false; editBtn.classList.remove('btn-edit-active'); }
+  if (saveBtn)  saveBtn.disabled  = true;
+  if (dlBtn)    dlBtn.disabled    = true;
+  if (speedBtn) speedBtn.disabled = false;
+  if (undoBtn)  undoBtn.disabled  = true;
+  if (noLanding) noLanding.style.display = 'none';
+  if (iframe)   { iframe.style.display = 'flex'; iframe.src = url; }
+
+  setEditorStatus('Cargando landing…');
+
+  if (iframe) {
+    iframe.onload = () => {
+      try {
+        iframe.contentDocument; /* throws if cross-origin */
+        renderEditorSections();
+        if (dlBtn)  dlBtn.disabled  = false;
+        setEditorStatus('Landing cargada · clic en ✏ Editar para activar edición');
+      } catch (_) {
+        setEditorStatus('No se puede acceder al iframe (cross-origin)', true);
+      }
+    };
+  }
+}
+
+function setEditorStatus(msg, isError) {
+  const el = document.getElementById('editor-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = isError ? 'var(--red)' : 'var(--muted)';
+}
+
+function renderEditorSections() {
+  const iframe = document.getElementById('editor-iframe');
+  const container = document.getElementById('editor-sections');
+  if (!iframe || !container) return;
+  let doc;
+  try { doc = iframe.contentDocument; } catch(_) { return; }
+
+  let sections = [...doc.querySelectorAll('[data-insync-section]')];
+  if (!sections.length) sections = [...doc.querySelectorAll('section, .hero, .modal-overlay, header, footer')];
+
+  if (!sections.length) {
+    container.innerHTML = '<p style="font-size:11px;color:var(--muted);padding:8px 4px">No se detectaron secciones.</p>';
+    return;
+  }
+
+  container.innerHTML = sections.map((sec, i) => {
+    const raw  = sec.getAttribute('data-insync-section') || sec.id || (sec.className||'').split(' ').find(c=>c) || ('sec-' + i);
+    const label = raw.charAt(0).toUpperCase() + raw.slice(1).replace(/-/g,' ');
+    const texts = [...sec.querySelectorAll('h1,h2,h3,h4,h5,h6,p')].slice(0,3)
+      .map(el => { const t=(el.textContent||'').trim().substring(0,42); return t?`<li class="es-child">• ${t}${t.length>=42?'…':''}</li>`:''; })
+      .filter(Boolean).join('');
+    const canUp   = i > 0;
+    const canDown = i < sections.length - 1;
+    return `<div class="es-section" data-si="${i}" onclick="editorScrollTo(${i})">
+      <div class="es-header">
+        <span class="es-chevron">▸</span>
+        <span class="es-name">${esc(label)}</span>
+        <span class="es-moves">
+          ${canUp   ? `<button onclick="event.stopPropagation();editorMoveSection(${i},-1)" title="Subir">↑</button>` : ''}
+          ${canDown ? `<button onclick="event.stopPropagation();editorMoveSection(${i},1)"  title="Bajar">↓</button>` : ''}
+        </span>
+      </div>
+      ${texts?`<ul class="es-children">${texts}</ul>`:''}
+    </div>`;
+  }).join('');
+}
+
+function editorScrollTo(index) {
+  const iframe = document.getElementById('editor-iframe');
+  try {
+    const doc = iframe.contentDocument;
+    let secs = [...doc.querySelectorAll('[data-insync-section]')];
+    if (!secs.length) secs = [...doc.querySelectorAll('section, .hero, header, footer')];
+    if (secs[index]) secs[index].scrollIntoView({ behavior:'smooth', block:'start' });
+  } catch(_) {}
+}
+
+function toggleEditorMode() {
+  const iframe  = document.getElementById('editor-iframe');
+  const editBtn = document.getElementById('editor-edit-btn');
+  try { iframe.contentDocument; } catch(_) { setEditorStatus('No se puede editar (cross-origin)', true); return; }
+
+  editorState.editMode = !editorState.editMode;
+
+  if (editorState.editMode) {
+    editBtn.textContent = '✕ Salir edición';
+    editBtn.classList.add('btn-edit-active');
+    injectEditorBridge(iframe);
+    setEditorStatus('Modo edición activo · clic en textos/imágenes para editar');
+  } else {
+    editBtn.textContent = '✏ Editar';
+    editBtn.classList.remove('btn-edit-active');
+    removeEditorBridge(iframe);
+    setEditorStatus('Modo edición desactivado');
+  }
+}
+
+function injectEditorBridge(iframe) {
+  let doc;
+  try { doc = iframe.contentDocument; } catch(_) { return; }
+
+  /* Remove previous injection */
+  doc.getElementById('__dv_bridge__')?.remove();
+  doc.getElementById('__dv_bridge_style__')?.remove();
+
+  const style = doc.createElement('style');
+  style.id = '__dv_bridge_style__';
+  style.textContent = `
+    .__dv_text:hover{outline:2px dashed rgba(129,140,248,.6)!important;outline-offset:2px;cursor:text}
+    .__dv_text:focus{outline:2px solid #818cf8!important;outline-offset:2px;background:rgba(129,140,248,.04)!important}
+    .__dv_img:hover{outline:3px dashed rgba(74,222,128,.7)!important;outline-offset:3px;cursor:pointer}
+    .__dv_img:hover::after{content:'📷 Reemplazar';position:absolute;top:8px;left:8px;background:#111;color:#4ade80;font-size:11px;padding:3px 8px;border-radius:4px;pointer-events:none}
+  `;
+  doc.head.appendChild(style);
+
+  const script = doc.createElement('script');
+  script.id = '__dv_bridge__';
+  script.textContent = `(function(){
+  if(window.__dvActive){return;}
+  window.__dvActive=true;
+
+  /* Text editing */
+  var SKIP='script,style,noscript,code,pre,svg,canvas,iframe';
+  document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,span,strong,em,small,li,td,th,button,a,label,div.price-main,div.price-compare,[class*="title"],[class*="headline"],[class*="cta"]').forEach(function(el){
+    if(el.closest(SKIP))return;
+    if(el.id&&el.id.startsWith('__dv'))return;
+    if(el.querySelectorAll('p,div,section,article').length>0)return;
+    el.classList.add('__dv_text');
+    el.contentEditable='true';
+    el.spellcheck=false;
+    el.addEventListener('input',function(){window.__dvNotify('text');});
+    el.addEventListener('keydown',function(e){if(e.key==='Escape'){el.blur();}if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();el.blur();}});
+  });
+
+  /* Image replacement */
+  document.querySelectorAll('img').forEach(function(img){
+    if(img.closest(SKIP))return;
+    img.classList.add('__dv_img');
+    img.style.cursor='pointer';
+    img.setAttribute('title','Clic para reemplazar imagen');
+    img.addEventListener('click',function(e){
+      e.preventDefault();e.stopPropagation();
+      var inp=document.createElement('input');
+      inp.type='file';inp.accept='image/*';
+      inp.onchange=function(){
+        var f=inp.files[0];if(!f)return;
+        var r=new FileReader();
+        r.onload=function(ev){img.src=ev.target.result;window.__dvNotify('image');};
+        r.readAsDataURL(f);
+      };
+      inp.click();
+    });
+  });
+
+  window.__dvNotify=function(type){window.parent&&window.parent.__dvOnChange&&window.parent.__dvOnChange(type);};
+})();`;
+  doc.body.appendChild(script);
+
+  /* Parent receives change notifications from iframe */
+  iframe.contentWindow.__dvOnChange = (type) => {
+    editorPushUndo();
+    editorState.hasChanges = true;
+    const saveBtn = document.getElementById('editor-save-btn');
+    if (saveBtn) saveBtn.disabled = false;
+    setEditorStatus('Cambios sin guardar — ' + new Date().toLocaleTimeString('es-PY',{hour:'2-digit',minute:'2-digit'}));
+  };
+}
+
+function removeEditorBridge(iframe) {
+  try {
+    const doc = iframe.contentDocument;
+    doc.getElementById('__dv_bridge__')?.remove();
+    doc.getElementById('__dv_bridge_style__')?.remove();
+    doc.querySelectorAll('[contenteditable]').forEach(el => { el.removeAttribute('contenteditable'); el.classList.remove('__dv_text'); });
+    doc.querySelectorAll('.__dv_img').forEach(img => { img.classList.remove('__dv_img'); img.style.cursor=''; img.removeAttribute('title'); });
+    if (iframe.contentWindow) iframe.contentWindow.__dvActive = false;
+  } catch(_) {}
+}
+
+function editorPushUndo() {
+  const iframe = document.getElementById('editor-iframe');
+  try {
+    const html = iframe.contentDocument.documentElement.outerHTML;
+    editorState.undoStack.push(html);
+    if (editorState.undoStack.length > 10) editorState.undoStack.shift();
+    const btn = document.getElementById('editor-undo-btn');
+    if (btn) btn.disabled = false;
+  } catch(_) {}
+}
+
+function editorUndo() {
+  if (!editorState.undoStack.length) return;
+  const iframe = document.getElementById('editor-iframe');
+  try {
+    const prev = editorState.undoStack.pop();
+    iframe.contentDocument.open();
+    iframe.contentDocument.write(prev);
+    iframe.contentDocument.close();
+    const btn = document.getElementById('editor-undo-btn');
+    if (btn) btn.disabled = !editorState.undoStack.length;
+    if (editorState.editMode) setTimeout(() => injectEditorBridge(iframe), 150);
+    renderEditorSections();
+    setEditorStatus('Cambio deshecho');
+  } catch(_) {}
+}
+
+function editorMoveSection(index, dir) {
+  const iframe = document.getElementById('editor-iframe');
+  try {
+    const doc = iframe.contentDocument;
+    let secs = [...doc.querySelectorAll('[data-insync-section]')];
+    if (!secs.length) secs = [...doc.querySelectorAll('section, .hero, header, footer')];
+    const el   = secs[index];
+    const swap = secs[index + dir];
+    if (!el || !swap) return;
+    editorPushUndo();
+    const parent = el.parentNode;
+    if (dir === -1) parent.insertBefore(el, swap);
+    else parent.insertBefore(swap, el);
+    editorState.hasChanges = true;
+    const saveBtn = document.getElementById('editor-save-btn');
+    if (saveBtn) saveBtn.disabled = false;
+    renderEditorSections();
+    setEditorStatus('Sección movida');
+  } catch(_) {}
+}
+
+function editorGetCleanHtml() {
+  const iframe = document.getElementById('editor-iframe');
+  try {
+    const doc = iframe.contentDocument;
+    /* Temporarily strip editor artifacts */
+    doc.getElementById('__dv_bridge__')?.remove();
+    doc.getElementById('__dv_bridge_style__')?.remove();
+    doc.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+    doc.querySelectorAll('.__dv_text').forEach(el => el.classList.remove('__dv_text'));
+    doc.querySelectorAll('.__dv_img').forEach(img => { img.classList.remove('__dv_img'); img.style.cursor=''; img.removeAttribute('title'); });
+    const html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+    if (editorState.editMode) setTimeout(() => injectEditorBridge(iframe), 100);
+    return html;
+  } catch(_) { return null; }
+}
+
+async function editorSave() {
+  if (!editorState.slug) return;
+  const html = editorGetCleanHtml();
+  if (!html) { setEditorStatus('Error al leer el iframe', true); return; }
+
+  const saveBtn = document.getElementById('editor-save-btn');
+  const orig    = saveBtn.textContent;
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Guardando…';
+  setEditorStatus('Guardando en D1…');
+
+  try {
+    const res  = await fetch('/api/save-landing', {
+      method:  'POST',
+      headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+TOKEN },
+      body:    JSON.stringify({ slug: editorState.slug, html }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || res.statusText);
+
+    editorState.hasChanges = false;
+    const dlBtn = document.getElementById('editor-download-btn');
+    if (dlBtn) dlBtn.disabled = false;
+    setEditorStatus('✓ Guardado · ' + new Date().toLocaleTimeString('es-PY',{hour:'2-digit',minute:'2-digit'}));
+    saveBtn.textContent = '✓ Guardado';
+    setTimeout(() => { saveBtn.textContent = orig; }, 2200);
+  } catch(err) {
+    saveBtn.disabled  = false;
+    saveBtn.textContent = orig;
+    setEditorStatus('Error: ' + err.message, true);
+  }
+}
+
+function editorDownloadHtml() {
+  const html = editorGetCleanHtml();
+  if (!html) return;
+  const slug = editorState.slug || 'landing';
+  const a    = document.createElement('a');
+  a.href     = 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
+  a.download = slug + '-editado.html';
+  a.click();
+  setEditorStatus('HTML descargado → reemplazá public/' + slug + '/index.html y deployá');
+}
+
+function editorReload() {
+  if (!editorState.slug) return;
+  if (editorState.hasChanges && !confirm('¿Descartar cambios y recargar?')) return;
+  const iframe  = document.getElementById('editor-iframe');
+  const editBtn = document.getElementById('editor-edit-btn');
+  editorState.editMode = false;
+  editorState.hasChanges = false;
+  editorState.undoStack = [];
+  if (editBtn) { editBtn.textContent='✏ Editar'; editBtn.classList.remove('btn-edit-active'); }
+  const undoBtn = document.getElementById('editor-undo-btn');
+  const saveBtn = document.getElementById('editor-save-btn');
+  if (undoBtn) undoBtn.disabled = true;
+  if (saveBtn) saveBtn.disabled = true;
+  if (iframe)  iframe.src = '/' + editorState.slug + '/';
+}
+
+function editorOpenExternal() {
+  if (editorState.slug) window.open('/' + editorState.slug + '/', '_blank');
+}
+
+function editorDeploy() {
+  const cmd = `& "C:\\Program Files\\nodejs\\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true`;
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1000;display:flex;align-items:center;justify-content:center';
+  overlay.innerHTML = `
+    <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:22px 26px;max-width:560px;width:90%">
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">🚀 Deployar</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">1. Descargá el HTML editado y reemplazá el archivo en disco.<br>2. Ejecutá este comando en PowerShell:</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-family:monospace;font-size:11px;color:#a5f3fc;word-break:break-all;margin-bottom:14px;line-height:1.6">${cmd}</div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="topbar-btn" id="deploy-copy-btn" onclick="navigator.clipboard.writeText(this.closest('div').previousElementSibling.textContent).then(()=>{this.textContent='✓ Copiado';setTimeout(()=>this.textContent='Copiar cmd',2000)})">Copiar cmd</button>
+        <button class="topbar-btn" onclick="editorDownloadHtml()">⬇ Descargar HTML</button>
+        <button class="topbar-btn primary" onclick="this.closest('[style*=fixed]').remove()">Cerrar</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+}
+
+async function editorSpeed() {
+  if (!editorState.slug) return;
+  const btn     = document.getElementById('editor-speed-btn');
+  const overlay = document.getElementById('editor-speed-overlay');
+  const results = document.getElementById('editor-speed-results');
+
+  btn.disabled = true;
+  btn.textContent = '⚡ Midiendo…';
+  overlay.style.display = 'block';
+  results.innerHTML = '<span class="spinner"></span> Analizando…';
+
+  try {
+    const res  = await fetch('/api/speed?slug=' + encodeURIComponent(editorState.slug), {
+      headers: { 'Authorization': 'Bearer ' + TOKEN },
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.error) throw new Error(data.error || 'Error');
+
+    const s = data.scores || {};
+    const row = (label, val) => {
+      if (val == null) return '';
+      const color = val >= 90 ? 'var(--green)' : val >= 50 ? 'var(--yellow)' : 'var(--red)';
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:11px;color:var(--muted)">${label}</span>
+        <span style="font-size:16px;font-weight:800;color:${color}">${val}</span></div>`;
+    };
+    results.innerHTML = row('Performance', s.performance) + row('Accesibilidad', s.accessibility) + row('SEO', s.seo) +
+      `<div style="font-size:9px;color:var(--muted);margin-top:8px">${data.url || ''}</div>`;
+  } catch(err) {
+    results.innerHTML = `<span style="font-size:11px;color:var(--red)">Error: ${err.message}</span>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⚡ Velocidad';
+  }
+}
 </script>
 </body>
 </html>
