@@ -7,6 +7,9 @@ export async function onRequestPost(ctx) {
     return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
+  console.log('GITHUB_TOKEN presente:', !!env.GITHUB_TOKEN);
+  console.log('GITHUB_TOKEN primeros 4 chars:', env.GITHUB_TOKEN?.slice(0, 4));
+
   const GITHUB_TOKEN = env.GITHUB_TOKEN || '';
   if (!GITHUB_TOKEN) {
     return Response.json({ ok: false, error: 'GITHUB_TOKEN no configurado' }, { status: 500 });
@@ -16,6 +19,9 @@ export async function onRequestPost(ctx) {
   try { body = await request.json(); } catch (_) {
     return Response.json({ ok: false, error: 'Body inválido' }, { status: 400 });
   }
+
+  console.log('HTML length:', body?.html?.length);
+  console.log('Slug:', body?.slug);
 
   const { html, slug } = body;
   if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
@@ -41,6 +47,7 @@ export async function onRequestPost(ctx) {
     return Response.json({ ok: false, error: `GitHub getfile error: ${fileData.message || fileRes.status}` }, { status: 502 });
   }
   const sha = fileData.sha || undefined;
+  console.log('SHA obtenido:', sha);
 
   /* Encode HTML como base64 */
   const content = btoa(unescape(encodeURIComponent(html)));
@@ -57,6 +64,7 @@ export async function onRequestPost(ctx) {
     }),
   });
   const result = await commitRes.json().catch(() => ({}));
+  console.log('GitHub PUT status:', commitRes.status);
 
   if (result.commit) {
     return Response.json({

@@ -3979,6 +3979,10 @@ async function editorDeploy() {
     if (data.ok) {
       msgEl.innerHTML = `<span style="color:var(--green)">${data.message}</span>${data.commit ? `<br><span style="font-size:10px;opacity:.6;font-family:monospace">${data.commit}</span>` : ''}`;
       setEditorStatus('✓ Deployado · GitHub → Cloudflare building');
+      setTimeout(() => {
+        const iframe = document.getElementById('editor-iframe');
+        if (iframe) iframe.src = iframe.src;
+      }, 3000);
     } else {
       msgEl.innerHTML = `<span style="color:var(--red)">Error: ${data.error || 'Desconocido'}</span>`;
     }
