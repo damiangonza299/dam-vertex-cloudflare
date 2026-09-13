@@ -34,10 +34,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 #login-error{color:var(--red);font-size:12px;min-height:16px}
 
 /* ── App shell ── */
-#app{display:none;width:100%;height:100%;overflow:hidden}
+#app{display:none;width:100%;height:100%;overflow:hidden;flex-direction:column}
 
 /* ── Sidebar ── */
-#sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;overflow:hidden}
+#sidebar{width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;position:fixed;top:0;left:0;bottom:0;z-index:200;transform:translateX(-100%);transition:transform .22s ease}
+#sidebar.open{transform:translateX(0)}
+#drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:199}
+#drawer-overlay.open{display:block}
 #sidebar-header{padding:16px 14px 12px;border-bottom:1px solid var(--border)}
 #sidebar-header h1{font-size:15px;font-weight:700;color:var(--accent);letter-spacing:-.3px}
 #sidebar-header p{font-size:11px;color:var(--muted);margin-top:2px}
@@ -60,8 +63,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 /* ── Main area ── */
 #main{flex:1;display:flex;flex-direction:column;height:100%;overflow:hidden;background:var(--bg)}
-#topbar{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;background:var(--bg2)}
-#topbar h2{font-size:14px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+#topbar{height:40px;padding:0 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-shrink:0;background:var(--bg2)}
+#topbar h2{font-size:13px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.topbar-tab{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;font-family:inherit;padding:5px 12px;border-radius:5px;white-space:nowrap}
+.topbar-tab:hover{color:var(--text);background:var(--bg3)}
+.topbar-tab.active{color:var(--accent);background:var(--bg3)}
 #topbar .slug-badge{font-size:10px;color:var(--muted);background:var(--bg3);padding:2px 8px;border-radius:3px;font-family:monospace}
 .topbar-btn{background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:6px 14px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap}
 .topbar-btn:hover{border-color:var(--accent);color:var(--accent)}
@@ -71,15 +77,16 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .topbar-btn:disabled{opacity:.4;cursor:default}
 
 /* ── Tabs ── */
-#tab-nav{display:flex;gap:2px;padding:10px 20px 0;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg);overflow-x:auto}
+#tab-nav{display:none}
 .tab-btn{padding:7px 14px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;font-family:inherit;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s}
 .tab-btn:hover{color:var(--text)}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
 
 /* ── Tab content ── */
-#tab-content{flex:1;overflow-y:auto;padding:20px}
-.tab-pane{display:none}
-.tab-pane.active{display:block}
+#tab-content{flex:1;overflow:hidden;position:relative}
+.tab-pane{display:none;height:100%}
+.tab-pane.active{display:flex;flex-direction:column}
+#tab-sync.active{display:block;overflow-y:auto;padding:20px;height:auto}
 
 /* ── Empty state ── */
 #empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--muted)}
@@ -205,36 +212,16 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .loading-overlay{display:none;position:absolute;inset:0;background:rgba(10,10,15,.7);align-items:center;justify-content:center;z-index:50;border-radius:var(--radius)}
 
 /* ── Visual Editor ── */
-#tab-content.is-editor{padding:0!important;overflow:hidden!important}
-#tab-landing.active{display:flex!important;flex-direction:column;height:100%}
-.editor-layout{display:flex;height:100%;overflow:hidden}
-.editor-left{width:300px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;overflow:hidden}
-.editor-right{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;background:#0e0e1a}
-.editor-toolbar{display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0}
-.editor-header{padding:14px 12px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
-.editor-header-name{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.editor-btn-row{display:flex;gap:6px}
-.editor-sections-head{padding:8px 8px 4px;border-bottom:1px solid var(--border);flex-shrink:0;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
-.editor-sections-list{flex:1;overflow-y:auto;padding:4px 6px}
-.es-section{border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
-.es-section:hover{background:var(--bg3)}
-.es-header{display:flex;align-items:center;gap:6px;padding:7px 8px}
-.es-chevron{font-size:9px;color:var(--muted);flex-shrink:0}
-.es-name{font-size:12px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.es-moves{display:flex;gap:2px;flex-shrink:0}
-.es-moves button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:1px 4px;border-radius:3px;line-height:1}
-.es-moves button:hover{background:rgba(255,255,255,.08);color:var(--text)}
-.es-children{list-style:none;padding:0 8px 7px 20px}
-.es-child{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px}
-.editor-actions{padding:10px 12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;flex-shrink:0}
-.editor-actions-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:2px}
-.editor-insync{padding:8px 12px 10px;border-top:1px solid var(--border);flex-shrink:0}
-.editor-insync-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
-.editor-insync-label button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:0}
-.editor-insync-label button:hover{color:var(--accent)}
-.editor-no-landing{display:flex;flex:1;align-items:center;justify-content:center;color:var(--muted);flex-direction:column;gap:10px}
-.editor-speed-overlay{display:none;position:absolute;bottom:16px;right:16px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 16px;min-width:240px;box-shadow:0 4px 24px rgba(0,0,0,.6);z-index:50}
-.btn-edit-active{background:rgba(248,113,113,.15)!important;border-color:rgba(248,113,113,.4)!important;color:var(--red)!important}
+#tab-landing.active{display:flex;flex-direction:column;height:100%;position:relative}
+#editor-no-landing{display:flex;flex:1;align-items:center;justify-content:center;color:var(--muted);flex-direction:column;gap:10px}
+#editor-iframe{flex:1;width:100%;border:none}
+.editor-float-toolbar{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:7px;z-index:50}
+.float-btn{background:var(--bg2);border:1px solid var(--border2);color:var(--text);width:40px;height:40px;border-radius:9px;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.55);transition:background .15s,border-color .15s;font-family:inherit;padding:0;line-height:1}
+.float-btn:hover{background:var(--bg3);border-color:var(--accent)}
+.float-btn:disabled{opacity:.32;cursor:default}
+.float-btn.btn-edit-active{background:rgba(248,113,113,.15)!important;border-color:rgba(248,113,113,.4)!important;color:var(--red)!important}
+#editor-status-bar{height:24px;background:var(--bg2);border-top:1px solid var(--border);padding:0 12px;display:none;align-items:center;font-size:10px;color:var(--muted);flex-shrink:0}
+.editor-speed-overlay{display:none;position:absolute;bottom:16px;right:62px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 16px;min-width:240px;box-shadow:0 4px 24px rgba(0,0,0,.6);z-index:100}
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar{width:5px;height:5px}
@@ -263,9 +250,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <!-- App -->
 <div id="app">
+  <div id="drawer-overlay" onclick="closeDrawer()"></div>
   <div id="sidebar">
     <div id="sidebar-header">
-      <h1>Product Studio</h1>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+        <h1>Product Studio</h1>
+        <button onclick="closeDrawer()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;padding:0 2px">×</button>
+      </div>
       <p>Dam Vertex</p>
     </div>
     <button id="new-product-btn" onclick="openNewProduct()" style="display:none">+ Nuevo producto</button>
@@ -286,10 +277,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     <!-- Product editor (hidden until product selected) -->
     <div id="product-editor" style="display:none;flex-direction:column;height:100%">
       <div id="topbar">
-        <h2 id="topbar-name">Nuevo producto</h2>
-        <span id="topbar-slug" class="slug-badge"></span>
-        <button class="topbar-btn" onclick="saveAll()">Guardar</button>
-        <button class="topbar-btn" id="archive-btn" onclick="archiveProduct()" style="display:none">Archivar</button>
+        <h2 id="topbar-name">—</h2>
+        <button class="topbar-tab active" data-tab="tab-landing" onclick="switchTab('tab-landing')">Editor</button>
+        <button class="topbar-tab" data-tab="tab-sync" onclick="switchTab('tab-sync')">Sync</button>
+        <button onclick="openDrawer()" style="margin-left:auto;background:none;border:1px solid var(--border2);color:var(--muted);cursor:pointer;font-size:11px;font-family:inherit;padding:4px 10px;border-radius:4px;white-space:nowrap">◀ Todos</button>
+        <!-- Hidden: referenced by JS -->
+        <span id="topbar-slug" style="display:none"></span>
+        <button id="archive-btn" onclick="archiveProduct()" style="display:none"></button>
       </div>
 
       <div id="tab-nav">
@@ -302,7 +296,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         <button class="tab-btn" data-tab="tab-sync" onclick="switchTab('tab-sync')">Sync</button>
       </div>
 
-      <div id="tab-content" class="is-editor">
+      <div id="tab-content">
 
         <!-- TAB: Producto -->
         <div class="tab-pane" id="tab-producto">
@@ -588,65 +582,40 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
         <!-- TAB: Editor Visual -->
         <div class="tab-pane active" id="tab-landing">
-          <div class="editor-layout">
-
-            <!-- Left: panel de control -->
-            <div class="editor-left">
-              <div class="editor-header">
-                <div class="editor-header-name">
-                  <span>📄</span>
-                  <span id="editor-landing-name">—</span>
-                </div>
-                <div class="editor-btn-row">
-                  <button class="topbar-btn primary" id="editor-edit-btn" onclick="toggleEditorMode()" style="flex:1" disabled>✏ Editar</button>
-                  <button class="topbar-btn" id="editor-save-btn" onclick="editorSave()" style="flex:1" disabled>💾 Guardar</button>
-                </div>
-                <div id="editor-status" style="font-size:10px;color:var(--muted);margin-top:6px;min-height:14px"></div>
-              </div>
-
-              <div class="editor-sections-head">SECCIONES</div>
-              <div id="editor-sections" class="editor-sections-list">
-                <p style="font-size:11px;color:var(--muted);padding:8px 4px">Cargá una landing para ver sus secciones.</p>
-              </div>
-
-              <div class="editor-actions">
-                <div class="editor-actions-label">ACCIONES</div>
-                <button class="sync-btn" onclick="editorDeploy()">🚀 Deployar</button>
-                <button class="sync-btn" onclick="editorSpeed()" id="editor-speed-btn" disabled>⚡ Velocidad</button>
-                <button class="sync-btn" onclick="editorUndo()" id="editor-undo-btn" disabled>↩ Deshacer</button>
-              </div>
-
-              <div class="editor-insync">
-                <div class="editor-insync-label">
-                  INSYNC
-                  <button onclick="refreshInsync()" id="refresh-insync-btn" title="Actualizar InSync">↻</button>
-                </div>
-                <div id="insync-panel" style="font-size:11px;color:var(--muted);max-height:160px;overflow-y:auto">Sin datos de InSync todavía.</div>
-              </div>
-            </div>
-
-            <!-- Right: iframe preview -->
-            <div class="editor-right">
-              <div class="editor-toolbar">
-                <span id="editor-url-bar" style="font-size:11px;color:var(--muted);font-family:monospace;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span>
-                <button class="topbar-btn" onclick="editorReload()" title="Recargar">↻</button>
-                <button class="topbar-btn" onclick="editorOpenExternal()" title="Abrir en nueva pestaña">↗</button>
-              </div>
-              <div id="editor-no-landing" class="editor-no-landing">
-                <span style="font-size:40px;opacity:.25">🖼</span>
-                <span style="font-size:13px">Seleccioná un producto para editar su landing</span>
-              </div>
-              <iframe id="editor-iframe" style="display:none;flex:1;width:100%;border:none;height:100%"></iframe>
-              <div id="editor-speed-overlay" class="editor-speed-overlay">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                  <span style="font-size:12px;font-weight:700">⚡ PageSpeed</span>
-                  <button onclick="document.getElementById('editor-speed-overlay').style.display='none'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1">✕</button>
-                </div>
-                <div id="editor-speed-results" style="font-size:12px;color:var(--muted)">—</div>
-              </div>
-            </div>
-
+          <div id="editor-no-landing">
+            <span style="font-size:40px;opacity:.25">🖼</span>
+            <span style="font-size:13px">Seleccioná un producto para editar su landing</span>
           </div>
+          <iframe id="editor-iframe" style="display:none;flex:1;width:100%;border:none;height:100%"></iframe>
+          <!-- Floating toolbar -->
+          <div class="editor-float-toolbar" id="editor-float-toolbar" style="display:none">
+            <button class="float-btn" id="float-edit-btn" onclick="toggleEditorMode()" title="Activar/desactivar edición">✏</button>
+            <button class="float-btn" id="float-save-btn" onclick="editorSave()" disabled title="Guardar en D1">💾</button>
+            <button class="float-btn" onclick="editorDeploy()" title="Deployar">🚀</button>
+            <button class="float-btn" id="editor-speed-btn" onclick="editorSpeed()" disabled title="PageSpeed">⚡</button>
+            <button class="float-btn" id="editor-undo-btn" onclick="editorUndo()" disabled title="Deshacer">↩</button>
+          </div>
+          <!-- Speed overlay -->
+          <div id="editor-speed-overlay" class="editor-speed-overlay">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <span style="font-size:12px;font-weight:700">⚡ PageSpeed</span>
+              <button onclick="document.getElementById('editor-speed-overlay').style.display='none'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1">✕</button>
+            </div>
+            <div id="editor-speed-results" style="font-size:12px;color:var(--muted)">—</div>
+          </div>
+          <!-- Status bar -->
+          <div id="editor-status-bar">
+            <span id="editor-status"></span>
+            <span style="margin-left:auto;display:flex;gap:10px">
+              <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:0" onclick="editorReload()" title="Recargar">↻</button>
+              <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:0" onclick="editorOpenExternal()" title="Abrir en nueva pestaña">↗</button>
+            </span>
+          </div>
+          <!-- Hidden: populated by JS, not shown in new layout -->
+          <div id="editor-sections" style="display:none"></div>
+          <span id="editor-landing-name" style="display:none"></span>
+          <span id="editor-url-bar" style="display:none"></span>
+          <div id="insync-panel" style="display:none"></div>
         </div><!-- /tab-landing -->
 
         <!-- TAB: Sync -->
@@ -802,7 +771,7 @@ function renderSidebar() {
   }
   list.innerHTML = shown.map(b => `
     <div class="product-item ${b.product_slug === currentSlug ? 'active' : ''}"
-         onclick="loadBrief('${b.product_slug}')">
+         onclick="loadBrief('${b.product_slug}');closeDrawer()">
       <div class="pi-name">${esc(b.name || b.product_slug)} ${b.platform === 'DCANP_GROUP' ? '<span class="badge-dcanp">DCANP</span>' : ''}</div>
       <div class="pi-meta">
         <span class="badge badge-${b.status}">${statusLabel(b.status)}</span>
@@ -3406,15 +3375,18 @@ document.addEventListener('DOMContentLoaded', () => {
 ────────────────────────────────────────── */
 function switchTab(tabId) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn,.topbar-tab').forEach(b => b.classList.remove('active'));
   document.getElementById(tabId)?.classList.add('active');
-  document.querySelector(`[data-tab="${tabId}"]`)?.classList.add('active');
-  const tc = document.getElementById('tab-content');
+  document.querySelectorAll(`[data-tab="${tabId}"]`).forEach(b => b.classList.add('active'));
+  const ft = document.getElementById('editor-float-toolbar');
+  const sb = document.getElementById('editor-status-bar');
   if (tabId === 'tab-landing') {
-    tc?.classList.add('is-editor');
+    if (ft) ft.style.display = 'flex';
+    if (sb) sb.style.display = 'flex';
     initEditor(currentSlug);
   } else {
-    tc?.classList.remove('is-editor');
+    if (ft) ft.style.display = 'none';
+    if (sb) sb.style.display = 'none';
   }
 }
 
@@ -3422,7 +3394,6 @@ function showEditor(name, slug) {
   document.getElementById('empty-state').style.display    = 'none';
   document.getElementById('product-editor').style.display = 'flex';
   document.getElementById('topbar-name').textContent      = name || 'Nuevo producto';
-  document.getElementById('topbar-slug').textContent      = slug ? `/${slug}` : 'nuevo';
 }
 
 function clearForm() {
@@ -3516,6 +3487,18 @@ function esc(s)      { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'
 })();
 
 /* ══════════════════════════════════════════════
+   DRAWER SIDEBAR
+═══════════════════════════════════════════════ */
+function openDrawer() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+}
+function closeDrawer() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+}
+
+/* ══════════════════════════════════════════════
    VISUAL EDITOR
 ═══════════════════════════════════════════════ */
 
@@ -3535,9 +3518,9 @@ function editorReset() {
   if (iframe) { iframe.style.display = 'none'; iframe.src = 'about:blank'; }
   const noLanding = document.getElementById('editor-no-landing');
   if (noLanding) noLanding.style.display = 'flex';
-  const editBtn = document.getElementById('editor-edit-btn');
-  if (editBtn) { editBtn.textContent = '✏ Editar'; editBtn.disabled = true; editBtn.className = editBtn.className.replace(' btn-edit-active',''); }
-  const saveBtn = document.getElementById('editor-save-btn');
+  const editBtn = document.getElementById('float-edit-btn');
+  if (editBtn) { editBtn.textContent = '✏'; editBtn.disabled = true; editBtn.classList.remove('btn-edit-active'); }
+  const saveBtn = document.getElementById('float-save-btn');
   if (saveBtn) saveBtn.disabled = true;
   const dlBtn = document.getElementById('editor-download-btn');
   if (dlBtn) dlBtn.disabled = true;
@@ -3571,8 +3554,8 @@ function initEditor(slug) {
 
   const nameEl  = document.getElementById('editor-landing-name');
   const urlBar  = document.getElementById('editor-url-bar');
-  const editBtn = document.getElementById('editor-edit-btn');
-  const saveBtn = document.getElementById('editor-save-btn');
+  const editBtn = document.getElementById('float-edit-btn');
+  const saveBtn = document.getElementById('float-save-btn');
   const dlBtn   = document.getElementById('editor-download-btn');
   const speedBtn = document.getElementById('editor-speed-btn');
   const undoBtn = document.getElementById('editor-undo-btn');
@@ -3580,7 +3563,7 @@ function initEditor(slug) {
 
   if (nameEl)  nameEl.textContent  = name;
   if (urlBar)  urlBar.textContent  = url;
-  if (editBtn) { editBtn.textContent = '✏ Editar'; editBtn.disabled = false; editBtn.classList.remove('btn-edit-active'); }
+  if (editBtn) { editBtn.textContent = '✏'; editBtn.disabled = false; editBtn.classList.remove('btn-edit-active'); }
   if (saveBtn)  saveBtn.disabled  = true;
   if (dlBtn)    dlBtn.disabled    = true;
   if (speedBtn) speedBtn.disabled = false;
@@ -3595,8 +3578,15 @@ function initEditor(slug) {
       try {
         iframe.contentDocument; /* throws if cross-origin */
         renderEditorSections();
-        if (dlBtn)  dlBtn.disabled  = false;
-        setEditorStatus('Landing cargada · clic en ✏ Editar para activar edición');
+        if (speedBtn) speedBtn.disabled = false;
+        /* Auto-activate edit mode on load */
+        editorState.editMode = true;
+        const eBtn = document.getElementById('float-edit-btn');
+        if (eBtn) { eBtn.textContent = '✕'; eBtn.classList.add('btn-edit-active'); }
+        injectEditorBridge(iframe);
+        setEditorStatus('Edición activa · clic en textos e imágenes para editar');
+        const sb = document.getElementById('editor-status-bar');
+        if (sb) sb.style.display = 'flex';
       } catch (_) {
         setEditorStatus('No se puede acceder al iframe (cross-origin)', true);
       }
@@ -3667,21 +3657,21 @@ function editorScrollTo(index) {
 
 function toggleEditorMode() {
   const iframe  = document.getElementById('editor-iframe');
-  const editBtn = document.getElementById('editor-edit-btn');
+  const editBtn = document.getElementById('float-edit-btn');
   try { iframe.contentDocument; } catch(_) { setEditorStatus('No se puede editar (cross-origin)', true); return; }
 
   editorState.editMode = !editorState.editMode;
 
   if (editorState.editMode) {
-    editBtn.textContent = '✕ Salir edición';
+    editBtn.textContent = '✕';
     editBtn.classList.add('btn-edit-active');
     injectEditorBridge(iframe);
-    setEditorStatus('Modo edición activo · clic en textos/imágenes para editar');
+    setEditorStatus('Edición activa · clic en textos e imágenes para editar');
   } else {
-    editBtn.textContent = '✏ Editar';
+    editBtn.textContent = '✏';
     editBtn.classList.remove('btn-edit-active');
     removeEditorBridge(iframe);
-    setEditorStatus('Modo edición desactivado');
+    setEditorStatus('Edición desactivada');
   }
 }
 
@@ -3743,6 +3733,55 @@ function injectEditorBridge(iframe) {
   });
 
   window.__dvNotify=function(type){window.parent&&window.parent.__dvOnChange&&window.parent.__dvOnChange(type);};
+
+  /* Color picker — hover icon on colored elements */
+  var __cpBtn=document.createElement('div');
+  __cpBtn.id='__dv_cp_btn__';
+  __cpBtn.style.cssText='position:fixed;background:#1a1a2e;border:1px solid rgba(255,255,255,.28);border-radius:5px;width:22px;height:22px;display:none;align-items:center;justify-content:center;cursor:pointer;z-index:999998;font-size:13px;pointer-events:auto;box-shadow:0 2px 8px rgba(0,0,0,.6);line-height:1';
+  __cpBtn.textContent='🎨';
+  document.body.appendChild(__cpBtn);
+  var __cpEl=null;
+  document.addEventListener('mouseover',function(e){
+    var t=e.target;
+    if(!t||t===__cpBtn||String(t.id).indexOf('__dv')===0)return;
+    if(t.closest('script,style,noscript,#__dv_cp_panel__'))return;
+    var bg=window.getComputedStyle(t).backgroundColor;
+    if(bg&&bg!=='rgba(0, 0, 0, 0)'&&bg!=='transparent'&&t.tagName!=='BODY'&&t.tagName!=='HTML'){
+      __cpEl=t;
+      var r=t.getBoundingClientRect();
+      __cpBtn.style.left=(r.right-26)+'px';
+      __cpBtn.style.top=(r.top+4)+'px';
+      __cpBtn.style.display='flex';
+    }
+  },true);
+  document.addEventListener('mouseout',function(e){
+    if(e.relatedTarget===__cpBtn||(__cpBtn.contains&&__cpBtn.contains(e.relatedTarget)))return;
+    __cpBtn.style.display='none';
+  },true);
+  __cpBtn.addEventListener('mouseenter',function(){__cpBtn.style.display='flex';});
+  __cpBtn.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(!__cpEl)return;
+    document.getElementById('__dv_cp_panel__')&&document.getElementById('__dv_cp_panel__').remove();
+    var el=__cpEl;
+    var st=window.getComputedStyle(el);
+    function toHex(c){var m=c.match(/\d+/g);return m&&m.length>=3?'#'+[m[0],m[1],m[2]].map(function(n){return ('0'+parseInt(n).toString(16)).slice(-2)}).join(''):'#ffffff';}
+    var panel=document.createElement('div');
+    panel.id='__dv_cp_panel__';
+    var r=el.getBoundingClientRect();
+    panel.style.cssText='position:fixed;left:'+Math.min(r.right+6,window.innerWidth-170)+'px;top:'+r.top+'px;z-index:999999;background:#111827;border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:10px 12px;font-size:11px;color:#fff;font-family:sans-serif;min-width:156px;box-shadow:0 4px 18px rgba(0,0,0,.65)';
+    panel.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;font-weight:700;font-size:12px">🎨 Color<button id="__dvcp_x__" style="background:none;border:none;color:#aaa;cursor:pointer;font-size:15px;padding:0;line-height:1">×</button></div>'+
+      '<label style="display:flex;align-items:center;gap:8px;margin-bottom:7px;cursor:pointer"><input type="color" id="__dvcp_fg__" style="width:28px;height:22px;border:none;padding:0;cursor:pointer;background:none"> Texto</label>'+
+      '<label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="color" id="__dvcp_bg__" style="width:28px;height:22px;border:none;padding:0;cursor:pointer;background:none"> Fondo</label>';
+    document.body.appendChild(panel);
+    try{panel.querySelector('#__dvcp_fg__').value=toHex(st.color||'#000');}catch(_){}
+    try{var bg2=st.backgroundColor;panel.querySelector('#__dvcp_bg__').value=toHex(bg2==='rgba(0, 0, 0, 0)'?'rgba(255,255,255,1)':bg2||'#fff');}catch(_){}
+    panel.querySelector('#__dvcp_fg__').oninput=function(){el.style.color=this.value;window.__dvNotify('color');};
+    panel.querySelector('#__dvcp_bg__').oninput=function(){el.style.backgroundColor=this.value;window.__dvNotify('color');};
+    panel.querySelector('#__dvcp_x__').onclick=function(){panel.remove();};
+    __cpBtn.style.display='none';
+    setTimeout(function(){document.addEventListener('click',function h(ev){if(!panel.contains(ev.target)){panel.remove();document.removeEventListener('click',h);}},true);},50);
+  });
 })();`;
   doc.body.appendChild(script);
 
@@ -3750,7 +3789,7 @@ function injectEditorBridge(iframe) {
   iframe.contentWindow.__dvOnChange = (type) => {
     editorPushUndo();
     editorState.hasChanges = true;
-    const saveBtn = document.getElementById('editor-save-btn');
+    const saveBtn = document.getElementById('float-save-btn');
     if (saveBtn) saveBtn.disabled = false;
     setEditorStatus('Cambios sin guardar — ' + new Date().toLocaleTimeString('es-PY',{hour:'2-digit',minute:'2-digit'}));
   };
@@ -3811,7 +3850,7 @@ function editorMoveSection(index, dir) {
     if (dir === -1) parent.insertBefore(el, swap);
     else parent.insertBefore(swap, el);
     editorState.hasChanges = true;
-    const saveBtn = document.getElementById('editor-save-btn');
+    const saveBtn = document.getElementById('float-save-btn');
     if (saveBtn) saveBtn.disabled = false;
     renderEditorSections();
     setEditorStatus('Sección movida');
@@ -3839,7 +3878,7 @@ async function editorSave() {
   const html = editorGetCleanHtml();
   if (!html) { setEditorStatus('Error al leer el iframe', true); return; }
 
-  const saveBtn = document.getElementById('editor-save-btn');
+  const saveBtn = document.getElementById('float-save-btn');
   const orig    = saveBtn.textContent;
   saveBtn.disabled = true;
   saveBtn.textContent = 'Guardando…';
@@ -3882,13 +3921,13 @@ function editorReload() {
   if (!editorState.slug) return;
   if (editorState.hasChanges && !confirm('¿Descartar cambios y recargar?')) return;
   const iframe  = document.getElementById('editor-iframe');
-  const editBtn = document.getElementById('editor-edit-btn');
+  const editBtn = document.getElementById('float-edit-btn');
   editorState.editMode = false;
   editorState.hasChanges = false;
   editorState.undoStack = [];
-  if (editBtn) { editBtn.textContent='✏ Editar'; editBtn.classList.remove('btn-edit-active'); }
+  if (editBtn) { editBtn.textContent='✏'; editBtn.classList.remove('btn-edit-active'); }
   const undoBtn = document.getElementById('editor-undo-btn');
-  const saveBtn = document.getElementById('editor-save-btn');
+  const saveBtn = document.getElementById('float-save-btn');
   if (undoBtn) undoBtn.disabled = true;
   if (saveBtn) saveBtn.disabled = true;
   if (iframe)  iframe.src = '/' + editorState.slug + '/';
