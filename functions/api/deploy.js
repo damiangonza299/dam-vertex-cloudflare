@@ -1,19 +1,70 @@
 import { verifyAdminToken } from '../_lib/adminAuth.js';
 
-/* Workers can't run CLI commands, so this endpoint returns the deploy
-   command for the user to run locally in PowerShell. */
-export async function onRequestGet(ctx) {
+export async function onRequestPost(ctx) {
   const { request, env } = ctx;
 
   if (!(await verifyAdminToken(request, env))) {
     return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-  const cmd = `& "C:\\Program Files\\nodejs\\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true`;
+  const GITHUB_TOKEN = env.GITHUB_TOKEN || '';
+  if (!GITHUB_TOKEN) {
+    return Response.json({ ok: false, error: 'GITHUB_TOKEN no configurado' }, { status: 500 });
+  }
 
-  return Response.json({
-    ok: true,
-    cmd,
-    note: 'Ejecutá este comando en PowerShell desde el directorio del proyecto. Los Workers no pueden ejecutar CLI directamente.',
+  let body;
+  try { body = await request.json(); } catch (_) {
+    return Response.json({ ok: false, error: 'Body inválido' }, { status: 400 });
+  }
+
+  const { html, slug } = body;
+  if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
+    return Response.json({ ok: false, error: 'slug inválido' }, { status: 400 });
+  }
+  if (!html || html.length < 100) {
+    return Response.json({ ok: false, error: 'html vacío' }, { status: 400 });
+  }
+
+  const REPO   = 'damiangonza299/dam-vertex-cloudflare';
+  const PATH   = `public/${slug}/index.html`;
+  const BRANCH = 'main';
+  const HEADERS = {
+    'Authorization': `Bearer ${GITHUB_TOKEN}`,
+    'Content-Type':  'application/json',
+    'User-Agent':    'dam-vertex-product-studio',
+  };
+
+  /* Obtener SHA del archivo actual */
+  const fileRes  = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, { headers: HEADERS });
+  const fileData = await fileRes.json().catch(() => ({}));
+  if (!fileRes.ok && fileRes.status !== 404) {
+    return Response.json({ ok: false, error: `GitHub getfile error: ${fileData.message || fileRes.status}` }, { status: 502 });
+  }
+  const sha = fileData.sha || undefined;
+
+  /* Encode HTML como base64 */
+  const content = btoa(unescape(encodeURIComponent(html)));
+
+  /* Commit */
+  const commitRes  = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+    method:  'PUT',
+    headers: HEADERS,
+    body:    JSON.stringify({
+      message: `product-studio: update landing ${slug}`,
+      content,
+      branch: BRANCH,
+      ...(sha ? { sha } : {}),
+    }),
   });
+  const result = await commitRes.json().catch(() => ({}));
+
+  if (result.commit) {
+    return Response.json({
+      ok:      true,
+      message: '✅ Deployado en GitHub — Cloudflare Pages building automáticamente',
+      commit:  result.commit.sha?.slice(0, 7),
+    });
+  }
+
+  return Response.json({ ok: false, error: result.message || JSON.stringify(result) }, { status: 502 });
 }

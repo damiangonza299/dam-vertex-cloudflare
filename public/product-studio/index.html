@@ -598,7 +598,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
           <!-- Speed overlay -->
           <div id="editor-speed-overlay" class="editor-speed-overlay">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-              <span style="font-size:12px;font-weight:700">⚡ PageSpeed</span>
+              <span style="font-size:12px;font-weight:700">⚡ Velocidad</span>
               <button onclick="document.getElementById('editor-speed-overlay').style.display='none'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1">✕</button>
             </div>
             <div id="editor-speed-results" style="font-size:12px;color:var(--muted)">—</div>
@@ -3953,22 +3953,40 @@ function editorOpenExternal() {
   if (editorState.slug) window.open('/' + editorState.slug + '/', '_blank');
 }
 
-function editorDeploy() {
-  const cmd = `& "C:\\Program Files\\nodejs\\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true`;
+async function editorDeploy() {
+  if (!editorState.slug) return;
+  const html = editorGetCleanHtml();
+  if (!html) { setEditorStatus('No se puede leer el iframe', true); return; }
+
+  /* Mostrar overlay de progreso */
   const overlay = document.createElement('div');
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1000;display:flex;align-items:center;justify-content:center';
   overlay.innerHTML = `
-    <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:22px 26px;max-width:560px;width:90%">
-      <div style="font-size:15px;font-weight:700;margin-bottom:6px">🚀 Deployar</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">1. Descargá el HTML editado y reemplazá el archivo en disco.<br>2. Ejecutá este comando en PowerShell:</div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-family:monospace;font-size:11px;color:#a5f3fc;word-break:break-all;margin-bottom:14px;line-height:1.6">${cmd}</div>
-      <div style="display:flex;gap:8px;justify-content:flex-end">
-        <button class="topbar-btn" id="deploy-copy-btn" onclick="navigator.clipboard.writeText(this.closest('div').previousElementSibling.textContent).then(()=>{this.textContent='✓ Copiado';setTimeout(()=>this.textContent='Copiar cmd',2000)})">Copiar cmd</button>
-        <button class="topbar-btn" onclick="editorDownloadHtml()">⬇ Descargar HTML</button>
-        <button class="topbar-btn primary" onclick="this.closest('[style*=fixed]').remove()">Cerrar</button>
-      </div>
+    <div id="deploy-panel" style="background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:22px 26px;max-width:480px;width:90%;text-align:center">
+      <div style="font-size:15px;font-weight:700;margin-bottom:10px">🚀 Deployando…</div>
+      <div id="deploy-msg" style="font-size:12px;color:var(--muted)"><span class="spinner"></span> Enviando a GitHub…</div>
     </div>`;
   document.body.appendChild(overlay);
+
+  try {
+    const res  = await fetch('/api/deploy', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+      body:    JSON.stringify({ html, slug: editorState.slug }),
+    });
+    const data = await res.json().catch(() => ({}));
+    const msgEl = document.getElementById('deploy-msg');
+    if (data.ok) {
+      msgEl.innerHTML = `<span style="color:var(--green)">${data.message}</span>${data.commit ? `<br><span style="font-size:10px;opacity:.6;font-family:monospace">${data.commit}</span>` : ''}`;
+      setEditorStatus('✓ Deployado · GitHub → Cloudflare building');
+    } else {
+      msgEl.innerHTML = `<span style="color:var(--red)">Error: ${data.error || 'Desconocido'}</span>`;
+    }
+    /* Cerrar automáticamente en 4s o con clic */
+    setTimeout(() => overlay.remove(), 4000);
+  } catch (err) {
+    document.getElementById('deploy-msg').innerHTML = `<span style="color:var(--red)">Error de red: ${err.message}</span>`;
+  }
   overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
 }
 
@@ -3990,16 +4008,19 @@ async function editorSpeed() {
     const data = await res.json().catch(() => ({}));
     if (!res.ok || data.error) throw new Error(data.error || 'Error');
 
-    const s = data.scores || {};
-    const row = (label, val) => {
-      if (val == null) return '';
-      const color = val >= 90 ? 'var(--green)' : val >= 50 ? 'var(--yellow)' : 'var(--red)';
-      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)">
+    const row = (label, val, unit) => `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)">
         <span style="font-size:11px;color:var(--muted)">${label}</span>
-        <span style="font-size:16px;font-weight:800;color:${color}">${val}</span></div>`;
-    };
-    results.innerHTML = row('Performance', s.performance) + row('Accesibilidad', s.accessibility) + row('SEO', s.seo) +
-      `<div style="font-size:9px;color:var(--muted);margin-top:8px">${data.url || ''}</div>`;
+        <span style="font-size:13px;font-weight:700;color:var(--text)">${val}${unit||''}</span>
+      </div>`;
+    const scoreColor = data.score >= 90 ? 'var(--green)' : data.score >= 70 ? 'var(--yellow)' : 'var(--red)';
+    results.innerHTML =
+      row('TTFB promedio', data.ttfb, ' ms') +
+      row('Tamaño HTML', data.size_kb, ' KB') +
+      `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0">
+        <span style="font-size:11px;color:var(--muted)">Score</span>
+        <span style="font-size:15px;font-weight:800;color:${scoreColor}">${data.score}/100 ${data.rating||''}</span>
+      </div>`;
   } catch(err) {
     results.innerHTML = `<span style="font-size:11px;color:var(--red)">Error: ${err.message}</span>`;
   } finally {

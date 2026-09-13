@@ -7,39 +7,36 @@ export async function onRequestGet(ctx) {
     return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-  const url  = new URL(request.url);
-  const slug = url.searchParams.get('slug') || '';
+  const slug = new URL(request.url).searchParams.get('slug') || '';
   if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
     return Response.json({ ok: false, error: 'slug requerido' }, { status: 400 });
   }
 
-  /* Derive the public URL of the landing */
-  const host       = request.headers.get('host') || 'dam-vertex-cloudflare.pages.dev';
-  const targetUrl  = `https://${host}/${slug}/`;
-  const apiKey     = env.PAGESPEED_API_KEY || '';
-  const cats       = 'performance,accessibility,seo';
-  const psUrl      = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(targetUrl)}&strategy=mobile&category=${cats}${apiKey ? '&key=' + apiKey : ''}`;
+  const url = `https://damvertex.com/${slug}/`;
 
   try {
-    const res  = await fetch(psUrl, { cf: { cacheTtl: 60 } });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      return Response.json({ ok: false, error: err?.error?.message || 'PageSpeed error' }, { status: 502 });
+    /* 3 HEAD requests para medir TTFB promedio */
+    const times = [];
+    for (let i = 0; i < 3; i++) {
+      const t0 = Date.now();
+      await fetch(url, { method: 'HEAD' });
+      times.push(Date.now() - t0);
     }
-    const data = await res.json();
-    const cats = data.lighthouseResult?.categories || {};
-    const score = (key) => cats[key] ? Math.round(cats[key].score * 100) : null;
 
-    return Response.json({
-      ok: true,
-      url: targetUrl,
-      scores: {
-        performance:   score('performance'),
-        accessibility: score('accessibility'),
-        seo:           score('seo'),
-      },
-      fetched_at: new Date().toISOString(),
-    });
+    const html   = await fetch(url).then(r => r.text());
+    const ttfb   = Math.round(times.reduce((a, b) => a + b) / times.length);
+    const sizeKb = Math.round(new Blob([html]).size / 1024);
+
+    let score = 100;
+    if (ttfb  > 200) score -= 10;
+    if (ttfb  > 400) score -= 20;
+    if (ttfb  > 600) score -= 20;
+    if (sizeKb > 100) score -= 10;
+    if (sizeKb > 200) score -= 10;
+
+    const rating = score >= 90 ? '🟢 Excelente' : score >= 70 ? '🟡 Bueno' : '🔴 Mejorar';
+
+    return Response.json({ ok: true, url, ttfb, size_kb: sizeKb, score, rating });
   } catch (err) {
     return Response.json({ ok: false, error: err.message }, { status: 500 });
   }
