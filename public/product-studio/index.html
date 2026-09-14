@@ -3727,6 +3727,34 @@ function injectEditorBridge(iframe) {
     }
   });
 
+  /* Bloquear apertura del modal/scroll-form con clic (bridge activo) */
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('[data-open-modal],[data-scroll-form],[data-product]');
+    if(t){e.preventDefault();e.stopImmediatePropagation();}
+  },true);
+
+  /* Price intelligence — al editar precio principal, recalcula combos */
+  var PRICE_SEL='.price-main,.hero-price,.precio-main,.main-price,[class*="price-main"]';
+  document.querySelectorAll(PRICE_SEL).forEach(function(priceEl){
+    if(priceEl.__dvPriceBound)return;
+    priceEl.__dvPriceBound=true;
+    priceEl.addEventListener('input',function(){
+      var raw=priceEl.textContent.replace(/[^\d]/g,'');
+      var base=parseInt(raw,10);
+      if(!base||base<1000)return;
+      var tachado=Math.round(base*1.33/1000)*1000;
+      var ahorra=tachado-base;
+      var combo2=Math.round(base*1.85/1000)*1000;
+      var combo3=Math.round(base*2.65/1000)*1000;
+      function fmtGs(n){return 'Gs. '+n.toLocaleString('es-PY');}
+      document.querySelectorAll('.price-compare,.precio-tachado,.price-old,[class*="price-compare"],[class*="price-old"]').forEach(function(el){el.textContent=fmtGs(tachado);});
+      document.querySelectorAll('.price-savings-top,.savings-amount').forEach(function(el){el.textContent='Ahorrás '+fmtGs(ahorra);});
+      document.querySelectorAll('.price-badge').forEach(function(el){if(/ahorra|descuento|off/i.test(el.textContent))el.textContent='Ahorrás '+fmtGs(ahorra);});
+      document.querySelectorAll('[data-combo="2"] .combo-price,.combo-2u .combo-price,.combo-price-2').forEach(function(el){el.textContent=fmtGs(combo2);});
+      document.querySelectorAll('[data-combo="3"] .combo-price,.combo-3u .combo-price,.combo-price-3').forEach(function(el){el.textContent=fmtGs(combo3);});
+    });
+  });
+
   /* Image replacement */
   var SKIP_IMG='script,style,noscript,svg,canvas,iframe';
   document.querySelectorAll('img').forEach(function(img){

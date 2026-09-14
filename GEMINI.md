@@ -627,3 +627,15 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 - El mensaje de Telegram incluye "Departamento: X" después de "Ciudad: X" cuando la ciudad se reconoce en CITY_TO_DEPT.
 - Para agregar nuevas ciudades → editar CITY_NORMALIZE en dcanp-lead.js
 - Referencia de ciudades por departamento: ver CITY_NORMALIZE en dcanp-lead.js
+
+## PRODUCT STUDIO — Editor Visual
+
+- El editor solo puede cambiar: textos visibles, imágenes, colores, precio
+- **Nunca toca:** `<script>`, `<style>`, `<noscript>` — Meta Pixel (fbq, fbevents.js), endpoints API (/api/leads, /api/dcanp-lead), tokens, lógica de Telegram, Sheets, CAPI son 100% intocables desde el bridge
+- El bridge agrega `contenteditable` solo a elementos con nodos de texto directos, nunca a scripts
+- **CTAs** (A, BUTTON, .btn, .cta): doble clic activa edición; clic simple bloqueado mientras el bridge está activo (no abre modal)
+- **Precio inteligente:** al editar `.price-main`, recalcula automáticamente precio tachado (×1.33), ahorrás (tachado-base), combo 2u (×1.85), combo 3u (×1.65)
+- **Deploy:** el botón 🚀 commitea el HTML limpio a GitHub (`main` branch). No conecta CF Pages a Git — el deploy a producción sigue siendo manual con `wrangler pages deploy public --branch=main`
+- **X-Frame-Options:** todas las landings tienen `SAMEORIGIN` (desde `public/_headers`). El editor carga same-origin → funciona. No usar `DENY` en landings individuales.
+- Para nuevas landings: agregar `data-insync-section` en secciones para que aparezcan en el árbol del editor
+- El HTML limpio usa `XMLSerializer` para evitar atributos booleanos duplicados (`checked=""`, `defer=""`, `required=""` que `outerHTML` duplica)
