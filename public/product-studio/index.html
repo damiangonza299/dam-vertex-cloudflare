@@ -3729,12 +3729,16 @@ function injectEditorBridge(iframe) {
 
   /* CTAs con data-open-modal: clic simple edita texto, doble clic abre modal */
   document.querySelectorAll('[data-open-modal],[data-scroll-form]').forEach(function(el){
-    el.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();el.contentEditable='true';el.focus();},true);
-    el.addEventListener('dblclick',function(e){e.preventDefault();e.stopImmediatePropagation();el.contentEditable='false';
-      var modalId=el.getAttribute('data-open-modal');
-      var modal=modalId?document.getElementById(modalId):null;
-      if(!modal)modal=document.querySelector('.modal,[id*="modal"],[class*="modal"]');
-      if(modal)modal.style.display='flex';
+    el.addEventListener('click',function(e){
+      if(el.__dvModalOpen){el.__dvModalOpen=false;return;} /* dejar pasar */
+      e.preventDefault();e.stopImmediatePropagation();
+      el.contentEditable='true';el.focus();
+    },true);
+    el.addEventListener('dblclick',function(e){
+      e.preventDefault();e.stopImmediatePropagation();
+      el.contentEditable='false';el.blur();
+      el.__dvModalOpen=true;
+      el.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
     },true);
     el.addEventListener('blur',function(){el.contentEditable='false';});
   });
