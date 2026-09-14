@@ -622,3 +622,26 @@ Meta marcó el 12/08/2026 que `ViewContent`, `AddToCart` e `InitiateCheckout` se
 ---
 
 Para contexto completo del proyecto, skills y routing: leer `gemini.md`.
+
+---
+
+## PRODUCT STUDIO — REGLA CRÍTICA — NUNCA VIOLAR
+
+El editor visual puede modificar textos, imágenes y colores. **El deploy desde Product Studio causó roturas graves en agosto y septiembre 2026** (HTML entities corruptos en JS, modificaciones a `_headers` y `protect.js`).
+
+**Archivos que Product Studio NUNCA debe tocar:**
+- `public/_headers` — rompe caché y CORS de todo el sitio
+- `public/assets/js/protect.js` — JS compartido, afecta todas las landings
+- Cualquier otro JS compartido en `public/assets/js/`
+
+**El deploy de Product Studio solo puede tocar el HTML de la landing específica** (`public/{slug}/index.html`).
+
+**Si Product Studio rompe una landing:**
+```powershell
+cd "F:\Desktop\dam-vertex-cloudflare"
+git log --oneline -10 -- public/{slug}/index.html   # encontrar commit bueno
+git checkout {commit-bueno} -- public/{slug}/index.html
+& "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=main --commit-dirty=true
+```
+
+**Síntoma típico:** CTA no abre el modal → buscar `&amp;gt;` en el HTML del script (`grep "amp;" public/{slug}/index.html`). Si hay hits, el editor re-escapó los operadores JS (`=>`, `&&`) como entidades HTML dentro de `<script>`. Fix: revertir con `git checkout`.

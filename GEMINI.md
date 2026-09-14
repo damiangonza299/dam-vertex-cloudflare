@@ -240,6 +240,8 @@ Módulo interno para crear, investigar y activar productos. Reemplaza el flujo m
 
 **Regla:** No tocar products D1 directamente para slugs gestionados por Product Studio. Editar via Tab Producto → Guardar.
 
+**⚠️ Regla crítica de deploy — NUNCA VIOLAR:** Product Studio solo puede modificar `public/{slug}/index.html`. Nunca debe tocar `public/_headers`, `public/assets/js/protect.js` ni ningún JS compartido. Roturas graves documentadas en agosto y septiembre 2026. Si un CTA deja de abrir el modal, buscar `&amp;gt;` en el script (`grep "amp;" public/{slug}/index.html`) — señal de que el editor re-escapó operadores JS. Fix: `git checkout {commit-bueno} -- public/{slug}/index.html` + deploy. Ver CLAUDE.md sección "PRODUCT STUDIO — REGLA CRÍTICA".
+
 ---
 
 ## DAM INTELLIGENCE — Regla Permanente
