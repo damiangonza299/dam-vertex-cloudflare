@@ -1,17 +1,4 @@
 (function() {
-  // Si estamos dentro de un iframe desde product-studio — no aplicar ninguna protección
-  if (window !== window.top) {
-    try {
-      var parentPath = window.parent.location.pathname;
-      if (parentPath.indexOf('/product-studio') !== -1) {
-        throw new Error('exit');
-      }
-    } catch(e) {
-      if (e.message === 'exit') return; // salida limpia: es el editor, no ejecutar nada
-      return; // cross-origin u otro error — también salir para no bloquear el iframe
-    }
-  }
-
   // Solo activar protección en desktop — en mobile no hay DevTools
   var isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent)
     || ('ontouchstart' in window && navigator.maxTouchPoints > 1);
