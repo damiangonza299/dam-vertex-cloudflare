@@ -3727,11 +3727,16 @@ function injectEditorBridge(iframe) {
     }
   });
 
-  /* CTAs con data-open-modal: clic simple abre modal, doble clic edita texto */
+  /* CTAs con data-open-modal: clic simple edita texto, doble clic abre modal */
   document.querySelectorAll('[data-open-modal],[data-scroll-form]').forEach(function(el){
-    el.addEventListener('click',function(e){if(el.__dvEditing){e.preventDefault();e.stopImmediatePropagation();}},true);
-    el.addEventListener('dblclick',function(e){e.preventDefault();e.stopImmediatePropagation();el.__dvEditing=true;el.contentEditable='true';el.focus();});
-    el.addEventListener('blur',function(){el.__dvEditing=false;el.contentEditable='false';});
+    el.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();el.contentEditable='true';el.focus();},true);
+    el.addEventListener('dblclick',function(e){e.preventDefault();e.stopImmediatePropagation();el.contentEditable='false';
+      var modalId=el.getAttribute('data-open-modal');
+      var modal=modalId?document.getElementById(modalId):null;
+      if(!modal)modal=document.querySelector('.modal,[id*="modal"],[class*="modal"]');
+      if(modal)modal.style.display='flex';
+    },true);
+    el.addEventListener('blur',function(){el.contentEditable='false';});
   });
 
   /* Price intelligence — al editar precio principal, recalcula combos */
