@@ -3727,11 +3727,12 @@ function injectEditorBridge(iframe) {
     }
   });
 
-  /* Bloquear apertura del modal/scroll-form con clic (bridge activo) */
-  document.addEventListener('click',function(e){
-    var t=e.target.closest('[data-open-modal],[data-scroll-form],[data-product]');
-    if(t){e.preventDefault();e.stopImmediatePropagation();}
-  },true);
+  /* CTAs con data-open-modal: clic simple abre modal, doble clic edita texto */
+  document.querySelectorAll('[data-open-modal],[data-scroll-form]').forEach(function(el){
+    el.addEventListener('click',function(e){if(el.__dvEditing){e.preventDefault();e.stopImmediatePropagation();}},true);
+    el.addEventListener('dblclick',function(e){e.preventDefault();e.stopImmediatePropagation();el.__dvEditing=true;el.contentEditable='true';el.focus();});
+    el.addEventListener('blur',function(){el.__dvEditing=false;el.contentEditable='false';});
+  });
 
   /* Price intelligence — al editar precio principal, recalcula combos */
   var PRICE_SEL='.price-main,.hero-price,.precio-main,.main-price,[class*="price-main"]';
