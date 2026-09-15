@@ -616,6 +616,15 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 5. Nunca improvisar si existe un skill adecuado en `skills/`
 6. Máximo 4 skills por sesión — no cargar el sistema completo
 
+## VALIDACIÓN TELÉFONO — Modal DCANP
+- Mínimo 10 dígitos numéricos (formato Paraguay: 0984 832 688)
+- Pre-cargado con "09" para guiar al cliente
+- Label: `Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span>`
+- Si < 10 dígitos → no enviar, borde rojo en el campo, mensaje inline debajo, scroll al campo
+- Si ≥ 10 dígitos → permitir envío
+- Al tipear nuevamente → limpiar borde y error automáticamente
+- Aplica en: estante-aluminio-bano, tabla-marmol, talonera-gel (landings DCANP)
+
 ## DCANP GROUP — Normalización de ciudades
 - El campo ciudad en landings DCANP es siempre texto libre
 - dcanp-lead.js normaliza automáticamente antes de enviar a Sheets y Telegram

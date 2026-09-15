@@ -345,8 +345,9 @@
           <input type="text" id="t-name" name="name" placeholder="Nombre y apellido" autocomplete="name" required>
         </div>
         <div class="form-group">
-          <label for="t-phone">Teléfono (WhatsApp)</label>
+          <label for="t-phone">Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span></label>
           <input type="tel" id="t-phone" name="phone" placeholder="981 234 567" value="09" autocomplete="tel" required>
+          <p id="t-phone-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
         </div>
         <div class="form-group">
           <label for="t-city">Ciudad</label>
@@ -489,6 +490,7 @@
     const tPhone = document.getElementById('t-phone');
     if (tPhone && !tPhone.value) tPhone.value = '09';
     if (tPhone) tPhone.addEventListener('focus', function() { const l = this.value.length; this.setSelectionRange(l, l); });
+    if (tPhone) tPhone.addEventListener('input', function() { this.style.borderColor = ''; const e = document.getElementById('t-phone-error'); if (e) { e.textContent = ''; e.style.display = 'none'; } });
 
     const tCityInput = document.getElementById('t-city');
     const tCityError = document.getElementById('t-city-error');
@@ -523,8 +525,12 @@
         alert('Completá nombre, teléfono y ciudad para continuar.');
         return;
       }
-      if (!/^[\d\s+\-]{7,}$/.test(data.phone) || data.phone.replace(/\D/g,'').length < 7) {
-        alert('Ingresá un número de teléfono válido.');
+      const tPhoneInput = document.getElementById('t-phone');
+      const tPhoneError = document.getElementById('t-phone-error');
+      const soloNumerosT = data.phone.replace(/\D/g, '');
+      if (soloNumerosT.length < 10) {
+        if (tPhoneInput) { tPhoneInput.style.borderColor = '#c0392b'; tPhoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        if (tPhoneError) { tPhoneError.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; tPhoneError.style.display = 'block'; }
         return;
       }
       const tCityOk = window.CIUDADES_PY && window.CIUDADES_PY.some(c => c.ciudad.toLowerCase() === data.city.toLowerCase());
