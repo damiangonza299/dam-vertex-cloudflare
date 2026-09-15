@@ -617,13 +617,17 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 6. Máximo 4 skills por sesión — no cargar el sistema completo
 
 ## VALIDACIÓN TELÉFONO — Modal DCANP
-- Mínimo 10 dígitos numéricos (formato Paraguay: 0984 832 688)
+
+**REGLA FIJA — nunca cambiar sin decisión de negocio explícita:**
+- **Mínimo 9 dígitos numéricos** (cubre Paraguay: 0984 832 688 = 10 dígitos, y números cortos reales de 9 dígitos)
+- Condición exacta del código: `if (soloNumeros.length < 9)` — NUNCA usar `< 10` ni otro umbral
 - Pre-cargado con "09" para guiar al cliente
 - Label: `Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span>`
-- Si < 10 dígitos → no enviar, borde rojo en el campo, mensaje inline debajo, scroll al campo
-- Si ≥ 10 dígitos → permitir envío
+- Si < 9 dígitos → no enviar, borde rojo en el campo, mensaje inline debajo, scroll al campo
+- Si ≥ 9 dígitos → permitir envío
 - Al tipear nuevamente → limpiar borde y error automáticamente
 - Aplica en: estante-aluminio-bano, tabla-marmol, talonera-gel (landings DCANP)
+- IDs por landing: `d-phone`/`d-phone-error` (estante) · `m-phone`/`m-phone-error` (tabla) · `t-phone`/`t-phone-error` (talonera)
 
 ## DCANP GROUP — Normalización de ciudades
 - El campo ciudad en landings DCANP es siempre texto libre
