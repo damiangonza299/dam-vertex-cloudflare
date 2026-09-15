@@ -9,9 +9,10 @@
 /* Nombres cortos por slug — deben aparecer EXACTAMENTE así en Telegram y Google Sheets.
    Si el slug no está acá, cae al product_name del body y luego al slug. */
 const PRODUCT_SHORT_NAMES = {
-  'estante-aluminio-bano': '🧴 Estante Organizador Winsen de Aluminio',
-  'talonera-gel':          'TALONERA EN GEL',
-  'tabla-marmol':          'TABLA DE PICAR DE MARMOL OVALADO 38X27CM',
+  'estante-aluminio-bano':      '🧴 Estante Organizador Winsen de Aluminio',
+  'talonera-gel':               'TALONERA EN GEL',
+  'tabla-marmol':               'TABLA DE PICAR DE MARMOL OVALADO 38X27CM',
+  'interruptor-control-remoto': '💡 Interruptor Inalámbrico',
 };
 
 /* Normalización de ciudad — comparación sin tildes y case-insensitive.
