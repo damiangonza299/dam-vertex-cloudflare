@@ -580,7 +580,7 @@
       const dPhoneInput = document.getElementById('d-phone');
       const dPhoneError = document.getElementById('d-phone-error');
       const soloNumerosD = data.phone.replace(/\D/g, '');
-      if (soloNumerosD.length < 10) {
+      if (soloNumerosD.length < 9) {
         if (dPhoneInput) { dPhoneInput.style.borderColor = '#c0392b'; dPhoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
         if (dPhoneError) { dPhoneError.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; dPhoneError.style.display = 'block'; }
         return;

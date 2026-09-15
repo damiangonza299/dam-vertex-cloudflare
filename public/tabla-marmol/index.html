@@ -916,7 +916,7 @@
       var mPhoneInput = document.getElementById('m-phone');
       var mPhoneError = document.getElementById('m-phone-error');
       var soloNumerosM = data.phone.replace(/\D/g, '');
-      if (soloNumerosM.length < 10) {
+      if (soloNumerosM.length < 9) {
         if (mPhoneInput) { mPhoneInput.style.borderColor = '#c0392b'; mPhoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
         if (mPhoneError) { mPhoneError.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; mPhoneError.style.display = 'block'; }
         return;

@@ -528,7 +528,7 @@
       const tPhoneInput = document.getElementById('t-phone');
       const tPhoneError = document.getElementById('t-phone-error');
       const soloNumerosT = data.phone.replace(/\D/g, '');
-      if (soloNumerosT.length < 10) {
+      if (soloNumerosT.length < 9) {
         if (tPhoneInput) { tPhoneInput.style.borderColor = '#c0392b'; tPhoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
         if (tPhoneError) { tPhoneError.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; tPhoneError.style.display = 'block'; }
         return;
