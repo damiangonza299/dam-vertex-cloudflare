@@ -108,6 +108,9 @@
     .gancho-irt--blue  { background: var(--irt-blue); }
     .img-full-irt { background: var(--irt-dark); }
     .img-full-irt img { width: 100%; height: auto; display: block; }
+    /* ══ VIDEOS ══ */
+    .videos-grid { display: flex; gap: 12px; justify-content: center; padding: 24px 16px; background: #0f172a; overflow-x: auto; }
+    @media (max-width: 600px) { .videos-grid { gap: 8px; padding: 16px 8px; } .videos-grid video { max-width: 110px; } }
     /* Placeholder imagen — Armando reemplaza con las imágenes reales */
     .img-placeholder {
       width: 100%; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;
@@ -280,12 +283,21 @@
 <section class="gancho-irt gancho-irt--blue" id="section-gancho2" data-insync-section="gancho2">
   <p class="gancho-irt__text">Un click. La luz se apaga. Vos no te movés.</p>
 </section>
-<section class="img-full-irt" id="section-img2" data-insync-section="img2">
-  <img src="/interruptor-control-remoto/img2.webp"
-       srcset="/interruptor-control-remoto/img2-400w.webp 400w, /interruptor-control-remoto/img2.webp 800w"
-       sizes="(max-width: 600px) 400px, 800px"
-       alt="Control remoto del interruptor inalámbrico"
-       loading="lazy" decoding="async" width="800" height="800">
+<section class="videos-section" id="section-videos" data-insync-section="videos">
+  <div class="videos-grid">
+    <video src="/assets/video/angulo1.mp4"
+           muted autoplay loop playsinline preload="auto"
+           style="aspect-ratio:9/16; width:100%; max-width:300px; border-radius:12px; object-fit:cover;">
+    </video>
+    <video src="/assets/video/angulo6.mp4"
+           muted autoplay loop playsinline preload="auto"
+           style="aspect-ratio:9/16; width:100%; max-width:300px; border-radius:12px; object-fit:cover;">
+    </video>
+    <video src="/assets/video/angulo3.mp4"
+           muted autoplay loop playsinline preload="auto"
+           style="aspect-ratio:9/16; width:100%; max-width:300px; border-radius:12px; object-fit:cover;">
+    </video>
+  </div>
 </section>
 
 <!-- ══ GANCHO 3 (fondo oscuro) + IMAGEN 3 ══ -->
