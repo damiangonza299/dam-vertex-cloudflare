@@ -159,13 +159,6 @@
     .theme-talonera .upsell-sub { color: rgba(30,41,59,.55); }
     #t-total-line:empty { display:none; }
     .form-submit { margin-top: 18px; }
-    /* Autocomplete de ciudad */
-    .city-input-wrap { position: relative; }
-    .city-suggestions { display:none; position:absolute; left:0; right:0; top:100%; margin-top:4px; background:#fff; border:1px solid rgba(0,0,0,.1); border-radius:8px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; max-height:240px; z-index:999; -webkit-user-select:none; user-select:none; }
-    .city-suggestions.open { display:block; }
-    .city-suggestions__item { padding:11px 14px; font-size:14px; color:#ffffff; background:#c0392b; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-    .city-suggestions__item + .city-suggestions__item { border-top:1px solid rgba(255,255,255,.15); }
-    .city-suggestions__item:hover, .city-suggestions__item.touch-active { background:#a93226; color:#ffffff; }
     .form-submit .btn-tal { max-width: none; }
     .theme-talonera .dcanp-success { display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; padding: 32px 24px; text-align: center; }
     .theme-talonera .dcanp-success.visible { display: block; }
@@ -350,12 +343,8 @@
           <p id="t-phone-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
         </div>
         <div class="form-group">
-          <label for="t-city">Ciudad</label>
-          <div class="city-input-wrap">
-            <input type="text" id="t-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
-            <div class="city-suggestions" id="t-city-sugg"></div>
-          </div>
-          <p id="t-city-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
+          <label for="t-city">Ciudad <span style="color:#c0392b;font-size:11px;font-weight:600;">· Solo el nombre de tu ciudad</span></label>
+          <input type="text" id="t-city" name="city" placeholder="Ej: Asunción, Lambaré, San Lorenzo..." autocomplete="off" required>
         </div>
         <div class="form-group">
           <label for="t-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
@@ -492,13 +481,6 @@
     if (tPhone) tPhone.addEventListener('focus', function() { const l = this.value.length; this.setSelectionRange(l, l); });
     if (tPhone) tPhone.addEventListener('input', function() { this.style.borderColor = ''; const e = document.getElementById('t-phone-error'); if (e) { e.textContent = ''; e.style.display = 'none'; } });
 
-    const tCityInput = document.getElementById('t-city');
-    const tCityError = document.getElementById('t-city-error');
-    if (tCityInput) tCityInput.addEventListener('input', () => {
-      tCityInput.style.borderColor = '';
-      if (tCityError) { tCityError.textContent = ''; tCityError.style.display = 'none'; }
-    });
-
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
@@ -533,12 +515,6 @@
         if (tPhoneError) { tPhoneError.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; tPhoneError.style.display = 'block'; }
         return;
       }
-      const tCityOk = window.CIUDADES_PY && window.CIUDADES_PY.some(c => c.ciudad.toLowerCase() === data.city.toLowerCase());
-      if (!tCityOk) {
-        if (tCityInput) { tCityInput.style.borderColor = '#c0392b'; tCityInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-        if (tCityError) { tCityError.textContent = 'Por favor seleccioná tu ciudad de la lista'; tCityError.style.display = 'block'; }
-        return;
-      }
       try {
         const client = typeof getClientData === 'function' ? getClientData() : {};
         data.fbp = client.fbp || null;
@@ -562,7 +538,6 @@
       submitBtn.disabled = false;
       submitBtn.textContent = 'Confirmar pedido';
     });
-    if (window.initDcanpCitySelector) initDcanpCitySelector('t-city', 't-city-sugg');
   });
 </script>
 

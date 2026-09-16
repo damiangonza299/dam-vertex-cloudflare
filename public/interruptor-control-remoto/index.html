@@ -167,12 +167,6 @@
     .theme-irt .upsell-title { color: var(--irt-text); font-size: 13px; font-weight: 700; }
     .theme-irt .upsell-sub { color: rgba(15,23,42,.55); font-size: 12px; }
     #d-total-line:empty { display:none; }
-    .city-input-wrap { position: relative; }
-    .city-suggestions { display:none; position:absolute; left:0; right:0; top:100%; margin-top:4px; background:#fff; border:1px solid rgba(0,0,0,.1); border-radius:8px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; max-height:240px; z-index:999; -webkit-user-select:none; user-select:none; }
-    .city-suggestions.open { display:block; }
-    .city-suggestions__item { padding:11px 14px; font-size:14px; color:#ffffff; background:#2563eb; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-    .city-suggestions__item + .city-suggestions__item { border-top:1px solid rgba(255,255,255,.15); }
-    .city-suggestions__item:hover, .city-suggestions__item.touch-active { background:#1d4ed8; color:#ffffff; }
     .form-submit { margin-top: 18px; }
     .form-submit .btn-irt { max-width: none; }
     .theme-irt .dcanp-success { display: none; background: #eff6ff; border: 1px solid #93c5fd; border-radius: 16px; padding: 32px 24px; text-align: center; }
@@ -399,12 +393,8 @@
           <p id="d-phone-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
         </div>
         <div class="form-group">
-          <label for="d-city">Ciudad</label>
-          <div class="city-input-wrap">
-            <input type="text" id="d-city" name="city" placeholder="¿De qué ciudad sos?" autocomplete="off" required>
-            <div class="city-suggestions" id="d-city-sugg"></div>
-          </div>
-          <p id="d-city-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
+          <label for="d-city">Ciudad <span style="color:#c0392b;font-size:11px;font-weight:600;">· Solo el nombre de tu ciudad</span></label>
+          <input type="text" id="d-city" name="city" placeholder="Ej: Asunción, Lambaré, San Lorenzo..." autocomplete="off" required>
         </div>
         <div class="form-group">
           <label for="d-calle">Calle principal y secundaria</label>
@@ -542,16 +532,9 @@
     const expChkD = document.getElementById('d-express');
     if (expChkD) expChkD.addEventListener('change', updateIrtTotalLine);
 
-    const dPhone = document.getElementById('d-phone');
+    const dPhone = document.getElementById('d-phone');
     if (dPhone) dPhone.addEventListener('focus', function() { const l = this.value.length; this.setSelectionRange(l, l); });
     if (dPhone) dPhone.addEventListener('input', function() { this.style.borderColor = ''; const e = document.getElementById('d-phone-error'); if (e) { e.textContent = ''; e.style.display = 'none'; } });
-
-    const dCityInput = document.getElementById('d-city');
-    const dCityError = document.getElementById('d-city-error');
-    if (dCityInput) dCityInput.addEventListener('input', () => {
-      dCityInput.style.borderColor = '';
-      if (dCityError) { dCityError.textContent = ''; dCityError.style.display = 'none'; }
-    });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -588,12 +571,6 @@
         if (dPhoneError) { dPhoneError.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; dPhoneError.style.display = 'block'; }
         return;
       }
-      const dCityOk = window.CIUDADES_PY && window.CIUDADES_PY.some(c => c.ciudad.toLowerCase() === data.city.toLowerCase());
-      if (!dCityOk) {
-        if (dCityInput) { dCityInput.style.borderColor = '#c0392b'; dCityInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-        if (dCityError) { dCityError.textContent = 'Por favor seleccioná tu ciudad de la lista'; dCityError.style.display = 'block'; }
-        return;
-      }
       try {
         const client = typeof getClientData === 'function' ? getClientData() : {};
         data.fbp = client.fbp || null;
@@ -617,7 +594,6 @@
       submitBtn.disabled = false;
       submitBtn.textContent = 'Confirmar pedido';
     });
-    if (window.initDcanpCitySelector) initDcanpCitySelector('d-city', 'd-city-sugg');
   });
 </script>
 
