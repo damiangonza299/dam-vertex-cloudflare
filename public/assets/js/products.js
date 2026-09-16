@@ -943,15 +943,6 @@ function validateModalForm() {
     showError(paymentEl, 'Seleccioná un método de pago.'); ok = false;
     if (!firstError) firstError = paymentEl;
   }
-  const locInputEl = document.getElementById('m-location');
-  const locLat     = document.getElementById('m-loc-lat')?.value || '';
-  const locCity    = document.getElementById('m-loc-city')?.value || '';
-  const locMapsUrl = document.getElementById('m-loc-maps-url')?.value || '';
-  if (!locInputEl?._dvPlaceSelected || !locLat || !locCity || !locMapsUrl) {
-    showError(locInputEl, 'Buscá y seleccioná tu ubicación exacta antes de continuar.');
-    ok = false;
-    if (!firstError) firstError = locInputEl;
-  }
   const cityGroup = document.getElementById('city-group');
   if (!cityGroup || cityGroup.style.display !== 'none') {
     const citySearchEl   = document.getElementById('m-city-search');
