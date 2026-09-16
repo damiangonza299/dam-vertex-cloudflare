@@ -621,7 +621,7 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 **REGLA FIJA — nunca cambiar sin decisión de negocio explícita:**
 - **Mínimo 9 dígitos numéricos** (cubre Paraguay: 0984 832 688 = 10 dígitos, y números cortos reales de 9 dígitos)
 - Condición exacta del código: `if (soloNumeros.length < 9)` — NUNCA usar `< 10` ni otro umbral
-- Pre-cargado con "09" para guiar al cliente
+- Campo vacío por defecto (sin value pre-cargado)
 - Label: `Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span>`
 - Si < 9 dígitos → no enviar, borde rojo en el campo, mensaje inline debajo, scroll al campo
 - Si ≥ 9 dígitos → permitir envío
