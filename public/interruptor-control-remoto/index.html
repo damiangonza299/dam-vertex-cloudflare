@@ -61,7 +61,8 @@
       --irt-card2:     #dbeafe;
     }
     body.theme-irt { background: var(--irt-cream); color: var(--irt-text); }
-    .theme-irt .nav { background: rgba(240,244,255,.92); border-bottom: 1px solid var(--irt-border); backdrop-filter: blur(12px); }
+    .theme-irt .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; width: 100%; background: rgba(240,244,255,.97); border-bottom: 1px solid var(--irt-border); backdrop-filter: blur(12px); }
+    body.theme-irt { padding-top: 60px; }
     .theme-irt .nav__logo { color: var(--irt-text); }
     .theme-irt .nav__logo span { opacity: .65; }
     .theme-irt .footer { background: var(--irt-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--irt-border); }
