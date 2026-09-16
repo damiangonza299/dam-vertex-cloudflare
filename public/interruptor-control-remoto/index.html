@@ -542,8 +542,7 @@
     const expChkD = document.getElementById('d-express');
     if (expChkD) expChkD.addEventListener('change', updateIrtTotalLine);
 
-    const dPhone = document.getElementById('d-phone');
-    if (dPhone && !dPhone.value) dPhone.value = '09';
+    const dPhone = document.getElementById('d-phone');
     if (dPhone) dPhone.addEventListener('focus', function() { const l = this.value.length; this.setSelectionRange(l, l); });
     if (dPhone) dPhone.addEventListener('input', function() { this.style.borderColor = ''; const e = document.getElementById('d-phone-error'); if (e) { e.textContent = ''; e.style.display = 'none'; } });
 
