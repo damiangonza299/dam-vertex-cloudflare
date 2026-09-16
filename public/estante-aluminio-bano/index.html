@@ -68,7 +68,8 @@
       --est-card2:     #e1e8f0;
     }
     body.theme-estante { background: var(--est-cream); color: var(--est-text); }
-    .theme-estante .nav { background: rgba(240,244,248,.92); border-bottom: 1px solid var(--est-border); backdrop-filter: blur(12px); }
+    .theme-estante .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; width: 100%; background: rgba(240,244,248,.97); border-bottom: 1px solid var(--est-border); backdrop-filter: blur(12px); }
+    body.theme-estante { padding-top: 60px; }
     .theme-estante .nav__logo { color: var(--est-text); }
     .theme-estante .nav__logo span { opacity: .65; }
     .theme-estante .footer { background: var(--est-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--est-border); }
