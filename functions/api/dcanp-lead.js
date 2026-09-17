@@ -13,6 +13,7 @@ const PRODUCT_SHORT_NAMES = {
   'talonera-gel':               'TALONERA EN GEL',
   'tabla-marmol':               'TABLA DE PICAR DE MARMOL OVALADO 38X27CM',
   'interruptor-control-remoto': '💡 Interruptor Inalámbrico',
+  'esquinero-aluminio':         '🔲 Esquinero',
 };
 
 /* Normalización de ciudad — comparación sin tildes y case-insensitive.
