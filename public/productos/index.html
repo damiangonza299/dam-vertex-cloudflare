@@ -48,6 +48,7 @@
     :root { --accent: #1d4ed8; }
     .nav__logo span { opacity: .65; }
     .footer { color: rgba(255,255,255,.6); }
+    .product-card img { aspect-ratio: 1/1; object-fit: cover; object-position: center; border-radius: 12px 12px 0 0; }
   </style>
 </head>
 <body>
@@ -138,6 +139,11 @@ var DV_CARD_IMAGES = {
   'lampara-escritorio-plegable':  '/assets/img/lampara-card.webp',
   'depilador-electrico-guard-wing': '/assets/img/depilador-card.webp',
   'proyector-astronauta-sistema-solar': '/assets/img/proyector-card.webp',
+  'estante-aluminio-bano':        '/estante-aluminio-bano/estante-hero.webp',
+  'interruptor-control-remoto':   '/interruptor-control-remoto/hero.webp',
+  'tabla-marmol':                 '/tabla-marmol/hero-depilador-v2.webp',
+  'talonera-gel':                 '/talonera-gel/talo-1.webp',
+  'esquinero-aluminio':           '/esquinero-aluminio/esquinero-hero.webp',
 };
 var DV_CARD_IMG_STYLE = {
   'lentes': 'object-position:right center',
@@ -158,6 +164,11 @@ var DV_CARD_SRCSET = {
   'rizador-automatico-giratorio': '/assets/img/rizador-card.webp 400w, /assets/img/rizador-card-800w.webp 800w',
   'depilador-electrico-guard-wing': '/assets/img/depilador-card.webp 400w, /assets/img/depilador-card-800w.webp 800w',
   'proyector-astronauta-sistema-solar': '/assets/img/proyector-card.webp 400w, /assets/img/proyector-card-800w.webp 800w',
+  'estante-aluminio-bano':        '/estante-aluminio-bano/estante-hero-400w.webp 400w, /estante-aluminio-bano/estante-hero.webp 800w',
+  'interruptor-control-remoto':   '/interruptor-control-remoto/hero-400w.webp 400w, /interruptor-control-remoto/hero.webp 800w',
+  'tabla-marmol':                 '/tabla-marmol/hero-depilador-v2-400w.webp 400w, /tabla-marmol/hero-depilador-v2.webp 800w',
+  'talonera-gel':                 '/talonera-gel/talo-1-400w.webp 400w, /talonera-gel/talo-1.webp 800w',
+  'esquinero-aluminio':           '/esquinero-aluminio/esquinero-hero-400w.webp 400w, /esquinero-aluminio/esquinero-hero.webp 800w',
 };
 /* Ancho real de la card en el grid (no 400/800 — eso sobrepedía imágenes de más):
    mobile 2 columnas ≈185px, desktop 3 columnas (max-width:1100px) ≈360px. */
@@ -173,6 +184,11 @@ var DV_CARD_DIMS = {
   'lampara-escritorio-plegable':  'width="400" height="500"',
   'depilador-electrico-guard-wing': 'width="400" height="400"',
   'proyector-astronauta-sistema-solar': 'width="400" height="400"',
+  'estante-aluminio-bano':        'width="800" height="800"',
+  'interruptor-control-remoto':   'width="800" height="800"',
+  'tabla-marmol':                 'width="800" height="800"',
+  'talonera-gel':                 'width="800" height="800"',
+  'esquinero-aluminio':           'width="800" height="800"',
 };
 var DV_CARD_BTN = {
   'reloj': 'Ver colección →',
