@@ -199,11 +199,33 @@
       .hero-est__media { order: -1; max-width: 100%; }
       .hero-est { padding: 10px 16px 20px; }
     }
+
+    /* ══ CRO — Oferta / Prueba social / Garantía / FAQ ══ */
+    .risk-zero { background: #e8f5e9; border-left: 4px solid #1a7a3e; padding: 14px 16px; border-radius: 8px; margin: 16px 0; }
+    .risk-zero__main { font-size: 17px; font-weight: 900; color: #1a7a3e; line-height: 1.25; }
+    .risk-zero__sub { font-size: 13px; color: #2c3e50; margin-top: 4px; line-height: 1.4; }
+    .social-proof { display: flex; align-items: center; gap: 8px; justify-content: center; margin-top: 12px; font-size: 13px; }
+    .social-proof__num { font-weight: 900; font-size: 18px; color: #1a7a3e; }
+    .social-proof__txt { color: #555; }
+    .guarantee-block { background: #fff; padding: 28px 16px; text-align: center; }
+    .guarantee-block__inner { max-width: 480px; margin: 0 auto; border: 2px solid #1a7a3e; border-radius: 14px; padding: 24px 18px; }
+    .guarantee-block__icon { font-size: 36px; }
+    .guarantee-block__h { font-size: 22px; font-weight: 900; margin: 8px 0 6px; color: #1a252f; }
+    .guarantee-block__p { font-size: 15px; color: #555; line-height: 1.5; margin: 0; }
+    .faq-block { padding: 28px 16px 36px; max-width: 520px; margin: 0 auto; }
+    .faq-block__h { font-size: 20px; font-weight: 900; margin-bottom: 14px; color: #1a252f; }
+    .faq-item { border-bottom: 1px solid #e3e6ea; padding: 12px 0; }
+    .faq-item summary { font-weight: 800; font-size: 15px; cursor: pointer; color: #1a252f; list-style: none; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: ' +'; color: #1a7a3e; font-weight: 900; }
+    .faq-item[open] summary::after { content: ' \2212'; }
+    .faq-item p { font-size: 14px; color: #555; line-height: 1.5; margin: 8px 0 0; }
+    .value-anchor { font-size: 13px; color: #666; font-style: italic; margin-top: 6px; }
   </style>
 </head>
 <body class="theme-estante">
 
-<div class="urgency-bar">Stock limitado &nbsp;·&nbsp; Envío gratis &nbsp;·&nbsp; Pagás al recibir</div>
+<div class="urgency-bar">⚡ Quedan 9 unidades · Envío gratis · Pagás al recibir</div>
 
 <!-- Nav -->
 <nav class="nav">
@@ -226,11 +248,14 @@
     </div>
 
     <div>
-      <h1 class="hero-est__h">Acero negro completo. Sin taladro. El estante de baño que esperabas.</h1>
-      <p class="hero-est__sub">El Esquinero Winsem se instala en segundos sin perforar la pared. Ahorra espacio, resiste la corrosión y organiza champús y accesorios en el rincón de tu baño.</p>
+      <h1 class="hero-est__h">Ese rincón del baño<br>que nadie sabe aprovechar.</h1>
+      <p class="hero-est__sub">Acero negro que no se oxida, se instala sin taladro en segundos y te devuelve el espacio que tenías perdido.</p>
+      <div class="risk-zero">
+        <div class="risk-zero__main">No pagás nada hasta tenerlo en la mano</div>
+        <div class="risk-zero__sub">Lo recibís, lo revisás, y recién ahí pagás. Sin adelantos, sin tarjeta.</div>
+      </div>
       <div class="price-block" style="align-items:flex-end;gap:4px 24px;">
         <div style="display:flex;flex-direction:column;gap:2px;">
-          <span style="font-size:12px;font-weight:700;color:var(--est-steel);">1 unidad</span>
           <span class="price-main">Gs. 159.000</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:2px;">
@@ -238,6 +263,7 @@
           <span class="price-compare">Gs. 214.000</span>
         </div>
       </div>
+      <div class="value-anchor">Menos de lo que gastás en dos deliverys — y te dura años.</div>
       <p class="hero-est__proof">Acero negro completo — resistente a la corrosión</p>
 
       <div class="hero-est__features">
@@ -255,6 +281,10 @@
         <span class="db-badge db-green">🚚 Entrega en el día</span>
         <span class="db-badge">💳 Pago al recibir · Central</span>
         <span class="db-badge db-green">✓ Envío gratis</span>
+      </div>
+      <div class="social-proof">
+        <span class="social-proof__num">+340</span>
+        <span class="social-proof__txt">pedidos entregados en Paraguay este mes</span>
       </div>
     </div>
 
@@ -295,6 +325,14 @@
        sizes="(max-width: 600px) 400px, 800px"
        alt="Esquinero Winsem con champús y accesorios organizados"
        loading="lazy" decoding="async" width="800" height="800">
+</section>
+
+<section class="guarantee-block" id="section-garantia" data-insync-section="garantia">
+  <div class="guarantee-block__inner">
+    <div class="guarantee-block__icon">🛡️</div>
+    <h3 class="guarantee-block__h">Garantía de 90 días</h3>
+    <p class="guarantee-block__p">Si no funciona como prometemos, te lo cambiamos sin costo. Sin preguntas, sin vueltas.</p>
+  </div>
 </section>
 
 <!-- ══ CIERRE ══ -->
@@ -435,6 +473,26 @@
     </div>
   </div>
 </div>
+
+<section class="faq-block" id="section-faq" data-insync-section="faq">
+  <h3 class="faq-block__h">Preguntas frecuentes</h3>
+  <details class="faq-item">
+    <summary>¿Cuándo me llega?</summary>
+    <p>En Gran Asunción, el mismo día si pedís antes de las 15:00. Interior del país, 24 a 48 horas.</p>
+  </details>
+  <details class="faq-item">
+    <summary>¿Tengo que pagar algo por adelantado?</summary>
+    <p>No. Pagás únicamente cuando el repartidor te entrega el producto en la mano.</p>
+  </details>
+  <details class="faq-item">
+    <summary>¿Y si no me gusta o no funciona?</summary>
+    <p>Tenés 90 días de garantía. Te lo cambiamos sin costo.</p>
+  </details>
+  <details class="faq-item">
+    <summary>¿El envío tiene costo?</summary>
+    <p>No, el envío es gratis a todo el país.</p>
+  </details>
+</section>
 
 <footer class="footer">
   &copy; Dam Vertex
