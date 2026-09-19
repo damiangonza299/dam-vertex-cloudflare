@@ -635,8 +635,13 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 - Si la ciudad no está en el mapa → se guarda tal como la escribió el cliente
 - El modal DCANP no incluye campo Referencia. Campos en orden: Nombre y apellido → Teléfono → Ciudad → Dirección exacta (calle principal y secundaria, obligatorio) → Nota del pedido (opcional) → Envío express → Necesito factura.
 - El placeholder de Nota del pedido en modales DCANP es siempre: "Ej: Frente al edificio Torres, portón azul"
-- Los modales DCANP usan siempre el selector de ciudad completo de Paraguay con autocomplete (dcanp-cities.js?v=1). No usar campo de texto libre para ciudad. El selector incluye todas las ciudades con su departamento — muestra "Ciudad (Departamento)" en el dropdown, guarda solo el nombre de la ciudad.
-- El campo ciudad en modales DCANP es selector estricto — no permite texto libre. La ciudad debe seleccionarse de la lista. Si el usuario intenta enviar sin seleccionar una ciudad válida de CIUDADES_PY, el submit queda bloqueado: se hace scroll al campo, se pone borde rojo y se muestra el mensaje "Por favor seleccioná tu ciudad de la lista". La validación es contra window.CIUDADES_PY.some() al momento del submit, no con flag.
+## CAMPO CIUDAD — Modal DCANP
+- Texto libre — sin selector estricto ni dropdown de autocomplete
+- Placeholder: "Ej: Asunción, Lambaré, San Lorenzo..."
+- Label: `Ciudad` + subtítulo rojo `· Solo el nombre de tu ciudad` (color:#c0392b, font-size:11px, font-weight:600)
+- Validación: solo que el campo no esté vacío (`!data.city`) — sin bloquear por ciudad específica
+- Normalización automática en dcanp-lead.js (CITY_NORMALIZE map) — el texto libre llega normalizado a Google Sheets
+- NO cargar dcanp-cities.js ni window.CIUDADES_PY — ya no aplica
 - El campo teléfono en modales DCANP tiene valor inicial "09" y placeholder "981 234 567". Al enfocar el cursor queda al final. Al enviar, se limpian los espacios con .replace(/\s/g, '').
 - El teléfono se normaliza automáticamente en dcanp-lead.js — se quita el prefijo internacional +595 o 595 antes de guardar en Sheets y Telegram.
 - El mensaje de Telegram incluye "Departamento: X" después de "Ciudad: X" cuando la ciudad se reconoce en CITY_TO_DEPT.
@@ -654,3 +659,13 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 - **X-Frame-Options:** todas las landings tienen `SAMEORIGIN` (desde `public/_headers`). El editor carga same-origin → funciona. No usar `DENY` en landings individuales.
 - Para nuevas landings: agregar `data-insync-section` en secciones para que aparezcan en el árbol del editor
 - El HTML limpio usa `XMLSerializer` para evitar atributos booleanos duplicados (`checked=""`, `defer=""`, `required=""` que `outerHTML` duplica)
+
+## ⚠️ ENCODING — REGLA CRÍTICA
+Siempre guardar HTMLs con UTF-8 sin BOM.
+NUNCA usar Set-Content de PowerShell sin especificar encoding:
+  ❌ Set-Content archivo.html $content
+  ✅ [System.IO.File]::WriteAllText(path, content, [System.Text.UTF8Encoding]::new($false))
+Esto causó corrupción de caracteres especiales (tildes, ñ, símbolos) dos veces:
+- 2026-09: Set-Content leyó HTMLs UTF-8 como Windows-1252 y reescribió con encoding doble → caracteres como "ó" se guardaron como "Ã³", "—" como "â€"", etc.
+- Afectó: esquinero-aluminio, interruptor-control-remoto, estante-aluminio-bano (y otros 16 landings del bump masivo de tracking.js)
+- Fix: git checkout al commit pre-corrupción + [System.IO.File]::WriteAllText con UTF8Encoding($false)
