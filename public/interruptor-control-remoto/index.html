@@ -48,7 +48,7 @@
 
     /* â•â• Interruptor InalÃ¡mbrico â€” theme azul tecnolÃ³gico â•â• */
     :root {
-      --irt-blue:      #2563eb;
+      --irt-blue:      #dc2626;
       --irt-dark2:     #1e3a8a;
       --irt-dark:      #0f172a;
       --irt-cream:     #f0f4ff;
@@ -56,7 +56,7 @@
       --irt-text:      #0f172a;
       --irt-text-dim:  rgba(15,23,42,.68);
       --irt-text-muted: rgba(15,23,42,.64);
-      --irt-border:    rgba(37,99,235,.28);
+      --irt-border:    rgba(220,38,38,.28);
       --irt-card:      #ffffff;
       --irt-card2:     #dbeafe;
     }
@@ -69,17 +69,17 @@
 
     .btn-irt {
       display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-      background: #2563eb; color: #fff; font-weight: 800;
-      padding: 15px 14px; border-radius: 999px; border: 3px solid #1d4ed8; cursor: pointer;
+      background: #dc2626; color: #fff; font-weight: 800;
+      padding: 15px 14px; border-radius: 999px; border: 3px solid #b91c1c; cursor: pointer;
       text-decoration: none; transition: background .2s, transform .15s;
       letter-spacing: 0; width: 100%; max-width: 340px; white-space: nowrap;
-      font-size: clamp(10px, 3.4vw, 14px); box-shadow: 0 4px 14px rgba(37,99,235,.35);
+      font-size: clamp(10px, 3.4vw, 14px); box-shadow: 0 4px 14px rgba(220,38,38,.35);
     }
-    .btn-irt:hover { background: #1d4ed8; transform: translateY(-1px); }
+    .btn-irt:hover { background: #b91c1c; transform: translateY(-1px); }
     .nav__cta-btn {
       display: inline-flex; align-items: center; justify-content: center;
-      background: #2563eb; color: #fff; font-weight: 800; font-size: clamp(7px,2.6vw,12px);
-      padding: 8px 10px; border-radius: 999px; border: 2px solid #1d4ed8; cursor: pointer;
+      background: #dc2626; color: #fff; font-weight: 800; font-size: clamp(7px,2.6vw,12px);
+      padding: 8px 10px; border-radius: 999px; border: 2px solid #b91c1c; cursor: pointer;
       white-space: nowrap; max-width: 62vw;
     }
 
@@ -97,9 +97,9 @@
     .hero-irt .price-compare { color: rgba(15,23,42,.64); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
     .hero-irt__proof { font-size: 13px; font-weight: 600; color: var(--irt-blue); margin: 0 0 18px; }
     .hero-irt__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; }
-    .hero-irt__feature { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--irt-text); background: rgba(37,99,235,.08); border: 1px solid var(--irt-border); border-radius: 8px; padding: 10px 14px; }
+    .hero-irt__feature { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--irt-text); background: rgba(220,38,38,.08); border: 1px solid var(--irt-border); border-radius: 8px; padding: 10px 14px; }
     .hero-irt .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 16px; }
-    .hero-irt .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--irt-text); padding: 5px 7px; border-radius: 20px; background: rgba(37,99,235,.1); border: 1px solid rgba(37,99,235,.3); white-space: nowrap; flex: 0 1 auto; }
+    .hero-irt .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--irt-text); padding: 5px 7px; border-radius: 20px; background: rgba(220,38,38,.1); border: 1px solid rgba(220,38,38,.3); white-space: nowrap; flex: 0 1 auto; }
     .hero-irt .db-badge.db-green { background: rgba(26,122,62,.12); border-color: rgba(26,122,62,.35); color: var(--irt-green); }
 
     /* â•â• GANCHO + IMAGEN â•â• */
@@ -131,16 +131,16 @@
     /* â•â• MODAL DCANP â€” estructura calcada del estante â•â• */
     .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(15,23,42,.6); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
     .modal-overlay.active { display: flex; }
-    .theme-irt .modal-box { position: relative; background: #fff; border: 1px solid rgba(37,99,235,.3); border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; }
-    .theme-irt .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(37,99,235,.14); color: var(--irt-text); font-size: 15px; cursor: pointer; }
+    .theme-irt .modal-box { position: relative; background: #fff; border: 1px solid rgba(220,38,38,.3); border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; }
+    .theme-irt .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(220,38,38,.14); color: var(--irt-text); font-size: 15px; cursor: pointer; }
     .theme-irt .modal-title { font-size: 20px; font-weight: 800; color: var(--irt-text); margin: 0 0 4px; }
     .theme-irt .modal-subtitle { font-size: 13px; color: #555555; margin: 0 0 18px; line-height: 1.5; }
     .theme-irt .modal-section-label { display: block; font-size: 12px; font-weight: 700; color: #666666; text-transform: uppercase; letter-spacing: .04em; margin: 0 0 10px; }
     .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-    .theme-irt .offer-option { position: relative; display: block; border: 1.5px solid rgba(37,99,235,.22); border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
+    .theme-irt .offer-option { position: relative; display: block; border: 1.5px solid rgba(220,38,38,.22); border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
     .offer-option input { position: absolute; opacity: 0; }
-    .theme-irt .offer-option.selected { border-color: var(--irt-blue); background: rgba(37,99,235,.08); }
-    .theme-irt .offer-option.selected:has(.offer-badge:not(.offer-badge--best)) { border-width: 2.5px; border-color: var(--irt-blue); background: rgba(37,99,235,.13); }
+    .theme-irt .offer-option.selected { border-color: var(--irt-blue); background: rgba(220,38,38,.08); }
+    .theme-irt .offer-option.selected:has(.offer-badge:not(.offer-badge--best)) { border-width: 2.5px; border-color: var(--irt-blue); background: rgba(220,38,38,.13); }
     .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
     .theme-irt .offer-option .offer-qty,
     .theme-irt .offer-option .offer-price { color: var(--irt-text); font-weight: 800; }
@@ -157,13 +157,13 @@
     .theme-irt .form-group input,
     .theme-irt .form-group select,
     .theme-irt .form-group textarea {
-      width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid rgba(37,99,235,.3);
+      width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid rgba(220,38,38,.3);
       background: #fff; color: var(--irt-text); font-size: 14px; font-family: inherit;
     }
     .theme-irt .form-group input::placeholder,
     .theme-irt .form-group textarea::placeholder { color: #666666; }
-    .theme-irt .upsell-block { background: #fff; border: 1.5px solid rgba(37,99,235,.2); border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
-    .theme-irt .upsell-block:has(input:checked) { border-color: var(--irt-blue); background: rgba(37,99,235,.08); }
+    .theme-irt .upsell-block { background: #fff; border: 1.5px solid rgba(220,38,38,.2); border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .theme-irt .upsell-block:has(input:checked) { border-color: var(--irt-blue); background: rgba(220,38,38,.08); }
     .theme-irt .upsell-title { color: var(--irt-text); font-size: 13px; font-weight: 700; }
     .theme-irt .upsell-sub { color: rgba(15,23,42,.55); font-size: 12px; }
     #d-total-line:empty { display:none; }
@@ -171,16 +171,16 @@
     .form-submit .btn-irt { max-width: none; }
     .theme-irt .dcanp-success { display: none; background: #eff6ff; border: 1px solid #93c5fd; border-radius: 16px; padding: 32px 24px; text-align: center; }
     .theme-irt .dcanp-success.visible { display: block; }
-    .theme-irt .dcanp-success__icon { width: 56px; height: 56px; background: #2563eb; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
-    .theme-irt .dcanp-success h2 { color: #1d4ed8; font-size: 22px; margin-bottom: 12px; }
+    .theme-irt .dcanp-success__icon { width: 56px; height: 56px; background: #dc2626; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .theme-irt .dcanp-success h2 { color: #b91c1c; font-size: 22px; margin-bottom: 12px; }
     .theme-irt .dcanp-success p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
     .theme-irt .dcanp-success__tip { font-weight: 600; }
     .theme-irt .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: #1a7a3e; font-weight: 700; }
 
     /* â•â• URGENCY BAR â•â• */
     .urgency-bar {
-      background: #2563eb; color: #fff; text-align: center;
-      font-size: 13px; font-weight: 700; padding: 8px 16px;
+      background: #dc2626; color: #fff; text-align: center;
+      font-size: 12px; font-weight: 700; padding: 8px 16px;
       position: sticky; top: 0; z-index: 200; letter-spacing: .02em;
     }
 
@@ -252,7 +252,6 @@
     </div>
 
     <div>
-      <p class="eyebrow-irt">Hogar inteligente Â· Dam Vertex</p>
       <h1 class="hero-irt__h">Ya estÃ¡s en la cama.<br>La luz sigue prendida.</h1>
       <p class="hero-irt__sub">El interruptor inalÃ¡mbrico que apaga tu luz desde donde estÃ©s. Sin cables, sin electricista, sin levantarte nunca mÃ¡s.</p>
       <div class="risk-zero">
@@ -268,10 +267,9 @@
           <span class="price-compare">Gs. 188.000</span>
         </div>
       </div>
-      <div class="value-anchor">Menos de lo que gastÃ¡s en dos deliverys â€” y te dura aÃ±os.</div>
-      <p class="hero-irt__proof">Control remoto incluido Â· instalaciÃ³n en segundos</p>
+      <div class=”value-anchor”>Menos de lo que gastÃ¡s en dos deliverys â€” y te dura aÃ±os.</div>
 
-      <div class="hero-irt__features">
+      <div class=”hero-irt__features”>
         <div class="hero-irt__feature">ðŸ“¡ Control remoto incluido â€” apagÃ¡ sin moverte</div>
         <div class="hero-irt__feature">ðŸ›ï¸ Perfecto para el dormitorio â€” desde la cama</div>
         <div class="hero-irt__feature">âš¡ InstalaciÃ³n en segundos â€” sin cables ni electricista</div>
@@ -378,7 +376,7 @@
 
     <div id="modal-form-wrap">
       <h2 class="modal-title" id="modal-title-irt">CompletÃ¡ tu pedido</h2>
-      <p class="modal-stock-alert" style="text-align:center;font-size:11px;font-weight:700;color:#2563eb;margin:4px 0 10px;">âš¡ Quedan pocas unidades â€” pedidos se procesan hoy</p>
+      <p class="modal-stock-alert" style="text-align:center;font-size:11px;font-weight:700;color:#dc2626;margin:4px 0 10px;">âš¡ Quedan pocas unidades â€” pedidos se procesan hoy</p>
       <p class="modal-subtitle">CompletÃ¡ tus datos y nos comunicamos para coordinar tu entrega.</p>
 
       <span class="modal-section-label">ElegÃ­ tu oferta</span>
