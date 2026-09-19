@@ -46,10 +46,14 @@ function getFbc() {
   return fbc;
 }
 
+function getFbp() {
+  return document.cookie.match(/_fbp=(fb\.[^;]+)/)?.[1] || null;
+}
+
 function getClientData() {
   return {
-    fbp:        getCookie('_fbp'),
-    fbc:        getFbc(),
+    fbp:        getFbp(),
+    fbc:        getFbc() || null,
     user_agent: navigator.userAgent,
     page_url:   location.href,
   };
