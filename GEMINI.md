@@ -660,6 +660,49 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 - Para nuevas landings: agregar `data-insync-section` en secciones para que aparezcan en el árbol del editor
 - El HTML limpio usa `XMLSerializer` para evitar atributos booleanos duplicados (`checked=""`, `defer=""`, `required=""` que `outerHTML` duplica)
 
+## REGLAS DE OFERTA — Todas las landing nuevas (Hormozi)
+
+### Principio base
+Los anuncios de video ya explican el producto. La landing NO repite lo que el video muestra.
+La landing tiene UN solo trabajo: eliminar objeciones y hacer el pedido irresistible.
+
+### Estructura obligatoria de toda landing nueva
+1. H1 — Dolor directo (no descripción del producto)
+2. Sub — Transformación en una línea
+3. Bloque riesgo cero — "No pagás nada hasta tenerlo en la mano" (verde, borde izquierdo)
+4. Precio + tachado + ahorrás + value anchor ("menos que dos deliverys")
+5. Features con emoji — máximo 4, solo beneficios reales, sin repetir lo de los videos
+6. CTA + prueba social "+X pedidos entregados este mes"
+7. Imágenes del producto (ganchos entre medio)
+8. Bloque garantía 90 días (propio, prominente)
+9. FAQ 4 preguntas: cuándo llega / pago adelantado / garantía / envío
+10. CTA cierre
+
+### Lo que NUNCA va en una landing
+- Eyebrow tipo "Hogar inteligente · Dam Vertex" — innecesario
+- Duplicados: si algo ya está en las features con emoji, no repetirlo arriba sin emoji
+- Características técnicas que el video ya muestra
+- Texto explicativo que no toca dolor, transformación o urgencia
+- Frases genéricas como "calidad premium" sin contexto concreto
+
+### Elementos de oferta irresistible (obligatorios)
+- Barra urgencia: "⚡ Quedan X unidades · Envío gratis · Pagás al recibir" — en UNA línea — fondo rojo
+- Riesgo cero: verde #e8f5e9 con borde #1a7a3e — antes del precio
+- Prueba social: "+X pedidos entregados en Paraguay este mes" — debajo del CTA hero
+- Escasez real con número concreto (no "stock limitado")
+- Garantía: bloque propio con borde verde, no solo subtítulo del botón
+- FAQ: resuelve las 4 objeciones principales antes del footer
+- Value anchor: frase de precio relativo debajo del precio principal
+- Color CTA: rojo #dc2626 — genera urgencia, convierte mejor que azul en COD Paraguay
+
+### Textos que detienen el scroll (usar en H1 y ganchos)
+- Empezar con la situación exacta del cliente: "Ya estás en la cama..."
+- Preguntas que duelen: "¿Ese rincón del baño que no sabés cómo aprovechar?"
+- Contraste antes/después: "Sin taladro. Sin perforar. En segundos."
+- Identidad: "Para los que trabajan todo el día y merecen descansar bien"
+
+---
+
 ## ⚠️ ENCODING — REGLA CRÍTICA
 Siempre guardar HTMLs con UTF-8 sin BOM.
 NUNCA usar Set-Content de PowerShell sin especificar encoding:
