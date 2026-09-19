@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -8,14 +8,14 @@
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
-  <meta name="description" content="Compacto. Silencioso. Recargable. Entrega hoy en Central. PagÃ¡s cuando lo recibÃ­s.">
-  <title>LUNA MINI â€” Bienestar Personal Â· Dam Vertex</title>
+  <meta name="description" content="Compacto. Silencioso. Recargable. Entrega hoy en Central. Pagás cuando lo recibís.">
+  <title>LUNA MINI — Bienestar Personal · Dam Vertex</title>
   <script src="/assets/js/site-version.js?v=60" defer></script>
-  <!-- CSS no crÃ­tico: preload + swap a stylesheet on load (no bloquea el render) -->
+  <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
   <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
   <style>
-    /* â•â• CRÃTICO ABOVE-THE-FOLD â€” extraÃ­do de styles.min.css â•â•
+    /* ══ CRÍTICO ABOVE-THE-FOLD — extraído de styles.min.css ══
        Necesario para nav/hero/precio sin FOUC mientras styles.min.css carga async. */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
@@ -45,7 +45,7 @@
       border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px;
     }
 
-    /* â•â• LUNA MINI â€” rosa Ã­ntimo â•â• */
+    /* ══ LUNA MINI — rosa íntimo ══ */
     :root {
       --luna-pink:     #E91E63;
       --luna-dark:     #c2185b;
@@ -75,7 +75,7 @@
     }
     .pink-line--center { margin: 0 auto 20px; }
 
-    /* â•â• HERO â•â• */
+    /* ══ HERO ══ */
     .hero-luna {
       background: var(--bg-base);
       padding: clamp(6px,1.5vw,14px) clamp(20px,5vw,64px) clamp(8px,2vw,20px);
@@ -106,8 +106,8 @@
       object-fit: cover; object-position: center;
       display: block; position: absolute; inset: 0; border-radius: 6px;
     }
-    /* Hero image: fuerza aspect-ratio 4/5 tambiÃ©n en mobile â€” sin esto, la media
-       query .hero-luna__media .img-ph{aspect-ratio:1} recortarÃ­a el perfil en cuadrado. */
+    /* Hero image: fuerza aspect-ratio 4/5 también en mobile — sin esto, la media
+       query .hero-luna__media .img-ph{aspect-ratio:1} recortaría el perfil en cuadrado. */
     #hero-img { aspect-ratio: 4 / 5; }
     .img-ph__label {
       display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -168,7 +168,7 @@
     .hero-luna .price-compare { font-size: clamp(26px,5.5vw,36px); font-weight: 700; color: rgba(255,255,255,.5); }
     .hero-luna .price-main    { font-size: clamp(18px,3vw,22px); }
 
-    /* â•â• EVERGREEN TIMER â€” copiado exacto de /cadena/ â•â• */
+    /* ══ EVERGREEN TIMER — copiado exacto de /cadena/ ══ */
     .evergreen-timer {
       background: #111;
       border-left: 3px solid #f59e0b;
@@ -201,7 +201,7 @@
       color: #fff;
     }
 
-    /* â•â• 3 caracterÃ­sticas debajo del contador â•â• */
+    /* ══ 3 características debajo del contador ══ */
     .luna-features {
       list-style: none; padding: 0; margin: 14px 0 20px;
       display: flex; flex-direction: column; gap: 9px;
@@ -232,7 +232,7 @@
     .db-pink  { background: rgba(233,30,99,.15); border-color: rgba(233,30,99,.35); color: #f9a8c9; }
     .delivery-badges--secondary { justify-content: flex-start; margin-top: 7px; }
 
-    /* â•â• TRANSFORMACION â•â• */
+    /* ══ TRANSFORMACION ══ */
     .transf {
       background: var(--bg-base);
       padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
@@ -266,9 +266,9 @@
     .transf__list { display: flex; flex-direction: column; gap: 10px; list-style: none; padding: 0; margin: 0; }
     .transf__list li { font-size: 13px; line-height: 1.5; display: flex; gap: 10px; }
     .transf__col--antes .transf__list li { color: rgba(255,255,255,.35); }
-    .transf__col--antes .transf__list li::before  { content: 'âœ•'; color: rgba(248,113,113,.4); flex-shrink: 0; }
+    .transf__col--antes .transf__list li::before  { content: '✕'; color: rgba(248,113,113,.4); flex-shrink: 0; }
     .transf__col--despues .transf__list li { color: rgba(255,255,255,.75); }
-    .transf__col--despues .transf__list li::before { content: 'âœ“'; color: #86efac; flex-shrink: 0; }
+    .transf__col--despues .transf__list li::before { content: '✓'; color: #86efac; flex-shrink: 0; }
     .transf__center {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 20px 16px; gap: 12px; min-width: 72px;
@@ -286,7 +286,7 @@
       writing-mode: vertical-lr; transform: rotate(180deg);
     }
 
-    /* â•â• PRODUCTO â€” specs â•â• */
+    /* ══ PRODUCTO — specs ══ */
     .producto {
       background: var(--bg-card2);
       padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
@@ -305,17 +305,17 @@
     .sec-h   { font-size: clamp(20px,3.5vw,30px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0 0 16px; letter-spacing: -.01em; }
     .sec-body { font-size: 14px; color: var(--text-dim); line-height: 1.75; margin: 0 0 24px; }
 
-    /* â•â• DETALLE â€” imagen real (specs). El WebP ya trae el texto
-       "Silicona mÃ©dica Â· IPX7 Â· 10 modos / Hecho para sentir. / 45+ min Â· USB Â· Un solo botÃ³n"
-       quemado en los pÃ­xeles â€” no se superpone texto en HTML/CSS encima. â•â• */
+    /* ══ DETALLE — imagen real (specs). El WebP ya trae el texto
+       "Silicona médica · IPX7 · 10 modos / Hecho para sentir. / 45+ min · USB · Un solo botón"
+       quemado en los píxeles — no se superpone texto en HTML/CSS encima. ══ */
     #detalle-img { border-style: solid; border-color: transparent; background: #0a0507; aspect-ratio: 16 / 9; }
 
-    /* â•â• CONFIANZA â€” imagen real (empaque discreto). El WebP ya trae el texto
-       "Empaque 100% discreto / Nadie sabe lo que hay adentro. / Bolsa neutra Â· Sin marcas Â· Entrega en el dÃ­a"
-       quemado en los pÃ­xeles, con su propio contraste â€” no necesita overlay adicional. â•â• */
+    /* ══ CONFIANZA — imagen real (empaque discreto). El WebP ya trae el texto
+       "Empaque 100% discreto / Nadie sabe lo que hay adentro. / Bolsa neutra · Sin marcas · Entrega en el día"
+       quemado en los píxeles, con su propio contraste — no necesita overlay adicional. ══ */
     #lifestyle-img { border-style: solid; border-color: transparent; background: #0a0507; }
 
-    /* â•â• BENEFICIOS â•â• */
+    /* ══ BENEFICIOS ══ */
     .beneficios {
       background: var(--bg-base);
       padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
@@ -335,7 +335,7 @@
     .bene-card strong { display: block; font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 10px; }
     .bene-card p { font-size: 13px; color: var(--text-muted); line-height: 1.65; margin: 0; }
 
-    /* â•â• CONFIANZA â•â• */
+    /* ══ CONFIANZA ══ */
     .confianza {
       background: var(--bg-card2);
       padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
@@ -352,7 +352,7 @@
     .trust-card p.t-title { font-size: 15px; font-weight: 700; color: #fff; margin: 0 0 6px; }
     .trust-card p.t-body  { font-size: 13px; color: rgba(255,255,255,.5); margin: 0; }
 
-    /* â•â• FAQ â•â• */
+    /* ══ FAQ ══ */
     .faq-section {
       background: var(--bg-base);
       padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px);
@@ -364,7 +364,7 @@
     .faq-section .faq-q::after { color: var(--luna-pink); }
     .faq-section .faq-a    { color: var(--text-dim); }
 
-    /* â•â• CIERRE â•â• */
+    /* ══ CIERRE ══ */
     .cierre-luna {
       background: linear-gradient(180deg, var(--bg-base) 0%, #0a0305 100%);
       padding: clamp(72px,12vw,110px) clamp(20px,5vw,64px);
@@ -397,7 +397,7 @@
     .ct-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-dim); justify-content: center; }
     .ct-ok { color: #86efac; font-weight: 700; }
 
-    /* â•â• STICKY CTA â•â• */
+    /* ══ STICKY CTA ══ */
     .sticky-cta-bar {
       display: none;
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
@@ -412,7 +412,7 @@
       body:has(#order-modal.active) .sticky-cta-bar { display: none; }
     }
 
-    /* â•â• RESPONSIVE â•â• */
+    /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
       .transf__bridge { grid-template-columns: 1fr; }
       .transf__col--antes { border-right: none; border-bottom: 1px solid var(--border-subtle); }
@@ -436,7 +436,7 @@
       .btn-luna         { max-width: 100%; }
     }
 
-    /* â•â• Modal theme â•â• */
+    /* ══ Modal theme ══ */
     .theme-luna .confirm-intent.checked,
     .theme-luna .confirm-intent:has(input:checked) {
       border-color: var(--luna-pink);
@@ -458,9 +458,9 @@
     .offer-foot .offer-saving { margin-top: 0; }
     .offer-foot .offer-badge  { position: static; flex-shrink: 0; }
 
-    /* Autocomplete manual de ciudad â€” reemplaza datalist (no confiable en algunos mobile).
+    /* Autocomplete manual de ciudad — reemplaza datalist (no confiable en algunos mobile).
        Wrapper dedicado (no #location-group entero) para que top:100% quede pegado
-       al input y no a la altura total del form-group (que incluye el botÃ³n de
+       al input y no a la altura total del form-group (que incluye el botón de
        referencia debajo). */
     .city-input-wrap { position: relative; }
     .city-suggestions {
@@ -504,13 +504,15 @@
     .city-suggestions__item:focus,
     .city-suggestions__item.touch-active { background-color: #FF3EA5 !important; color: #ffffff !important; }
   </style>
-  <meta property="og:title" content="LUNA MINI â€” Bienestar Personal Â· Dam Vertex" />
-  <meta property="og:description" content="Compacto. Silencioso. Recargable. Entrega hoy en Central. PagÃ¡s cuando lo recibÃ­s." />
+  <meta property="og:title" content="LUNA MINI — Bienestar Personal · Dam Vertex" />
+  <meta property="og:description" content="Compacto. Silencioso. Recargable. Entrega hoy en Central. Pagás cuando lo recibís." />
   <meta property="og:image" content="/assets/img/lunamini2image.webp" />
   <meta property="og:url" content="https://damvertex.com/luna-mini-vibrador-bala-recargable/" />
   <meta property="og:type" content="website" />
 </head>
 <body class="theme-luna">
+
+<div style="background:#dc2626;color:#fff;text-align:center;padding:7px 8px;font-size:12px;font-weight:700;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">⚡ Quedan 4 unidades · Envío gratis · Pagás al recibir</div>
 
 <!-- Sprite: icono WhatsApp real del proyecto (reusado de public/index.html .wa-btn) -->
 <svg style="position:absolute;width:0;height:0" aria-hidden="true">
@@ -522,11 +524,11 @@
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">Lo quiero â€” Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
 </nav>
 
 <main>
-<!-- â•â• HERO â•â• -->
+<!-- ══ HERO ══ -->
 <section class="hero-luna" id="section-hero" data-insync-section="hero">
   <div class="hero-luna__inner">
 
@@ -544,10 +546,14 @@
     </div>
 
     <div>
-      <p class="eyebrow-luna">Â¿QuÃ© es lo que todas estÃ¡n pidiendo? â†“</p>
+      <p class="eyebrow-luna">¿Qué es lo que todas están pidiendo? ↓</p>
       <h1 class="hero-luna__h">Mereces sentir placer,<br><em>a tu manera y a tu tiempo.</em></h1>
-      <p class="hero-luna__sub">LUNA MINI es tu vibrador personal: compacto, silencioso y siempre listo cuando vos querÃ©s. Para esos momentos que son solo tuyos â€” sin apuro, sin ruido y sin que nadie mÃ¡s lo sepa.</p>
-      <p class="exclusive-badge">ðŸ‡µðŸ‡¾ No conseguÃ­s esto en ningÃºn local de Paraguay</p>
+      <p class="hero-luna__sub">LUNA MINI es tu vibrador personal: compacto, silencioso y siempre listo cuando vos querés. Para esos momentos que son solo tuyos — sin apuro, sin ruido y sin que nadie más lo sepa.</p>
+      <p class="exclusive-badge">🇵🇾 No conseguís esto en ningún local de Paraguay</p>
+      <div style="background:#e8f5e9;border-left:4px solid #1a7a3e;padding:14px 16px;border-radius:8px;margin:16px 0;">
+        <div style="font-size:17px;font-weight:900;color:#1a7a3e;">No pagás nada hasta tenerlo en la mano</div>
+        <div style="font-size:13px;color:#2c3e50;margin-top:4px;">Lo recibís, lo revisás, y recién ahí pagás. Sin adelantos, sin tarjeta.</div>
+      </div>
       <div class="price-block">
         <div class="price-main-row">
           <span class="price-main">Gs. 199.000</span>
@@ -555,37 +561,42 @@
           <span class="price-badge">26% OFF</span>
         </div>
       </div>
+      <div style="font-size:13px;color:#666;font-style:italic;margin-top:6px;">Menos de lo que gastás en dos deliverys — y te dura años.</div>
       <div class="evergreen-timer" id="evergreen-timer">
         <div class="evergreen-timer__line1">Este precio cierra en <strong class="evergreen-timer__time">07:00</strong></div>
-        <div class="evergreen-timer__line2">Ãšltimas unidades con entrega en el dÃ­a</div>
+        <div class="evergreen-timer__line2">Últimas unidades con entrega en el día</div>
       </div>
       <ul class="luna-features">
-        <li><span class="luna-features__dot"></span>Tan silencioso que es tu secreto, nada mÃ¡s</li>
-        <li><span class="luna-features__dot"></span>10 modos distintos, para encontrar el que mÃ¡s te guste</li>
-        <li><span class="luna-features__dot"></span>MÃ¡s de 45 minutos de baterÃ­a, siempre lista para vos</li>
+        <li><span class="luna-features__dot"></span>Tan silencioso que es tu secreto, nada más</li>
+        <li><span class="luna-features__dot"></span>10 modos distintos, para encontrar el que más te guste</li>
+        <li><span class="luna-features__dot"></span>Más de 45 minutos de batería, siempre lista para vos</li>
       </ul>
       <div class="spi">
-        <span class="spi-stars">â˜…â˜…â˜…â˜…â˜…</span>
-        <span class="spi-text">Pocas unidades disponibles Â· Llega hoy mismo</span>
+        <span class="spi-stars">★★★★★</span>
+        <span class="spi-text">Pocas unidades disponibles · Llega hoy mismo</span>
       </div>
       <a class="btn-luna" data-scroll-form data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Lo quiero â€” Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+        Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
       </a>
       <div class="delivery-badges">
-        <span class="db-badge db-pink">ðŸšš Entrega en el dÃ­a</span>
-        <span class="db-badge db-pink">âœ“ EnvÃ­o gratis</span>
-        <span class="db-badge">ðŸ’³ Pago al recibir Â· Central</span>
-        <span class="db-badge">ðŸ“¦ Empaque discreto</span>
+        <span class="db-badge db-pink">🚚 Entrega en el día</span>
+        <span class="db-badge db-pink">✓ Envío gratis</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge">📦 Empaque discreto</span>
       </div>
       <div class="delivery-badges delivery-badges--secondary">
-        <span class="db-badge">ðŸ“¦ Interior: pago anticipado - sin envÃ­o gratis</span>
+        <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;justify-content:center;margin-top:12px;font-size:13px;">
+        <span style="font-weight:900;font-size:18px;color:#1a7a3e;">+340</span>
+        <span style="color:#555;">pedidos entregados en Paraguay este mes</span>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- â•â• CONFIANZA â•â• -->
+<!-- ══ CONFIANZA ══ -->
 <section class="confianza" id="section-confianza" data-insync-section="confianza">
   <div class="confianza__inner">
     <div class="confianza__head">
@@ -598,26 +609,26 @@
 
       <div>
         <div class="img-ph img-ph--sq" id="lifestyle-img">
-          <img src="/assets/img/empaque-discreto.webp" alt="LUNA MINI â€” empaque 100% discreto, bolsa neutra sin marcas, entrega en el dÃ­a" width="600" height="600" loading="lazy">
+          <img src="/assets/img/empaque-discreto.webp" alt="LUNA MINI — empaque 100% discreto, bolsa neutra sin marcas, entrega en el día" width="600" height="600" loading="lazy">
         </div>
       </div>
 
       <div class="confianza__cards">
         <div class="trust-card" style="border-color:rgba(233,30,99,.25);background:rgba(233,30,99,.05)">
-          <p class="t-title">Empaque 100% discreto <span style="font-size:1em">ðŸ“¦</span></p>
-          <p class="t-body">Llega en una bolsa simple, sin marcas ni nada que diga quÃ© hay adentro. Ni quien te lo entrega se entera de nada â€” es solo tuyo.</p>
+          <p class="t-title">Empaque 100% discreto <span style="font-size:1em">📦</span></p>
+          <p class="t-body">Llega en una bolsa simple, sin marcas ni nada que diga qué hay adentro. Ni quien te lo entrega se entera de nada — es solo tuyo.</p>
         </div>
         <div class="trust-card">
-          <p class="t-title">Entrega en el dÃ­a en Central <span style="font-size:1em">ðŸšš</span></p>
-          <p class="t-body">Si estÃ¡s en Central, hoy mismo lo tenÃ©s en tus manos. Coordinamos todo por WhatsApp, tranquila y sin vueltas.</p>
+          <p class="t-title">Entrega en el día en Central <span style="font-size:1em">🚚</span></p>
+          <p class="t-body">Si estás en Central, hoy mismo lo tenés en tus manos. Coordinamos todo por WhatsApp, tranquila y sin vueltas.</p>
         </div>
         <div class="trust-card">
-          <p class="t-title">PagÃ¡s cuando lo tenÃ©s en mano <span style="font-size:1em">ðŸ’³</span></p>
-          <p class="t-body">En Central pagÃ¡s reciÃ©n cuando lo tenÃ©s en tus manos â€” efectivo o transferencia, como prefieras. Sin adelantar nada.</p>
+          <p class="t-title">Pagás cuando lo tenés en mano <span style="font-size:1em">💳</span></p>
+          <p class="t-body">En Central pagás recién cuando lo tenés en tus manos — efectivo o transferencia, como prefieras. Sin adelantar nada.</p>
         </div>
         <div class="trust-card">
-          <p class="t-title">Soporte real por WhatsApp <span style="font-size:1em">ðŸ’¬</span></p>
-          <p class="t-body">Si te queda alguna duda, te respondemos directo por WhatsApp, como quien te ayuda de verdad. Con garantÃ­a y acompaÃ±amiento despuÃ©s de la compra.</p>
+          <p class="t-title">Soporte real por WhatsApp <span style="font-size:1em">💬</span></p>
+          <p class="t-body">Si te queda alguna duda, te respondemos directo por WhatsApp, como quien te ayuda de verdad. Con garantía y acompañamiento después de la compra.</p>
         </div>
       </div>
 
@@ -625,19 +636,19 @@
 
     <div style="text-align:center;margin-top:40px">
       <a class="btn-luna" data-scroll-form data-insync-cta="confianza" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Lo quiero â€” Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+        Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
       </a>
     </div>
   </div>
 </section>
 
-<!-- â•â• TRANSFORMACION â•â• -->
+<!-- ══ TRANSFORMACION ══ -->
 <section class="transf" id="section-transformacion" data-insync-section="transformacion">
   <div class="transf__inner">
     <div class="transf__head">
       <p class="transf__overline">Lo que cambia cuando es tuyo</p>
       <div class="pink-line pink-line--center"></div>
-      <h2 class="transf__title">Tu placer merece ser<br>solo tu decisiÃ³n.</h2>
+      <h2 class="transf__title">Tu placer merece ser<br>solo tu decisión.</h2>
     </div>
 
     <div class="transf__bridge">
@@ -646,28 +657,28 @@
         <p class="transf__col-label">Antes</p>
         <h3>Sin nada propio. Sin la certeza de sentir bien.</h3>
         <ul class="transf__list">
-          <li>Opciones genÃ©ricas, incÃ³modas, que se notan a simple vista</li>
+          <li>Opciones genéricas, incómodas, que se notan a simple vista</li>
           <li>Nada que entre disimulado en tu cartera</li>
-          <li>Esa sensaciÃ³n de cuidar el ruido, de que alguien pregunte</li>
-          <li>Precios de importaciÃ³n que no cierran</li>
-          <li>Sin garantÃ­a acÃ¡, sin nadie que te acompaÃ±e</li>
+          <li>Esa sensación de cuidar el ruido, de que alguien pregunte</li>
+          <li>Precios de importación que no cierran</li>
+          <li>Sin garantía acá, sin nadie que te acompañe</li>
         </ul>
       </div>
 
       <div class="transf__center">
-        <div class="transf__arrow">â†’</div>
+        <div class="transf__arrow">→</div>
         <span class="transf__product-name">LUNA MINI</span>
       </div>
 
       <div class="transf__col transf__col--despues">
-        <p class="transf__col-label">DespuÃ©s</p>
-        <h3>Tu momento, cuando vos decidÃ­s.</h3>
+        <p class="transf__col-label">Después</p>
+        <h3>Tu momento, cuando vos decidís.</h3>
         <ul class="transf__list">
-          <li>80 mm, del tamaÃ±o justo para llevarlo en cualquier cartera</li>
-          <li>Silencioso de verdad â€” tu momento, sin que nadie se entere</li>
+          <li>80 mm, del tamaño justo para llevarlo en cualquier cartera</li>
+          <li>Silencioso de verdad — tu momento, sin que nadie se entere</li>
           <li>10 modos para encontrar el que te haga sentir mejor</li>
-          <li>Gs. 199.000, con entrega el mismo dÃ­a</li>
-          <li>AcompaÃ±amiento por WhatsApp y garantÃ­a real</li>
+          <li>Gs. 199.000, con entrega el mismo día</li>
+          <li>Acompañamiento por WhatsApp y garantía real</li>
         </ul>
       </div>
 
@@ -675,55 +686,55 @@
 
     <div style="text-align:center;margin-top:40px">
       <a class="btn-luna" data-scroll-form data-insync-cta="transformacion" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Lo quiero â€” Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+        Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
       </a>
     </div>
   </div>
 </section>
 
-<!-- â•â• BENEFICIOS â•â• -->
+<!-- ══ BENEFICIOS ══ -->
 <section class="beneficios" id="section-beneficios" data-insync-section="beneficios">
   <div class="beneficios__inner">
     <div class="beneficios__head">
       <p class="sec-overline">Todo lo que vas a amar</p>
       <div class="pink-line pink-line--center"></div>
-      <h2 class="sec-h" style="margin:0">Pensado para que te sientas bien.<br>Nada mÃ¡s, nada menos.</h2>
+      <h2 class="sec-h" style="margin:0">Pensado para que te sientas bien.<br>Nada más, nada menos.</h2>
     </div>
 
     <div class="bene-grid">
       <div class="bene-card">
-        <strong>10 modos de vibraciÃ³n <span style="font-size:1em">ðŸŽ›ï¸</span></strong>
-        <p>De lo mÃ¡s suave a lo mÃ¡s intenso â€” vos elegÃ­s segÃºn cÃ³mo te sintÃ¡s cada vez. Un solo botÃ³n, nada de instrucciones complicadas.</p>
+        <strong>10 modos de vibración <span style="font-size:1em">🎛️</span></strong>
+        <p>De lo más suave a lo más intenso — vos elegís según cómo te sintás cada vez. Un solo botón, nada de instrucciones complicadas.</p>
       </div>
       <div class="bene-card">
-        <strong>Silencioso de verdad <span style="font-size:1em">ðŸ”‡</span></strong>
-        <p>PodÃ©s disfrutarlo tranquila, sin que nadie en la otra habitaciÃ³n se entere. Toda la potencia, toda la discreciÃ³n.</p>
+        <strong>Silencioso de verdad <span style="font-size:1em">🔇</span></strong>
+        <p>Podés disfrutarlo tranquila, sin que nadie en la otra habitación se entere. Toda la potencia, toda la discreción.</p>
       </div>
       <div class="bene-card">
-        <strong>DiseÃ±o para discreciÃ³n <span style="font-size:1em">ðŸ‘œ</span></strong>
-        <p>80mm, apenas 50 gramos. Entra en tu cartera o en tu cajÃ³n sin que nadie lo note. Chiquito, lindo y solo tuyo.</p>
+        <strong>Diseño para discreción <span style="font-size:1em">👜</span></strong>
+        <p>80mm, apenas 50 gramos. Entra en tu cartera o en tu cajón sin que nadie lo note. Chiquito, lindo y solo tuyo.</p>
       </div>
     </div>
     <div class="bene-grid-2">
       <div class="bene-card">
-        <strong>Recargable vÃ­a USB <span style="font-size:1em">âš¡</span></strong>
-        <p>Nada de pilas que te dejan a mitad de camino. Lo cargÃ¡s con el mismo cable de tu celular y lo tenÃ©s listo cuando lo necesites.</p>
+        <strong>Recargable vía USB <span style="font-size:1em">⚡</span></strong>
+        <p>Nada de pilas que te dejan a mitad de camino. Lo cargás con el mismo cable de tu celular y lo tenés listo cuando lo necesites.</p>
       </div>
       <div class="bene-card">
-        <strong>Impermeable IPX7 <span style="font-size:1em">ðŸ’§</span></strong>
-        <p>Lo lavÃ¡s fÃ¡cil y tranquila, bajo el agua. Silicona mÃ©dica certificada: suave con tu piel y hecho para acompaÃ±arte tiempo.</p>
+        <strong>Impermeable IPX7 <span style="font-size:1em">💧</span></strong>
+        <p>Lo lavás fácil y tranquila, bajo el agua. Silicona médica certificada: suave con tu piel y hecho para acompañarte tiempo.</p>
       </div>
     </div>
 
     <div style="text-align:center;margin-top:40px">
       <a class="btn-luna" data-scroll-form data-insync-cta="beneficios" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Lo quiero â€” Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+        Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
       </a>
     </div>
   </div>
 </section>
 
-<!-- â•â• PRODUCTO â€” especificaciones â•â• -->
+<!-- ══ PRODUCTO — especificaciones ══ -->
 <section class="producto" id="section-producto" data-insync-section="producto">
   <div class="producto__inner">
 
@@ -739,13 +750,13 @@
       <p class="sec-overline">Especificaciones</p>
       <div class="pink-line"></div>
       <h2 class="sec-h">Hecho para durar.<br>Pensado para vos.</h2>
-      <p class="sec-body">Silicona mÃ©dica ultra suave, 10 modos de vibraciÃ³n, carga USB. LUNA MINI es ese vibrador bala que se siente increÃ­ble y no ocupa nada de lugar â€” entra en cualquier bolso y te acompaÃ±a mÃ¡s de 45 minutos con una sola carga.</p>
+      <p class="sec-body">Silicona médica ultra suave, 10 modos de vibración, carga USB. LUNA MINI es ese vibrador bala que se siente increíble y no ocupa nada de lugar — entra en cualquier bolso y te acompaña más de 45 minutos con una sola carga.</p>
 
       <div class="specs__grid">
         <div class="spec-item">
           <div class="spec-item__label">Material</div>
-          <div class="spec-item__val">Silicona mÃ©dica</div>
-          <div class="spec-item__sub">Suave, sin lÃ¡tex</div>
+          <div class="spec-item__val">Silicona médica</div>
+          <div class="spec-item__sub">Suave, sin látex</div>
         </div>
         <div class="spec-item">
           <div class="spec-item__label">Impermeabilidad</div>
@@ -755,28 +766,28 @@
         <div class="spec-item">
           <div class="spec-item__label">Modos</div>
           <div class="spec-item__val">10 intensidades</div>
-          <div class="spec-item__sub">Un solo botÃ³n</div>
+          <div class="spec-item__sub">Un solo botón</div>
         </div>
         <div class="spec-item">
           <div class="spec-item__label">Carga</div>
           <div class="spec-item__val">USB incluido</div>
-          <div class="spec-item__sub">45+ min de autonomÃ­a</div>
+          <div class="spec-item__sub">45+ min de autonomía</div>
         </div>
         <div class="spec-item">
           <div class="spec-item__label">Dimensiones</div>
-          <div class="spec-item__val">80 Ã— 21,5 mm</div>
+          <div class="spec-item__val">80 × 21,5 mm</div>
           <div class="spec-item__sub">Compacto y discreto</div>
         </div>
         <div class="spec-item">
           <div class="spec-item__label">Peso</div>
           <div class="spec-item__val">50 gramos</div>
-          <div class="spec-item__sub">FÃ¡cil de guardar</div>
+          <div class="spec-item__sub">Fácil de guardar</div>
         </div>
       </div>
 
       <div style="margin-top:28px">
         <a class="btn-luna" data-scroll-form data-insync-cta="producto" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-          Lo quiero â€” Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+          Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
         </a>
       </div>
     </div>
@@ -806,89 +817,97 @@
   })();
 </script>
 
-<!-- â•â• FAQ â•â• -->
+<section id="section-garantia" data-insync-section="garantia" style="padding:28px 16px;text-align:center;">
+  <div style="max-width:480px;margin:0 auto;border:2px solid #1a7a3e;border-radius:14px;padding:24px 18px;">
+    <div style="font-size:36px;">🛡️</div>
+    <h3 style="font-size:22px;font-weight:900;margin:8px 0 6px;color:#1a252f;">Garantía de 90 días</h3>
+    <p style="font-size:15px;color:#555;line-height:1.5;margin:0;">Si no funciona como prometemos, te lo cambiamos sin costo. Sin preguntas, sin vueltas.</p>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
 <section class="faq-section" id="section-faq" data-insync-section="faq">
   <p class="sec-overline" style="text-align:center;margin-bottom:10px">Preguntas frecuentes</p>
   <div class="pink-line pink-line--center"></div>
   <div class="faq-wrap">
 
     <details class="faq-item">
-      <summary class="faq-q">Â¿Es un buen vibrador?</summary>
-      <div class="faq-a">SÃ­, y de los buenos. Es de silicona mÃ©dica, suave y segura para uso Ã­ntimo. Lo probamos antes de sumarlo al catÃ¡logo porque querÃ­amos estar seguras de que valÃ­a la pena. Calidad real, sin pagar de mÃ¡s.</div>
+      <summary class="faq-q">¿Es un buen vibrador?</summary>
+      <div class="faq-a">Sí, y de los buenos. Es de silicona médica, suave y segura para uso íntimo. Lo probamos antes de sumarlo al catálogo porque queríamos estar seguras de que valía la pena. Calidad real, sin pagar de más.</div>
     </details>
 
     <details class="faq-item">
-      <summary class="faq-q">Â¿Hace mucho ruido?</summary>
-      <div class="faq-a">No, para nada. EstÃ¡ pensado para ser silencioso de verdad â€” nadie en la otra habitaciÃ³n se va a enterar. Toda la privacidad, sin perder intensidad.</div>
+      <summary class="faq-q">¿Hace mucho ruido?</summary>
+      <div class="faq-a">No, para nada. Está pensado para ser silencioso de verdad — nadie en la otra habitación se va a enterar. Toda la privacidad, sin perder intensidad.</div>
     </details>
 
     <details class="faq-item">
-      <summary class="faq-q">Â¿Por quÃ© estÃ¡ tan barato si se ve tan bien?</summary>
-      <div class="faq-a">Porque no estÃ¡s pagando una marca importada ni publicidad inflada. Trabajamos directo con proveedores de confianza y dejamos el margen justo. Calidad real, a un precio que tiene sentido.</div>
+      <summary class="faq-q">¿Por qué está tan barato si se ve tan bien?</summary>
+      <div class="faq-a">Porque no estás pagando una marca importada ni publicidad inflada. Trabajamos directo con proveedores de confianza y dejamos el margen justo. Calidad real, a un precio que tiene sentido.</div>
     </details>
 
     <details class="faq-item">
-      <summary class="faq-q">Â¿CuÃ¡nto tarda en llegar?</summary>
-      <div class="faq-a">En AsunciÃ³n y Central te llega el mismo dÃ­a â€” lo pedÃ­s hoy, lo tenÃ©s hoy. Si estÃ¡s en el Interior, coordinamos por WhatsApp; suele tardar uno o dos dÃ­as hÃ¡biles mÃ¡s.</div>
+      <summary class="faq-q">¿Cuánto tarda en llegar?</summary>
+      <div class="faq-a">En Asunción y Central te llega el mismo día — lo pedís hoy, lo tenés hoy. Si estás en el Interior, coordinamos por WhatsApp; suele tardar uno o dos días hábiles más.</div>
     </details>
 
     <details class="faq-item">
-      <summary class="faq-q">Â¿CÃ³mo pago?</summary>
-      <div class="faq-a">En Central pagÃ¡s reciÃ©n cuando lo recibÃ­s, en efectivo o por transferencia â€” sin adelantar nada. En el Interior el pago va antes, y coordinamos el envÃ­o apenas se confirma.</div>
+      <summary class="faq-q">¿Cómo pago?</summary>
+      <div class="faq-a">En Central pagás recién cuando lo recibís, en efectivo o por transferencia — sin adelantar nada. En el Interior el pago va antes, y coordinamos el envío apenas se confirma.</div>
     </details>
 
     <details class="faq-item">
-      <summary class="faq-q">Â¿Hay garantÃ­a?</summary>
-      <div class="faq-a">SÃ­. Si llega con algÃºn defecto de fÃ¡brica, lo solucionamos directo por WhatsApp. Te acompaÃ±amos despuÃ©s de la compra, no desaparecemos.</div>
+      <summary class="faq-q">¿Hay garantía?</summary>
+      <div class="faq-a">Sí. Si llega con algún defecto de fábrica, lo solucionamos directo por WhatsApp. Te acompañamos después de la compra, no desaparecemos.</div>
     </details>
 
     <details class="faq-item">
-      <summary class="faq-q">Â¿El empaque es discreto?</summary>
-      <div class="faq-a">100%. Llega en una bolsa neutra, sin logos ni nada que diga quÃ© hay adentro. Ni la persona que te lo entrega lo sabe. Tu privacidad es lo primero para nosotras.</div>
+      <summary class="faq-q">¿El empaque es discreto?</summary>
+      <div class="faq-a">100%. Llega en una bolsa neutra, sin logos ni nada que diga qué hay adentro. Ni la persona que te lo entrega lo sabe. Tu privacidad es lo primero para nosotras.</div>
     </details>
 
   </div>
 </section>
 
-<!-- â•â• CIERRE â•â• -->
+<!-- ══ CIERRE ══ -->
 <section class="cierre-luna" id="section-cierre" data-insync-section="cierre">
   <div class="cierre-luna__inner">
     <div class="cierre-novedad">
       <span class="cierre-novedad__dot"></span>
-      Novedad exclusiva Â· Stock limitado
+      Novedad exclusiva · Stock limitado
     </div>
     <h2 class="cierre-luna__h">Date este gusto.<br>Gs. 199.000. Hoy mismo.</h2>
-    <p class="cierre-luna__sub">LUNA MINI â€” el vibrador silencioso, compacto y con 10 modos que sentÃ­as que te hacÃ­a falta. Entrega en el dÃ­a. Empaque discreto. Precio de lanzamiento mientras haya stock.</p>
+    <p class="cierre-luna__sub">LUNA MINI — el vibrador silencioso, compacto y con 10 modos que sentías que te hacía falta. Entrega en el día. Empaque discreto. Precio de lanzamiento mientras haya stock.</p>
     <a class="btn-luna" data-scroll-form data-insync-cta="cierre" style="display:inline-flex;max-width:380px;padding:17px 24px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-      Lo quiero â€” Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+      Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
     </a>
     <div class="cierre-trust">
-      <div class="ct-item"><span class="ct-ok">âœ“</span><span>Entrega en el dÃ­a Â· Central</span></div>
-      <div class="ct-item"><span class="ct-ok">âœ“</span><span>PagÃ¡s cuando lo recibÃ­s Â· Central</span></div>
-      <div class="ct-item"><span class="ct-ok">âœ“</span><span>Empaque 100% discreto â€” sin marcas</span></div>
-      <div class="ct-item"><span class="ct-ok">âœ“</span><span>WhatsApp directo para coordinar</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Entrega en el día · Central</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Pagás cuando lo recibís · Central</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>Empaque 100% discreto — sin marcas</span></div>
+      <div class="ct-item"><span class="ct-ok">✓</span><span>WhatsApp directo para coordinar</span></div>
     </div>
   </div>
 </section>
 
-<!-- â•â• MODAL PEDIDO â•â• -->
+<!-- ══ MODAL PEDIDO ══ -->
 <div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-luna">
   <div class="modal-box">
-    <p class="modal-urgency">â³ Stock limitado Â· Novedad</p>
-    <button class="modal-close" id="modal-close" aria-label="Cerrar">âœ•</button>
-    <h2 class="modal-title" id="modal-title-luna">Ya casi es tuyo ðŸŒ™</h2>
-    <p class="modal-step">Tu vibrador LUNA MINI Â· Entrega en el dÃ­a ðŸšš</p>
-    <p class="modal-subtitle">CompletÃ¡ tus datos y te escribimos por WhatsApp en minutos para coordinar la entrega hoy mismo.</p>
+    <p class="modal-urgency">⏳ Stock limitado · Novedad</p>
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+    <h2 class="modal-title" id="modal-title-luna">Ya casi es tuyo 🌙</h2>
+    <p class="modal-step">Tu vibrador LUNA MINI · Entrega en el día 🚚</p>
+    <p class="modal-subtitle">Completá tus datos y te escribimos por WhatsApp en minutos para coordinar la entrega hoy mismo.</p>
 
     <div class="modal-section">
-      <span class="modal-section-label">ElegÃ­ tu oferta</span>
+      <span class="modal-section-label">Elegí tu oferta</span>
       <div class="offer-options">
 
         <label class="offer-option selected">
           <input type="radio" name="offer" value="1" checked>
           <div class="offer-content">
             <span class="offer-qty">1 unidad</span>
-            <span class="offer-price" id="offer-price-1">â€”</span>
+            <span class="offer-price" id="offer-price-1">—</span>
           </div>
         </label>
 
@@ -897,13 +916,13 @@
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-2">â€”</span>
-              <span class="offer-price" id="offer-price-2">â€”</span>
+              <span class="offer-compare" id="offer-compare-2">—</span>
+              <span class="offer-price" id="offer-price-2">—</span>
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">AhorrÃ¡s Gs. 99.500</span>
-            <div class="offer-badge">ðŸ”¥ MÃ¡s elegido</div>
+            <span class="offer-saving">Ahorrás Gs. 99.500</span>
+            <div class="offer-badge">🔥 Más elegido</div>
           </div>
         </label>
 
@@ -912,19 +931,19 @@
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-3">â€”</span>
-              <span class="offer-price" id="offer-price-3">â€”</span>
+              <span class="offer-compare" id="offer-compare-3">—</span>
+              <span class="offer-price" id="offer-price-3">—</span>
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">AhorrÃ¡s Gs. 208.950</span>
-            <div class="offer-badge offer-badge--best">â­ Mayor ahorro</div>
+            <span class="offer-saving">Ahorrás Gs. 208.950</span>
+            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           </div>
         </label>
 
       </div>
     </div>
-    <p class="modal-price-warning">ðŸ”’ Tus datos estÃ¡n seguros Â· Solo los usamos para coordinar tu entrega</p>
+    <p class="modal-price-warning">🔒 Tus datos están seguros · Solo los usamos para coordinar tu entrega</p>
 
     <div class="modal-section" id="variant-section" style="display:none">
       <span class="modal-section-label">Variante</span>
@@ -940,7 +959,7 @@
       </div>
 
       <div class="form-group">
-        <label for="m-phone">TelÃ©fono (WhatsApp)</label>
+        <label for="m-phone">Teléfono (WhatsApp)</label>
         <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
         <span class="form-error-msg"></span>
       </div>
@@ -948,26 +967,26 @@
 
       <div class="form-group" id="m-ref-group" style="display:none;margin-top:-4px">
         <label for="m-ref">Referencia adicional</label>
-        <input type="text" id="m-ref" name="referencia" placeholder="piso, portÃ³n, referencia extra" style="margin-top:6px">
+        <input type="text" id="m-ref" name="referencia" placeholder="piso, portón, referencia extra" style="margin-top:6px">
       </div>
 
       <div class="form-group" id="city-group" style="display:none">
-        <label for="m-city-search" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectÃ³ automÃ¡ticamente)</span></label>
+        <label for="m-city-search" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
         <div class="city-picker-wrap">
-          <input type="text" id="m-city-search" class="city-search-input" placeholder="BuscÃ¡ tu ciudad" autocomplete="off">
+          <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
           <div class="city-dropdown" id="m-city-dropdown"></div>
         </div>
         <input type="hidden" id="m-city" name="city">
         <div class="city-manual-wrap" id="city-manual-wrap" style="display:none">
-          <input type="text" id="m-city-manual" class="city-manual-input" placeholder="EscribÃ­ tu ciudad" autocomplete="off">
+          <input type="text" id="m-city-manual" class="city-manual-input" placeholder="Escribí tu ciudad" autocomplete="off">
         </div>
         <span class="form-error-msg"></span>
       </div>
 
       <div class="form-group">
-        <label for="m-payment">MÃ©todo de pago</label>
+        <label for="m-payment">Método de pago</label>
         <select id="m-payment" name="payment">
-          <option value="">SeleccionÃ¡...</option>
+          <option value="">Seleccioná...</option>
           <option value="Transferencia">Transferencia</option>
           <option value="Efectivo">Efectivo</option>
         </select>
@@ -977,16 +996,16 @@
       <label class="upsell-block">
         <input type="checkbox" id="m-express" name="express">
         <div class="upsell-content">
-          <span class="upsell-title">ðŸš€ EnvÃ­o express +10.000 Gs</span>
-          <span class="upsell-sub">RecibÃ­ antes que los demÃ¡s</span>
+          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+          <span class="upsell-sub">Recibí antes que los demás</span>
         </div>
       </label>
 
       <label class="upsell-block" id="m-invoice-block">
         <input type="checkbox" id="m-invoice" name="invoice">
         <div class="upsell-content">
-          <span class="upsell-title">ðŸ§¾ Necesito factura</span>
-          <span class="upsell-sub">RUC o cÃ©dula para comprobante fiscal</span>
+          <span class="upsell-title">🧾 Necesito factura</span>
+          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
         </div>
       </label>
       <div id="m-invoice-fields" style="display:none;margin-top:6px">
@@ -996,8 +1015,8 @@
           <span class="form-error-msg"></span>
         </div>
         <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-name">RazÃ³n social / Nombre *</label>
-          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razÃ³n social">
+          <label for="m-invoice-name">Razón social / Nombre *</label>
+          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
           <span class="form-error-msg"></span>
         </div>
         <div class="form-group" style="margin-top:14px">
@@ -1019,11 +1038,11 @@
     </form>
 
     <div class="form-success" id="modal-success">
-      <h3>Â¡Listo!</h3>
+      <h3>¡Listo!</h3>
       <p>Abrimos WhatsApp para coordinar tu pedido.</p>
-      <p style="margin-top:8px">Si no abriÃ³ automÃ¡ticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
+      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
       <div class="manual-wa">
-        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente â†’</a>
+        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
       </div>
     </div>
 
@@ -1038,7 +1057,7 @@
 
 <!-- Scripts -->
 <!-- Sin Google Maps: el modal usa selector de ciudad simple (ver script de m-city-select
-     mÃ¡s abajo) â€” se omite el fetch de /api/maps-key para no cargar la API de Maps sin uso. -->
+     más abajo) — se omite el fetch de /api/maps-key para no cargar la API de Maps sin uso. -->
 <script src="/assets/js/tracking.js?v=74" defer></script>
 <script src="/assets/js/products.js?v=66" defer></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
@@ -1076,49 +1095,49 @@
 <script>
   /* Selector simple de ciudad (sin Google Maps). products.js exige que
      #m-location tenga _dvPlaceSelected=true y que location_lat/location_city/
-     location_maps_url no estÃ©n vacÃ­os para permitir el submit â€” como ya no
-     hay autocomplete que llene esos campos, se completan acÃ¡ con la ciudad
-     real elegida + coordenadas aproximadas del departamento (la direcciÃ³n
+     location_maps_url no estén vacíos para permitir el submit — como ya no
+     hay autocomplete que llene esos campos, se completan acá con la ciudad
+     real elegida + coordenadas aproximadas del departamento (la dirección
      exacta se coordina por WhatsApp, como indica el propio modal). */
   (function() {
     var DEPT_COORDS = {
       'Central':          [-25.3000, -57.5500],
-      'Alto ParanÃ¡':       [-25.5163, -54.6119],
-      'ItapÃºa':            [-27.3308, -55.8664],
+      'Alto Paraná':       [-25.5163, -54.6119],
+      'Itapúa':            [-27.3308, -55.8664],
       'Cordillera':        [-25.3866, -57.1414],
-      'ParaguarÃ­':         [-25.6294, -57.1519],
-      'GuairÃ¡':            [-25.7500, -56.4333],
-      'CaaguazÃº':          [-25.4500, -56.4500],
+      'Paraguarí':         [-25.6294, -57.1519],
+      'Guairá':            [-25.7500, -56.4333],
+      'Caaguazú':          [-25.4500, -56.4500],
       'Misiones':          [-26.6667, -57.1333],
-      'Ã‘eembucÃº':          [-26.8667, -58.3000],
+      'Ñeembucú':          [-26.8667, -58.3000],
       'Amambay':           [-22.5500, -55.7333],
-      'ConcepciÃ³n':        [-23.4064, -57.4344],
-      'CanindeyÃº':         [-24.0667, -54.3333],
+      'Concepción':        [-23.4064, -57.4344],
+      'Canindeyú':         [-24.0667, -54.3333],
       'San Pedro':         [-24.0833, -57.0833],
-      'CaazapÃ¡':           [-26.2000, -56.3833],
-      'BoquerÃ³n':          [-22.3500, -60.0333],
+      'Caazapá':           [-26.2000, -56.3833],
+      'Boquerón':          [-22.3500, -60.0333],
       'Presidente Hayes':  [-25.0958, -57.5442],
       'Alto Paraguay':     [-21.0333, -57.8667],
     };
 
     var CITIES_BY_DEPT = {
-      'Central': ['AsunciÃ³n','San Lorenzo','Luque','CapiatÃ¡','LambarÃ©','Fernando de la Mora','Limpio','Ã‘emby','Villa Elisa','Mariano Roque Alonso','ItauguÃ¡','AreguÃ¡','Villeta','Nueva Italia','GuarambarÃ©','YpacaraÃ­','San Antonio','YpanÃ©','TobatÃ­','Emboscada','Altos','CompaÃ±Ã­a','ItÃ¡'],
-      'Alto ParanÃ¡': ['Ciudad del Este','Hernandarias','Minga GuazÃº','Presidente Franco','Minga PorÃ£','Santa Rita','Los Cedrales','Naranjal','Juan LeÃ³n MallorquÃ­n','Santa Rosa del Monday','IruÃ±a','Itakyry',"Juan Emilio O'Leary",'Ã‘acunday','San Alberto','San CristÃ³bal','Santa Fe del ParanÃ¡','Tavapy','YguazÃº','Doctor RaÃºl PeÃ±a','Domingo MartÃ­nez de Irala'],
-      'ItapÃºa': ['EncarnaciÃ³n','CambyretÃ¡','Coronel Bogado','General Artigas','Hohenau','Bella Vista','Obligado','CapitÃ¡n Miranda','Natalio','Edelira','Alto VerÃ¡','CapitÃ¡n Meza','Carmen del ParanÃ¡','Fram','General Delgado','JesÃºs','La Paz','Mayor OtaÃ±o','Nueva Alborada','PJC Caballero Ãlvarez','PirapÃ³','San Cosme y DamiÃ¡n','San Juan del ParanÃ¡','San Pedro del ParanÃ¡','TomÃ¡s Romero Pereira','Trinidad','Yatytay'],
-      'Cordillera': ['CaacupÃ©','Valenzuela','San Bernardino','Arroyos y Esteros','Caraguatay','Escobar','Isla PucÃº','Juan de Mena','Loma Grande','Mbocayaty del Yhaguy','Nueva Colombia','Piribebuy','Primero de Marzo','San JosÃ© Obrero','Santa Elena','ItacurubÃ­ de la Cordillera','Tacuara'],
-      'ParaguarÃ­': ['ParaguarÃ­','Acahay','CaapucÃº','Caballero','CarapeguÃ¡','General Bernardino Caballero','La Colmena','Mbuyapey','PirayÃº','Quiindy','QuyquyhÃ³','San Roque GonzÃ¡lez de Santa Cruz','Sapucai','TebicuarymÃ­','YaguarÃ³n','YbycuÃ­','YbytymÃ­'],
-      'GuairÃ¡': ['Villarrica','Borja','CapitÃ¡n Mauricio JosÃ© Troche','Colonia Independencia','Coronel MartÃ­nez','Dr. Bottrell','FÃ©lix PÃ©rez Cardozo','General Eugenio A. Garay','Iturbe','JosÃ© Fassardi','Mbocayaty','Natalicio Talavera','Ã‘umÃ­','San Salvador','TembiaporÃ£','Tebicuary'],
-      'CaaguazÃº': ['Coronel Oviedo','CaaguazÃº','CarayaÃ³','Dr. Juan Manuel Frutos','JosÃ© Domingo Ocampo','Nueva Londres','R.I. 3 Corrales','RepatriaciÃ³n','San JoaquÃ­n','San JosÃ© de los Arroyos','SimÃ³n BolÃ­var','Tres Corrales','VaquerÃ­a','YhÃº','Mbutuy','Dr. Cecilio BÃ¡ez','Dr. J. Eulogio Estigarribia','La Pastora','Mcal. Francisco Solano LÃ³pez','Nueva Toledo','RaÃºl Arsenio Oviedo','Santa Rosa del Mbutuy','3 de Febrero'],
-      'Misiones': ['San Juan Bautista','Ayolas','San Ignacio','San Miguel','San Patricio','Santa MarÃ­a','Santa Rosa','Santiago','Villa Florida','Yabebyry'],
-      'Ã‘eembucÃº': ['Pilar','Alberdi','Cerrito','Desmochados','General JosÃ© Eduvigis DÃ­az','GuazÃº CuÃ¡','HumaitÃ¡','Isla UmbÃº','Laureles','Mayor JosÃ© J. MartÃ­nez','Paso de Patria','San Juan Bautista del Ã‘eembucÃº','Tacuaras','Villa Oliva','Villalbin'],
-      'Amambay': ['Pedro Juan Caballero','Bella Vista Norte','CapitÃ¡n Bado','CinturÃ³n','Paso Yobai','Zanja PytÃ¡','Cerro CorÃ¡','KarapaÃ­'],
-      'ConcepciÃ³n': ['ConcepciÃ³n','BelÃ©n','Horqueta','Loreto','San Carlos','San LÃ¡zaro','Yby YaÃº',"Azote'y",'Sargento JosÃ© FÃ©lix LÃ³pez','Paso Barreto'],
-      'CanindeyÃº': ['Salto del GuairÃ¡','Corpus Christi','Curuguaty','IgatimÃ­','ItanarÃ¡','KatuetÃ©','La Paloma','Maracayu','MbaracayÃº','Nueva Esperanza','Villa Curuguaty','YpejhÃº','Yby PytÃ£'],
-      'San Pedro': ['San Pedro de YcuamandiyÃº','Antequera','Chore','General Elizardo Aquino','GuayaibÃ­','ItacurubÃ­ del Rosario','Lima','Nueva Germania','San Estanislao','San Pablo','TacuatÃ­','UniÃ³n','Villa del Rosario','Yataity del Norte','25 de Diciembre','Capiibary','General Isidoro ResquÃ­n','LiberaciÃ³n','San Vicente Pancholo'],
-      'CaazapÃ¡': ['CaazapÃ¡','Abai','Buena Vista','Dr. MoisÃ©s Bertoni','Fulgencio Yegros','Gral. Higinio MorÃ­nigo','Maciel','San Juan Nepomuceno','TavaÃ­','Yuty','3 de Mayo'],
-      'BoquerÃ³n': ['Filadelfia','Loma Plata','Mariscal Estigarribia','Neuland','General DÃ­az'],
-      'Presidente Hayes': ['Villa Hayes','BenjamÃ­n Aceval','General JosÃ© MarÃ­a Bruguez','JosÃ© FalcÃ³n','Nanawa','Nueva AsunciÃ³n','Pozo Colorado','Puerto Pinasco','Tte. 1ro Manuel Irala FernÃ¡ndez','Tte. Esteban MartÃ­nez'],
-      'Alto Paraguay': ['Fuerte Olimpo','BahÃ­a Negra','Carmelo Peralta','La Victoria'],
+      'Central': ['Asunción','San Lorenzo','Luque','Capiatá','Lambaré','Fernando de la Mora','Limpio','Ñemby','Villa Elisa','Mariano Roque Alonso','Itauguá','Areguá','Villeta','Nueva Italia','Guarambaré','Ypacaraí','San Antonio','Ypané','Tobatí','Emboscada','Altos','Compañía','Itá'],
+      'Alto Paraná': ['Ciudad del Este','Hernandarias','Minga Guazú','Presidente Franco','Minga Porã','Santa Rita','Los Cedrales','Naranjal','Juan León Mallorquín','Santa Rosa del Monday','Iruña','Itakyry',"Juan Emilio O'Leary",'Ñacunday','San Alberto','San Cristóbal','Santa Fe del Paraná','Tavapy','Yguazú','Doctor Raúl Peña','Domingo Martínez de Irala'],
+      'Itapúa': ['Encarnación','Cambyretá','Coronel Bogado','General Artigas','Hohenau','Bella Vista','Obligado','Capitán Miranda','Natalio','Edelira','Alto Verá','Capitán Meza','Carmen del Paraná','Fram','General Delgado','Jesús','La Paz','Mayor Otaño','Nueva Alborada','PJC Caballero Álvarez','Pirapó','San Cosme y Damián','San Juan del Paraná','San Pedro del Paraná','Tomás Romero Pereira','Trinidad','Yatytay'],
+      'Cordillera': ['Caacupé','Valenzuela','San Bernardino','Arroyos y Esteros','Caraguatay','Escobar','Isla Pucú','Juan de Mena','Loma Grande','Mbocayaty del Yhaguy','Nueva Colombia','Piribebuy','Primero de Marzo','San José Obrero','Santa Elena','Itacurubí de la Cordillera','Tacuara'],
+      'Paraguarí': ['Paraguarí','Acahay','Caapucú','Caballero','Carapeguá','General Bernardino Caballero','La Colmena','Mbuyapey','Pirayú','Quiindy','Quyquyhó','San Roque González de Santa Cruz','Sapucai','Tebicuarymí','Yaguarón','Ybycuí','Ybytymí'],
+      'Guairá': ['Villarrica','Borja','Capitán Mauricio José Troche','Colonia Independencia','Coronel Martínez','Dr. Bottrell','Félix Pérez Cardozo','General Eugenio A. Garay','Iturbe','José Fassardi','Mbocayaty','Natalicio Talavera','Ñumí','San Salvador','Tembiaporã','Tebicuary'],
+      'Caaguazú': ['Coronel Oviedo','Caaguazú','Carayaó','Dr. Juan Manuel Frutos','José Domingo Ocampo','Nueva Londres','R.I. 3 Corrales','Repatriación','San Joaquín','San José de los Arroyos','Simón Bolívar','Tres Corrales','Vaquería','Yhú','Mbutuy','Dr. Cecilio Báez','Dr. J. Eulogio Estigarribia','La Pastora','Mcal. Francisco Solano López','Nueva Toledo','Raúl Arsenio Oviedo','Santa Rosa del Mbutuy','3 de Febrero'],
+      'Misiones': ['San Juan Bautista','Ayolas','San Ignacio','San Miguel','San Patricio','Santa María','Santa Rosa','Santiago','Villa Florida','Yabebyry'],
+      'Ñeembucú': ['Pilar','Alberdi','Cerrito','Desmochados','General José Eduvigis Díaz','Guazú Cuá','Humaitá','Isla Umbú','Laureles','Mayor José J. Martínez','Paso de Patria','San Juan Bautista del Ñeembucú','Tacuaras','Villa Oliva','Villalbin'],
+      'Amambay': ['Pedro Juan Caballero','Bella Vista Norte','Capitán Bado','Cinturón','Paso Yobai','Zanja Pytá','Cerro Corá','Karapaí'],
+      'Concepción': ['Concepción','Belén','Horqueta','Loreto','San Carlos','San Lázaro','Yby Yaú',"Azote'y",'Sargento José Félix López','Paso Barreto'],
+      'Canindeyú': ['Salto del Guairá','Corpus Christi','Curuguaty','Igatimí','Itanará','Katueté','La Paloma','Maracayu','Mbaracayú','Nueva Esperanza','Villa Curuguaty','Ypejhú','Yby Pytã'],
+      'San Pedro': ['San Pedro de Ycuamandiyú','Antequera','Chore','General Elizardo Aquino','Guayaibí','Itacurubí del Rosario','Lima','Nueva Germania','San Estanislao','San Pablo','Tacuatí','Unión','Villa del Rosario','Yataity del Norte','25 de Diciembre','Capiibary','General Isidoro Resquín','Liberación','San Vicente Pancholo'],
+      'Caazapá': ['Caazapá','Abai','Buena Vista','Dr. Moisés Bertoni','Fulgencio Yegros','Gral. Higinio Morínigo','Maciel','San Juan Nepomuceno','Tavaí','Yuty','3 de Mayo'],
+      'Boquerón': ['Filadelfia','Loma Plata','Mariscal Estigarribia','Neuland','General Díaz'],
+      'Presidente Hayes': ['Villa Hayes','Benjamín Aceval','General José María Bruguez','José Falcón','Nanawa','Nueva Asunción','Pozo Colorado','Puerto Pinasco','Tte. 1ro Manuel Irala Fernández','Tte. Esteban Martínez'],
+      'Alto Paraguay': ['Fuerte Olimpo','Bahía Negra','Carmelo Peralta','La Victoria'],
     };
     var CITY_TO_DEPT = {};
     Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
@@ -1127,8 +1146,8 @@
       });
     });
 
-    /* Orden: 1) Central + AsunciÃ³n primero (alfabÃ©tico entre sÃ­),
-       2) el resto de los departamentos combinados y ordenados alfabÃ©ticamente. */
+    /* Orden: 1) Central + Asunción primero (alfabético entre sí),
+       2) el resto de los departamentos combinados y ordenados alfabéticamente. */
     var centralCities = CITIES_BY_DEPT['Central'].slice().sort(function(a, b) { return a.localeCompare(b, 'es'); });
     var restCities = [];
     Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
@@ -1144,7 +1163,7 @@
     if (!cityField || !suggBox || !locInput) return;
 
     /* Completa los campos ocultos si el texto coincide EXACTO con una ciudad real.
-       Devuelve true si aplicÃ³, false si no matchea nada todavÃ­a. */
+       Devuelve true si aplicó, false si no matchea nada todavía. */
     function applyCity(city) {
       var dept = CITY_TO_DEPT[city.toLowerCase()];
       if (!dept) return false;
@@ -1193,7 +1212,7 @@
         }
 
         /* Touch: distinguir tap de scroll. Solo selecciona en touchend, y
-           solo si el dedo no se moviÃ³ (no fue un gesto de scroll). */
+           solo si el dedo no se movió (no fue un gesto de scroll). */
         var touchStartY = null;
         var touchMoved  = false;
         item.addEventListener('touchstart', function(e) {
@@ -1255,22 +1274,22 @@
     name:  'LUNA MINI Vibrador Bala Recargable',
     slug:  'luna-mini-vibrador-bala-recargable',
     price: 199000,
-    /* El modal solo pide ciudad (sin mapa) â€” el link de Maps que se arma con
-       coordenadas aproximadas del departamento no representa una ubicaciÃ³n
-       real, asÃ­ que se omite del mensaje de WhatsApp. Flag opt-in en
-       products.js: no afecta a otras landings que sÃ­ usan geo real. */
+    /* El modal solo pide ciudad (sin mapa) — el link de Maps que se arma con
+       coordenadas aproximadas del departamento no representa una ubicación
+       real, así que se omite del mensaje de WhatsApp. Flag opt-in en
+       products.js: no afecta a otras landings que sí usan geo real. */
     hideExactLocation: true,
   };
 
   document.addEventListener('DOMContentLoaded', () => {
     /* Blindaje CTA: si tracking.js o products.js fallan en cargar (WiFi restrictivo,
        firewall corporativo), cada try/catch aislado evita que un script roto tumbe al
-       otro. El botÃ³n igual funciona por el href de WhatsApp hardcodeado â€” ver
-       CLAUDE.md "CTA â€” BLINDADO CONTRA FALLOS DE RED". */
+       otro. El botón igual funciona por el href de WhatsApp hardcodeado — ver
+       CLAUDE.md "CTA — BLINDADO CONTRA FALLOS DE RED". */
     try { DV.trackViewContent(PRODUCT); } catch (_) {}
     try { DV.initForm(PRODUCT); } catch (_) {}
 
-    /* Evergreen timer â€” persiste en localStorage por visitante, nunca se reinicia.
+    /* Evergreen timer — persiste en localStorage por visitante, nunca se reinicia.
        Al llegar a 0 muestra mensaje de escasez fijo, sin timer. */
     (function() {
       var el = document.getElementById('evergreen-timer');
@@ -1299,10 +1318,10 @@
           var ssStr = (ss < 10 ? '0' : '') + ss;
           el.innerHTML =
             '<div class="evergreen-timer__line1">Este precio cierra en <strong class="evergreen-timer__time">' + mmStr + ':' + ssStr + '</strong></div>' +
-            '<div class="evergreen-timer__line2">Ãšltimas unidades con entrega en el dÃ­a</div>';
+            '<div class="evergreen-timer__line2">Últimas unidades con entrega en el día</div>';
         } else {
           if (timerId) clearInterval(timerId);
-          el.innerHTML = '<div class="evergreen-timer__expired">âš ï¸ Precio especial Â· Ãšltimas unidades disponibles</div>';
+          el.innerHTML = '<div class="evergreen-timer__expired">⚠️ Precio especial · Últimas unidades disponibles</div>';
         }
       }
 
@@ -1312,10 +1331,10 @@
   });
 </script>
 
-<!-- CRO: Sticky CTA bar â€” mobile only -->
+<!-- CRO: Sticky CTA bar — mobile only -->
 <div class="sticky-cta-bar" id="sticky-cta-bar">
   <a class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;background:var(--luna-pink);white-space:nowrap;font-size:clamp(12px,3.6vw,15px);padding:12px 10px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-    Lo quiero â€” Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+    Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
   </a>
 </div>
 
