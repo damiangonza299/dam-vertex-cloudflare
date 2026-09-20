@@ -645,3 +645,24 @@ git checkout {commit-bueno} -- public/{slug}/index.html
 ```
 
 **Síntoma típico:** CTA no abre el modal → buscar `&amp;gt;` en el HTML del script (`grep "amp;" public/{slug}/index.html`). Si hay hits, el editor re-escapó los operadores JS (`=>`, `&&`) como entidades HTML dentro de `<script>`. Fix: revertir con `git checkout`.
+
+---
+
+## ⚠️ PIXEL EVENTS — REGLA INAMOVIBLE — NUNCA CAMBIAR
+
+El sistema de eventos Meta Pixel replica exactamente Releasit COD Form en Shopify.
+Esta configuración NUNCA se toca. No importa qué fix, qué optimización ni qué deploy.
+
+FLUJO EXACTO (igual a Releasit COD + Shopify):
+1. ViewContent → DOMContentLoaded + setTimeout 800ms (browser + CAPI)
+2. AddToCart → clic en [data-open-modal] o [data-scroll-form] (browser only)
+3. InitiateCheckout → primer focus en cualquier input del formulario, una sola vez por sesión (browser only)
+4. Purchase → CAPI server-side únicamente, en el endpoint al recibir el lead (NUNCA en browser)
+
+REGLAS:
+- AddToCart y InitiateCheckout NUNCA se disparan al mismo tiempo
+- InitiateCheckout NUNCA se dispara al submit — ya es tarde
+- Purchase NUNCA se duplica en browser y server
+- Esta configuración aplica a TODAS las landings nuevas sin excepción
+
+Si algo se rompe: git log → encontrar el commit bueno → revertir solo el archivo afectado.
