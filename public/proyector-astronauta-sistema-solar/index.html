@@ -1096,6 +1096,21 @@
     try { DV.trackViewContent(PRODUCT); } catch (_) {}
     try { DV.initForm(PRODUCT); } catch (_) {}
 
+    /* AddToCart — al abrir modal (clic en cualquier [data-scroll-form]) */
+    document.querySelectorAll('[data-scroll-form]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+      });
+    });
+
+    /* InitiateCheckout — primer focus en cualquier campo del formulario */
+    var _icFired = false;
+    document.querySelectorAll('#modal-form input, #modal-form textarea').forEach(function(inp) {
+      inp.addEventListener('focus', function() {
+        if (!_icFired) { _icFired = true; try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }
+      }, { once: true });
+    });
+
     /* Stock real desde D1 — barra de urgencia en la sección de cierre */
     fetch('/api/product-stock?slug=' + PRODUCT.slug)
       .then(function(r) { return r.ok ? r.json() : null; })

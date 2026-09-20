@@ -536,6 +536,13 @@
     closeBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
+    let _icFired = false;
+    document.querySelectorAll('#dcanp-form input, #dcanp-form textarea').forEach(function(inp) {
+      inp.addEventListener('focus', function() {
+        if (!_icFired) { _icFired = true; try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }
+      }, { once: true });
+    });
+
     offerInputs.forEach(input => {
       input.addEventListener('change', () => {
         document.querySelectorAll('.offer-option').forEach(opt => opt.classList.remove('selected'));
@@ -572,7 +579,6 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
-      try { DV.trackInitiateCheckout(PRODUCT, null, qty); } catch (_) {}
       const base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
       const express = document.getElementById('d-express')?.checked || false;
       const invoice = document.getElementById('d-invoice')?.checked || false;

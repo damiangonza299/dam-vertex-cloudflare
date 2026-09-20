@@ -1289,6 +1289,21 @@
     try { DV.trackViewContent(PRODUCT); } catch (_) {}
     try { DV.initForm(PRODUCT); } catch (_) {}
 
+    /* AddToCart — al abrir modal (clic en cualquier [data-scroll-form]) */
+    document.querySelectorAll('[data-scroll-form]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+      });
+    });
+
+    /* InitiateCheckout — primer focus en cualquier campo del formulario */
+    var _icFired = false;
+    document.querySelectorAll('#modal-form input, #modal-form textarea').forEach(function(inp) {
+      inp.addEventListener('focus', function() {
+        if (!_icFired) { _icFired = true; try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }
+      }, { once: true });
+    });
+
     /* Evergreen timer — persiste en localStorage por visitante, nunca se reinicia.
        Al llegar a 0 muestra mensaje de escasez fijo, sin timer. */
     (function() {
