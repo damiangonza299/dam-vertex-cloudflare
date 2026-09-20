@@ -184,7 +184,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       return json({ ok: false, error: 'Campos requeridos: name, phone' }, 400);
     }
 
-    const ip = request.headers.get('CF-Connecting-IP') || '';
+    const ip = request.headers.get('CF-Connecting-IPv6') || request.headers.get('CF-Connecting-IP') || '';
     const ua = request.headers.get('User-Agent') || '';
     const qty = parseInt(quantity) || 1;
     const amount = Number(value) || 0;
