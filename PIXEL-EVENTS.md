@@ -16,7 +16,7 @@ Esta configuración NUNCA se toca. No importa qué fix, qué optimización ni qu
 - InitiateCheckout NUNCA se dispara al submit — ya es tarde
 - Purchase NUNCA se duplica en browser y server
 - Pixel ID NUNCA hardcodeado en server-side — siempre `env.META_PIXEL_ID` via secret
-- Esta configuración aplica a TODAS las landings nuevas sin excepción
+- Esta configuración aplica a TODAS las landings sin excepción — activas, inactivas, DCANP o normales
 
 Si algo se rompe: `git log` → encontrar el commit bueno → revertir solo el archivo afectado.
 

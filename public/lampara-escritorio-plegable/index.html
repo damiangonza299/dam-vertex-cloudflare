@@ -883,6 +883,15 @@
     try { DV.trackViewContent(PRODUCT); } catch (_) {}
     try { DV.initForm(PRODUCT); } catch (_) {}
 
+    /* AddToCart + InitiateCheckout — al abrir modal */
+    var _icFired = false;
+    document.querySelectorAll('[data-scroll-form]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+        if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500); }
+      });
+    });
+
     /* Stock real desde D1 â€” barra de urgencia en la secciÃ³n de cierre */
     fetch('/api/product-stock?slug=' + PRODUCT.slug)
       .then(function(r) { return r.ok ? r.json() : null; })

@@ -762,6 +762,15 @@
     DV.trackViewContent(PRODUCT);
     DV.initForm(PRODUCT);
 
+    /* AddToCart + InitiateCheckout — al abrir modal */
+    var _icFired = false;
+    document.querySelectorAll('[data-scroll-form]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+        if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500); }
+      });
+    });
+
     /* Pills de combos externos â€” preseleccionan en el modal, nada mÃ¡s */
     document.querySelectorAll('.offer-pill').forEach(pill => {
       pill.addEventListener('click', () => {
