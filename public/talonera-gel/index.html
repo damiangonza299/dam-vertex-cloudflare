@@ -478,6 +478,7 @@
     function openModal() {
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
+      try { DV.trackAddToCart(PRODUCT); } catch (_) {}
     }
     function closeModal() {
       modal.classList.remove('active');
@@ -523,6 +524,7 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      try { DV.trackInitiateCheckout(PRODUCT, null, qty); } catch (_) {}
       const base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
       const express = document.getElementById('t-express')?.checked || false;
       const invoice = document.getElementById('t-invoice')?.checked || false;

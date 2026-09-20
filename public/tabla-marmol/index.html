@@ -832,6 +832,14 @@
       })
       .catch(function() {});
 
+    /* AddToCart — se dispara cuando el modal se abre (inline onclick) */
+    (function() {
+      var _m = document.getElementById('order-modal');
+      if (_m) new MutationObserver(function() {
+        if (_m.style.display === 'flex') try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+      }).observe(_m, { attributes: true, attributeFilter: ['style'] });
+    })();
+
     /* Submit DCANP — POST a /api/dcanp-lead, sin WhatsApp, pantalla de
        agradecimiento en su lugar. */
     var form      = document.getElementById('modal-form');
@@ -870,6 +878,7 @@
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       var qty     = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
+      try { DV.trackInitiateCheckout(PRODUCT, null, qty); } catch (_) {}
       var base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
       var express = document.getElementById('m-express') && document.getElementById('m-express').checked;
       var invoice = document.getElementById('m-invoice') && document.getElementById('m-invoice').checked;

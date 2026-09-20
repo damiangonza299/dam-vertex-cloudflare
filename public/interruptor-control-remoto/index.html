@@ -567,7 +567,7 @@
     const submitBtn  = document.getElementById('dcanp-submit-btn');
     const offerInputs = document.querySelectorAll('input[name="offer"]');
 
-    function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; try { DV.trackAddToCart(PRODUCT); } catch (_) {} }
     function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
     openBtns.forEach(btn => btn && btn.addEventListener('click', openModal));
     const comboCta = document.querySelector('.combo-highlight__cta');
@@ -616,6 +616,7 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      try { DV.trackInitiateCheckout(PRODUCT, null, qty); } catch (_) {}
       const base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
       const express = document.getElementById('d-express')?.checked || false;
       const invoice = document.getElementById('d-invoice')?.checked || false;
