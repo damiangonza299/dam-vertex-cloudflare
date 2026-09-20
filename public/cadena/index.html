@@ -1670,19 +1670,13 @@
     try { DV.trackViewContent(PRODUCT); } catch(_) {}
     try { DV.initForm(PRODUCT); } catch(_) {}
 
-    /* AddToCart — al abrir modal (clic en cualquier [data-scroll-form]) */
+    /* AddToCart + InitiateCheckout — al abrir modal */
+    var _icFired = false;
     document.querySelectorAll('[data-scroll-form]').forEach(function(btn) {
       btn.addEventListener('click', function() {
         try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+        if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500); }
       });
-    });
-
-    /* InitiateCheckout — primer focus en cualquier campo del formulario */
-    var _icFired = false;
-    document.querySelectorAll('#modal-form input, #modal-form textarea').forEach(function(inp) {
-      inp.addEventListener('focus', function() {
-        if (!_icFired) { _icFired = true; try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }
-      }, { once: true });
     });
 
     /* Evergreen timer — persiste en localStorage por visitante, nunca se reinicia.
@@ -1823,13 +1817,6 @@
       var _comboLocInit   = false;
 
       var _comboIcFired = false;
-      (function() {
-        document.querySelectorAll('#combo-form input, #combo-form textarea').forEach(function(inp) {
-          inp.addEventListener('focus', function() {
-            if (!_comboIcFired) { _comboIcFired = true; try { DV.trackInitiateCheckout({ name: COMBO_NAME, slug: COMBO_SLUG, price: COMBO_PRICE }, null, 2); } catch (_) {} }
-          }, { once: true });
-        });
-      })();
 
       function openComboModal() {
         comboOverlay.classList.add('active');
@@ -1838,6 +1825,7 @@
           DV.trackAddToCart({ name: COMBO_NAME, slug: COMBO_SLUG, price: COMBO_PRICE });
           _comboAtcFired = true;
         }
+        if (!_comboIcFired) { _comboIcFired = true; setTimeout(function() { try { DV.trackInitiateCheckout({ name: COMBO_NAME, slug: COMBO_SLUG, price: COMBO_PRICE }, null, 2); } catch (_) {} }, 1500); }
         if (!_comboLocInit && typeof DV.initLocationPicker === 'function') {
           DV.initLocationPicker('cm', window.DV_MAPS_KEY || '');
           _comboLocInit = true;

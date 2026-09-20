@@ -832,21 +832,17 @@
       })
       .catch(function() {});
 
-    /* AddToCart — se dispara cuando el modal se abre (inline onclick) */
+    /* AddToCart + InitiateCheckout — cuando el modal se abre (inline onclick) */
+    var _icFired = false;
     (function() {
       var _m = document.getElementById('order-modal');
       if (_m) new MutationObserver(function() {
-        if (_m.style.display === 'flex') try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+        if (_m.style.display === 'flex') {
+          try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+          if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }, 1500); }
+        }
       }).observe(_m, { attributes: true, attributeFilter: ['style'] });
     })();
-
-    /* InitiateCheckout — primer focus en cualquier campo del formulario */
-    var _icFired = false;
-    document.querySelectorAll('#modal-form input, #modal-form textarea').forEach(function(inp) {
-      inp.addEventListener('focus', function() {
-        if (!_icFired) { _icFired = true; try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }
-      }, { once: true });
-    });
 
     /* Submit DCANP — POST a /api/dcanp-lead, sin WhatsApp, pantalla de
        agradecimiento en su lugar. */
