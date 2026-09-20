@@ -655,14 +655,31 @@ Esta configuración NUNCA se toca. No importa qué fix, qué optimización ni qu
 
 FLUJO EXACTO (igual a Releasit COD + Shopify):
 1. ViewContent → DOMContentLoaded + setTimeout 800ms (browser + CAPI)
-2. AddToCart → clic en [data-open-modal] o [data-scroll-form] (browser only)
-3. InitiateCheckout → primer focus en cualquier input del formulario, una sola vez por sesión (browser only)
+2. AddToCart → dentro de openModal(), al inicio, inmediato
+3. InitiateCheckout → dentro de openModal(), setTimeout 1500ms después de AddToCart, flag _icFired, UNA SOLA VEZ por sesión
 4. Purchase → CAPI server-side únicamente, en el endpoint al recibir el lead (NUNCA en browser)
 
+PATRÓN CANÓNICO (copiar exactamente en cada landing nueva):
+```javascript
+let _icFired = false;
+function openModal() {
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  try { DV.trackAddToCart(PRODUCT); } catch(_) {}
+  if (!_icFired) {
+    _icFired = true;
+    setTimeout(() => {
+      try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {}
+    }, 1500);
+  }
+}
+```
+
 REGLAS:
-- AddToCart y InitiateCheckout NUNCA se disparan al mismo tiempo
+- InitiateCheckout NUNCA en focus/blur listener — siempre setTimeout dentro de openModal()
 - InitiateCheckout NUNCA se dispara al submit — ya es tarde
 - Purchase NUNCA se duplica en browser y server
+- Pixel ID NUNCA hardcodeado en server-side — siempre env.META_PIXEL_ID via secret
 - Esta configuración aplica a TODAS las landings nuevas sin excepción
 
 Si algo se rompe: git log → encontrar el commit bueno → revertir solo el archivo afectado.

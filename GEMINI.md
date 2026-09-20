@@ -712,3 +712,45 @@ Esto causó corrupción de caracteres especiales (tildes, ñ, símbolos) dos vec
 - 2026-09: Set-Content leyó HTMLs UTF-8 como Windows-1252 y reescribió con encoding doble → caracteres como "ó" se guardaron como "Ã³", "—" como "â€"", etc.
 - Afectó: esquinero-aluminio, interruptor-control-remoto, estante-aluminio-bano (y otros 16 landings del bump masivo de tracking.js)
 - Fix: git checkout al commit pre-corrupción + [System.IO.File]::WriteAllText con UTF8Encoding($false)
+
+
+---
+
+## ⚠️ PIXEL EVENTS — REGLA INAMOVIBLE — NUNCA CAMBIAR
+
+El sistema de eventos Meta Pixel replica exactamente Releasit COD Form en Shopify.
+Esta configuración NUNCA se toca. No importa qué fix, qué optimización ni qué deploy.
+
+FLUJO EXACTO (igual a Releasit COD + Shopify) — confirmado 2026-09-20:
+1. **ViewContent** → DOMContentLoaded + setTimeout 800ms (browser + CAPI)
+2. **AddToCart** → dentro de `openModal()`, al inicio, inmediato
+3. **InitiateCheckout** → dentro de `openModal()`, setTimeout 1500ms después de AddToCart, flag `_icFired`, UNA SOLA VEZ por sesión
+4. **Purchase** → CAPI server-side únicamente, en el endpoint al recibir el lead (NUNCA en browser)
+
+REGLAS:
+- InitiateCheckout NUNCA en focus/blur listener — siempre setTimeout dentro de openModal()
+- InitiateCheckout NUNCA se dispara al submit — ya es tarde
+- Purchase NUNCA se duplica en browser y server
+- Pixel ID NUNCA hardcodeado en server-side — siempre `env.META_PIXEL_ID` via secret
+- Esta configuración aplica a TODAS las landings nuevas sin excepción
+
+Si algo se rompe: `git log` → encontrar el commit bueno → revertir solo el archivo afectado.
+
+### Patrón canónico — TODAS las landings (copiar exactamente)
+
+```javascript
+let _icFired = false;
+function openModal() {
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  try { DV.trackAddToCart(PRODUCT); } catch(_) {}
+  if (!_icFired) {
+    _icFired = true;
+    setTimeout(() => {
+      try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {}
+    }, 1500);
+  }
+}
+```
+
+Ver `PIXEL-EVENTS.md` para patrones de combo modal y tabla-marmol (MutationObserver).
