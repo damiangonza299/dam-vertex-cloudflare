@@ -754,3 +754,16 @@ function openModal() {
 ```
 
 Ver `PIXEL-EVENTS.md` para patrones de combo modal y tabla-marmol (MutationObserver).
+
+## ⚠️ NUEVAS LANDINGS — REGLA META PIXEL INAMOVIBLE
+
+Antes de crear cualquier landing nueva, leer `PIXEL-EVENTS.md` completo.
+El flujo de eventos Meta Pixel NUNCA cambia:
+
+1. ViewContent → setTimeout 800ms en DOMContentLoaded
+2. AddToCart → al abrir el modal (dentro de `openModal()` o en click `[data-scroll-form]`)
+3. InitiateCheckout → setTimeout 1500ms dentro del mismo evento de apertura, flag `_icFired`, UNA VEZ por sesión
+4. Purchase → CAPI server-side ÚNICAMENTE
+
+NUNCA usar focus/blur para InitiateCheckout.
+NUNCA hardcodear Pixel ID en server-side — siempre `env.META_PIXEL_ID` via secret.
