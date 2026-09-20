@@ -185,6 +185,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .check-badge-PASS{background:rgba(74,222,128,.12);color:var(--green)}
 .check-badge-WARNING{background:rgba(251,191,36,.12);color:var(--yellow)}
 .check-badge-FAIL{background:rgba(248,113,113,.12);color:var(--red)}
+.check-badge-MANUAL{background:rgba(129,140,248,.1);color:var(--accent)}
+.filter-group-title{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:10px 0 4px;font-weight:700}
+.filter-summary-bar{display:flex;align-items:center;gap:10px;padding:9px 10px;background:var(--bg2);border-radius:var(--radius-sm);margin-bottom:10px}
+.filter-score{font-size:20px;font-weight:800}
+.filter-score.all-pass{color:var(--green)}.filter-score.has-fail{color:var(--red)}.filter-score.has-warn{color:var(--yellow)}
+.insync-rec{background:var(--bg3);border-left:3px solid var(--accent);padding:6px 10px;margin-bottom:6px;border-radius:0 4px 4px 0;font-size:11px;line-height:1.4}
+.insync-rec.warn{border-left-color:var(--yellow)}.insync-rec.good{border-left-color:var(--green)}
 .check-label{font-weight:600;color:var(--text)}
 .check-evidence{color:var(--muted);margin-top:2px;font-family:monospace}
 .check-fix{color:var(--yellow);margin-top:2px}
@@ -653,6 +660,23 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
               Solo los checks FAIL bloquean la activación. Los WARNING son opcionales.
             </div>
           </div>
+
+          <!-- Módulo: Filtros de Activación -->
+          <div class="sync-card">
+            <h4>Filtros de Activación</h4>
+            <p style="font-size:11px;color:var(--muted);margin-bottom:10px">Analiza el HTML de la landing para detectar problemas antes de activar.</p>
+            <button class="sync-btn" id="run-filters-btn" onclick="runLandingFilters()">⚡ Analizar landing</button>
+            <div id="filter-results" style="margin-top:12px"></div>
+          </div>
+
+          <!-- Módulo: Análisis InSync Semanal -->
+          <div class="sync-card">
+            <h4>InSync — Última semana</h4>
+            <p style="font-size:11px;color:var(--muted);margin-bottom:10px">Comportamiento por sección (7 días) y recomendaciones automáticas.</p>
+            <button class="sync-btn" id="run-insync-weekly-btn" onclick="runInsyncWeekly()">⚡ Analizar última semana</button>
+            <div id="insync-weekly-results" style="margin-top:12px"></div>
+          </div>
+
         </div><!-- /tab-sync -->
 
       </div><!-- /tab-content -->
@@ -4074,6 +4098,187 @@ async function editorSpeed() {
     btn.disabled = false;
     btn.textContent = '⚡ Velocidad';
   }
+}
+
+/* ──────────────────────────────────────────
+   Módulo 1 — Filtros de Activación
+────────────────────────────────────────── */
+async function runLandingFilters() {
+  if (!currentSlug) return;
+  const btn     = document.getElementById('run-filters-btn');
+  const results = document.getElementById('filter-results');
+  btn.disabled  = true;
+  btn.textContent = '…';
+  results.innerHTML = '<div style="color:var(--muted);font-size:11px">Analizando HTML…</div>';
+  try {
+    const res = await fetch('/' + currentSlug + '/', { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const html = await res.text();
+    renderFilterResults(html, results);
+  } catch(err) {
+    results.innerHTML = '<div style="color:var(--red);font-size:11px">Error al cargar landing: ' + esc(err.message) + '</div>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⚡ Analizar landing';
+  }
+}
+
+function renderFilterResults(html, el) {
+  var isDcanp = html.includes('/api/dcanp-lead');
+  var htmlLow = html.toLowerCase();
+
+  function fchk(label, pass, note) {
+    return { label: label, status: pass === null ? 'MANUAL' : (pass ? 'PASS' : 'FAIL'), note: note || '' };
+  }
+
+  var groups = [
+    { title: 'Meta Pixel', rows: [
+      fchk('ViewContent + setTimeout 800ms', html.includes('trackViewContent') && /setTimeout[^}]{0,80}800/.test(html)),
+      fchk('AddToCart en openModal', html.includes('trackAddToCart') && (html.includes('function openModal') || html.includes('data-open-modal') || html.includes('MutationObserver'))),
+      fchk('InitiateCheckout + 1500ms + _icFired', html.includes('trackInitiateCheckout') && html.includes('1500') && html.includes('_icFired')),
+      fchk('Purchase solo en servidor (no en HTML browser)', !(/fbq\s*\(\s*['"]track['"]\s*,\s*['"]Purchase/.test(html))),
+      fchk('Pixel ID no hardcodeado en HTML', !(/fbq\s*\(\s*['"]init['"]/.test(html))),
+    ]},
+    { title: 'Modal y formulario', rows: [
+      fchk('openModal o [data-open-modal]', html.includes('function openModal') || html.includes('data-open-modal') || html.includes('order-modal')),
+      fchk('Campo nombre', /id=["']nombre["']|name=["']nombre["']/.test(html)),
+      fchk('Campo teléfono', /id=["']tel["']|name=["']tel["']|id=["']telefono["']/.test(html)),
+      fchk('Campo ciudad', /id=["']ciudad["']|name=["']ciudad["']/.test(html)),
+      isDcanp
+        ? fchk('Pantalla de gracias DCANP (.dcanp-success)', html.includes('dcanp-success'))
+        : fchk('Campo horario', /id=["']horario["']|name=["']horario["']/.test(html)),
+    ]},
+    { title: 'Tipo de landing', rows: [
+      fchk('Endpoint correcto: ' + (isDcanp ? '/api/dcanp-lead' : '/api/leads o DV.initForm'), isDcanp ? html.includes('/api/dcanp-lead') : (html.includes('/api/leads') || (html.includes('DV.initForm') && html.includes('tracking.js')))),
+      fchk('tracking.js cargado', html.includes('tracking.js')),
+      fchk('Notificación Telegram en servidor', null, 'Verificar en functions/api/'),
+      fchk('CAPI Purchase en endpoint', null, 'Verificar en functions/api/'),
+    ]},
+    { title: 'Velocidad', rows: [
+      fchk('Imágenes .webp', html.includes('.webp')),
+      fchk('Hero loading=eager + fetchpriority=high', html.includes('fetchpriority') && html.includes('loading="eager"')),
+      fchk('Scripts con defer', html.includes('defer')),
+      fchk('CSS preload + onload swap', html.includes('rel="preload"') && html.includes('as="style"') && html.includes('onload')),
+    ]},
+    { title: 'Contenido', rows: [
+      fchk('Riesgo cero / pago al recibir', htmlLow.includes('pago al recibir') || htmlLow.includes('riesgo cero') || htmlLow.includes('sin riesgo')),
+      fchk('FAQ o preguntas frecuentes', htmlLow.includes('faq') || htmlLow.includes('preguntas frecuentes')),
+      fchk('Garantía mencionada', htmlLow.includes('garant')),
+      fchk('Prueba social con número', /\d+[\s+]*pedidos|\d+[\s+]*clientes|\d+[\s+]*compraron/.test(htmlLow)),
+    ]},
+    { title: 'InSync', rows: [
+      fchk('data-insync-section en secciones', html.includes('data-insync-section')),
+      fchk('data-insync-cta en CTAs', html.includes('data-insync-cta')),
+      fchk('insync.js con ?v=', /insync\.js\?v=/.test(html)),
+    ]},
+  ];
+
+  var allRows   = groups.reduce(function(acc, g) { return acc.concat(g.rows); }, []);
+  var passCount = allRows.filter(function(r) { return r.status === 'PASS'; }).length;
+  var failCount = allRows.filter(function(r) { return r.status === 'FAIL'; }).length;
+  var total     = allRows.filter(function(r) { return r.status !== 'MANUAL'; }).length;
+  var scoreClass = failCount > 0 ? 'has-fail' : passCount < total ? 'has-warn' : 'all-pass';
+  var icon       = failCount > 0 ? '✗' : passCount === total ? '✓' : '⚠';
+
+  var out = '<div class="filter-summary-bar">'
+    + '<span class="filter-score ' + scoreClass + '">' + icon + ' ' + passCount + '/' + total + '</span>'
+    + '<div><div style="font-size:12px;font-weight:600">' + (failCount > 0 ? failCount + ' checks críticos fallaron' : 'Landing analizada') + '</div>'
+    + '<div style="font-size:10px;color:var(--muted)">MANUAL = verificar server · ' + (isDcanp ? 'DCANP GROUP' : 'Landing normal') + '</div></div>'
+    + '</div>';
+
+  groups.forEach(function(g) {
+    out += '<div class="filter-group-title">' + esc(g.title) + '</div>';
+    g.rows.forEach(function(r) {
+      out += '<div class="check-row">'
+        + '<span class="check-badge check-badge-' + r.status + '">' + r.status + '</span>'
+        + '<div><div class="check-label">' + esc(r.label) + '</div>'
+        + (r.note ? '<div class="check-evidence">' + esc(r.note) + '</div>' : '')
+        + '</div></div>';
+    });
+  });
+
+  el.innerHTML = out;
+}
+
+/* ──────────────────────────────────────────
+   Módulo 2 — Análisis InSync Semanal
+────────────────────────────────────────── */
+async function runInsyncWeekly() {
+  if (!currentSlug) return;
+  const btn     = document.getElementById('run-insync-weekly-btn');
+  const results = document.getElementById('insync-weekly-results');
+  btn.disabled  = true;
+  btn.textContent = '…';
+  results.innerHTML = '<div style="color:var(--muted);font-size:11px">Consultando InSync…</div>';
+  try {
+    const res  = await fetch('/api/product-registry', {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({ action: 'refresh_insync', slug: currentSlug, period: '7d' }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Error desconocido');
+    renderInsyncWeekly(data.insync, results);
+  } catch(err) {
+    results.innerHTML = '<div style="color:var(--red);font-size:11px">Error: ' + esc(err.message) + '</div>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⚡ Analizar última semana';
+  }
+}
+
+function renderInsyncWeekly(insync, el) {
+  if (!insync || insync.low_volume) {
+    el.innerHTML = '<div style="font-size:11px;color:var(--muted)">'
+      + (insync ? 'Solo ' + insync.sessions + ' sesiones en 7 días. Se necesitan 30+ para análisis confiable.' : 'Sin datos InSync para esta semana.')
+      + '</div>';
+    return;
+  }
+
+  var sections = insync.top_sections || [];
+  var sf       = insync.scroll_funnel || {};
+  var recs     = [];
+
+  sections.forEach(function(s) {
+    if ((s.reach_pct || 0) < 20) {
+      recs.push({ type: 'warn', text: '"' + s.name + '": reach ' + (s.reach_pct || 0) + '% — mover más arriba o quitar' });
+    } else if ((s.avg_time_s || 0) < 3 && (s.reach_pct || 0) > 40) {
+      recs.push({ type: 'warn', text: '"' + s.name + '": tiempo promedio ' + (s.avg_time_s || 0) + 's — revisar copy' });
+    } else if ((s.attention_score || 0) >= 70) {
+      recs.push({ type: 'good', text: '"' + s.name + '": atención alta (score ' + (s.attention_score || 0) + ') — mantener posición' });
+    }
+  });
+  if ((sf.p50 || 0) < 40) recs.push({ type: 'warn', text: 'Solo ' + (sf.p50 || 0) + '% llegan al 50% — hero no retiene' });
+  if ((sf.p25 || 0) < 60) recs.push({ type: 'warn', text: (100 - (sf.p25 || 0)) + '% abandona antes del 25% — revisar velocidad y primer bloque' });
+
+  var lastDate = insync.last_fetched ? new Date(insync.last_fetched).toLocaleDateString('es-PY') : '—';
+  var out = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+    + '<span style="font-size:11px;font-weight:700">' + insync.sessions + ' sesiones (7d)</span>'
+    + '<span style="font-size:10px;color:var(--muted)">Act. ' + esc(lastDate) + '</span></div>';
+
+  if (sections.length) {
+    out += '<div class="filter-group-title">Secciones</div>';
+    sections.forEach(function(s) {
+      var sc = (s.attention_score || 0) >= 60 ? 'good' : (s.attention_score || 0) >= 30 ? '' : 'warn';
+      out += '<div class="insync-metric" style="padding:4px 0">'
+        + '<span class="im-label" style="font-size:10px">' + esc(s.name) + '</span>'
+        + '<span class="im-value ' + sc + '" style="font-size:10px">'
+        + 'score ' + (s.attention_score != null ? s.attention_score : '?')
+        + ' · ' + (s.reach_pct || 0) + '% · ' + (s.avg_time_s || 0) + 's'
+        + '</span></div>';
+    });
+  }
+
+  if (recs.length) {
+    out += '<div class="filter-group-title">Recomendaciones</div>';
+    recs.forEach(function(r) {
+      out += '<div class="insync-rec ' + r.type + '">'
+        + (r.type === 'good' ? '✓ ' : '⚠ ') + esc(r.text) + '</div>';
+    });
+  } else {
+    out += '<div style="font-size:11px;color:var(--muted);margin-top:8px">Sin recomendaciones urgentes esta semana.</div>';
+  }
+
+  el.innerHTML = out;
 }
 </script>
 </body>
