@@ -99,6 +99,12 @@
     .hero-irt__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; }
     .hero-irt__feature { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--irt-text); background: rgba(220,38,38,.08); border: 1px solid var(--irt-border); border-radius: 8px; padding: 10px 14px; }
     .hero-irt .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 16px; }
+    .combo-highlight { background: #fff3cd; border: 2px solid #f59e0b; border-radius: 12px; padding: 14px 16px; margin: 16px 0; display: flex; flex-direction: column; gap: 6px; }
+    .combo-highlight__badge { font-size: 11px; font-weight: 900; color: #92400e; letter-spacing: .06em; }
+    .combo-highlight__text { display: flex; flex-direction: column; gap: 2px; }
+    .combo-highlight__text strong { font-size: 17px; font-weight: 900; color: #1a252f; }
+    .combo-highlight__text span { font-size: 13px; color: #555; }
+    .combo-highlight__cta { background: #f59e0b; color: #fff; font-weight: 900; font-size: 14px; padding: 10px 16px; border-radius: 8px; text-align: center; cursor: pointer; margin-top: 4px; }
     .hero-irt .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--irt-text); padding: 5px 7px; border-radius: 20px; background: rgba(220,38,38,.1); border: 1px solid rgba(220,38,38,.3); white-space: nowrap; flex: 0 1 auto; }
     .hero-irt .db-badge.db-green { background: rgba(26,122,62,.12); border-color: rgba(26,122,62,.35); color: var(--irt-green); }
 
@@ -272,6 +278,15 @@
         <div class="hero-irt__feature">🛏️ Perfecto para el dormitorio — desde la cama</div>
         <div class="hero-irt__feature">⚡ Instalación en segundos — sin cables ni electricista</div>
         <div class="hero-irt__feature">🔋 Batería de larga duración — CR2025 incluida</div>
+      </div>
+
+      <div class="combo-highlight">
+        <div class="combo-highlight__badge">🔥 MÁS ELEGIDO</div>
+        <div class="combo-highlight__text">
+          <strong>2 unidades — Gs. 259.000</strong>
+          <span>Uno para el cuarto, uno para el living. Ahorrás Gs. 19.000.</span>
+        </div>
+        <div class="combo-highlight__cta">Quiero las 2 →</div>
       </div>
 
       <button type="button" class="btn-irt" id="cta-open-modal" data-open-modal data-insync-cta="hero">
@@ -555,6 +570,14 @@
     function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; }
     function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
     openBtns.forEach(btn => btn && btn.addEventListener('click', openModal));
+    const comboCta = document.querySelector('.combo-highlight__cta');
+    if (comboCta) comboCta.addEventListener('click', function() {
+      openModal();
+      setTimeout(() => {
+        const r = document.querySelector('input[name="offer"][value="2"]');
+        if (r) { r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); }
+      }, 50);
+    });
     closeBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
