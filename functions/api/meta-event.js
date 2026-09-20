@@ -33,7 +33,9 @@ export async function onRequestPost({ request, env }) {
       return json({ ok: false, error: 'CAPI not configured' }, 500);
     }
 
-    const ip = request.headers.get('CF-Connecting-IP') || '';
+    const ip = request.headers.get('CF-Connecting-IPv6')
+            || request.headers.get('CF-Connecting-IP')
+            || '';
     const ua = client?.user_agent || request.headers.get('User-Agent') || '';
 
     /* Build user_data */
