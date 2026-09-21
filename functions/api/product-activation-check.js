@@ -43,15 +43,20 @@ export async function onRequestGet({ request, env }) {
     checks.push(check('product_exists', 'Producto en D1', 'PASS',
       `id=${product.id}, name="${product.name}"`, null));
 
-    /* ── 2. Stock disponible ── */
-    const stockNum = Number(product.stock_total) || 0;
-    if (stockNum <= 0) {
-      checks.push(check('stock', 'Stock disponible', 'WARNING',
-        `stock_total = ${stockNum}`,
-        `Cargar stock antes de activar para evitar sobreventa`));
-    } else {
+    /* ── 2. Stock disponible (N/A para DCANP: stock lo gestiona The Can Group) ── */
+    if (product.platform === 'DCANP_GROUP') {
       checks.push(check('stock', 'Stock disponible', 'PASS',
-        `stock_total = ${stockNum}`, null));
+        'N/A — DCANP_GROUP, stock gestionado externamente', null));
+    } else {
+      const stockNum = Number(product.stock_total) || 0;
+      if (stockNum <= 0) {
+        checks.push(check('stock', 'Stock disponible', 'WARNING',
+          `stock_total = ${stockNum}`,
+          `Cargar stock antes de activar para evitar sobreventa`));
+      } else {
+        checks.push(check('stock', 'Stock disponible', 'PASS',
+          `stock_total = ${stockNum}`, null));
+      }
     }
 
     /* ── 3. Precio de venta configurado ── */
@@ -76,15 +81,20 @@ export async function onRequestGet({ request, env }) {
         `Gs. ${comparePrice.toLocaleString('es-PY')}`, null));
     }
 
-    /* ── 4. Costo unitario configurado ── */
-    const cost = Number(product.unit_cost) || 0;
-    if (cost <= 0) {
-      checks.push(check('unit_cost', 'Costo unitario', 'WARNING',
-        `unit_cost = ${cost}`,
-        `Sin costo configurado, el margen aparece como 100% en Dam Finanzas`));
-    } else {
+    /* ── 4. Costo unitario (N/A para DCANP — sin Dam Finanzas, sin margen interno) ── */
+    if (product.platform === 'DCANP_GROUP') {
       checks.push(check('unit_cost', 'Costo unitario', 'PASS',
-        `Gs. ${cost.toLocaleString('es-PY')}`, null));
+        'N/A — DCANP_GROUP, costo no aplica', null));
+    } else {
+      const cost = Number(product.unit_cost) || 0;
+      if (cost <= 0) {
+        checks.push(check('unit_cost', 'Costo unitario', 'WARNING',
+          `unit_cost = ${cost}`,
+          `Sin costo configurado, el margen aparece como 100% en Dam Finanzas`));
+      } else {
+        checks.push(check('unit_cost', 'Costo unitario', 'PASS',
+          `Gs. ${cost.toLocaleString('es-PY')}`, null));
+      }
     }
 
     /* ── 5. Dam Finanzas vinculado (N/A para DCANP — sin admin panel ni
