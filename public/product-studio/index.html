@@ -4097,7 +4097,7 @@ function renderFilterResults(html, el) {
 
   var groups = [
     { title: 'Meta Pixel', rows: [
-      fchk('trackViewContent con setTimeout(..., 800)', /trackViewContent|DV\.trackViewContent/.test(html) && /setTimeout[^}]+800/.test(html)),
+      fchk('trackViewContent en DOMContentLoaded', /trackViewContent|DV\.trackViewContent/.test(html)),
       fchk('trackAddToCart dentro de openModal()', html.includes('trackAddToCart') && (html.includes('function openModal') || html.includes('data-open-modal') || html.includes('MutationObserver'))),
       fchk('trackInitiateCheckout + setTimeout(..., 1500) + _icFired', html.includes('trackInitiateCheckout') && html.includes('1500') && html.includes('_icFired')),
       fchk("Sin fbq('track','Purchase') en browser", !(/fbq\s*\(\s*['"]track['"]\s*,\s*['"]Purchase/.test(html))),
