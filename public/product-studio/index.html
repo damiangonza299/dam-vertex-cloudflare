@@ -4072,51 +4072,55 @@ async function runLandingFilters() {
 
 function renderFilterResults(html, el) {
   var isDcanp = html.includes('/api/dcanp-lead');
-  var htmlLow = html.toLowerCase();
 
   function fchk(label, pass, note) {
     return { label: label, status: pass === null ? 'MANUAL' : (pass ? 'PASS' : 'FAIL'), note: note || '' };
   }
 
+  /* Modal: ciudad debe ser <input>, no <select> */
+  var ciudadInputOk = /\<input[^>]+(id|name)=["']ciudad["']/.test(html);
+  var ciudadSelectBad = /\<select[^>]+(id|name)=["']ciudad["']/.test(html);
+
+  /* Phone: minlength 9 o pattern con 9+ dígitos en el campo tel */
+  var phoneValidation = /minlength=["']9["']|pattern=["'][^"']*\\d[^"']*{9/.test(html)
+    || /tel[^;]{0,200}\.length\s*[<>]=?\s*[89]/.test(html)
+    || /\.length\s*[<>]=?\s*[89][^}]{0,60}tel/.test(html);
+
+  var endpointRows = isDcanp
+    ? [
+        fchk('Endpoint /api/dcanp-lead', html.includes('/api/dcanp-lead')),
+        fchk('Google Sheets + Telegram (DCANP)', null, 'Verificar en functions/api/dcanp-lead.js'),
+      ]
+    : [
+        fchk('Endpoint /api/leads o DV.initForm', html.includes('/api/leads') || (html.includes('DV.initForm') && html.includes('tracking.js'))),
+        fchk('Notificación Telegram (leads.js)', null, 'Verificar en functions/api/leads.js'),
+      ];
+
   var groups = [
     { title: 'Meta Pixel', rows: [
-      fchk('ViewContent + setTimeout 800ms', html.includes('trackViewContent') && /setTimeout[^}]{0,80}800/.test(html)),
-      fchk('AddToCart en openModal', html.includes('trackAddToCart') && (html.includes('function openModal') || html.includes('data-open-modal') || html.includes('MutationObserver'))),
-      fchk('InitiateCheckout + 1500ms + _icFired', html.includes('trackInitiateCheckout') && html.includes('1500') && html.includes('_icFired')),
-      fchk('Purchase solo en servidor (no en HTML browser)', !(/fbq\s*\(\s*['"]track['"]\s*,\s*['"]Purchase/.test(html))),
-      fchk('Pixel ID no hardcodeado en HTML', !(/fbq\s*\(\s*['"]init['"]/.test(html))),
+      fchk('trackViewContent con setTimeout(..., 800)', html.includes('trackViewContent') && /setTimeout[^}]{0,80}800/.test(html)),
+      fchk('trackAddToCart dentro de openModal()', html.includes('trackAddToCart') && (html.includes('function openModal') || html.includes('data-open-modal') || html.includes('MutationObserver'))),
+      fchk('trackInitiateCheckout + setTimeout(..., 1500) + _icFired', html.includes('trackInitiateCheckout') && html.includes('1500') && html.includes('_icFired')),
+      fchk("Sin fbq('track','Purchase') en browser", !(/fbq\s*\(\s*['"]track['"]\s*,\s*['"]Purchase/.test(html))),
+      fchk('Sin Pixel ID hardcodeado en HTML', !(/fbq\s*\(\s*['"]init['"]/.test(html))),
     ]},
-    { title: 'Modal y formulario', rows: [
-      fchk('openModal o [data-open-modal]', html.includes('function openModal') || html.includes('data-open-modal') || html.includes('order-modal')),
-      fchk('Campo nombre', /id=["']nombre["']|name=["']nombre["']/.test(html)),
-      fchk('Campo teléfono', /id=["']tel["']|name=["']tel["']|id=["']telefono["']/.test(html)),
-      fchk('Campo ciudad', /id=["']ciudad["']|name=["']ciudad["']/.test(html)),
+    { title: 'Modal', rows: [
+      fchk('Existe openModal() o [data-open-modal]', html.includes('function openModal') || html.includes('data-open-modal') || html.includes('order-modal')),
+      fchk('Campos nombre, teléfono, ciudad presentes',
+        /id=["']nombre["']|name=["']nombre["']/.test(html) &&
+        /id=["']tel["']|name=["']tel["']/.test(html) &&
+        /id=["']ciudad["']|name=["']ciudad["']/.test(html)),
+      fchk('Validación teléfono mínimo 9 dígitos', phoneValidation, phoneValidation ? '' : 'Buscar validación en JS del form'),
+      fchk('Ciudad texto libre (sin <select>)', ciudadInputOk && !ciudadSelectBad),
       isDcanp
-        ? fchk('Pantalla de gracias DCANP (.dcanp-success)', html.includes('dcanp-success'))
-        : fchk('Campo horario', /id=["']horario["']|name=["']horario["']/.test(html)),
+        ? fchk('Pantalla agradecimiento DCANP (sin WhatsApp)', html.includes('dcanp-success'))
+        : fchk('Campo horario presente', /id=["']horario["']|name=["']horario["']/.test(html)),
     ]},
-    { title: 'Tipo de landing', rows: [
-      fchk('Endpoint correcto: ' + (isDcanp ? '/api/dcanp-lead' : '/api/leads o DV.initForm'), isDcanp ? html.includes('/api/dcanp-lead') : (html.includes('/api/leads') || (html.includes('DV.initForm') && html.includes('tracking.js')))),
-      fchk('tracking.js cargado', html.includes('tracking.js')),
-      fchk('Notificación Telegram en servidor', null, 'Verificar en functions/api/'),
-      fchk('CAPI Purchase en endpoint', null, 'Verificar en functions/api/'),
-    ]},
+    { title: 'Endpoint', rows: endpointRows },
     { title: 'Velocidad', rows: [
       fchk('Imágenes .webp', html.includes('.webp')),
-      fchk('Hero loading=eager + fetchpriority=high', html.includes('fetchpriority') && html.includes('loading="eager"')),
+      fchk('Hero loading="eager" fetchpriority="high"', html.includes('fetchpriority') && html.includes('loading="eager"')),
       fchk('Scripts con defer', html.includes('defer')),
-      fchk('CSS preload + onload swap', html.includes('rel="preload"') && html.includes('as="style"') && html.includes('onload')),
-    ]},
-    { title: 'Contenido', rows: [
-      fchk('Riesgo cero / pago al recibir', htmlLow.includes('pago al recibir') || htmlLow.includes('riesgo cero') || htmlLow.includes('sin riesgo')),
-      fchk('FAQ o preguntas frecuentes', htmlLow.includes('faq') || htmlLow.includes('preguntas frecuentes')),
-      fchk('Garantía mencionada', htmlLow.includes('garant')),
-      fchk('Prueba social con número', /\d+[\s+]*pedidos|\d+[\s+]*clientes|\d+[\s+]*compraron/.test(htmlLow)),
-    ]},
-    { title: 'InSync', rows: [
-      fchk('data-insync-section en secciones', html.includes('data-insync-section')),
-      fchk('data-insync-cta en CTAs', html.includes('data-insync-cta')),
-      fchk('insync.js con ?v=', /insync\.js\?v=/.test(html)),
     ]},
   ];
 
