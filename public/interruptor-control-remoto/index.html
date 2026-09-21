@@ -7,7 +7,7 @@
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
-  <meta name="description" content="Interruptor Inalámbrico con Control Remoto — apagá la luz desde la cama sin levantarte. Instalación en segundos. Gs. 139.000. Entrega en el día.">
+  <meta name="description" content="Interruptor Inalámbrico con Control Remoto — apagá la luz desde la cama sin levantarte. Instalación en segundos. Gs. 119.000. Entrega en el día.">
   <title>Interruptor Inalámbrico con Control Remoto — Dam Vertex</title>
   <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
   <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -23,7 +23,7 @@
       "brand": { "@type": "Brand", "name": "DAM Vertex" },
       "offers": {
         "@type": "Offer",
-        "price": "139000",
+        "price": "119000",
         "priceCurrency": "PYG",
         "availability": "https://schema.org/InStock",
         "seller": { "@type": "Organization", "name": "DAM Vertex" }
@@ -266,11 +266,11 @@
       </div>
       <div class="price-block" style="align-items:flex-end;gap:4px 24px;">
         <div style="display:flex;flex-direction:column;gap:2px;">
-          <span class="price-savings-top" style="margin:0;">Ahorrás Gs. 49.000</span>
-          <span class="price-main">Gs. 139.000</span>
+          <span class="price-savings-top" style="margin:0;">Ahorrás Gs. 42.000</span>
+          <span class="price-main">Gs. 119.000</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:2px;">
-          <span class="price-compare">Gs. 188.000</span>
+          <span class="price-compare">Gs. 161.000</span>
         </div>
       </div>
       <div class="hero-irt__features">
@@ -283,7 +283,7 @@
       <div class="combo-highlight">
         <div class="combo-highlight__badge">🔥 MÁS ELEGIDO</div>
         <div class="combo-highlight__text">
-          <strong>2 unidades — Gs. 259.000</strong>
+          <strong>2 unidades — Gs. 219.000</strong>
           <span>Uno para el cuarto, uno para el living. Ahorrás Gs. 19.000.</span>
         </div>
         <div class="combo-highlight__cta">Quiero las 2 →</div>
@@ -372,7 +372,7 @@
 <section class="urgencia-irt" id="section-urgencia" data-insync-section="urgencia">
   <div class="urgencia-irt__inner">
     <h2 class="urgencia-irt__h">Pedí tu interruptor hoy mismo</h2>
-    <p class="urgencia-irt__sub">Gs. 139.000 · Entrega en el día · Pagás al recibir</p>
+    <p class="urgencia-irt__sub">Gs. 119.000 · Entrega en el día · Pagás al recibir</p>
     <button type="button" class="btn-irt" data-insync-cta="urgencia" id="cta-open-modal-2" data-open-modal>
       Pedir ahora — Pagás al recibir
       <div style="font-size:13px;font-weight:800;margin-top:4px;letter-spacing:.02em;">✓ Envío gratis</div>
@@ -398,7 +398,7 @@
           <input type="radio" name="offer" value="1" checked>
           <div class="offer-content">
             <span class="offer-qty">1 unidad</span>
-            <span class="offer-price">Gs. 139.000</span>
+            <span class="offer-price">Gs. 119.000</span>
           </div>
         </label>
         <label class="offer-option">
@@ -406,8 +406,8 @@
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare">Gs. 278.000</span>
-              <span class="offer-price">Gs. 259.000</span>
+              <span class="offer-compare">Gs. 238.000</span>
+              <span class="offer-price">Gs. 219.000</span>
             </div>
           </div>
           <div class="offer-foot">
@@ -420,12 +420,12 @@
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
             <div class="offer-prices">
-              <span class="offer-compare">Gs. 417.000</span>
-              <span class="offer-price">Gs. 369.000</span>
+              <span class="offer-compare">Gs. 357.000</span>
+              <span class="offer-price">Gs. 319.000</span>
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 48.000</span>
+            <span class="offer-saving">Ahorrás Gs. 38.000</span>
             <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           </div>
         </label>
@@ -551,8 +551,8 @@
   const PRODUCT = {
     name: 'Interruptor Inalámbrico con Control Remoto',
     slug: 'interruptor-control-remoto',
-    price: 139000,
-    comboPricing: { 1: 139000, 2: 259000, 3: 369000 },
+    price: 119000,
+    comboPricing: { 1: 119000, 2: 219000, 3: 319000 },
   };
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -567,16 +567,10 @@
     const submitBtn  = document.getElementById('dcanp-submit-btn');
     const offerInputs = document.querySelectorAll('input[name="offer"]');
 
-    function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; try { DV.trackAddToCart(PRODUCT); } catch (_) {} }
+    let _icFired = false;
+    function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; try { DV.trackAddToCart(PRODUCT); } catch (_) {} if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500); } }
     function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
     openBtns.forEach(btn => btn && btn.addEventListener('click', openModal));
-
-    let _icFired = false;
-    document.querySelectorAll('#dcanp-form input, #dcanp-form textarea').forEach(function(inp) {
-      inp.addEventListener('focus', function() {
-        if (!_icFired) { _icFired = true; try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }
-      }, { once: true });
-    });
 
     const comboCta = document.querySelector('.combo-highlight__cta');
     if (comboCta) comboCta.addEventListener('click', function() {
