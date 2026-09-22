@@ -433,8 +433,8 @@
 
       <form id="dcanp-form" novalidate>
         <div class="form-group">
-          <label for="d-name">Nombre completo</label>
-          <input type="text" id="d-name" name="name" placeholder="Nombre y apellido" autocomplete="name" required>
+          <label for="d-name">Nombre y apellido</label>
+          <input type="text" id="d-name" name="name" placeholder="Ej: Damián Rivero" autocomplete="name" required>
         </div>
         <div class="form-group">
           <label for="d-phone">Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span></label>
@@ -448,10 +448,6 @@
         <div class="form-group">
           <label for="d-calle">Calle principal y secundaria</label>
           <input type="text" id="d-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address">
-        </div>
-        <div class="form-group">
-          <label for="d-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
-          <textarea id="d-nota" name="nota" rows="1" style="resize:none;height:44px;" placeholder="Ej: Frente al edificio Torres, portón azul"></textarea>
         </div>
         <label class="upsell-block">
           <input type="checkbox" id="d-express" name="express">
@@ -627,8 +623,7 @@
         phone:         document.getElementById('d-phone').value.replace(/\s/g, ''),
         city:          document.getElementById('d-city').value.trim(),
         street:        document.getElementById('d-calle').value.trim(),
-        nota:          document.getElementById('d-nota').value.trim(),
-        quantity:      qty,
+quantity:      qty,
         product_slug:  PRODUCT.slug,
         product_name:  PRODUCT.name,
         value:         value,
