@@ -213,27 +213,17 @@ export async function onRequestPost({ request, env, waitUntil }) {
     }
 
     /* ── Filtro de duplicados — mismo teléfono + slug en los últimos 30 min (KV).
-       Si ya existe: avisar por Telegram con ⚠️ y responder ok sin escribir en Sheets. ── */
+       Si ya existe: marcar como duplicado y continuar — Telegram y Sheets reciben
+       el pedido completo igual, solo se agrega la nota "⚠️ POSIBLE DUPLICADO". ── */
+    let isDuplicate = false;
     try {
       if (env.COUNTER_KV && phoneTrim && slugTrim) {
         const dupKey = `dcanp_dup_${phoneTrim}_${slugTrim}`;
         if (await env.COUNTER_KV.get(dupKey)) {
-          waitUntil((async () => {
-            if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
-            try {
-              await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                method:  'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify({
-                  chat_id: env.TELEGRAM_CHAT_ID,
-                  text:    `[DCANP GROUP] ⚠️ PEDIDO DUPLICADO — ${safeName} ${phoneTrim} ${safeProd}`,
-                }),
-              });
-            } catch (e) { console.error('DCANP_DUP_TELEGRAM_ERROR', e.message); }
-          })());
-          return json({ ok: true, message: '¡Pedido recibido!' });
+          isDuplicate = true;
+        } else {
+          await env.COUNTER_KV.put(dupKey, '1', { expirationTtl: 1800 });
         }
-        await env.COUNTER_KV.put(dupKey, '1', { expirationTtl: 1800 });
       }
     } catch (e) {
       console.error('DCANP_DUP_CHECK_SKIP', e.message);
@@ -244,7 +234,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
       try {
         const text = [
-          '[DCANP GROUP] 📦',
+          isDuplicate ? '[DCANP GROUP] ⚠️ POSIBLE DUPLICADO' : '[DCANP GROUP] 📦',
           `Total: Gs. ${fmtNum(effectiveAmount)}`,
           ...(express ? ['🚀 Envío express: +Gs. 10.000'] : []),
           `Producto: ${safeProd}`,
