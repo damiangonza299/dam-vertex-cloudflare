@@ -248,8 +248,8 @@
     </div>
 
     <div>
-      <h1 class="hero-est__h">Ese rincón del baño<br>que nadie sabe aprovechar.</h1>
-      <p class="hero-est__sub">Acero negro que no se oxida, se instala sin taladro en segundos y te devuelve el espacio que tenías perdido.</p>
+      <h1 class="hero-est__h">Tu baño tiene un rincón perdido.<br>Este esquinero lo rescata en segundos.</h1>
+      <p class="hero-est__sub">Sin perforar la pared, sin herramientas, sin drama. Instalás en segundos y organizás champús, jabones y accesorios al instante.</p>
       <div class="risk-zero">
         <div class="risk-zero__main">No pagás nada hasta tenerlo en la mano</div>
         <div class="risk-zero__sub">Lo recibís, lo revisás, y recién ahí pagás. Sin adelantos, sin tarjeta.</div>
@@ -264,12 +264,6 @@
         </div>
       </div>
 
-      <div class="hero-est__features">
-        <div class="hero-est__feature">🖤 Acero negro completo — resistente a la corrosión</div>
-        <div class="hero-est__feature">📐 Diseñado para rincones — aprovechá cada centímetro</div>
-        <div class="hero-est__feature">🔧 Sin taladro — montaje sencillo en segundos</div>
-        <div class="hero-est__feature">🛁 Diseño hueco ventilado — para champús y accesorios</div>
-      </div>
 
       <button type="button" class="btn-est" id="cta-open-modal" data-open-modal data-insync-cta="hero">
         Pedir ahora — Pagás al recibir
@@ -277,7 +271,7 @@
       </button>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
-        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge">💳 Pago al recibir</span>
         <span class="db-badge db-green">✓ Envío gratis</span>
       </div>
       <div class="social-proof">
@@ -291,7 +285,7 @@
 
 <!-- ══ GANCHO 1 (fondo oscuro) + IMAGEN 1 ══ -->
 <section class="gancho-est gancho-est--negro" id="section-gancho1" data-insync-section="gancho1">
-  <p class="gancho-est__text">¿Ese rincón del baño vacío que no sabés cómo aprovechar?</p>
+  <p class="gancho-est__text">¿Ese rincón del baño que acumula polvo porque no sabés qué hacer con él?</p>
 </section>
 <section class="img-full-est" id="section-img1" data-insync-section="img1">
   <img src="/esquinero-aluminio/esquinero-img1.webp"
@@ -355,7 +349,6 @@
     <div id="modal-form-wrap">
       <h2 class="modal-title" id="modal-title-est">Completá tu pedido</h2>
       <p class="modal-stock-alert" style="text-align:center;font-size:11px;font-weight:700;color:#c53030;margin:4px 0 10px;">⚡ Quedan pocas unidades — pedidos se procesan hoy</p>
-      <p class="modal-subtitle">Completá tus datos y nos comunicamos para coordinar tu entrega.</p>
 
       <span class="modal-section-label">Elegí tu oferta</span>
       <div class="offer-options">
@@ -402,7 +395,7 @@
           <input type="text" id="d-name" name="name" placeholder="Nombre y apellido" autocomplete="name" required>
         </div>
         <div class="form-group">
-          <label for="d-phone">Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span></label>
+          <label for="d-phone">Teléfono (WhatsApp)</label>
           <input type="tel" id="d-phone" name="phone" placeholder="Ej: 0984 832 688" autocomplete="tel" required>
           <p id="d-phone-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
         </div>
@@ -532,10 +525,12 @@
     const submitBtn   = document.getElementById('dcanp-submit-btn');
     const offerInputs = document.querySelectorAll('input[name="offer"]');
 
+    let _icFired = false;
     function openModal() {
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
       try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+      if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500); }
     }
     function closeModal() {
       modal.classList.remove('active');
@@ -544,13 +539,6 @@
     openBtns.forEach(btn => btn && btn.addEventListener('click', openModal));
     closeBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-    let _icFired = false;
-    document.querySelectorAll('#dcanp-form input, #dcanp-form textarea').forEach(function(inp) {
-      inp.addEventListener('focus', function() {
-        if (!_icFired) { _icFired = true; try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }
-      }, { once: true });
-    });
 
     offerInputs.forEach(input => {
       input.addEventListener('change', () => {
