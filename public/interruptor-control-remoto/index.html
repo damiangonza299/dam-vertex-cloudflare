@@ -231,6 +231,11 @@
     .faq-item[open] summary::after { content: ' \2212'; }
     .faq-item p { font-size: 14px; color: #555; line-height: 1.5; margin: 8px 0 0; }
     .value-anchor { font-size: 13px; color: #666; font-style: italic; margin-top: 6px; }
+    .objeciones { display:flex; flex-direction:column; gap:16px; padding:24px 16px; max-width:520px; margin:0 auto; }
+    .obj-item { display:flex; flex-direction:column; gap:4px; padding:16px; background:#f8f9fa; border-radius:12px; border-left:4px solid #1a7a3e; }
+    .obj-icon { font-size:24px; }
+    .obj-item strong { font-size:16px; font-weight:800; color:#1a252f; }
+    .obj-item p { font-size:14px; color:#555; margin:0; line-height:1.4; }
   </style>
 </head>
 <body class="theme-irt">
@@ -258,8 +263,8 @@
     </div>
 
     <div>
-      <h1 class="hero-irt__h">Ya estás en la cama.<br>La luz sigue prendida.</h1>
-      <p class="hero-irt__sub">El interruptor inalámbrico que apaga tu luz desde donde estés. Sin cables, sin electricista, sin levantarte nunca más.</p>
+      <h1 class="hero-irt__h">¿Te cuesta levantarte<br>a apagar la luz?</h1>
+      <p class="hero-irt__sub">Este interruptor lo hace por vos. Sin cables, sin electricista, sin moverte de la cama.</p>
       <div class="risk-zero">
         <div class="risk-zero__main">No pagás nada hasta tenerlo en la mano</div>
         <div class="risk-zero__sub">Lo recibís, lo revisás, y recién ahí pagás. Sin adelantos, sin tarjeta.</div>
@@ -273,20 +278,18 @@
           <span class="price-compare">Gs. 161.000</span>
         </div>
       </div>
-
-
+      <div style="font-size:12px;font-weight:700;color:#1a7a3e;margin:8px 0 12px;letter-spacing:.01em;">✓ Garantía de 30 días</div>
+      <div class="social-proof" style="margin:0 0 14px;">
+        <span class="social-proof__num">+340</span>
+        <span class="social-proof__txt">pedidos entregados en Paraguay este mes</span>
+      </div>
       <button type="button" class="btn-irt" id="cta-open-modal" data-open-modal data-insync-cta="hero">
         Pedir ahora — Pagás al recibir
-        <div style="font-size:12px;font-weight:700;margin-top:4px;letter-spacing:.02em;">✓ Garantía de 30 días</div>
+        <div style="font-size:12px;font-weight:700;margin-top:4px;letter-spacing:.02em;">✓ Envío gratis</div>
       </button>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
         <span class="db-badge">💳 Pago al recibir</span>
-        <span class="db-badge db-green">✓ Envío gratis</span>
-      </div>
-      <div class="social-proof">
-        <span class="social-proof__num">+340</span>
-        <span class="social-proof__txt">pedidos entregados en Paraguay este mes</span>
       </div>
     </div>
 
@@ -346,11 +349,23 @@
        loading="lazy" decoding="async" width="800" height="800">
 </section>
 
-<section class="guarantee-block" id="section-garantia" data-insync-section="garantia">
-  <div class="guarantee-block__inner">
-    <div class="guarantee-block__icon">🛡️</div>
-    <h3 class="guarantee-block__h">Garantía de 90 días</h3>
-    <p class="guarantee-block__p">Si no funciona como prometemos, te lo cambiamos sin costo. Sin preguntas, sin vueltas.</p>
+<section id="section-objeciones" data-insync-section="objeciones">
+  <div class="objeciones">
+    <div class="obj-item">
+      <span class="obj-icon">🚚</span>
+      <strong>¿Cuándo llega?</strong>
+      <p>Hoy mismo si pedís antes de las 15:00 en Gran Asunción. Interior: 24-48hs.</p>
+    </div>
+    <div class="obj-item">
+      <span class="obj-icon">💵</span>
+      <strong>¿Tengo que pagar antes?</strong>
+      <p>No. Pagás únicamente cuando el repartidor te lo entrega en la mano.</p>
+    </div>
+    <div class="obj-item">
+      <span class="obj-icon">🛡️</span>
+      <strong>¿Y si no funciona?</strong>
+      <p>30 días de garantía. Te lo cambiamos sin costo, sin preguntas.</p>
+    </div>
   </div>
 </section>
 
@@ -361,7 +376,7 @@
     <p class="urgencia-irt__sub">Gs. 119.000 · Entrega en el día · Pagás al recibir</p>
     <button type="button" class="btn-irt" data-insync-cta="urgencia" id="cta-open-modal-2" data-open-modal>
       Pedir ahora — Pagás al recibir
-      <div style="font-size:13px;font-weight:800;margin-top:4px;letter-spacing:.02em;">✓ Envío gratis</div>
+      <div style="font-size:13px;font-weight:800;margin-top:4px;letter-spacing:.02em;">✓ Envío gratis · ✓ Garantía 30 días</div>
     </button>
   </div>
 </section>
