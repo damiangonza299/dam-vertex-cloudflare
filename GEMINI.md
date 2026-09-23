@@ -767,3 +767,21 @@ El flujo de eventos Meta Pixel NUNCA cambia:
 
 NUNCA usar focus/blur para InitiateCheckout.
 NUNCA hardcodear Pixel ID en server-side — siempre `env.META_PIXEL_ID` via secret.
+
+---
+
+## MODAL ESTÁNDAR — Estructura canónica (todas las landings nuevas)
+
+Referencia exacta: `public/interruptor-control-remoto/index.html` y `public/esquinero-aluminio/index.html`
+
+- Label nombre: **"Nombre y apellido"** (NO "Nombre completo")
+- Placeholder nombre: `"Ej: Damián Rivero"`
+- Label teléfono: **"Teléfono (WhatsApp)"**
+- Subtítulo teléfono: `"· Ingresá tu número completo"` en rojo
+- Validación teléfono: mínimo 9 dígitos, sin valor predeterminado, sin "09" hardcodeado
+- Ciudad: texto libre, placeholder `"Ej: Asunción, Lambaré, San Lorenzo..."`, sin selector estricto bloqueante
+- Calle: opcional, sin `required`
+- Campo "Nota del pedido": **ELIMINADO en landings DCANP**
+- Sin texto `"Completá tus datos y nos comunicamos para coordinar tu entrega."`
+- Badge: `"💳 Pago al recibir"` — sin `"· Central"`
+- Combos: solo dentro del modal, nunca antes del CTA principal en la landing
