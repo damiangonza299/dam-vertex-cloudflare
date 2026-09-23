@@ -785,3 +785,38 @@ Referencia exacta: `public/interruptor-control-remoto/index.html` y `public/esqu
 - Sin texto `"Completá tus datos y nos comunicamos para coordinar tu entrega."`
 - Badge: `"💳 Pago al recibir"` — sin `"· Central"`
 - Combos: solo dentro del modal, nunca antes del CTA principal en la landing
+
+---
+
+## ESTRUCTURA LANDING PAGES — COD Paraguay 2026
+
+### Regla principal
+El headline de la landing SIEMPRE tiene que continuar exactamente el hook del anuncio de video.
+Si el video dice "¿te cuesta levantarte a apagar la luz?" — el H1 dice exactamente eso.
+Meta Andromeda penaliza el rebote post-clic subiendo el CPM. Landing y anuncio desconectados = más caro.
+
+### Estructura obligatoria para NUEVAS landings
+1. HERO — mismo gancho del video, H1 directo al dolor
+2. PRECIO + RIESGO CERO — antes del primer scroll. "No pagás nada hasta tenerlo en la mano" + precio grande + tachado + ahorrás + "+340 pedidos" al lado del precio
+3. VIDEO del producto — antes del primer CTA (15-28% más conversión que solo imágenes)
+4. CTA — "Pedir ahora" simple. Garantía debajo en texto pequeño.
+5. IMÁGENES + GANCHOS — estructura actual de secciones alternas
+6. 3 OBJECIONES VISUALES — reemplaza el FAQ de acordeón:
+   - 🚚 ¿Cuándo llega? → Hoy si pedís antes de las 15:00
+   - 💵 ¿Tengo que pagar antes? → No, pagás cuando lo recibís
+   - 🛡️ ¿Y si no funciona? → 30 días de garantía, cambio sin costo
+7. CTA CIERRE
+
+### Para landings existentes
+- NO cambiar estructura sin que Armando lo pida explícitamente
+- Si Armando pide un cambio visual en una landing existente, preguntar: "¿Querés que también actualice la estructura al nuevo formato COD 2026?"
+
+### Lo que NO va en landing nuevas
+- FAQ de acordeón con 4+ preguntas → usar 3 objeciones visuales
+- Bloque de garantía separado al final → integrar debajo del precio
+- "+340 pedidos" después del CTA → va al lado del precio
+- Bullets de características técnicas → el video ya las muestra
+
+### Referencia canónica
+`public/interruptor-control-remoto/index.html` y `public/esquinero-aluminio/index.html`
+(refactorizadas con esta estructura en septiembre 2026)
