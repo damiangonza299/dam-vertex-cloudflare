@@ -61,8 +61,8 @@
       --irt-card2:     #dbeafe;
     }
     body.theme-irt { background: var(--irt-cream); color: var(--irt-text); }
-    .theme-irt .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; width: 100%; background: rgba(240,244,255,.97); border-bottom: 1px solid var(--irt-border); backdrop-filter: blur(12px); }
-    body.theme-irt { padding-top: 60px; }
+    .theme-irt .nav { position: relative; background: rgba(240,244,255,.97); border-bottom: 1px solid var(--irt-border); backdrop-filter: blur(12px); }
+    body.theme-irt { padding-top: 40px; }
     .theme-irt .nav__logo { color: var(--irt-text); }
     .theme-irt .nav__logo span { opacity: .65; }
     .theme-irt .footer { background: var(--irt-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--irt-border); }
@@ -185,9 +185,11 @@
 
     /* ══ URGENCY BAR ══ */
     .urgency-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 400;
       background: #dc2626; color: #fff; text-align: center;
-      font-size: 12px; font-weight: 700; padding: 8px 16px;
-      position: sticky; top: 0; z-index: 200; letter-spacing: .02em; white-space: nowrap;
+      font-size: 12px; font-weight: 700; letter-spacing: .02em; white-space: nowrap;
+      height: 36px; line-height: 36px; padding: 0 16px;
+      overflow: hidden; text-overflow: ellipsis;
     }
 
     /* ══ STICKY CTA ══ */
