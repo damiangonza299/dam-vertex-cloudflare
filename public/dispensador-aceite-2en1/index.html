@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
+  <meta name="description" content="Dispensador de Aceite 2 en 1 — spray para Air Fryer y chorro para freír. Sin manchas, sin desperdicio. Gs. 155.000. Entrega en el día. Pagás al recibir.">
+  <title>Dispensador de Aceite 2 en 1 — Dam Vertex</title>
+  <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "name": "Dispensador de Aceite 2 en 1",
+      "description": "Controla cada gota: spray para Air Fryer y chorro para freír. Sin manchas, sin desperdicio.",
+      "brand": { "@type": "Brand", "name": "DCANP GROUP" },
+      "offers": {
+        "@type": "Offer",
+        "price": "155000",
+        "priceCurrency": "PYG",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "Dam Vertex" }
+      }
+    }
+  ]
+}
+  </script>
+  <style>
+    /* ══ CRÍTICO ABOVE-THE-FOLD — CLAUDE.md "CARGA CRÍTICA — CSS NO BLOQUEANTE" ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #dc2626; --green: #1a7a3e; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(0,0,0,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+
+    /* ══ Dispensador Aceite 2en1 — theme rojo cocina ══ */
+    :root {
+      --dao-red:        #dc2626;
+      --dao-red-dark:   #b91c1c;
+      --dao-dark:       #1a0800;
+      --dao-cream:      #fdf8f5;
+      --dao-green:      #1a7a3e;
+      --dao-text:       #1a0a00;
+      --dao-text-dim:   rgba(26,10,0,.62);
+      --dao-border:     rgba(220,38,38,.28);
+      --dao-card:       #ffffff;
+    }
+    body.theme-dao { background: var(--dao-cream); color: var(--dao-text); }
+
+    /* URGENCY BAR — fixed, por encima del contenido pero debajo del nav */
+    .urgency-bar {
+      background: var(--dao-red); color: #fff; text-align: center;
+      font-size: 12px; font-weight: 700; letter-spacing: .02em; white-space: nowrap;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 36px; line-height: 36px; padding: 0 16px;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* NAV — fixed debajo de la barra, z-index > barra */
+    .theme-dao .nav {
+      position: fixed; top: 36px; left: 0; right: 0; z-index: 300;
+      background: rgba(253,248,245,.97); border-bottom: 1px solid var(--dao-border);
+      backdrop-filter: blur(12px); width: 100%;
+    }
+    .theme-dao .nav__logo { color: var(--dao-text); }
+    .theme-dao .nav__logo span { opacity: .65; }
+    body.theme-dao { padding-top: 96px; } /* 36px barra + 60px nav */
+    .theme-dao .footer { background: var(--dao-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--dao-border); }
+
+    /* BOTÓN PRINCIPAL */
+    .btn-dao {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      background: var(--dao-red); color: #fff; font-weight: 800;
+      padding: 15px 14px; border-radius: 999px; border: 3px solid var(--dao-red-dark); cursor: pointer;
+      text-decoration: none; transition: background .2s, transform .15s;
+      width: 100%; max-width: 340px; white-space: nowrap; letter-spacing: 0;
+      font-size: clamp(10px, 3.4vw, 14px); box-shadow: 0 4px 14px rgba(220,38,38,.35);
+    }
+    .btn-dao:hover { background: var(--dao-red-dark); transform: translateY(-1px); }
+    .nav__cta-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--dao-red); color: #fff; font-weight: 800; font-size: clamp(7px,2.6vw,12px);
+      padding: 8px 10px; border-radius: 999px; border: 2px solid var(--dao-red-dark); cursor: pointer;
+      white-space: nowrap; max-width: 62vw;
+    }
+
+    /* ══ HERO ══ */
+    .hero-dao { background: linear-gradient(180deg, #fff5f0 0%, var(--dao-cream) 100%); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-dao__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+    .hero-dao__media { max-width: 420px; margin: 0 auto; width: 100%; }
+    .hero-dao__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; background: #fde8e0; }
+    .hero-dao__h { font-size: clamp(20px,6vw,40px); font-weight: 800; line-height: 1.2; letter-spacing: -.01em; color: var(--dao-text); margin: 0 0 12px; }
+    .hero-dao__sub { font-size: clamp(14px,2vw,16px); color: var(--dao-text-dim); line-height: 1.65; margin: 0 0 18px; }
+    .hero-dao .price-savings-top { font-size: 13px; font-weight: 700; color: var(--dao-green); margin: 0 0 2px; }
+    .hero-dao .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
+    .hero-dao .price-main { color: var(--dao-text); font-size: clamp(28px,5.5vw,38px); }
+    .hero-dao .price-compare { color: var(--dao-text-dim); font-size: clamp(16px,2.5vw,20px); text-decoration: line-through; }
+    .hero-dao .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 16px; }
+    .hero-dao .db-badge { font-size: clamp(8px,2.4vw,11px); color: var(--dao-text); padding: 5px 7px; border-radius: 20px; background: rgba(220,38,38,.1); border: 1px solid rgba(220,38,38,.3); white-space: nowrap; flex: 0 1 auto; }
+    .hero-dao .db-badge.db-green { background: rgba(26,122,62,.12); border-color: rgba(26,122,62,.35); color: var(--dao-green); }
+
+    /* ══ RIESGO CERO ══ */
+    .risk-zero { background: #e8f5e9; border-left: 4px solid var(--dao-green); padding: 14px 16px; border-radius: 8px; margin: 16px 0; }
+    .risk-zero__main { font-size: 17px; font-weight: 900; color: var(--dao-green); line-height: 1.25; }
+    .risk-zero__sub { font-size: 13px; color: #2c3e50; margin-top: 4px; line-height: 1.4; }
+
+    /* ══ PRUEBA SOCIAL ══ */
+    .social-proof { display: flex; align-items: center; gap: 8px; justify-content: center; font-size: 13px; }
+    .social-proof__num { font-weight: 900; font-size: 18px; color: var(--dao-green); }
+    .social-proof__txt { color: #555; }
+
+    /* ══ GANCHOS ══ */
+    .gancho-dao { padding: clamp(40px,10vw,72px) clamp(20px,5vw,48px); text-align: center; }
+    .gancho-dao__text { font-size: clamp(22px,5.5vw,38px); font-weight: 800; color: #fff; line-height: 1.25; margin: 0; max-width: 720px; margin-inline: auto; }
+    .gancho-dao--negro { background: var(--dao-dark); }
+    .gancho-dao--rojo  { background: var(--dao-red); }
+    .img-full-dao { background: var(--dao-dark); }
+    .img-full-dao img { width: 100%; height: auto; display: block; }
+
+    /* ══ PLACEHOLDER IMÁGENES/VIDEOS ══ */
+    .img-placeholder {
+      width: 100%; aspect-ratio: 4/3; display: flex; flex-direction:column; align-items: center; justify-content: center;
+      background: #1e0a05; color: rgba(255,255,255,.4); font-size: 13px; font-weight: 600;
+      letter-spacing: .03em; text-transform: uppercase; gap: 8px;
+    }
+    .img-placeholder span { font-size: 11px; opacity: .7; }
+
+    /* ══ VIDEOS ══ */
+    .demo-dao { background: var(--dao-dark); padding: clamp(32px,7vw,60px) clamp(20px,5vw,64px); }
+    .demo-dao__videos { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; max-width: 760px; margin: 0 auto; }
+    .demo-video-dao-wrap { aspect-ratio: 9/16; border-radius: 14px; overflow: hidden; background: #2a0c05; display: flex; align-items: center; justify-content: center; }
+    .demo-video-dao-wrap span { color: rgba(255,255,255,.35); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-align: center; padding: 8px; }
+
+    /* ══ CTA INTERMEDIO ══ */
+    .cta-mid-dao { background: #fff5f0; padding: clamp(32px,7vw,52px) clamp(20px,5vw,48px); text-align: center; border-top: 1px solid rgba(220,38,38,.15); border-bottom: 1px solid rgba(220,38,38,.15); }
+
+    /* ══ CIERRE ══ */
+    .urgencia-dao { background: var(--dao-dark); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); text-align: center; }
+    .urgencia-dao__inner { max-width: 480px; margin: 0 auto; }
+    .urgencia-dao__h { font-size: clamp(20px,4vw,28px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0 0 12px; }
+    .urgencia-dao__sub { font-size: 14px; color: rgba(255,255,255,.9); line-height: 1.6; margin: 0 0 22px; }
+
+    /* ══ OBJECIONES ══ */
+    .objeciones { display:flex; flex-direction:column; gap:16px; padding:24px 16px; max-width:520px; margin:0 auto; }
+    .obj-item { display:flex; flex-direction:column; gap:4px; padding:16px; background:#f8f9fa; border-radius:12px; border-left:4px solid var(--dao-green); }
+    .obj-icon { font-size:24px; }
+    .obj-item strong { font-size:16px; font-weight:800; color:#1a252f; }
+    .obj-item p { font-size:14px; color:#555; margin:0; line-height:1.4; }
+
+    /* ══ MODAL DCANP ══ */
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(26,8,0,.6); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
+    .modal-overlay.active { display: flex; }
+    .theme-dao .modal-box { position: relative; background: #fff; border: 1px solid rgba(220,38,38,.3); border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; }
+    .theme-dao .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(220,38,38,.14); color: var(--dao-text); font-size: 15px; cursor: pointer; }
+    .theme-dao .modal-title { font-size: 20px; font-weight: 800; color: var(--dao-text); margin: 0 0 4px; }
+    .theme-dao .modal-section-label { display: block; font-size: 12px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: .04em; margin: 0 0 10px; }
+    .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .theme-dao .offer-option { position: relative; display: block; border: 1.5px solid rgba(220,38,38,.22); border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
+    .offer-option input { position: absolute; opacity: 0; }
+    .theme-dao .offer-option.selected { border-color: var(--dao-red); background: rgba(220,38,38,.08); }
+    .theme-dao .offer-option.selected:has(.offer-badge:not(.offer-badge--best)) { border-width: 2.5px; border-color: var(--dao-red); background: rgba(220,38,38,.13); }
+    .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    .theme-dao .offer-option .offer-qty,
+    .theme-dao .offer-option .offer-price { color: var(--dao-text); font-weight: 800; }
+    .offer-qty { font-weight: 700; font-size: 14px; }
+    .offer-price { font-weight: 800; font-size: 15px; }
+    .theme-dao .offer-option .offer-compare { color: #767676; }
+    .offer-compare { font-size: 12px; text-decoration: line-through; margin-right: 6px; }
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .theme-dao .offer-saving { color: var(--dao-green); font-weight: 700; font-size: 12px; }
+    .theme-dao .offer-badge { background: var(--dao-red); color: #fff; font-size: 13px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+    .theme-dao .offer-badge--best { background: var(--dao-green); color: #fff; }
+    .form-group { margin-bottom: 14px; }
+    .theme-dao .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--dao-text); margin-bottom: 6px; }
+    .theme-dao .form-group input,
+    .theme-dao .form-group textarea {
+      width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid rgba(220,38,38,.3);
+      background: #fff; color: var(--dao-text); font-size: 14px; font-family: inherit;
+    }
+    .theme-dao .form-group input::placeholder { color: #666; }
+    .theme-dao .upsell-block { background: #fff; border: 1.5px solid rgba(220,38,38,.2); border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .theme-dao .upsell-block:has(input:checked) { border-color: var(--dao-red); background: rgba(220,38,38,.08); }
+    .theme-dao .upsell-title { color: var(--dao-text); font-size: 13px; font-weight: 700; }
+    .theme-dao .upsell-sub { color: rgba(26,10,0,.55); font-size: 12px; }
+    #d-total-line:empty { display: none; }
+    .form-submit { margin-top: 18px; }
+    .form-submit .btn-dao { max-width: none; }
+    .theme-dao .dcanp-success { display: none; background: #fff5f0; border: 1px solid rgba(220,38,38,.35); border-radius: 16px; padding: 32px 24px; text-align: center; }
+    .theme-dao .dcanp-success.visible { display: block; }
+    .theme-dao .dcanp-success__icon { width: 56px; height: 56px; background: var(--dao-red); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .theme-dao .dcanp-success h2 { color: var(--dao-red-dark); font-size: 22px; margin-bottom: 12px; }
+    .theme-dao .dcanp-success p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .theme-dao .dcanp-success__tip { font-weight: 600; }
+    .theme-dao .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: var(--dao-green); font-weight: 700; }
+
+    /* ══ STICKY CTA ══ */
+    .sticky-cta-bar {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+      background: rgba(253,248,245,.97); border-top: 1px solid var(--dao-border);
+      padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width: 700px) {
+      .sticky-cta-bar { display: block; }
+      body:has(#order-modal.active) .sticky-cta-bar { display: none; }
+    }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 700px) {
+      .hero-dao__inner { grid-template-columns: 1fr; gap: 18px; }
+      .hero-dao__media { order: -1; max-width: 100%; }
+      .hero-dao { padding: 10px 16px 20px; }
+      .demo-dao__videos { gap: 8px; }
+    }
+  </style>
+</head>
+<body class="theme-dao">
+
+<div class="urgency-bar">⚡ Quedan 18 unidades · Envío gratis · Pagás al recibir</div>
+
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <button type="button" class="nav__cta-btn" data-open-modal>Pedir ahora — Pagás al recibir</button>
+</nav>
+
+<main>
+
+<!-- ══ HERO ══ -->
+<section class="hero-dao" id="section-hero" data-insync-section="hero">
+  <div class="hero-dao__inner">
+
+    <div class="hero-dao__media">
+      <!-- PLACEHOLDER — reemplazar con imagen real: /dispensador-aceite-2en1/hero.webp -->
+      <div class="img-placeholder" style="border-radius:16px;aspect-ratio:1/1;">
+        🫒 IMAGEN HERO
+        <span>dispensador-aceite-2en1/hero.webp</span>
+      </div>
+    </div>
+
+    <div>
+      <h1 class="hero-dao__h">¿Otra vez limpiando aceite derramado de la mesada?</h1>
+      <p class="hero-dao__sub">El dispensador 2 en 1 que controla cada gota — spray para el Air Fryer, chorro para freír. Sin manchas, sin desperdicio.</p>
+      <div class="risk-zero">
+        <div class="risk-zero__main">No pagás nada hasta tenerlo en la mano</div>
+        <div class="risk-zero__sub">Lo recibís, lo revisás, y recién ahí pagás. Sin adelantos, sin tarjeta.</div>
+      </div>
+      <div class="price-block" style="align-items:flex-end;gap:4px 24px;">
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span class="price-savings-top" style="margin:0;">Ahorrás Gs. 54.000</span>
+          <span class="price-main">Gs. 155.000</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span class="price-compare">Gs. 209.000</span>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:#1a7a3e;margin:8px 0 12px;letter-spacing:.01em;">✓ Garantía de 30 días</div>
+      <div class="social-proof" style="margin:0 0 14px;">
+        <span class="social-proof__num">+280</span>
+        <span class="social-proof__txt">dispensadores entregados en Paraguay este mes</span>
+      </div>
+      <button type="button" class="btn-dao" id="cta-open-modal" data-open-modal data-insync-cta="hero">
+        Pedir ahora — Pagás al recibir
+        <div style="font-size:12px;font-weight:700;margin-top:4px;letter-spacing:.02em;">✓ Envío gratis · Entrega en el día</div>
+      </button>
+      <div class="delivery-badges hero-dao">
+        <span class="db-badge db-green">🚚 Entrega en el día</span>
+        <span class="db-badge">💳 Pago al recibir</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ GANCHO 1 (oscuro) + VIDEOS ══ -->
+<section class="gancho-dao gancho-dao--negro" id="section-gancho1" data-insync-section="gancho1" style="padding-bottom:8px">
+  <p class="gancho-dao__text">¿Otra vez terminaste limpiando aceite de la mesada?</p>
+</section>
+<section class="demo-dao" id="section-videos" data-insync-section="videos">
+  <div class="demo-dao__videos">
+    <div><div class="demo-video-dao-wrap"><span>▶ VIDEO 1<br>9:16</span></div></div>
+    <div><div class="demo-video-dao-wrap"><span>▶ VIDEO 2<br>9:16</span></div></div>
+    <div><div class="demo-video-dao-wrap"><span>▶ VIDEO 3<br>9:16</span></div></div>
+  </div>
+</section>
+
+<!-- ══ GANCHO 2 (rojo) + IMAGEN 2 ══ -->
+<section class="gancho-dao gancho-dao--rojo" id="section-gancho2" data-insync-section="gancho2">
+  <p class="gancho-dao__text">2 en 1: spray para tu Air Fryer, chorro para freír.</p>
+</section>
+<section class="img-full-dao" id="section-img2" data-insync-section="img2">
+  <!-- PLACEHOLDER — reemplazar con imagen real: /dispensador-aceite-2en1/img2.webp -->
+  <div class="img-placeholder">📷 IMAGEN 2<span>dispensador-aceite-2en1/img2.webp</span></div>
+</section>
+
+<!-- ══ GANCHO 3 (oscuro) + IMAGEN 3 ══ -->
+<section class="gancho-dao gancho-dao--negro" id="section-gancho3" data-insync-section="gancho3">
+  <p class="gancho-dao__text">No es solo para el aceite. Es para toda tu cocina.</p>
+</section>
+<section class="img-full-dao" id="section-img3" data-insync-section="img3">
+  <!-- PLACEHOLDER — reemplazar con imagen real: /dispensador-aceite-2en1/img3.webp -->
+  <div class="img-placeholder">📷 IMAGEN 3<span>dispensador-aceite-2en1/img3.webp</span></div>
+</section>
+
+<!-- ══ CTA INTERMEDIO ══ -->
+<section class="cta-mid-dao" id="section-cta-mid" data-insync-section="cta-mid">
+  <button type="button" class="btn-dao" data-open-modal data-insync-cta="cta-mid">
+    Pedir ahora — Pagás al recibir
+    <div style="font-size:13px;font-weight:800;margin-top:4px;letter-spacing:.02em;">✓ Envío gratis</div>
+  </button>
+</section>
+
+<!-- ══ GANCHO 4 (rojo) + IMAGEN 4 ══ -->
+<section class="gancho-dao gancho-dao--rojo" id="section-gancho4" data-insync-section="gancho4">
+  <p class="gancho-dao__text">Comé más sano sin renunciar al sabor.</p>
+</section>
+<section class="img-full-dao" id="section-img4" data-insync-section="img4">
+  <!-- PLACEHOLDER — reemplazar con imagen real: /dispensador-aceite-2en1/img4.webp -->
+  <div class="img-placeholder">📷 IMAGEN 4<span>dispensador-aceite-2en1/img4.webp</span></div>
+</section>
+
+<!-- ══ OBJECIONES ══ -->
+<section id="section-objeciones" data-insync-section="objeciones">
+  <div class="objeciones">
+    <div class="obj-item">
+      <span class="obj-icon">🚚</span>
+      <strong>¿Cuándo llega?</strong>
+      <p>Hoy mismo si pedís antes de las 15:00 en Gran Asunción. Interior: 24-48hs.</p>
+    </div>
+    <div class="obj-item">
+      <span class="obj-icon">💵</span>
+      <strong>¿Tengo que pagar antes?</strong>
+      <p>No. Pagás únicamente cuando el repartidor te lo entrega en la mano.</p>
+    </div>
+    <div class="obj-item">
+      <span class="obj-icon">🛡️</span>
+      <strong>¿Y si no me gusta?</strong>
+      <p>30 días de garantía. Te lo cambiamos sin costo, sin preguntas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CIERRE ══ -->
+<section class="urgencia-dao" id="section-urgencia" data-insync-section="urgencia">
+  <div class="urgencia-dao__inner">
+    <h2 class="urgencia-dao__h">Pedí tu dispensador hoy mismo</h2>
+    <p class="urgencia-dao__sub">Gs. 155.000 · Entrega en el día · Pagás al recibir</p>
+    <button type="button" class="btn-dao" data-insync-cta="urgencia" id="cta-open-modal-2" data-open-modal>
+      Pedir ahora — Pagás al recibir
+      <div style="font-size:13px;font-weight:800;margin-top:4px;letter-spacing:.02em;">✓ Envío gratis · ✓ Garantía 30 días</div>
+    </button>
+  </div>
+</section>
+
+</main>
+
+<!-- ══ MODAL DCANP — sin WhatsApp, sin horario, POST a /api/dcanp-lead ══ -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-dao">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+
+    <div id="modal-form-wrap">
+      <h2 class="modal-title" id="modal-title-dao">Completá tu pedido</h2>
+      <p class="modal-stock-alert" style="text-align:center;font-size:11px;font-weight:700;color:#dc2626;margin:4px 0 10px;">⚡ Quedan pocas unidades — pedidos se procesan hoy</p>
+
+      <span class="modal-section-label">Elegí tu oferta</span>
+      <div class="offer-options">
+        <label class="offer-option selected">
+          <input type="radio" name="offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price">Gs. 155.000</span>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="offer" value="2">
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare">Gs. 310.000</span>
+              <span class="offer-price">Gs. 289.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 21.000</span>
+            <div class="offer-badge">🔥 Más elegido</div>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="offer" value="3">
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare">Gs. 465.000</span>
+              <span class="offer-price">Gs. 409.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 56.000</span>
+            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
+          </div>
+        </label>
+      </div>
+
+      <form id="dcanp-form" novalidate>
+        <div class="form-group">
+          <label for="d-name">Nombre y apellido</label>
+          <input type="text" id="d-name" name="name" placeholder="Ej: Damián Rivero" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label for="d-phone">Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span></label>
+          <input type="tel" id="d-phone" name="phone" placeholder="Ej: 0984 832 688" autocomplete="tel" required>
+          <p id="d-phone-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
+        </div>
+        <div class="form-group">
+          <label for="d-city">Ciudad <span style="color:#c0392b;font-size:11px;font-weight:600;">· Solo el nombre de tu ciudad</span></label>
+          <input type="text" id="d-city" name="city" placeholder="Ej: Asunción, Lambaré, San Lorenzo..." autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="d-calle">Calle principal y secundaria</label>
+          <input type="text" id="d-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address">
+        </div>
+        <label class="upsell-block">
+          <input type="checkbox" id="d-express" name="express">
+          <div class="upsell-content">
+            <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+            <span class="upsell-sub">Recibí antes que los demás</span>
+          </div>
+        </label>
+
+        <label class="upsell-block" id="d-invoice-block" style="margin-top:12px">
+          <input type="checkbox" id="d-invoice" name="invoice">
+          <div class="upsell-content">
+            <span class="upsell-title">🧾 Necesito factura</span>
+            <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="d-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group">
+            <label for="d-invoice-ruc">RUC *</label>
+            <input type="text" id="d-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="d-invoice-name">Razón social / Nombre *</label>
+            <input type="text" id="d-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="d-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+            <input type="email" id="d-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+          </div>
+        </div>
+
+        <p id="d-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:var(--dao-text)"></p>
+
+        <div style="margin-top:16px;text-align:center;font-size:12px;font-weight:800;color:var(--dao-red);background:rgba(220,38,38,.08);border-radius:8px;padding:8px 12px;">
+          💳 Pago al recibir
+        </div>
+
+        <div class="form-submit">
+          <button type="submit" class="btn-dao" id="dcanp-submit-btn">
+            <div>Confirmar pedido</div>
+            <div style="font-size:12px;font-weight:800;margin-top:3px;letter-spacing:.03em;">✓ Envío gratis · Pagás al recibir</div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="dcanp-success" id="dcanp-success">
+      <div class="dcanp-success__icon">✓</div>
+      <h2>¡Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p class="dcanp-success__tip">📱 Quedate atento a tu número — te vamos a contactar pronto.</p>
+      <div class="dcanp-success__badges">
+        <span>✓ Envío gratis</span>
+        <span>✓ Pagás al recibir</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer" style="padding:20px;text-align:center;font-size:13px;">
+  &copy; Dam Vertex
+</footer>
+
+<!-- CRO: Sticky bottom CTA — mobile only -->
+<div class="sticky-cta-bar" id="sticky-cta-bar">
+  <button type="button" class="btn-dao" style="width:100%;margin:0" data-open-modal>
+    Pedir ahora — Pagás al recibir
+    <div style="font-size:13px;font-weight:800;margin-top:4px;letter-spacing:.02em;">✓ Envío gratis</div>
+  </button>
+</div>
+
+<!-- Scripts -->
+<script src="/assets/js/tracking.js?v=74" defer></script>
+<script src="/assets/js/dcanp-cities.js?v=1" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+
+<script defer>
+  /* Producto DCANP — flujo independiente, NO usa products.js/DV.initForm.
+     Ver CLAUDE.md "DCANP GROUP — Flujo especial". */
+  const PRODUCT = {
+    name: 'Dispensador de Aceite 2 en 1',
+    slug: 'dispensador-aceite-2en1',
+    price: 155000,
+    comboPricing: { 1: 155000, 2: 289000, 3: 409000 },
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    try { DV.trackViewContent(PRODUCT); } catch (_) {}
+
+    const modal       = document.getElementById('order-modal');
+    const openBtns    = document.querySelectorAll('[data-open-modal]');
+    const closeBtn    = document.getElementById('modal-close');
+    const form        = document.getElementById('dcanp-form');
+    const formWrap    = document.getElementById('modal-form-wrap');
+    const successBox  = document.getElementById('dcanp-success');
+    const submitBtn   = document.getElementById('dcanp-submit-btn');
+    const offerInputs = document.querySelectorAll('input[name="offer"]');
+
+    let _icFired = false;
+    function openModal() {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+      if (!_icFired) {
+        _icFired = true;
+        setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }, 1500);
+      }
+    }
+    function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+
+    openBtns.forEach(btn => btn && btn.addEventListener('click', openModal));
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    offerInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        document.querySelectorAll('.offer-option').forEach(opt => opt.classList.remove('selected'));
+        input.closest('.offer-option').classList.add('selected');
+        updateDaoTotalLine();
+      });
+    });
+
+    const invoiceChk    = document.getElementById('d-invoice');
+    const invoiceFields = document.getElementById('d-invoice-fields');
+    const totalLine     = document.getElementById('d-total-line');
+    if (invoiceChk && invoiceFields) {
+      invoiceChk.addEventListener('change', function() {
+        invoiceFields.style.display = this.checked ? 'block' : 'none';
+      });
+    }
+
+    function updateDaoTotalLine() {
+      if (!totalLine) return;
+      const qty   = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      const base  = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const isExp = document.getElementById('d-express')?.checked;
+      const total = base + (isExp ? 10000 : 0);
+      totalLine.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    }
+    const expChk = document.getElementById('d-express');
+    if (expChk) expChk.addEventListener('change', updateDaoTotalLine);
+
+    const dPhone = document.getElementById('d-phone');
+    if (dPhone) dPhone.addEventListener('focus', function() { const l = this.value.length; this.setSelectionRange(l, l); });
+    if (dPhone) dPhone.addEventListener('input', function() {
+      this.style.borderColor = '';
+      const e = document.getElementById('d-phone-error');
+      if (e) { e.textContent = ''; e.style.display = 'none'; }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      const base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const express = document.getElementById('d-express')?.checked || false;
+      const invoice = document.getElementById('d-invoice')?.checked || false;
+      const value   = base + (express ? 10000 : 0);
+      const data = {
+        name:          document.getElementById('d-name').value.trim(),
+        phone:         document.getElementById('d-phone').value.replace(/\s/g, ''),
+        city:          document.getElementById('d-city').value.trim(),
+        street:        document.getElementById('d-calle').value.trim(),
+        quantity:      qty,
+        product_slug:  PRODUCT.slug,
+        product_name:  PRODUCT.name,
+        value:         value,
+        express:       express,
+        invoice:       invoice,
+        invoice_ruc:   invoice ? (document.getElementById('d-invoice-ruc')?.value || '').trim() : '',
+        invoice_name:  invoice ? (document.getElementById('d-invoice-name')?.value || '').trim() : '',
+        invoice_email: invoice ? (document.getElementById('d-invoice-email')?.value || '').trim() : '',
+      };
+      if (!data.name || !data.phone || !data.city) {
+        alert('Completá nombre, teléfono y ciudad para continuar.');
+        return;
+      }
+      const dPhoneInput = document.getElementById('d-phone');
+      const dPhoneError = document.getElementById('d-phone-error');
+      const soloNumeros = data.phone.replace(/\D/g, '');
+      if (soloNumeros.length < 9) {
+        if (dPhoneInput) { dPhoneInput.style.borderColor = '#c0392b'; dPhoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        if (dPhoneError) { dPhoneError.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; dPhoneError.style.display = 'block'; }
+        return;
+      }
+      try {
+        const client = typeof getClientData === 'function' ? getClientData() : {};
+        data.fbp = client.fbp || null;
+        data.fbc = client.fbc || null;
+      } catch (_) {}
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+      try {
+        const res = await fetch('/api/dcanp-lead', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(data),
+        });
+        await res.json().catch(() => ({}));
+      } catch (err) {
+        console.error('DCANP_SUBMIT_ERROR', err?.message);
+      }
+      formWrap.style.display = 'none';
+      successBox.classList.add('visible');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Confirmar pedido';
+    });
+  });
+</script>
+
+<script src="/assets/js/protect.js?v=68" defer></script>
+</body>
+</html>

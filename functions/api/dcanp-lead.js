@@ -14,6 +14,7 @@ const PRODUCT_SHORT_NAMES = {
   'tabla-marmol':               'TABLA DE PICAR DE MARMOL OVALADO 38X27CM',
   'interruptor-control-remoto': '💡 Interruptor Inalámbrico',
   'esquinero-aluminio':         '🔲 Esquinero',
+  'dispensador-aceite-2en1':    '🫒 Dispensador Aceite',
 };
 
 /* Normalización de ciudad — comparación sin tildes y case-insensitive.
