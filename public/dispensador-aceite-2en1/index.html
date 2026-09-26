@@ -243,11 +243,12 @@
   <div class="hero-dao__inner">
 
     <div class="hero-dao__media">
-      <!-- PLACEHOLDER — reemplazar con imagen real: /dispensador-aceite-2en1/hero.webp -->
-      <div class="img-placeholder" style="border-radius:16px;aspect-ratio:1/1;">
-        🫒 IMAGEN HERO
-        <span>dispensador-aceite-2en1/hero.webp</span>
-      </div>
+      <img src="/dispensador-aceite-2en1/hero.webp"
+           srcset="/dispensador-aceite-2en1/hero-400w.webp 400w, /dispensador-aceite-2en1/hero.webp 800w"
+           sizes="(max-width: 600px) 400px, 800px"
+           alt="Dispensador de Aceite 2 en 1"
+           class="hero-dao__img"
+           loading="eager" fetchpriority="high" decoding="async" width="800" height="800">
     </div>
 
     <div>
@@ -290,10 +291,12 @@
   <p class="gancho-dao__text">¿Otra vez terminaste limpiando aceite de la mesada?</p>
 </section>
 <section class="demo-dao" id="section-videos" data-insync-section="videos">
-  <div class="demo-dao__videos">
-    <div><div class="demo-video-dao-wrap"><span>▶ VIDEO 1<br>9:16</span></div></div>
-    <div><div class="demo-video-dao-wrap"><span>▶ VIDEO 2<br>9:16</span></div></div>
-    <div><div class="demo-video-dao-wrap"><span>▶ VIDEO 3<br>9:16</span></div></div>
+  <div style="max-width:340px;margin:0 auto;">
+    <div class="demo-video-dao-wrap">
+      <video autoplay muted loop playsinline preload="auto" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <source src="/dispensador-aceite-2en1/video1.mp4" type="video/mp4">
+      </video>
+    </div>
   </div>
 </section>
 
@@ -302,8 +305,11 @@
   <p class="gancho-dao__text">2 en 1: spray para tu Air Fryer, chorro para freír.</p>
 </section>
 <section class="img-full-dao" id="section-img2" data-insync-section="img2">
-  <!-- PLACEHOLDER — reemplazar con imagen real: /dispensador-aceite-2en1/img2.webp -->
-  <div class="img-placeholder">📷 IMAGEN 2<span>dispensador-aceite-2en1/img2.webp</span></div>
+  <img src="/dispensador-aceite-2en1/img2.webp"
+       srcset="/dispensador-aceite-2en1/img2-400w.webp 400w, /dispensador-aceite-2en1/img2.webp 800w"
+       sizes="(max-width: 600px) 400px, 800px"
+       alt="Dispensador de Aceite 2 en 1 — modo spray"
+       loading="lazy" decoding="async" width="800" height="800">
 </section>
 
 <!-- ══ GANCHO 3 (oscuro) + IMAGEN 3 ══ -->
@@ -311,8 +317,11 @@
   <p class="gancho-dao__text">No es solo para el aceite. Es para toda tu cocina.</p>
 </section>
 <section class="img-full-dao" id="section-img3" data-insync-section="img3">
-  <!-- PLACEHOLDER — reemplazar con imagen real: /dispensador-aceite-2en1/img3.webp -->
-  <div class="img-placeholder">📷 IMAGEN 3<span>dispensador-aceite-2en1/img3.webp</span></div>
+  <img src="/dispensador-aceite-2en1/img3.webp"
+       srcset="/dispensador-aceite-2en1/img3-400w.webp 400w, /dispensador-aceite-2en1/img3.webp 800w"
+       sizes="(max-width: 600px) 400px, 800px"
+       alt="Dispensador de Aceite 2 en 1 — en cocina"
+       loading="lazy" decoding="async" width="800" height="800">
 </section>
 
 <!-- ══ CTA INTERMEDIO ══ -->
