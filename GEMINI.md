@@ -1,4 +1,4 @@
-# DAM Vertex Cloudflare Context
+﻿# DAM Vertex Cloudflare Context
 
 Este repositorio usa un sistema local de AI Skills en `/AI_SYSTEM`.
 
@@ -820,3 +820,23 @@ Meta Andromeda penaliza el rebote post-clic subiendo el CPM. Landing y anuncio d
 ### Referencia canónica
 `public/interruptor-control-remoto/index.html` y `public/esquinero-aluminio/index.html`
 (refactorizadas con esta estructura en septiembre 2026)
+
+
+## VIDEOS EN LANDINGS — REGLA CRÍTICA
+
+El navegador interno de Meta (Instagram/Facebook) bloquea autoplay si falta `webkit-playsinline`.
+Siempre usar estos atributos en todo `<video>`:
+
+```html
+<video src="..." muted autoplay loop playsinline webkit-playsinline preload="metadata"
+       style="width:100%;border-radius:12px;object-fit:cover;"
+       onerror="this.style.display='none'">
+  <source src="..." type="video/mp4">
+</video>
+```
+
+Reglas:
+- `webkit-playsinline` — obligatorio para iOS y navegador Meta/Instagram
+- `preload="metadata"` — nunca `preload="auto"` (causa timeouts en conexiones lentas)
+- `onerror` — si el video no carga, se oculta sin romper la página
+- `<source>` dentro del `<video>` — fallback si el atributo `src` no es soportado
