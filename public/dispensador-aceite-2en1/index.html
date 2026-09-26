@@ -60,24 +60,24 @@
     }
     body.theme-dao { background: var(--dao-cream); color: var(--dao-text); }
 
-    /* URGENCY BAR — fixed, por encima del contenido pero debajo del nav */
+    /* URGENCY BAR — sticky: scrollea hacia arriba y queda bajo el nav fijo */
     .urgency-bar {
       background: var(--dao-red); color: #fff; text-align: center;
       font-size: 12px; font-weight: 700; letter-spacing: .02em; white-space: nowrap;
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      position: sticky; top: 0; z-index: 100;
       height: 36px; line-height: 36px; padding: 0 16px;
       overflow: hidden; text-overflow: ellipsis;
     }
 
-    /* NAV — fixed debajo de la barra, z-index > barra */
+    /* NAV — fijo en top:0, siempre visible por encima de la barra */
     .theme-dao .nav {
-      position: fixed; top: 36px; left: 0; right: 0; z-index: 300;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       background: rgba(253,248,245,.97); border-bottom: 1px solid var(--dao-border);
       backdrop-filter: blur(12px); width: 100%;
     }
     .theme-dao .nav__logo { color: var(--dao-text); }
     .theme-dao .nav__logo span { opacity: .65; }
-    body.theme-dao { padding-top: 96px; } /* 36px barra + 60px nav */
+    body.theme-dao { padding-top: 60px; } /* solo nav */
     .theme-dao .footer { background: var(--dao-dark); color: rgba(255,255,255,.6); border-top: 1px solid var(--dao-border); }
 
     /* BOTÓN PRINCIPAL */
