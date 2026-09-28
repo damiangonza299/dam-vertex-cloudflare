@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -210,6 +210,7 @@
       .hero-est__media { order: -1; max-width: 100%; }
       .hero-est { padding: 10px 16px 20px; }
     }
+    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: #dc2626; color: #ffffff; font-weight: 900; font-size: 15px; border-radius: 8px; text-decoration: none; text-align: center; }
   </style>
 </head>
 <body class="theme-estante">
@@ -459,6 +460,7 @@
         <span>✓ Envío gratis</span>
         <span>✓ Pagás al recibir</span>
       </div>
+            <a href="/" class="btn-ver-coleccion">Ver colecci&#243;n completa &#x2192;</a>
     </div>
   </div>
 </div>
@@ -523,10 +525,12 @@
     const submitBtn   = document.getElementById('dcanp-submit-btn');
     const offerInputs = document.querySelectorAll('input[name="offer"]');
 
+    let _icFired = false;
     function openModal() {
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
       try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+      if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500); }
     }
     function closeModal() {
       modal.classList.remove('active');
@@ -535,13 +539,6 @@
     openBtns.forEach(btn => btn && btn.addEventListener('click', openModal));
     closeBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-    let _icFired = false;
-    document.querySelectorAll('#dcanp-form input, #dcanp-form textarea').forEach(function(inp) {
-      inp.addEventListener('focus', function() {
-        if (!_icFired) { _icFired = true; try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }
-      }, { once: true });
-    });
 
     offerInputs.forEach(input => {
       input.addEventListener('change', () => {

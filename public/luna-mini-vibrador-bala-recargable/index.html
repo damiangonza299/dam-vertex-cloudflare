@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -503,6 +503,7 @@
     .city-suggestions__item:hover,
     .city-suggestions__item:focus,
     .city-suggestions__item.touch-active { background-color: #FF3EA5 !important; color: #ffffff !important; }
+    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: #dc2626; color: #ffffff; font-weight: 900; font-size: 15px; border-radius: 8px; text-decoration: none; text-align: center; }
   </style>
   <meta property="og:title" content="LUNA MINI — Bienestar Personal · Dam Vertex" />
   <meta property="og:description" content="Compacto. Silencioso. Recargable. Entrega hoy en Central. Pagás cuando lo recibís." />
@@ -556,9 +557,9 @@
       </div>
       <div class="price-block">
         <div class="price-main-row">
-          <span class="price-main">Gs. 199.000</span>
-          <span class="price-compare">Gs. 269.000</span>
-          <span class="price-badge">26% OFF</span>
+          <span class="price-main">Gs. 119.000</span>
+          <span class="price-compare">Gs. 161.000</span>
+          <span class="price-badge">Ahorrás Gs. 42.000</span>
         </div>
       </div>
       <div style="font-size:13px;color:#666;font-style:italic;margin-top:6px;">Menos de lo que gastás en dos deliverys — y te dura años.</div>
@@ -921,7 +922,7 @@
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 99.500</span>
+            <span class="offer-saving">Ahorrás Gs. 19.000</span>
             <div class="offer-badge">🔥 Más elegido</div>
           </div>
         </label>
@@ -936,7 +937,7 @@
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 208.950</span>
+            <span class="offer-saving">Ahorrás Gs. 38.000</span>
             <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
           </div>
         </label>
@@ -1044,6 +1045,7 @@
       <div class="manual-wa">
         <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
       </div>
+            <a href="/" class="btn-ver-coleccion">Ver colecci&#243;n completa &#x2192;</a>
     </div>
 
   </div>
@@ -1273,7 +1275,8 @@
   const PRODUCT = {
     name:  'LUNA MINI Vibrador Bala Recargable',
     slug:  'luna-mini-vibrador-bala-recargable',
-    price: 199000,
+    price: 119000,
+    comboPricing: { 1: 119000, 2: 219000, 3: 319000 },
     /* El modal solo pide ciudad (sin mapa) — el link de Maps que se arma con
        coordenadas aproximadas del departamento no representa una ubicación
        real, así que se omite del mensaje de WhatsApp. Flag opt-in en
