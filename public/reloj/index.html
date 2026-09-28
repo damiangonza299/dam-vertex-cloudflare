@@ -641,37 +641,28 @@
 
       <div class="form-group">
         <label for="cm-name">Nombre y apellido</label>
-        <input type="text" id="cm-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
+        <input type="text" id="cm-name" name="name" placeholder="Ej: Diego Gonz&aacute;lez" autocomplete="name">
         <span class="form-error-msg"></span>
       </div>
 
       <div class="form-group">
-        <label for="cm-phone">Teléfono (WhatsApp)</label>
+        <label for="cm-phone">Tel&eacute;fono (WhatsApp) <span style="color:#c0392b;font-size:11px;font-weight:600;">&middot; Ingres&aacute; tu n&uacute;mero completo</span></label>
         <input type="tel" id="cm-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
         <span class="form-error-msg"></span>
       </div>
 
-
-      <div class="form-group" id="cm-ref-group" style="display:none;margin-top:-4px">
-        <label for="cm-ref">Referencia adicional</label>
-        <input type="text" id="cm-ref" name="referencia" placeholder="piso, portón negro, referencia extra" style="margin-top:6px">
-      </div>
-
-      <div class="form-group" style="display:none">
-        <label for="cm-city" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
-        <input type="text" id="cm-city" name="city" placeholder="Ej: Asunción, Luque, San Lorenzo..." autocomplete="off">
-        <span class="form-error-msg"></span>
-      </div>
-
       <div class="form-group">
-        <label for="cm-payment">Método de pago</label>
-        <select id="cm-payment" name="payment">
-          <option value="">Seleccioná...</option>
-          <option value="Transferencia">Transferencia</option>
-          <option value="Efectivo">Efectivo</option>
-        </select>
+        <label for="cm-city">Ciudad <span style="color:#c0392b;font-size:11px;font-weight:600;">&middot; Solo el nombre de tu ciudad</span></label>
+        <input type="text" id="cm-city" name="city" placeholder="Ej: Asunci&oacute;n, Luque, San Lorenzo..." autocomplete="off">
         <span class="form-error-msg"></span>
       </div>
+
+      <div class="form-group" id="cm-ref-group">
+        <label for="cm-ref">Calle principal y secundaria</label>
+        <input type="text" id="cm-ref" name="referencia" placeholder="Ej: Av. Espa&ntilde;a y Tacuary" autocomplete="street-address">
+      </div>
+
+      <input type="hidden" id="cm-payment" name="payment" value="Al recibir">
 
       <label class="upsell-block" id="cm-express-block">
         <input type="checkbox" id="cm-express">
@@ -705,17 +696,14 @@
         </div>
       </div>
 
-      <label class="confirm-intent" id="cm-confirm-block">
-        <input type="checkbox" id="cm-confirm">
-        <span class="confirm-text">Confirmo que tengo intención real de comprar este combo</span>
-      </label>
-      <span class="form-error-msg" id="cm-confirm-error">Debes confirmar tu intención de compra para continuar</span>
+      <input type="checkbox" id="cm-confirm" name="confirm" checked hidden>
 
       <div id="cm-stock-error" style="display:none;color:#f87171;font-size:13px;margin:10px 0;padding:10px;background:rgba(248,113,113,.08);border-radius:6px;border:1px solid rgba(248,113,113,.2)"></div>
 
       <div class="form-submit">
         <button type="submit" class="btn btn-primary" id="combo-submit-btn">
           Pedir combo por WhatsApp
+          <div style="font-size:12px;font-weight:800;margin-top:3px;letter-spacing:.03em;">&#x2713; Env&iacute;o gratis &middot; Pag&aacute;s al recibir</div>
         </button>
       </div>
 
