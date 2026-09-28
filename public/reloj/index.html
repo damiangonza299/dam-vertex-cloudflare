@@ -517,51 +517,42 @@
 
       </div>
     </div>
-    <p class="modal-price-warning">⚠️ Este precio puede cambiar en cualquier momento</p>
+    <p class="modal-price-warning">&#x1F512; Tus datos est&aacute;n seguros &middot; Solo los usamos para coordinar tu entrega</p>
 
     <!-- Formulario -->
     <form class="modal-form" id="modal-form" novalidate>
 
       <div class="form-group">
         <label for="m-name">Nombre y apellido</label>
-        <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
+        <input type="text" id="m-name" name="name" placeholder="Ej: Diego Gonz&aacute;lez" autocomplete="name">
         <span class="form-error-msg"></span>
       </div>
 
       <div class="form-group">
-        <label for="m-phone">Teléfono (WhatsApp)</label>
+        <label for="m-phone">Tel&eacute;fono (WhatsApp) <span style="color:#c0392b;font-size:11px;font-weight:600;">&middot; Ingres&aacute; tu n&uacute;mero completo</span></label>
         <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
         <span class="form-error-msg"></span>
       </div>
 
 
-      <div class="form-group" id="m-ref-group" style="display:none;margin-top:-4px">
-        <label for="m-ref">Referencia adicional</label>
-        <input type="text" id="m-ref" name="referencia" placeholder="piso, portón negro, referencia extra" style="margin-top:6px">
-      </div>
-
-      <div class="form-group" id="city-group" style="display:none">
-        <label for="m-city-search" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectó automáticamente)</span></label>
-        <div class="city-picker-wrap">
-          <input type="text" id="m-city-search" class="city-search-input" placeholder="Buscá tu ciudad" autocomplete="off">
-          <div class="city-dropdown" id="m-city-dropdown"></div>
-        </div>
-        <input type="hidden" id="m-city" name="city">
-        <div class="city-manual-wrap" id="city-manual-wrap" style="display:none">
-          <input type="text" id="m-city-manual" class="city-manual-input" placeholder="Escribí tu ciudad" autocomplete="off">
-        </div>
-        <span class="form-error-msg"></span>
+            <div class="form-group">
+        <label for="horario">&iquest;En qu&eacute; horario pod&eacute;s recibir? <span style="font-weight:400;font-size:11px">(opcional)</span></label>
+        <input type="text" name="horario" id="horario" placeholder="Ej: de 9:00 a 17:00hs" maxlength="100" autocomplete="off">
       </div>
 
       <div class="form-group">
-        <label for="m-payment">Método de pago</label>
-        <select id="m-payment" name="payment">
-          <option value="">Seleccioná...</option>
-          <option value="Transferencia">Transferencia</option>
-          <option value="Efectivo">Efectivo</option>
-        </select>
+        <label for="m-ref">Calle principal y secundaria</label>
+        <input type="text" id="m-ref" name="referencia" placeholder="Ej: Av. Espa&ntilde;a y Tacuary" autocomplete="street-address">
+      </div>
+
+            <div class="form-group" id="city-group">
+        <label for="m-city-search">Ciudad <span style="color:#c0392b;font-size:11px;font-weight:600;">&middot; Solo el nombre de tu ciudad</span></label>
+        <input type="text" id="m-city-search" placeholder="Ej: Luque, Fernando de la Mora" autocomplete="off" oninput="document.getElementById('m-city').value=this.value">
+        <input type="hidden" id="m-city" name="city">
         <span class="form-error-msg"></span>
       </div>
+
+            <input type="hidden" id="m-payment" name="payment" value="Al recibir">
 
       <label class="upsell-block">
         <input type="checkbox" id="m-express" name="express">
@@ -595,11 +586,7 @@
         </div>
       </div>
 
-      <label class="confirm-intent">
-        <input type="checkbox" id="m-confirm" name="confirm">
-        <span class="confirm-text">Quiero recibir este reloj y confirmo mi pedido</span>
-      </label>
-      <span class="confirm-error-msg form-error-msg">Debes confirmar tu intención de compra para continuar</span>
+            <input type="checkbox" id="m-confirm" name="confirm" checked hidden>
 
       <div class="form-submit">
         <button type="submit" class="btn btn-primary" id="modal-submit-btn">
