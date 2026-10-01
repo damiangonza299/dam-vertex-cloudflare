@@ -344,6 +344,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
             calle:      street ? sanitize(street, 150) : '',
             monto:      'Gs. ' + fmtNum(effectiveAmount),
             nota:       nota ? sanitize(nota, 300) : '',
+            ruc:          invoice_ruc   ? sanitize(invoice_ruc, 50)    : '',
+            razon_social: invoice_name  ? sanitize(invoice_name, 100) : '',
+            email:        invoice_email ? sanitize(invoice_email, 100) : '',
           }),
         });
         console.error('DCANP_SHEETS_STATUS', sheetsRes.status, sheetsRes.url?.slice(0, 80));
