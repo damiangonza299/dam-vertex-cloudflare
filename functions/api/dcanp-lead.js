@@ -255,11 +255,15 @@ export async function onRequestPost({ request, env, waitUntil }) {
             ...(invoice_email ? [`Email: ${sanitize(invoice_email, 100)}`]       : []),
           ] : []),
         ].join('\n');
-        await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        const tgRes = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text }),
         });
+        if (!tgRes.ok) {
+          const tgErr = await tgRes.json();
+          console.error('TELEGRAM_ERROR', tgErr);
+        }
       } catch (e) {
         console.error('DCANP_TELEGRAM_ERROR', e.message);
       }
