@@ -840,3 +840,34 @@ Reglas:
 - `preload="metadata"` — nunca `preload="auto"` (causa timeouts en conexiones lentas)
 - `onerror` — si el video no carga, se oculta sin romper la página
 - `<source>` dentro del `<video>` — fallback si el atributo `src` no es soportado
+
+
+## SECRETS DE CLOUDFLARE — REGLA CRÍTICA (BOM UTF-8)
+
+Wrangler v3.x en Windows tiene un bug conocido: al usar `echo "valor" | wrangler pages secret put`
+o cualquier método de pipe desde PowerShell, agrega un BOM UTF-8 invisible (`﻿`) al inicio
+del valor guardado. Esto corrompe el secret silenciosamente — el CLI confirma éxito pero el valor
+real en Cloudflare está roto.
+
+### Síntomas
+- `TELEGRAM_BOT_TOKEN` con BOM → Telegram devuelve `404 Not Found` en todos los endpoints
+- `TELEGRAM_CHAT_ID` con BOM → Telegram devuelve `400 Bad Request: chat not found`
+- El valor parece correcto al setearlo pero falla en producción
+
+### Solución ÚNICA confirmada
+NUNCA usar `wrangler pages secret put` desde PowerShell en Windows para estos secrets.
+SIEMPRE setear secrets sensibles directamente desde el Dashboard de Cloudflare:
+1. dash.cloudflare.com → Workers & Pages → dam-vertex-cloudflare → Settings → Environment variables
+2. Editar el secret → seleccionar todo (Ctrl+A) → borrar → escribir el valor a mano o pegar limpio
+3. Guardar → hacer redeploy manual para que el Worker tome el valor nuevo
+
+### Secrets afectados (verificar siempre desde Dashboard)
+- `TELEGRAM_BOT_TOKEN` — token del bot de Telegram
+- `TELEGRAM_CHAT_ID` — chat ID del grupo DAM VERTEX (-5451330380)
+- `TELEGRAM_INTELLIGENCE_CHAT_ID` — chat ID de DAM INTELLIGENCE (-5132624168)
+- `TELEGRAM_INVOICE_CHAT_ID` — pendiente de configurar
+
+### Otros aprendizajes de esta sesión
+- Al reemplazar un bot de Telegram, el bot nuevo debe ser removido y re-agregado al grupo para que Telegram lo reconozca
+- Cambios de secrets vía API de Cloudflare requieren redeploy para propagarse al Worker en producción
+- Para debuggear secrets corruptos: agregar log temporal con `.length` y `.substring(0,10)` del valor — nunca loguear el secret completo
