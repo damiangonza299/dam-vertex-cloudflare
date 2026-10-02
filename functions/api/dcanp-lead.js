@@ -15,6 +15,7 @@ const PRODUCT_SHORT_NAMES = {
   'interruptor-control-remoto': '💡 Interruptor Inalámbrico',
   'esquinero-aluminio':         '🔲 Esquinero',
   'dispensador-aceite-2en1':    'Dispensador Inteligente de Aceite 2 en 1',
+  'reloj-imperial-verde':       '⌚ Reloj Imperial Verde',
 };
 
 /* Normalización de ciudad — comparación sin tildes y case-insensitive.

@@ -1,1086 +1,979 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style">
+  <meta name="theme-color" content="#0F3D2E">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
-  <meta name="description" content="Reloj Imperial Verde â€” estilo ejecutivo con esfera esmeralda y detalles dorados. Acero inoxidable 42mm. Entrega en el dÃ­a. Dam Vertex Paraguay.">
-  <title>Reloj Imperial Verde â€” Estilo Ejecutivo â€” Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=60"></script>
-  <link rel="stylesheet" href="/assets/css/styles.min.css?v=55">
-  <style>
-    /* â•â• Reloj Imperial Verde â€” tema esmeralda + oro â•â• */
-    :root {
-      --imperial-green:  #0f6b4d;
-      --imperial-dark:   #0a4f39;
-      --imperial-light:  #1a8a62;
-      --imperial-gold:   #d4af37;
-      --imperial-gold2:  #b8962a;
-      --bg-base:         #060c09;
-      --bg-card:         #0c1510;
-      --bg-card2:        #0f1c14;
-      --border-subtle:   rgba(212,175,55,.12);
-      --border-green:    rgba(15,107,77,.3);
-      --text-muted:      rgba(255,255,255,.45);
-      --text-dim:        rgba(255,255,255,.65);
-    }
-    body { background: var(--bg-base); }
-
-    /* â”€â”€ Nav override â”€â”€ */
-    .nav { background: rgba(6,12,9,.96); border-bottom: 1px solid var(--border-subtle); }
-    .nav__cta { background: var(--imperial-green); color: #fff; }
-    .nav__cta:hover { background: var(--imperial-light); }
-
-    /* â”€â”€ Gold divider â”€â”€ */
-    .gold-line {
-      width: 40px; height: 2px;
-      background: linear-gradient(90deg, var(--imperial-gold), transparent);
-      margin: 0 0 20px;
-    }
-    .gold-line--center { margin: 0 auto 20px; }
-
-    /* â•â• HERO â•â• */
-    .hero-iv {
-      background: var(--bg-base);
-      padding: clamp(32px,7vw,64px) clamp(20px,5vw,64px);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .hero-iv__inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .hero-iv__media { position: relative; }
-
-    /* â”€â”€ Image placeholder (hÃ©roe) â”€â”€ */
-    .img-ph {
-      width: 100%;
-      aspect-ratio: 4/5;
-      border-radius: 6px;
-      background: var(--bg-card);
-      border: 1.5px dashed rgba(212,175,55,.35);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      overflow: hidden;
-      position: relative;
-    }
-    .img-ph img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      position: absolute; inset: 0;
-      border-radius: 6px;
-    }
-    .img-ph__label {
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      text-align: center; padding: 20px;
-      pointer-events: none;
-    }
-    .img-ph__icon {
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      background: rgba(212,175,55,.1);
-      border: 1.5px solid rgba(212,175,55,.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-    }
-    .img-ph__title {
-      font-size: 11px; font-weight: 700; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--imperial-gold);
-    }
-    .img-ph__file {
-      font-size: 10px; color: rgba(255,255,255,.3);
-      font-family: monospace;
-    }
-    .img-ph__size { font-size: 10px; color: rgba(255,255,255,.2); }
-
-    /* Imagen de producto cuadrada para grilla */
-    .img-ph--sq { aspect-ratio: 1; }
-    /* Imagen landscape */
-    .img-ph--ls { aspect-ratio: 16/10; }
-
-    .hero-iv__badge {
-      position: absolute; top: 16px; left: 16px; z-index: 10;
-      font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
-      background: var(--imperial-gold);
-      color: #000;
-      padding: 5px 11px; border-radius: 3px;
-    }
-
-    .eyebrow-iv {
-      font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--imperial-gold); margin: 0 0 18px;
-    }
-    .hero-iv__h {
-      font-size: clamp(28px,5vw,50px); font-weight: 800; line-height: 1.1;
-      margin: 0 0 18px; letter-spacing: -.02em; color: #fff;
-    }
-    .hero-iv__h em { font-style: normal; color: var(--imperial-green); }
-    .hero-iv__sub {
-      font-size: clamp(14px,2vw,16px); color: var(--text-dim);
-      line-height: 1.65; margin: 0 0 24px;
-    }
-
-    .spi { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; }
-    .spi-stars { color: var(--imperial-gold); font-size: 14px; }
-    .spi-text  { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-
-    .hero-iv .price-block { margin: 0 0 24px; gap: 6px 10px; }
-    .hero-iv .price-main  { font-size: clamp(26px,5vw,40px); }
-
-    .btn-imperial {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--imperial-green);
-      color: #fff; font-size: 15px; font-weight: 700;
-      padding: 15px 32px; border-radius: 8px; border: none; cursor: pointer;
-      text-decoration: none; transition: background .2s, transform .15s;
-      letter-spacing: .01em; width: 100%; max-width: 320px;
-    }
-    .btn-imperial:hover { background: var(--imperial-light); transform: translateY(-1px); }
-    .btn-imperial .arrow { transition: transform .2s; }
-    .btn-imperial:hover .arrow { transform: translateX(4px); }
-
-    .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
-    .db-badge { font-size: 11px; color: #e2e2e2; padding: 5px 10px; border-radius: 20px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); }
-    .db-green { background: rgba(15,107,77,.18); border-color: rgba(15,107,77,.4); color: #86efac; }
-
-    /* â•â• TRANSFORMACION â•â• */
-    .transf {
-      background: var(--bg-base);
-      padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
-      border-top: 1px solid var(--border-subtle);
-    }
-    .transf__inner { max-width: 900px; margin: 0 auto; }
-    .transf__head { text-align: center; margin-bottom: 60px; }
-    .transf__overline {
-      font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--imperial-gold); margin: 0 0 16px;
-    }
-    .transf__title {
-      font-size: clamp(22px,4vw,34px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0;
-    }
-
-    .transf__bridge {
-      display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch;
-      background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden;
-    }
-    .transf__col {
-      padding: 40px 32px;
-    }
-    .transf__col--antes { border-right: 1px solid var(--border-subtle); }
-    .transf__col--despues { border-left: 1px solid var(--border-subtle); }
-
-    .transf__col-label {
-      font-size: 10px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase;
-      margin: 0 0 20px;
-    }
-    .transf__col--antes .transf__col-label { color: rgba(255,255,255,.25); }
-    .transf__col--despues .transf__col-label { color: var(--imperial-gold); }
-
-    .transf__col h3 {
-      font-size: clamp(15px,2.2vw,18px); font-weight: 700; color: #fff; line-height: 1.3;
-      margin: 0 0 14px;
-    }
-    .transf__col--antes h3 { opacity: .55; }
-
-    .transf__list { display: flex; flex-direction: column; gap: 10px; list-style: none; padding: 0; margin: 0; }
-    .transf__list li { font-size: 13px; line-height: 1.5; display: flex; gap: 10px; }
-    .transf__col--antes .transf__list li { color: rgba(255,255,255,.35); }
-    .transf__col--antes .transf__list li::before { content: 'âœ•'; color: rgba(248,113,113,.4); flex-shrink: 0; }
-    .transf__col--despues .transf__list li { color: rgba(255,255,255,.75); }
-    .transf__col--despues .transf__list li::before { content: 'âœ“'; color: #86efac; flex-shrink: 0; }
-
-    .transf__center {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px 16px; gap: 12px; min-width: 72px;
-      background: linear-gradient(180deg, var(--bg-card), rgba(15,107,77,.08), var(--bg-card));
-    }
-    .transf__arrow {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--imperial-green);
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 16px; font-weight: 700; flex-shrink: 0;
-    }
-    .transf__product-name {
-      font-size: 9px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase;
-      color: var(--imperial-gold); text-align: center; line-height: 1.4; writing-mode: vertical-lr;
-      transform: rotate(180deg);
-    }
-
-    /* â•â• PRODUCTO â€” specs â•â• */
-    .producto {
-      background: var(--bg-card2);
-      padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
-      border-top: 1px solid var(--border-subtle);
-    }
-    .producto__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; max-width: 1060px; margin: 0 auto; }
-    .producto__img-wrap { position: relative; }
-
-    .specs__grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-      background: var(--border-subtle); border-radius: 8px; overflow: hidden;
-      margin-top: 28px;
-    }
-    .spec-item {
-      background: var(--bg-card2); padding: 20px 18px;
-    }
-    .spec-item__label {
-      font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
-      color: var(--imperial-gold); margin: 0 0 6px;
-    }
-    .spec-item__val { font-size: 14px; font-weight: 600; color: #fff; }
-    .spec-item__sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-
-    .sec-overline {
-      font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--imperial-gold); margin: 0 0 14px;
-    }
-    .sec-h {
-      font-size: clamp(20px,3.5vw,30px); font-weight: 800; color: #fff; line-height: 1.2;
-      margin: 0 0 16px; letter-spacing: -.01em;
-    }
-    .sec-body {
-      font-size: 14px; color: var(--text-dim); line-height: 1.75; margin: 0 0 24px;
-    }
-
-    /* â•â• BENEFICIOS â•â• */
-    .beneficios {
-      background: var(--bg-base);
-      padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
-      border-top: 1px solid var(--border-subtle);
-    }
-    .beneficios__inner { max-width: 1000px; margin: 0 auto; }
-    .beneficios__head { text-align: center; margin-bottom: 48px; }
-
-    .bene-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border-subtle); border-radius: 10px; overflow: hidden; }
-    .bene-card { background: var(--bg-card); padding: 36px 28px; }
-    .bene-num {
-      font-size: 11px; font-weight: 800; letter-spacing: .1em;
-      color: var(--imperial-gold); opacity: .55; margin-bottom: 18px;
-    }
-    .bene-card__icon {
-      width: 44px; height: 44px; border-radius: 8px;
-      background: rgba(15,107,77,.15); border: 1px solid rgba(15,107,77,.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; margin-bottom: 18px;
-    }
-    .bene-card strong { display: block; font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 10px; }
-    .bene-card p { font-size: 13px; color: var(--text-muted); line-height: 1.65; margin: 0; }
-
-    /* â•â• TESTIMONIOS â•â• */
-    .testis {
-      background: var(--bg-card2);
-      padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
-      border-top: 1px solid var(--border-subtle);
-    }
-    .testis__inner { max-width: 1060px; margin: 0 auto; }
-    .testis__head { text-align: center; margin-bottom: 48px; }
-    .testis__layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
-    .testis__img-col { position: relative; }
-    .testis__cards { display: flex; flex-direction: column; gap: 16px; }
-    .testi-card {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: 10px; padding: 22px 24px;
-    }
-    .testi-card__stars { color: var(--imperial-gold); font-size: 13px; margin-bottom: 10px; }
-    .testi-card__text { font-size: 14px; color: var(--text-dim); line-height: 1.65; font-style: italic; margin: 0 0 14px; }
-    .testi-card__author { display: flex; align-items: center; gap: 10px; }
-    .testi-card__avatar {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: var(--imperial-green); display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0;
-    }
-    .testi-card__name { font-size: 12px; font-weight: 700; color: #e2e2e2; }
-    .testi-card__loc { font-size: 11px; color: var(--text-muted); }
-
-    /* â•â• FAQ â•â• */
-    .faq-iv {
-      background: var(--bg-base);
-      padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px);
-      border-top: 1px solid var(--border-subtle);
-    }
-    .faq-iv .faq-wrap { max-width: 640px; margin: 0 auto; }
-    .faq-iv .faq-item {
-      border-bottom: 1px solid rgba(212,175,55,.08);
-    }
-    .faq-iv .faq-q { color: #e2e2e2; }
-    .faq-iv .faq-q::after { color: var(--imperial-gold); }
-    .faq-iv .faq-a { color: var(--text-dim); }
-
-    /* â•â• CIERRE â•â• */
-    .cierre-iv {
-      background: linear-gradient(180deg, var(--bg-base) 0%, #020704 100%);
-      padding: clamp(72px,12vw,110px) clamp(20px,5vw,64px);
-      text-align: center;
-      border-top: 1px solid var(--border-subtle);
-    }
-    .cierre-iv__inner { max-width: 560px; margin: 0 auto; }
-    .cierre-novedad {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-      color: var(--imperial-gold);
-      background: rgba(212,175,55,.08); border: 1px solid rgba(212,175,55,.2);
-      padding: 7px 16px; border-radius: 20px; margin-bottom: 28px;
-    }
-    .cierre-novedad__dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--imperial-gold);
-      animation: pulse-gold 2s ease-in-out infinite;
-    }
-    @keyframes pulse-gold {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: .45; transform: scale(.7); }
-    }
-    .cierre-iv__h {
-      font-size: clamp(24px,4.5vw,38px); font-weight: 800; color: #fff;
-      line-height: 1.15; letter-spacing: -.02em; margin: 0 0 14px;
-    }
-    .cierre-iv__sub {
-      font-size: 15px; color: var(--text-dim); line-height: 1.6; margin: 0 0 36px;
-    }
-    .cierre-trust { display: flex; flex-direction: column; gap: 10px; margin: 32px 0 0; }
-    .ct-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-dim); justify-content: center; }
-    .ct-ok { color: #86efac; font-weight: 700; }
-
-    /* â•â• STICKY CTA â•â• */
-    .sticky-cta-bar {
-      display: none;
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
-      background: rgba(6,12,9,.96);
-      border-top: 1px solid rgba(212,175,55,.15);
-      padding: 8px 16px;
-      padding-bottom: max(8px, env(safe-area-inset-bottom));
-      backdrop-filter: blur(10px);
-    }
-    @media (max-width: 700px) {
-      .sticky-cta-bar { display: block; }
-      body:has(#order-modal.active) .sticky-cta-bar { display: none; }
-    }
-
-    /* â•â• RESPONSIVE â•â• */
-    @media (max-width: 900px) {
-      .transf__bridge { grid-template-columns: 1fr; }
-      .transf__col--antes { border-right: none; border-bottom: 1px solid var(--border-subtle); }
-      .transf__col--despues { border-left: none; border-top: 1px solid var(--border-subtle); }
-      .transf__center {
-        writing-mode: horizontal-tb;
-        flex-direction: row; padding: 16px 24px;
-        border-top: 1px solid rgba(212,175,55,.08);
-        border-bottom: 1px solid rgba(212,175,55,.08);
-      }
-      .transf__product-name { writing-mode: horizontal-tb; transform: none; }
-      .bene-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 700px) {
-      .hero-iv__inner { grid-template-columns: 1fr; gap: 28px; }
-      .hero-iv__media { order: -1; }
-      .producto__inner { grid-template-columns: 1fr; gap: 36px; }
-      .specs__grid { grid-template-columns: 1fr 1fr; }
-      .testis__layout { grid-template-columns: 1fr; gap: 32px; }
-      .hero-iv { padding: 16px 16px 24px; }
-      .btn-imperial { max-width: 100%; }
-    }
-
-    /* â•â• Modal theme override â•â• */
-    .theme-imperial-verde .confirm-intent.checked,
-    .theme-imperial-verde .confirm-intent:has(input:checked) {
-      border-color: var(--imperial-green);
-      background: rgba(15,107,77,.06);
-    }
-    .theme-imperial-verde .btn-primary {
-      background: var(--imperial-green);
-    }
-    .theme-imperial-verde .btn-primary:hover {
-      background: var(--imperial-light);
-    }
-
-    /* Badge modal: fila inferior junto a offer-saving */
-    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
-    .offer-foot .offer-saving { margin-top: 0; }
-    .offer-foot .offer-badge  { position: static; flex-shrink: 0; }
-  </style>
-<script type="application/ld+json">
+  <link rel="preload" href="/reloj-imperial-verde/hero.webp" as="image">
+  <meta name="description" content="Esfera verde, caja tonneau dorada y estuche de cuero de regalo. Pagás al recibir, envío gratis y entrega en el día.">
+  <title>Reloj Imperial Verde — Dam Vertex</title>
+  <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Product",
       "name": "Reloj Imperial Verde",
-      "description": "Reloj estilo ejecutivo con esfera esmeralda y detalles dorados. Acero inoxidable 42mm. Entrega en el dÃ­a en Paraguay.",
-      "brand": { "@type": "Brand", "name": "DAM Vertex" },
-      "url": "https://damvertex.com/reloj-imperial-verde/",
+      "description": "Esfera verde, caja tonneau dorada y estuche de cuero negro de regalo.",
+      "brand": { "@type": "Brand", "name": "DCANP GROUP" },
       "offers": {
         "@type": "Offer",
         "price": "349000",
         "priceCurrency": "PYG",
         "availability": "https://schema.org/InStock",
-        "seller": { "@type": "Organization", "name": "DAM Vertex" }
+        "seller": { "@type": "Organization", "name": "Dam Vertex" }
       }
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Â¿Es de buena calidad?",
-          "acceptedAnswer": { "@type": "Answer", "text": "SÃ­. El material es aleaciÃ³n metÃ¡lica de acero inoxidable â€” no plÃ¡stico, no zinc barato. Vas a notar la diferencia apenas lo tenÃ©s en la mano. Para el precio, la relaciÃ³n calidad/valor es excepcional." }
-        },
-        {
-          "@type": "Question",
-          "name": "Â¿Por quÃ© estÃ¡ tan barato si se ve tan bien?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Porque no pagÃ¡s una marca. El reloj es el mismo producto fÃ­sico que uno que cuesta tres veces mÃ¡s â€” sin el logo que infla el precio. Dam Vertex trabaja directo con proveedores y mantiene los mÃ¡rgenes al mÃ­nimo." }
-        },
-        {
-          "@type": "Question",
-          "name": "Â¿CuÃ¡nto tarda en llegar?",
-          "acceptedAnswer": { "@type": "Answer", "text": "En AsunciÃ³n y Central, el envÃ­o es en el dÃ­a â€” pedÃ­s hoy, lo recibÃ­s hoy. En el Interior coordinamos despuÃ©s de confirmar el pedido, generalmente 1 a 2 dÃ­as adicionales." }
-        }
-      ]
     }
   ]
 }
-</script>
-</head>
-<body class="theme-imperial-verde">
+  </script>
+  <style>
+    /* ══ CRÍTICO ABOVE-THE-FOLD — CLAUDE.md "CARGA CRÍTICA — CSS NO BLOQUEANTE" ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Georgia, 'Times New Roman', serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(0,0,0,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .nav__cta { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; padding: 9px 20px; border-radius: var(--radius-sm); transition: opacity .2s; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+    .price-badge { font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green); border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px; }
 
-<!-- Nav -->
+    /* ══ RIV — Reloj Imperial Verde ══ */
+    :root {
+      --riv-verde:      #0F3D2E;
+      --riv-verde-prof: #0A2F23;
+      --riv-laton:      #C9A45C;
+      --riv-oro:        #D6B26A;
+      --riv-hueso:      #F1E9D8;
+      --riv-hueso-2:    #BDB5A2;
+      --riv-cuero:      #151311;
+      --riv-input:      #1F1C19;
+      --riv-tachado:    #8FA197;
+      --riv-tonneau: polygon(100% 50%,99.8% 43%,99.2% 36.1%,97.9% 29.3%,95.9% 22.6%,92.9% 16.3%,88.8% 10.7%,83.7% 6%,77.6% 2.8%,70.8% .9%,63.9% .2%,57% 0%,50% 0%,43% 0%,36.1% .2%,29.2% .9%,22.4% 2.8%,16.3% 6%,11.2% 10.7%,7.1% 16.3%,4.1% 22.6%,2.1% 29.3%,.8% 36.1%,.2% 43%,0% 50%,.2% 57%,.8% 63.9%,2.1% 70.7%,4.1% 77.4%,7.1% 83.7%,11.2% 89.3%,16.3% 94%,22.4% 97.2%,29.2% 99.1%,36.1% 99.8%,43% 100%,50% 100%,57% 100%,63.9% 99.8%,70.8% 99.1%,77.6% 97.2%,83.7% 94%,88.8% 89.3%,92.9% 83.7%,95.9% 77.4%,97.9% 70.7%,99.2% 63.9%,99.8% 57%);
+    }
+
+    body.riv {
+      background: var(--riv-verde);
+      color: var(--riv-hueso);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      padding-top: 36px; /* urgency bar fija */
+    }
+
+    /* URGENCY BAR */
+    .riv-urgency-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 400;
+      background: var(--riv-cuero); color: var(--riv-hueso); text-align: center;
+      font-size: clamp(11px,3.4vw,14px); font-weight: 700; letter-spacing: .02em;
+      white-space: nowrap; height: 36px; line-height: 36px; padding: 0 16px;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* NAV override — scrollea normalmente debajo de la barra fija */
+    .riv .nav {
+      position: relative;
+      background: rgba(10,47,35,.96);
+      border-bottom: 1px solid rgba(201,164,92,.2);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .riv .nav__logo { color: var(--riv-hueso); }
+    .riv .nav__logo span { opacity: .5; color: var(--riv-laton); }
+
+    /* NAV CTA */
+    .riv-nav-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--riv-oro); color: #0B241B; font-weight: 700;
+      font-size: clamp(7px,2.6vw,12px); padding: 8px 12px; border-radius: 999px;
+      border: none; cursor: pointer; white-space: nowrap; max-width: 62vw;
+      font-family: inherit;
+    }
+
+    /* INNER COLUMN */
+    .riv-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* BOTÓN CTA PRINCIPAL */
+    .riv-btn {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--riv-oro); color: #0B241B; font-weight: 600;
+      padding: 0 14px; border-radius: 999px; border: none; cursor: pointer;
+      text-decoration: none; transition: background .2s, transform .15s;
+      width: 100%; height: 56px; white-space: nowrap; letter-spacing: .01em;
+      font-size: clamp(13px,3.8vw,16px); font-family: inherit;
+    }
+    .riv-btn:hover { background: #C49A52; transform: translateY(-1px); }
+    .riv-btn-sub { font-size: 11px; font-weight: 700; margin-top: 2px; opacity: .75; }
+
+    /* HERO */
+    .riv-hero {
+      padding: clamp(28px,7vw,52px) 0 clamp(32px,7vw,52px);
+      text-align: center;
+    }
+    .riv-hero__h1 {
+      font-size: clamp(28px,8vw,38px); font-weight: 700; line-height: 1.15;
+      color: var(--riv-hueso); margin: 0 0 16px; font-style: italic;
+    }
+    .riv-hero__sub {
+      font-size: 15px; color: var(--riv-hueso-2); line-height: 1.55; margin: 0 0 20px;
+    }
+
+    /* TONNEAU HERO IMAGE */
+    .riv-hero-img-container {
+      position: relative;
+      width: min(62vw,280px);
+      aspect-ratio: 4/5;
+      margin: 0 auto 24px;
+    }
+    .riv-tonneau {
+      position: absolute; inset: 0;
+      padding: 2px;
+      -webkit-clip-path: var(--riv-tonneau);
+      clip-path: var(--riv-tonneau);
+      background: linear-gradient(115deg,#8A6A2F 0%,#E9CF94 45%,#B48A3E 60%,#8A6A2F 100%);
+      background-size: 250% 100%;
+      background-position: 100% 0;
+      animation: riv-brillo 1.6s ease-out .4s 1 forwards;
+    }
+    .riv-tonneau .riv-ph {
+      position: absolute; inset: 2px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--riv-verde-prof);
+      -webkit-clip-path: var(--riv-tonneau); clip-path: var(--riv-tonneau);
+      font-size: 10px; color: rgba(241,233,216,.35); text-align: center; padding: 16px;
+      z-index: 0;
+    }
+    .riv-tonneau img {
+      display: block; width: 100%; height: 100%;
+      object-fit: cover;
+      -webkit-clip-path: var(--riv-tonneau); clip-path: var(--riv-tonneau);
+      background: var(--riv-verde-prof);
+      position: relative; z-index: 1;
+    }
+    @keyframes riv-brillo { to { background-position: 0 0; } }
+    @media (prefers-reduced-motion:reduce) { .riv-tonneau { animation: none; } }
+
+    /* PRECIO HERO */
+    .riv-save-pill {
+      display: inline-block;
+      font-size: 12px; font-weight: 700; color: var(--riv-laton);
+      border: 1px solid var(--riv-laton); border-radius: 999px;
+      padding: 3px 12px; margin-bottom: 8px;
+    }
+    .riv-price-row {
+      display: flex; align-items: baseline; gap: 10px;
+      justify-content: center; flex-wrap: nowrap; margin-bottom: 6px;
+    }
+    .riv-price-main {
+      font-size: clamp(30px,9vw,40px); font-weight: 800; color: var(--riv-oro);
+    }
+    .riv-price-compare {
+      font-size: clamp(14px,4.2vw,18px); color: var(--riv-tachado); text-decoration: line-through;
+    }
+    .riv-social-proof {
+      font-size: 13px; color: var(--riv-laton); font-weight: 700; margin-bottom: 4px;
+    }
+    .riv-garantia {
+      font-size: 13px; color: var(--riv-hueso-2); margin-bottom: 20px;
+    }
+
+    /* RIESGO CERO */
+    .riv-risk-zero {
+      background: rgba(201,164,92,.08); border-left: 3px solid var(--riv-laton);
+      padding: 14px 16px; border-radius: 8px; margin: 0 0 20px; text-align: left;
+    }
+    .riv-risk-zero__main { font-size: 14px; font-weight: 800; color: var(--riv-hueso); line-height: 1.25; }
+    .riv-risk-zero__sub { font-size: 13px; color: var(--riv-hueso-2); margin-top: 4px; line-height: 1.4; }
+    .riv-risk-zero__dest { font-size: 15px; font-weight: 700; color: var(--riv-hueso); margin-bottom: 4px; }
+
+    /* GIFT BLOCKS */
+    .riv-gift-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px;
+    }
+    .riv-gift-block {
+      border: 1px solid rgba(201,164,92,.3); border-radius: 10px;
+      padding: 12px 10px; text-align: center; font-size: 13px; color: var(--riv-hueso-2);
+      background: rgba(201,164,92,.05);
+    }
+    .riv-gift-block span { display: block; font-size: 20px; margin-bottom: 4px; }
+
+    /* VIDEO SECTION */
+    .riv-video-sec {
+      background: var(--riv-verde-prof);
+      padding: clamp(32px,8vw,56px) 0;
+    }
+    .riv-section-h2 {
+      font-size: 26px; font-weight: 700; line-height: 1.2;
+      color: var(--riv-hueso); margin: 0 0 8px; font-style: italic;
+    }
+    .riv-section-sub {
+      font-size: 14px; color: var(--riv-hueso-2); line-height: 1.55; margin: 0 0 20px;
+    }
+    .riv-video-wrap {
+      position: relative; aspect-ratio: 9/16; border-radius: 14px;
+      overflow: hidden; background: var(--riv-verde-prof); max-width: 280px; margin: 0 auto 20px;
+    }
+    .riv-video-wrap .riv-ph {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: rgba(241,233,216,.35); text-align: center; padding: 16px; z-index: 0;
+    }
+    .riv-video-wrap video {
+      position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .riv-cta-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .riv-cta-note { font-size: 12px; color: var(--riv-hueso-2); }
+
+    /* LO QUE LLEGA */
+    .riv-entrega {
+      background: var(--riv-cuero);
+      padding: clamp(32px,8vw,56px) 0;
+    }
+    .riv-entrega-img-wrap {
+      position: relative; aspect-ratio: 1/1; border-radius: 12px;
+      overflow: hidden; background: var(--riv-verde-prof);
+      margin: 0 0 24px; max-width: 100%;
+    }
+    .riv-entrega-img-wrap .riv-ph {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: rgba(241,233,216,.35); text-align: center; padding: 16px; z-index: 0;
+    }
+    .riv-entrega-img-wrap img {
+      position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .riv-value-list { list-style: none; padding: 0; margin: 0 0 20px; }
+    .riv-value-item {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 10px 0; border-bottom: 1px solid rgba(201,164,92,.18); gap: 12px;
+    }
+    .riv-value-item:last-child { border-bottom: none; }
+    .riv-value-item--highlight { background: rgba(201,164,92,.08); padding: 10px 8px; border-radius: 6px; border-bottom: none; margin-bottom: 1px; }
+    .riv-value-item__label { font-size: 14px; color: var(--riv-hueso-2); line-height: 1.35; flex: 1; }
+    .riv-value-item__amount { font-size: 14px; color: var(--riv-laton); font-weight: 700; white-space: nowrap; }
+    .riv-value-total { font-size: 13px; color: var(--riv-hueso-2); margin: 0 0 6px; }
+    .riv-value-hoy {
+      font-size: 20px; font-weight: 700; color: var(--riv-hueso); margin: 0 0 8px;
+    }
+    .riv-value-hoy span { color: var(--riv-oro); }
+    .riv-value-nota { font-size: 12px; color: var(--riv-hueso-2); margin: 0 0 24px; }
+
+    /* DE LA OFICINA AL ASADO */
+    .riv-oficina {
+      background: var(--riv-verde);
+      padding: clamp(32px,8vw,56px) 0;
+    }
+    .riv-oficina-img-wrap {
+      position: relative; aspect-ratio: 4/5; border-radius: 12px;
+      overflow: hidden; background: var(--riv-verde-prof);
+      margin: 0 0 24px;
+    }
+    .riv-oficina-img-wrap .riv-ph {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: rgba(241,233,216,.35); text-align: center; padding: 16px; z-index: 0;
+    }
+    .riv-oficina-img-wrap img {
+      position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .riv-specs { list-style: none; padding: 0; margin: 16px 0 24px; display: flex; flex-direction: column; gap: 10px; }
+    .riv-specs li {
+      padding-left: 18px; position: relative;
+      font-size: 15px; color: var(--riv-hueso-2); line-height: 1.45;
+    }
+    .riv-specs li::before {
+      content: ''; position: absolute; left: 0; top: 7px;
+      width: 7px; height: 7px; background: var(--riv-laton); border-radius: 50%;
+    }
+
+    /* OBJECIONES */
+    .riv-objeciones {
+      background: var(--riv-verde-prof);
+      padding: clamp(32px,8vw,56px) 0;
+    }
+    .riv-obj-list { display: flex; flex-direction: column; gap: 14px; }
+    .riv-obj-item {
+      padding: 16px; border-radius: 12px;
+      border: 1px solid rgba(201,164,92,.15);
+      background: rgba(10,47,35,.6);
+    }
+    .riv-obj-icon { font-size: 22px; margin-bottom: 6px; }
+    .riv-obj-item strong { font-size: 15px; font-weight: 700; color: var(--riv-hueso); display: block; margin-bottom: 4px; }
+    .riv-obj-item p { font-size: 14px; color: var(--riv-hueso-2); margin: 0; line-height: 1.45; }
+
+    /* CIERRE */
+    .riv-cierre {
+      background: var(--riv-verde);
+      padding: clamp(48px,10vw,72px) 0;
+      text-align: center;
+    }
+    .riv-cierre__h2 {
+      font-size: 22px; font-weight: 700; color: var(--riv-hueso); margin: 0 0 10px; font-style: italic;
+    }
+    .riv-cierre__stock { font-size: 13px; color: var(--riv-laton); margin: 0 0 8px; }
+    .riv-cierre__price { font-size: 15px; color: var(--riv-hueso-2); margin: 0 0 22px; }
+
+    /* FOOTER */
+    .riv-footer {
+      background: var(--riv-cuero);
+      padding: 20px; text-align: center; font-size: 13px; color: var(--riv-hueso-2);
+      border-top: 1px solid rgba(201,164,92,.12);
+    }
+
+    /* STICKY CTA BAR */
+    .riv-sticky-cta {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+      background: rgba(10,47,35,.97); border-top: 1px solid rgba(201,164,92,.25);
+      padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width:700px) {
+      .riv-sticky-cta { display: block; }
+      body.riv:has(#riv-order-modal.active) .riv-sticky-cta { display: none; }
+    }
+
+    /* ══ MODAL DCANP — TEMA OSCURO DORADO ══ */
+    .riv .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(5,18,12,.78); align-items: center; justify-content: center;
+      padding: 16px; overflow-y: auto;
+    }
+    .riv .modal-overlay.active { display: flex; }
+    .riv .modal-box {
+      position: relative; background: var(--riv-cuero);
+      border: 1px solid rgba(201,164,92,.3); border-radius: 16px;
+      max-width: 440px; width: 100%; padding: 28px 24px;
+      max-height: 90vh; overflow-y: auto;
+      color-scheme: dark; accent-color: var(--riv-oro);
+    }
+    .riv .modal-close {
+      position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
+      border-radius: 50%; border: none; background: rgba(201,164,92,.14);
+      color: var(--riv-hueso); font-size: 15px; cursor: pointer; font-family: inherit;
+    }
+    .riv .modal-title {
+      font-size: 18px; font-weight: 700; color: var(--riv-hueso); margin: 0 0 4px;
+    }
+    .riv .modal-price-sub {
+      font-size: 13px; color: var(--riv-hueso-2); margin: 0 0 16px;
+    }
+    .riv .modal-section-label {
+      display: block; font-size: 11px; font-weight: 700; color: var(--riv-hueso-2);
+      text-transform: uppercase; letter-spacing: .05em; margin: 0 0 10px;
+    }
+
+    /* OFFER OPTIONS */
+    .riv .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .riv .offer-option {
+      position: relative; display: block;
+      border: 1.5px solid rgba(201,164,92,.22); border-radius: 10px;
+      padding: 12px 14px; cursor: pointer;
+      background: rgba(31,28,25,.7);
+    }
+    .riv .offer-option input { position: absolute; opacity: 0; }
+    .riv .offer-option.selected { border-color: var(--riv-oro); background: rgba(214,178,106,.08); }
+    .riv .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    .riv .offer-qty { font-weight: 700; font-size: 14px; color: var(--riv-hueso); }
+    .riv .offer-price { font-weight: 800; font-size: 15px; color: var(--riv-oro); }
+    .riv .offer-compare { font-size: 12px; text-decoration: line-through; color: var(--riv-tachado); margin-right: 6px; }
+    .riv .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .riv .offer-saving { color: var(--riv-laton); font-weight: 700; font-size: 12px; }
+    .riv .offer-badge {
+      background: var(--riv-laton); color: #0B241B; font-size: 12px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .riv .offer-badge--best { background: var(--riv-oro); color: #0B241B; }
+
+    /* FORM */
+    .riv .form-group { margin-bottom: 14px; }
+    .riv .form-group label {
+      display: block; font-size: 12px; font-weight: 700;
+      color: var(--riv-hueso-2); margin-bottom: 6px;
+    }
+    .riv .form-group input,
+    .riv .form-group textarea {
+      width: 100%; padding: 11px 12px; border-radius: 8px;
+      border: 1px solid rgba(201,164,92,.35);
+      background: var(--riv-input); color: var(--riv-hueso); font-size: 14px; font-family: inherit;
+      outline: none; transition: border-color .15s;
+    }
+    .riv .form-group input:focus { border-color: var(--riv-oro); }
+    .riv .form-group input::placeholder { color: #9A927F; }
+    .riv .form-group input:-webkit-autofill {
+      -webkit-text-fill-color: var(--riv-hueso);
+      box-shadow: 0 0 0 1000px var(--riv-input) inset;
+    }
+
+    /* UPSELL BLOCKS */
+    .riv .upsell-block {
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      background: rgba(31,28,25,.7); border: 1.5px solid rgba(201,164,92,.2);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .riv .upsell-block:has(input:checked) { border-color: var(--riv-oro); background: rgba(214,178,106,.07); }
+    .riv .upsell-title { color: var(--riv-hueso); font-size: 13px; font-weight: 700; }
+    .riv .upsell-sub { color: var(--riv-hueso-2); font-size: 12px; }
+
+    /* TOTAL LINE */
+    #riv-total-line:empty { display: none; }
+
+    /* SUBMIT */
+    .riv .form-submit { margin-top: 18px; }
+    .riv .form-submit .riv-btn { max-width: none; border-radius: 12px; }
+
+    /* SUCCESS */
+    .riv .dcanp-success {
+      display: none; text-align: center;
+    }
+    .riv .dcanp-success.visible { display: block; }
+    .riv .dcanp-success__icon {
+      width: 56px; height: 56px; background: var(--riv-oro); color: #0B241B;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin: 0 auto 16px;
+    }
+    .riv .dcanp-success h2 { color: var(--riv-oro); font-size: 22px; margin-bottom: 12px; }
+    .riv .dcanp-success p { color: var(--riv-hueso-2); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .riv .dcanp-success__tip { font-weight: 600; color: var(--riv-hueso); }
+    .riv .dcanp-success__badges {
+      display: flex; gap: 12px; justify-content: center; margin-top: 16px;
+      font-size: 13px; color: var(--riv-laton); font-weight: 700;
+    }
+
+    /* PAYMENT BADGE IN MODAL */
+    .riv-pay-badge {
+      margin-top: 16px; text-align: center; font-size: 12px; font-weight: 800;
+      color: var(--riv-oro); background: rgba(214,178,106,.1);
+      border-radius: 8px; padding: 8px 12px;
+    }
+
+    /* BTN VER COLECCION */
+    .btn-ver-coleccion {
+      display: block; margin-top: 20px; padding: 12px 24px;
+      background: #dc2626; color: #ffffff; font-weight: 700; font-size: 14px;
+      border-radius: 8px; text-decoration: none; text-align: center; white-space: nowrap;
+      font-family: inherit;
+    }
+
+    /* NO SCROLL HORIZONTAL */
+    html, body { overflow-x: hidden; }
+  </style>
+</head>
+<body class="riv">
+
+<!-- BARRA DE URGENCIA — fija en top:0, 36px de alto -->
+<div class="riv-urgency-bar">⚡ Lote limitado: quedan <span data-stock>20</span> de 100 &middot; Envío gratis</div>
+
+<!-- NAV -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">Quiero el mÃ­o â†’</a>
+  <button type="button" class="riv-nav-btn" data-open-modal>Pedir ahora &mdash; Pagás al recibir</button>
 </nav>
 
-<!-- â•â• HERO â•â• -->
-<section class="hero-iv" id="section-hero" data-insync-section="hero">
-  <div class="hero-iv__inner">
+<main>
 
-    <!-- Imagen hero -->
-    <div class="hero-iv__media">
-      <span class="hero-iv__badge">Novedad</span>
-      <div class="img-ph" id="hero-img">
-        <!--
-          â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-          â”‚  IMAGEN HERO â€” colocÃ¡ tu foto aquÃ­       â”‚
-          â”‚  Archivo sugerido:                       â”‚
-          â”‚  /assets/img/reloj-imperial-verde-hero.webpâ”‚
-          â”‚  TamaÃ±o mÃ­nimo: 800 Ã— 1000 px            â”‚
-          â”‚  Fondo oscuro recomendado                â”‚
-          â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-          Para agregar la imagen: reemplazÃ¡ este div
-          por un <img> o un <picture> con tu archivo.
-        -->
-        <div class="img-ph__label">
-          <div class="img-ph__icon">ðŸ“·</div>
-          <div class="img-ph__title">Foto Hero<br>Principal</div>
-          <div class="img-ph__file">reloj-imperial-verde-hero.webp</div>
-          <div class="img-ph__size">800 Ã— 1000 px mÃ­n Â· fondo oscuro</div>
-        </div>
+<!-- ══ SECCIÓN 1: HERO ══ -->
+<section id="section-hero" data-insync-section="hero" class="riv-hero">
+  <div class="riv-inner">
+
+    <!-- Imagen tonneau -->
+    <div class="riv-hero-img-container">
+      <div class="riv-tonneau">
+        <div class="riv-ph">Foto 1 &mdash; reloj de frente, fondo oscuro</div>
+        <img src="/reloj-imperial-verde/hero.webp"
+             alt="Reloj Imperial Verde"
+             fetchpriority="high" width="280" height="350"
+             onerror="this.style.display='none'">
       </div>
     </div>
 
-    <!-- Copy hero -->
-    <div class="hero-iv__text">
-      <p class="eyebrow-iv">Relojes Â· Novedad exclusiva</p>
-      <h1 class="hero-iv__h">El reloj que cambia<br><em>cÃ³mo te ven.</em></h1>
-      <p class="hero-iv__sub">Esfera esmeralda. Detalles en oro. Acero inoxidable 42mm.<br>El ejecutivo que llevÃ¡s en la muÃ±eca.</p>
-      <div class="price-block">
-        <span class="price-main">Gs. 349.000</span>
-        <span class="price-compare">Gs. 499.000</span>
-        <span class="price-badge">30% OFF</span>
+    <h1 class="riv-hero__h1">Un reloj barato se nota de lejos. Este, no.</h1>
+    <p class="riv-hero__sub">Esfera verde, caja tonneau dorada y estuche de cuero negro de regalo.</p>
+
+    <!-- Precio -->
+    <div style="text-align:center">
+      <div class="riv-save-pill">Ahorrás Gs. 122.000</div>
+      <div class="riv-price-row">
+        <span class="riv-price-main">Gs. 349.000</span>
+        <span class="riv-price-compare">Gs. 471.000</span>
       </div>
-      <div class="spi">
-        <span class="spi-stars">â˜…â˜…â˜…â˜…â˜…</span>
-        <span class="spi-text">Stock limitado Â· Entrega en el dÃ­a</span>
+      <p class="riv-social-proof">+340 pedidos entregados en Paraguay</p>
+      <p class="riv-garantia">&#x2713; Garantía de 30 días</p>
+    </div>
+
+    <!-- Riesgo cero -->
+    <div class="riv-risk-zero">
+      <p class="riv-risk-zero__dest">No pagás nada hasta tenerlo en la mano</p>
+      <p class="riv-risk-zero__sub">Lo recibís, lo revisás, y recién ahí pagás.<br>Sin adelantos, sin tarjeta.</p>
+    </div>
+
+    <!-- Regalos -->
+    <div class="riv-gift-grid">
+      <div class="riv-gift-block">
+        <span>&#127873;</span>De regalo: estuche de cuero negro
       </div>
-      <button class="btn-imperial" data-scroll-form data-insync-cta="hero">
-        Quiero el mÃ­o <span class="arrow">â†’</span>
-      </button>
-      <div class="delivery-badges">
-        <span class="db-badge db-green">ðŸšš Entrega en el dÃ­a</span>
-        <span class="db-badge db-green">âœ“ EnvÃ­o gratis</span>
-        <span class="db-badge">ðŸ’³ Pago al recibir Â· Central</span>
-        <span class="db-badge">ðŸ“¦ Interior: pago anticipado</span>
+      <div class="riv-gift-block">
+        <span>&#128267;</span>De regalo: pila de repuesto
       </div>
     </div>
 
-  </div>
-</section>
-
-<!-- â•â• TRANSFORMACION â•â• -->
-<section class="transf" id="section-transformacion" data-insync-section="transformacion">
-  <div class="transf__inner">
-    <div class="transf__head">
-      <p class="transf__overline">El cambio real</p>
-      <div class="gold-line gold-line--center"></div>
-      <h2 class="transf__title">Un reloj no es solo un accesorio.<br>Es lo primero que ven.</h2>
-    </div>
-
-    <div class="transf__bridge">
-
-      <!-- Antes -->
-      <div class="transf__col transf__col--antes">
-        <p class="transf__col-label">Antes</p>
-        <h3>El reloj genÃ©rico de siempre</h3>
-        <ul class="transf__list">
-          <li>Se ve barato aunque costÃ³ plata</li>
-          <li>Pierde el acabado en semanas</li>
-          <li>No suma al outfit â€” lo arruina</li>
-          <li>Precios de marca que no vale</li>
-          <li>Se oxida, raya, destiÃ±e</li>
-        </ul>
-      </div>
-
-      <!-- Centro / puente -->
-      <div class="transf__center">
-        <div class="transf__arrow">â†’</div>
-        <span class="transf__product-name">Imperial Verde</span>
-      </div>
-
-      <!-- DespuÃ©s -->
-      <div class="transf__col transf__col--despues">
-        <p class="transf__col-label">DespuÃ©s</p>
-        <h3>El reloj que habla antes que vos</h3>
-        <ul class="transf__list">
-          <li>Acero inoxidable que se ve premium</li>
-          <li>Acabado que dura, no cede</li>
-          <li>Eleva cualquier look â€” casual o formal</li>
-          <li>Calidad real a precio accesible</li>
-          <li>Resistente al uso diario real</li>
-        </ul>
-      </div>
-
-    </div>
-
-    <div style="text-align:center;margin-top:40px">
-      <button class="btn-imperial" data-scroll-form data-insync-cta="transformacion" style="display:inline-flex;max-width:300px">
-        Quiero el mÃ­o <span class="arrow">â†’</span>
+    <!-- CTA Hero -->
+    <div class="riv-cta-wrap">
+      <button type="button" class="riv-btn" data-open-modal data-insync-cta="hero">
+        Pedir ahora &mdash; Pagás al recibir
+        <span class="riv-btn-sub">&#x2713; Garantía de 30 días</span>
       </button>
     </div>
+
   </div>
 </section>
 
-<!-- â•â• PRODUCTO â€” especificaciones â•â• -->
-<section class="producto" id="section-producto" data-insync-section="producto">
-  <div class="producto__inner">
+<!-- ══ SECCIÓN 2: VIDEO ══ -->
+<section id="section-video" data-insync-section="video" class="riv-video-sec">
+  <div class="riv-inner">
 
-    <!-- Imagen de detalle -->
-    <div class="producto__img-wrap">
-      <div class="img-ph" id="detalle-img">
-        <!--
-          â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-          â”‚  IMAGEN DETALLE / MATERIALES                 â”‚
-          â”‚  MostrÃ¡ textura, esfera, detalles dorados    â”‚
-          â”‚  Archivo: reloj-imperial-verde-detalle.webp  â”‚
-          â”‚  TamaÃ±o: 800 Ã— 1000 px mÃ­n                  â”‚
-          â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-        -->
-        <div class="img-ph__label">
-          <div class="img-ph__icon">ðŸ”</div>
-          <div class="img-ph__title">Foto Detalle<br>Materiales</div>
-          <div class="img-ph__file">reloj-imperial-verde-detalle.webp</div>
-          <div class="img-ph__size">800 Ã— 1000 px Â· detalle esfera/acero</div>
-        </div>
-      </div>
+    <h2 class="riv-section-h2">Así se ve en la mano.</h2>
+    <p class="riv-section-sub">Sin filtros ni renders: es el mismo reloj que te llega.</p>
+
+    <div class="riv-video-wrap">
+      <div class="riv-ph">Video &mdash; abrir el estuche y ponérselo</div>
+      <video src="/reloj-imperial-verde/video1.mp4"
+             muted autoplay loop playsinline webkit-playsinline preload="metadata"
+             aria-hidden="true"
+             style="position:relative;z-index:1;width:100%;height:100%;object-fit:cover;display:block;border-radius:14px;"
+             onerror="this.style.display='none'">
+        <source src="/reloj-imperial-verde/video1.mp4" type="video/mp4">
+      </video>
     </div>
 
-    <!-- Specs -->
-    <div>
-      <p class="sec-overline">Especificaciones</p>
-      <div class="gold-line"></div>
-      <h2 class="sec-h">Lo que llevÃ¡s<br>en la muÃ±eca</h2>
-      <p class="sec-body">
-        Cada detalle del Reloj Imperial Verde fue pensado para que dure,
-        se vea bien y no pase desapercibido. Sin pagar precio de marca.
-      </p>
-
-      <div class="specs__grid">
-        <div class="spec-item">
-          <div class="spec-item__label">Material</div>
-          <div class="spec-item__val">Acero inoxidable</div>
-          <div class="spec-item__sub">AleaciÃ³n metÃ¡lica premium</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-item__label">DiÃ¡metro</div>
-          <div class="spec-item__val">42 mm</div>
-          <div class="spec-item__sub">TamaÃ±o ejecutivo ideal</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-item__label">Esfera</div>
-          <div class="spec-item__val">Verde esmeralda</div>
-          <div class="spec-item__sub">Con nÃºmeros romanos e Ã­ndices</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-item__label">Acabado</div>
-          <div class="spec-item__val">Bicolor oro / plata</div>
-          <div class="spec-item__sub">Correa de acero</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-item__label">Mecanismo</div>
-          <div class="spec-item__val">Cuarzo</div>
-          <div class="spec-item__sub">DÃ­a y hora</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-item__label">PresentaciÃ³n</div>
-          <div class="spec-item__val">Con caja</div>
-          <div class="spec-item__sub">10 Ã— 11 Ã— 7.5 cm Â· listo para regalo</div>
-        </div>
-      </div>
-
-      <div style="margin-top:28px">
-        <button class="btn-imperial" data-scroll-form data-insync-cta="producto" style="display:inline-flex;max-width:300px">
-          Quiero el mÃ­o <span class="arrow">â†’</span>
-        </button>
-      </div>
+    <div class="riv-cta-wrap">
+      <button type="button" class="riv-btn" data-open-modal data-insync-cta="video">
+        Pedir ahora &mdash; Pagás al recibir
+        <span class="riv-btn-sub">&#x2713; Garantía de 30 días</span>
+      </button>
     </div>
 
   </div>
 </section>
 
-<!-- â•â• BENEFICIOS â•â• -->
-<section class="beneficios" id="section-beneficios" data-insync-section="beneficios">
-  <div class="beneficios__inner">
-    <div class="beneficios__head">
-      <p class="sec-overline">Por quÃ© este reloj</p>
-      <div class="gold-line gold-line--center"></div>
-      <h2 class="sec-h" style="margin:0">Tres razones que lo dicen todo</h2>
+<!-- ══ SECCIÓN 3: LO QUE LLEGA A TU PUERTA ══ -->
+<section id="section-entrega" data-insync-section="entrega" class="riv-entrega">
+  <div class="riv-inner">
+
+    <!-- Imagen estuche -->
+    <div class="riv-entrega-img-wrap">
+      <div class="riv-ph">Foto 2 &mdash; estuche abierto + reloj + pila</div>
+      <img src="/reloj-imperial-verde/img2.webp"
+           alt="Estuche de cuero con Reloj Imperial Verde"
+           loading="lazy" decoding="async" width="480" height="480"
+           onerror="this.style.display='none'">
     </div>
 
-    <div class="bene-grid">
+    <h2 class="riv-section-h2">Lo que llega a tu puerta</h2>
 
-      <div class="bene-card">
-        <div class="bene-num">01</div>
-        <div class="bene-card__icon">ðŸ›¡ï¸</div>
-        <strong>Resistente de verdad</strong>
-        <p>Acero inoxidable que aguanta el uso diario: sudor, rozas y el tiempo. No es marketing â€” es el material que se siente cuando lo ponÃ©s en la muÃ±eca.</p>
-      </div>
+    <ul class="riv-value-list">
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Reloj Imperial Verde</span>
+        <span class="riv-value-item__amount">Gs. 471.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">De regalo: estuche de cuero negro</span>
+        <span class="riv-value-item__amount">Gs. 49.000</span>
+      </li>
+      <li class="riv-value-item riv-value-item--highlight">
+        <span class="riv-value-item__label">De regalo: pila de repuesto, hasta 18 meses más de uso</span>
+        <span class="riv-value-item__amount">Gs. 25.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Envío gratis con entrega en el día</span>
+        <span class="riv-value-item__amount">Gs. 30.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Garantía de 30 días</span>
+        <span class="riv-value-item__amount">Incluida</span>
+      </li>
+    </ul>
 
-      <div class="bene-card">
-        <div class="bene-num">02</div>
-        <div class="bene-card__icon">ðŸ‘”</div>
-        <strong>Eleva cualquier look</strong>
-        <p>La esfera verde esmeralda y los detalles dorados hacen que funcione igual en una reuniÃ³n de negocios que en una salida casual. Un reloj que no necesita ocasiÃ³n.</p>
-      </div>
+    <p class="riv-value-total">Valor total: <strong style="color:var(--riv-hueso)">Gs. 575.000</strong></p>
+    <p class="riv-value-hoy">Hoy pagás <span>Gs. 349.000</span>, al recibir.</p>
+    <p class="riv-value-nota">Llevando 2 ahorrás Gs. 49.000: uno para vos y otro para regalar.</p>
 
-      <div class="bene-card">
-        <div class="bene-num">03</div>
-        <div class="bene-card__icon">ðŸŽ</div>
-        <strong>El regalo perfecto</strong>
-        <p>Viene en caja lista para entregar. No necesita envoltorio ni excusa. Ideal para el que no sabe quÃ© regalar y quiere que se vea premium sin gastar una fortuna.</p>
-      </div>
-
+    <div class="riv-cta-wrap">
+      <button type="button" class="riv-btn" data-open-modal data-insync-cta="entrega">
+        Pedir ahora &mdash; Pagás al recibir
+        <span class="riv-btn-sub">&#x2713; Garantía de 30 días</span>
+      </button>
     </div>
 
-    <div style="text-align:center;margin-top:40px">
-      <button class="btn-imperial" data-scroll-form data-insync-cta="beneficios" style="display:inline-flex;max-width:300px">
-        Quiero el mÃ­o <span class="arrow">â†’</span>
+  </div>
+</section>
+
+<!-- ══ SECCIÓN 4: DE LA OFICINA AL ASADO ══ -->
+<section id="section-oficina" data-insync-section="oficina" class="riv-oficina">
+  <div class="riv-inner">
+
+    <!-- Imagen en la muñeca -->
+    <div class="riv-oficina-img-wrap">
+      <div class="riv-ph">Foto 3 &mdash; en la muñeca con camisa</div>
+      <img src="/reloj-imperial-verde/img3.webp"
+           alt="Reloj Imperial Verde en la muñeca"
+           loading="lazy" decoding="async" width="480" height="600"
+           onerror="this.style.display='none'">
+    </div>
+
+    <h2 class="riv-section-h2">De la oficina al asado del domingo.</h2>
+    <p class="riv-section-sub">8,5 mm de espesor: entra bajo el puño de la camisa. La esfera verde hace el resto.</p>
+
+    <ul class="riv-specs">
+      <li>Caja tonneau de 42 mm</li>
+      <li>Esfera verde con día y fecha</li>
+      <li>Cristal mineral endurecido</li>
+      <li>Resiste salpicaduras y lluvia (3 ATM)</li>
+      <li>Movimiento de cuarzo, pila de hasta 18 meses</li>
+    </ul>
+
+    <div class="riv-cta-wrap">
+      <button type="button" class="riv-btn" data-open-modal data-insync-cta="oficina">
+        Pedir ahora &mdash; Pagás al recibir
+        <span class="riv-btn-sub">&#x2713; Garantía de 30 días</span>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ SECCIÓN 5: OBJECIONES ══ -->
+<section id="section-objeciones" data-insync-section="objeciones" class="riv-objeciones">
+  <div class="riv-inner">
+    <div class="riv-obj-list">
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F69A;</div>
+        <strong>¿Cuándo llega?</strong>
+        <p>Entrega en el día y el envío es gratis.</p>
+      </div>
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F4B5;</div>
+        <strong>¿Tengo que pagar antes?</strong>
+        <p>No. Abrís el estuche, lo revisás y recién ahí pagás. Si no te convence, no pagás.</p>
+      </div>
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F6E1;&#xFE0F;</div>
+        <strong>¿Y si no funciona?</strong>
+        <p>Tenés 30 días de garantía: si falla, te lo cambiamos sin costo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECCIÓN 6: CIERRE ══ -->
+<section id="section-cierre" data-insync-section="cierre" class="riv-cierre">
+  <div class="riv-inner">
+    <h2 class="riv-cierre__h2">Revisalo en tu puerta. Pagá solo si te convence.</h2>
+    <p class="riv-cierre__stock">Quedan <span data-stock>20</span> de 100.</p>
+    <p class="riv-cierre__price">Gs. 349.000 &middot; Entrega en el día &middot; Pagás al recibir</p>
+    <div class="riv-cta-wrap">
+      <button type="button" class="riv-btn" data-open-modal data-insync-cta="cierre">
+        Pedir ahora &mdash; Pagás al recibir
+        <span class="riv-btn-sub">&#x2713; Garantía de 30 días</span>
       </button>
     </div>
   </div>
 </section>
 
-<!-- â•â• TESTIMONIOS â•â• -->
-<section class="testis" id="section-testimonios" data-insync-section="testimonios">
-  <div class="testis__inner">
-    <div class="testis__head">
-      <p class="sec-overline">Por quÃ© comprar con Dam Vertex</p>
-      <div class="gold-line gold-line--center"></div>
-      <h2 class="sec-h" style="margin:0">Sin riesgos.<br>Sin excusas.</h2>
-    </div>
+</main>
 
-    <div class="testis__layout">
-
-      <!-- Imagen lifestyle -->
-      <div class="testis__img-col">
-        <div class="img-ph img-ph--sq" id="lifestyle-img">
-          <!--
-            â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-            â”‚  IMAGEN LIFESTYLE                            â”‚
-            â”‚  Reloj en muÃ±eca / contexto de uso          â”‚
-            â”‚  Archivo: reloj-imperial-verde-lifestyle.webpâ”‚
-            â”‚  TamaÃ±o: 800 Ã— 800 px mÃ­n                   â”‚
-            â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-          -->
-          <div class="img-ph__label">
-            <div class="img-ph__icon">ðŸŒ¿</div>
-            <div class="img-ph__title">Foto Lifestyle<br>En Uso</div>
-            <div class="img-ph__file">reloj-imperial-verde-lifestyle.webp</div>
-            <div class="img-ph__size">800 Ã— 800 px Â· reloj en muÃ±eca</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Prueba social â€” sin testimonios inventados -->
-      <div class="testis__cards">
-
-        <div class="testi-card" style="border-color:rgba(15,107,77,.3);background:rgba(15,107,77,.06)">
-          <div style="font-size:24px;margin-bottom:12px">ðŸšš</div>
-          <p class="testi-card__text" style="font-style:normal;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Entrega en el dÃ­a en Central</p>
-          <p style="font-size:13px;color:rgba(255,255,255,.5);margin:0">PedÃ­s hoy, lo recibÃ­s hoy. Sin excusas y sin esperas. Coordinamos por WhatsApp al momento.</p>
-        </div>
-
-        <div class="testi-card" style="border-color:rgba(212,175,55,.2);background:rgba(212,175,55,.04)">
-          <div style="font-size:24px;margin-bottom:12px">ðŸŽ</div>
-          <p class="testi-card__text" style="font-style:normal;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Viene en caja lista para regalo</p>
-          <p style="font-size:13px;color:rgba(255,255,255,.5);margin:0">No necesita envoltorio ni explicaciÃ³n. La caja lo dice todo. Ideal para padre, hermano, pareja o el que querÃ©s impresionar.</p>
-        </div>
-
-        <div class="testi-card">
-          <div style="font-size:24px;margin-bottom:12px">ðŸ’³</div>
-          <p class="testi-card__text" style="font-style:normal;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">PagÃ¡s cuando lo tenÃ©s en la mano</p>
-          <p style="font-size:13px;color:rgba(255,255,255,.5);margin:0">En Central, el pago es al recibir â€” efectivo o transferencia. Sin adelantos, sin riesgos. Lo ves, lo probÃ¡s, lo pagÃ¡s.</p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- â•â• FAQ â•â• -->
-<section class="faq-iv" id="section-faq" data-insync-section="faq">
-  <p class="sec-overline" style="text-align:center;margin-bottom:10px">Preguntas frecuentes</p>
-  <div class="gold-line gold-line--center"></div>
-  <div class="faq-wrap">
-
-    <details class="faq-item">
-      <summary class="faq-q">Â¿Es de buena calidad?</summary>
-      <div class="faq-a">SÃ­. El material es aleaciÃ³n metÃ¡lica de acero inoxidable â€” no plÃ¡stico, no zinc barato. Vas a notar la diferencia apenas lo tenÃ©s en la mano. Para el precio, la relaciÃ³n calidad/valor es excepcional.</div>
-    </details>
-
-    <details class="faq-item">
-      <summary class="faq-q">Â¿Por quÃ© estÃ¡ tan barato si se ve tan bien?</summary>
-      <div class="faq-a">Porque no pagÃ¡s una marca. El reloj es el mismo producto fÃ­sico que uno que cuesta tres veces mÃ¡s â€” sin el logo que infla el precio. Dam Vertex trabaja directo con proveedores y mantiene los mÃ¡rgenes al mÃ­nimo.</div>
-    </details>
-
-    <details class="faq-item">
-      <summary class="faq-q">Â¿CuÃ¡nto tarda en llegar?</summary>
-      <div class="faq-a">En AsunciÃ³n y Central, el envÃ­o es en el dÃ­a â€” pedÃ­s hoy, lo recibÃ­s hoy. En el Interior coordinamos despuÃ©s de confirmar el pedido, generalmente 1 a 2 dÃ­as adicionales.</div>
-    </details>
-
-    <details class="faq-item">
-      <summary class="faq-q">Â¿CÃ³mo pago?</summary>
-      <div class="faq-a">En Central, pagÃ¡s cuando lo recibÃ­s â€” efectivo o transferencia. En el Interior el pago es anticipado y coordinamos el envÃ­o una vez confirmado el pago.</div>
-    </details>
-
-    <details class="faq-item">
-      <summary class="faq-q">Â¿Hay garantÃ­a?</summary>
-      <div class="faq-a">SÃ­. Si el reloj llega con algÃºn defecto de fÃ¡brica, lo coordinamos directamente. Nuestro WhatsApp estÃ¡ disponible para cualquier consulta posventa.</div>
-    </details>
-
-    <details class="faq-item">
-      <summary class="faq-q">Â¿Viene en caja para regalo?</summary>
-      <div class="faq-a">SÃ­. El Reloj Imperial Verde viene en caja de presentaciÃ³n lista para entregar. No necesita ningÃºn agregado â€” es un regalo completo tal como llega.</div>
-    </details>
-
-  </div>
-</section>
-
-<!-- Formulario oculto (heredado â€” reemplazado por modal) -->
-<section class="form-section" id="form-section" style="display:none">
-  <div class="form-section__inner">
-    <form class="form" id="lead-form" novalidate>
-      <input type="hidden" name="product" value="reloj-imperial-verde">
-    </form>
-  </div>
-</section>
-
-<!-- â•â• CIERRE â•â• -->
-<section class="cierre-iv" id="section-cierre" data-insync-section="cierre">
-  <div class="cierre-iv__inner">
-    <div class="cierre-novedad">
-      <span class="cierre-novedad__dot"></span>
-      Novedad reciente Â· Stock limitado
-    </div>
-    <h2 class="cierre-iv__h">El estilo que querÃ©s<br>te lo ponÃ©s hoy.</h2>
-    <p class="cierre-iv__sub">Gs. 349.000 â€” antes Gs. 499.000. Entrega en el dÃ­a.<br>Mientras haya stock a este precio.</p>
-    <button class="btn-imperial" data-scroll-form data-insync-cta="cierre" style="display:inline-flex;max-width:340px;font-size:16px;padding:17px 36px">
-      Quiero el mÃ­o <span class="arrow">â†’</span>
-    </button>
-    <div class="cierre-trust">
-      <div class="ct-item"><span class="ct-ok">âœ“</span><span>Entrega en el dÃ­a Â· Central</span></div>
-      <div class="ct-item"><span class="ct-ok">âœ“</span><span>PagÃ¡s cuando lo recibÃ­s Â· Central</span></div>
-      <div class="ct-item"><span class="ct-ok">âœ“</span><span>Viene en caja lista para regalo</span></div>
-      <div class="ct-item"><span class="ct-ok">âœ“</span><span>Sin marcas infladas â€” precio real</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- â•â• MODAL PEDIDO â•â• -->
-<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-imperial">
-  <div class="modal-box">
-    <p class="modal-urgency">â³ Stock limitado Â· Novedad</p>
-    <button class="modal-close" id="modal-close" aria-label="Cerrar">âœ•</button>
-    <h2 class="modal-title" id="modal-title-imperial">HacÃ© tu pedido</h2>
-    <p class="modal-step">Reloj Imperial Verde Â· Entrega en el dÃ­a ðŸšš</p>
-    <p class="modal-subtitle">CompletÃ¡ los datos y te contactamos al instante.</p>
-
-    <!-- Ofertas -->
-    <div class="modal-section">
-      <span class="modal-section-label">ElegÃ­ tu oferta</span>
-      <div class="offer-options">
-
-        <label class="offer-option selected">
-          <input type="radio" name="offer" value="1" checked>
-          <div class="offer-content">
-            <span class="offer-qty">1 unidad</span>
-            <span class="offer-price" id="offer-price-1">â€”</span>
-          </div>
-        </label>
-
-        <label class="offer-option">
-          <input type="radio" name="offer" value="2">
-          <div class="offer-content">
-            <span class="offer-qty">2 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-2">â€”</span>
-              <span class="offer-price" id="offer-price-2">â€”</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">LlevÃ¡ 2 y ahorrÃ¡ 25%</span>
-            <div class="offer-badge">ðŸ”¥ MÃ¡s elegido</div>
-          </div>
-        </label>
-
-        <label class="offer-option">
-          <input type="radio" name="offer" value="3">
-          <div class="offer-content">
-            <span class="offer-qty">3 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-3">â€”</span>
-              <span class="offer-price" id="offer-price-3">â€”</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">3 unidades con 35% OFF</span>
-            <div class="offer-badge offer-badge--best">â­ Mayor ahorro</div>
-          </div>
-        </label>
-
-        <label class="offer-option" style="display:none" aria-hidden="true">
-          <input type="radio" name="offer" value="custom" tabindex="-1">
-          <div class="offer-content">
-            <span class="offer-qty">4+ unidades â€” 40% OFF</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-custom">â€”</span>
-              <span class="offer-price" id="offer-price-custom">â€”</span>
-            </div>
-          </div>
-        </label>
-
-      </div>
-    </div>
-    <p class="modal-price-warning">âš ï¸ Este precio puede cambiar en cualquier momento</p>
-
-    <!-- Sin variantes â€” no se muestra selector de modelo -->
-    <div class="modal-section" id="variant-section" style="display:none">
-      <span class="modal-section-label">Modelo</span>
-      <div id="variant-selectors"></div>
-    </div>
-
-    <!-- 4+ unidades -->
-    <div class="modal-section" id="custom-order-section" style="display:none">
-      <span class="modal-section-label">MÃ¡s de 3 unidades con 40% OFF</span>
-      <p style="font-size:13px;color:var(--muted);margin:4px 0 14px">ElegÃ­ la cantidad exacta.</p>
-      <div class="form-group">
-        <label>Cantidad</label>
-        <div class="qty-stepper">
-          <button type="button" class="qty-btn qty-minus" id="m-custom-qty-minus" aria-label="Disminuir" disabled>âˆ’</button>
-          <span class="qty-val" id="m-custom-qty-display">4</span>
-          <button type="button" class="qty-btn qty-plus" id="m-custom-qty-plus" aria-label="Aumentar">+</button>
-          <input type="hidden" id="m-custom-qty" value="4">
-        </div>
-      </div>
-      <div class="form-group" id="custom-variant-section" style="display:none;margin-top:14px">
-        <div id="custom-variant-rows"></div>
-      </div>
-      <div style="margin-top:12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
-        <span id="custom-compare-display" style="font-size:13px;color:var(--muted);text-decoration:line-through">â€”</span>
-        <span id="custom-price-display" style="font-size:18px;font-weight:700;color:#fff">â€”</span>
-        <span style="font-size:11px;font-weight:700;color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);padding:2px 7px;border-radius:4px">40% OFF</span>
-      </div>
-    </div>
-
-    <!-- Formulario -->
-    <form class="modal-form" id="modal-form" novalidate>
-
-      <div class="form-group">
-        <label for="m-name">Nombre y apellido</label>
-        <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name">
-        <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="m-phone">TelÃ©fono (WhatsApp)</label>
-        <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
-        <span class="form-error-msg"></span>
-      </div>
-
-
-      <div class="form-group" id="m-ref-group" style="display:none;margin-top:-4px">
-        <label for="m-ref">Referencia adicional</label>
-        <input type="text" id="m-ref" name="referencia" placeholder="piso, portÃ³n, referencia extra" style="margin-top:6px">
-      </div>
-
-      <div class="form-group" id="city-group" style="display:none">
-        <label for="m-city-search" style="font-size:12px;color:rgba(255,255,255,.5)">Ciudad <span style="font-weight:400">(si no se detectÃ³ automÃ¡ticamente)</span></label>
-        <div class="city-picker-wrap">
-          <input type="text" id="m-city-search" class="city-search-input" placeholder="BuscÃ¡ tu ciudad" autocomplete="off">
-          <div class="city-dropdown" id="m-city-dropdown"></div>
-        </div>
-        <input type="hidden" id="m-city" name="city">
-        <div class="city-manual-wrap" id="city-manual-wrap" style="display:none">
-          <input type="text" id="m-city-manual" class="city-manual-input" placeholder="EscribÃ­ tu ciudad" autocomplete="off">
-        </div>
-        <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="m-payment">MÃ©todo de pago</label>
-        <select id="m-payment" name="payment">
-          <option value="">SeleccionÃ¡...</option>
-          <option value="Transferencia">Transferencia</option>
-          <option value="Efectivo">Efectivo</option>
-        </select>
-        <span class="form-error-msg"></span>
-      </div>
-
-      <label class="upsell-block">
-        <input type="checkbox" id="m-express" name="express">
-        <div class="upsell-content">
-          <span class="upsell-title">ðŸš€ EnvÃ­o express +10.000 Gs</span>
-          <span class="upsell-sub">RecibÃ­ antes que los demÃ¡s</span>
-        </div>
-      </label>
-
-      <label class="upsell-block" id="m-invoice-block" style="margin-top:10px">
-        <input type="checkbox" id="m-invoice" name="invoice">
-        <div class="upsell-content">
-          <span class="upsell-title">ðŸ§¾ Necesito factura</span>
-          <span class="upsell-sub">RUC o cÃ©dula para comprobante fiscal</span>
-        </div>
-      </label>
-      <div id="m-invoice-fields" style="display:none;margin-top:6px">
-        <div class="form-group">
-          <label for="m-invoice-ruc">RUC *</label>
-          <input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
-          <span class="form-error-msg"></span>
-        </div>
-        <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-name">RazÃ³n social / Nombre *</label>
-          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razÃ³n social">
-          <span class="form-error-msg"></span>
-        </div>
-        <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(255,255,255,.4)">(opcional)</span></label>
-          <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
-        </div>
-      </div>
-
-      <label class="confirm-intent">
-        <input type="checkbox" id="m-confirm" name="confirm">
-        <span class="confirm-text">Quiero recibir este reloj y confirmo mi pedido</span>
-      </label>
-      <span class="confirm-error-msg form-error-msg">DebÃ©s confirmar tu intenciÃ³n de compra para continuar</span>
-
-      <div class="form-submit">
-        <button type="submit" class="btn btn-primary" id="modal-submit-btn">
-          Confirmar pedido por WhatsApp
-        </button>
-      </div>
-
-    </form>
-
-    <div class="form-success" id="modal-success">
-      <h3>Â¡Listo!</h3>
-      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
-      <p style="margin-top:8px">Si no abriÃ³ automÃ¡ticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
-      <div class="manual-wa">
-        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente â†’</a>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<footer class="footer">
-  &copy; 2026 Dam Vertex
-</footer>
-
-<!-- Scripts -->
-<script>
-</script>
-<script src="/assets/js/tracking.js?v=74" defer></script>
-<script src="/assets/js/products.js?v=66" defer></script>
-<script defer src="/assets/js/insync.js?v=4"></script>
-<script>
-(function() {
-  var lpLoaded = false;
-  function loadLP() {
-    if (lpLoaded) return;
-    lpLoaded = true;
-    var s = document.createElement('script');
-    s.src = '/assets/js/location-picker.js?v=57';
-    s.onload = function() {
-      if (typeof DV.initLocationPicker === 'function') {
-        DV.initLocationPicker('m', window.DV_MAPS_KEY || '');
-      }
-    };
-    document.head.appendChild(s);
-  }
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('[data-scroll-form]').forEach(function(el) {
-      el.addEventListener('click', loadLP);
-    });
-    var modal = document.getElementById('order-modal');
-    if (modal) {
-      new MutationObserver(function(mutations) {
-        mutations.forEach(function(m) {
-          if (m.target.classList.contains('active')) loadLP();
-        });
-      }).observe(modal, { attributes: true, attributeFilter: ['class'] });
-    }
-  });
-})();
-</script>
-
-<script>
-  const PRODUCT = {
-    name:  'Reloj Imperial Verde',
-    slug:  'reloj-imperial-verde',
-    price: 349000,
-  };
-
-  document.addEventListener('DOMContentLoaded', () => {
-    DV.trackViewContent(PRODUCT);
-    DV.initForm(PRODUCT);
-
-    /* AddToCart + InitiateCheckout — al abrir modal */
-    var _icFired = false;
-    document.querySelectorAll('[data-scroll-form]').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        try { DV.trackAddToCart(PRODUCT); } catch (_) {}
-        if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500); }
-      });
-    });
-  });
-</script>
-
-<!-- CRO: Sticky CTA bar â€” mobile only -->
-<div class="sticky-cta-bar" id="sticky-cta-bar">
-  <button class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;background:var(--imperial-green)">
-    Quiero el mÃ­o â†’
+<!-- STICKY CTA BAR (mobile) -->
+<div class="riv-sticky-cta">
+  <button type="button" class="riv-btn" data-open-modal>
+    Pedir ahora &mdash; Pagás al recibir
+    <span class="riv-btn-sub">&#x2713; Garantía de 30 días</span>
   </button>
 </div>
 
+<!-- ══ MODAL DCANP — sin WhatsApp, sin horario, POST a /api/dcanp-lead ══ -->
+<div class="modal-overlay" id="riv-order-modal" role="dialog" aria-modal="true" aria-labelledby="riv-modal-title">
+  <div class="modal-box">
+    <button class="modal-close" id="riv-modal-close" aria-label="Cerrar">&#x2715;</button>
+
+    <div id="riv-modal-form-wrap">
+      <h2 class="modal-title" id="riv-modal-title">Reloj Imperial Verde &mdash; Gs. 349.000</h2>
+      <p style="text-align:center;font-size:11px;font-weight:700;color:var(--riv-laton);margin:4px 0 14px;">&#x26A1; Quedan pocas unidades &mdash; pedidos se procesan hoy</p>
+
+      <span class="modal-section-label">Elegí tu oferta</span>
+      <div class="offer-options">
+        <label class="offer-option selected">
+          <input type="radio" name="riv-offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price">Gs. 349.000</span>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="riv-offer" value="2">
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div>
+              <span class="offer-compare">Gs. 698.000</span>
+              <span class="offer-price">Gs. 649.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 49.000</span>
+            <div class="offer-badge">&#x1F525; Más elegido</div>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="riv-offer" value="3">
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div>
+              <span class="offer-compare">Gs. 1.047.000</span>
+              <span class="offer-price">Gs. 929.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorrás Gs. 118.000</span>
+            <div class="offer-badge offer-badge--best">&#x2B50; Mayor ahorro</div>
+          </div>
+        </label>
+      </div>
+
+      <form id="riv-dcanp-form" novalidate>
+        <div class="form-group">
+          <label for="riv-name">Nombre y apellido</label>
+          <input type="text" id="riv-name" name="name" placeholder="Ej: Matías Giménez" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label for="riv-phone">Teléfono <span style="color:#F87171;font-size:11px;font-weight:600;">&#xB7; Ingresá tu número completo</span></label>
+          <input type="tel" id="riv-phone" name="phone" placeholder="Ej: 984 832 688" autocomplete="tel" required>
+          <p id="riv-phone-error" style="display:none;color:#F87171;font-size:12px;font-weight:700;margin-top:4px;"></p>
+        </div>
+        <div class="form-group">
+          <label for="riv-city">Ciudad <span style="color:#F87171;font-size:11px;font-weight:600;">&#xB7; Solo el nombre de tu ciudad</span></label>
+          <input type="text" id="riv-city" name="city" placeholder="Ej: Asunción, Lambaré, San Lorenzo..." autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="riv-calle">Calle principal y secundaria</label>
+          <input type="text" id="riv-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address">
+        </div>
+
+        <label class="upsell-block">
+          <input type="checkbox" id="riv-express" name="express">
+          <div class="upsell-content">
+            <span class="upsell-title">&#x1F680; Envío express +10.000 Gs</span>
+            <span class="upsell-sub">Recibí antes que los demás</span>
+          </div>
+        </label>
+
+        <label class="upsell-block" id="riv-invoice-block" style="margin-top:12px">
+          <input type="checkbox" id="riv-invoice" name="invoice">
+          <div class="upsell-content">
+            <span class="upsell-title">&#x1F9FE; Necesito factura</span>
+            <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="riv-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group">
+            <label for="riv-invoice-ruc">RUC *</label>
+            <input type="text" id="riv-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="riv-invoice-name">Razón social / Nombre *</label>
+            <input type="text" id="riv-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="riv-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+            <input type="email" id="riv-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+          </div>
+        </div>
+
+        <p id="riv-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:var(--riv-hueso)"></p>
+
+        <div class="riv-pay-badge">&#x1F4B3; Pago al recibir</div>
+
+        <div class="form-submit">
+          <button type="submit" class="riv-btn" id="riv-submit-btn" style="border-radius:12px;width:100%;height:auto;padding:14px;">
+            <div>Confirmar pedido</div>
+            <div style="font-size:11px;font-weight:700;margin-top:3px;letter-spacing:.03em;">&#x2713; Envío gratis &middot; Pagás al recibir</div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="dcanp-success" id="riv-dcanp-success">
+      <div class="dcanp-success__icon">&#x2713;</div>
+      <h2>¡Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p class="dcanp-success__tip">&#x1F4F1; Quedate atento a tu número &mdash; te vamos a contactar pronto.</p>
+      <div class="dcanp-success__badges">
+        <span>&#x2713; Envío gratis</span>
+        <span>&#x2713; Pagás al recibir</span>
+      </div>
+      <a href="/" class="btn-ver-coleccion">Ver m&aacute;s productos &#x2192;</a>
+    </div>
+  </div>
+</div>
+
+<footer class="riv-footer">
+  &copy; Dam Vertex
+</footer>
+
+<!-- Scripts -->
+<script src="/assets/js/tracking.js?v=74" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+
+<script defer>
+  /* Reloj Imperial Verde — DCANP GROUP. Ver CLAUDE.md "DCANP GROUP — Flujo especial". */
+  const PRODUCT = {
+    name: 'Reloj Imperial Verde',
+    slug: 'reloj-imperial-verde',
+    price: 349000,
+    comboPricing: { 1: 349000, 2: 649000, 3: 929000 },
+  };
+  const STOCK_RESTANTE = 20;
+
+  document.addEventListener('DOMContentLoaded', function() {
+    /* InSync stock fill */
+    document.querySelectorAll('[data-stock]').forEach(function(el) { el.textContent = STOCK_RESTANTE; });
+
+    /* ViewContent — setTimeout 800ms (PIXEL-EVENTS — REGLA INAMOVIBLE) */
+    setTimeout(function() {
+      try { DV.trackViewContent(PRODUCT); } catch (_) {}
+    }, 800);
+
+    var modal      = document.getElementById('riv-order-modal');
+    var openBtns   = document.querySelectorAll('[data-open-modal]');
+    var closeBtn   = document.getElementById('riv-modal-close');
+    var form       = document.getElementById('riv-dcanp-form');
+    var formWrap   = document.getElementById('riv-modal-form-wrap');
+    var successBox = document.getElementById('riv-dcanp-success');
+    var submitBtn  = document.getElementById('riv-submit-btn');
+    var offerInputs = document.querySelectorAll('input[name="riv-offer"]');
+
+    var _icFired = false;
+    function openModal() {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+      if (!_icFired) {
+        _icFired = true;
+        setTimeout(function() {
+          try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {}
+        }, 1500);
+      }
+    }
+    function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+
+    openBtns.forEach(function(btn) { if (btn) btn.addEventListener('click', openModal); });
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modal) modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+
+    offerInputs.forEach(function(input) {
+      input.addEventListener('change', function() {
+        document.querySelectorAll('.offer-option').forEach(function(opt) { opt.classList.remove('selected'); });
+        input.closest('.offer-option').classList.add('selected');
+        updateRivTotalLine();
+      });
+    });
+
+    var invoiceChk    = document.getElementById('riv-invoice');
+    var invoiceFields = document.getElementById('riv-invoice-fields');
+    if (invoiceChk && invoiceFields) {
+      invoiceChk.addEventListener('change', function() {
+        invoiceFields.style.display = this.checked ? 'block' : 'none';
+      });
+    }
+
+    function updateRivTotalLine() {
+      var tl = document.getElementById('riv-total-line');
+      if (!tl) return;
+      var qty  = parseInt(document.querySelector('input[name="riv-offer"]:checked') && document.querySelector('input[name="riv-offer"]:checked').value) || 1;
+      var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      var isExp = document.getElementById('riv-express') && document.getElementById('riv-express').checked;
+      var total = base + (isExp ? 10000 : 0);
+      tl.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    }
+    var expChk = document.getElementById('riv-express');
+    if (expChk) expChk.addEventListener('change', updateRivTotalLine);
+
+    var rivPhone = document.getElementById('riv-phone');
+    if (rivPhone) rivPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
+    if (rivPhone) rivPhone.addEventListener('input', function() {
+      this.style.borderColor = '';
+      var e = document.getElementById('riv-phone-error');
+      if (e) { e.textContent = ''; e.style.display = 'none'; }
+    });
+
+    if (form) form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var qty     = parseInt(document.querySelector('input[name="riv-offer"]:checked') && document.querySelector('input[name="riv-offer"]:checked').value) || 1;
+      var base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      var express = (document.getElementById('riv-express') && document.getElementById('riv-express').checked) || false;
+      var invoice = (document.getElementById('riv-invoice') && document.getElementById('riv-invoice').checked) || false;
+      var value   = base + (express ? 10000 : 0);
+      var data = {
+        name:          document.getElementById('riv-name').value.trim(),
+        phone:         document.getElementById('riv-phone').value.replace(/\s/g, ''),
+        city:          document.getElementById('riv-city').value.trim(),
+        street:        document.getElementById('riv-calle').value.trim(),
+        quantity:      qty,
+        product_slug:  PRODUCT.slug,
+        product_name:  PRODUCT.name,
+        value:         value,
+        express:       express,
+        invoice:       invoice,
+        invoice_ruc:   invoice ? ((document.getElementById('riv-invoice-ruc') && document.getElementById('riv-invoice-ruc').value) || '').trim() : '',
+        invoice_name:  invoice ? ((document.getElementById('riv-invoice-name') && document.getElementById('riv-invoice-name').value) || '').trim() : '',
+        invoice_email: invoice ? ((document.getElementById('riv-invoice-email') && document.getElementById('riv-invoice-email').value) || '').trim() : '',
+      };
+      if (!data.name || !data.phone || !data.city) {
+        alert('Completá nombre, teléfono y ciudad para continuar.');
+        return;
+      }
+      var soloNumeros = data.phone.replace(/\D/g, '');
+      if (soloNumeros.length < 9) {
+        if (rivPhone) { rivPhone.style.borderColor = '#F87171'; rivPhone.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        var pErr = document.getElementById('riv-phone-error');
+        if (pErr) { pErr.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; pErr.style.display = 'block'; }
+        return;
+      }
+      try {
+        var client = typeof getClientData === 'function' ? getClientData() : {};
+        data.fbp = client.fbp || null;
+        data.fbc = client.fbc || null;
+      } catch (_) {}
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+      try {
+        var res = await fetch('/api/dcanp-lead', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(data),
+        });
+        await res.json().catch(function() { return {}; });
+      } catch (err) {
+        console.error('DCANP_SUBMIT_ERROR', err && err.message);
+      }
+      formWrap.style.display = 'none';
+      successBox.classList.add('visible');
+      submitBtn.disabled = false;
+    });
+  });
+</script>
+
+<script src="/assets/js/protect.js?v=68" defer></script>
 </body>
 </html>
