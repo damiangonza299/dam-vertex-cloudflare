@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0F3D2E">
+  <meta name="theme-color" content="#06100A">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
@@ -52,20 +52,25 @@
 
     /* ══ RIV — Reloj Imperial Verde ══ */
     :root {
-      --riv-verde:      #0F3D2E;
-      --riv-verde-prof: #0A2F23;
-      --riv-laton:      #C9A45C;
-      --riv-oro:        #D6B26A;
-      --riv-hueso:      #F1E9D8;
-      --riv-hueso-2:    #BDB5A2;
-      --riv-cuero:      #151311;
-      --riv-input:      #1F1C19;
-      --riv-tachado:    #8FA197;
+      --riv-base:        #06100A;
+      --riv-base-2:      #0C1C12;
+      --riv-borde:       #1C3A26;
+      --riv-verde-medio: #254D34;
+      --riv-oro:         #C8A028;
+      --riv-oro-cta:     #D4AF37;
+      --riv-oro-text:    #0A0E08;
+      --riv-oro-glow:    rgba(212,175,55,.12);
+      --riv-hueso:       #EDE8DC;
+      --riv-hueso-2:     #A89E8C;
+      --riv-modal:       #0A0806;
+      --riv-input:       #161210;
+      --riv-input-borde: rgba(212,175,55,.25);
+      --riv-input-focus: #D4AF37;
       --riv-tonneau: polygon(100% 50%,99.8% 43%,99.2% 36.1%,97.9% 29.3%,95.9% 22.6%,92.9% 16.3%,88.8% 10.7%,83.7% 6%,77.6% 2.8%,70.8% .9%,63.9% .2%,57% 0%,50% 0%,43% 0%,36.1% .2%,29.2% .9%,22.4% 2.8%,16.3% 6%,11.2% 10.7%,7.1% 16.3%,4.1% 22.6%,2.1% 29.3%,.8% 36.1%,.2% 43%,0% 50%,.2% 57%,.8% 63.9%,2.1% 70.7%,4.1% 77.4%,7.1% 83.7%,11.2% 89.3%,16.3% 94%,22.4% 97.2%,29.2% 99.1%,36.1% 99.8%,43% 100%,50% 100%,57% 100%,63.9% 99.8%,70.8% 99.1%,77.6% 97.2%,83.7% 94%,88.8% 89.3%,92.9% 83.7%,95.9% 77.4%,97.9% 70.7%,99.2% 63.9%,99.8% 57%);
     }
 
     body.riv {
-      background: var(--riv-verde);
+      background: var(--riv-base);
       color: var(--riv-hueso);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
       padding-top: 36px; /* urgency bar fija */
@@ -74,7 +79,7 @@
     /* URGENCY BAR */
     .riv-urgency-bar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 400;
-      background: var(--riv-cuero); color: var(--riv-hueso); text-align: center;
+      background: var(--riv-modal); color: var(--riv-hueso); text-align: center;
       font-size: clamp(11px,3.4vw,14px); font-weight: 700; letter-spacing: .02em;
       white-space: nowrap; height: 36px; line-height: 36px; padding: 0 16px;
       overflow: hidden; text-overflow: ellipsis;
@@ -83,18 +88,18 @@
     /* NAV override — scrollea normalmente debajo de la barra fija */
     .riv .nav {
       position: relative;
-      background: rgba(10,47,35,.96);
-      border-bottom: 1px solid rgba(201,164,92,.2);
+      background: rgba(6,16,10,.96);
+      border-bottom: 1px solid rgba(212,175,55,.2);
       backdrop-filter: blur(12px);
       z-index: 100;
     }
     .riv .nav__logo { color: var(--riv-hueso); }
-    .riv .nav__logo span { opacity: .5; color: var(--riv-laton); }
+    .riv .nav__logo span { opacity: .5; color: var(--riv-oro); }
 
     /* NAV CTA */
     .riv-nav-btn {
       display: inline-flex; align-items: center; justify-content: center;
-      background: var(--riv-oro); color: #0B241B; font-weight: 700;
+      background: var(--riv-oro-cta); color: var(--riv-oro-text); font-weight: 700;
       font-size: clamp(7px,2.6vw,12px); padding: 8px 12px; border-radius: 999px;
       border: none; cursor: pointer; white-space: nowrap; max-width: 62vw;
       font-family: inherit;
@@ -110,13 +115,13 @@
     /* BOTÓN CTA PRINCIPAL */
     .riv-btn {
       display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
-      background: var(--riv-oro); color: #0B241B; font-weight: 600;
+      background: var(--riv-oro-cta); color: var(--riv-oro-text); font-weight: 600;
       padding: 0 14px; border-radius: 999px; border: none; cursor: pointer;
       text-decoration: none; transition: background .2s, transform .15s;
       width: 100%; height: 56px; white-space: nowrap; letter-spacing: .01em;
       font-size: clamp(13px,3.8vw,16px); font-family: inherit;
     }
-    .riv-btn:hover { background: #C49A52; transform: translateY(-1px); }
+    .riv-btn:hover { background: #B8902A; transform: translateY(-1px); }
     .riv-btn-sub { font-size: 11px; font-weight: 700; margin-top: 2px; opacity: .75; }
 
     /* HERO */
@@ -144,7 +149,7 @@
       padding: 2px;
       -webkit-clip-path: var(--riv-tonneau);
       clip-path: var(--riv-tonneau);
-      background: linear-gradient(115deg,#8A6A2F 0%,#E9CF94 45%,#B48A3E 60%,#8A6A2F 100%);
+      background: linear-gradient(115deg,#7A6018 0%,#EDD85A 45%,#C8A028 60%,#7A6018 100%);
       background-size: 250% 100%;
       background-position: 100% 0;
       animation: riv-brillo 1.6s ease-out .4s 1 forwards;
@@ -152,7 +157,7 @@
     .riv-tonneau .riv-ph {
       position: absolute; inset: 2px;
       display: flex; align-items: center; justify-content: center;
-      background: var(--riv-verde-prof);
+      background: var(--riv-base-2);
       -webkit-clip-path: var(--riv-tonneau); clip-path: var(--riv-tonneau);
       font-size: 10px; color: rgba(241,233,216,.35); text-align: center; padding: 16px;
       z-index: 0;
@@ -161,7 +166,7 @@
       display: block; width: 100%; height: 100%;
       object-fit: cover;
       -webkit-clip-path: var(--riv-tonneau); clip-path: var(--riv-tonneau);
-      background: var(--riv-verde-prof);
+      background: var(--riv-base-2);
       position: relative; z-index: 1;
     }
     @keyframes riv-brillo { to { background-position: 0 0; } }
@@ -170,8 +175,8 @@
     /* PRECIO HERO */
     .riv-save-pill {
       display: inline-block;
-      font-size: 12px; font-weight: 700; color: var(--riv-laton);
-      border: 1px solid var(--riv-laton); border-radius: 999px;
+      font-size: 12px; font-weight: 700; color: var(--riv-oro);
+      border: 1px solid var(--riv-oro); border-radius: 999px;
       padding: 3px 12px; margin-bottom: 8px;
     }
     .riv-price-row {
@@ -182,10 +187,10 @@
       font-size: clamp(30px,9vw,40px); font-weight: 800; color: var(--riv-oro);
     }
     .riv-price-compare {
-      font-size: clamp(14px,4.2vw,18px); color: var(--riv-tachado); text-decoration: line-through;
+      font-size: clamp(14px,4.2vw,18px); color: #6B7E74; text-decoration: line-through;
     }
     .riv-social-proof {
-      font-size: 13px; color: var(--riv-laton); font-weight: 700; margin-bottom: 4px;
+      font-size: 13px; color: var(--riv-oro); font-weight: 700; margin-bottom: 4px;
     }
     .riv-garantia {
       font-size: 13px; color: var(--riv-hueso-2); margin-bottom: 20px;
@@ -193,7 +198,7 @@
 
     /* RIESGO CERO */
     .riv-risk-zero {
-      background: rgba(201,164,92,.08); border-left: 3px solid var(--riv-laton);
+      background: rgba(212,175,55,.08); border-left: 3px solid var(--riv-oro);
       padding: 14px 16px; border-radius: 8px; margin: 0 0 20px; text-align: left;
     }
     .riv-risk-zero__main { font-size: 14px; font-weight: 800; color: var(--riv-hueso); line-height: 1.25; }
@@ -205,15 +210,15 @@
       display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px;
     }
     .riv-gift-block {
-      border: 1px solid rgba(201,164,92,.3); border-radius: 10px;
+      border: 1px solid rgba(212,175,55,.3); border-radius: 10px;
       padding: 12px 10px; text-align: center; font-size: 13px; color: var(--riv-hueso-2);
-      background: rgba(201,164,92,.05);
+      background: rgba(212,175,55,.05);
     }
     .riv-gift-block span { display: block; font-size: 20px; margin-bottom: 4px; }
 
     /* VIDEO SECTION */
     .riv-video-sec {
-      background: var(--riv-verde-prof);
+      background: var(--riv-base-2);
       padding: clamp(32px,8vw,56px) 0;
     }
     .riv-section-h2 {
@@ -225,7 +230,7 @@
     }
     .riv-video-wrap {
       position: relative; aspect-ratio: 9/16; border-radius: 14px;
-      overflow: hidden; background: var(--riv-verde-prof); max-width: 280px; margin: 0 auto 20px;
+      overflow: hidden; background: var(--riv-base-2); max-width: 280px; margin: 0 auto 20px;
     }
     .riv-video-wrap .riv-ph {
       position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -241,12 +246,12 @@
 
     /* LO QUE LLEGA */
     .riv-entrega {
-      background: var(--riv-cuero);
+      background: var(--riv-modal);
       padding: clamp(32px,8vw,56px) 0;
     }
     .riv-entrega-img-wrap {
       position: relative; aspect-ratio: 1/1; border-radius: 12px;
-      overflow: hidden; background: var(--riv-verde-prof);
+      overflow: hidden; background: var(--riv-base-2);
       margin: 0 0 24px; max-width: 100%;
     }
     .riv-entrega-img-wrap .riv-ph {
@@ -259,12 +264,12 @@
     .riv-value-list { list-style: none; padding: 0; margin: 0 0 20px; }
     .riv-value-item {
       display: flex; justify-content: space-between; align-items: flex-start;
-      padding: 10px 0; border-bottom: 1px solid rgba(201,164,92,.18); gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid rgba(212,175,55,.18); gap: 12px;
     }
     .riv-value-item:last-child { border-bottom: none; }
-    .riv-value-item--highlight { background: rgba(201,164,92,.08); padding: 10px 8px; border-radius: 6px; border-bottom: none; margin-bottom: 1px; }
+    .riv-value-item--highlight { background: rgba(212,175,55,.08); padding: 10px 8px; border-radius: 6px; border-bottom: none; margin-bottom: 1px; }
     .riv-value-item__label { font-size: 14px; color: var(--riv-hueso-2); line-height: 1.35; flex: 1; }
-    .riv-value-item__amount { font-size: 14px; color: var(--riv-laton); font-weight: 700; white-space: nowrap; }
+    .riv-value-item__amount { font-size: 14px; color: var(--riv-oro); font-weight: 700; white-space: nowrap; }
     .riv-value-total { font-size: 13px; color: var(--riv-hueso-2); margin: 0 0 6px; }
     .riv-value-hoy {
       font-size: 20px; font-weight: 700; color: var(--riv-hueso); margin: 0 0 8px;
@@ -274,12 +279,12 @@
 
     /* DE LA OFICINA AL ASADO */
     .riv-oficina {
-      background: var(--riv-verde);
+      background: var(--riv-base);
       padding: clamp(32px,8vw,56px) 0;
     }
     .riv-oficina-img-wrap {
       position: relative; aspect-ratio: 4/5; border-radius: 12px;
-      overflow: hidden; background: var(--riv-verde-prof);
+      overflow: hidden; background: var(--riv-base-2);
       margin: 0 0 24px;
     }
     .riv-oficina-img-wrap .riv-ph {
@@ -296,19 +301,19 @@
     }
     .riv-specs li::before {
       content: ''; position: absolute; left: 0; top: 7px;
-      width: 7px; height: 7px; background: var(--riv-laton); border-radius: 50%;
+      width: 7px; height: 7px; background: var(--riv-oro); border-radius: 50%;
     }
 
     /* OBJECIONES */
     .riv-objeciones {
-      background: var(--riv-verde-prof);
+      background: var(--riv-base-2);
       padding: clamp(32px,8vw,56px) 0;
     }
     .riv-obj-list { display: flex; flex-direction: column; gap: 14px; }
     .riv-obj-item {
       padding: 16px; border-radius: 12px;
-      border: 1px solid rgba(201,164,92,.15);
-      background: rgba(10,47,35,.6);
+      border: 1px solid rgba(212,175,55,.15);
+      background: rgba(12,28,18,.6);
     }
     .riv-obj-icon { font-size: 22px; margin-bottom: 6px; }
     .riv-obj-item strong { font-size: 15px; font-weight: 700; color: var(--riv-hueso); display: block; margin-bottom: 4px; }
@@ -316,27 +321,27 @@
 
     /* CIERRE */
     .riv-cierre {
-      background: var(--riv-verde);
+      background: var(--riv-base);
       padding: clamp(48px,10vw,72px) 0;
       text-align: center;
     }
     .riv-cierre__h2 {
       font-size: 22px; font-weight: 700; color: var(--riv-hueso); margin: 0 0 10px; font-style: italic;
     }
-    .riv-cierre__stock { font-size: 13px; color: var(--riv-laton); margin: 0 0 8px; }
+    .riv-cierre__stock { font-size: 13px; color: var(--riv-oro); margin: 0 0 8px; }
     .riv-cierre__price { font-size: 15px; color: var(--riv-hueso-2); margin: 0 0 22px; }
 
     /* FOOTER */
     .riv-footer {
-      background: var(--riv-cuero);
+      background: var(--riv-modal);
       padding: 20px; text-align: center; font-size: 13px; color: var(--riv-hueso-2);
-      border-top: 1px solid rgba(201,164,92,.12);
+      border-top: 1px solid rgba(212,175,55,.12);
     }
 
     /* STICKY CTA BAR */
     .riv-sticky-cta {
       display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
-      background: rgba(10,47,35,.97); border-top: 1px solid rgba(201,164,92,.25);
+      background: rgba(6,16,10,.97); border-top: 1px solid rgba(212,175,55,.25);
       padding: 8px 16px; padding-bottom: max(8px, env(safe-area-inset-bottom));
       backdrop-filter: blur(10px);
     }
@@ -348,24 +353,24 @@
     /* ══ MODAL DCANP — TEMA OSCURO DORADO ══ */
     .riv .modal-overlay {
       display: none; position: fixed; inset: 0; z-index: 1000;
-      background: rgba(5,18,12,.78); align-items: center; justify-content: center;
+      background: rgba(6,16,10,.78); align-items: center; justify-content: center;
       padding: 16px; overflow-y: auto;
     }
     .riv .modal-overlay.active { display: flex; }
     .riv .modal-box {
-      position: relative; background: var(--riv-cuero);
-      border: 1px solid rgba(201,164,92,.3); border-radius: 16px;
+      position: relative; background: var(--riv-modal);
+      border: 1px solid rgba(212,175,55,.3); border-radius: 16px;
       max-width: 440px; width: 100%; padding: 28px 24px;
       max-height: 90vh; overflow-y: auto;
       color-scheme: dark; accent-color: var(--riv-oro);
     }
     .riv .modal-close {
       position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
-      border-radius: 50%; border: none; background: rgba(201,164,92,.14);
+      border-radius: 50%; border: none; background: rgba(212,175,55,.14);
       color: var(--riv-hueso); font-size: 15px; cursor: pointer; font-family: inherit;
     }
     .riv .modal-title {
-      font-size: 18px; font-weight: 700; color: var(--riv-hueso); margin: 0 0 4px;
+      font-size: clamp(12px,3.8vw,17px); font-weight: 700; color: var(--riv-hueso); margin: 0 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .riv .modal-price-sub {
       font-size: 13px; color: var(--riv-hueso-2); margin: 0 0 16px;
@@ -379,23 +384,23 @@
     .riv .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
     .riv .offer-option {
       position: relative; display: block;
-      border: 1.5px solid rgba(201,164,92,.22); border-radius: 10px;
+      border: 1.5px solid rgba(212,175,55,.22); border-radius: 10px;
       padding: 12px 14px; cursor: pointer;
-      background: rgba(31,28,25,.7);
+      background: rgba(22,18,16,.9);
     }
     .riv .offer-option input { position: absolute; opacity: 0; }
-    .riv .offer-option.selected { border-color: var(--riv-oro); background: rgba(214,178,106,.08); }
+    .riv .offer-option.selected { border-color: var(--riv-oro); background: var(--riv-oro-glow); }
     .riv .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
     .riv .offer-qty { font-weight: 700; font-size: 14px; color: var(--riv-hueso); }
     .riv .offer-price { font-weight: 800; font-size: 15px; color: var(--riv-oro); }
-    .riv .offer-compare { font-size: 12px; text-decoration: line-through; color: var(--riv-tachado); margin-right: 6px; }
+    .riv .offer-compare { font-size: 12px; text-decoration: line-through; color: #6B7E74; margin-right: 6px; }
     .riv .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
-    .riv .offer-saving { color: var(--riv-laton); font-weight: 700; font-size: 12px; }
+    .riv .offer-saving { color: var(--riv-oro); font-weight: 700; font-size: 12px; }
     .riv .offer-badge {
-      background: var(--riv-laton); color: #0B241B; font-size: 12px; font-weight: 700;
+      position: static; background: var(--riv-oro); color: var(--riv-oro-text); font-size: 12px; font-weight: 700;
       padding: 2px 8px; border-radius: 20px;
     }
-    .riv .offer-badge--best { background: var(--riv-oro); color: #0B241B; }
+    .riv .offer-badge--best { background: var(--riv-oro-cta); color: var(--riv-oro-text); }
 
     /* FORM */
     .riv .form-group { margin-bottom: 14px; }
@@ -406,11 +411,11 @@
     .riv .form-group input,
     .riv .form-group textarea {
       width: 100%; padding: 11px 12px; border-radius: 8px;
-      border: 1px solid rgba(201,164,92,.35);
+      border: 1px solid var(--riv-input-borde);
       background: var(--riv-input); color: var(--riv-hueso); font-size: 14px; font-family: inherit;
       outline: none; transition: border-color .15s;
     }
-    .riv .form-group input:focus { border-color: var(--riv-oro); }
+    .riv .form-group input:focus { border-color: var(--riv-input-focus); }
     .riv .form-group input::placeholder { color: #9A927F; }
     .riv .form-group input:-webkit-autofill {
       -webkit-text-fill-color: var(--riv-hueso);
@@ -420,10 +425,10 @@
     /* UPSELL BLOCKS */
     .riv .upsell-block {
       display: flex; align-items: center; gap: 10px; cursor: pointer;
-      background: rgba(31,28,25,.7); border: 1.5px solid rgba(201,164,92,.2);
+      background: rgba(22,18,16,.9); border: 1.5px solid rgba(212,175,55,.2);
       border-radius: 10px; padding: 12px 14px;
     }
-    .riv .upsell-block:has(input:checked) { border-color: var(--riv-oro); background: rgba(214,178,106,.07); }
+    .riv .upsell-block:has(input:checked) { border-color: var(--riv-oro); background: var(--riv-oro-glow); }
     .riv .upsell-title { color: var(--riv-hueso); font-size: 13px; font-weight: 700; }
     .riv .upsell-sub { color: var(--riv-hueso-2); font-size: 12px; }
 
@@ -440,7 +445,7 @@
     }
     .riv .dcanp-success.visible { display: block; }
     .riv .dcanp-success__icon {
-      width: 56px; height: 56px; background: var(--riv-oro); color: #0B241B;
+      width: 56px; height: 56px; background: var(--riv-oro-cta); color: var(--riv-oro-text);
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
       font-size: 24px; margin: 0 auto 16px;
     }
@@ -449,13 +454,13 @@
     .riv .dcanp-success__tip { font-weight: 600; color: var(--riv-hueso); }
     .riv .dcanp-success__badges {
       display: flex; gap: 12px; justify-content: center; margin-top: 16px;
-      font-size: 13px; color: var(--riv-laton); font-weight: 700;
+      font-size: 13px; color: var(--riv-oro); font-weight: 700;
     }
 
     /* PAYMENT BADGE IN MODAL */
     .riv-pay-badge {
       margin-top: 16px; text-align: center; font-size: 12px; font-weight: 800;
-      color: var(--riv-oro); background: rgba(214,178,106,.1);
+      color: var(--riv-oro); background: var(--riv-oro-glow);
       border-radius: 8px; padding: 8px 12px;
     }
 
@@ -709,7 +714,7 @@
 
     <div id="riv-modal-form-wrap">
       <h2 class="modal-title" id="riv-modal-title">Reloj Imperial Verde &mdash; Gs. 349.000</h2>
-      <p style="text-align:center;font-size:11px;font-weight:700;color:var(--riv-laton);margin:4px 0 14px;">&#x26A1; Quedan pocas unidades &mdash; pedidos se procesan hoy</p>
+      <p style="text-align:center;font-size:11px;font-weight:700;color:var(--riv-oro);margin:4px 0 14px;">&#x26A1; Quedan pocas unidades &mdash; pedidos se procesan hoy</p>
 
       <span class="modal-section-label">Elegí tu oferta</span>
       <div class="offer-options">
