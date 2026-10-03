@@ -588,7 +588,7 @@
           </div>
         </div>
 
-        <p id="riv-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:#16181A;min-height:1em"></p>
+        <p id="riv-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none"></p>
 
         <div class="riv-pay-badge">&#x1F4B3; Pago al recibir</div>
 
@@ -715,6 +715,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var isExp = document.getElementById('riv-express') && document.getElementById('riv-express').checked;
     var total = base + (isExp ? 10000 : 0);
     tl.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    tl.style.display = isExp ? 'block' : 'none';
   }
   var expChk = document.getElementById('riv-express');
   if (expChk) expChk.addEventListener('change', updateTotal);
