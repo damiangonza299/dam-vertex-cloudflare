@@ -342,7 +342,7 @@
     }
     @media (max-width:700px) {
       .riv-sticky-cta { display: block; }
-      body.riv:has(#riv-order-modal.active) .riv-sticky-cta { display: none; }
+      body.riv:has(#order-modal.active) .riv-sticky-cta { display: none; }
     }
 
     /* ══ MODAL DCANP — TEMA OSCURO DORADO ══ */
@@ -494,7 +494,7 @@
         <div class="riv-ph">Foto 1 &mdash; reloj de frente, fondo oscuro</div>
         <img src="/reloj-imperial-verde/hero.webp"
              alt="Reloj Imperial Verde"
-             fetchpriority="high" width="280" height="350"
+             loading="eager" fetchpriority="high" width="280" height="350"
              onerror="this.style.display='none'">
       </div>
     </div>
@@ -703,7 +703,7 @@
 </div>
 
 <!-- ══ MODAL DCANP — sin WhatsApp, sin horario, POST a /api/dcanp-lead ══ -->
-<div class="modal-overlay" id="riv-order-modal" role="dialog" aria-modal="true" aria-labelledby="riv-modal-title">
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="riv-modal-title">
   <div class="modal-box">
     <button class="modal-close" id="riv-modal-close" aria-label="Cerrar">&#x2715;</button>
 
@@ -853,7 +853,7 @@
       try { DV.trackViewContent(PRODUCT); } catch (_) {}
     }, 800);
 
-    var modal      = document.getElementById('riv-order-modal');
+    var modal      = document.getElementById('order-modal');
     var openBtns   = document.querySelectorAll('[data-open-modal]');
     var closeBtn   = document.getElementById('riv-modal-close');
     var form       = document.getElementById('riv-dcanp-form');
