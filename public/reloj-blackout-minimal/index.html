@@ -1,1 +1,791 @@
-﻿<!DOCTYPE html><html><head><meta charset=UTF-8><title>BM</title></head><body style='background:#0D0D0D;color:#F0F0F0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0'><h1>OK — deploy funciona</h1></body></html>
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0D0D0D">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
+  <link rel="preload" href="/reloj-blackout-minimal/hero.webp" as="image" fetchpriority="high">
+  <meta name="description" content="Reloj completamente negro, cajita de cuero de regalo. Pag&#xE1;s al recibir, env&#xED;o gratis y entrega en el d&#xED;a.">
+  <title>Reloj Blackout Minimal &mdash; Dam Vertex</title>
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"Product","name":"Reloj Blackout Minimal","description":"Reloj completamente negro, cajita de cuero de regalo.","brand":{"@type":"Brand","name":"DCANP GROUP"},"offers":{"@type":"Offer","price":"209000","priceCurrency":"PYG","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Dam Vertex"}}}]}
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #16181A; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    .nav { position: relative; top: auto; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px,5vw,48px); height: 60px; background: #FFFFFF; border-bottom: 1px solid #D4D7DB; }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #16181A; }
+    .nav__logo span { opacity: .45; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px,5vw,38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: #9AA0A6; text-decoration: line-through; }
+
+    body.riv {
+      background: #0D0D0D;
+      color: #16181A;
+      padding-top: 36px;
+    }
+    :root {
+      --riv-bg:              #FAFAF8;
+      --riv-bg-2:            #F1F2F0;
+      --riv-negro:           #0D0D0D;
+      --riv-texto:           #16181A;
+      --riv-texto-2:         #5B6066;
+      --riv-blanco:          #FFFFFF;
+      --riv-blanco-2:        #B9BEC4;
+      --riv-plata:           #D4D7DB;
+      --riv-esmeralda:       #C0C0C0;
+      --riv-esmeralda-hover: #A8A8A8;
+      --riv-esmeralda-vivo:  #C0C0C0;
+      --riv-esmeralda-suave: #F5F5F5;
+      --riv-tachado:         #9AA0A6;
+    }
+    .riv-urgency-bar {
+      position: relative; z-index: 400;
+      background: var(--riv-esmeralda); color: #FFFFFF;
+      text-align: center; font-size: clamp(11px,3.4vw,14px); font-weight: 600;
+      letter-spacing: .02em; height: 36px; line-height: 36px;
+      padding: 0 16px; overflow: hidden; text-overflow: ellipsis;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      white-space: nowrap;
+    }
+    .riv-urgency-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--riv-esmeralda-vivo); flex-shrink: 0; display: inline-block;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .riv-urgency-dot { animation: riv-pulse 1.5s ease-in-out infinite; }
+    }
+    @keyframes riv-pulse { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+    .riv .nav {
+      position: relative;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--riv-plata);
+    }
+    .riv .nav__logo { color: #F0F0F0; }
+    .riv-nav-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--riv-esmeralda); color: #FFFFFF; font-weight: 700;
+      font-size: clamp(7px,2.6vw,12px); padding: 8px 14px; border-radius: 999px;
+      border: none; cursor: pointer; white-space: nowrap; max-width: 62vw;
+      font-family: inherit;
+    }
+    .riv-inner { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+    .riv-btn {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--riv-esmeralda); color: #FFFFFF; font-weight: 600;
+      padding: 0 14px; border-radius: 999px; border: none; cursor: pointer;
+      text-decoration: none; transition: background .2s, transform .15s;
+      width: 100%; height: 56px; letter-spacing: .01em;
+      font-size: clamp(13px,3.8vw,16px); font-family: inherit;
+      box-shadow: 0 6px 18px rgba(192,192,192,.18); white-space: nowrap;
+    }
+    .riv-btn:hover { background: var(--riv-esmeralda-hover); transform: translateY(-1px); }
+    .riv-btn-sub { font-size: 11px; font-weight: 700; margin-top: 2px; opacity: .8; }
+    .riv-hero {
+      background: var(--riv-negro);
+      padding: clamp(28px,7vw,52px) 0 clamp(32px,7vw,52px);
+      text-align: center;
+    }
+    .riv-hero__h1 {
+      font-size: clamp(24px,7vw,36px); font-weight: 800; line-height: 1.15;
+      color: var(--riv-blanco); margin: 0 0 16px;
+    }
+    .riv-hero__sub { font-size: 15px; color: var(--riv-blanco-2); line-height: 1.55; margin: 0 0 20px; }
+    .riv-hero-img-container {
+      width: min(90vw,440px); aspect-ratio: 1/1;
+      margin: 0 auto 28px; border-radius: 16px; overflow: hidden;
+      border: 1px solid #2A2A2A;
+    }
+    .riv-hero-img-container img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .riv-save-pill {
+      display: inline-block;
+      font-size: 12px; font-weight: 700; color: #0D0D0D;
+      background: var(--riv-esmeralda); border-radius: 999px;
+      padding: 3px 12px; margin-bottom: 10px;
+    }
+    .riv-price-row {
+      display: flex; align-items: baseline; gap: 10px;
+      justify-content: center; flex-wrap: nowrap; margin-bottom: 6px;
+    }
+    .riv-price-main { font-size: clamp(25px,7.5vw,35px); font-weight: 800; color: var(--riv-blanco); }
+    .riv-price-compare { font-size: clamp(18px,5.5vw,22px); color: var(--riv-tachado); text-decoration: line-through; }
+    .riv-social-proof { font-size: 13px; color: var(--riv-blanco-2); font-weight: 700; margin-bottom: 4px; }
+    .riv-garantia { font-size: 13px; color: var(--riv-esmeralda-vivo); margin-bottom: 20px; }
+    .riv-risk-zero {
+      background: rgba(192,192,192,.08); border-left: 3px solid var(--riv-esmeralda-vivo);
+      padding: 14px 16px; border-radius: 8px; margin: 0 0 20px; text-align: left;
+    }
+    .riv-risk-zero__dest { font-size: 15px; font-weight: 700; color: var(--riv-blanco); margin-bottom: 4px; }
+    .riv-risk-zero__sub { font-size: 13px; color: var(--riv-blanco-2); line-height: 1.4; }
+    .riv-gift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .riv-gift-block {
+      border: 1px solid #3A3D42; border-radius: 10px;
+      padding: 12px 10px; text-align: center; font-size: 13px; color: var(--riv-blanco-2);
+    }
+    .riv-gift-block span { display: block; font-size: 20px; margin-bottom: 4px; }
+    .riv-video-sec { background: #161616; padding: clamp(32px,8vw,56px) 0; }
+    .riv-section-h2 {
+      font-size: 24px; font-weight: 800; line-height: 1.2;
+      color: #F0F0F0; margin: 0 0 8px;
+    }
+    .riv-section-sub { font-size: 14px; color: var(--riv-texto-2); line-height: 1.55; margin: 0 0 20px; }
+    .riv-video-wrap {
+      aspect-ratio: 1/1; border-radius: 16px;
+      overflow: hidden; background: #111214; max-width: 440px; margin: 0 auto 20px;
+    }
+    .riv-video-wrap video {
+      width: 100%; height: 100%; object-fit: contain; object-position: center; display: block;
+    }
+    .riv-cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .riv-entrega { background: var(--riv-negro); padding: clamp(32px,8vw,56px) 0; }
+    .riv-entrega-img-wrap {
+      aspect-ratio: 1/1; border-radius: 12px;
+      overflow: hidden; background: #1A1A1A;
+      margin: 0 0 24px; max-width: 100%;
+    }
+    .riv-entrega-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .riv-entrega .riv-section-h2 { color: var(--riv-blanco); }
+    .riv-value-list { list-style: none; padding: 0; margin: 0 0 20px; }
+    .riv-value-item {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 10px 0; border-bottom: 1px solid #3A3D42; gap: 12px;
+    }
+    .riv-value-item:last-child { border-bottom: none; }
+    .riv-value-item--highlight {
+      background: rgba(192,192,192,.10); padding: 10px 8px;
+      border-radius: 6px; border-bottom: none; margin-bottom: 1px;
+    }
+    .riv-value-item__label { font-size: 14px; color: var(--riv-blanco-2); line-height: 1.35; flex: 1; }
+    .riv-value-item__amount { font-size: 14px; color: var(--riv-blanco); font-weight: 700; white-space: nowrap; }
+    .riv-value-total { font-size: 13px; color: var(--riv-blanco-2); margin: 0 0 6px; }
+    .riv-value-hoy { font-size: 20px; font-weight: 700; color: var(--riv-blanco); margin: 0 0 8px; }
+    .riv-value-hoy span { color: var(--riv-esmeralda-vivo); }
+    .riv-value-nota { font-size: 12px; color: var(--riv-blanco-2); margin: 0 0 24px; }
+    .riv-oficina { background: #161616; padding: clamp(32px,8vw,56px) 0; }
+    .riv-oficina-img-wrap {
+      aspect-ratio: 1/1; border-radius: 12px;
+      overflow: hidden; background: #1A1A1A; margin: 0 0 24px;
+    }
+    .riv-oficina-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .riv-specs { list-style: none; padding: 0; margin: 16px 0 24px; display: flex; flex-direction: column; gap: 10px; }
+    .riv-specs li { padding-left: 18px; position: relative; font-size: 15px; color: var(--riv-texto-2); line-height: 1.45; }
+    .riv-specs li::before { content: ''; position: absolute; left: 0; top: 7px; width: 7px; height: 7px; background: var(--riv-esmeralda); border-radius: 50%; }
+    .riv-objeciones { background: #161616; padding: clamp(32px,8vw,56px) 0; }
+    .riv-obj-list { display: flex; flex-direction: column; gap: 14px; }
+    .riv-obj-item { padding: 16px; border-radius: 12px; border: 1px solid var(--riv-plata); background: var(--riv-blanco); }
+    .riv-obj-icon { font-size: 22px; margin-bottom: 6px; }
+    .riv-obj-item strong { font-size: 15px; font-weight: 700; color: var(--riv-texto); display: block; margin-bottom: 4px; }
+    .riv-obj-item p { font-size: 14px; color: var(--riv-texto-2); margin: 0; line-height: 1.45; }
+    .riv-cierre { background: var(--riv-negro); padding: clamp(48px,10vw,72px) 0; text-align: center; }
+    .riv-cierre__h2 { font-size: 22px; font-weight: 800; color: var(--riv-blanco); margin: 0 0 10px; }
+    .riv-cierre__stock { font-size: 13px; color: var(--riv-blanco-2); margin: 0 0 8px; }
+    .riv-cierre__price { font-size: 15px; color: var(--riv-blanco-2); margin: 0 0 22px; }
+    .riv-footer {
+      background: var(--riv-negro); padding: 20px; text-align: center;
+      font-size: 13px; color: var(--riv-blanco-2);
+      border-top: 1px solid #2A2D30;
+    }
+    .riv .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(17,18,20,.6); align-items: center; justify-content: center;
+      padding: 16px; overflow-y: auto;
+    }
+    .riv .modal-overlay.active { display: flex; }
+    .riv .modal-box {
+      position: relative; background: #FFFFFF;
+      border: 1px solid var(--riv-plata); border-radius: 16px;
+      max-width: 440px; width: 100%; padding: 28px 24px;
+      max-height: 90vh; overflow-y: auto;
+      color-scheme: light; accent-color: var(--riv-esmeralda);
+      color: var(--riv-texto);
+    }
+    .riv .modal-close {
+      position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
+      border-radius: 50%; border: none; background: var(--riv-bg-2);
+      color: var(--riv-texto); font-size: 15px; cursor: pointer; font-family: inherit;
+    }
+    .riv .modal-title {
+      font-size: clamp(14px,4vw,18px); font-weight: 700; color: var(--riv-texto);
+      margin: 0 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .riv .modal-section-label {
+      display: block; font-size: 11px; font-weight: 700; color: var(--riv-texto-2);
+      text-transform: uppercase; letter-spacing: .05em; margin: 0 0 10px;
+    }
+    .riv .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .riv .offer-option {
+      position: relative; display: block;
+      border: 1.5px solid var(--riv-plata); border-radius: 10px;
+      padding: 12px 14px; cursor: pointer; background: var(--riv-bg);
+    }
+    .riv .offer-option input { position: absolute; opacity: 0; }
+    .riv .offer-option.selected { border: 2px solid var(--riv-esmeralda); background: var(--riv-esmeralda-suave); }
+    .riv .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    .riv .offer-qty { font-weight: 700; font-size: 14px; color: var(--riv-texto); }
+    .riv .offer-price { font-weight: 800; font-size: 15px; color: var(--riv-texto); }
+    .riv .offer-compare { font-size: 12px; text-decoration: line-through; color: var(--riv-tachado); margin-right: 6px; }
+    .riv .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .riv .offer-saving { color: #1A1A1A; font-weight: 700; font-size: 12px; }
+    .riv .offer-badge {
+      position: static; background: #1A1A1A; color: #C0C0C0;
+      font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+    }
+    .riv .form-group { margin-bottom: 14px; }
+    .riv .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--riv-texto-2); margin-bottom: 6px; }
+    .riv .form-group input {
+      width: 100%; padding: 11px 12px; border-radius: 8px;
+      border: 1px solid var(--riv-plata);
+      background: var(--riv-bg); color: var(--riv-texto); font-size: 14px; font-family: inherit;
+      outline: none; transition: border-color .15s;
+    }
+    .riv .form-group input:focus { border: 2px solid var(--riv-esmeralda); }
+    .riv .form-group input::placeholder { color: var(--riv-tachado); }
+    .riv .upsell-block {
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      background: var(--riv-bg); border: 1.5px solid var(--riv-plata);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .riv .upsell-title { color: var(--riv-texto); font-size: 13px; font-weight: 700; }
+    .riv .upsell-sub { color: var(--riv-texto-2); font-size: 12px; }
+    .riv-pay-badge {
+      margin-top: 16px; text-align: center; font-size: 12px; font-weight: 800;
+      color: #1A1A1A; background: #F0F0F0;
+      border-radius: 8px; padding: 8px 12px;
+    }
+    .riv .form-submit { margin-top: 18px; }
+    .riv .dcanp-success { display: none; text-align: center; }
+    .riv .dcanp-success.visible { display: block; }
+    .riv .dcanp-success__icon {
+      width: 56px; height: 56px; background: #1A1A1A; color: #C0C0C0;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin: 0 auto 16px;
+    }
+    .riv .dcanp-success h2 { color: #16181A; font-size: 22px; margin-bottom: 12px; }
+    .riv .dcanp-success p { color: var(--riv-texto-2); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .riv .dcanp-success__tip { font-weight: 600; color: var(--riv-texto); }
+    .riv .dcanp-success__badges {
+      display: flex; gap: 12px; justify-content: center; margin-top: 16px;
+      font-size: 13px; color: #1A1A1A; font-weight: 700;
+    }
+    .btn-ver-coleccion {
+      display: block; margin-top: 20px; padding: 12px 24px;
+      background: #dc2626; color: #ffffff; font-weight: 700; font-size: 14px;
+      border-radius: 8px; text-align: center; white-space: nowrap; font-family: inherit;
+    }
+    html, body { overflow-x: hidden; }
+  </style>
+</head>
+<body class="riv">
+
+<div class="riv-urgency-bar">Lote limitado: quedan <span data-stock>20</span> de 100 &middot; Env&#xED;o gratis</div>
+
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <button type="button" class="riv-nav-btn" data-open-modal>Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir</button>
+</nav>
+
+<main>
+
+<section id="section-hero" data-insync-section="hero" class="riv-hero">
+  <div class="riv-inner">
+
+    <div class="riv-hero-img-container">
+      <img src="/reloj-blackout-minimal/hero.webp"
+           alt="Reloj Blackout Minimal completamente negro"
+           loading="eager" fetchpriority="high" decoding="async" width="1080" height="1080"
+           onerror="this.style.display='none'">
+    </div>
+
+    <h1 class="riv-hero__h1">El que viste de negro no necesita presentaci&#xF3;n.</h1>
+    <p class="riv-hero__sub">Reloj completamente negro, cajita de cuero de regalo. Sin cuotas, sin adelanto.</p>
+
+    <div style="text-align:center">
+      <div class="riv-save-pill">Ahorr&#xE1;s Gs. 70.000</div>
+      <div class="riv-price-row">
+        <span class="riv-price-main">Gs. 209.000</span>
+        <span class="riv-price-compare">Gs. 279.000</span>
+      </div>
+      <p class="riv-social-proof">+340 pedidos entregados en Paraguay</p>
+
+    </div>
+
+    
+<div class="riv-gift-grid">
+      <div class="riv-gift-block">
+        <span>&#x2B1B;</span><strong>100% negro mate</strong> Dise&#xF1;o sin concesiones
+      </div>
+      <div class="riv-gift-block">
+        <span>&#x1F527;</span><strong>Ajuste de malla</strong> Incluido sin costo
+      </div>
+    </div>
+
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="hero"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="section-video" data-insync-section="video" class="riv-video-sec">
+  <div class="riv-inner">
+
+    <h2 class="riv-section-h2">As&#xED; se ve en la mano.</h2>
+    <p class="riv-section-sub">Sin filtros ni renders: el mismo reloj que te llega.</p>
+
+    <div class="riv-video-wrap">
+      <video id="riv-video" muted autoplay loop playsinline webkit-playsinline preload="metadata"
+             poster="/reloj-blackout-minimal/video1-poster.webp" disablepictureinpicture
+             width="1080" height="1080"
+             onerror="this.style.display='none'">
+        <source src="/reloj-blackout-minimal/video1.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="video"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="section-entrega" data-insync-section="entrega" class="riv-entrega">
+  <div class="riv-inner">
+
+    <div class="riv-entrega-img-wrap">
+      <img src="/reloj-blackout-minimal/img2.webp"
+           alt="Cajita de cuero con Reloj Blackout Minimal"
+           loading="lazy" decoding="async" width="1080" height="1080"
+           onerror="this.style.display='none'">
+    </div>
+
+    <h2 class="riv-section-h2">&#xBF;Por qu&#xE9; este reloj?</h2>
+
+    <ul class="riv-value-list">
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Reloj Blackout Minimal &mdash; precio normal</span>
+        <span class="riv-value-item__amount">Gs. 279.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">De regalo: cajita de cuero negra</span>
+        <span class="riv-value-item__amount">Gs. 45.000</span>
+      </li>
+      <li class="riv-value-item riv-value-item--highlight">
+        <span class="riv-value-item__label">Ajuste de tama&#xF1;o de malla incluido</span>
+        <span class="riv-value-item__amount">Gs. 25.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Env&#xED;o gratis con entrega en el d&#xED;a</span>
+        <span class="riv-value-item__amount">Gs. 30.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Garant&#xED;a de 30 d&#xED;as</span>
+        <span class="riv-value-item__amount">Incluida</span>
+      </li>
+    </ul>
+
+    <p class="riv-value-total">Valor total: <strong style="color:#FFFFFF">Gs. 379.000</strong></p>
+    <p class="riv-value-hoy">Hoy pag&#xE1;s <span>Gs. 209.000</span>, al recibir.</p>
+    <p class="riv-value-nota">Llevando 2 ahorr&#xE1;s Gs. 49.000 m&#xE1;s &mdash; uno para vos, uno para regalar.</p>
+
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="entrega"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="section-oficina" data-insync-section="oficina" class="riv-oficina">
+  <div class="riv-inner">
+
+    <div class="riv-oficina-img-wrap">
+      <img src="/reloj-blackout-minimal/img3.webp"
+           alt="Reloj Blackout Minimal en la mu&#xF1;eca"
+           loading="lazy" decoding="async" width="1080" height="1080"
+           onerror="this.style.display='none'">
+    </div>
+
+    <h2 class="riv-section-h2">No pag&#xE1;s nada hasta tenerlo en la mano.</h2>
+    <p class="riv-section-sub">Lo recib&#xED;s, lo revis&#xE1;s, y reci&#xE9;n ah&#xED; pag&#xE1;s.<br>Sin adelanto &middot; Sin tarjeta &middot; Sin riesgo.</p>
+
+    <ul class="riv-specs">
+      <li>Caja tonneau de 42 mm</li>
+      <li>Esfera verde con d&#xED;a y fecha</li>
+      <li>Cristal mineral endurecido</li>
+      <li>Resiste salpicaduras y lluvia (3 ATM)</li>
+      <li>Movimiento de cuarzo japon&#xE9;s</li>
+      <li>Ajuste de tama&#xF1;o de malla incluido</li>
+    </ul>
+
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="oficina"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="section-objeciones" data-insync-section="objeciones" class="riv-objeciones">
+  <div class="riv-inner">
+    <div class="riv-obj-list">
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F69A;</div>
+        <strong>&#xBF;Cu&#xE1;ndo llega?</strong>
+        <p>Entrega en el d&#xED;a en el Gran Asunci&#xF3;n. Env&#xED;o gratis a todo Paraguay.</p>
+      </div>
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F4B5;</div>
+        <strong>&#xBF;Tengo que pagar antes?</strong>
+        <p>No. Abr&#xED;s la caja, lo revis&#xE1;s y reci&#xE9;n ah&#xED; pag&#xE1;s. Si no te convence, no pag&#xE1;s.</p>
+      </div>
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F6E1;&#xFE0F;</div>
+        <strong>&#xBF;Y si falla?</strong>
+        <p>Ten&#xE9;s 30 d&#xED;as de garant&#xED;a. Si falla, te lo cambiamos sin costo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="section-cierre" data-insync-section="cierre" class="riv-cierre">
+  <div class="riv-inner">
+    <h2 class="riv-cierre__h2">Revisalo en tu puerta.</h2>
+    <p class="riv-section-sub" style="margin:8px 0 16px">Pag&#xE1; solo si te convence.</p>
+    <p class="riv-cierre__stock">Quedan <span data-stock>20</span> de 100.</p>
+    <p class="riv-cierre__price">Gs. 209.000 &middot; Entrega en el d&#xED;a &middot; Pag&#xE1;s al recibir</p>
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="cierre"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="riv-modal-title">
+  <div class="modal-box">
+    <button class="modal-close" id="riv-modal-close" aria-label="Cerrar">&#x2715;</button>
+
+    <div id="riv-modal-form-wrap">
+      <h2 class="modal-title" id="riv-modal-title">Reloj Blackout Minimal &mdash; Gs. 209.000</h2>
+      <p style="text-align:center;font-size:11px;font-weight:700;color:#1A1A1A;margin:4px 0 14px;">&#x26A1; Quedan pocas unidades &mdash; pedidos se procesan hoy</p>
+
+      <span class="modal-section-label">Eleg&#xED; tu oferta</span>
+      <div class="offer-options">
+        <label class="offer-option selected">
+          <input type="radio" name="riv-offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price">Gs. 209.000</span>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="riv-offer" value="2">
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div>
+              <span class="offer-compare">Gs. 418.000</span>
+              <span class="offer-price">Gs. 369.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorr&#xE1;s Gs. 49.000</span>
+            <div class="offer-badge">&#x1F525; M&#xE1;s elegido</div>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="riv-offer" value="3">
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div>
+              <span class="offer-compare">Gs. 627.000</span>
+              <span class="offer-price">Gs. 529.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorr&#xE1;s Gs. 98.000</span>
+            <div class="offer-badge">&#x2B50; Mayor ahorro</div>
+          </div>
+        </label>
+      </div>
+
+      <form id="riv-dcanp-form" novalidate>
+        <div class="form-group">
+          <label for="riv-name">Nombre y apellido</label>
+          <input type="text" id="riv-name" name="name" placeholder="Ej: Mat&#xED;as Gim&#xE9;nez" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label for="riv-phone">Tel&#xE9;fono <span style="color:#DC2626;font-size:11px;font-weight:600;">&#xB7; Ingres&#xE1; tu n&#xFA;mero completo</span></label>
+          <input type="tel" id="riv-phone" name="phone" placeholder="Ej: 984 832 688" autocomplete="tel" required>
+          <p id="riv-phone-error" style="display:none;color:#DC2626;font-size:12px;font-weight:700;margin-top:4px;"></p>
+        </div>
+        <div class="form-group">
+          <label for="riv-city">Ciudad <span style="color:#DC2626;font-size:11px;font-weight:600;">&#xB7; Solo el nombre de tu ciudad</span></label>
+          <input type="text" id="riv-city" name="city" placeholder="Ej: Asunci&#xF3;n, Lambar&#xE9;, San Lorenzo..." autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="riv-calle">Calle principal y secundaria</label>
+          <input type="text" id="riv-calle" name="calle" placeholder="Ej: Av. Espa&#xF1;a y Tacuary" maxlength="200" autocomplete="street-address">
+        </div>
+
+        <label class="upsell-block">
+          <input type="checkbox" id="riv-express" name="express">
+          <div>
+            <span class="upsell-title">&#x1F680; Env&#xED;o express +10.000 Gs</span><br>
+            <span class="upsell-sub">Recib&#xED; antes que los dem&#xE1;s</span>
+          </div>
+        </label>
+
+        <label class="upsell-block" style="margin-top:12px">
+          <input type="checkbox" id="riv-invoice" name="invoice">
+          <div>
+            <span class="upsell-title">&#x1F9FE; Necesito factura</span><br>
+            <span class="upsell-sub">RUC o c&#xE9;dula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="riv-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group">
+            <label for="riv-invoice-ruc">RUC</label>
+            <input type="text" id="riv-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="riv-invoice-name">Raz&#xF3;n social o nombre</label>
+            <input type="text" id="riv-invoice-name" name="invoice_name" placeholder="Nombre completo o raz&#xF3;n social">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="riv-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+            <input type="email" id="riv-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+          </div>
+        </div>
+
+        <p id="riv-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none"></p>
+
+        <div class="riv-pay-badge">&#x1F4B3; Pago al recibir</div>
+
+        <div class="form-submit">
+          <button type="submit" id="riv-submit-btn"
+                  style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px;background:#1A1A1A;color:#C0C0C0;font-weight:700;font-size:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;">
+            <div>Confirmar pedido</div>
+            <div style="font-size:11px;font-weight:700;margin-top:3px;letter-spacing:.03em;opacity:.85;">&#x2713; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="dcanp-success" id="riv-dcanp-success">
+      <div class="dcanp-success__icon">&#x2713;</div>
+      <h2>&#xA1;Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p class="dcanp-success__tip">&#x1F4F1; Quedate atento a tu n&#xFA;mero &mdash; te vamos a contactar pronto.</p>
+      <div class="dcanp-success__badges">
+        <span>&#x2713; Env&#xED;o gratis</span>
+        <span>&#x2713; Pag&#xE1;s al recibir</span>
+      </div>
+      <a href="/" class="btn-ver-coleccion">Ver m&aacute;s productos &#x2192;</a>
+    </div>
+  </div>
+</div>
+
+<footer class="riv-footer">&copy; Dam Vertex</footer>
+
+<script src="/assets/js/tracking.js?v=74" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+
+<script defer>
+(function() {
+  function rivInitVideo() {
+    var vid = document.getElementById('riv-video');
+    if (!vid) return;
+    vid.muted = true;
+    document.addEventListener('touchstart', function() {
+      if (vid.paused) vid.play().catch(function(){});
+    }, { once: true, passive: true });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { vid.muted = true; vid.play().catch(function(){}); }
+          else vid.pause();
+        });
+      }, { threshold: 0.3 }).observe(vid);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', rivInitVideo);
+  else rivInitVideo();
+})();
+</script>
+
+<script defer>
+var PRODUCT = {
+  name: 'Reloj Blackout Minimal',
+  slug: 'reloj-blackout-minimal',
+  price: 209000,
+  comboPricing: { 1: 209000, 2: 369000, 3: 529000 },
+};
+var STOCK_RESTANTE = 20;
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-stock]').forEach(function(el) { el.textContent = STOCK_RESTANTE; });
+
+  setTimeout(function() {
+    try { DV.trackViewContent(PRODUCT); } catch (_) {}
+  }, 800);
+
+  var modal      = document.getElementById('order-modal');
+  var openBtns   = document.querySelectorAll('[data-open-modal]');
+  var closeBtn   = document.getElementById('riv-modal-close');
+  var form       = document.getElementById('riv-dcanp-form');
+  var formWrap   = document.getElementById('riv-modal-form-wrap');
+  var successBox = document.getElementById('riv-dcanp-success');
+  var submitBtn  = document.getElementById('riv-submit-btn');
+  var offerInputs = document.querySelectorAll('input[name="riv-offer"]');
+
+  var _icFired = false;
+  function openModal() {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+    if (!_icFired) {
+      _icFired = true;
+      setTimeout(function() {
+        try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {}
+      }, 1500);
+    }
+  }
+  function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+
+  openBtns.forEach(function(btn) {
+    if (!btn) return;
+    btn.addEventListener('click', function(e) { e.preventDefault(); openModal(); });
+  });
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (modal) modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+
+  offerInputs.forEach(function(input) {
+    input.addEventListener('change', function() {
+      document.querySelectorAll('.offer-option').forEach(function(opt) { opt.classList.remove('selected'); });
+      input.closest('.offer-option').classList.add('selected');
+      updateTotal();
+    });
+  });
+
+  var invoiceChk    = document.getElementById('riv-invoice');
+  var invoiceFields = document.getElementById('riv-invoice-fields');
+  if (invoiceChk && invoiceFields) {
+    invoiceChk.addEventListener('change', function() {
+      invoiceFields.style.display = this.checked ? 'block' : 'none';
+    });
+  }
+
+  function updateTotal() {
+    var tl = document.getElementById('riv-total-line');
+    if (!tl) return;
+    var sel = document.querySelector('input[name="riv-offer"]:checked');
+    var qty = sel ? parseInt(sel.value) : 1;
+    var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    var isExp = document.getElementById('riv-express') && document.getElementById('riv-express').checked;
+    var total = base + (isExp ? 10000 : 0);
+    tl.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    tl.style.display = isExp ? 'block' : 'none';
+  }
+  var expChk = document.getElementById('riv-express');
+  if (expChk) expChk.addEventListener('change', updateTotal);
+
+  var rivPhone = document.getElementById('riv-phone');
+  if (rivPhone) {
+    rivPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
+    rivPhone.addEventListener('input', function() {
+      this.style.borderColor = '';
+      var e = document.getElementById('riv-phone-error');
+      if (e) { e.textContent = ''; e.style.display = 'none'; }
+    });
+  }
+
+  if (form) form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var sel   = document.querySelector('input[name="riv-offer"]:checked');
+    var qty   = sel ? parseInt(sel.value) : 1;
+    var base  = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    var express = !!(document.getElementById('riv-express') && document.getElementById('riv-express').checked);
+    var invoice = !!(document.getElementById('riv-invoice') && document.getElementById('riv-invoice').checked);
+    var value = base + (express ? 10000 : 0);
+    var data = {
+      name:          (document.getElementById('riv-name') && document.getElementById('riv-name').value.trim()) || '',
+      phone:         (document.getElementById('riv-phone') && document.getElementById('riv-phone').value.replace(/\s/g,'')) || '',
+      city:          (document.getElementById('riv-city') && document.getElementById('riv-city').value.trim()) || '',
+      street:        (document.getElementById('riv-calle') && document.getElementById('riv-calle').value.trim()) || '',
+      quantity:      qty,
+      product_slug:  PRODUCT.slug,
+      product_name:  PRODUCT.name,
+      value:         value,
+      express:       express,
+      invoice:       invoice,
+      invoice_ruc:   invoice ? ((document.getElementById('riv-invoice-ruc') && document.getElementById('riv-invoice-ruc').value) || '').trim() : '',
+      invoice_name:  invoice ? ((document.getElementById('riv-invoice-name') && document.getElementById('riv-invoice-name').value) || '').trim() : '',
+      invoice_email: invoice ? ((document.getElementById('riv-invoice-email') && document.getElementById('riv-invoice-email').value) || '').trim() : '',
+    };
+    if (!data.name || !data.phone || !data.city) {
+      alert('Complet\u00E1 nombre, tel\u00E9fono y ciudad para continuar.');
+      return;
+    }
+    var soloNums = data.phone.replace(/\D/g,'');
+    if (soloNums.length < 9) {
+      if (rivPhone) { rivPhone.style.borderColor = '#DC2626'; rivPhone.scrollIntoView({ behavior:'smooth', block:'center' }); }
+      var pErr = document.getElementById('riv-phone-error');
+      if (pErr) { pErr.textContent = 'Ingres\u00E1 tu n\u00FAmero completo (ej: 0984 832 688)'; pErr.style.display = 'block'; }
+      return;
+    }
+    try {
+      var client = typeof getClientData === 'function' ? getClientData() : {};
+      data.fbp = client.fbp || null;
+      data.fbc = client.fbc || null;
+    } catch (_) {}
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+    try {
+      var res = await fetch('/api/dcanp-lead', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(data),
+      });
+      await res.json().catch(function() { return {}; });
+    } catch (err) {
+      console.error('DCANP_SUBMIT_ERROR', err && err.message);
+    }
+    formWrap.style.display = 'none';
+    successBox.classList.add('visible');
+    submitBtn.disabled = false;
+  });
+});
+</script>
+
+<script src="/assets/js/protect.js?v=68" defer></script>
+</body>
+</html>
