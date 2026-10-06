@@ -8,7 +8,8 @@
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
-  <meta name="description" content="Reloj completamente negro, cajita de cuero de regalo. Pag&#xE1;s al recibir, env&#xED;o gratis, entrega en el d&#xED;a.">
+  <link rel="preload" href="/reloj-blackout-minimal/hero.webp" as="image" fetchpriority="high">
+  <meta name="description" content="Reloj completamente negro, cajita de cuero de regalo. Pag&#xE1;s al recibir, env&#xED;o gratis y entrega en el d&#xED;a.">
   <title>Reloj Blackout Minimal &mdash; Dam Vertex</title>
   <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
@@ -17,9 +18,21 @@
   </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #F0F0F0; -webkit-font-smoothing: antialiased; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #16181A; -webkit-font-smoothing: antialiased; }
     img { max-width: 100%; display: block; }
     a { text-decoration: none; color: inherit; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px,5vw,48px); height: 60px; background: #FFFFFF; border-bottom: 1px solid #D4D7DB; }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #16181A; }
+    .nav__logo span { opacity: .45; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px,5vw,38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: #9AA0A6; text-decoration: line-through; }
+
+    body.bm {
+      background: #0D0D0D;
+      color: #F0F0F0;
+      padding-top: 36px;
+    }
     :root {
       --bm-bg:         #0D0D0D;
       --bm-superficie: #161616;
@@ -28,58 +41,40 @@
       --bm-acento:     #C0C0C0;
       --bm-borde:      #2A2A2A;
     }
-    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px,5vw,48px); height: 60px; background: rgba(13,13,13,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--bm-borde); }
-    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: var(--bm-blanco); }
-    .nav__logo span { opacity: .4; }
-    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
-    .price-main { font-size: clamp(28px,5vw,38px); font-weight: 800; color: var(--bm-blanco); }
-    .price-compare { font-size: 16px; color: var(--bm-gris); text-decoration: line-through; }
-
-    body.bm {
-      background: var(--bm-bg);
-      color: var(--bm-blanco);
-      padding-top: 36px;
-    }
     .bm-urgency-bar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 400;
-      background: var(--bm-superficie); color: var(--bm-acento);
-      text-align: center; font-size: clamp(11px,3.4vw,13px); font-weight: 700;
-      letter-spacing: .06em; height: 36px;
-      padding: 0 16px; overflow: hidden;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      white-space: nowrap; border-bottom: 1px solid var(--bm-borde);
-      text-transform: uppercase;
+      background: var(--bm-acento); color: #0D0D0D;
+      text-align: center; font-size: clamp(11px,3.4vw,14px); font-weight: 600;
+      letter-spacing: .02em; height: 36px; line-height: 36px;
+      padding: 0 16px; overflow: hidden; text-overflow: ellipsis;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      white-space: nowrap;
     }
-    .bm-urgency-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--bm-acento); flex-shrink: 0;
+    .bm .nav {
+      position: relative;
+      background: #FFFFFF;
+      border-bottom: 1px solid #D4D7DB;
     }
-    @media (prefers-reduced-motion: no-preference) {
-      .bm-urgency-dot { animation: bm-pulse 2s ease-in-out infinite; }
-    }
-    @keyframes bm-pulse { 0%,100% { opacity:1; } 50% { opacity:.15; } }
-
+    .bm .nav__logo { color: #16181A; }
     .bm-nav-btn {
       display: inline-flex; align-items: center; justify-content: center;
-      background: var(--bm-acento); color: #000000; font-weight: 800;
+      background: var(--bm-acento); color: #0D0D0D; font-weight: 700;
       font-size: clamp(7px,2.6vw,12px); padding: 8px 14px; border-radius: 999px;
       border: none; cursor: pointer; white-space: nowrap; max-width: 62vw;
-      font-family: inherit; letter-spacing: .03em;
+      font-family: inherit;
     }
     .bm-inner { max-width: 480px; margin: 0 auto; padding: 0 20px; }
     .bm-btn {
       display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
-      background: var(--bm-acento); color: #000000; font-weight: 700;
+      background: var(--bm-acento); color: #0D0D0D; font-weight: 600;
       padding: 0 14px; border-radius: 999px; border: none; cursor: pointer;
       text-decoration: none; transition: background .2s, transform .15s;
-      width: 100%; height: 56px; letter-spacing: .03em;
+      width: 100%; height: 56px; letter-spacing: .01em;
       font-size: clamp(13px,3.8vw,16px); font-family: inherit;
-      box-shadow: 0 6px 18px rgba(192,192,192,.14); white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(192,192,192,.18); white-space: nowrap;
     }
-    .bm-btn:hover { background: #d4d4d4; transform: translateY(-1px); }
-    .bm-btn-sub { font-size: 11px; font-weight: 700; margin-top: 2px; opacity: .65; }
-    .bm-cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-
+    .bm-btn:hover { background: #A8A8A8; transform: translateY(-1px); }
+    .bm-btn-sub { font-size: 11px; font-weight: 700; margin-top: 2px; opacity: .8; }
     .bm-hero {
       background: var(--bm-bg);
       padding: clamp(28px,7vw,52px) 0 clamp(32px,7vw,52px);
@@ -87,53 +82,48 @@
     }
     .bm-hero__h1 {
       font-size: clamp(24px,7vw,36px); font-weight: 800; line-height: 1.15;
-      color: var(--bm-blanco); margin: 0 0 14px;
+      color: var(--bm-blanco); margin: 0 0 16px;
     }
     .bm-hero__sub { font-size: 15px; color: var(--bm-gris); line-height: 1.55; margin: 0 0 20px; }
     .bm-hero-img-container {
       width: min(90vw,440px); aspect-ratio: 1/1;
       margin: 0 auto 28px; border-radius: 16px; overflow: hidden;
-      border: 1px solid var(--bm-borde); background: var(--bm-superficie);
-      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--bm-borde);
     }
     .bm-hero-img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .bm-img-placeholder { color: var(--bm-gris); font-size: 14px; font-weight: 500; padding: 40px; }
-
     .bm-save-pill {
-      display: inline-block; font-size: 12px; font-weight: 800; color: #000000;
+      display: inline-block;
+      font-size: 12px; font-weight: 700; color: #0D0D0D;
       background: var(--bm-acento); border-radius: 999px;
-      padding: 4px 14px; margin-bottom: 10px; letter-spacing: .03em;
+      padding: 3px 12px; margin-bottom: 10px;
     }
     .bm-price-row {
       display: flex; align-items: baseline; gap: 10px;
       justify-content: center; flex-wrap: nowrap; margin-bottom: 6px;
     }
-    .bm-price-main { font-size: clamp(26px,7.5vw,36px); font-weight: 800; color: var(--bm-blanco); }
+    .bm-price-main { font-size: clamp(25px,7.5vw,35px); font-weight: 800; color: var(--bm-blanco); }
     .bm-price-compare { font-size: clamp(18px,5.5vw,22px); color: var(--bm-gris); text-decoration: line-through; }
-    .bm-social-proof { font-size: 13px; color: var(--bm-acento); font-weight: 700; margin-bottom: 20px; }
-
-    .bm-grid4 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
-    .bm-grid4-item {
+    .bm-social-proof { font-size: 13px; color: var(--bm-gris); font-weight: 700; margin-bottom: 20px; }
+    .bm-benefit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .bm-benefit-block {
       border: 1px solid var(--bm-borde); border-radius: 10px;
-      padding: 14px 10px; text-align: center; font-size: 12px; color: var(--bm-gris);
-      background: var(--bm-superficie); line-height: 1.4;
+      padding: 12px 10px; text-align: center; font-size: 12px; color: var(--bm-gris);
     }
-    .bm-grid4-item span { display: block; font-size: 22px; margin-bottom: 5px; }
-    .bm-grid4-item strong { display: block; font-size: 13px; color: var(--bm-blanco); font-weight: 700; margin-bottom: 3px; }
-
+    .bm-benefit-block span { display: block; font-size: 20px; margin-bottom: 4px; }
+    .bm-benefit-block strong { display: block; font-size: 13px; font-weight: 700; color: var(--bm-blanco); margin-bottom: 2px; }
+    .bm-cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
     .bm-video-sec { background: var(--bm-superficie); padding: clamp(32px,8vw,56px) 0; }
-    .bm-section-h2 { font-size: 24px; font-weight: 800; line-height: 1.2; color: var(--bm-blanco); margin: 0 0 8px; }
+    .bm-section-h2 {
+      font-size: 24px; font-weight: 800; line-height: 1.2;
+      color: var(--bm-blanco); margin: 0 0 8px;
+    }
     .bm-section-sub { font-size: 14px; color: var(--bm-gris); line-height: 1.55; margin: 0 0 20px; }
     .bm-video-wrap {
       aspect-ratio: 1/1; border-radius: 16px;
-      overflow: hidden; background: var(--bm-bg); max-width: 440px; margin: 0 auto 20px;
-      border: 1px solid var(--bm-borde);
-      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; background: #000000; max-width: 440px; margin: 0 auto 20px;
     }
     .bm-video-wrap video { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
-    .bm-video-placeholder { color: var(--bm-gris); font-size: 14px; font-weight: 500; }
-
-    .bm-porque { background: var(--bm-bg); padding: clamp(32px,8vw,56px) 0; }
+    .bm-porque { background: var(--bm-superficie); padding: clamp(32px,8vw,56px) 0; }
     .bm-value-list { list-style: none; padding: 0; margin: 0 0 20px; }
     .bm-value-item {
       display: flex; justify-content: space-between; align-items: flex-start;
@@ -141,7 +131,7 @@
     }
     .bm-value-item:last-child { border-bottom: none; }
     .bm-value-item--highlight {
-      background: rgba(192,192,192,.07); padding: 10px 8px;
+      background: rgba(192,192,192,.08); padding: 10px 8px;
       border-radius: 6px; border-bottom: none; margin-bottom: 1px;
     }
     .bm-value-item__label { font-size: 14px; color: var(--bm-gris); line-height: 1.35; flex: 1; }
@@ -150,125 +140,125 @@
     .bm-value-hoy { font-size: 20px; font-weight: 700; color: var(--bm-blanco); margin: 0 0 8px; }
     .bm-value-hoy span { color: var(--bm-acento); }
     .bm-value-nota { font-size: 12px; color: var(--bm-gris); margin: 0 0 24px; }
-
-    .bm-img-sec { background: var(--bm-superficie); padding: clamp(32px,8vw,56px) 0; }
-    .bm-img-wrap {
+    .bm-img2-sec { background: var(--bm-bg); padding: clamp(32px,8vw,56px) 0; }
+    .bm-img2-wrap {
       aspect-ratio: 1/1; border-radius: 12px;
-      overflow: hidden; background: var(--bm-bg);
-      margin: 0 0 24px; border: 1px solid var(--bm-borde);
-      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; background: #1A1A1A; margin: 0 0 24px; max-width: 100%;
     }
-    .bm-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
+    .bm-img2-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .bm-risk-zero {
-      background: rgba(192,192,192,.07); border-left: 3px solid var(--bm-acento);
+      background: rgba(192,192,192,.06); border-left: 3px solid var(--bm-acento);
       padding: 14px 16px; border-radius: 8px; margin: 0 0 20px; text-align: left;
     }
     .bm-risk-zero__dest { font-size: 15px; font-weight: 700; color: var(--bm-blanco); margin-bottom: 4px; }
     .bm-risk-zero__sub { font-size: 13px; color: var(--bm-gris); line-height: 1.4; }
-
-    .bm-objeciones { background: var(--bm-bg); padding: clamp(32px,8vw,56px) 0; }
-    .bm-obj-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-    .bm-obj-item { padding: 16px; border-radius: 12px; border: 1px solid var(--bm-borde); background: var(--bm-superficie); }
-    .bm-obj-icon { font-size: 20px; margin-bottom: 5px; }
+    .bm-objeciones { background: var(--bm-superficie); padding: clamp(32px,8vw,56px) 0; }
+    .bm-obj-list { display: flex; flex-direction: column; gap: 14px; }
+    .bm-obj-item { padding: 16px; border-radius: 12px; border: 1px solid var(--bm-borde); background: var(--bm-bg); }
+    .bm-obj-icon { font-size: 22px; margin-bottom: 6px; }
     .bm-obj-item strong { font-size: 15px; font-weight: 700; color: var(--bm-blanco); display: block; margin-bottom: 4px; }
     .bm-obj-item p { font-size: 14px; color: var(--bm-gris); margin: 0; line-height: 1.45; }
-
-    .bm-cierre { background: var(--bm-superficie); padding: clamp(48px,10vw,72px) 0; text-align: center; }
-    .bm-cierre__h2 { font-size: 22px; font-weight: 800; color: var(--bm-blanco); margin: 0 0 10px; line-height: 1.25; }
+    .bm-cierre { background: var(--bm-bg); padding: clamp(48px,10vw,72px) 0; text-align: center; }
+    .bm-cierre__h2 { font-size: 22px; font-weight: 800; color: var(--bm-blanco); margin: 0 0 6px; }
+    .bm-cierre__sub { font-size: 17px; font-weight: 700; color: var(--bm-blanco); margin: 0 0 10px; }
     .bm-cierre__stock { font-size: 13px; color: var(--bm-gris); margin: 0 0 8px; }
     .bm-cierre__price { font-size: 15px; color: var(--bm-gris); margin: 0 0 22px; }
-
-    .bm-img3-sec { background: var(--bm-bg); padding: clamp(32px,8vw,56px) 0; }
-
+    .bm-img3-sec { background: var(--bm-superficie); padding: clamp(32px,8vw,56px) 0; }
+    .bm-img3-wrap {
+      aspect-ratio: 1/1; border-radius: 12px;
+      overflow: hidden; background: #1A1A1A; max-width: 440px; margin: 0 auto;
+    }
+    .bm-img3-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .bm-footer {
       background: var(--bm-bg); padding: 20px; text-align: center;
       font-size: 13px; color: var(--bm-gris);
       border-top: 1px solid var(--bm-borde);
     }
-
     .bm .modal-overlay {
       display: none; position: fixed; inset: 0; z-index: 1000;
-      background: rgba(0,0,0,.78); align-items: center; justify-content: center;
+      background: rgba(0,0,0,.75); align-items: center; justify-content: center;
       padding: 16px; overflow-y: auto;
     }
     .bm .modal-overlay.active { display: flex; }
     .bm .modal-box {
       position: relative; background: #FFFFFF;
-      border: 1px solid #E0E0E0; border-radius: 16px;
+      border: 1px solid #D4D7DB; border-radius: 16px;
       max-width: 440px; width: 100%; padding: 28px 24px;
       max-height: 90vh; overflow-y: auto;
-      color-scheme: light; color: #1A1A1A;
+      color-scheme: light; accent-color: var(--bm-acento);
+      color: #16181A;
     }
     .bm .modal-close {
       position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
-      border-radius: 50%; border: none; background: #F0F0F0;
-      color: #1A1A1A; font-size: 15px; cursor: pointer; font-family: inherit;
+      border-radius: 50%; border: none; background: #F1F2F0;
+      color: #16181A; font-size: 15px; cursor: pointer; font-family: inherit;
     }
     .bm .modal-title {
-      font-size: clamp(14px,4vw,17px); font-weight: 700; color: #1A1A1A;
+      font-size: clamp(14px,4vw,18px); font-weight: 700; color: #16181A;
       margin: 0 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .bm .modal-section-label {
-      display: block; font-size: 11px; font-weight: 700; color: #777;
+      display: block; font-size: 11px; font-weight: 700; color: #5B6066;
       text-transform: uppercase; letter-spacing: .05em; margin: 0 0 10px;
     }
     .bm .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
     .bm .offer-option {
       position: relative; display: block;
-      border: 1.5px solid #E0E0E0; border-radius: 10px;
-      padding: 12px 14px; cursor: pointer; background: #F8F8F8;
+      border: 1.5px solid #D4D7DB; border-radius: 10px;
+      padding: 12px 14px; cursor: pointer; background: #FAFAF8;
     }
     .bm .offer-option input { position: absolute; opacity: 0; }
-    .bm .offer-option.selected { border: 2px solid #1A1A1A; background: #F0F0F0; }
+    .bm .offer-option.selected { border: 2px solid var(--bm-acento); background: #F5F5F5; }
     .bm .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
-    .bm .offer-qty { font-weight: 700; font-size: 14px; color: #1A1A1A; }
-    .bm .offer-price { font-weight: 800; font-size: 15px; color: #1A1A1A; }
-    .bm .offer-compare { font-size: 12px; text-decoration: line-through; color: #AAA; margin-right: 6px; }
+    .bm .offer-qty { font-weight: 700; font-size: 14px; color: #16181A; }
+    .bm .offer-price { font-weight: 800; font-size: 15px; color: #16181A; }
+    .bm .offer-compare { font-size: 12px; text-decoration: line-through; color: #9AA0A6; margin-right: 6px; }
     .bm .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
-    .bm .offer-saving { color: #555; font-weight: 700; font-size: 12px; }
+    .bm .offer-saving { color: #1A1A1A; font-weight: 700; font-size: 12px; }
     .bm .offer-badge {
-      background: #1A1A1A; color: #F0F0F0;
-      font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+      position: static; background: #1A1A1A; color: #C0C0C0;
+      font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
     }
     .bm .form-group { margin-bottom: 14px; }
-    .bm .form-group label { display: block; font-size: 12px; font-weight: 700; color: #555; margin-bottom: 6px; }
+    .bm .form-group label { display: block; font-size: 12px; font-weight: 700; color: #5B6066; margin-bottom: 6px; }
     .bm .form-group input {
       width: 100%; padding: 11px 12px; border-radius: 8px;
-      border: 1px solid #E0E0E0; background: #FFFFFF; color: #1A1A1A;
-      font-size: 14px; font-family: inherit; outline: none; transition: border-color .15s;
+      border: 1px solid #D4D7DB;
+      background: #FAFAF8; color: #16181A; font-size: 14px; font-family: inherit;
+      outline: none; transition: border-color .15s;
     }
-    .bm .form-group input:focus { border: 2px solid #1A1A1A; }
-    .bm .form-group input::placeholder { color: #BBB; }
+    .bm .form-group input:focus { border: 2px solid var(--bm-acento); }
+    .bm .form-group input::placeholder { color: #9AA0A6; }
     .bm .upsell-block {
       display: flex; align-items: center; gap: 10px; cursor: pointer;
-      background: #F8F8F8; border: 1.5px solid #E0E0E0;
+      background: #FAFAF8; border: 1.5px solid #D4D7DB;
       border-radius: 10px; padding: 12px 14px;
     }
-    .bm .upsell-title { color: #1A1A1A; font-size: 13px; font-weight: 700; }
-    .bm .upsell-sub { color: #666; font-size: 12px; }
+    .bm .upsell-title { color: #16181A; font-size: 13px; font-weight: 700; }
+    .bm .upsell-sub { color: #5B6066; font-size: 12px; }
     .bm-pay-badge {
       margin-top: 16px; text-align: center; font-size: 12px; font-weight: 800;
-      color: #1A1A1A; background: #EBEBEB; border-radius: 8px; padding: 8px 12px;
+      color: #1A1A1A; background: #F0F0F0;
+      border-radius: 8px; padding: 8px 12px;
     }
     .bm .form-submit { margin-top: 18px; }
     .bm .dcanp-success { display: none; text-align: center; }
     .bm .dcanp-success.visible { display: block; }
     .bm .dcanp-success__icon {
-      width: 56px; height: 56px; background: #1A1A1A; color: #F0F0F0;
+      width: 56px; height: 56px; background: #1A1A1A; color: #C0C0C0;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
       font-size: 24px; margin: 0 auto 16px;
     }
-    .bm .dcanp-success h2 { color: #1A1A1A; font-size: 22px; margin-bottom: 12px; }
-    .bm .dcanp-success p { color: #555; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
-    .bm .dcanp-success__tip { font-weight: 600; color: #1A1A1A; }
+    .bm .dcanp-success h2 { color: #16181A; font-size: 22px; margin-bottom: 12px; }
+    .bm .dcanp-success p { color: #5B6066; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .bm .dcanp-success__tip { font-weight: 600; color: #16181A; }
     .bm .dcanp-success__badges {
       display: flex; gap: 12px; justify-content: center; margin-top: 16px;
       font-size: 13px; color: #1A1A1A; font-weight: 700;
     }
     .btn-ver-coleccion {
       display: block; margin-top: 20px; padding: 12px 24px;
-      background: #1A1A1A; color: #F0F0F0; font-weight: 700; font-size: 14px;
+      background: #dc2626; color: #ffffff; font-weight: 700; font-size: 14px;
       border-radius: 8px; text-align: center; white-space: nowrap; font-family: inherit;
     }
     html, body { overflow-x: hidden; }
@@ -276,10 +266,7 @@
 </head>
 <body class="bm">
 
-<div class="bm-urgency-bar">
-  <span class="bm-urgency-dot"></span>
-  Lote limitado: quedan <span data-stock>20</span> de 100 &middot; Env&#xED;o gratis
-</div>
+<div class="bm-urgency-bar">Lote limitado: quedan <span data-stock>20</span> de 100 &middot; Env&#xED;o gratis</div>
 
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
@@ -293,9 +280,9 @@
 
     <div class="bm-hero-img-container">
       <img src="/reloj-blackout-minimal/hero.webp"
-           alt="Reloj Blackout Minimal"
+           alt="Reloj Blackout Minimal completamente negro"
            loading="eager" fetchpriority="high" decoding="async" width="1080" height="1080"
-           onerror="this.outerHTML='&lt;div class=bm-img-placeholder&gt;[ Imagen del producto ]&lt;/div&gt;'">
+           onerror="this.style.display='none'">
     </div>
 
     <h1 class="bm-hero__h1">El que viste de negro no necesita presentaci&#xF3;n.</h1>
@@ -310,23 +297,23 @@
       <p class="bm-social-proof">+340 pedidos entregados en Paraguay</p>
     </div>
 
-    <div class="bm-grid4">
-      <div class="bm-grid4-item">
+    <div class="bm-benefit-grid">
+      <div class="bm-benefit-block">
         <span>&#x2B1B;</span>
         <strong>100% negro mate</strong>
         Dise&#xF1;o sin concesiones
       </div>
-      <div class="bm-grid4-item">
+      <div class="bm-benefit-block">
         <span>&#x1F381;</span>
         <strong>Cajita de cuero</strong>
         Incluida de regalo
       </div>
-      <div class="bm-grid4-item">
+      <div class="bm-benefit-block">
         <span>&#x1F527;</span>
         <strong>Ajuste de malla</strong>
         Incluido sin costo
       </div>
-      <div class="bm-grid4-item">
+      <div class="bm-benefit-block">
         <span>&#x1F69A;</span>
         <strong>Env&#xED;o gratis</strong>
         A todo Paraguay
@@ -352,8 +339,8 @@
 
     <div class="bm-video-wrap">
       <video id="bm-video" muted autoplay loop playsinline webkit-playsinline preload="metadata"
-             poster="/reloj-blackout-minimal/video1-poster.webp"
-             width="1080" height="1080" disablepictureinpicture
+             poster="/reloj-blackout-minimal/video1-poster.webp" disablepictureinpicture
+             width="1080" height="1080"
              onerror="this.style.display='none'">
         <source src="/reloj-blackout-minimal/video1.mp4" type="video/mp4">
       </video>
@@ -399,7 +386,7 @@
       </li>
     </ul>
 
-    <p class="bm-value-total">Valor total: <strong style="color:var(--bm-blanco)">Gs. 379.000</strong></p>
+    <p class="bm-value-total">Valor total: <strong style="color:#F0F0F0">Gs. 379.000</strong></p>
     <p class="bm-value-hoy">Hoy pag&#xE1;s <span>Gs. 209.000</span>, al recibir.</p>
     <p class="bm-value-nota">Llevando 2 ahorr&#xE1;s Gs. 49.000 m&#xE1;s &mdash; uno para vos, uno para regalar.</p>
 
@@ -414,14 +401,14 @@
   </div>
 </section>
 
-<section id="section-img2" data-insync-section="img2" class="bm-img-sec">
+<section id="section-img2" data-insync-section="img2" class="bm-img2-sec">
   <div class="bm-inner">
 
-    <div class="bm-img-wrap">
+    <div class="bm-img2-wrap">
       <img src="/reloj-blackout-minimal/img2.webp"
-           alt="Reloj Blackout Minimal &mdash; detalle cajita de cuero"
+           alt="Cajita de cuero negra con Reloj Blackout Minimal"
            loading="lazy" decoding="async" width="1080" height="1080"
-           onerror="this.outerHTML='&lt;div class=bm-img-placeholder&gt;[ Imagen del producto ]&lt;/div&gt;'">
+           onerror="this.style.display='none'">
     </div>
 
     <div class="bm-risk-zero">
@@ -469,14 +456,15 @@
 
 <section id="section-cierre" data-insync-section="cierre" class="bm-cierre">
   <div class="bm-inner">
-    <h2 class="bm-cierre__h2">Revisalo en tu puerta.<br>Pag&#xE1; solo si te convence.</h2>
+    <h2 class="bm-cierre__h2">Revisalo en tu puerta.</h2>
+    <p class="bm-cierre__sub">Pag&#xE1; solo si te convence.</p>
     <p class="bm-cierre__stock">Quedan <span data-stock>20</span> de 100.</p>
     <p class="bm-cierre__price">Gs. 209.000 &middot; Entrega en el d&#xED;a &middot; Pag&#xE1;s al recibir</p>
     <div class="bm-cta-wrap">
       <a class="bm-btn" data-open-modal data-insync-cta="cierre"
          href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
         Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
-        <span class="bm-btn-sub">&#x2713; Solo quedan <span data-stock>20</span> unidades</span>
+        <span class="bm-btn-sub">&#x2713; Solo quedan 20 unidades</span>
       </a>
     </div>
   </div>
@@ -484,11 +472,11 @@
 
 <section id="section-img3" data-insync-section="img3" class="bm-img3-sec">
   <div class="bm-inner">
-    <div class="bm-img-wrap">
+    <div class="bm-img3-wrap">
       <img src="/reloj-blackout-minimal/img3.webp"
            alt="Reloj Blackout Minimal en la mu&#xF1;eca"
            loading="lazy" decoding="async" width="1080" height="1080"
-           onerror="this.outerHTML='&lt;div class=bm-img-placeholder&gt;[ Imagen del producto ]&lt;/div&gt;'">
+           onerror="this.style.display='none'">
     </div>
   </div>
 </section>
@@ -501,7 +489,7 @@
 
     <div id="bm-modal-form-wrap">
       <h2 class="modal-title" id="bm-modal-title">Reloj Blackout Minimal &mdash; Gs. 209.000</h2>
-      <p style="text-align:center;font-size:11px;font-weight:700;color:#666;margin:4px 0 14px;">&#x26A1; Quedan pocas unidades &mdash; pedidos se procesan hoy</p>
+      <p style="text-align:center;font-size:11px;font-weight:700;color:#1A1A1A;margin:4px 0 14px;">&#x26A1; Quedan pocas unidades &mdash; pedidos se procesan hoy</p>
 
       <span class="modal-section-label">Eleg&#xED; tu oferta</span>
       <div class="offer-options">
@@ -591,15 +579,15 @@
           </div>
         </div>
 
-        <p id="bm-total-line" style="font-size:13px;font-weight:700;color:#1A1A1A;display:none"></p>
+        <p id="bm-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none"></p>
 
         <div class="bm-pay-badge">&#x1F4B3; Pago al recibir</div>
 
         <div class="form-submit">
           <button type="submit" id="bm-submit-btn"
-                  style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px;background:#0D0D0D;color:#F0F0F0;font-weight:700;font-size:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.2);">
+                  style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px;background:#1A1A1A;color:#C0C0C0;font-weight:700;font-size:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;">
             <div>Confirmar pedido</div>
-            <div style="font-size:11px;font-weight:700;margin-top:3px;letter-spacing:.03em;opacity:.7;">&#x2713; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</div>
+            <div style="font-size:11px;font-weight:700;margin-top:3px;letter-spacing:.03em;opacity:.85;">&#x2713; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</div>
           </button>
         </div>
       </form>
@@ -671,7 +659,6 @@ document.addEventListener('DOMContentLoaded', function() {
   var successBox  = document.getElementById('bm-dcanp-success');
   var submitBtn   = document.getElementById('bm-submit-btn');
   var offerInputs = document.querySelectorAll('input[name="bm-offer"]');
-  var bmPhone     = document.getElementById('bm-phone');
 
   var _icFired = false;
   function openModal() {
@@ -711,19 +698,20 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateTotal() {
-    var tl  = document.getElementById('bm-total-line');
+    var tl = document.getElementById('bm-total-line');
     if (!tl) return;
-    var sel = document.querySelector('input[name="bm-offer"]:checked');
-    var qty = sel ? parseInt(sel.value) : 1;
-    var base   = PRODUCT.comboPricing[qty] || PRODUCT.price;
-    var isExp  = !!(document.getElementById('bm-express') && document.getElementById('bm-express').checked);
-    var total  = base + (isExp ? 10000 : 0);
+    var sel  = document.querySelector('input[name="bm-offer"]:checked');
+    var qty  = sel ? parseInt(sel.value) : 1;
+    var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    var isExp = document.getElementById('bm-express') && document.getElementById('bm-express').checked;
+    var total = base + (isExp ? 10000 : 0);
     tl.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
     tl.style.display = isExp ? 'block' : 'none';
   }
   var expChk = document.getElementById('bm-express');
   if (expChk) expChk.addEventListener('change', updateTotal);
 
+  var bmPhone = document.getElementById('bm-phone');
   if (bmPhone) {
     bmPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
     bmPhone.addEventListener('input', function() {
@@ -742,9 +730,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var invoice = !!(document.getElementById('bm-invoice') && document.getElementById('bm-invoice').checked);
     var value   = base + (express ? 10000 : 0);
     var data = {
-      name:          (document.getElementById('bm-name') && document.getElementById('bm-name').value.trim()) || '',
+      name:          (document.getElementById('bm-name')  && document.getElementById('bm-name').value.trim())  || '',
       phone:         (document.getElementById('bm-phone') && document.getElementById('bm-phone').value.replace(/\s/g,'')) || '',
-      city:          (document.getElementById('bm-city') && document.getElementById('bm-city').value.trim()) || '',
+      city:          (document.getElementById('bm-city')  && document.getElementById('bm-city').value.trim())  || '',
       street:        (document.getElementById('bm-calle') && document.getElementById('bm-calle').value.trim()) || '',
       quantity:      qty,
       product_slug:  PRODUCT.slug,
@@ -752,8 +740,8 @@ document.addEventListener('DOMContentLoaded', function() {
       value:         value,
       express:       express,
       invoice:       invoice,
-      invoice_ruc:   invoice ? ((document.getElementById('bm-invoice-ruc') && document.getElementById('bm-invoice-ruc').value) || '').trim() : '',
-      invoice_name:  invoice ? ((document.getElementById('bm-invoice-name') && document.getElementById('bm-invoice-name').value) || '').trim() : '',
+      invoice_ruc:   invoice ? ((document.getElementById('bm-invoice-ruc')   && document.getElementById('bm-invoice-ruc').value)   || '').trim() : '',
+      invoice_name:  invoice ? ((document.getElementById('bm-invoice-name')  && document.getElementById('bm-invoice-name').value)  || '').trim() : '',
       invoice_email: invoice ? ((document.getElementById('bm-invoice-email') && document.getElementById('bm-invoice-email').value) || '').trim() : '',
     };
     if (!data.name || !data.phone || !data.city) {
