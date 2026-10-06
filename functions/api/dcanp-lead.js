@@ -16,6 +16,7 @@ const PRODUCT_SHORT_NAMES = {
   'esquinero-aluminio':         '🔲 Esquinero',
   'dispensador-aceite-2en1':    'Dispensador Inteligente de Aceite 2 en 1',
   'reloj-imperial-verde':       'Reloj Imperial Verde',
+  'reloj-blackout-minimal':     'Reloj Blackout Minimal',
 };
 
 /* Normalización de ciudad — comparación sin tildes y case-insensitive.
