@@ -215,6 +215,7 @@ var DV_CARD_IMAGES = {
   'estante-aluminio-bano':        '/estante-aluminio-bano/estante-hero.webp',
   'interruptor-control-remoto':   '/interruptor-control-remoto/hero.webp',
   'tabla-marmol':                 '/tabla-marmol/tabla-img1.webp',
+  'reloj-imperial-verde':         '/reloj-imperial-verde/reloj_dropi_1080x1080.webp',
   'talonera-gel':                 '/talonera-gel/talo-1.webp',
   'esquinero-aluminio':           '/esquinero-aluminio/esquinero-hero.webp',
   'dispensador-aceite-2en1':     '/dispensador-aceite-2en1/hero.webp',
@@ -262,6 +263,7 @@ var DV_CARD_DIMS = {
   'estante-aluminio-bano':        'width="800" height="800"',
   'interruptor-control-remoto':   'width="800" height="800"',
   'tabla-marmol':                 'width="1080" height="1080"',
+  'reloj-imperial-verde':         'width="1080" height="1080"',
   'talonera-gel':                 'width="800" height="800"',
   'esquinero-aluminio':           'width="800" height="800"',
 };
@@ -277,7 +279,7 @@ var DV_CARD_PRICES = {
   'luna-mini-vibrador-bala-recargable': { price: 229000, compare: 330000 },
 };
 /* ── Orden visual de productos ── */
-var DV_SLUG_ORDER = ['reloj', 'estante-aluminio-bano', 'tabla-marmol', 'interruptor-control-remoto', 'talonera-gel', 'esquinero-aluminio', 'cadena', 'reloj-imperial-verde', 'cepillo', 'lentes', 'luna-mini-vibrador-bala-recargable'];
+var DV_SLUG_ORDER = ['reloj', 'interruptor-control-remoto', 'estante-aluminio-bano', 'reloj-imperial-verde', 'tabla-marmol', 'talonera-gel', 'esquinero-aluminio', 'cadena', 'cepillo', 'lentes', 'luna-mini-vibrador-bala-recargable'];
 
 function buildCardHtml(p) {
   var fb       = DV_CARD_PRICES[p.slug] || {};
