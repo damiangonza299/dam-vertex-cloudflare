@@ -3,1120 +3,789 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/assets/img/reloj-black-caracteristicas.webp" fetchpriority="high" type="image/webp">
-  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style">
+  <meta name="theme-color" content="#0D0D0D">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
-  <meta name="description" content="Reloj Blackout Minimal — Negro Total. Diseño minimalista, acabado oscuro total. Envío gratis en el día. Dam Vertex Paraguay.">
-  <title>Reloj Blackout Minimal — Negro Total — Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=60"></script>
-  <link rel="stylesheet" href="/assets/css/styles.min.css?v=55">
+  <link rel="preload" href="/reloj/hero.webp" as="image" fetchpriority="high">
+  <meta name="description" content="Reloj completamente negro, cajita de cuero de regalo. Pag&#xE1;s al recibir, env&#xED;o gratis y entrega en el d&#xED;a.">
+  <title>Reloj Blackout Minimal &mdash; Dam Vertex</title>
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"Product","name":"Reloj Blackout Minimal","description":"Reloj completamente negro, cajita de cuero de regalo.","brand":{"@type":"Brand","name":"DCANP GROUP"},"offers":{"@type":"Offer","price":"209000","priceCurrency":"PYG","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"Dam Vertex"}}}]}
+  </script>
   <style>
-    /* ── Reloj Colección — theme negro total ── */
-    :root { --accent: rgba(255,255,255,.65); }
-    body { background: #000; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #16181A; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    .nav { position: relative; top: auto; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px,5vw,48px); height: 60px; background: #FFFFFF; border-bottom: 1px solid #D4D7DB; }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #16181A; }
+    .nav__logo span { opacity: .45; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px,5vw,38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: #9AA0A6; text-decoration: line-through; }
 
-    /* Hero */
-    .hero { background: #000; padding: clamp(24px,6vw,56px) clamp(20px,5vw,64px); }
-    .hero__inner {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 56px; align-items: center;
-      max-width: 1100px; margin: 0 auto;
+    body.riv {
+      background: #0D0D0D;
+      color: #16181A;
+      padding-top: 36px;
     }
-    .hero__media { max-width: 520px; margin: 0 auto; overflow: hidden; border-radius: 4px; }
-    .hero__img { width: 100%; height: auto; display: block; }
-    .hero__h { font-size: clamp(28px,5vw,50px); font-weight: 800; line-height: 1.1; margin: 0 0 20px; letter-spacing: -.01em; color: #fff; }
-    .hero__sub { font-size: clamp(15px,2vw,17px); color: rgba(255,255,255,.65); line-height: 1.6; margin: 0 0 8px; }
-
-
-    /* Estilo */
-    .estilo { background: #000; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.06); }
-    .estilo__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; max-width: 1000px; margin: 0 auto; }
-    .estilo__img { width: 100%; border-radius: 4px; aspect-ratio: 4/5; object-fit: cover; object-position: center; background: #111; display: block; }
-    .t-overline { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.38); font-weight: 600; margin: 0 0 16px; }
-    .t-h { font-size: clamp(20px,3.5vw,30px); font-weight: 700; color: #fff; line-height: 1.2; margin: 0 0 16px; }
-    .t-body { font-size: 14px; color: rgba(255,255,255,.6); line-height: 1.75; margin: 0 0 24px; }
-    .t-list { display: flex; flex-direction: column; gap: 10px; }
-    .t-list li { font-size: 14px; color: #e2e2e2; display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
-    .t-dash { color: rgba(255,255,255,.35); flex-shrink: 0; }
-
-    /* Materiales */
-    .materiales { background: #0a0a0a; padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.06); }
-    .mat__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,.06); max-width: 900px; margin: 40px auto 0; }
-    .mat-card { background: #0a0a0a; padding: 32px 28px; }
-    .mat-num { font-size: 11px; font-weight: 800; color: rgba(255,255,255,.22); letter-spacing: .08em; margin-bottom: 16px; }
-    .mat-card strong { display: block; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 10px; }
-    .mat-card p { font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.65; margin: 0; }
-
-
-    /* FAQ */
-    .faq { background: #0a0a0a; padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); border-top: 1px solid rgba(255,255,255,.06); }
-    .faq .faq-wrap { max-width: 640px; margin: 0 auto; }
-
-    /* Cierre */
-    .close-sec { background: #000; padding: clamp(64px,12vw,100px) clamp(20px,5vw,64px); text-align: center; border-top: 1px solid rgba(255,255,255,.06); }
-    .close-sec__inner { max-width: 540px; margin: 0 auto; }
-    .close-quote { font-size: clamp(17px,3vw,24px); font-style: italic; color: rgba(255,255,255,.45); line-height: 1.45; margin: 0 0 32px; font-weight: 300; }
-    .close-divider { width: 32px; height: 1px; background: #1c1c1c; margin: 0 auto 32px; }
-    .close-h { font-size: clamp(22px,4vw,34px); font-weight: 800; color: #fff; letter-spacing: -.01em; margin: 0 0 40px; }
-
-    @media (max-width: 700px) {
-      .hero__inner { grid-template-columns: 1fr; gap: 20px; }
-      .estilo__inner { grid-template-columns: 1fr; gap: 32px; }
-      .mat__grid { grid-template-columns: 1fr; }
+    :root {
+      --riv-bg:              #FAFAF8;
+      --riv-bg-2:            #F1F2F0;
+      --riv-negro:           #0D0D0D;
+      --riv-texto:           #16181A;
+      --riv-texto-2:         #5B6066;
+      --riv-blanco:          #FFFFFF;
+      --riv-blanco-2:        #B9BEC4;
+      --riv-plata:           #D4D7DB;
+      --riv-esmeralda:       #C0C0C0;
+      --riv-esmeralda-hover: #A8A8A8;
+      --riv-esmeralda-vivo:  #C0C0C0;
+      --riv-esmeralda-suave: #F5F5F5;
+      --riv-tachado:         #9AA0A6;
     }
-
-    /* CRO: Hero mobile conservador — CTA sube por encima de combo cards */
-    @media (max-width: 700px) {
-      .hero { padding: 16px 16px 20px; }
-      .hero__text { display: flex; flex-direction: column; }
-      .hero__text .eyebrow        { order: 1; }
-      .hero__text .hero__h        { order: 2; }
-      .hero__text .hero__sub      { order: 3; }
-      .hero__text .price-block    { order: 4; }
-      .hero__text .spi            { order: 5; }
-      .hero__text .btn-primary    { order: 6; width: 100%; margin-bottom: 14px; }
-      .hero__text .combo-preview  { order: 7; }
-      .hero__text .delivery-badges { order: 8; }
-      /* Combo cards más compactos */
-      .combo-preview-card { padding: 9px 12px; }
-      /* Badges más compactos: 2 líneas claras */
-      .delivery-badges { gap: 5px; margin-top: 12px; }
-      .db-badge { font-size: 11px; padding: 4px 8px; }
-      /* Espaciado compacto entre título, subtítulo y precio */
-      .hero__h  { margin-bottom: 8px; }
-      .hero__sub { margin-bottom: 4px; }
-      .hero .price-block { margin-top: 8px; margin-bottom: 14px; }
+    .riv-urgency-bar {
+      position: relative; z-index: 400;
+      background: var(--riv-esmeralda); color: #FFFFFF;
+      text-align: center; font-size: clamp(11px,3.4vw,14px); font-weight: 600;
+      letter-spacing: .02em; height: 36px; line-height: 36px;
+      padding: 0 16px; overflow: hidden; text-overflow: ellipsis;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      white-space: nowrap;
     }
-
-    /* CRO: Materiales — ocultar cards 4-6 en mobile (redundantes con secciones dedicadas) */
-    @media (max-width: 700px) {
-      .mat-card:nth-child(n+4) { display: none; }
+    .riv-urgency-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--riv-esmeralda-vivo); flex-shrink: 0; display: inline-block;
     }
-
-    /* CRO: Sticky bottom CTA — mobile only */
-    .sticky-cta-bar {
-      display: none;
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
-      background: rgba(0,0,0,.95);
-      border-top: 1px solid rgba(255,255,255,.08);
-      padding: 8px 16px;
-      padding-bottom: max(8px, env(safe-area-inset-bottom));
-      backdrop-filter: blur(8px);
+    @media (prefers-reduced-motion: no-preference) {
+      .riv-urgency-dot { animation: riv-pulse 1.5s ease-in-out infinite; }
     }
-    @media (max-width: 700px) {
-      .sticky-cta-bar { display: block; }
-      body:has(#order-modal.active) .sticky-cta-bar,
-      body:has(#combo-modal.active) .sticky-cta-bar { display: none; }
-    }
-
-    /* Fix precio hero: badge 24% OFF no baja de línea en mobile */
-    .hero .price-main  { font-size: clamp(22px, 5vw, 38px); }
-    .hero .price-block { gap: 5px 8px; margin: 18px 0; }
-
-    /* Prueba social inline hero */
-    .spi       { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; }
-    .spi-stars { color: #fbbf24; font-size: 14px; line-height: 1; }
-    .spi-text  { font-size: 12px; color: rgba(255,255,255,.5); font-weight: 600; }
-
-    /* Combos externos — replica visual del modal, solo preselección */
-    .combo-preview { display: flex; flex-direction: column; gap: 8px; margin: 0 0 16px; }
-    .combo-preview-card {
-      display: block;
-      border: 2px solid rgba(255,255,255,.08);
-      border-radius: 10px;
-      padding: 12px 14px;
-      cursor: pointer;
+    @keyframes riv-pulse { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+    .riv .nav {
       position: relative;
-      transition: border-color .18s, background .18s;
-      background: #1a1a1a;
-      user-select: none;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--riv-plata);
     }
-    .combo-preview-card.combo-preview-card--active {
-      border-color: rgba(255,255,255,.45);
-      background: rgba(255,255,255,.04);
+    .riv .nav__logo { color: #F0F0F0; }
+    .riv-nav-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--riv-esmeralda); color: #FFFFFF; font-weight: 700;
+      font-size: clamp(7px,2.6vw,12px); padding: 8px 14px; border-radius: 999px;
+      border: none; cursor: pointer; white-space: nowrap; max-width: 62vw;
+      font-family: inherit;
     }
-
-    /* Badge modal: fila inferior junto a offer-saving */
-    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
-    .offer-foot .offer-saving { margin-top: 0; }
-    .offer-foot .offer-badge  { position: static; flex-shrink: 0; }
-
-    /* Confirm-intent — mismo estado visual que upsell-block (verde) */
-    .confirm-intent { transition: border-color .18s, background .18s; }
-    .confirm-intent input[type="checkbox"] { accent-color: var(--green); }
-    .theme-reloj .confirm-intent.checked,
-    .theme-reloj .confirm-intent:has(input:checked) { border-color: var(--green); background: rgba(74,222,128,.06); }
-
-
-    /* Combo strip */
-    .combo-strip { background: transparent; border: none; padding: 0 0 28px; }
-    .combo-strip__inner { max-width: 700px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-    .combo-strip__text { display: flex; flex-direction: column; gap: 3px; }
-    .combo-strip__label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.35); font-weight: 600; }
-    .combo-strip__title { font-size: 17px; font-weight: 700; color: #fff; }
-    .combo-strip__sub { font-size: 13px; color: rgba(255,255,255,.55); }
-    .combo-strip__sub strong { color: #fff; }
-    .combo-strip__btn { flex-shrink: 0; background: #fff; color: #000; border: none; border-radius: 8px; padding: 12px 22px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: opacity .18s; }
-    .combo-strip__btn:hover { opacity: .82; }
-    @media (max-width: 520px) {
-      .combo-strip__inner { flex-direction: column; align-items: flex-start; }
-      .combo-strip__btn { width: 100%; text-align: center; padding: 13px 22px; }
+    .riv-inner { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+    .riv-btn {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--riv-esmeralda); color: #FFFFFF; font-weight: 600;
+      padding: 0 14px; border-radius: 999px; border: none; cursor: pointer;
+      text-decoration: none; transition: background .2s, transform .15s;
+      width: 100%; height: 56px; letter-spacing: .01em;
+      font-size: clamp(13px,3.8vw,16px); font-family: inherit;
+      box-shadow: 0 6px 18px rgba(192,192,192,.18); white-space: nowrap;
     }
-    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: #dc2626; color: #ffffff; font-weight: 700; font-size: 14px; border-radius: 8px; text-decoration: none; text-align: center; white-space: nowrap; }
+    .riv-btn:hover { background: var(--riv-esmeralda-hover); transform: translateY(-1px); }
+    .riv-btn-sub { font-size: 11px; font-weight: 700; margin-top: 2px; opacity: .8; }
+    .riv-hero {
+      background: var(--riv-negro);
+      padding: clamp(28px,7vw,52px) 0 clamp(32px,7vw,52px);
+      text-align: center;
+    }
+    .riv-hero__h1 {
+      font-size: clamp(24px,7vw,36px); font-weight: 800; line-height: 1.15;
+      color: var(--riv-blanco); margin: 0 0 16px;
+    }
+    .riv-hero__sub { font-size: 15px; color: var(--riv-blanco-2); line-height: 1.55; margin: 0 0 20px; }
+    .riv-hero-img-container {
+      width: min(90vw,440px); aspect-ratio: 1/1;
+      margin: 0 auto 28px; border-radius: 16px; overflow: hidden;
+      border: 1px solid #2A2A2A;
+    }
+    .riv-hero-img-container img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .riv-save-pill {
+      display: inline-block;
+      font-size: 12px; font-weight: 700; color: #0D0D0D;
+      background: var(--riv-esmeralda); border-radius: 999px;
+      padding: 3px 12px; margin-bottom: 10px;
+    }
+    .riv-price-row {
+      display: flex; align-items: baseline; gap: 10px;
+      justify-content: center; flex-wrap: nowrap; margin-bottom: 6px;
+    }
+    .riv-price-main { font-size: clamp(25px,7.5vw,35px); font-weight: 800; color: var(--riv-blanco); }
+    .riv-price-compare { font-size: clamp(18px,5.5vw,22px); color: var(--riv-tachado); text-decoration: line-through; }
+    .riv-social-proof { font-size: 13px; color: var(--riv-blanco-2); font-weight: 700; margin-bottom: 4px; }
+    .riv-garantia { font-size: 13px; color: var(--riv-esmeralda-vivo); margin-bottom: 20px; }
+    .riv-risk-zero {
+      background: rgba(192,192,192,.08); border-left: 3px solid var(--riv-esmeralda-vivo);
+      padding: 14px 16px; border-radius: 8px; margin: 0 0 20px; text-align: left;
+    }
+    .riv-risk-zero__dest { font-size: 15px; font-weight: 700; color: var(--riv-blanco); margin-bottom: 4px; }
+    .riv-risk-zero__sub { font-size: 13px; color: var(--riv-blanco-2); line-height: 1.4; }
+    .riv-gift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .riv-gift-block {
+      border: 1px solid #3A3D42; border-radius: 10px;
+      padding: 12px 10px; text-align: center; font-size: 13px; color: var(--riv-blanco-2);
+    }
+    .riv-gift-block span { display: block; font-size: 20px; margin-bottom: 4px; }
+    .riv-video-sec { background: #161616; padding: clamp(32px,8vw,56px) 0; }
+    .riv-section-h2 {
+      font-size: 24px; font-weight: 800; line-height: 1.2;
+      color: #F0F0F0; margin: 0 0 8px;
+    }
+    .riv-section-sub { font-size: 14px; color: var(--riv-texto-2); line-height: 1.55; margin: 0 0 20px; }
+    .riv-video-wrap {
+      aspect-ratio: 1/1; border-radius: 16px;
+      overflow: hidden; background: #111214; max-width: 440px; margin: 0 auto 20px;
+    }
+    .riv-video-wrap video {
+      width: 100%; height: 100%; object-fit: contain; object-position: center; display: block;
+    }
+    .riv-cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .riv-entrega { background: var(--riv-negro); padding: clamp(32px,8vw,56px) 0; }
+    .riv-entrega-img-wrap {
+      aspect-ratio: 1/1; border-radius: 12px;
+      overflow: hidden; background: #1A1A1A;
+      margin: 0 0 24px; max-width: 100%;
+    }
+    .riv-entrega-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .riv-entrega .riv-section-h2 { color: var(--riv-blanco); }
+    .riv-value-list { list-style: none; padding: 0; margin: 0 0 20px; }
+    .riv-value-item {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 10px 0; border-bottom: 1px solid #3A3D42; gap: 12px;
+    }
+    .riv-value-item:last-child { border-bottom: none; }
+    .riv-value-item--highlight {
+      background: rgba(192,192,192,.10); padding: 10px 8px;
+      border-radius: 6px; border-bottom: none; margin-bottom: 1px;
+    }
+    .riv-value-item__label { font-size: 14px; color: var(--riv-blanco-2); line-height: 1.35; flex: 1; }
+    .riv-value-item__amount { font-size: 14px; color: var(--riv-blanco); font-weight: 700; white-space: nowrap; }
+    .riv-value-total { font-size: 13px; color: var(--riv-blanco-2); margin: 0 0 6px; }
+    .riv-value-hoy { font-size: 20px; font-weight: 700; color: var(--riv-blanco); margin: 0 0 8px; }
+    .riv-value-hoy span { color: var(--riv-esmeralda-vivo); }
+    .riv-value-nota { font-size: 12px; color: var(--riv-blanco-2); margin: 0 0 24px; }
+    .riv-oficina { background: #161616; padding: clamp(32px,8vw,56px) 0; }
+    .riv-oficina-img-wrap {
+      aspect-ratio: 1/1; border-radius: 12px;
+      overflow: hidden; background: #1A1A1A; margin: 0 0 24px;
+    }
+    .riv-oficina-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .riv-specs { list-style: none; padding: 0; margin: 16px 0 24px; display: flex; flex-direction: column; gap: 10px; }
+    .riv-specs li { padding-left: 18px; position: relative; font-size: 15px; color: var(--riv-texto-2); line-height: 1.45; }
+    .riv-specs li::before { content: ''; position: absolute; left: 0; top: 7px; width: 7px; height: 7px; background: var(--riv-esmeralda); border-radius: 50%; }
+    .riv-objeciones { background: #161616; padding: clamp(32px,8vw,56px) 0; }
+    .riv-obj-list { display: flex; flex-direction: column; gap: 14px; }
+    .riv-obj-item { padding: 16px; border-radius: 12px; border: 1px solid var(--riv-plata); background: var(--riv-blanco); }
+    .riv-obj-icon { font-size: 22px; margin-bottom: 6px; }
+    .riv-obj-item strong { font-size: 15px; font-weight: 700; color: var(--riv-texto); display: block; margin-bottom: 4px; }
+    .riv-obj-item p { font-size: 14px; color: var(--riv-texto-2); margin: 0; line-height: 1.45; }
+    .riv-cierre { background: var(--riv-negro); padding: clamp(48px,10vw,72px) 0; text-align: center; }
+    .riv-cierre__h2 { font-size: 22px; font-weight: 800; color: var(--riv-blanco); margin: 0 0 10px; }
+    .riv-cierre__stock { font-size: 13px; color: var(--riv-blanco-2); margin: 0 0 8px; }
+    .riv-cierre__price { font-size: 15px; color: var(--riv-blanco-2); margin: 0 0 22px; }
+    .riv-footer {
+      background: var(--riv-negro); padding: 20px; text-align: center;
+      font-size: 13px; color: var(--riv-blanco-2);
+      border-top: 1px solid #2A2D30;
+    }
+    .riv .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(17,18,20,.6); align-items: center; justify-content: center;
+      padding: 16px; overflow-y: auto;
+    }
+    .riv .modal-overlay.active { display: flex; }
+    .riv .modal-box {
+      position: relative; background: #FFFFFF;
+      border: 1px solid var(--riv-plata); border-radius: 16px;
+      max-width: 440px; width: 100%; padding: 28px 24px;
+      max-height: 90vh; overflow-y: auto;
+      color-scheme: light; accent-color: var(--riv-esmeralda);
+      color: var(--riv-texto);
+    }
+    .riv .modal-close {
+      position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
+      border-radius: 50%; border: none; background: var(--riv-bg-2);
+      color: var(--riv-texto); font-size: 15px; cursor: pointer; font-family: inherit;
+    }
+    .riv .modal-title {
+      font-size: clamp(14px,4vw,18px); font-weight: 700; color: var(--riv-texto);
+      margin: 0 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .riv .modal-section-label {
+      display: block; font-size: 11px; font-weight: 700; color: var(--riv-texto-2);
+      text-transform: uppercase; letter-spacing: .05em; margin: 0 0 10px;
+    }
+    .riv .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .riv .offer-option {
+      position: relative; display: block;
+      border: 1.5px solid var(--riv-plata); border-radius: 10px;
+      padding: 12px 14px; cursor: pointer; background: var(--riv-bg);
+    }
+    .riv .offer-option input { position: absolute; opacity: 0; }
+    .riv .offer-option.selected { border: 2px solid var(--riv-esmeralda); background: var(--riv-esmeralda-suave); }
+    .riv .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    .riv .offer-qty { font-weight: 700; font-size: 14px; color: var(--riv-texto); }
+    .riv .offer-price { font-weight: 800; font-size: 15px; color: var(--riv-texto); }
+    .riv .offer-compare { font-size: 12px; text-decoration: line-through; color: var(--riv-tachado); margin-right: 6px; }
+    .riv .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .riv .offer-saving { color: #1A1A1A; font-weight: 700; font-size: 12px; }
+    .riv .offer-badge {
+      position: static; background: #1A1A1A; color: #C0C0C0;
+      font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+    }
+    .riv .form-group { margin-bottom: 14px; }
+    .riv .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--riv-texto-2); margin-bottom: 6px; }
+    .riv .form-group input {
+      width: 100%; padding: 11px 12px; border-radius: 8px;
+      border: 1px solid var(--riv-plata);
+      background: var(--riv-bg); color: var(--riv-texto); font-size: 14px; font-family: inherit;
+      outline: none; transition: border-color .15s;
+    }
+    .riv .form-group input:focus { border: 2px solid var(--riv-esmeralda); }
+    .riv .form-group input::placeholder { color: var(--riv-tachado); }
+    .riv .upsell-block {
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      background: var(--riv-bg); border: 1.5px solid var(--riv-plata);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .riv .upsell-title { color: var(--riv-texto); font-size: 13px; font-weight: 700; }
+    .riv .upsell-sub { color: var(--riv-texto-2); font-size: 12px; }
+    .riv-pay-badge {
+      margin-top: 16px; text-align: center; font-size: 12px; font-weight: 800;
+      color: #1A1A1A; background: #F0F0F0;
+      border-radius: 8px; padding: 8px 12px;
+    }
+    .riv .form-submit { margin-top: 18px; }
+    .riv .dcanp-success { display: none; text-align: center; }
+    .riv .dcanp-success.visible { display: block; }
+    .riv .dcanp-success__icon {
+      width: 56px; height: 56px; background: #1A1A1A; color: #C0C0C0;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin: 0 auto 16px;
+    }
+    .riv .dcanp-success h2 { color: #16181A; font-size: 22px; margin-bottom: 12px; }
+    .riv .dcanp-success p { color: var(--riv-texto-2); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .riv .dcanp-success__tip { font-weight: 600; color: var(--riv-texto); }
+    .riv .dcanp-success__badges {
+      display: flex; gap: 12px; justify-content: center; margin-top: 16px;
+      font-size: 13px; color: #1A1A1A; font-weight: 700;
+    }
+    .btn-ver-coleccion {
+      display: block; margin-top: 20px; padding: 12px 24px;
+      background: #dc2626; color: #ffffff; font-weight: 700; font-size: 14px;
+      border-radius: 8px; text-align: center; white-space: nowrap; font-family: inherit;
+    }
+    html, body { overflow-x: hidden; }
   </style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Product",
-      "name": "Reloj Blackout Minimal",
-      "description": "Reloj minimalista negro total. Diseño Blackout, acabado oscuro total. 6 modelos disponibles. Envío gratis en el día en Paraguay.",
-      "brand": { "@type": "Brand", "name": "DAM Vertex" },
-      "url": "https://damvertex.com/reloj/",
-      "offers": {
-        "@type": "Offer",
-        "price": "189000",
-        "priceCurrency": "PYG",
-        "availability": "https://schema.org/InStock",
-        "seller": { "@type": "Organization", "name": "DAM Vertex" }
-      }
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "¿Con qué outfits combina?",
-          "acceptedAnswer": { "@type": "Answer", "text": "El Blackout Minimal Negro Total es el más versátil — funciona con cualquier look, casual o formal. Su acabado oscuro total lo hace discreto sin perder presencia." }
-        },
-        {
-          "@type": "Question",
-          "name": "¿Es resistente al agua o sudor?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Soporta el uso cotidiano normal — sudor y salpicaduras del día a día. Para especificaciones técnicas de resistencia al agua, consultanos antes de comprar." }
-        },
-        {
-          "@type": "Question",
-          "name": "¿Cuánto dura la batería?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Funciona con pila de cuarzo estándar. La duración es la típica de relojes de este tipo. Sin necesidad de carga — cuando se agota la pila, se cambia." }
-        },
-        {
-          "@type": "Question",
-          "name": "¿Cuándo llega el pedido?",
-          "acceptedAnswer": { "@type": "Answer", "text": "En Central el envío es en el día. En el Interior coordinamos con vos después de confirmar el pedido — generalmente 1 a 2 días adicionales." }
-        },
-        {
-          "@type": "Question",
-          "name": "¿Cómo se paga?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Si estás en Central, pagás cuando lo recibís. Si estás en el Interior, el pago es anticipado y coordinamos el envío una vez confirmado." }
-        }
-      ]
-    }
-  ]
-}
-</script>
 </head>
-<body class="theme-reloj">
+<body class="riv">
 
-<div style="background:#dc2626;color:#fff;text-align:center;padding:7px 8px;font-size:12px;font-weight:700;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">⚡ Quedan 5 unidades · Envío gratis · Pagás al recibir</div>
+<div class="riv-urgency-bar">Lote limitado: quedan <span data-stock>20</span> de 100 &middot; Env&#xED;o gratis</div>
 
-<!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">Quiero este reloj</a>
+  <button type="button" class="riv-nav-btn" data-open-modal>Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir</button>
 </nav>
 
-<!-- Hero -->
-<section class="hero" id="section-hero" data-insync-section="hero">
-  <div class="hero__inner">
-    <div class="hero__media">
-      <picture>
-        <source srcset="/assets/img/reloj-black-caracteristicas.webp" type="image/webp">
-        <img
-          src="/assets/img/reloj%20black%20caracteristicas.png"
-          alt="Reloj Blackout Minimal Negro Total"
-          class="hero__img"
-          loading="eager"
-          fetchpriority="high"
-          width="1024"
-          height="1118">
-      </picture>
+<main>
+
+<section id="section-hero" data-insync-section="hero" class="riv-hero">
+  <div class="riv-inner">
+
+    <div class="riv-hero-img-container">
+      <img src="/reloj/hero.webp"
+           alt="Reloj Blackout Minimal completamente negro"
+           loading="eager" fetchpriority="high" decoding="async" width="1080" height="1080"
+           onerror="this.style.display='none'">
     </div>
-    <div class="hero__text">
-      <p class="eyebrow">Blackout Minimal · Negro Total</p>
-      <h1 class="hero__h">El reloj que no necesita hablar.<br>Igual, todo lo dice.</h1>
-      <p class="hero__sub">Diseño minimalista. Acabado oscuro total.</p>
-      <div style="background:#e8f5e9;border-left:4px solid #1a7a3e;padding:14px 16px;border-radius:8px;margin:16px 0;">
-        <div style="font-size:17px;font-weight:900;color:#1a7a3e;">No pagás nada hasta tenerlo en la mano</div>
-        <div style="font-size:13px;color:#2c3e50;margin-top:4px;">Lo recibís, lo revisás, y recién ahí pagás. Sin adelantos, sin tarjeta.</div>
+
+    <h1 class="riv-hero__h1">El que viste de negro no necesita presentaci&#xF3;n.</h1>
+    <p class="riv-hero__sub">Reloj completamente negro, cajita de cuero de regalo. Sin cuotas, sin adelanto.</p>
+
+    <div style="text-align:center">
+      <div class="riv-save-pill">Ahorr&#xE1;s Gs. 70.000</div>
+      <div class="riv-price-row">
+        <span class="riv-price-main">Gs. 209.000</span>
+        <span class="riv-price-compare">Gs. 279.000</span>
       </div>
-      <div class="price-block">
-        <span class="price-main">Gs. 189.000</span>
-        <span class="price-compare">Gs. 250.000</span>
-        <span class="price-badge">24% OFF</span>
+      <p class="riv-social-proof">+340 pedidos entregados en Paraguay</p>
+
+    </div>
+
+    
+<div class="riv-gift-grid">
+      <div class="riv-gift-block">
+        <span>&#x2B1B;</span><strong>100% negro mate</strong> Dise&#xF1;o sin concesiones
       </div>
-      <div style="font-size:13px;color:#666;font-style:italic;margin-top:6px;">Menos de lo que gastás en dos deliverys — y te dura años.</div>
-      <div class="spi">
-        <span class="spi-stars">★★★★★</span>
-        <span class="spi-text">Pedidos activos · Entrega en el día</span>
+      <div class="riv-gift-block">
+        <span>&#x1F527;</span><strong>Ajuste de malla</strong> Incluido sin costo
       </div>
-      <!-- Combos externos — preselección visual, sin tracking ni eventos -->
-      <div class="combo-preview" id="combo-preview">
-        <div class="combo-preview-card combo-preview-card--active" data-offer="1">
-          <div class="offer-content">
-            <span class="offer-qty">1 unidad</span>
-            <span class="offer-price" id="cpv-price-1">Gs. 189.000</span>
-          </div>
-        </div>
-        <div class="combo-preview-card" data-offer="2">
-          <div class="offer-content">
-            <span class="offer-qty">2 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="cpv-compare-2">Gs. 378.000</span>
-              <span class="offer-price" id="cpv-price-2">Gs. 283.500</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 94.500</span>
-            <div class="offer-badge">🔥 Más elegido</div>
-          </div>
-        </div>
-        <div class="combo-preview-card" data-offer="3">
-          <div class="offer-content">
-            <span class="offer-qty">3 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="cpv-compare-3">Gs. 567.000</span>
-              <span class="offer-price" id="cpv-price-3">Gs. 368.550</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 198.450</span>
-            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
-          </div>
-        </div>
+    </div>
+
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="hero"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="section-video" data-insync-section="video" class="riv-video-sec">
+  <div class="riv-inner">
+
+    <h2 class="riv-section-h2">As&#xED; se ve en la mano.</h2>
+    <p class="riv-section-sub">Sin filtros ni renders: el mismo reloj que te llega.</p>
+
+    <div class="riv-video-wrap">
+      <video id="riv-video" muted autoplay loop playsinline webkit-playsinline preload="metadata"
+             poster="/reloj/video1-poster.webp" disablepictureinpicture
+             width="1080" height="1080"
+             onerror="this.style.display='none'">
+        <source src="/reloj/video1.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="video"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="section-entrega" data-insync-section="entrega" class="riv-entrega">
+  <div class="riv-inner">
+
+    <div class="riv-entrega-img-wrap">
+      <img src="/reloj/img2.webp"
+           alt="Cajita de cuero con Reloj Blackout Minimal"
+           loading="lazy" decoding="async" width="1080" height="1080"
+           onerror="this.style.display='none'">
+    </div>
+
+    <h2 class="riv-section-h2">&#xBF;Por qu&#xE9; este reloj?</h2>
+
+    <ul class="riv-value-list">
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Reloj Blackout Minimal &mdash; precio normal</span>
+        <span class="riv-value-item__amount">Gs. 279.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">De regalo: cajita de cuero negra</span>
+        <span class="riv-value-item__amount">Gs. 45.000</span>
+      </li>
+      <li class="riv-value-item riv-value-item--highlight">
+        <span class="riv-value-item__label">Ajuste de tama&#xF1;o de malla incluido</span>
+        <span class="riv-value-item__amount">Gs. 25.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Env&#xED;o gratis con entrega en el d&#xED;a</span>
+        <span class="riv-value-item__amount">Gs. 30.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Garant&#xED;a de 30 d&#xED;as</span>
+        <span class="riv-value-item__amount">Incluida</span>
+      </li>
+    </ul>
+
+    <p class="riv-value-total">Valor total: <strong style="color:#FFFFFF">Gs. 379.000</strong></p>
+    <p class="riv-value-hoy">Hoy pag&#xE1;s <span>Gs. 209.000</span>, al recibir.</p>
+    <p class="riv-value-nota">Llevando 2 ahorr&#xE1;s Gs. 49.000 m&#xE1;s &mdash; uno para vos, uno para regalar.</p>
+
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="entrega"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="section-oficina" data-insync-section="oficina" class="riv-oficina">
+  <div class="riv-inner">
+
+    <div class="riv-oficina-img-wrap">
+      <img src="/reloj/img3.webp"
+           alt="Reloj Blackout Minimal en la mu&#xF1;eca"
+           loading="lazy" decoding="async" width="1080" height="1080"
+           onerror="this.style.display='none'">
+    </div>
+
+    <h2 class="riv-section-h2">No pag&#xE1;s nada hasta tenerlo en la mano.</h2>
+    <p class="riv-section-sub">Lo recib&#xED;s, lo revis&#xE1;s, y reci&#xE9;n ah&#xED; pag&#xE1;s.<br>Sin adelanto &middot; Sin tarjeta &middot; Sin riesgo.</p>
+
+    <ul class="riv-specs">
+      <li>Caja tonneau de 42 mm</li>
+      <li>Esfera verde con d&#xED;a y fecha</li>
+      <li>Cristal mineral endurecido</li>
+      <li>Resiste salpicaduras y lluvia (3 ATM)</li>
+      <li>Movimiento de cuarzo japon&#xE9;s</li>
+      <li>Ajuste de tama&#xF1;o de malla incluido</li>
+    </ul>
+
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="oficina"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="section-objeciones" data-insync-section="objeciones" class="riv-objeciones">
+  <div class="riv-inner">
+    <div class="riv-obj-list">
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F69A;</div>
+        <strong>&#xBF;Cu&#xE1;ndo llega?</strong>
+        <p>Entrega en el d&#xED;a en el Gran Asunci&#xF3;n. Env&#xED;o gratis a todo Paraguay.</p>
       </div>
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">Pedir ahora →</button>
-      <div class="delivery-badges">
-        <span class="db-badge db-green">🚚 Entrega en el día</span>
-        <span class="db-badge db-green">✓ Envío gratis</span>
-        <span class="db-badge">💳 Pago al recibir · Central</span>
-        <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F4B5;</div>
+        <strong>&#xBF;Tengo que pagar antes?</strong>
+        <p>No. Abr&#xED;s la caja, lo revis&#xE1;s y reci&#xE9;n ah&#xED; pag&#xE1;s. Si no te convence, no pag&#xE1;s.</p>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;justify-content:center;margin-top:12px;font-size:13px;">
-        <span style="font-weight:900;font-size:18px;color:#1a7a3e;">+340</span>
-        <span style="color:#555;">pedidos entregados en Paraguay este mes</span>
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F6E1;&#xFE0F;</div>
+        <strong>&#xBF;Y si falla?</strong>
+        <p>Ten&#xE9;s 30 d&#xED;as de garant&#xED;a. Si falla, te lo cambiamos sin costo.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Estilo -->
-<section class="estilo" id="section-estilo" data-insync-section="estilo">
-  <div class="estilo__inner">
-    <div>
-      <!-- lookbook: Cadena + reloj negro -->
-      <img
-        src="/assets/img/apex-cadena-reloj-negro.webp"
-        alt="Reloj Blackout Minimal en outfit"
-        class="estilo__img"
-        loading="lazy"
-        width="600"
-        height="750">
-    </div>
-    <div>
-      <!-- Combo Reloj + Cadena Apex -->
-      <div class="combo-strip">
-        <div class="combo-strip__inner">
-          <div class="combo-strip__text">
-            <span class="combo-strip__label">Oferta especial</span>
-            <span class="combo-strip__title">Reloj + Cadena Apex</span>
-            <span class="combo-strip__sub">Llevá ambos por <strong>Gs. 249.000</strong></span>
-          </div>
-          <button class="combo-strip__btn" id="open-combo-modal">Ver combo →</button>
-        </div>
-      </div>
-      <p class="t-overline">El efecto Blackout</p>
-      <h2 class="t-h">El detalle que termina cualquier look.</h2>
-      <p class="t-body">
-        Un buen reloj no compite con lo que llevás puesto.
-        Lo eleva. El Blackout Minimal está diseñado para eso:
-        estar sin molestar, sumar sin gritar.
-      </p>
-      <ul class="t-list">
-        <li><span class="t-dash">—</span> Estilo silencioso. Presencia que se siente.</li>
-        <li><span class="t-dash">—</span> Funciona casual, formal y urbano por igual.</li>
-        <li><span class="t-dash">—</span> No satura el look. Lo completa.</li>
-        <li><span class="t-dash">—</span> Esfera limpia, sin ruido visual.</li>
-      </ul>
-      <div style="margin-top:28px">
-        <button class="btn btn-primary" data-scroll-form data-insync-cta="estilo" style="max-width:280px">
-          Pedir ahora →
-        </button>
-      </div>
+<section id="section-cierre" data-insync-section="cierre" class="riv-cierre">
+  <div class="riv-inner">
+    <h2 class="riv-cierre__h2">Revisalo en tu puerta.</h2>
+    <p class="riv-section-sub" style="margin:8px 0 16px">Pag&#xE1; solo si te convence.</p>
+    <p class="riv-cierre__stock">Quedan <span data-stock>20</span> de 100.</p>
+    <p class="riv-cierre__price">Gs. 209.000 &middot; Entrega en el d&#xED;a &middot; Pag&#xE1;s al recibir</p>
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="cierre"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Reloj%20Blackout%20Minimal.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Quiero el m&#xED;o &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- Materiales -->
-<section class="materiales" id="section-materiales" data-insync-section="materiales">
-  <div style="max-width:900px;margin:0 auto;text-align:center">
-    <p class="sec-label">Detalles</p>
-    <h2 class="sec-title" style="margin-bottom:10px">Lo que llevás en la muñeca</h2>
-    <p style="font-size:14px;color:rgba(255,255,255,.38);max-width:480px;margin:0 auto">Ningún detalle de más. Ninguno de menos.</p>
-  </div>
-  <div class="mat__grid">
-    <div class="mat-card">
-      <div class="mat-num">01</div>
-      <strong>Esfera minimalista</strong>
-      <p>Sin números. Sin marcas. Solo el tiempo, limpio. La esfera es el protagonista discreto de cada modelo.</p>
-    </div>
-    <div class="mat-card">
-      <div class="mat-num">02</div>
-      <strong>Correa negra</strong>
-      <p>Tono oscuro total. Ajuste cómodo para uso prolongado durante el día.</p>
-    </div>
-    <div class="mat-card">
-      <div class="mat-num">03</div>
-      <strong>Acabado consistente</strong>
-      <p>Caja y correa en el mismo tono. Sin contraste forzado. El acabado define la personalidad de cada modelo.</p>
-    </div>
-    <div class="mat-card">
-      <div class="mat-num">04</div>
-      <strong>Uso diario real</strong>
-      <p>Soporta sudor y salpicaduras del día a día. Para especificaciones técnicas de resistencia, consultanos antes.</p>
-    </div>
-    <div class="mat-card">
-      <div class="mat-num">05</div>
-      <strong>Versión única — Negro Total</strong>
-      <p>No hay opciones de color. Hay una sola elección deliberada: el acabado más oscuro, sin concesiones.</p>
-    </div>
-    <div class="mat-card">
-      <div class="mat-num">06</div>
-      <strong>Stock limitado</strong>
-      <p>No es marketing: tenemos cantidades fijas. Una vez agotado, no hay reposición garantizada.</p>
-    </div>
-  </div>
-</section>
+</main>
 
-<section id="section-garantia" data-insync-section="garantia" style="padding:28px 16px;text-align:center;">
-  <div style="max-width:480px;margin:0 auto;border:2px solid #1a7a3e;border-radius:14px;padding:24px 18px;">
-    <div style="font-size:36px;">🛡️</div>
-    <h3 style="font-size:22px;font-weight:900;margin:8px 0 6px;color:#1a252f;">Garantía de 90 días</h3>
-    <p style="font-size:15px;color:#555;line-height:1.5;margin:0;">Si no funciona como prometemos, te lo cambiamos sin costo. Sin preguntas, sin vueltas.</p>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="faq" id="section-faq" data-insync-section="faq">
-  <p class="sec-label" style="text-align:center">Preguntas frecuentes</p>
-  <div class="faq-wrap">
-    <details class="faq-item">
-      <summary class="faq-q">¿Con qué outfits combina?</summary>
-      <div class="faq-a">El Blackout Minimal Negro Total es el más versátil — funciona con cualquier look, casual o formal. Su acabado oscuro total lo hace discreto sin perder presencia.</div>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-q">¿Es resistente al agua o sudor?</summary>
-      <div class="faq-a">Soporta el uso cotidiano normal — sudor y salpicaduras del día a día. Para especificaciones técnicas de resistencia al agua, consultanos antes de comprar.</div>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-q">¿Cuánto dura la batería?</summary>
-      <div class="faq-a">Funciona con pila de cuarzo estándar. La duración es la típica de relojes de este tipo. Sin necesidad de carga — cuando se agota la pila, se cambia.</div>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-q">¿Cuándo llega el pedido?</summary>
-      <div class="faq-a">En Central el envío es en el día. En el Interior coordinamos con vos después de confirmar el pedido — generalmente 1 a 2 días adicionales.</div>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-q">¿Cómo se paga?</summary>
-      <div class="faq-a">Si estás en Central, pagás cuando lo recibís. Si estás en el Interior, el pago es anticipado y coordinamos el envío una vez confirmado.</div>
-    </details>
-  </div>
-</section>
-
-<!-- Formulario oculto (heredado — reemplazado por modal) -->
-<section class="form-section" id="form-section" style="display:none">
-  <div class="form-section__inner">
-    <form class="form" id="lead-form" novalidate>
-      <input type="hidden" name="product" value="reloj">
-    </form>
-  </div>
-</section>
-
-<!-- Cierre -->
-<section class="close-sec" id="section-cierre" data-insync-section="cierre">
-  <div class="close-sec__inner">
-    <p class="close-quote">"Para el que se viste bien<br>sin hacer ruido."</p>
-    <div class="close-divider"></div>
-    <h2 class="close-h">Negro Total. Un solo precio.<br>Tuyo hoy.</h2>
-    <div class="close-trust">
-      <div class="ct-item"><span class="ct-ok">✓</span><span>Envío GRATIS · Envío en el día</span></div>
-      <div class="ct-item"><span class="ct-ok">✓</span><span>Central: pagás al recibir · Interior: pago anticipado - sin envío gratis</span></div>
-      <div class="ct-item"><span class="ct-ok">✓</span><span>Diseño único, acabado oscuro total</span></div>
-    </div>
-    <button class="cta-ref" data-scroll-form data-insync-cta="cierre">
-      <span class="cta-ref-arrow">↑</span>
-      <span>Pedir ahora</span>
-    </button>
-  </div>
-</section>
-
-<!-- Modal Pedido -->
-<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-reloj">
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="riv-modal-title">
   <div class="modal-box">
-    <p class="modal-urgency">⏳ Stock limitado</p>
-    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
-    <h2 class="modal-title" id="modal-title-reloj">Hacé tu pedido</h2>
-    <p class="modal-step">Estás a un paso de recibir tu reloj 🚚</p>
-    <p class="modal-subtitle">Elegí la cantidad. Te contactamos al toque.</p>
+    <button class="modal-close" id="riv-modal-close" aria-label="Cerrar">&#x2715;</button>
 
-    <!-- Ofertas -->
-    <div class="modal-section">
-      <span class="modal-section-label">Elegí tu oferta</span>
+    <div id="riv-modal-form-wrap">
+      <h2 class="modal-title" id="riv-modal-title">Reloj Blackout Minimal &mdash; Gs. 209.000</h2>
+      <p style="text-align:center;font-size:11px;font-weight:700;color:#1A1A1A;margin:4px 0 14px;">&#x26A1; Quedan pocas unidades &mdash; pedidos se procesan hoy</p>
+
+      <span class="modal-section-label">Eleg&#xED; tu oferta</span>
       <div class="offer-options">
-
         <label class="offer-option selected">
-          <input type="radio" name="offer" value="1" checked>
+          <input type="radio" name="riv-offer" value="1" checked>
           <div class="offer-content">
             <span class="offer-qty">1 unidad</span>
-            <span class="offer-price" id="offer-price-1">—</span>
+            <span class="offer-price">Gs. 209.000</span>
           </div>
         </label>
-
         <label class="offer-option">
-          <input type="radio" name="offer" value="2">
+          <input type="radio" name="riv-offer" value="2">
           <div class="offer-content">
             <span class="offer-qty">2 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-2">—</span>
-              <span class="offer-price" id="offer-price-2">—</span>
+            <div>
+              <span class="offer-compare">Gs. 418.000</span>
+              <span class="offer-price">Gs. 369.000</span>
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 94.500</span>
-            <div class="offer-badge">🔥 Más elegido</div>
+            <span class="offer-saving">Ahorr&#xE1;s Gs. 49.000</span>
+            <div class="offer-badge">&#x1F525; M&#xE1;s elegido</div>
           </div>
         </label>
-
         <label class="offer-option">
-          <input type="radio" name="offer" value="3">
+          <input type="radio" name="riv-offer" value="3">
           <div class="offer-content">
             <span class="offer-qty">3 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-3">—</span>
-              <span class="offer-price" id="offer-price-3">—</span>
+            <div>
+              <span class="offer-compare">Gs. 627.000</span>
+              <span class="offer-price">Gs. 529.000</span>
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 198.450</span>
-            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
+            <span class="offer-saving">Ahorr&#xE1;s Gs. 98.000</span>
+            <div class="offer-badge">&#x2B50; Mayor ahorro</div>
+          </div>
+        </label>
+      </div>
+
+      <form id="riv-dcanp-form" novalidate>
+        <div class="form-group">
+          <label for="riv-name">Nombre y apellido</label>
+          <input type="text" id="riv-name" name="name" placeholder="Ej: Mat&#xED;as Gim&#xE9;nez" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label for="riv-phone">Tel&#xE9;fono <span style="color:#DC2626;font-size:11px;font-weight:600;">&#xB7; Ingres&#xE1; tu n&#xFA;mero completo</span></label>
+          <input type="tel" id="riv-phone" name="phone" placeholder="Ej: 984 832 688" autocomplete="tel" required>
+          <p id="riv-phone-error" style="display:none;color:#DC2626;font-size:12px;font-weight:700;margin-top:4px;"></p>
+        </div>
+        <div class="form-group">
+          <label for="riv-city">Ciudad <span style="color:#DC2626;font-size:11px;font-weight:600;">&#xB7; Solo el nombre de tu ciudad</span></label>
+          <input type="text" id="riv-city" name="city" placeholder="Ej: Asunci&#xF3;n, Lambar&#xE9;, San Lorenzo..." autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="riv-calle">Calle principal y secundaria</label>
+          <input type="text" id="riv-calle" name="calle" placeholder="Ej: Av. Espa&#xF1;a y Tacuary" maxlength="200" autocomplete="street-address">
+        </div>
+
+        <label class="upsell-block">
+          <input type="checkbox" id="riv-express" name="express">
+          <div>
+            <span class="upsell-title">&#x1F680; Env&#xED;o express +10.000 Gs</span><br>
+            <span class="upsell-sub">Recib&#xED; antes que los dem&#xE1;s</span>
           </div>
         </label>
 
-      </div>
-    </div>
-    <p class="modal-price-warning">&#x1F512; Tus datos est&aacute;n seguros &middot; Solo los usamos para coordinar tu entrega</p>
-
-    <!-- Formulario -->
-    <form class="modal-form" id="modal-form" novalidate>
-
-      <div class="form-group">
-        <label for="m-name">Nombre y apellido</label>
-        <input type="text" id="m-name" name="name" placeholder="Ej: Diego Gonz&aacute;lez" autocomplete="name">
-        <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="m-phone">Tel&eacute;fono (WhatsApp) <span style="color:#c0392b;font-size:11px;font-weight:600;">&middot; Ingres&aacute; tu n&uacute;mero completo</span></label>
-        <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
-        <span class="form-error-msg"></span>
-      </div>
-
-
-            <div class="form-group">
-        <label for="horario">&iquest;En qu&eacute; horario pod&eacute;s recibir? <span style="font-weight:400;font-size:11px">(opcional)</span></label>
-        <input type="text" name="horario" id="horario" placeholder="Ej: de 9:00 a 17:00hs" maxlength="100" autocomplete="off">
-      </div>
-
-      <div class="form-group">
-        <label for="m-ref">Calle principal y secundaria</label>
-        <input type="text" id="m-ref" name="referencia" placeholder="Ej: Av. Espa&ntilde;a y Tacuary" autocomplete="street-address">
-      </div>
-
-            <div class="form-group" id="city-group">
-        <label for="m-city-search">Ciudad <span style="color:#c0392b;font-size:11px;font-weight:600;">&middot; Solo el nombre de tu ciudad</span></label>
-        <input type="text" id="m-city-search" placeholder="Ej: Luque, Fernando de la Mora" autocomplete="off" oninput="document.getElementById('m-city').value=this.value">
-        <input type="hidden" id="m-city" name="city">
-        <span class="form-error-msg"></span>
-      </div>
-
-            <input type="hidden" id="m-payment" name="payment" value="Al recibir">
-
-      <label class="upsell-block">
-        <input type="checkbox" id="m-express" name="express">
-        <div class="upsell-content">
-          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
-          <span class="upsell-sub">Recibí antes que los demás</span>
+        <label class="upsell-block" style="margin-top:12px">
+          <input type="checkbox" id="riv-invoice" name="invoice">
+          <div>
+            <span class="upsell-title">&#x1F9FE; Necesito factura</span><br>
+            <span class="upsell-sub">RUC o c&#xE9;dula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="riv-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group">
+            <label for="riv-invoice-ruc">RUC</label>
+            <input type="text" id="riv-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="riv-invoice-name">Raz&#xF3;n social o nombre</label>
+            <input type="text" id="riv-invoice-name" name="invoice_name" placeholder="Nombre completo o raz&#xF3;n social">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="riv-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+            <input type="email" id="riv-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+          </div>
         </div>
-      </label>
 
-      <label class="upsell-block" id="m-invoice-block" style="margin-top:10px">
-        <input type="checkbox" id="m-invoice" name="invoice">
-        <div class="upsell-content">
-          <span class="upsell-title">🧾 Necesito factura</span>
-          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+        <p id="riv-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none"></p>
+
+        <div class="riv-pay-badge">&#x1F4B3; Pago al recibir</div>
+
+        <div class="form-submit">
+          <button type="submit" id="riv-submit-btn"
+                  style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px;background:#1A1A1A;color:#C0C0C0;font-weight:700;font-size:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;">
+            <div>Confirmar pedido</div>
+            <div style="font-size:11px;font-weight:700;margin-top:3px;letter-spacing:.03em;opacity:.85;">&#x2713; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</div>
+          </button>
         </div>
-      </label>
-      <div id="m-invoice-fields" style="display:none;margin-top:6px">
-        <div class="form-group">
-          <label for="m-invoice-ruc">RUC *</label>
-          <input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
-          <span class="form-error-msg"></span>
-        </div>
-        <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-name">Razón social / Nombre *</label>
-          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
-          <span class="form-error-msg"></span>
-        </div>
-        <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(255,255,255,.4)">(opcional)</span></label>
-          <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
-        </div>
-      </div>
-
-            <input type="checkbox" id="m-confirm" name="confirm" checked hidden>
-
-      <div class="form-submit">
-        <button type="submit" class="btn btn-primary" id="modal-submit-btn">
-          Confirmar pedido por WhatsApp
-        </button>
-      </div>
-
-    </form>
-
-    <div class="form-success" id="modal-success">
-      <h3>¡Listo!</h3>
-      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
-      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
-      <div class="manual-wa">
-        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
-      </div>
-            <a href="/" class="btn-ver-coleccion">Ver m&aacute;s productos &#x2192;</a>
+      </form>
     </div>
 
-  </div>
-</div>
-
-<!-- Modal Combo Reloj + Cadena Apex -->
-<div class="modal-overlay" id="combo-modal" role="dialog" aria-modal="true" aria-labelledby="combo-modal-title">
-  <div class="modal-box">
-    <p class="modal-urgency">⏳ Stock limitado</p>
-    <button class="modal-close" id="combo-modal-close" aria-label="Cerrar">✕</button>
-    <h2 class="modal-title" id="combo-modal-title">Combo Reloj + Cadena Apex</h2>
-    <p class="modal-step">1 reloj + 1 Cadena Apex — todo en un pedido</p>
-    <p class="modal-subtitle">Reloj Blackout Minimal + Cadena Apex. Todo en un pedido.</p>
-
-    <!-- Precio combo -->
-    <div style="margin:16px 0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
-      <span style="font-size:clamp(22px,5vw,30px);font-weight:800;color:#fff">Gs. 249.000</span>
-      <span class="price-compare" style="font-size:13px">Gs. 318.000</span>
-      <span class="price-badge">22% OFF</span>
-    </div>
-
-    <!-- Cadena incluida (fija) -->
-    <div class="modal-section">
-      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid rgba(74,222,128,.3);border-radius:8px;background:rgba(74,222,128,.05)">
-        <span style="color:#4ade80;font-size:16px;flex-shrink:0">✓</span>
-        <div>
-          <div style="font-size:14px;font-weight:600;color:#fff">Cadena Apex seleccionada</div>
-          <div style="font-size:12px;color:rgba(255,255,255,.45)">1 unidad · incluida en el combo</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Formulario combo -->
-    <form class="modal-form" id="combo-form" novalidate>
-
-      <div class="form-group">
-        <label for="cm-name">Nombre y apellido</label>
-        <input type="text" id="cm-name" name="name" placeholder="Ej: Diego Gonz&aacute;lez" autocomplete="name">
-        <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="cm-phone">Tel&eacute;fono (WhatsApp) <span style="color:#c0392b;font-size:11px;font-weight:600;">&middot; Ingres&aacute; tu n&uacute;mero completo</span></label>
-        <input type="tel" id="cm-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
-        <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="cm-city">Ciudad <span style="color:#c0392b;font-size:11px;font-weight:600;">&middot; Solo el nombre de tu ciudad</span></label>
-        <input type="text" id="cm-city" name="city" placeholder="Ej: Asunci&oacute;n, Luque, San Lorenzo..." autocomplete="off">
-        <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group" id="cm-ref-group">
-        <label for="cm-ref">Calle principal y secundaria</label>
-        <input type="text" id="cm-ref" name="referencia" placeholder="Ej: Av. Espa&ntilde;a y Tacuary" autocomplete="street-address">
-      </div>
-
-      <input type="hidden" id="cm-payment" name="payment" value="Al recibir">
-
-      <label class="upsell-block" id="cm-express-block">
-        <input type="checkbox" id="cm-express">
-        <div class="upsell-content">
-          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
-          <span class="upsell-sub">Recibí antes que los demás</span>
-        </div>
-      </label>
-
-      <label class="upsell-block" id="cm-invoice-block" style="margin-top:10px">
-        <input type="checkbox" id="cm-invoice">
-        <div class="upsell-content">
-          <span class="upsell-title">🧾 Necesito factura</span>
-          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
-        </div>
-      </label>
-      <div id="cm-invoice-fields" style="display:none;margin-top:6px">
-        <div class="form-group">
-          <label for="cm-invoice-ruc">RUC *</label>
-          <input type="text" id="cm-invoice-ruc" placeholder="Ej: 1234567-8" autocomplete="off">
-          <span class="form-error-msg"></span>
-        </div>
-        <div class="form-group" style="margin-top:14px">
-          <label for="cm-invoice-name">Razón social / Nombre *</label>
-          <input type="text" id="cm-invoice-name" placeholder="Nombre completo o razón social">
-          <span class="form-error-msg"></span>
-        </div>
-        <div class="form-group" style="margin-top:14px">
-          <label for="cm-invoice-email">Email <span style="font-weight:400;color:rgba(255,255,255,.4)">(opcional)</span></label>
-          <input type="email" id="cm-invoice-email" placeholder="correo@ejemplo.com" autocomplete="email">
-        </div>
-      </div>
-
-      <input type="checkbox" id="cm-confirm" name="confirm" checked hidden>
-
-      <div id="cm-stock-error" style="display:none;color:#f87171;font-size:13px;margin:10px 0;padding:10px;background:rgba(248,113,113,.08);border-radius:6px;border:1px solid rgba(248,113,113,.2)"></div>
-
-      <div class="form-submit">
-        <button type="submit" class="btn btn-primary" id="combo-submit-btn">
-          Pedir combo por WhatsApp
-          <div style="font-size:12px;font-weight:800;margin-top:3px;letter-spacing:.03em;">&#x2713; Env&iacute;o gratis &middot; Pag&aacute;s al recibir</div>
-        </button>
-      </div>
-
-    </form>
-
-    <div class="form-success" id="combo-success">
-      <h3>¡Listo!</h3>
-      <p>Abrimos WhatsApp para coordinar tu pedido del combo.</p>
-      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
-      <div class="manual-wa">
-        <a href="https://wa.me/595993471550" class="btn-wa-manual" id="cm-wa-manual">Abrir WhatsApp manualmente →</a>
+    <div class="dcanp-success" id="riv-dcanp-success">
+      <div class="dcanp-success__icon">&#x2713;</div>
+      <h2>&#xA1;Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p class="dcanp-success__tip">&#x1F4F1; Quedate atento a tu n&#xFA;mero &mdash; te vamos a contactar pronto.</p>
+      <div class="dcanp-success__badges">
+        <span>&#x2713; Env&#xED;o gratis</span>
+        <span>&#x2713; Pag&#xE1;s al recibir</span>
       </div>
       <a href="/" class="btn-ver-coleccion">Ver m&aacute;s productos &#x2192;</a>
     </div>
-
   </div>
 </div>
 
-<footer class="footer">
-  &copy; 2026 Dam Vertex
-</footer>
+<footer class="riv-footer">&copy; Dam Vertex</footer>
 
-<!-- Scripts -->
-<script>
-</script>
 <script src="/assets/js/tracking.js?v=74" defer></script>
-<script src="/assets/js/products.js?v=66" defer></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
-<script>
+
+<script defer>
 (function() {
-  var lpLoaded = false;
-  function loadLP() {
-    if (lpLoaded) return;
-    lpLoaded = true;
-    var s = document.createElement('script');
-    s.src = '/assets/js/location-picker.js?v=57';
-    s.onload = function() {
-      if (typeof DV.initLocationPicker === 'function') {
-        DV.initLocationPicker('m', window.DV_MAPS_KEY || '');
-        var cm = document.getElementById('combo-modal');
-        if (cm && cm.classList.contains('active')) {
-          DV.initLocationPicker('cm', window.DV_MAPS_KEY || '');
-        }
-      }
-    };
-    document.head.appendChild(s);
+  function rivInitVideo() {
+    var vid = document.getElementById('riv-video');
+    if (!vid) return;
+    vid.muted = true;
+    document.addEventListener('touchstart', function() {
+      if (vid.paused) vid.play().catch(function(){});
+    }, { once: true, passive: true });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { vid.muted = true; vid.play().catch(function(){}); }
+          else vid.pause();
+        });
+      }, { threshold: 0.3 }).observe(vid);
+    }
   }
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('[data-scroll-form]').forEach(function(el) {
-      el.addEventListener('click', loadLP);
-    });
-    var modal = document.getElementById('order-modal');
-    if (modal) {
-      new MutationObserver(function(mutations) {
-        mutations.forEach(function(m) {
-          if (m.target.classList.contains('active')) loadLP();
-        });
-      }).observe(modal, { attributes: true, attributeFilter: ['class'] });
-    }
-    var comboBtn = document.getElementById('open-combo-modal');
-    if (comboBtn) comboBtn.addEventListener('click', loadLP);
-    var comboModal = document.getElementById('combo-modal');
-    if (comboModal) {
-      new MutationObserver(function(mutations) {
-        mutations.forEach(function(m) {
-          if (m.target.classList.contains('active')) loadLP();
-        });
-      }).observe(comboModal, { attributes: true, attributeFilter: ['class'] });
-    }
-  });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', rivInitVideo);
+  else rivInitVideo();
 })();
 </script>
-<script>
-  const PRODUCT = {
-    name: 'Reloj Blackout Minimal',
-    slug: 'reloj',
-    price: 189000,
-  };
 
-  function preSelectOffer(val) {
-    var radio = document.querySelector('.offer-options input[name="offer"][value="' + val + '"]');
-    if (!radio) return;
-    radio.checked = true;
-    document.querySelectorAll('.offer-option').forEach(function(opt) { opt.classList.remove('selected'); });
-    var parent = radio.closest('.offer-option');
-    if (parent) parent.classList.add('selected');
-    radio.dispatchEvent(new Event('change'));
+<script defer>
+var PRODUCT = {
+  name: 'Reloj Blackout Minimal',
+  slug: 'reloj',
+  price: 209000,
+  comboPricing: { 1: 209000, 2: 369000, 3: 529000 },
+};
+var STOCK_RESTANTE = 20;
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-stock]').forEach(function(el) { el.textContent = STOCK_RESTANTE; });
+
+  setTimeout(function() {
+    try { DV.trackViewContent(PRODUCT); } catch (_) {}
+  }, 800);
+
+  var modal      = document.getElementById('order-modal');
+  var openBtns   = document.querySelectorAll('[data-open-modal]');
+  var closeBtn   = document.getElementById('riv-modal-close');
+  var form       = document.getElementById('riv-dcanp-form');
+  var formWrap   = document.getElementById('riv-modal-form-wrap');
+  var successBox = document.getElementById('riv-dcanp-success');
+  var submitBtn  = document.getElementById('riv-submit-btn');
+  var offerInputs = document.querySelectorAll('input[name="riv-offer"]');
+
+  var _icFired = false;
+  function openModal() {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+    if (!_icFired) {
+      _icFired = true;
+      setTimeout(function() {
+        try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {}
+      }, 1500);
+    }
+  }
+  function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+
+  openBtns.forEach(function(btn) {
+    if (!btn) return;
+    btn.addEventListener('click', function(e) { e.preventDefault(); openModal(); });
+  });
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (modal) modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+
+  offerInputs.forEach(function(input) {
+    input.addEventListener('change', function() {
+      document.querySelectorAll('.offer-option').forEach(function(opt) { opt.classList.remove('selected'); });
+      input.closest('.offer-option').classList.add('selected');
+      updateTotal();
+    });
+  });
+
+  var invoiceChk    = document.getElementById('riv-invoice');
+  var invoiceFields = document.getElementById('riv-invoice-fields');
+  if (invoiceChk && invoiceFields) {
+    invoiceChk.addEventListener('change', function() {
+      invoiceFields.style.display = this.checked ? 'block' : 'none';
+    });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    DV.trackViewContent(PRODUCT);
-    DV.initForm(PRODUCT);
+  function updateTotal() {
+    var tl = document.getElementById('riv-total-line');
+    if (!tl) return;
+    var sel = document.querySelector('input[name="riv-offer"]:checked');
+    var qty = sel ? parseInt(sel.value) : 1;
+    var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    var isExp = document.getElementById('riv-express') && document.getElementById('riv-express').checked;
+    var total = base + (isExp ? 10000 : 0);
+    tl.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    tl.style.display = isExp ? 'block' : 'none';
+  }
+  var expChk = document.getElementById('riv-express');
+  if (expChk) expChk.addEventListener('change', updateTotal);
 
-    /* AddToCart + InitiateCheckout — al abrir modal */
-    var _icFired = false;
-    document.querySelectorAll('[data-scroll-form]').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        try { DV.trackAddToCart(PRODUCT); } catch (_) {}
-        if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500); }
-      });
+  var rivPhone = document.getElementById('riv-phone');
+  if (rivPhone) {
+    rivPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
+    rivPhone.addEventListener('input', function() {
+      this.style.borderColor = '';
+      var e = document.getElementById('riv-phone-error');
+      if (e) { e.textContent = ''; e.style.display = 'none'; }
     });
+  }
 
-    /* Precios de combos externos */
-    (function() {
-      var p   = PRODUCT.price;
-      var fmt = function(n) { return 'Gs. ' + Math.round(n).toLocaleString('es-PY'); };
-      var e1  = document.getElementById('cpv-price-1');
-      var e2  = document.getElementById('cpv-price-2');
-      var e3  = document.getElementById('cpv-price-3');
-      var c2  = document.getElementById('cpv-compare-2');
-      var c3  = document.getElementById('cpv-compare-3');
-      if (e1) e1.textContent = fmt(p);
-      if (e2) e2.textContent = fmt(Math.round(p * 2 * 0.75));
-      if (e3) e3.textContent = fmt(Math.round(p * 3 * 0.65));
-      if (c2) c2.textContent = fmt(p * 2);
-      if (c3) c3.textContent = fmt(p * 3);
-    })();
-
-    /* Click en mini card → preselecciona combo en modal */
-    document.querySelectorAll('.combo-preview-card').forEach(function(card) {
-      card.addEventListener('click', function() {
-        document.querySelectorAll('.combo-preview-card').forEach(function(c) { c.classList.remove('combo-preview-card--active'); });
-        card.classList.add('combo-preview-card--active');
-        preSelectOffer(card.dataset.offer);
+  if (form) form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var sel   = document.querySelector('input[name="riv-offer"]:checked');
+    var qty   = sel ? parseInt(sel.value) : 1;
+    var base  = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    var express = !!(document.getElementById('riv-express') && document.getElementById('riv-express').checked);
+    var invoice = !!(document.getElementById('riv-invoice') && document.getElementById('riv-invoice').checked);
+    var value = base + (express ? 10000 : 0);
+    var data = {
+      name:          (document.getElementById('riv-name') && document.getElementById('riv-name').value.trim()) || '',
+      phone:         (document.getElementById('riv-phone') && document.getElementById('riv-phone').value.replace(/\s/g,'')) || '',
+      city:          (document.getElementById('riv-city') && document.getElementById('riv-city').value.trim()) || '',
+      street:        (document.getElementById('riv-calle') && document.getElementById('riv-calle').value.trim()) || '',
+      quantity:      qty,
+      product_slug:  PRODUCT.slug,
+      product_name:  PRODUCT.name,
+      value:         value,
+      express:       express,
+      invoice:       invoice,
+      invoice_ruc:   invoice ? ((document.getElementById('riv-invoice-ruc') && document.getElementById('riv-invoice-ruc').value) || '').trim() : '',
+      invoice_name:  invoice ? ((document.getElementById('riv-invoice-name') && document.getElementById('riv-invoice-name').value) || '').trim() : '',
+      invoice_email: invoice ? ((document.getElementById('riv-invoice-email') && document.getElementById('riv-invoice-email').value) || '').trim() : '',
+    };
+    if (!data.name || !data.phone || !data.city) {
+      alert('Complet\u00E1 nombre, tel\u00E9fono y ciudad para continuar.');
+      return;
+    }
+    var soloNums = data.phone.replace(/\D/g,'');
+    if (soloNums.length < 9) {
+      if (rivPhone) { rivPhone.style.borderColor = '#DC2626'; rivPhone.scrollIntoView({ behavior:'smooth', block:'center' }); }
+      var pErr = document.getElementById('riv-phone-error');
+      if (pErr) { pErr.textContent = 'Ingres\u00E1 tu n\u00FAmero completo (ej: 0984 832 688)'; pErr.style.display = 'block'; }
+      return;
+    }
+    try {
+      var client = typeof getClientData === 'function' ? getClientData() : {};
+      data.fbp = client.fbp || null;
+      data.fbc = client.fbc || null;
+    } catch (_) {}
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+    try {
+      var res = await fetch('/api/dcanp-lead', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(data),
       });
-    });
-
-    /* ── Combo Reloj + Cadena Apex ── */
-    (function() {
-      var COMBO_PRICE = 249000;
-      var COMBO_SLUG  = 'combo-reloj-cadena';
-      var COMBO_NAME  = 'Combo Reloj Blackout Minimal + Cadena Apex';
-
-      var comboOverlay  = document.getElementById('combo-modal');
-      var comboForm     = document.getElementById('combo-form');
-      var comboSuccess  = document.getElementById('combo-success');
-      var comboSubmit   = document.getElementById('combo-submit-btn');
-      var comboClose    = document.getElementById('combo-modal-close');
-      var comboOpenBtn  = document.getElementById('open-combo-modal');
-      var comboConfirm  = document.getElementById('cm-confirm');
-      var comboConfBlk  = document.getElementById('cm-confirm-block');
-      var comboConfErr  = document.getElementById('cm-confirm-error');
-      var comboStockEl  = document.getElementById('cm-stock-error');
-      var comboWaManual = document.getElementById('cm-wa-manual');
-      var cmExpressEl   = document.getElementById('cm-express');
-
-      if (!comboOverlay || !comboForm) return;
-
-      var _comboAtcFired  = false;
-      var _comboLocInit  = false;
-
-      var _comboIcFired = false;
-
-      function openComboModal() {
-        comboOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        if (!_comboAtcFired) {
-          DV.trackAddToCart({ name: COMBO_NAME, slug: COMBO_SLUG, price: COMBO_PRICE });
-          _comboAtcFired = true;
-        }
-        if (!_comboIcFired) { _comboIcFired = true; setTimeout(function() { try { DV.trackInitiateCheckout({ name: COMBO_NAME, slug: COMBO_SLUG, price: COMBO_PRICE }, null, 2); } catch (_) {} }, 1500); }
-        if (!_comboLocInit && typeof DV.initLocationPicker === 'function') {
-          _comboLocInit = true;
-          DV.initLocationPicker('cm', window.DV_MAPS_KEY || '');
-        }
-      }
-
-      function closeComboModal() {
-        comboOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      if (comboOpenBtn) comboOpenBtn.addEventListener('click', openComboModal);
-      if (comboClose) comboClose.addEventListener('click', closeComboModal);
-      comboOverlay.addEventListener('click', function(e) {
-        if (e.target === comboOverlay) closeComboModal();
-      });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && comboOverlay.classList.contains('active')) closeComboModal();
-      });
-
-      if (comboConfirm) {
-        comboConfirm.addEventListener('change', function() {
-          if (comboConfBlk) comboConfBlk.classList.toggle('checked', comboConfirm.checked);
-          if (comboConfirm.checked) {
-            if (comboConfBlk) comboConfBlk.classList.remove('error');
-            if (comboConfErr) comboConfErr.classList.remove('visible');
-          }
-        });
-      }
-
-      if (cmExpressEl) {
-        cmExpressEl.addEventListener('change', function() {
-          var blk = document.getElementById('cm-express-block');
-          if (blk) blk.classList.toggle('checked', cmExpressEl.checked);
-        });
-      }
-
-      var cmInvoiceCb = document.getElementById('cm-invoice');
-      var cmInvoiceFields = document.getElementById('cm-invoice-fields');
-      if (cmInvoiceCb && cmInvoiceFields) {
-        cmInvoiceCb.addEventListener('change', function() {
-          cmInvoiceFields.style.display = cmInvoiceCb.checked ? 'block' : 'none';
-        });
-      }
-
-      comboForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        if (!comboConfirm || !comboConfirm.checked) {
-          if (comboConfBlk) comboConfBlk.classList.add('error');
-          if (comboConfErr) comboConfErr.classList.add('visible');
-          if (comboConfBlk) comboConfBlk.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-
-        var nameEl    = document.getElementById('cm-name');
-        var phoneEl   = document.getElementById('cm-phone');
-        var cityEl    = document.getElementById('cm-city');
-        var paymentEl = document.getElementById('cm-payment');
-        var variantEl = document.getElementById('cm-variant');
-
-        var name     = nameEl  ? nameEl.value.trim()  : '';
-        var rawPhone = phoneEl ? phoneEl.value.trim()  : '';
-        var city     = cityEl  ? cityEl.value.trim()   : '';
-        var variant  = variantEl ? variantEl.value : 'Negro Total';
-        var address  = (document.getElementById('cm-ref')     || {}).value || '';
-        var payment  = paymentEl ? paymentEl.value : '';
-        address = address.trim();
-
-        /* Location picker fields */
-        var cmLocCity    = (document.getElementById('cm-loc-city')     || {}).value || '';
-        var cmLocAddress = (document.getElementById('cm-loc-address')  || {}).value || '';
-        var cmLocLat     = parseFloat((document.getElementById('cm-loc-lat') || {}).value || '') || null;
-        var cmLocLng     = parseFloat((document.getElementById('cm-loc-lng') || {}).value || '') || null;
-        var cmLocMapsUrl = (document.getElementById('cm-loc-maps-url') || {}).value || '';
-        var cmLocPlaceId = (document.getElementById('cm-loc-place-id') || {}).value || '';
-        var cmLocInputEl = document.getElementById('cm-location');
-        /* Si se detectó ciudad automáticamente, usarla */
-        if (cmLocCity && !city) city = cmLocCity;
-
-        /* Clear errors */
-        [nameEl, phoneEl, cityEl, paymentEl, cmLocInputEl].forEach(function(el) {
-          if (!el) return;
-          el.classList.remove('error');
-          var errEl = el.closest('.form-group') && el.closest('.form-group').querySelector('.form-error-msg');
-          if (errEl) errEl.classList.remove('visible');
-        });
-
-        var hasError   = false;
-        var firstError = null;
-        function markErr(el, msg) {
-          if (!el) return;
-          el.classList.add('error');
-          var errEl = el.closest('.form-group') && el.closest('.form-group').querySelector('.form-error-msg');
-          if (errEl) { errEl.textContent = msg; errEl.classList.add('visible'); }
-          if (!firstError) firstError = el;
-          hasError = true;
-        }
-
-        if (!name)                                        markErr(nameEl,  'Ingresá tu nombre');
-        if (!rawPhone)                                    markErr(phoneEl, 'El teléfono es obligatorio');
-        else if (!/^[0-9+\s\-]{6,16}$/.test(rawPhone))  markErr(phoneEl, 'Teléfono inválido');
-        if (!payment)                                     markErr(paymentEl, 'Seleccioná un método de pago.');
-
-        if (hasError) {
-          if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-
-        /* Invoice */
-        var cmInvoiceChecked = cmInvoiceCb ? cmInvoiceCb.checked : false;
-        if (cmInvoiceChecked) {
-          var invRucEl2  = document.getElementById('cm-invoice-ruc');
-          var invNameEl2 = document.getElementById('cm-invoice-name');
-          var invErr2 = false;
-          if (!invRucEl2 || !invRucEl2.value.trim()) {
-            var e2 = invRucEl2 && invRucEl2.closest('.form-group') && invRucEl2.closest('.form-group').querySelector('.form-error-msg');
-            if (invRucEl2) invRucEl2.classList.add('error');
-            if (e2) { e2.textContent = 'El RUC es obligatorio'; e2.classList.add('visible'); }
-            if (!invErr2 && invRucEl2) invRucEl2.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            invErr2 = true;
-          }
-          if (!invNameEl2 || !invNameEl2.value.trim()) {
-            var e3 = invNameEl2 && invNameEl2.closest('.form-group') && invNameEl2.closest('.form-group').querySelector('.form-error-msg');
-            if (invNameEl2) invNameEl2.classList.add('error');
-            if (e3) { e3.textContent = 'La razón social es obligatoria'; e3.classList.add('visible'); }
-            if (!invErr2 && invNameEl2) invNameEl2.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            invErr2 = true;
-          }
-          if (invErr2) return;
-        }
-        var cmInvRuc   = cmInvoiceChecked ? ((document.getElementById('cm-invoice-ruc')  || {}).value || '').trim() : '';
-        var cmInvName  = cmInvoiceChecked ? ((document.getElementById('cm-invoice-name') || {}).value || '').trim() : '';
-        var cmInvEmail = cmInvoiceChecked ? ((document.getElementById('cm-invoice-email')|| {}).value || '').trim() : '';
-
-        var validPhone = normalizeParaguayPhone(rawPhone);
-
-        var isExpress  = cmExpressEl ? cmExpressEl.checked : false;
-        var comboTotal = COMBO_PRICE + (isExpress ? 10000 : 0);
-        var totalFmt   = isExpress ? 'Gs. 259.000' : 'Gs. 249.000';
-        var tgPayment  = payment ? payment + (isExpress ? ' + Express' : '') : (isExpress ? 'Express' : null);
-
-        /* Armar WA URL ANTES del primer await — preservar gesture context */
-        var waLines = [
-          '¡Hola! Acabo de realizar un pedido en Dam Vertex y quiero confirmar los detalles:',
-          '',
-          'Nombre: ' + name,
-          'Producto: Combo Reloj + Cadena Apex',
-          'Reloj: ' + (VARIANT_DISPLAY_NAMES[variant] || variant),
-          'Cadena Apex: 1 unidad incluida',
-        ];
-        if (isExpress) waLines.push('Envío express: Sí (+10.000 Gs)');
-        waLines.push('Total: ' + totalFmt);
-        waLines.push('Método de Pago: ' + (tgPayment || 'No especificado'));
-        if (city) waLines.push('Ciudad: ' + city);
-        waLines.push('WhatsApp: ' + rawPhone);
-        if (cmLocMapsUrl) waLines.push('Ubicación exacta: ' + cmLocMapsUrl);
-        if (address) waLines.push('Referencia: ' + address);
-        if (cmInvoiceChecked) {
-          waLines.push('Factura: Sí');
-          if (cmInvRuc)  waLines.push('RUC: ' + cmInvRuc);
-          if (cmInvName) waLines.push('Razón social: ' + cmInvName);
-        }
-        waLines.push('', '¿Pueden ayudarme a coordinar el envío?');
-        var waUrl = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waLines.join('\n'));
-        if (comboWaManual) comboWaManual.href = waUrl;
-
-        comboSubmit.disabled = true;
-        comboSubmit.innerHTML = '<span class="spinner"></span>';
-        if (comboStockEl) comboStockEl.style.display = 'none';
-
-        /* Verificar stock del modelo de reloj seleccionado */
-        var comboRelojStock = await checkProductStock('reloj', 1, variant);
-        if (!comboRelojStock.ok) {
-          if (comboStockEl) {
-            comboStockEl.textContent = comboRelojStock.error;
-            comboStockEl.style.display = 'block';
-            comboStockEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-          comboSubmit.disabled = false;
-          comboSubmit.innerHTML = 'Pedir combo por WhatsApp';
-          return;
-        }
-
-        /* Guardar lead */
-        try {
-          var client = typeof getClientData === 'function' ? getClientData() : {};
-          var attr   = typeof DV.getAttribution === 'function' ? DV.getAttribution() : {};
-          var payload = Object.assign({}, attr, {
-            product_name:      COMBO_NAME,
-            product_slug:      COMBO_SLUG,
-            name:              name,
-            phone:             validPhone || rawPhone,
-            email:             '',
-            city:              city,
-            value:             comboTotal,
-            currency:          'PYG',
-            quantity:          2,
-            variant:           JSON.stringify([variant]),
-            fbp:               client.fbp || '',
-            fbc:               client.fbc || '',
-            user_agent:        navigator.userAgent,
-            address:           address || null,
-            payment_method:    tgPayment || null,
-            location_address:  cmLocAddress  || null,
-            location_city:     cmLocCity     || null,
-            location_lat:      cmLocLat      || null,
-            location_lng:      cmLocLng      || null,
-            location_maps_url: cmLocMapsUrl  || null,
-            location_place_id: cmLocPlaceId  || null,
-            invoice_requested: cmInvoiceChecked ? 1 : 0,
-            invoice_ruc:       cmInvRuc   || null,
-            invoice_name:      cmInvName  || null,
-            invoice_email:     cmInvEmail || null,
-          });
-          var res = await fetch('/api/leads', {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify(payload),
-          });
-          if (!res.ok) throw new Error('lead_error');
-        } catch (err) {
-          if (err && err.message !== 'lead_error') console.error('COMBO_LEAD_ERROR', err.message);
-          comboSubmit.disabled = false;
-          comboSubmit.innerHTML = 'Pedir combo por WhatsApp';
-          if (comboStockEl) {
-            comboStockEl.textContent = 'Error al registrar el pedido. Intentá de nuevo.';
-            comboStockEl.style.display = 'block';
-            comboStockEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-          return;
-        }
-
-        if (typeof DV.saveLeadDataLocal === 'function') {
-          DV.saveLeadDataLocal(validPhone || rawPhone, name, cmInvEmail || '');
-        }
-
-        comboForm.style.display = 'none';
-        comboSuccess.classList.add('visible');
-        window.location.href = waUrl;
-      });
-    })();
-
+      await res.json().catch(function() { return {}; });
+    } catch (err) {
+      console.error('DCANP_SUBMIT_ERROR', err && err.message);
+    }
+    formWrap.style.display = 'none';
+    successBox.classList.add('visible');
+    submitBtn.disabled = false;
   });
+});
 </script>
-<!-- CRO: Sticky bottom CTA — mobile only, se oculta cuando modal está activo (CSS :has) -->
-<div class="sticky-cta-bar" id="sticky-cta-bar">
-  <button class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0">
-    Pedir ahora →
-  </button>
-</div>
 
-<script src="/assets/js/protect.js?v=68"></script>
+<script src="/assets/js/protect.js?v=68" defer></script>
 </body>
 </html>
