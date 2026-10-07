@@ -157,7 +157,7 @@
     }
     .riv-section-sub { font-size: 14px; color: var(--riv-texto-2); line-height: 1.55; margin: 0 0 20px; }
     .riv-video-wrap {
-      aspect-ratio: 1/1; border-radius: 16px;
+      aspect-ratio: 9/16; border-radius: 16px;
       overflow: hidden; background: #111214; max-width: 440px; margin: 0 auto 20px;
     }
     .riv-video-wrap video {
@@ -354,11 +354,11 @@
     <p class="riv-hero__sub">Manguera LED multicolor, 8 modos de iluminaci&#xF3;n, enchufa&#x301;s y listo. Para quincho, patio, local o sal&#xF3;n. Sin instalaci&#xF3;n.</p>
 
     <div class="mled-var-grid" id="hero-var-grid">
-      <button type="button" class="mled-var-btn" data-var-id="10m" data-var-price="149000" data-var-compare="199000" data-var-save="50000">
+      <button type="button" class="mled-var-btn selected" data-var-id="10m" data-var-price="149000" data-var-compare="199000" data-var-save="50000">
         <span class="mled-var-label">10 metros</span>
         <span class="mled-var-price">Gs. 149.000</span>
       </button>
-      <button type="button" class="mled-var-btn selected" data-var-id="30m" data-var-price="259000" data-var-compare="359000" data-var-save="100000">
+      <button type="button" class="mled-var-btn" data-var-id="30m" data-var-price="259000" data-var-compare="359000" data-var-save="100000">
         <span class="mled-var-label">30 metros</span>
         <span class="mled-var-price">Gs. 259.000</span>
         <span class="mled-var-badge">&#x2B50; M&#xE1;s elegido</span>
@@ -366,10 +366,10 @@
     </div>
 
     <div style="text-align:center">
-      <div class="riv-save-pill" id="hero-save-pill">Ahorr&#xE1;s Gs. 100.000</div>
+      <div class="riv-save-pill" id="hero-save-pill">Ahorr&#xE1;s Gs. 50.000</div>
       <div class="riv-price-row">
-        <span class="riv-price-main" id="hero-price">Gs. 259.000</span>
-        <span class="riv-price-compare" id="hero-compare">Gs. 359.000</span>
+        <span class="riv-price-main" id="hero-price">Gs. 149.000</span>
+        <span class="riv-price-compare" id="hero-compare">Gs. 199.000</span>
       </div>
       <p class="riv-social-proof">+280 paraguayos ya la tienen</p>
       <p class="riv-garantia">&#x2713; Pago al recibir &middot; Sin adelanto &middot; Env&#xED;o gratis</p>
@@ -606,11 +606,11 @@
     <p class="riv-cierre__sub">No importa si es tu casa, tu quincho o tu local &mdash; la diferencia se nota en cuanto la encend&#xE9;s.</p>
 
     <div class="mled-cierre-var-grid" id="cierre-var-grid">
-      <button type="button" class="mled-var-btn" data-var-id="10m" data-var-price="149000" data-var-compare="199000" data-var-save="50000">
+      <button type="button" class="mled-var-btn selected" data-var-id="10m" data-var-price="149000" data-var-compare="199000" data-var-save="50000">
         <span class="mled-var-label">10 metros</span>
         <span class="mled-var-price">Gs. 149.000</span>
       </button>
-      <button type="button" class="mled-var-btn selected" data-var-id="30m" data-var-price="259000" data-var-compare="359000" data-var-save="100000">
+      <button type="button" class="mled-var-btn" data-var-id="30m" data-var-price="259000" data-var-compare="359000" data-var-save="100000">
         <span class="mled-var-label">30 metros</span>
         <span class="mled-var-price">Gs. 259.000</span>
         <span class="mled-var-badge">&#x2B50; M&#xE1;s elegido</span>
@@ -640,8 +640,8 @@
 
       <span class="modal-section-label">Eleg&#xED; tu longitud</span>
       <div class="offer-options">
-        <label class="offer-option">
-          <input type="radio" name="riv-offer" value="10m">
+        <label class="offer-option selected">
+          <input type="radio" name="riv-offer" value="10m" checked>
           <div class="offer-content">
             <span class="offer-qty">10 metros</span>
             <div>
@@ -653,8 +653,8 @@
             <span class="offer-saving">Ahorr&#xE1;s Gs. 50.000</span>
           </div>
         </label>
-        <label class="offer-option selected">
-          <input type="radio" name="riv-offer" value="30m" checked>
+        <label class="offer-option">
+          <input type="radio" name="riv-offer" value="30m">
           <div class="offer-content">
             <span class="offer-qty">30 metros</span>
             <div>
@@ -725,7 +725,7 @@
         <div class="form-submit">
           <button type="submit" id="riv-submit-btn"
                   style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px;background:#0B6E4F;color:#FFFFFF;font-weight:700;font-size:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(11,110,79,.28);">
-            <div id="riv-submit-label">Confirmar pedido &mdash; Gs. 259.000</div>
+            <div id="riv-submit-label">Confirmar pedido &mdash; Gs. 149.000</div>
             <div style="font-size:11px;font-weight:700;margin-top:3px;letter-spacing:.03em;opacity:.85;">&#x2713; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</div>
           </button>
         </div>
@@ -756,7 +756,7 @@ var VARIANTS = [
   { id: '10m', label: '10 metros', price: 149000, compare: 199000, save: 50000, badge: '' },
   { id: '30m', label: '30 metros', price: 259000, compare: 359000, save: 100000, badge: '⭐ Más elegido' }
 ];
-var selectedVariant = VARIANTS[1];
+var selectedVariant = VARIANTS[0];
 
 var PRODUCT = {
   name: 'Manguera LED Multicolor',
