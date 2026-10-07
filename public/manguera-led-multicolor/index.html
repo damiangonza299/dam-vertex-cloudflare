@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -280,6 +280,10 @@
       background: var(--riv-esmeralda); color: #FFFFFF;
       font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
     }
+    .riv .offer-badge-row {
+      display: block; font-size: 0.72rem; margin-top: 2px;
+      color: #0B6E4F; font-weight: 600;
+    }
     .riv .form-group { margin-bottom: 14px; }
     .riv .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--riv-texto-2); margin-bottom: 6px; }
     .riv .form-group input {
@@ -404,7 +408,10 @@
     <p class="riv-section-sub">El mismo producto que te llega. Sin filtros.</p>
 
     <div class="riv-video-wrap">
-      <div style="width:100%;aspect-ratio:1/1;background:#0B6E4F;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;border-radius:12px">&#x1F3A5; Video producto</div>
+      <video muted autoplay loop playsinline webkit-playsinline
+             preload="metadata" style="width:100%;border-radius:12px;object-fit:contain">
+        <source src="/manguera-led-multicolor/video1.mp4" type="video/mp4">
+      </video>
     </div>
 
     <div class="riv-cta-wrap">
@@ -655,9 +662,9 @@
               <span class="offer-price">Gs. 259.000</span>
             </div>
           </div>
+          <span class="offer-badge-row">&#x2B50; M&#xE1;s elegido</span>
           <div class="offer-foot">
             <span class="offer-saving">Ahorr&#xE1;s Gs. 100.000</span>
-            <div class="offer-badge">&#x2B50; M&#xE1;s elegido</div>
           </div>
         </label>
       </div>
