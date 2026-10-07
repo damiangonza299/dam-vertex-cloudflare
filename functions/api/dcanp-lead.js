@@ -17,6 +17,7 @@ const PRODUCT_SHORT_NAMES = {
   'dispensador-aceite-2en1':    'Dispensador Inteligente de Aceite 2 en 1',
   'reloj-imperial-verde':       'Reloj Imperial Verde',
   'reloj-blackout-minimal':     'Reloj Blackout Minimal',
+  'manguera-led-multicolor':    'Manguera LED Multicolor',
 };
 
 /* Normalización de ciudad — comparación sin tildes y case-insensitive.
