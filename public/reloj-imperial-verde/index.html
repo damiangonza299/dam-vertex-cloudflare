@@ -351,11 +351,10 @@
     <h2 class="riv-section-h2">As&#xED; se ve en la mano.</h2>
     <p class="riv-section-sub">Sin filtros ni renders: es el mismo reloj que te llega.</p>
 
-    <div class="riv-video-wrap">
-      <div style="width:100%;max-width:420px;aspect-ratio:1/1;overflow:hidden;border-radius:12px;margin:0 auto;">
-        <video muted autoplay loop playsinline webkit-playsinline preload="metadata" poster="poster1.jpg"
-          style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;">
-          <source src="video1.mp4" type="video/mp4">
+    <div style="max-width:420px;margin:0 auto 20px;">
+      <div style="aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#111214;display:flex;align-items:center;justify-content:center;">
+        <video src="../assets/video/dam-reloj-video.mp4" muted autoplay loop playsinline webkit-playsinline preload="auto" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+          <source src="../assets/video/dam-reloj-video.mp4" type="video/mp4">
         </video>
       </div>
     </div>
@@ -589,7 +588,7 @@
           </div>
         </div>
 
-        <p id="riv-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none"></p>
+        <p id="riv-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none;margin-top:16px"></p>
 
         <div class="riv-pay-badge">&#x1F4B3; Pago al recibir</div>
 

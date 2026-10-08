@@ -41,10 +41,10 @@
       --riv-blanco:          #FFFFFF;
       --riv-blanco-2:        #B9BEC4;
       --riv-plata:           #D4D7DB;
-      --riv-esmeralda:       #0B6E4F;
-      --riv-esmeralda-hover: #095C42;
-      --riv-esmeralda-vivo:  #34D399;
-      --riv-esmeralda-suave: #E8F3EE;
+      --riv-esmeralda:       #C62828;
+      --riv-esmeralda-hover: #B71C1C;
+      --riv-esmeralda-vivo:  #EF9A9A;
+      --riv-esmeralda-suave: #FFEBEE;
       --riv-tachado:         #9AA0A6;
     }
     .riv-urgency-bar {
@@ -85,7 +85,7 @@
       text-decoration: none; transition: background .2s, transform .15s;
       width: 100%; height: 56px; letter-spacing: .01em;
       font-size: clamp(13px,3.8vw,16px); font-family: inherit;
-      box-shadow: 0 6px 18px rgba(11,110,79,.28); white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(198,40,40,.28); white-space: nowrap;
     }
     .riv-btn:hover { background: var(--riv-esmeralda-hover); transform: translateY(-1px); }
     .riv-btn-sub { font-size: 11px; font-weight: 700; margin-top: 2px; opacity: .8; }
@@ -127,7 +127,7 @@
     }
     .mled-var-btn.selected {
       border-color: var(--riv-esmeralda-vivo);
-      background: rgba(52,211,153,.12);
+      background: rgba(198,40,40,.12);
     }
     .mled-var-btn.selected .mled-var-label { color: var(--riv-esmeralda-vivo); }
     .riv-save-pill {
@@ -183,7 +183,7 @@
     }
     .riv-value-item:last-child { border-bottom: none; }
     .riv-value-item--highlight {
-      background: rgba(52,211,153,.10); padding: 10px 8px;
+      background: rgba(198,40,40,.10); padding: 10px 8px;
       border-radius: 6px; border-bottom: none; margin-bottom: 1px;
     }
     .riv-value-item__label { font-size: 14px; color: var(--riv-blanco-2); line-height: 1.35; flex: 1; }
@@ -282,7 +282,7 @@
     }
     .riv .offer-badge-row {
       display: block; font-size: 0.72rem; margin-top: 2px;
-      color: #0B6E4F; font-weight: 600;
+      color: #C62828; font-weight: 600;
     }
     .riv .form-group { margin-bottom: 14px; }
     .riv .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--riv-texto-2); margin-bottom: 6px; }
@@ -331,11 +331,11 @@
 </head>
 <body class="riv">
 
-<div class="riv-urgency-bar"><span class="riv-urgency-dot"></span> Solo quedan <span data-stock>28</span> &middot; Diciembre se acerca &middot; Env&#xED;o gratis</div>
+<div class="riv-urgency-bar"><span class="riv-urgency-dot"></span> &#x1F384; Precio pre-Navidad &middot; Solo 20 unidades disponibles &middot; Env&#xED;o gratis</div>
 
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <button type="button" class="riv-nav-btn" data-open-modal>Quiero la m&#xED;a &mdash; Pag&#xE1;s al recibir</button>
+  <button type="button" class="riv-nav-btn" data-open-modal>Quiero el m&#xED;o al precio de hoy</button>
 </nav>
 
 <main>
@@ -350,8 +350,8 @@
            onerror="this.style.display='none'">
     </div>
 
-    <h1 class="riv-hero__h1">Tu espacio se ve apagado. Eso cambia en 10 minutos.</h1>
-    <p class="riv-hero__sub">Manguera LED multicolor, 8 modos de iluminaci&#xF3;n, enchufa&#x301;s y listo. Para quincho, patio, local o sal&#xF3;n. Sin instalaci&#xF3;n.</p>
+    <h1 class="riv-hero__h1">Tu casa lista para las fiestas &mdash; al precio que no va a durar</h1>
+    <p class="riv-hero__sub">La manguera LED que ya instalaron cientos de paraguayos. Con la temporada navide&#xF1;a que se viene, este precio no se mantiene. Son las &#xFA;ltimas 20 unidades al valor de hoy.</p>
 
     <div class="mled-var-grid" id="hero-var-grid">
       <button type="button" class="mled-var-btn selected" data-var-id="10m" data-var-price="149000" data-var-compare="199000" data-var-save="50000">
@@ -393,7 +393,7 @@
     <div class="riv-cta-wrap">
       <a class="riv-btn" data-open-modal data-insync-cta="hero"
          href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Manguera%20LED%20Multicolor.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Quiero la m&#xED;a &mdash; Pag&#xE1;s al recibir
+        Quiero el m&#xED;o al precio de hoy
         <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Sin adelanto &middot; Env&#xED;o gratis</span>
       </a>
     </div>
@@ -409,7 +409,9 @@
 
     <div class="riv-video-wrap">
       <video muted autoplay loop playsinline webkit-playsinline
-             preload="metadata" style="width:100%;border-radius:12px;object-fit:contain">
+             preload="metadata" poster="/manguera-led-multicolor/poster1.jpg"
+             style="width:100%;border-radius:12px;object-fit:contain"
+             onerror="this.style.display='none'">
         <source src="/manguera-led-multicolor/video1.mp4" type="video/mp4">
       </video>
     </div>
@@ -417,7 +419,7 @@
     <div class="riv-cta-wrap">
       <a class="riv-btn" data-open-modal data-insync-cta="video"
          href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Manguera%20LED%20Multicolor.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Quiero la m&#xED;a &mdash; Pag&#xE1;s al recibir
+        Quiero el m&#xED;o al precio de hoy
         <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
       </a>
     </div>
@@ -436,7 +438,7 @@
     <div class="riv-cta-wrap">
       <a class="riv-btn" data-open-modal data-insync-cta="dolor"
          href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Manguera%20LED%20Multicolor.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Quiero la m&#xED;a &mdash; Pag&#xE1;s al recibir
+        Quiero el m&#xED;o al precio de hoy
         <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
       </a>
     </div>
@@ -486,7 +488,7 @@
     <div class="riv-cta-wrap">
       <a class="riv-btn" data-open-modal data-insync-cta="comparacion"
          href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Manguera%20LED%20Multicolor.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Quiero la m&#xED;a &mdash; Pag&#xE1;s al recibir
+        Quiero el m&#xED;o al precio de hoy
         <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
       </a>
     </div>
@@ -536,7 +538,7 @@
     <div class="riv-cta-wrap">
       <a class="riv-btn" data-open-modal data-insync-cta="entrega"
          href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Manguera%20LED%20Multicolor.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Quiero la m&#xED;a &mdash; Pag&#xE1;s al recibir
+        Quiero el m&#xED;o al precio de hoy
         <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
       </a>
     </div>
@@ -560,7 +562,7 @@
     <div class="riv-cta-wrap">
       <a class="riv-btn" data-open-modal data-insync-cta="oficina"
          href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Manguera%20LED%20Multicolor.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Quiero la m&#xED;a &mdash; Pag&#xE1;s al recibir
+        Quiero el m&#xED;o al precio de hoy
         <span class="riv-btn-sub">&#x2713; Pago al recibir &middot; Env&#xED;o gratis</span>
       </a>
     </div>
@@ -617,11 +619,11 @@
       </button>
     </div>
 
-    <p class="riv-cierre__stock">Quedan <span data-stock>28</span> unidades.</p>
+    <p class="riv-cierre__stock">&#x26A0;&#xFE0F; En diciembre los precios suben. Estas son las &#xFA;ltimas 20 unidades al precio actual.</p>
     <div class="riv-cta-wrap">
       <a class="riv-btn" data-open-modal data-insync-cta="cierre"
          href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Manguera%20LED%20Multicolor.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Quiero la m&#xED;a &mdash; Pag&#xE1;s al recibir
+        Quiero el m&#xED;o al precio de hoy
         <span class="riv-btn-sub">&#x2713; Env&#xED;o gratis &middot; Pago al recibir &middot; Garant&#xED;a 30 d&#xED;as</span>
       </a>
     </div>
@@ -636,35 +638,47 @@
 
     <div id="riv-modal-form-wrap">
       <h2 class="modal-title" id="riv-modal-title">Manguera LED Multicolor &mdash; eleg&#xED; tu longitud</h2>
-      <p style="text-align:center;font-size:11px;font-weight:700;color:#0B6E4F;margin:4px 0 14px;">&#x26A1; Quedan pocas &mdash; pedidos se procesan hoy</p>
+      <p style="text-align:center;font-size:11px;font-weight:700;color:#C62828;margin:4px 0 14px;">&#x26A1; Quedan pocas &mdash; pedidos se procesan hoy</p>
 
       <span class="modal-section-label">Eleg&#xED; tu longitud</span>
       <div class="offer-options">
-        <label class="offer-option selected">
+        <label class="offer-option selected" data-longitud="10" data-precio="149000">
           <input type="radio" name="riv-offer" value="10m" checked>
           <div class="offer-content">
             <span class="offer-qty">10 metros</span>
             <div>
               <span class="offer-compare">Gs. 199.000</span>
-              <span class="offer-price">Gs. 149.000</span>
+              <span class="offer-price precio-total-variante">Gs. 149.000</span>
             </div>
           </div>
           <div class="offer-foot">
             <span class="offer-saving">Ahorr&#xE1;s Gs. 50.000</span>
           </div>
+          <div style="display:flex;align-items:center;gap:0;margin-top:8px;">
+            <button type="button" onclick="cambiarCantidad(this,-1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:8px 0 0 8px;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">&#x2212;</button>
+            <span style="width:44px;height:36px;border-top:1.5px solid #E5E7EB;border-bottom:1.5px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.95rem;" class="qty-display">1</span>
+            <button type="button" onclick="cambiarCantidad(this,1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:0 8px 8px 0;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">+</button>
+            <span style="margin-left:10px;font-size:0.8rem;color:#6B7280;" class="metros-label">= 10 metros</span>
+          </div>
         </label>
-        <label class="offer-option">
+        <label class="offer-option" data-longitud="30" data-precio="259000">
           <input type="radio" name="riv-offer" value="30m">
           <div class="offer-content">
             <span class="offer-qty">30 metros</span>
             <div>
               <span class="offer-compare">Gs. 359.000</span>
-              <span class="offer-price">Gs. 259.000</span>
+              <span class="offer-price precio-total-variante">Gs. 259.000</span>
             </div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-top:3px;">
             <span style="color:#6b7280;font-size:0.75rem;">Ahorr&#xE1;s Gs. 100.000</span>
-            <span style="background:#0B6E4F;color:#fff;font-size:0.65rem;font-weight:600;padding:2px 7px;border-radius:4px;white-space:nowrap;">&#x2B50; M&#xE1;s elegido</span>
+            <span style="background:#C62828;color:#fff;font-size:0.65rem;font-weight:600;padding:2px 7px;border-radius:4px;white-space:nowrap;">&#x2B50; M&#xE1;s elegido</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0;margin-top:8px;">
+            <button type="button" onclick="cambiarCantidad(this,-1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:8px 0 0 8px;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">&#x2212;</button>
+            <span style="width:44px;height:36px;border-top:1.5px solid #E5E7EB;border-bottom:1.5px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.95rem;" class="qty-display">1</span>
+            <button type="button" onclick="cambiarCantidad(this,1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:0 8px 8px 0;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">+</button>
+            <span style="margin-left:10px;font-size:0.8rem;color:#6B7280;" class="metros-label">= 30 metros</span>
           </div>
         </label>
       </div>
@@ -718,13 +732,13 @@
           </div>
         </div>
 
-        <p id="riv-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none"></p>
+        <p id="riv-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none;margin-top:16px"></p>
 
         <div class="riv-pay-badge">&#x1F4B3; Pago al recibir</div>
 
         <div class="form-submit">
           <button type="submit" id="riv-submit-btn"
-                  style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px;background:#0B6E4F;color:#FFFFFF;font-weight:700;font-size:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(11,110,79,.28);">
+                  style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px;background:#C62828;color:#FFFFFF;font-weight:700;font-size:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(198,40,40,.28);">
             <div id="riv-submit-label">Confirmar pedido &mdash; Gs. 149.000</div>
             <div style="font-size:11px;font-weight:700;margin-top:3px;letter-spacing:.03em;opacity:.85;">&#x2713; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</div>
           </button>
@@ -757,6 +771,7 @@ var VARIANTS = [
   { id: '30m', label: '30 metros', price: 259000, compare: 359000, save: 100000, badge: '⭐ Más elegido' }
 ];
 var selectedVariant = VARIANTS[0];
+var selectedQty = 1;
 
 var PRODUCT = {
   name: 'Manguera LED Multicolor',
@@ -764,9 +779,31 @@ var PRODUCT = {
   price: selectedVariant.price,
   comboPricing: { 1: selectedVariant.price },
 };
-var STOCK_RESTANTE = 28;
+var STOCK_RESTANTE = 20;
 
 function fmtGs(n) { return 'Gs. ' + n.toLocaleString('es-PY'); }
+
+function cambiarCantidad(btn, delta) {
+  var wrapper = btn.parentElement;
+  var display = wrapper.querySelector('.qty-display');
+  var label = wrapper.querySelector('.metros-label');
+  var varianteEl = btn.closest('[data-longitud]');
+  if (!display || !varianteEl) return;
+  var qty = parseInt(display.textContent) + delta;
+  if (qty < 1) qty = 1;
+  if (qty > 10) qty = 10;
+  display.textContent = qty;
+  var metros = parseInt(varianteEl.dataset.longitud) * qty;
+  label.textContent = '= ' + metros + ' metros';
+  var precioBase = parseInt(varianteEl.dataset.precio);
+  var total = precioBase * qty;
+  var precioDisplay = varianteEl.querySelector('.precio-total-variante');
+  if (precioDisplay) precioDisplay.textContent = fmtGs(total);
+  if (varianteEl.querySelector('input[type="radio"]:checked')) {
+    selectedQty = qty;
+    updateSubmitLabel();
+  }
+}
 
 function selectVariant(varId) {
   var v = VARIANTS.find(function(x) { return x.id === varId; });
@@ -804,7 +841,7 @@ function selectVariant(varId) {
 
 function updateSubmitLabel() {
   var express = document.getElementById('riv-express') && document.getElementById('riv-express').checked;
-  var total = selectedVariant.price + (express ? 10000 : 0);
+  var total = selectedVariant.price * selectedQty + (express ? 10000 : 0);
   var lbl = document.getElementById('riv-submit-label');
   if (lbl) lbl.textContent = 'Confirmar pedido — ' + fmtGs(total);
   var tl = document.getElementById('riv-total-line');
@@ -868,6 +905,16 @@ document.addEventListener('DOMContentLoaded', function() {
         selectedVariant = v;
         PRODUCT.price = v.price;
         PRODUCT.comboPricing = { 1: v.price };
+        /* reset qty */
+        selectedQty = 1;
+        document.querySelectorAll('.qty-display').forEach(function(d) { d.textContent = '1'; });
+        document.querySelectorAll('[data-longitud]').forEach(function(varEl) {
+          var m = parseInt(varEl.dataset.longitud);
+          var ml = varEl.querySelector('.metros-label');
+          if (ml) ml.textContent = '= ' + m + ' metros';
+          var pd = varEl.querySelector('.precio-total-variante');
+          if (pd) pd.textContent = fmtGs(parseInt(varEl.dataset.precio));
+        });
         /* sync hero + cierre */
         document.querySelectorAll('.mled-var-btn').forEach(function(btn) {
           btn.classList.toggle('selected', btn.dataset.varId === v.id);
@@ -908,14 +955,17 @@ document.addEventListener('DOMContentLoaded', function() {
     e.preventDefault();
     var express = !!(document.getElementById('riv-express') && document.getElementById('riv-express').checked);
     var invoice = !!(document.getElementById('riv-invoice') && document.getElementById('riv-invoice').checked);
-    var value = selectedVariant.price + (express ? 10000 : 0);
-    var variantLabel = 'Manguera LED ' + selectedVariant.label;
+    var qty = selectedQty || 1;
+    var value = selectedVariant.price * qty + (express ? 10000 : 0);
+    var variantLabel = qty > 1
+      ? qty + 'x Manguera LED ' + selectedVariant.label
+      : 'Manguera LED ' + selectedVariant.label;
     var data = {
       name:          (document.getElementById('riv-name') && document.getElementById('riv-name').value.trim()) || '',
       phone:         (document.getElementById('riv-phone') && document.getElementById('riv-phone').value.replace(/\s/g,'')) || '',
       city:          (document.getElementById('riv-city') && document.getElementById('riv-city').value.trim()) || '',
       street:        (document.getElementById('riv-calle') && document.getElementById('riv-calle').value.trim()) || '',
-      quantity:      1,
+      quantity:      qty,
       product_slug:  PRODUCT.slug,
       product_name:  variantLabel,
       value:         value,
