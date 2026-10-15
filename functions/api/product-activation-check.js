@@ -184,6 +184,20 @@ export async function onRequestGet({ request, env }) {
 /* ── Verifica el contenido HTML de la landing ── */
 function verifyLandingHtml(html, slug, price, checks, isDcanp) {
 
+  /* Detección por HTML — sobreescribe el valor D1 si hay señales claras.
+     Default: DCANP (todas las landings nuevas son DCANP). */
+  const htmlSignalDcanp = html.includes('/api/dcanp-lead');
+  const htmlSignalDamv  = html.includes('DV.initForm') || html.includes("'/api/leads'") || html.includes('"/api/leads"');
+  if (htmlSignalDcanp)      isDcanp = true;
+  else if (htmlSignalDamv)  isDcanp = false;
+  else                      isDcanp = true; // default DCANP
+
+  const platformLabel = isDcanp ? 'DCANP_GROUP' : 'DAM_VERTEX';
+  checks.push(check('platform_detected', 'Plataforma detectada', 'PASS',
+    `${platformLabel} (${htmlSignalDcanp ? 'señal HTML /api/dcanp-lead' : htmlSignalDamv ? 'señal HTML DV.initForm//api/leads' : 'sin señal — default DCANP'})`,
+    null));
+
+
   /* PRODUCT.slug correcto */
   const hasSlug = html.includes(`'${slug}'`) || html.includes(`"${slug}"`);
   checks.push(check('product_slug_match', 'PRODUCT.slug en HTML', hasSlug ? 'PASS' : 'FAIL',
