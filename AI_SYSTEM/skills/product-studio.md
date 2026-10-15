@@ -305,10 +305,10 @@ Ver: `AI_SYSTEM/execution/PRODUCT_COMPLETION_CHECKLIST.md`
 
 Columna `products.platform` (`DAM_VERTEX` default | `DCANP_GROUP`, migrate35.sql). Los checklists de arriba (Admin Panel, venta manual WhatsApp, `/api/leads`) **no aplican** a productos `DCANP_GROUP`:
 
-- Productos DCANP no van al admin panel.
-- Pedidos van a Google Sheets + Telegram + Meta CAPI — vía `/api/dcanp-lead`, **NO** `/api/leads`.
-- NO disparar leads normales — el flujo DCANP es completamente independiente y no escribe en D1 (`leads` ni `products` en tiempo de pedido).
-- Sin admin panel, sin WhatsApp del cliente (no se abre WhatsApp al enviar el formulario) — pantalla de agradecimiento en su lugar.
+- **Pedidos DCANP SÍ aparecen en el Admin Panel** (desde 2026-10). `/api/dcanp-lead` escribe en D1 `leads` con `source='dcanp'` (best-effort, background) para que los pedidos sean visibles junto a los DAM Vertex.
+- Pedidos van a **Google Sheets + Telegram + Meta CAPI + D1 leads** — vía `/api/dcanp-lead`, **NO** `/api/leads`.
+- Sin WhatsApp del cliente (no se abre WhatsApp al enviar el formulario) — pantalla de agradecimiento en su lugar.
+- **Filtro de plataforma en Admin Panel**: el select `#filter-platform` en `admin/index.html` permite filtrar por "DAM Vertex" vs "DCANP GROUP" usando el campo `source` de D1. Los leads DCANP tienen `source='dcanp'`; los DAM Vertex tienen `source=NULL` o distinto.
 - Google Sheets vía webhook (Apps Script) en la variable de entorno `DCANP_SHEETS_WEBHOOK_URL` — si falta, `functions/api/dcanp-lead.js` loguea el error y sigue sin romper el flujo (siempre responde `{ ok: true }`).
 - Campo **Horario NO aplica** en landings DCANP — el modal no lo incluye.
 - Campos del modal DCANP en orden: Nombre y apellido → Teléfono → Ciudad → Dirección exacta (`id="d-calle"`, opcional) → Nota del pedido (opcional) → Envío express → Necesito factura.

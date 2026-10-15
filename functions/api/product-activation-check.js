@@ -152,7 +152,32 @@ export async function onRequestGet({ request, env }) {
 }
 
 /* ── Verifica el contenido HTML de la landing ── */
-function verifyLandingHtml(html, slug, price, checks, isDcanp) {
+function verifyLandingHtml(html, slug, price, checks, isDcanpFromD1) {
+
+  /* ── Detección de arquitectura por HTML (sobreescribe D1) ── */
+  const hasDcanpEndpoint = html.includes('/api/dcanp-lead');
+  const hasDAMVertexInit = html.includes('DV.initForm') || html.includes('/api/leads');
+
+  let isDcanp = isDcanpFromD1; // valor base desde D1
+  let platformReason = `D1 platform=${isDcanpFromD1 ? 'DCANP_GROUP' : 'DAM_VERTEX'}`;
+
+  if (hasDcanpEndpoint) {
+    isDcanp = true;
+    platformReason = 'Detectado: fetch(\'/api/dcanp-lead\') en HTML → DCANP';
+  } else if (hasDAMVertexInit) {
+    isDcanp = false;
+    platformReason = 'Detectado: DV.initForm o /api/leads en HTML → DAM Vertex';
+  } else {
+    // Sin señal clara → default DCANP (todas las landings nuevas son DCANP)
+    isDcanp = true;
+    platformReason = 'Sin señal DAM Vertex detectada → default DCANP';
+  }
+
+  checks.push(check('platform_detected',
+    `Arquitectura detectada: ${isDcanp ? 'DCANP' : 'DAM Vertex'}`,
+    'PASS',
+    platformReason,
+    null));
 
   /* Detección por HTML — sobreescribe el valor D1 si hay señales claras.
      Default: DCANP (todas las landings nuevas son DCANP). */

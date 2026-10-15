@@ -22,13 +22,21 @@ export async function onRequestGet({ request, env }) {
   if (!(await verifyAdminToken(request, env))) return json({ ok: false, error: 'Unauthorized' }, 401);
 
   try {
-    const { results } = await env.DB.prepare(
-      `SELECT l.*, lq.is_dead_lead
-       FROM leads l
-       LEFT JOIN lead_quality lq ON l.id = lq.lead_id
-       ORDER BY l.created_at DESC LIMIT 500`
-    ).all();
+    const url    = new URL(request.url);
+    const source = url.searchParams.get('source') || '';   // 'dcanp' | 'dam_vertex' | '' (todos)
 
+    let sql    = `SELECT l.*, lq.is_dead_lead FROM leads l LEFT JOIN lead_quality lq ON l.id = lq.lead_id`;
+    const args = [];
+
+    if (source === 'dcanp') {
+      sql += ` WHERE l.source = 'dcanp'`;
+    } else if (source === 'dam_vertex') {
+      sql += ` WHERE (l.source IS NULL OR l.source != 'dcanp')`;
+    }
+
+    sql += ` ORDER BY l.created_at DESC LIMIT 500`;
+
+    const { results } = await env.DB.prepare(sql).bind(...args).all();
     return json({ ok: true, leads: results || [] });
   } catch (err) {
     return json({ ok: false, error: err.message }, 500);

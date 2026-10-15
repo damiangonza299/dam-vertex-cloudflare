@@ -293,9 +293,10 @@ function updateStats(leads) {
 }
 
 function applyFilters() {
-  const q       = (document.getElementById('search-input')?.value || '').toLowerCase();
-  const product = document.getElementById('filter-product')?.value || '';
-  const status  = document.getElementById('filter-status')?.value  || '';
+  const q        = (document.getElementById('search-input')?.value || '').toLowerCase();
+  const product  = document.getElementById('filter-product')?.value  || '';
+  const status   = document.getElementById('filter-status')?.value   || '';
+  const platform = document.getElementById('filter-platform')?.value || '';
 
   const todayStr = new Date().toLocaleDateString('sv-SE');
   const yestStr  = new Date(Date.now() - 86400000).toLocaleDateString('sv-SE');
@@ -309,6 +310,10 @@ function applyFilters() {
       || l.phone?.includes(q)
       || l.city?.toLowerCase().includes(q);
     const matchProd = !product || l.product_name === product;
+    /* Filtro de plataforma: 'dcanp' = source='dcanp'; 'dam_vertex' = sin source o source distinto */
+    const matchPlatform = !platform
+      || (platform === 'dcanp'      && l.source === 'dcanp')
+      || (platform === 'dam_vertex' && (l.source !== 'dcanp'));
     let matchStatus;
     if (activeDateFilter === 'purchased-today') {
       /* "Comprados hoy" ya exige status='purchased' — el filtro de estado no aplica */
@@ -348,7 +353,7 @@ function applyFilters() {
       }
     }
 
-    return matchQ && matchProd && matchStatus && matchDate;
+    return matchQ && matchProd && matchStatus && matchDate && matchPlatform;
   });
 
   renderTable(filtered);
@@ -502,6 +507,7 @@ function setDateFilter(val) {
 document.getElementById('search-input')?.addEventListener('input', applyFilters);
 document.getElementById('filter-product')?.addEventListener('change', applyFilters);
 document.getElementById('filter-status')?.addEventListener('change', applyFilters);
+document.getElementById('filter-platform')?.addEventListener('change', applyFilters);
 document.getElementById('refresh-btn')?.addEventListener('click', loadLeads);
 document.getElementById('export-csv-btn')?.addEventListener('click', exportCSV);
 document.querySelector('.admin-table-wrap')?.addEventListener('scroll', closeMenus);

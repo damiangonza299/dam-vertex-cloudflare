@@ -238,7 +238,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
       try {
         const text = [
-          isDuplicate ? '[DCANP GROUP] ⚠️ POSIBLE DUPLICADO' : '[DCANP GROUP] 📦',
+          isDuplicate ? '⚠️ POSIBLE DUPLICADO — NUEVO PEDIDO DAM VERTEX 📦' : 'NUEVO PEDIDO DAM VERTEX 📦',
           `Total: Gs. ${fmtNum(effectiveAmount)}`,
           ...(express ? ['🚀 Envío express: +Gs. 10.000'] : []),
           `Producto: ${safeProd}`,
@@ -325,6 +325,50 @@ export async function onRequestPost({ request, env, waitUntil }) {
         );
       } catch (e) {
         console.error('DCANP_CAPI_ERROR', e.message);
+      }
+    })());
+
+    /* ── D1 leads — insertar en tabla leads para Admin Panel (best-effort, background).
+       source='dcanp' identifica el origen en los filtros del Admin Panel.
+       Campos DCANP sin equivalente en leads (referencia, nota) se omiten silenciosamente. ── */
+    waitUntil((async () => {
+      if (!env.DB) return;
+      try {
+        const leadDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Asuncion' }).format(new Date());
+        await env.DB.prepare(`
+          INSERT INTO leads (
+            product_name, name, phone, city, value, currency,
+            fbp, fbc, user_agent, ip, quantity,
+            address, payment_method, product_slug,
+            operational_date_py, attribution_confidence,
+            invoice_requested, invoice_ruc, invoice_name, invoice_email,
+            source
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).bind(
+          safeProd,
+          safeName,
+          phoneTrim,
+          safeCity || null,
+          effectiveAmount,
+          'PYG',
+          fbp || null,
+          fbc || null,
+          ua,
+          ip,
+          qty,
+          street   ? sanitize(street, 150)        : null,
+          payment  ? sanitize(payment, 50)         : null,
+          slugTrim || null,
+          leadDate,
+          'low',
+          invoice ? 1 : 0,
+          invoice_ruc   ? sanitize(invoice_ruc, 50)   : null,
+          invoice_name  ? sanitize(invoice_name, 100) : null,
+          invoice_email ? sanitize(invoice_email, 100): null,
+          'dcanp',
+        ).run();
+      } catch (e) {
+        console.error('DCANP_D1_INSERT_ERROR', e.message);
       }
     })());
 
