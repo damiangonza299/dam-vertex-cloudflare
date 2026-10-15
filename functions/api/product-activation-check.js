@@ -81,22 +81,6 @@ export async function onRequestGet({ request, env }) {
         `Gs. ${comparePrice.toLocaleString('es-PY')}`, null));
     }
 
-    /* ── 4. Costo unitario (N/A para DCANP — sin Dam Finanzas, sin margen interno) ── */
-    if (product.platform === 'DCANP_GROUP') {
-      checks.push(check('unit_cost', 'Costo unitario', 'PASS',
-        'N/A — DCANP_GROUP, costo no aplica', null));
-    } else {
-      const cost = Number(product.unit_cost) || 0;
-      if (cost <= 0) {
-        checks.push(check('unit_cost', 'Costo unitario', 'WARNING',
-          `unit_cost = ${cost}`,
-          `Sin costo configurado, el margen aparece como 100% en Dam Finanzas`));
-      } else {
-        checks.push(check('unit_cost', 'Costo unitario', 'PASS',
-          `Gs. ${cost.toLocaleString('es-PY')}`, null));
-      }
-    }
-
     /* ── 5. Dam Finanzas vinculado (N/A para DCANP — sin admin panel ni
        sync a Dam Finanzas, ver CLAUDE.md "DCANP GROUP — Flujo especial") ── */
     if (product.platform === 'DCANP_GROUP') {
