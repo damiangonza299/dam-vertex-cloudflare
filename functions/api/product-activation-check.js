@@ -1,4 +1,4 @@
-/* =========================================================
+﻿/* =========================================================
    /api/product-activation-check?slug=<slug>
    GET — Admin auth required
    Verifica que un producto está listo para Activación Total.
@@ -126,9 +126,14 @@ export async function onRequestGet({ request, env }) {
       'SELECT slug, name FROM products WHERE slug != ? AND active = 1'
     ).bind(slug).all();
 
+    /* Colision real: solo si un slug es prefijo directo separado por '-' o '/'.
+       Con el patron %/${slug}/% los prefijos de distinto nombre son seguros:
+       '/reloj/' no es substring de '/reloj-imperial-verde/'. */
     const collision = (allProds || []).filter(p => {
       const s = p.slug;
-      return s.startsWith(slug) || slug.startsWith(s);
+      const aIsPrefix = s.startsWith(slug + '-') || s.startsWith(slug + '/');
+      const bIsPrefix = slug.startsWith(s + '-') || slug.startsWith(s + '/');
+      return aIsPrefix || bIsPrefix;
     });
 
     if (collision.length > 0) {
