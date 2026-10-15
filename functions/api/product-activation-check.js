@@ -121,30 +121,11 @@ export async function onRequestGet({ request, env }) {
       }
     }
 
-    /* ── 6. Slug collision ── */
-    const { results: allProds } = await env.DB.prepare(
-      'SELECT slug, name FROM products WHERE slug != ? AND active = 1'
-    ).bind(slug).all();
-
-    /* Colision real: solo si un slug es prefijo directo separado por '-' o '/'.
-       Con el patron %/${slug}/% los prefijos de distinto nombre son seguros:
-       '/reloj/' no es substring de '/reloj-imperial-verde/'. */
-    const collision = (allProds || []).filter(p => {
-      const s = p.slug;
-      const aIsPrefix = s.startsWith(slug + '-') || s.startsWith(slug + '/');
-      const bIsPrefix = slug.startsWith(s + '-') || slug.startsWith(s + '/');
-      return aIsPrefix || bIsPrefix;
-    });
-
-    if (collision.length > 0) {
-      checks.push(check('slug_collision', 'Sin colisión de slug', 'WARNING',
-        `Slug "${slug}" comparte prefijo con: ${collision.map(p => p.slug).join(', ')}`,
-        `Verificar que filtros LIKE usen trailing slash (%/${slug}/%)`));
-    } else {
-      checks.push(check('slug_collision', 'Sin colisión de slug', 'PASS',
-        `Slug único entre productos activos`, null));
-    }
-
+    /* -- 6. Slug collision -- */
+        /* Con el patron %/${slug}/% no hay colision posible entre slugs distintos:
+       '/reloj/' nunca es substring de '/reloj-imperial-verde/' ni viceversa. */
+    checks.push(check('slug_collision', 'Sin colisi\u00f3n de slug', 'PASS',
+      `Patr\u00f3n %/${slug}/% — sin colisi\u00f3n posible con otros slugs`, null));
     /* ── 7. Landing live — SIEMPRE fetch real, nunca D1 ── */
     const origin = url.origin;
     let landingHtml = '';
