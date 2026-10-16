@@ -280,16 +280,8 @@ function renderLeads(leads) {
 }
 
 function updateStats(leads) {
-  const expired   = leads.filter(l => l.is_dead_lead || l.status === 'cancelled').length;
-  const pending   = leads.filter(l => l.status === 'pending' && !l.is_dead_lead).length;
-  const purchased = leads.filter(l => l.status === 'purchased').length;
-  const total     = leads.length;
-
-  document.getElementById('stat-total').textContent     = total;
-  document.getElementById('stat-pending').textContent   = pending;
-  document.getElementById('stat-purchased').textContent = purchased;
-  const expiredEl = document.getElementById('stat-expired');
-  if (expiredEl) expiredEl.textContent = expired;
+  const total = leads.length;
+  document.getElementById('stat-total').textContent = total;
 }
 
 function applyFilters() {
@@ -1199,8 +1191,8 @@ function formatCity(cityRaw) {
 }
 function fmtDate(s){ return s ? new Date(s + 'Z').toLocaleString('es-PY', { day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit' }) : '—'; }
 function labelStatus(s, short = false) {
-  if (short) return { pending: 'Pend.', purchased: 'Pagado' }[s] || s;
-  return { pending: 'Pendiente', purchased: 'Comprado' }[s] || s;
+  if (short) return { pending: 'Pend.', purchased: 'Recibido' }[s] || s;
+  return { pending: 'Pendiente', purchased: 'Recibido' }[s] || s;
 }
 
 /* ── Admin tab navigation ── */
@@ -1644,7 +1636,7 @@ function renderDashboard() {
   if (kpiEl) kpiEl.innerHTML = `
     <div class="dash-kpi"><div class="dash-kpi__val dash-kpi__val--green">Gs.&nbsp;${revenue.toLocaleString('es-PY')}</div><div class="dash-kpi__label">Facturación confirmada</div></div>
     <div class="dash-kpi"><div class="dash-kpi__val">${leads.length}</div><div class="dash-kpi__label">Leads generados</div></div>
-    <div class="dash-kpi"><div class="dash-kpi__val dash-kpi__val--green">${purchased.length}</div><div class="dash-kpi__label">Comprados</div></div>
+    <div class="dash-kpi"><div class="dash-kpi__val dash-kpi__val--green">${purchased.length}</div><div class="dash-kpi__label">Recibidos</div></div>
     <div class="dash-kpi"><div class="dash-kpi__val dash-kpi__val--yellow">${pending.length}</div><div class="dash-kpi__label">Pendientes</div></div>
     <div class="dash-kpi"><div class="dash-kpi__val">${closeRate.toFixed(1)}%</div><div class="dash-kpi__label">Tasa de cierre</div></div>
     <div class="dash-kpi"><div class="dash-kpi__val">Gs.&nbsp;${avgTicket.toLocaleString('es-PY')}</div><div class="dash-kpi__label">Ticket promedio</div></div>
@@ -1700,7 +1692,7 @@ function renderStatusBars(purchased, pending, expired) {
   }
   const pct = v => Math.round(v / total * 100);
   const rows = [
-    ['Comprados',  purchased, '#4ade80'],
+    ['Recibidos',  purchased, '#4ade80'],
     ['Pendientes', pending,   '#fbbf24'],
     ...(expired ? [['Vencidos', expired, '#f87171']] : []),
   ];
@@ -2886,7 +2878,7 @@ function renderShippingHistory(rows) {
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:10px">
         <span>Delivery: ${r.delivery_amount > 0 ? 'Gs. ' + fmt(r.delivery_amount) : '—'}</span>
-        <span>Comprados: ${r.purchased_count || 0}</span>
+        <span>Recibidos: ${r.purchased_count || 0}</span>
         <span>Encom./Bolt: ${r.encomienda_amount > 0 ? 'Gs. ' + fmt(r.encomienda_amount) : '—'}</span>
         <span>C/venta: ${r.per_sale > 0 ? 'Gs. ' + fmt(r.per_sale) : '—'}</span>
       </div>

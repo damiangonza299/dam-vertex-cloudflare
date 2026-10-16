@@ -171,19 +171,7 @@
     <div class="admin-stats">
       <div class="admin-stat">
         <div class="admin-stat__val" id="stat-total">—</div>
-        <div class="admin-stat__label">Leads</div>
-      </div>
-      <div class="admin-stat">
-        <div class="admin-stat__val" id="stat-pending" style="color:#fbbf24">—</div>
-        <div class="admin-stat__label">Pendientes</div>
-      </div>
-      <div class="admin-stat">
-        <div class="admin-stat__val" id="stat-purchased" style="color:#4ade80">—</div>
-        <div class="admin-stat__label">Comprados</div>
-      </div>
-      <div class="admin-stat">
-        <div class="admin-stat__val" id="stat-expired" style="color:#f87171">—</div>
-        <div class="admin-stat__label">Vencidos</div>
+        <div class="admin-stat__label">Pedidos recibidos</div>
       </div>
     </div>
 
@@ -208,7 +196,7 @@
       <button class="date-btn date-btn--active" id="date-all">Todas</button>
       <button class="date-btn" id="date-today">Hoy</button>
       <button class="date-btn" id="date-yesterday">Ayer</button>
-      <button class="date-btn" id="date-purchased-today">Comprados hoy</button>
+      <button class="date-btn" id="date-purchased-today">Recibidos hoy</button>
       <div class="date-range-group">
         <div class="date-picker-wrapper">
           <button type="button" class="date-btn" id="date-picker-btn" tabindex="-1">Desde</button>
@@ -236,7 +224,7 @@
       <select id="filter-status" class="admin-filter-select">
         <option value="">Todos los estados</option>
         <option value="pending">Pendientes</option>
-        <option value="purchased">Comprados</option>
+        <option value="purchased">Recibidos</option>
         <option value="expired">Vencidos</option>
       </select>
       <select id="filter-platform" class="admin-filter-select">
@@ -366,7 +354,7 @@
         <select id="ads-filter-status" class="admin-filter-select" onchange="adsFilterChange()">
           <option value="">Todo</option>
           <option value="pending">Pendientes</option>
-          <option value="purchased">Comprados</option>
+          <option value="purchased">Recibidos</option>
         </select>
         <select id="ads-filter-prod" class="admin-filter-select" onchange="adsFilterChange()">
           <option value="">Productos</option>
