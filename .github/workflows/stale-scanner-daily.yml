@@ -15,8 +15,8 @@ name: Stale Lead Scanner — Daily
 # (mismo valor que la variable de entorno SERVICE_SECRET en Cloudflare Pages)
 
 on:
-  schedule:
-    - cron: '0 8 * * *'
+  # Deshabilitado — los leads ya no se marcan como vencidos en el Admin Panel.
+  # El stale-scanner sigue disponible para Intelligence/analytics pero no corre automáticamente.
   workflow_dispatch:
 
 jobs:

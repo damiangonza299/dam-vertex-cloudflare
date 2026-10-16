@@ -312,10 +312,8 @@ function applyFilters() {
       matchStatus = true;
     } else if (!status) {
       matchStatus = true;
-    } else if (status === 'expired') {
-      matchStatus = !!l.is_dead_lead || l.status === 'cancelled';
     } else if (status === 'pending') {
-      matchStatus = l.status === 'pending' && !l.is_dead_lead;
+      matchStatus = l.status === 'pending';
     } else {
       matchStatus = l.status === status;
     }
@@ -676,9 +674,6 @@ function renderVHTable() {
 
 function statusBadge(l) {
   const inv = l.invoice_requested ? ' <span title="Factura solicitada" style="font-size:11px;opacity:.9">🧾</span>' : '';
-  if ((l.is_dead_lead && l.status === 'pending') || l.status === 'cancelled') {
-    return '<span class="badge badge-cancelled" style="opacity:.85">VENCIDO</span>' + inv;
-  }
   return '<span class="badge badge-' + l.status + '">' + labelStatus(l.status) + '</span>' + inv;
 }
 
@@ -1614,8 +1609,8 @@ function renderDashboard() {
   const chartLeads = getDashLeads(false);
 
   const purchased = leads.filter(l => l.status === 'purchased');
-  const pending   = leads.filter(l => l.status === 'pending' && !l.is_dead_lead);
-  const expired   = leads.filter(l => l.is_dead_lead || l.status === 'cancelled');
+  const pending   = leads.filter(l => l.status === 'pending');
+  const expired   = [];
 
   const revenue   = purchased.reduce((s, l) => s + (Number(l.value)    || 0), 0);
   const units     = purchased.reduce((s, l) => s + (Number(l.quantity) || 1), 0);
