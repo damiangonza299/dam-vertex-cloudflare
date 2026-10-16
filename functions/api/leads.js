@@ -316,6 +316,17 @@ export async function onRequestPost({ request, env, waitUntil }) {
       } catch (_) {}
     }
 
+    /* Marcar lead nuevo como 'purchased' (Recibido) directamente al crearse.
+       El Admin Panel ya no muestra 'pendiente' para leads de la landing — todo entra como Recibido.
+       También se registra purchased_at para que el Admin Panel lo trate igual que una venta confirmada. */
+    if (result?.meta?.last_row_id) {
+      try {
+        await env.DB.prepare(
+          "UPDATE leads SET status = 'purchased', purchased_at = datetime('now') WHERE id = ?"
+        ).bind(result.meta.last_row_id).run();
+      } catch (_) {}
+    }
+
     /* Telegram — background, no bloquea la respuesta.
        Venta Hipnótica (source='venta-hipnotica') se gestiona aparte en la sección V.H
        del admin — sin notificación Telegram por pedido explícito. */
@@ -462,11 +473,20 @@ export async function onRequestPost({ request, env, waitUntil }) {
     })();
     if (typeof waitUntil === 'function') waitUntil(leadsCountPromise);
 
-    /* Incrementar contador del panel PiP — KV, best-effort (no bloquea el guardado del lead) */
+    /* Incrementar contador del panel PiP — KV, best-effort (no bloquea el guardado del lead).
+       Se incrementan ambos contadores: leads (pedidos totales) y purchases (recibidos),
+       ya que todo lead nuevo entra directamente como 'purchased' (Recibido). */
     if (env.COUNTER_KV && typeof waitUntil === 'function') {
       waitUntil((async () => {
         try {
           const key     = `counter:leads:${leadDate}`;
+          const current = Number((await env.COUNTER_KV.get(key)) || 0);
+          await env.COUNTER_KV.put(key, String(current + 1));
+        } catch (_) {}
+      })());
+      waitUntil((async () => {
+        try {
+          const key     = `counter:purchases:${leadDate}`;
           const current = Number((await env.COUNTER_KV.get(key)) || 0);
           await env.COUNTER_KV.put(key, String(current + 1));
         } catch (_) {}
