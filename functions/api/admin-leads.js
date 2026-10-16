@@ -34,7 +34,7 @@ export async function onRequestGet({ request, env }) {
       sql += ` WHERE (l.source IS NULL OR l.source != 'dcanp')`;
     }
 
-    sql += ` ORDER BY l.created_at DESC LIMIT 500`;
+    sql += ` ORDER BY l.created_at DESC`;
 
     const { results } = await env.DB.prepare(sql).bind(...args).all();
     return json({ ok: true, leads: results || [] });
