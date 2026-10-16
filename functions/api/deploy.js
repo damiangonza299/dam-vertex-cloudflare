@@ -14,6 +14,10 @@ export async function onRequestGet(ctx) {
 }
 
 export async function onRequestPost(ctx) {
+  // DESHABILITADO — Product Studio no puede sobreescribir landings en producción.
+  // Para deployar cambios: usar wrangler pages deploy desde Windows.
+  return Response.json({ ok: false, error: 'Deploy automático deshabilitado. Usar wrangler deploy manual.' }, { status: 403 });
+
   const { request, env } = ctx;
 
   if (!(await verifyAdminToken(request, env))) {
