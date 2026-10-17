@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
+  <meta name="description" content="Bases Elevadoras Ajustables — nivelá cualquier mueble en segundos. 5cm de base, ajustable hasta 12cm, soporta 300kg por pata. Gs. 139.000 con envío gratis.">
+  <title>Bases Elevadoras Ajustables — DCANP GROUP</title>
+  <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <style>
+    /* ══ CRÍTICO ABOVE-THE-FOLD ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #1a1a1a; -webkit-font-smoothing: antialiased; background: #f8f9fa; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #374151; --green: #16a34a; --muted: rgba(0,0,0,.55); --border: rgba(0,0,0,.1); --radius-sm: 6px; }
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 48px); height: 60px;
+      background: #fff; border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #1a1a1a; }
+    .nav__logo span { opacity: .45; }
+    .nav__cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent); color: #fff;
+      font-size: 13px; font-weight: 700; letter-spacing: .02em;
+      padding: 9px 20px; border-radius: var(--radius-sm); transition: opacity .2s;
+    }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #1a1a1a; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+    .price-badge { font-size: 12px; font-weight: 700; background: rgba(55,65,81,.15); color: #374151; border: 1px solid rgba(55,65,81,.25); border-radius: 4px; padding: 3px 8px; }
+
+    /* ══ THEME ══ */
+    .hero { background: linear-gradient(160deg, #f8f9fa 0%, #e5e7eb 100%); padding: clamp(40px,8vw,80px) clamp(20px,5vw,48px); }
+    .hero__inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    @media (max-width:700px) { .hero__inner { grid-template-columns: 1fr; } }
+    .hero__text h1 { font-size: clamp(26px, 4vw, 42px); font-weight: 900; color: #111827; line-height: 1.15; }
+    .hero__text p { font-size: 16px; color: #374151; line-height: 1.6; margin-top: 14px; }
+    .hero__img img { border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,.14); width: 100%; height: auto; display: block; }
+    .section { padding: clamp(40px,6vw,70px) clamp(20px,5vw,48px); }
+    .section-inner { max-width: 860px; margin: 0 auto; }
+    .section-title { font-size: clamp(22px,3vw,30px); font-weight: 800; color: #111827; margin-bottom: 24px; text-align: center; }
+    .price-section { background: #fff; border-bottom: 1px solid #e5e7eb; }
+    .price-section .section-inner { text-align: center; }
+    .savings-line { font-size: 16px; font-weight: 700; color: #374151; margin-bottom: 8px; }
+    .price-display { display: flex; align-items: baseline; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+    .price-display .main { font-size: clamp(32px,5vw,44px); font-weight: 900; color: #111827; }
+    .price-display .old { font-size: 18px; color: #9ca3af; text-decoration: line-through; }
+    .trust-badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 20px 0; }
+    .trust-badge { background: #f1f5f9; border: 1px solid #d1d5db; color: #374151; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 20px; }
+    .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 20px; }
+    .spec-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; text-align: center; }
+    .spec-card .value { font-size: 28px; font-weight: 900; color: #374151; margin-bottom: 4px; }
+    .spec-card .label { font-size: 13px; color: #4b5563; }
+    .steps-list { display: flex; flex-direction: column; gap: 20px; }
+    .step-item { display: flex; align-items: flex-start; gap: 16px; }
+    .step-num { min-width: 36px; height: 36px; background: #374151; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 16px; }
+    .step-item h3 { font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+    .step-item p { font-size: 14px; color: #4b5563; line-height: 1.5; }
+    .testimonials { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 20px; margin-top: 24px; }
+    .testimonial { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
+    .testimonial p { font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 12px; font-style: italic; }
+    .testimonial span { font-size: 12px; font-weight: 700; color: #6b7280; }
+    .social-proof-bar { background: #f1f5f9; border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; padding: 14px clamp(20px,5vw,48px); text-align: center; font-size: 14px; font-weight: 700; color: #374151; }
+    .cierre-section { background: #374151; }
+    .cierre-section .section-title { color: #fff; }
+    .cierre-section p { color: rgba(255,255,255,.8); font-size: 16px; text-align: center; margin-bottom: 28px; }
+    .btn-main {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: #374151; color: #fff; font-size: 16px; font-weight: 800;
+      padding: 16px 32px; border-radius: 999px; border: none; cursor: pointer;
+      transition: opacity .2s; text-decoration: none;
+    }
+    .btn-main:hover { opacity: .9; }
+    .btn-main.white { background: #fff; color: #374151; }
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6);
+      z-index: 1000; align-items: center; justify-content: center; padding: 16px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+    .offer-option.selected { border-color: #374151 !important; background: #f1f5f9 !important; }
+    input[type=text]:focus, input[type=tel]:focus, input[type=email]:focus {
+      outline: none; border-color: #374151 !important; box-shadow: 0 0 0 3px rgba(55,65,81,.15);
+    }
+    .dcanp-badge { display: inline-block; background: #1d4ed8; color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .06em; padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav__logo">DCANP <span>GROUP</span></span>
+  <a class="nav__cta" data-open-modal data-insync-cta="nav"
+    href="https://wa.me/595993471550?text=%C2%A1Hola%21%20Quiero%20pedir%3A%20BASES%20ELEVADORAS%20AJUSTABLES.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+    Pedir ahora
+  </a>
+</nav>
+
+<section id="section-hero" data-insync-section="hero" class="hero">
+  <div class="hero__inner">
+    <div class="hero__text">
+      <span class="dcanp-badge">DCANP GROUP</span>
+      <h1>El mueble que se mueve, rayar el piso, el ángulo que nunca queda bien — esto lo resuelve hoy</h1>
+      <p>Bases Elevadoras Ajustables para cualquier mueble del hogar. 5cm de base, ajustable hasta 12cm de altura, soporta 300kg por pata. Instalación en segundos, sin herramientas.</p>
+      <div style="margin-top:28px;">
+        <a class="btn-main" data-open-modal data-insync-cta="hero"
+          href="https://wa.me/595993471550?text=%C2%A1Hola%21%20Quiero%20pedir%3A%20BASES%20ELEVADORAS%20AJUSTABLES.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+          🔧 LO QUIERO — PEDIR AHORA
+        </a>
+        <p style="margin-top:12px;font-size:13px;color:#4b5563;">✓ Envío gratis · ✓ Pagás al recibir · ✓ Entrega en el día</p>
+      </div>
+    </div>
+    <div class="hero__img">
+      <img src="https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1789668603186-w7d0s0ymyh.jpg"
+        alt="Bases Elevadoras Ajustables para muebles" width="500" height="500"
+        style="width:100%;height:auto;display:block;">
+    </div>
+  </div>
+</section>
+
+<section id="section-precio-garantia" data-insync-section="precio-garantia" class="section price-section">
+  <div class="section-inner">
+    <p class="savings-line">Ahorrás Gs. 90.000</p>
+    <div class="price-display">
+      <span class="old">Gs. 229.000</span>
+      <span class="main">Gs. 139.000</span>
+    </div>
+    <p style="font-size:15px;color:#4b5563;max-width:500px;margin:0 auto 20px;">Dejá de convivir con muebles torcidos o pisos rayados. Con estas bases regulás la altura exacta que necesitás en segundos.</p>
+    <div class="trust-badges">
+      <span class="trust-badge">✓ Envío gratis</span>
+      <span class="trust-badge">✓ Pagás al recibir</span>
+      <span class="trust-badge">✓ Entrega en el día</span>
+      <span class="trust-badge">✓ 300kg por pata</span>
+    </div>
+    <div style="margin-top:24px;">
+      <a class="btn-main" data-open-modal data-insync-cta="precio-garantia"
+        href="https://wa.me/595993471550?text=%C2%A1Hola%21%20Quiero%20pedir%3A%20BASES%20ELEVADORAS%20AJUSTABLES.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        🔧 PEDIR AHORA — Gs. 139.000
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="section-caracteristicas" data-insync-section="caracteristicas" class="section" style="background:#f8f9fa;">
+  <div class="section-inner">
+    <h2 class="section-title">Especificaciones técnicas</h2>
+    <div class="specs-grid">
+      <div class="spec-card">
+        <div class="value">5 cm</div>
+        <div class="label">Ancho de base</div>
+      </div>
+      <div class="spec-card">
+        <div class="value">12 cm</div>
+        <div class="label">Altura máxima ajustable</div>
+      </div>
+      <div class="spec-card">
+        <div class="value">300 kg</div>
+        <div class="label">Carga por pata</div>
+      </div>
+      <div class="spec-card">
+        <div class="value">360°</div>
+        <div class="label">Ajuste de nivelación</div>
+      </div>
+    </div>
+    <div style="margin-top:32px;">
+      <img src="https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1789668615815-a769y62z5qw.jpg"
+        alt="Bases elevadoras ajustables instaladas en mueble"
+        style="max-width:520px;width:100%;height:auto;display:block;margin:0 auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.12);">
+      <p style="text-align:center;font-size:14px;color:#4b5563;margin-top:14px;line-height:1.6;">Material resistente — compatibles con mesas, sillas, sofás, camas, estantes y electrodomésticos.</p>
+    </div>
+  </div>
+</section>
+
+<section id="section-como-funciona" data-insync-section="como-funciona" class="section" style="background:#fff;">
+  <div class="section-inner">
+    <h2 class="section-title">Cómo funciona</h2>
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Elegís la altura</h3>
+          <p>Girás el mecanismo de ajuste hasta la medida que necesitás — entre el mínimo de base y los 12cm máximos.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Colocás debajo del mueble</h3>
+          <p>Levantás ligeramente la pata del mueble y posicionás la base elevadora debajo. No necesitás herramientas.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Ajustás el nivel</h3>
+          <p>Regulás la altura exacta hasta que el mueble quede perfectamente nivelado. El sistema de rosca lo fija en su lugar.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <h3>Listo — sin más movimientos</h3>
+          <p>La base queda fija. No se mueve, no resbala, no daña el piso. Podés reajustar si cambiás el mueble de lugar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="section-prueba-social" data-insync-section="prueba-social" class="section" style="background:#f8f9fa;">
+  <div class="section-inner">
+    <div class="social-proof-bar" style="border-radius:10px;margin-bottom:28px;">
+      482 pedidos · Clientes en Gran Asunción e Interior
+    </div>
+    <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+    <div class="testimonials">
+      <div class="testimonial">
+        <p>"Tenía el lavarropas que vibraba y se movía todo. Puse las bases y quedó fijo al toque. Increíble lo fácil que fue."</p>
+        <span>— M. R., Luque</span>
+      </div>
+      <div class="testimonial">
+        <p>"Mi heladera tenía el piso desnivelado y no cerraba bien la puerta. Con las bases la nivelé perfectamente en 2 minutos."</p>
+        <span>— C. G., Asunción</span>
+      </div>
+      <div class="testimonial">
+        <p>"Las puse en la cama para tener más espacio abajo. Soporta perfectamente, no hay nada raro con el peso. Muy resistentes."</p>
+        <span>— J. P., San Lorenzo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="section-cierre" data-insync-section="cierre" class="section cierre-section">
+  <div class="section-inner" style="text-align:center;">
+    <h2 class="section-title">Nivelá cualquier mueble hoy — sin herramientas</h2>
+    <p>Bases Elevadoras Ajustables — Gs. 139.000 con envío gratis.<br>Pedidos activos · Entrega en el día en Gran Asunción e Interior.</p>
+    <a class="btn-main white" data-open-modal data-insync-cta="cierre"
+      href="https://wa.me/595993471550?text=%C2%A1Hola%21%20Quiero%20pedir%3A%20BASES%20ELEVADORAS%20AJUSTABLES.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+      🔧 QUIERO LAS MÍAS AHORA
+    </a>
+    <p style="margin-top:16px;color:rgba(255,255,255,.7);font-size:13px;">✓ Envío gratis · ✓ Pagás al recibir</p>
+  </div>
+</section>
+
+<!-- Modal pedido -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box" style="background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:16px;max-width:440px;width:100%;padding:28px 24px;max-height:90vh;overflow-y:auto;position:relative;">
+    <button class="modal-close" id="modal-close" aria-label="Cerrar" style="position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;border:none;background:rgba(0,0,0,.15);color:#1a1a1a;font-size:15px;cursor:pointer;">✕</button>
+
+    <div id="modal-form-wrap">
+      <h2 id="modal-title" style="font-size:20px;font-weight:800;color:#1a1a1a;margin:0 0 4px;">Completá tu pedido</h2>
+      <p style="text-align:center;font-size:11px;font-weight:700;color:#374151;margin:4px 0 14px;">⚡ Quedan pocas unidades — pedidos se procesan hoy</p>
+
+      <span style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.04em;margin:0 0 10px;">Elegí tu oferta</span>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+
+        <label class="offer-option selected" style="position:relative;display:block;border:2px solid #374151;border-radius:10px;padding:12px 14px;cursor:pointer;background:#f8f9fa;">
+          <input type="radio" name="offer" value="1" checked style="position:absolute;opacity:0;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;">
+            <span style="font-weight:700;font-size:14px;color:#1a1a1a;">1 unidad</span>
+            <span style="font-weight:800;font-size:15px;color:#1a1a1a;">Gs. 139.000</span>
+          </div>
+        </label>
+
+        <label class="offer-option" style="position:relative;display:block;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:12px 14px;cursor:pointer;background:#f8f9fa;">
+          <input type="radio" name="offer" value="2" style="position:absolute;opacity:0;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;">
+            <span style="font-weight:700;font-size:14px;color:#1a1a1a;">2 unidades</span>
+            <div>
+              <span style="font-size:12px;text-decoration:line-through;color:#999;margin-right:6px;">Gs. 278.000</span>
+              <span style="font-weight:800;font-size:15px;color:#1a1a1a;">Gs. 239.000</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+            <span style="color:#059669;font-weight:700;font-size:12px;">Ahorrás Gs. 39.000</span>
+            <div style="background:#ef4444;color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:20px;">🔥 Más elegido</div>
+          </div>
+        </label>
+
+        <label class="offer-option" style="position:relative;display:block;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:12px 14px;cursor:pointer;background:#f8f9fa;">
+          <input type="radio" name="offer" value="3" style="position:absolute;opacity:0;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;">
+            <span style="font-weight:700;font-size:14px;color:#1a1a1a;">3 unidades</span>
+            <div>
+              <span style="font-size:12px;text-decoration:line-through;color:#999;margin-right:6px;">Gs. 417.000</span>
+              <span style="font-weight:800;font-size:15px;color:#1a1a1a;">Gs. 329.000</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+            <span style="color:#059669;font-weight:700;font-size:12px;">Ahorrás Gs. 88.000</span>
+            <div style="background:#22c55e;color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:20px;">⭐ Mayor ahorro</div>
+          </div>
+        </label>
+
+      </div>
+
+      <form id="dcanp-form" novalidate>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-name">Nombre y apellido</label>
+          <input type="text" id="d-name" name="name" placeholder="Ej: Damián Riveros" autocomplete="name" required
+            style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-phone">Teléfono (WhatsApp) <span style="color:#ef4444;">· Ingresá tu número completo</span></label>
+          <input type="tel" id="d-phone" name="phone" placeholder="Ej: 0984 832 688" autocomplete="tel" required
+            style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+          <p id="d-phone-error" style="display:none;color:#ef4444;font-size:12px;font-weight:700;margin-top:4px;"></p>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-city">Ciudad</label>
+          <input type="text" id="d-city" name="city" placeholder="Ej: Asunción, Lambaré, San Lorenzo..." autocomplete="off" required
+            style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-calle">Calle principal y secundaria</label>
+          <input type="text" id="d-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address"
+            style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+        </div>
+
+        <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f8f9fa;border:1.5px solid rgba(0,0,0,.12);border-radius:10px;cursor:pointer;margin-bottom:10px;">
+          <input type="checkbox" id="d-express" name="express">
+          <div>
+            <span style="display:block;font-size:13px;font-weight:700;color:#1a1a1a;">🚀 Envío express +10.000 Gs</span>
+            <span style="font-size:12px;color:#64748b;">Recibí antes que los demás</span>
+          </div>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f8f9fa;border:1.5px solid rgba(0,0,0,.12);border-radius:10px;cursor:pointer;margin-bottom:10px;">
+          <input type="checkbox" id="d-invoice" name="invoice">
+          <div>
+            <span style="display:block;font-size:13px;font-weight:700;color:#1a1a1a;">🧾 Necesito factura</span>
+            <span style="font-size:12px;color:#64748b;">RUC o cédula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="d-invoice-fields" style="display:none;margin-top:6px;margin-bottom:14px;">
+          <input type="text" id="d-invoice-ruc" name="invoice_ruc" placeholder="RUC (ej: 1234567-8)"
+            style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:13px;font-family:inherit;margin-bottom:8px;">
+          <input type="text" id="d-invoice-name" name="invoice_name" placeholder="Razón social / Nombre"
+            style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:13px;font-family:inherit;margin-bottom:8px;">
+          <input type="email" id="d-invoice-email" name="invoice_email" placeholder="Email (opcional)"
+            style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:13px;font-family:inherit;">
+        </div>
+
+        <p id="d-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:#1a1a1a;"></p>
+        <div style="margin-top:12px;text-align:center;font-size:12px;font-weight:800;color:#374151;background:rgba(0,0,0,.05);border-radius:8px;padding:8px 12px;">💳 Pago al recibir</div>
+
+        <div style="margin-top:16px;">
+          <button type="submit" id="dcanp-submit-btn"
+            style="display:block;width:100%;padding:16px;background:#374151;color:#fff;font-weight:800;font-size:15px;border-radius:999px;border:none;cursor:pointer;">
+            Confirmar pedido<br><small style="font-size:12px;font-weight:700;opacity:.9;">✓ Envío gratis · Pagás al recibir</small>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div id="dcanp-success" style="display:none;text-align:center;padding:24px 0;">
+      <div style="width:56px;height:56px;background:#374151;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px;">✓</div>
+      <h2 style="color:#374151;font-size:22px;margin-bottom:12px;">¡Tu pedido fue recibido!</h2>
+      <p style="color:rgba(26,26,26,.7);font-size:15px;line-height:1.6;margin-bottom:8px;">Gracias por confiar en nosotros. En breve nos comunicamos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p style="font-weight:600;color:rgba(26,26,26,.7);font-size:14px;margin-bottom:16px;">📱 Quedate atento — te contactamos pronto.</p>
+      <div style="display:flex;gap:12px;justify-content:center;font-size:13px;color:#059669;font-weight:700;margin-bottom:20px;">
+        <span>✓ Envío gratis</span><span>✓ Pagás al recibir</span>
+      </div>
+      <a href="/" style="display:block;padding:12px 24px;background:#374151;color:#fff;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Ver más productos →</a>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/tracking.js?v=74" defer></script>
+<script src="/assets/js/dcanp-cities.js?v=1" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+<script defer>
+const PRODUCT = {
+  name: "Bases Elevadoras Ajustables",
+  slug: 'bases-elevadoras-ajustables',
+  price: 139000,
+  comboPricing: { 1: 139000, 2: 239000, 3: 329000 },
+  sheets_title: "BASES ELEVADORAS AJUSTABLES",
+};
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => { try { DV.trackViewContent(PRODUCT); } catch(_) {} }, 800);
+  const modal      = document.getElementById('order-modal');
+  const openBtns   = document.querySelectorAll('[data-open-modal]');
+  const closeBtn   = document.getElementById('modal-close');
+  const form       = document.getElementById('dcanp-form');
+  const formWrap   = document.getElementById('modal-form-wrap');
+  const successBox = document.getElementById('dcanp-success');
+  const submitBtn  = document.getElementById('dcanp-submit-btn');
+  const offerInps  = document.querySelectorAll('input[name="offer"]');
+  let _icFired = false;
+  function openModal() {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    try { DV.trackAddToCart(PRODUCT); } catch(_) {}
+    if (!_icFired) {
+      _icFired = true;
+      setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500);
+    }
+  }
+  function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+  openBtns.forEach(btn => btn && btn.addEventListener('click', e => { e.preventDefault(); openModal(); }));
+  closeBtn && closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  offerInps.forEach(inp => {
+    inp.addEventListener('change', () => {
+      document.querySelectorAll('.offer-option').forEach(o => o.classList.remove('selected'));
+      inp.closest('.offer-option').classList.add('selected');
+      updateTotal();
+    });
+  });
+  const invoiceChk    = document.getElementById('d-invoice');
+  const invoiceFields = document.getElementById('d-invoice-fields');
+  const totalLine     = document.getElementById('d-total-line');
+  if (invoiceChk && invoiceFields) {
+    invoiceChk.addEventListener('change', function() {
+      invoiceFields.style.display = this.checked ? 'block' : 'none';
+    });
+  }
+  function updateTotal() {
+    if (!totalLine) return;
+    const qty  = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+    const base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    const isExp = document.getElementById('d-express')?.checked;
+    const tot = base + (isExp ? 10000 : 0);
+    totalLine.textContent = isExp ? 'Total: Gs. ' + tot.toLocaleString('es-PY') + ' (incluye express)' : '';
+  }
+  const expChk = document.getElementById('d-express');
+  if (expChk) expChk.addEventListener('change', updateTotal);
+  const dPhone = document.getElementById('d-phone');
+  if (dPhone) {
+    dPhone.addEventListener('focus', function() { const l=this.value.length; this.setSelectionRange(l,l); });
+    dPhone.addEventListener('input', function() {
+      this.style.borderColor='';
+      const e=document.getElementById('d-phone-error');
+      if(e){e.textContent='';e.style.display='none';}
+    });
+  }
+  form && form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const qty    = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+    const base   = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    const express = document.getElementById('d-express')?.checked || false;
+    const invoice = document.getElementById('d-invoice')?.checked || false;
+    const value   = base + (express ? 10000 : 0);
+    const data = {
+      name:          document.getElementById('d-name').value.trim(),
+      phone:         document.getElementById('d-phone').value.replace(/\s/g,''),
+      city:          document.getElementById('d-city').value.trim(),
+      street:        document.getElementById('d-calle').value.trim(),
+      quantity:      qty,
+      product_slug:  PRODUCT.slug,
+      product_name:  PRODUCT.sheets_title,
+      value,
+      express,
+      invoice,
+      invoice_ruc:   invoice ? (document.getElementById('d-invoice-ruc')?.value||'').trim() : '',
+      invoice_name:  invoice ? (document.getElementById('d-invoice-name')?.value||'').trim() : '',
+      invoice_email: invoice ? (document.getElementById('d-invoice-email')?.value||'').trim() : '',
+    };
+    if (!data.name || !data.phone || !data.city) {
+      alert('Completá nombre, teléfono y ciudad para continuar.');
+      return;
+    }
+    const soloN = data.phone.replace(/\D/g,'');
+    if (soloN.length < 9) {
+      if (dPhone) { dPhone.style.borderColor='#ef4444'; dPhone.scrollIntoView({behavior:'smooth',block:'center'}); }
+      const err = document.getElementById('d-phone-error');
+      if (err) { err.textContent='Ingresá tu número completo (ej: 0984 832 688)'; err.style.display='block'; }
+      return;
+    }
+    try {
+      const client = typeof getClientData === 'function' ? getClientData() : {};
+      data.fbp = client.fbp || null;
+      data.fbc = client.fbc || null;
+    } catch(_) {}
+    submitBtn.disabled = true; submitBtn.textContent = 'Enviando...';
+    try {
+      const res = await fetch('/api/dcanp-lead', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data),
+      });
+      await res.json().catch(()=>({}));
+    } catch(err) { console.error('DCANP_SUBMIT_ERROR', err?.message); }
+    formWrap.style.display = 'none';
+    successBox.style.display = 'block';
+    submitBtn.disabled = false; submitBtn.textContent = 'Confirmar pedido';
+  });
+});
+</script>
+<script src="/assets/js/protect.js?v=69" defer></script>
+</body>
+</html>

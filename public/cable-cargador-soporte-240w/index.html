@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
+  <meta name="description" content="Cable Cargador con Soporte 240W — Carga ultra-rápida con soporte integrado invisible. Compatible USB-C, Android, tablets y más. Pago al recibir.">
+  <title>Cable Cargador con Soporte 240W — Dam Vertex</title>
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;background:#f8f9fa;color:#1a1a1a;}
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+    .nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,5vw,40px);height:60px;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.08);}
+    .nav__logo{font-size:15px;font-weight:800;letter-spacing:.04em;color:#1a1a1a;}
+    .nav__logo span{opacity:.45;}
+    .nav__cta{display:inline-flex;align-items:center;gap:6px;background:#6366f1;color:#fff;font-size:13px;font-weight:700;letter-spacing:.02em;padding:9px 20px;border-radius:6px;transition:opacity .2s;}
+    .urgency-bar{position:fixed;top:0;left:0;right:0;z-index:400;background:#6366f1;color:#fff;text-align:center;font-size:12px;font-weight:700;height:36px;line-height:36px;padding:0 16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    body.has-urgency-bar{padding-top:36px;}
+    .modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:16px;overflow-y:auto;}
+    .modal-overlay.active{display:flex;}
+    .offer-option{cursor:pointer;transition:border-color .15s,background .15s;}
+    .offer-option.selected{border-color:#6366f1 !important;background:rgba(99,102,241,.05) !important;}
+
+    /* Hero */
+    .hero{padding:clamp(32px,6vw,64px) clamp(16px,5vw,80px);max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,60px);align-items:center;}
+    @media(max-width:700px){.hero{grid-template-columns:1fr;}}
+    .hero__img{border-radius:16px;overflow:hidden;background:#e2e8f0;}
+    .hero__badge{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);color:#6366f1;font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;margin-bottom:16px;}
+    .hero h1{font-size:clamp(26px,4vw,42px);font-weight:900;line-height:1.15;color:#1a1a1a;margin-bottom:12px;}
+    .hero h1 em{font-style:normal;color:#6366f1;}
+    .hero__sub{font-size:15px;color:#64748b;line-height:1.6;margin-bottom:20px;}
+    .price-savings-top{font-size:14px;font-weight:800;color:#059669;display:block;margin-bottom:6px;}
+    .price-block{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 12px;margin:0 0 24px;}
+    .price-main{font-size:clamp(28px,5vw,38px);font-weight:800;color:#1a1a1a;}
+    .price-compare{font-size:16px;color:#94a3b8;text-decoration:line-through;}
+    .price-badge{font-size:12px;font-weight:700;background:rgba(5,150,105,.1);color:#059669;border:1px solid rgba(5,150,105,.2);border-radius:4px;padding:3px 8px;}
+    .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#6366f1;color:#fff;font-weight:800;font-size:15px;padding:16px 32px;border-radius:999px;border:none;cursor:pointer;width:100%;text-align:center;transition:opacity .2s;}
+    .btn-primary:hover{opacity:.9;}
+    .trust-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+    .trust-badge{font-size:12px;color:#64748b;display:flex;align-items:center;gap:4px;}
+
+    /* Sections */
+    .section{padding:clamp(40px,6vw,72px) clamp(16px,5vw,80px);}
+    .section-white{background:#fff;}
+    .section-light{background:#f8f9fa;}
+    .section-inner{max-width:900px;margin:0 auto;}
+    .section-title{font-size:clamp(22px,3.5vw,32px);font-weight:900;color:#1a1a1a;text-align:center;margin-bottom:10px;}
+    .section-sub{font-size:15px;color:#64748b;text-align:center;margin-bottom:36px;}
+
+    /* Beneficios */
+    .benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+    .benefit-card{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:24px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+    .benefit-icon{font-size:32px;margin-bottom:12px;}
+    .benefit-title{font-size:15px;font-weight:800;color:#1a1a1a;margin-bottom:6px;}
+    .benefit-desc{font-size:13px;color:#64748b;line-height:1.5;}
+
+    /* Imagen full */
+    .img-full{max-width:800px;margin:0 auto;border-radius:16px;overflow:hidden;}
+    .img-caption{text-align:center;font-size:13px;color:#64748b;margin-top:12px;line-height:1.5;}
+
+    /* Precio-garantía */
+    .pricebox{background:#fff;border:2px solid rgba(99,102,241,.2);border-radius:16px;padding:clamp(24px,4vw,40px);text-align:center;max-width:520px;margin:0 auto;box-shadow:0 4px 20px rgba(99,102,241,.08);}
+    .pricebox-savings{font-size:15px;font-weight:800;color:#059669;display:block;margin-bottom:8px;}
+    .pricebox .price-main{font-size:clamp(36px,6vw,52px);}
+    .badges-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:20px 0;}
+    .badge-item{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);color:#6366f1;font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px;}
+
+    /* Objeciones */
+    .faq-list{display:flex;flex-direction:column;gap:16px;}
+    .faq-item{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:12px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.03);}
+    .faq-q{font-size:15px;font-weight:800;color:#1a1a1a;margin-bottom:8px;}
+    .faq-a{font-size:14px;color:#64748b;line-height:1.6;}
+
+    /* Cierre */
+    .section-cierre{background:#6366f1;padding:clamp(40px,6vw,72px) clamp(16px,5vw,80px);text-align:center;}
+    .section-cierre h2{font-size:clamp(24px,4vw,36px);font-weight:900;color:#fff;margin-bottom:12px;}
+    .section-cierre p{font-size:15px;color:rgba(255,255,255,.85);margin-bottom:28px;}
+    .btn-white{display:inline-flex;align-items:center;justify-content:center;background:#fff;color:#6366f1;font-weight:800;font-size:15px;padding:16px 40px;border-radius:999px;transition:opacity .2s;}
+    .btn-white:hover{opacity:.9;}
+
+    /* Footer */
+    .footer{background:#1a1a1a;padding:24px clamp(16px,5vw,80px);text-align:center;font-size:12px;color:#64748b;}
+  </style>
+</head>
+<body class="has-urgency-bar">
+
+  <div class="urgency-bar">⚡ Cargá tu dispositivo 5x más rápido — Oferta limitada, entrega hoy</div>
+
+  <nav class="nav" style="margin-top:36px;">
+    <span class="nav__logo">DCANP <span>GROUP</span></span>
+    <a class="nav__cta" data-open-modal data-insync-cta="nav"
+       href="https://wa.me/595993471550?text=%C2%A1Hola%21%20Quiero%20pedir%3A%20CABLE%20CARGADOR%20SOPORTE%20240W.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+      🛒 Pedir ahora
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="section-hero" data-insync-section="hero" class="section section-white">
+    <div class="hero" style="padding:0;">
+      <div class="hero__img">
+        <img src="https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1782572062157-pbysmia1gjp.webp"
+             alt="Cable Cargador con Soporte 240W"
+             style="width:100%;height:auto;display:block;">
+      </div>
+      <div>
+        <div class="hero__badge">⚡ Carga ultra-rápida 240W</div>
+        <h1>El cable que <em>no se dobla, no se enreda</em> y carga todo en minutos</h1>
+        <p class="hero__sub">240W de potencia real con soporte integrado invisible. Compatible con USB-C, Android, tablets, laptops, power banks y consolas. Un cable para todo.</p>
+        <span class="price-savings-top">✓ Ahorrás Gs. 90.000</span>
+        <div class="price-block">
+          <span class="price-main">Gs. 129.000</span>
+          <span class="price-compare">Gs. 219.000</span>
+          <span class="price-badge">-41%</span>
+        </div>
+        <a class="btn-primary" data-open-modal data-insync-cta="hero"
+           href="https://wa.me/595993471550?text=%C2%A1Hola%21%20Quiero%20pedir%3A%20CABLE%20CARGADOR%20SOPORTE%20240W.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+          ⚡ LO QUIERO — PEDIR AHORA
+        </a>
+        <div class="trust-badges">
+          <span class="trust-badge">✓ Pago al recibir</span>
+          <span class="trust-badge">✓ Envío gratis</span>
+          <span class="trust-badge">✓ Entrega hoy</span>
+          <span class="trust-badge">🚫 No pagás nada hasta tenerlo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFICIOS RÁPIDOS -->
+  <section id="section-beneficios" data-insync-section="beneficios" class="section section-light">
+    <div class="section-inner">
+      <h2 class="section-title">Tres razones para elegirlo</h2>
+      <p class="section-sub">No es un cable más — es el único que necesitás.</p>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">⚡</div>
+          <div class="benefit-title">240W Ultra-rápido</div>
+          <div class="benefit-desc">Cargá tu celular de 0 a 100% en minutos. Potencia real, no marketing.</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">🔗</div>
+          <div class="benefit-title">Universal USB-C</div>
+          <div class="benefit-desc">Compatible con celulares Android, tablets, laptops, consolas y power banks. Un cable, todos tus dispositivos.</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">📐</div>
+          <div class="benefit-title">Soporte invisible integrado</div>
+          <div class="benefit-desc">Se mantiene en posición perfecta sin doblarse ni dañarse. Diseñado para durar.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMAGEN PRODUCTO -->
+  <section id="section-imagen" data-insync-section="imagen" class="section section-white">
+    <div class="section-inner">
+      <div class="img-full">
+        <img src="https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1782572069185-silcffhysbi.jpg"
+             alt="Cable Cargador Soporte 240W — Compatibilidad universal"
+             style="width:100%;height:auto;display:block;">
+      </div>
+      <p class="img-caption">Compatible con: USB-C · Android · Tablets · Laptops · Power Banks · Consolas — Un solo cable para todo lo que usás.</p>
+    </div>
+  </section>
+
+  <!-- PRECIO + GARANTÍA -->
+  <section id="section-precio-garantia" data-insync-section="precio-garantia" class="section section-light">
+    <div class="section-inner">
+      <h2 class="section-title">Precio especial por tiempo limitado</h2>
+      <p class="section-sub">Sin suscripciones, sin costos ocultos. Tuyo para siempre.</p>
+      <div class="pricebox">
+        <span class="pricebox-savings">✓ Ahorrás Gs. 90.000 hoy</span>
+        <div class="price-block" style="justify-content:center;">
+          <span class="price-main">Gs. 129.000</span>
+          <span class="price-compare">Gs. 219.000</span>
+        </div>
+        <div class="badges-row">
+          <span class="badge-item">📦 Entrega hoy</span>
+          <span class="badge-item">💳 Pagás al recibir</span>
+          <span class="badge-item">🛡️ Garantía 30 días</span>
+          <span class="badge-item">🚚 Envío gratis</span>
+        </div>
+        <a class="btn-primary" data-open-modal data-insync-cta="precio-garantia"
+           href="https://wa.me/595993471550?text=%C2%A1Hola%21%20Quiero%20pedir%3A%20CABLE%20CARGADOR%20SOPORTE%20240W.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+          Quiero mi cable ahora →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- OBJECIONES -->
+  <section id="section-objeciones" data-insync-section="objeciones" class="section section-white">
+    <div class="section-inner">
+      <h2 class="section-title">Preguntas frecuentes</h2>
+      <p class="section-sub">Todo lo que necesitás saber antes de pedir.</p>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">¿Funciona con mi celular?</div>
+          <div class="faq-a">Sí. El cable es compatible con todos los dispositivos USB-C: Samsung, Motorola, Xiaomi, Huawei, LG, OnePlus, tablets Android, laptops, consolas y power banks. Si tu celular usa Micro-USB, incluimos un adaptador.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿El soporte realmente funciona?</div>
+          <div class="faq-a">Sí. El soporte integrado está hecho de material reforzado que mantiene el cable en posición sin doblarse ni fatigarse. No es un accesorio extra — está construido dentro del cable desde el primer centímetro.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Cuándo llega mi pedido?</div>
+          <div class="faq-a">Para Asunción y Gran Asunción, los pedidos realizados antes de las 14:00 se despachan el mismo día. Para interior del país, 1 a 3 días hábiles según tu ciudad. Envío gratis a todo el país.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section id="section-cierre" data-insync-section="cierre" class="section-cierre">
+    <h2>¿Seguís cargando lento con un cable viejo?</h2>
+    <p>240W reales, soporte que no se dobla y entrega hoy. Hacé el cambio ahora.</p>
+    <a class="btn-white" data-open-modal data-insync-cta="cierre"
+       href="https://wa.me/595993471550?text=%C2%A1Hola%21%20Quiero%20pedir%3A%20CABLE%20CARGADOR%20SOPORTE%20240W.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+      ⚡ Quiero mi cable — Pedir ahora
+    </a>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 DCANP GROUP · Todos los derechos reservados · Envíos a todo el país</p>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box" style="background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:16px;max-width:440px;width:100%;padding:28px 24px;max-height:90vh;overflow-y:auto;position:relative;">
+      <button class="modal-close" id="modal-close" aria-label="Cerrar" style="position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;border:none;background:rgba(0,0,0,.15);color:#1a1a1a;font-size:15px;cursor:pointer;">✕</button>
+
+      <div id="modal-form-wrap">
+        <h2 id="modal-title" style="font-size:20px;font-weight:800;color:#1a1a1a;margin:0 0 4px;">Completá tu pedido</h2>
+        <p style="text-align:center;font-size:11px;font-weight:700;color:#6366f1;margin:4px 0 14px;">⚡ Quedan pocas unidades — pedidos se procesan hoy</p>
+
+        <span style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.04em;margin:0 0 10px;">Elegí tu oferta</span>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+
+          <label class="offer-option selected" style="position:relative;display:block;border:2px solid #6366f1;border-radius:10px;padding:12px 14px;cursor:pointer;background:#f8f9fa;">
+            <input type="radio" name="offer" value="1" checked style="position:absolute;opacity:0;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+              <span style="font-weight:700;font-size:14px;color:#1a1a1a;">1 unidad</span>
+              <span style="font-weight:800;font-size:15px;color:#1a1a1a;">Gs. 129.000</span>
+            </div>
+          </label>
+
+          <label class="offer-option" style="position:relative;display:block;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:12px 14px;cursor:pointer;background:#f8f9fa;">
+            <input type="radio" name="offer" value="2" style="position:absolute;opacity:0;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+              <span style="font-weight:700;font-size:14px;color:#1a1a1a;">2 unidades</span>
+              <div>
+                <span style="font-size:12px;text-decoration:line-through;color:#999;margin-right:6px;">Gs. 258.000</span>
+                <span style="font-weight:800;font-size:15px;color:#1a1a1a;">Gs. 219.000</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+              <span style="color:#059669;font-weight:700;font-size:12px;">Ahorrás Gs. 39.000</span>
+              <div style="background:#ef4444;color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:20px;">🔥 Más elegido</div>
+            </div>
+          </label>
+
+          <label class="offer-option" style="position:relative;display:block;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:12px 14px;cursor:pointer;background:#f8f9fa;">
+            <input type="radio" name="offer" value="3" style="position:absolute;opacity:0;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+              <span style="font-weight:700;font-size:14px;color:#1a1a1a;">3 unidades</span>
+              <div>
+                <span style="font-size:12px;text-decoration:line-through;color:#999;margin-right:6px;">Gs. 387.000</span>
+                <span style="font-weight:800;font-size:15px;color:#1a1a1a;">Gs. 299.000</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+              <span style="color:#059669;font-weight:700;font-size:12px;">Ahorrás Gs. 88.000</span>
+              <div style="background:#22c55e;color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:20px;">⭐ Mayor ahorro</div>
+            </div>
+          </label>
+
+        </div>
+
+        <form id="dcanp-form" novalidate>
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-name">Nombre y apellido</label>
+            <input type="text" id="d-name" name="name" placeholder="Ej: Damián Riveros" autocomplete="name" required
+              style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-phone">Teléfono (WhatsApp) <span style="color:#ef4444;">· Ingresá tu número completo</span></label>
+            <input type="tel" id="d-phone" name="phone" placeholder="Ej: 0984 832 688" autocomplete="tel" required
+              style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+            <p id="d-phone-error" style="display:none;color:#ef4444;font-size:12px;font-weight:700;margin-top:4px;"></p>
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-city">Ciudad</label>
+            <input type="text" id="d-city" name="city" placeholder="Ej: Asunción, Lambaré, San Lorenzo..." autocomplete="off" required
+              style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-calle">Calle principal y secundaria</label>
+            <input type="text" id="d-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address"
+              style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+          </div>
+
+          <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f8f9fa;border:1.5px solid rgba(0,0,0,.12);border-radius:10px;cursor:pointer;margin-bottom:10px;">
+            <input type="checkbox" id="d-express" name="express">
+            <div>
+              <span style="display:block;font-size:13px;font-weight:700;color:#1a1a1a;">🚀 Envío express +10.000 Gs</span>
+              <span style="font-size:12px;color:#64748b;">Recibí antes que los demás</span>
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f8f9fa;border:1.5px solid rgba(0,0,0,.12);border-radius:10px;cursor:pointer;margin-bottom:10px;">
+            <input type="checkbox" id="d-invoice" name="invoice">
+            <div>
+              <span style="display:block;font-size:13px;font-weight:700;color:#1a1a1a;">🧾 Necesito factura</span>
+              <span style="font-size:12px;color:#64748b;">RUC o cédula para comprobante fiscal</span>
+            </div>
+          </label>
+          <div id="d-invoice-fields" style="display:none;margin-top:6px;margin-bottom:14px;">
+            <input type="text" id="d-invoice-ruc" name="invoice_ruc" placeholder="RUC (ej: 1234567-8)"
+              style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:13px;font-family:inherit;margin-bottom:8px;">
+            <input type="text" id="d-invoice-name" name="invoice_name" placeholder="Razón social / Nombre"
+              style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:13px;font-family:inherit;margin-bottom:8px;">
+            <input type="email" id="d-invoice-email" name="invoice_email" placeholder="Email (opcional)"
+              style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:13px;font-family:inherit;">
+          </div>
+
+          <p id="d-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:#1a1a1a;"></p>
+          <div style="margin-top:12px;text-align:center;font-size:12px;font-weight:800;color:#6366f1;background:rgba(99,102,241,.08);border-radius:8px;padding:8px 12px;">💳 Pago al recibir</div>
+
+          <div style="margin-top:16px;">
+            <button type="submit" id="dcanp-submit-btn"
+              style="display:block;width:100%;padding:16px;background:#6366f1;color:#fff;font-weight:800;font-size:15px;border-radius:999px;border:none;cursor:pointer;">
+              Confirmar pedido<br><small style="font-size:12px;font-weight:700;opacity:.9;">✓ Envío gratis · Pagás al recibir</small>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="dcanp-success" style="display:none;text-align:center;padding:24px 0;">
+        <div style="width:56px;height:56px;background:#6366f1;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px;">✓</div>
+        <h2 style="color:#6366f1;font-size:22px;margin-bottom:12px;">¡Tu pedido fue recibido!</h2>
+        <p style="color:rgba(26,26,26,.7);font-size:15px;line-height:1.6;margin-bottom:8px;">Gracias por confiar en nosotros. En breve nos comunicamos por WhatsApp o llamada para coordinar la entrega.</p>
+        <p style="font-weight:600;color:rgba(26,26,26,.7);font-size:14px;margin-bottom:16px;">📱 Quedate atento — te contactamos pronto.</p>
+        <div style="display:flex;gap:12px;justify-content:center;font-size:13px;color:#059669;font-weight:700;margin-bottom:20px;">
+          <span>✓ Envío gratis</span><span>✓ Pagás al recibir</span>
+        </div>
+        <a href="/" style="display:block;padding:12px 24px;background:#6366f1;color:#fff;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Ver más productos →</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/tracking.js?v=74" defer></script>
+  <script src="/assets/js/dcanp-cities.js?v=1" defer></script>
+  <script defer src="/assets/js/insync.js?v=4"></script>
+  <script defer>
+  const PRODUCT = {
+    name: "Cable Cargador con Soporte 240W",
+    slug: 'cable-cargador-soporte-240w',
+    price: 129000,
+    comboPricing: { 1: 129000, 2: 219000, 3: 299000 },
+    sheets_title: "CABLE CARGADOR SOPORTE 240W",
+  };
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => { try { DV.trackViewContent(PRODUCT); } catch(_) {} }, 800);
+    const modal      = document.getElementById('order-modal');
+    const openBtns   = document.querySelectorAll('[data-open-modal]');
+    const closeBtn   = document.getElementById('modal-close');
+    const form       = document.getElementById('dcanp-form');
+    const formWrap   = document.getElementById('modal-form-wrap');
+    const successBox = document.getElementById('dcanp-success');
+    const submitBtn  = document.getElementById('dcanp-submit-btn');
+    const offerInps  = document.querySelectorAll('input[name="offer"]');
+    let _icFired = false;
+    function openModal() {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      try { DV.trackAddToCart(PRODUCT); } catch(_) {}
+      if (!_icFired) {
+        _icFired = true;
+        setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500);
+      }
+    }
+    function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+    openBtns.forEach(btn => btn && btn.addEventListener('click', e => { e.preventDefault(); openModal(); }));
+    closeBtn && closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    offerInps.forEach(inp => {
+      inp.addEventListener('change', () => {
+        document.querySelectorAll('.offer-option').forEach(o => o.classList.remove('selected'));
+        inp.closest('.offer-option').classList.add('selected');
+        updateTotal();
+      });
+    });
+    const invoiceChk    = document.getElementById('d-invoice');
+    const invoiceFields = document.getElementById('d-invoice-fields');
+    const totalLine     = document.getElementById('d-total-line');
+    if (invoiceChk && invoiceFields) {
+      invoiceChk.addEventListener('change', function() {
+        invoiceFields.style.display = this.checked ? 'block' : 'none';
+      });
+    }
+    function updateTotal() {
+      if (!totalLine) return;
+      const qty  = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      const base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const isExp = document.getElementById('d-express')?.checked;
+      const tot = base + (isExp ? 10000 : 0);
+      totalLine.textContent = isExp ? 'Total: Gs. ' + tot.toLocaleString('es-PY') + ' (incluye express)' : '';
+    }
+    const expChk = document.getElementById('d-express');
+    if (expChk) expChk.addEventListener('change', updateTotal);
+    const dPhone = document.getElementById('d-phone');
+    if (dPhone) {
+      dPhone.addEventListener('focus', function() { const l=this.value.length; this.setSelectionRange(l,l); });
+      dPhone.addEventListener('input', function() {
+        this.style.borderColor='';
+        const e=document.getElementById('d-phone-error');
+        if(e){e.textContent='';e.style.display='none';}
+      });
+    }
+    form && form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const qty    = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      const base   = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const express = document.getElementById('d-express')?.checked || false;
+      const invoice = document.getElementById('d-invoice')?.checked || false;
+      const value   = base + (express ? 10000 : 0);
+      const data = {
+        name:          document.getElementById('d-name').value.trim(),
+        phone:         document.getElementById('d-phone').value.replace(/\s/g,''),
+        city:          document.getElementById('d-city').value.trim(),
+        street:        document.getElementById('d-calle').value.trim(),
+        quantity:      qty,
+        product_slug:  PRODUCT.slug,
+        product_name:  PRODUCT.sheets_title,
+        value,
+        express,
+        invoice,
+        invoice_ruc:   invoice ? (document.getElementById('d-invoice-ruc')?.value||'').trim() : '',
+        invoice_name:  invoice ? (document.getElementById('d-invoice-name')?.value||'').trim() : '',
+        invoice_email: invoice ? (document.getElementById('d-invoice-email')?.value||'').trim() : '',
+      };
+      if (!data.name || !data.phone || !data.city) {
+        alert('Completá nombre, teléfono y ciudad para continuar.');
+        return;
+      }
+      const soloN = data.phone.replace(/\D/g,'');
+      if (soloN.length < 9) {
+        if (dPhone) { dPhone.style.borderColor='#ef4444'; dPhone.scrollIntoView({behavior:'smooth',block:'center'}); }
+        const err = document.getElementById('d-phone-error');
+        if (err) { err.textContent='Ingresá tu número completo (ej: 0984 832 688)'; err.style.display='block'; }
+        return;
+      }
+      try {
+        const client = typeof getClientData === 'function' ? getClientData() : {};
+        data.fbp = client.fbp || null;
+        data.fbc = client.fbc || null;
+      } catch(_) {}
+      submitBtn.disabled = true; submitBtn.textContent = 'Enviando...';
+      try {
+        const res = await fetch('/api/dcanp-lead', {
+          method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data),
+        });
+        await res.json().catch(()=>({}));
+      } catch(err) { console.error('DCANP_SUBMIT_ERROR', err?.message); }
+      formWrap.style.display = 'none';
+      successBox.style.display = 'block';
+      submitBtn.disabled = false; submitBtn.textContent = 'Confirmar pedido';
+    });
+  });
+  </script>
+  <script src="/assets/js/protect.js?v=69" defer></script>
+</body>
+</html>
