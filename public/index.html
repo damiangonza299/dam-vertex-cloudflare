@@ -222,14 +222,14 @@ var DV_CARD_IMAGES = {
   'tabla-de-picar-inox-pro-304':   'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/8137OArDerL.jpg',
   'mini-camara-espia':             '/assets/img/minicamara.webp',
   'cable-cargador-soporte-240w':   'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1782572062157-pbysmia1gjp.webp',
-  'rejilla-autoadhesiva-pack10':   'https://acdn-us.mitiendanube.com/stores/001/836/042/products/img_8890-4857d05e74bd140d9517473250670310-1024-1024.webp',
-  'tobillera-compresion':          'https://cdn.shopify.com/s/files/1/0707/1979/9484/files/tobillera.jpg?v=1762705987',
+  'rejilla-autoadhesiva-pack10':   '/assets/img/filtro-rejilla.webp',
+  'tobillera-compresion':          '/assets/img/soporte-tobillo.webp',
   'cuchillo-pelador-madera':       'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1787227933293-pmlbsme8drr.jpg',
   'molino-carne-multifuncional':   'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1789335558165-3zelx4vkg8r.webp',
   'guante-quitapelos-mascotas':    'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1791553467564-66q0xw97tj3.png',
   'bases-elevadoras-ajustables':   'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1789668603186-w7d0s0ymyh.jpg',
-  'soplador-alto-impacto':         'https://http2.mlstatic.com/D_Q_NP_625525-MLA85660222409_062025-O.webp',
-  'pistola-masajeadora':           'https://http2.mlstatic.com/D_NQ_NP_863788-MLA78270636317_082024-O.webp',
+  'soplador-alto-impacto':         '/assets/img/potencia-soplador.webp',
+  'pistola-masajeadora':           '/assets/img/alivio-masajeador.webp',
   'guante-3en1-bano-perros':       'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/WhatsAppImage2025-01-08at16.45.04_1.jpg',
   'huevera-electrica-gallinita':   'https://i5.walmartimages.com/asr/38287ab5-5cf3-4aa2-a7ff-e7d3e60a240d.ed14180e8b1a0f73bc88f4cf03082575.png',
   'retinal-shot-booster':          'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1779938504609-9nu80enb68d.jpeg',
@@ -244,6 +244,7 @@ var DV_CARD_IMG_STYLE = {
   'taza-mezcladora-automatica': 'object-fit:contain;max-height:80%;width:auto',
   'depilador-electrico-guard-wing': 'object-fit:contain;max-height:80%;width:auto',
   'proyector-astronauta-sistema-solar': 'object-fit:contain;max-height:80%;width:auto',
+  'gps-rastreador': 'object-fit:contain;background:#111;',
 };
 /* srcset — solo para imágenes cuyo ancho real supera el ancho mostrado en la card
    (~400px). */
@@ -321,7 +322,7 @@ var DV_CARD_PRICES = {
 /* ── Orden visual de productos ── */
 var DV_SLUG_ORDER = ['reloj', 'reloj-imperial-verde', 'interruptor-control-remoto', 'estante-aluminio-bano', 'tabla-marmol', 'talonera-gel', 'esquinero-aluminio', 'tabla-de-picar-inox-pro-304', 'guante-3en1-bano-perros', 'huevera-electrica-gallinita', 'retinal-shot-booster', 'cepillo-9en1', 'avion-acrobatico-360', 'gps-rastreador', 'audifono-amplificador-sonido', 'plantillas-deportivas', 'mini-camara-espia', 'cable-cargador-soporte-240w', 'rejilla-autoadhesiva-pack10', 'tobillera-compresion', 'cuchillo-pelador-madera', 'molino-carne-multifuncional', 'guante-quitapelos-mascotas', 'bases-elevadoras-ajustables', 'soplador-alto-impacto', 'pistola-masajeadora', 'cadena', 'cepillo', 'lentes', 'luna-mini-vibrador-bala-recargable'];
 
-function buildCardHtml(p) {
+function buildCardHtml(p, idx) {
   var fb       = DV_CARD_PRICES[p.slug] || {};
   var defPrice = p.default_price || fb.price || 0;
   var cmpPrice = p.compare_price || fb.compare || 0;
@@ -333,11 +334,12 @@ function buildCardHtml(p) {
   var imgDims  = DV_CARD_DIMS[p.slug] || '';
   var imgSrcset = DV_CARD_SRCSET[p.slug] || '';
   var btnText  = DV_CARD_BTN[p.slug] || 'Ver producto →';
+  var imgLoading = (idx < 3) ? 'eager' : 'lazy';
   var imgHtml  = imgUrl
     ? '<img src="' + imgUrl + '" alt="' + p.name + '" class="product-card__img"' +
       (imgDims ? ' ' + imgDims : '') +
       (imgSrcset ? ' srcset="' + imgSrcset + '" sizes="' + DV_CARD_SIZES + '"' : '') +
-      (imgStyle ? ' style="' + imgStyle + '"' : '') + ' loading="lazy">'
+      (imgStyle ? ' style="' + imgStyle + '"' : '') + ' loading="' + imgLoading + '">'
     : '<div class="product-card__img" style="background:linear-gradient(145deg,#1a1a2e,#16213e);' +
       'display:flex;align-items:center;justify-content:center">' +
       '<span style="font-size:40px;opacity:.3">📦</span></div>';
@@ -393,7 +395,7 @@ fetch('/api/product-stock?active_only=1')
       return ia - ib;
     });
     if (grid) {
-      grid.innerHTML = products.map(buildCardHtml).join('');
+      grid.innerHTML = products.map(function(p, i) { return buildCardHtml(p, i); }).join('');
       requestAnimationFrame(function() { grid.style.opacity = '1'; });
     }
   })
