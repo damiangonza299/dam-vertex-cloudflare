@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espátula SkinPulse Ultrasónica | Dam Vertex</title>
+  <meta name="description" content="Espátula SkinPulse Ultrasónica — limpieza profunda de poros con ultrasonido. Desde Gs. 169.000. Pagás al recibir.">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(0,0,0,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .nav__cta { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; padding: 9px 20px; border-radius: var(--radius-sm); transition: opacity .2s; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+    .price-badge { font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green); border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px; }
+
+    :root {
+      --sp-pink: #e879a0;
+      --sp-pink-dk: #c0577e;
+      --sp-light: #fff5f9;
+      --sp-bg: #fdf0f5;
+      --sp-dark: #1a0a10;
+      --sp-text: #2d1520;
+      --sp-muted: rgba(45,21,32,.65);
+      --sp-card: rgba(232,121,160,.08);
+      --sp-border: rgba(232,121,160,.2);
+    }
+    body.theme-skinpulse { background: var(--sp-bg); color: var(--sp-text); }
+    .theme-skinpulse .nav { background: rgba(253,240,245,.97); border-bottom: 1px solid var(--sp-border); }
+    .theme-skinpulse .nav__logo { color: var(--sp-pink); }
+    .theme-skinpulse .nav__logo span { opacity: .6; color: var(--sp-text); }
+    .nav__cta-btn { display: inline-flex; align-items: center; justify-content: center; background: #ef4444; color: #fff; font-weight: 800; font-size: clamp(8px,2.6vw,12px); padding: 8px 12px; border-radius: 999px; border: 2px solid rgba(0,0,0,.1); cursor: pointer; white-space: nowrap; max-width: 62vw; }
+
+    .hero-sp { background: linear-gradient(135deg, #fff0f5 0%, #fce4ef 100%); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-sp__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+    .hero-sp__media { max-width: 420px; margin: 0 auto; width: 100%; }
+    .hero-sp__img { width: 100%; height: auto; border-radius: 20px; box-shadow: 0 12px 40px rgba(232,121,160,.2); }
+    .hero-sp__h { font-size: clamp(24px,4.5vw,40px); font-weight: 800; line-height: 1.14; color: var(--sp-text); margin: 0 0 12px; }
+    .hero-sp__h em { font-style: normal; color: var(--sp-pink); }
+    .price-savings-top { font-size: 13px; font-weight: 700; color: var(--sp-pink); margin: 0 0 6px; }
+    .hero-sp .price-main { color: var(--sp-text); }
+    .hero-sp .price-compare { color: var(--sp-muted); }
+    .feature-list { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; }
+    .feature-item { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--sp-text); background: var(--sp-card); border: 1px solid var(--sp-border); border-radius: 8px; padding: 10px 14px; }
+    .btn-cta-sp { display: block; width: 100%; max-width: 340px; margin: 0 auto; border: 2px solid rgba(0,0,0,.1); border-radius: 999px; background: #ef4444; color: #fff; padding: 13px 10px; font-size: clamp(10px,3.2vw,15px); white-space: nowrap; font-weight: 900; box-shadow: 0 4px 14px rgba(239,68,68,.3); cursor: pointer; text-align: center; }
+    .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 14px; }
+    .db-badge { font-size: clamp(8px,2.4vw,11px); color: var(--sp-text); padding: 5px 7px; border-radius: 20px; background: var(--sp-card); border: 1px solid var(--sp-border); white-space: nowrap; }
+    .db-pink { color: var(--sp-pink); }
+
+    .sec-sp { padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); }
+    .sec-sp--alt { background: #fff0f7; border-top: 1px solid var(--sp-border); }
+    .sec-head { text-align: center; margin-bottom: 36px; }
+    .sec-overline { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--sp-pink); margin: 0 0 10px; }
+    .sec-h { font-size: clamp(20px,3.5vw,30px); font-weight: 800; color: var(--sp-text); line-height: 1.2; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 900px; margin: 0 auto; }
+    .card-sp { background: #fff; border: 1.5px solid var(--sp-border); border-radius: 14px; padding: 24px 18px; text-align: center; box-shadow: 0 2px 8px rgba(232,121,160,.08); }
+    .card-sp strong { display: block; font-size: 14px; font-weight: 700; color: var(--sp-text); margin-bottom: 6px; }
+    .card-sp p { font-size: 12.5px; color: var(--sp-muted); line-height: 1.6; }
+
+    .urgencia-sp { background: linear-gradient(135deg, #fce4ef 0%, #f9d0e4 100%); padding: clamp(56px,10vw,96px) clamp(20px,5vw,64px); text-align: center; border-top: 1px solid var(--sp-border); }
+    .urgencia-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--sp-pink); background: rgba(232,121,160,.12); border: 1px solid var(--sp-border); padding: 7px 16px; border-radius: 20px; margin-bottom: 24px; }
+    .urgencia-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sp-pink); animation: pulse-sp 2s ease-in-out infinite; }
+    @keyframes pulse-sp { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+    .urgencia-h { font-size: clamp(22px,4vw,34px); font-weight: 800; color: var(--sp-text); margin: 0 0 14px; }
+    .urgencia-sub { font-size: 14px; color: var(--sp-muted); margin: 0 0 28px; line-height: 1.6; }
+
+    /* Modal */
+    .theme-skinpulse .modal-box { background: #fff; border: 1.5px solid var(--sp-border); max-width: 440px; }
+    .theme-skinpulse .modal-title { color: var(--sp-text); }
+    .theme-skinpulse .modal-subtitle { color: var(--sp-muted); }
+    .theme-skinpulse .modal-urgency { background: rgba(232,121,160,.1); border-color: var(--sp-border); color: var(--sp-pink); }
+    .theme-skinpulse .modal-close { background: rgba(232,121,160,.1); color: var(--sp-text); top: 14px; right: 14px; width: 30px; height: 30px; }
+    .theme-skinpulse .modal-section-label { color: var(--sp-muted); font-size: 12px; }
+    .theme-skinpulse .offer-option { background: #fff5f8; border-color: var(--sp-border); border-width: 1.5px; }
+    .theme-skinpulse .offer-option .offer-qty, .theme-skinpulse .offer-option .offer-price { color: var(--sp-text); }
+    .theme-skinpulse .offer-option .offer-compare { color: var(--sp-muted); }
+    .theme-skinpulse .offer-option.selected, .theme-skinpulse .offer-option:has(input:checked) { border-color: var(--sp-pink); background: rgba(232,121,160,.08); }
+    .theme-skinpulse .offer-badge { background: #ef4444; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 20px; }
+    .theme-skinpulse .offer-badge--best { background: #22c55e; }
+    .theme-skinpulse .form-group label { color: var(--sp-muted); font-size: 12px; font-weight: 700; }
+    .theme-skinpulse .form-group input, .theme-skinpulse .form-group textarea { background: #fff5f8; border: 1.5px solid var(--sp-border); color: var(--sp-text); padding: 11px 12px; border-radius: 8px; font-size: 14px; font-family: inherit; }
+    .theme-skinpulse .btn-primary { background: var(--sp-pink); color: #fff; font-weight: 800; }
+    .theme-skinpulse .upsell-block { background: #fff5f8; border-color: var(--sp-border); }
+    .theme-skinpulse .upsell-title { color: var(--sp-text); }
+    .theme-skinpulse .upsell-sub { color: var(--sp-muted); }
+    .theme-skinpulse .modal-step { color: var(--sp-pink); font-size: 13px; }
+    .theme-skinpulse .modal-price-warning { color: var(--sp-muted); }
+    .theme-skinpulse .dcanp-success { display: none; background: rgba(232,121,160,.08); border: 1.5px solid var(--sp-border); border-radius: 16px; padding: 32px 24px; text-align: center; }
+    .theme-skinpulse .dcanp-success.visible { display: block; }
+    .theme-skinpulse .dcanp-success__icon { width: 56px; height: 56px; background: var(--sp-pink); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .theme-skinpulse .dcanp-success h2 { color: var(--sp-pink); font-size: 22px; margin-bottom: 12px; }
+    .theme-skinpulse .dcanp-success p { color: var(--sp-text); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .theme-skinpulse .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: var(--sp-pink); font-weight: 700; }
+    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: var(--sp-pink); color: #fff; font-weight: 700; font-size: 14px; border-radius: 8px; text-align: center; }
+    .sticky-cta-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900; background: rgba(253,240,245,.97); border-top: 1px solid var(--sp-border); padding: 8px 16px; padding-bottom: max(8px,env(safe-area-inset-bottom)); }
+    @media (max-width: 700px) { .sticky-cta-bar { display: block; } body:has(#order-modal[style*="flex"]) .sticky-cta-bar { display: none; } }
+    @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) { .hero-sp__inner { grid-template-columns: 1fr; gap: 18px; } .hero-sp__media { order: -1; max-width: 100%; } .hero-sp { padding: 10px 16px 20px; } }
+  </style>
+</head>
+<body class="theme-skinpulse">
+
+<div style="background:var(--sp-pink);color:#fff;text-align:center;padding:7px 8px;font-size:12px;font-weight:700;">💆 Limpieza profesional en casa · Pagás al recibir · Envío gratis</div>
+
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <button type="button" class="nav__cta-btn" onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';">Pedilo aquí — Pagás al recibir</button>
+</nav>
+
+<main>
+<section class="hero-sp" id="section-hero" data-insync-section="hero">
+  <div class="hero-sp__inner">
+    <div class="hero-sp__media">
+      <img src="/espatula-skinpulse-ultrasonica/hero.webp" alt="Espátula SkinPulse Ultrasónica" class="hero-sp__img" loading="eager" fetchpriority="high" decoding="async" width="800" height="800">
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--sp-pink);margin:0 0 10px;">Skincare con tecnología ultrasónica</p>
+      <h1 class="hero-sp__h">Limpieza profunda. <em>Sin ir al estetichista.</em></h1>
+      <p style="font-size:clamp(14px,2vw,16px);color:var(--sp-muted);line-height:1.65;margin:0 0 18px;">La espátula ultrasónica SkinPulse exfolia, limpia en profundidad y estimula la piel con vibraciones de alta frecuencia. Blackheads, poros obstruidos y células muertas — fuera.</p>
+      <div style="background:rgba(232,121,160,.1);border-left:4px solid var(--sp-pink);padding:14px 16px;border-radius:8px;margin:0 0 16px;">
+        <div style="font-size:17px;font-weight:900;color:var(--sp-text);">No pagás nada hasta tenerla en la mano</div>
+        <div style="font-size:13px;color:var(--sp-muted);margin-top:4px;">Lo recibís, lo revisás, y recién ahí pagás.</div>
+      </div>
+      <p class="price-savings-top">Ahorrás Gs. 40.000</p>
+      <div class="price-block">
+        <span class="price-main" style="color:var(--sp-text);">Gs. 169.000</span>
+        <span class="price-compare">Gs. 209.000</span>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">🔊 Ultrasonido 24.000 Hz — limpieza sin irritar</div>
+        <div class="feature-item">💧 4 modos: exfolia, lift, ion+ y ion-</div>
+        <div class="feature-item">🔋 Recargable USB — batería para 90 min</div>
+        <div class="feature-item">🌸 Resultados visibles desde la primera sesión</div>
+      </div>
+      <a class="btn-cta-sp" data-scroll-form data-insync-cta="hero"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Esp%C3%A1tula%20SkinPulse%20Ultras%C3%B3nica.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F"
+         onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';return false;">
+        Pedilo aquí — Pagás al recibir
+      </a>
+      <div class="delivery-badges">
+        <span class="db-badge db-pink">🚚 Entrega en el día</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge db-pink">✓ Envío gratis</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-sp sec-sp--alt" id="section-beneficios" data-insync-section="beneficios">
+  <div class="sec-head">
+    <p class="sec-overline">Por qué SkinPulse</p>
+    <h2 class="sec-h">Cuatro modos, una herramienta</h2>
+  </div>
+  <div class="grid-3">
+    <div class="card-sp"><strong>Modo exfolia 🧼</strong><p>Vibraciones ultrasónicas para desprender células muertas y suciedad de poros sin abrasión.</p></div>
+    <div class="card-sp"><strong>Modo lift ✨</strong><p>Estimulación microcorriente para firmar y tonificar el contorno facial con uso regular.</p></div>
+    <div class="card-sp"><strong>Modo ion+ / ion- 💡</strong><p>Iontoforesis para maximizar la absorción de tus serums y cremas.</p></div>
+  </div>
+</section>
+
+<section class="sec-sp" id="section-como-usar" data-insync-section="como-usar">
+  <div class="sec-head">
+    <p class="sec-overline">Cómo usarla</p>
+    <h2 class="sec-h">Rutina en 10 minutos</h2>
+  </div>
+  <div class="grid-3">
+    <div class="card-sp"><strong>Paso 1 — Limpiá</strong><p>Desmaquillate y humedecé el rostro con agua tibia o loción.</p></div>
+    <div class="card-sp"><strong>Paso 2 — Aplicá</strong><p>Deslizá la espátula en ángulo de 45° con movimientos suaves. 2-3 minutos por zona.</p></div>
+    <div class="card-sp"><strong>Paso 3 — Hidratá</strong><p>Aplicá tu serum o crema favorita. Usá el modo ion+ para potenciar la absorción.</p></div>
+  </div>
+</section>
+
+<section class="sec-sp sec-sp--alt" id="section-confianza" data-insync-section="confianza">
+  <div class="sec-head">
+    <p class="sec-overline">Pedidos activos</p>
+    <h2 class="sec-h">Miles de clientas en Paraguay ya la tienen.</h2>
+  </div>
+  <div class="grid-3">
+    <div class="card-sp"><strong>Entrega en el día 🚚</strong><p>Gran Asunción recibe el mismo día.</p></div>
+    <div class="card-sp"><strong>Pago al recibir 💳</strong><p>Sin adelantos — pagás cuando llega a tu puerta, en Central.</p></div>
+    <div class="card-sp"><strong>Garantía 90 días 🛡️</strong><p>Si no es lo que esperabas, lo cambiamos sin costo.</p></div>
+  </div>
+</section>
+
+<section class="urgencia-sp" id="section-urgencia" data-insync-section="urgencia">
+  <div style="max-width:520px;margin:0 auto;">
+    <div class="urgencia-badge"><span class="urgencia-dot"></span>Stock limitado</div>
+    <h2 class="urgencia-h">Tu spa en casa. Gs. 169.000. Hoy mismo.</h2>
+    <p class="urgencia-sub">Espátula SkinPulse Ultrasónica — resultados profesionales, precio accesible. Reservá la tuya antes de que se agote.</p>
+    <a class="btn-cta-sp" data-scroll-form data-insync-cta="urgencia"
+       href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Esp%C3%A1tula%20SkinPulse.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F"
+       onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';return false;">
+      Pedilo aquí — Pagás al recibir
+    </a>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:6px;align-items:center;">
+      <span style="font-size:13px;color:var(--sp-muted);">✓ Entrega en el día · Central</span>
+      <span style="font-size:13px;color:var(--sp-muted);">✓ Pagás cuando lo recibís</span>
+      <span style="font-size:13px;color:var(--sp-muted);">✓ Envío gratis</span>
+    </div>
+  </div>
+</section>
+
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <p class="modal-urgency">⏳ Stock limitado</p>
+    <button class="modal-close" aria-label="Cerrar" onclick="document.getElementById('order-modal').style.display='none';document.body.style.overflow='';">✕</button>
+    <h2 class="modal-title">Ya casi es tuya</h2>
+    <p class="modal-step">Espátula SkinPulse Ultrasónica</p>
+    <p class="modal-subtitle">Completá tus datos para coordinar la entrega.</p>
+    <div id="modal-form-wrap">
+      <div class="modal-section">
+        <span class="modal-section-label">Elegí tu oferta</span>
+        <div class="offer-options">
+          <label class="offer-option selected"><input type="radio" name="offer" value="1" checked><div class="offer-content"><span class="offer-qty">1 unidad</span><span class="offer-price">Gs. 169.000</span></div></label>
+          <label class="offer-option"><input type="radio" name="offer" value="2"><div class="offer-content"><span class="offer-qty">2 unidades</span><div class="offer-prices"><span class="offer-compare">Gs. 338.000</span><span class="offer-price">Gs. 319.000</span></div></div><div class="offer-foot"><span class="offer-saving">Ahorrás Gs. 19.000</span><div class="offer-badge">🔥 Más elegido</div></div></label>
+          <label class="offer-option"><input type="radio" name="offer" value="3"><div class="offer-content"><span class="offer-qty">3 unidades</span><div class="offer-prices"><span class="offer-compare">Gs. 507.000</span><span class="offer-price">Gs. 459.000</span></div></div><div class="offer-foot"><span class="offer-saving">Ahorrás Gs. 48.000</span><div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div></div></label>
+        </div>
+      </div>
+      <p class="modal-price-warning">🔒 Tus datos se usan solo para coordinar tu entrega</p>
+      <form class="modal-form" id="modal-form" novalidate>
+        <div class="form-group"><label for="m-name">Nombre y apellido</label><input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name" required></div>
+        <div class="form-group"><label for="m-phone">Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span></label><input type="tel" id="m-phone" name="phone" placeholder="Ej: 0984 832 688" autocomplete="tel" required><p id="m-phone-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p></div>
+        <div class="form-group"><label for="m-city">Ciudad</label><input type="text" id="m-city" name="city" placeholder="Ej: Asunción, Luque, Fernando de la Mora..." autocomplete="off" required></div>
+        <div class="form-group"><label for="m-calle">Calle principal y secundaria</label><input type="text" id="m-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200"></div>
+        <div class="form-group"><label for="m-nota">Nota <span style="font-weight:400">(opcional)</span></label><textarea id="m-nota" name="nota" rows="2" placeholder="Referencia, color de portón, etc."></textarea></div>
+        <label class="upsell-block" style="margin-top:4px"><input type="checkbox" id="m-express" name="express"><div class="upsell-content"><span class="upsell-title">🚀 Envío express +10.000 Gs</span><span class="upsell-sub">Recibí antes</span></div></label>
+        <label class="upsell-block" style="margin-top:2px"><input type="checkbox" id="m-invoice" name="invoice"><div class="upsell-content"><span class="upsell-title">🧾 Necesito factura</span><span class="upsell-sub">RUC o cédula</span></div></label>
+        <div id="m-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group"><label for="m-invoice-ruc">RUC *</label><input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8"></div>
+          <div class="form-group" style="margin-top:6px"><label for="m-invoice-name">Razón social *</label><input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre o razón social"></div>
+          <div class="form-group" style="margin-top:6px"><label for="m-invoice-email">Email (opcional)</label><input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com"></div>
+        </div>
+        <p id="m-total-line" style="margin-top:18px;font-size:13px;font-weight:700;color:var(--sp-pink);"></p>
+        <div class="form-submit"><button type="submit" class="btn btn-primary" id="modal-submit-btn">Confirmar pedido</button></div>
+      </form>
+    </div>
+    <div class="dcanp-success" id="modal-success">
+      <div class="dcanp-success__icon">✓</div>
+      <h2>¡Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve te contactamos para coordinar la entrega.</p>
+      <p style="font-weight:600;">📱 Quedate atenta a tu número.</p>
+      <div class="dcanp-success__badges"><span>✓ Envío gratis</span><span>✓ Pagás al recibir</span></div>
+      <a href="/" class="btn-ver-coleccion">Ver más productos →</a>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer style="background:var(--sp-bg);border-top:1px solid var(--sp-border);color:var(--sp-muted);padding:20px;text-align:center;font-size:13px;">&copy; Dam Vertex</footer>
+
+<div class="sticky-cta-bar">
+  <button type="button" class="btn btn-primary" style="width:100%;margin:0;border-radius:999px;background:#ef4444;color:#fff;font-weight:900;font-size:clamp(10px,3.2vw,15px);white-space:nowrap;padding:12px 10px;border:2px solid rgba(0,0,0,.1);" onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';">Pedilo aquí — Pagás al recibir</button>
+</div>
+
+<script src="/assets/js/tracking.js?v=74" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+<script defer>
+const PRODUCT = { name: 'Espátula SkinPulse Ultrasónica', slug: 'espatula-skinpulse-ultrasonica', price: 169000, comboPricing: { 1: 169000, 2: 319000, 3: 459000 } };
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => { try { DV.trackViewContent(PRODUCT); } catch (_) {} }, 800);
+  var _icFired = false;
+  (function() {
+    var _m = document.getElementById('order-modal');
+    if (_m) new MutationObserver(function() {
+      if (_m.style.display === 'flex') {
+        try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+        if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }, 1500); }
+      }
+    }).observe(_m, { attributes: true, attributeFilter: ['style'] });
+  })();
+  var form = document.getElementById('modal-form');
+  var formWrap = document.getElementById('modal-form-wrap');
+  var successBox = document.getElementById('modal-success');
+  var submitBtn = document.getElementById('modal-submit-btn');
+  if (!form) return;
+  var invoiceChk = document.getElementById('m-invoice');
+  if (invoiceChk) invoiceChk.addEventListener('change', function() { document.getElementById('m-invoice-fields').style.display = this.checked ? 'block' : 'none'; });
+  var mPhone = document.getElementById('m-phone');
+  if (mPhone && !mPhone.value) mPhone.value = '09';
+  if (mPhone) mPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var qty = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
+    var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    var express = document.getElementById('m-express') && document.getElementById('m-express').checked;
+    var invoice = document.getElementById('m-invoice') && document.getElementById('m-invoice').checked;
+    var value = base + (express ? 10000 : 0);
+    var data = {
+      name: (document.getElementById('m-name').value || '').trim(),
+      phone: (document.getElementById('m-phone').value || '').replace(/\s/g, ''),
+      city: (document.getElementById('m-city').value || '').trim(),
+      street: (document.getElementById('m-calle').value || '').trim(),
+      nota: (document.getElementById('m-nota').value || '').trim(),
+      quantity: qty, product_slug: PRODUCT.slug, product_name: PRODUCT.name,
+      value: value, express: express, invoice: invoice,
+      invoice_ruc: invoice ? (document.getElementById('m-invoice-ruc').value || '').trim() : '',
+      invoice_name: invoice ? (document.getElementById('m-invoice-name').value || '').trim() : '',
+      invoice_email: invoice ? (document.getElementById('m-invoice-email').value || '').trim() : '',
+    };
+    if (!data.name || !data.phone || !data.city) { alert('Completá nombre, teléfono y ciudad.'); return; }
+    if (data.phone.replace(/\D/g, '').length < 9) {
+      if (mPhone) { mPhone.style.borderColor = '#c0392b'; mPhone.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      var pe = document.getElementById('m-phone-error'); if (pe) { pe.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; pe.style.display = 'block'; } return;
+    }
+    try { var client = typeof getClientData === 'function' ? getClientData() : {}; data.fbp = client.fbp || null; data.fbc = client.fbc || null; } catch (_) {}
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando...'; }
+    try { await fetch('/api/dcanp-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch (_) {}
+    if (formWrap) formWrap.style.display = 'none';
+    if (successBox) successBox.classList.add('visible');
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Confirmar pedido'; }
+  });
+});
+</script>
+<script src="/assets/js/protect.js?v=69" defer></script>
+</body>
+</html>

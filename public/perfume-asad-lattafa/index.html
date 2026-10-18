@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfume Asad Lattafa | Dam Vertex</title>
+  <meta name="description" content="Perfume Asad Lattafa — fragancia oriental de larga duración. Desde Gs. 179.000. Pagás al recibir. Envío gratis.">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(0,0,0,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .nav__cta { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; padding: 9px 20px; border-radius: var(--radius-sm); transition: opacity .2s; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+    .price-badge { font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green); border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px; }
+
+    /* ── Paleta Asad — dorado/negro ── */
+    :root {
+      --asad-gold: #c9a84c;
+      --asad-gold-dk: #a07830;
+      --asad-dark: #1a1208;
+      --asad-bg: #0e0b04;
+      --asad-card: rgba(201,168,76,.07);
+      --asad-border: rgba(201,168,76,.18);
+      --asad-text: #f0e8d0;
+      --asad-muted: rgba(240,232,208,.65);
+      --asad-green: #c9a84c;
+    }
+    body.theme-asad { background: var(--asad-bg); color: var(--asad-text); }
+    .theme-asad .nav { background: rgba(14,11,4,.95); border-bottom-color: var(--asad-border); }
+    .theme-asad .nav__logo { color: var(--asad-gold); }
+    .theme-asad .nav__logo span { opacity: .55; color: #fff; }
+
+    .nav__cta-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #ef4444; color: #fff; font-weight: 800; font-size: clamp(8px,2.6vw,12px);
+      padding: 8px 12px; border-radius: 999px; border: 2px solid rgba(0,0,0,.15); cursor: pointer;
+      white-space: nowrap; max-width: 62vw;
+    }
+
+    /* ── Hero ── */
+    .hero-asad { background: linear-gradient(180deg, #1a1208 0%, #0e0b04 100%); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-asad__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+    .hero-asad__media { max-width: 420px; margin: 0 auto; width: 100%; }
+    .hero-asad__img { width: 100%; height: auto; display: block; border-radius: 16px; }
+    .hero-asad__h { font-size: clamp(26px,4.5vw,42px); font-weight: 800; line-height: 1.14; color: var(--asad-text); margin: 0 0 12px; }
+    .hero-asad__h em { font-style: normal; color: var(--asad-gold); }
+    .hero-asad__sub { font-size: clamp(14px,2vw,16px); color: var(--asad-muted); line-height: 1.65; margin: 0 0 18px; }
+    .price-savings-top { font-size: 13px; font-weight: 700; color: var(--asad-gold); margin: 0 0 6px; }
+    .hero-asad .price-block { margin: 0 0 16px; }
+    .hero-asad .price-main { color: var(--asad-text); font-size: clamp(26px,5vw,36px); font-weight: 800; }
+    .hero-asad .price-compare { color: var(--asad-muted); font-size: 15px; }
+    .feature-list { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; }
+    .feature-item { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--asad-text); background: var(--asad-card); border: 1px solid var(--asad-border); border-radius: 8px; padding: 10px 14px; }
+
+    /* ── Secciones ── */
+    .sec-asad { padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); }
+    .sec-asad--dark { background: #100d04; border-top: 1px solid var(--asad-border); }
+    .sec-asad--card { background: var(--asad-card); border-top: 1px solid var(--asad-border); }
+    .sec-head { text-align: center; margin-bottom: 36px; }
+    .sec-overline { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--asad-gold); margin: 0 0 10px; }
+    .sec-h { font-size: clamp(20px,3.5vw,30px); font-weight: 800; color: var(--asad-text); line-height: 1.2; margin: 0; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 900px; margin: 0 auto; }
+    .card-asad { background: rgba(201,168,76,.06); border: 1px solid var(--asad-border); border-radius: 12px; padding: 24px 18px; text-align: center; }
+    .card-asad strong { display: block; font-size: 14px; font-weight: 700; color: var(--asad-text); margin-bottom: 6px; }
+    .card-asad p { font-size: 12.5px; color: var(--asad-muted); line-height: 1.6; margin: 0; }
+
+    /* ── Urgencia ── */
+    .urgencia-asad { background: #1a1208; padding: clamp(56px,10vw,96px) clamp(20px,5vw,64px); text-align: center; border-top: 1px solid var(--asad-border); }
+    .urgencia-asad__inner { max-width: 520px; margin: 0 auto; }
+    .urgencia-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--asad-gold); background: rgba(201,168,76,.12); border: 1px solid var(--asad-border); padding: 7px 16px; border-radius: 20px; margin-bottom: 24px; }
+    .urgencia-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--asad-gold); animation: pulse-asad 2s ease-in-out infinite; }
+    @keyframes pulse-asad { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.4; transform:scale(.7); } }
+    .urgencia-h { font-size: clamp(22px,4vw,34px); font-weight: 800; color: var(--asad-text); line-height: 1.18; margin: 0 0 14px; }
+    .urgencia-sub { font-size: 14px; color: var(--asad-muted); line-height: 1.6; margin: 0 0 28px; }
+
+    /* ── Modal ── */
+    .theme-asad .modal-box { background: #1a1208; border: 1px solid var(--asad-border); max-width: 440px; padding: 28px 24px; }
+    .theme-asad .modal-title { color: var(--asad-text); font-size: 20px; }
+    .theme-asad .modal-subtitle { color: var(--asad-muted); }
+    .theme-asad .modal-urgency { background: rgba(201,168,76,.12); border-color: var(--asad-border); color: var(--asad-gold); }
+    .theme-asad .modal-close { background: rgba(201,168,76,.12); color: var(--asad-text); top: 14px; right: 14px; width: 30px; height: 30px; }
+    .theme-asad .modal-section-label { color: var(--asad-muted); font-size: 12px; margin: 0 0 10px; }
+    .theme-asad .offer-option { background: rgba(201,168,76,.06); border-color: var(--asad-border); border-width: 1.5px; }
+    .theme-asad .offer-option .offer-qty, .theme-asad .offer-option .offer-price { color: var(--asad-text); }
+    .theme-asad .offer-option .offer-compare { color: var(--asad-muted); }
+    .theme-asad .offer-option.selected, .theme-asad .offer-option:has(input:checked) { border-color: var(--asad-gold); background: rgba(201,168,76,.12); }
+    .theme-asad .offer-badge { background: #ef4444; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 20px; }
+    .theme-asad .offer-badge--best { background: #22c55e; color: #fff; }
+    .theme-asad .modal-form { gap: 8px; }
+    .theme-asad .form-group label { color: var(--asad-muted); font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    .theme-asad .form-group input, .theme-asad .form-group textarea { background: rgba(201,168,76,.06); border: 1px solid var(--asad-border); color: var(--asad-text); font-family: inherit; padding: 11px 12px; border-radius: 8px; font-size: 14px; }
+    .theme-asad .form-group input::placeholder, .theme-asad .form-group textarea::placeholder { color: var(--asad-muted); }
+    .theme-asad .btn-primary { background: var(--asad-gold); color: #1a1208; font-weight: 800; }
+    .theme-asad .btn-primary:hover { background: var(--asad-gold-dk); }
+    .theme-asad .upsell-block { background: rgba(201,168,76,.06); border-color: var(--asad-border); }
+    .theme-asad .upsell-block:has(input:checked) { border-color: var(--asad-gold); background: rgba(201,168,76,.12); }
+    .theme-asad .upsell-title { color: var(--asad-text); }
+    .theme-asad .upsell-sub { color: var(--asad-muted); }
+    .theme-asad .modal-step { font-size: 13px; color: var(--asad-gold); }
+    .theme-asad .modal-price-warning { color: var(--asad-muted); }
+    #m-total-line:empty { display: none; }
+    .theme-asad .dcanp-success { display: none; background: rgba(201,168,76,.08); border: 1px solid var(--asad-border); border-radius: 16px; padding: 32px 24px; text-align: center; }
+    .theme-asad .dcanp-success.visible { display: block; }
+    .theme-asad .dcanp-success__icon { width: 56px; height: 56px; background: var(--asad-gold); color: #1a1208; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .theme-asad .dcanp-success h2 { color: var(--asad-gold); font-size: 22px; margin-bottom: 12px; }
+    .theme-asad .dcanp-success p { color: var(--asad-text); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .theme-asad .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: var(--asad-gold); font-weight: 700; }
+
+    /* ── CTA btn ── */
+    .btn-cta-asad { display: block; width: 100%; max-width: 340px; margin: 0 auto; border: 2px solid rgba(0,0,0,.15); border-radius: 999px; background: #ef4444; color: #fff; padding: 13px 10px; font-size: clamp(10px,3.2vw,15px); white-space: nowrap; font-weight: 900; box-shadow: 0 4px 14px rgba(239,68,68,.35); cursor: pointer; text-align: center; }
+    .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 14px; }
+    .db-badge { font-size: clamp(8px,2.4vw,11px); color: var(--asad-text); padding: 5px 7px; border-radius: 20px; background: var(--asad-card); border: 1px solid var(--asad-border); white-space: nowrap; }
+    .db-badge.db-green { color: var(--asad-gold); }
+
+    /* ── Sticky ── */
+    .sticky-cta-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900; background: rgba(14,11,4,.97); border-top: 1px solid var(--asad-border); padding: 8px 16px; padding-bottom: max(8px,env(safe-area-inset-bottom)); }
+    @media (max-width: 700px) { .sticky-cta-bar { display: block; } body:has(#order-modal[style*="flex"]) .sticky-cta-bar { display: none; } }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) {
+      .hero-asad__inner { grid-template-columns: 1fr; gap: 18px; }
+      .hero-asad__media { order: -1; max-width: 100%; }
+      .hero-asad { padding: 10px 16px 20px; }
+    }
+    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: var(--asad-gold); color: #1a1208; font-weight: 700; font-size: 14px; border-radius: 8px; text-decoration: none; text-align: center; }
+  </style>
+</head>
+<body class="theme-asad">
+
+<div style="background:var(--asad-gold);color:#1a1208;text-align:center;padding:7px 8px;font-size:12px;font-weight:700;letter-spacing:.03em;">⚡ Stock limitado · Envío gratis · Pagás al recibir</div>
+
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <button type="button" class="nav__cta-btn" onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';">Pedilo aquí — Pagás al recibir</button>
+</nav>
+
+<main>
+<!-- HERO -->
+<section class="hero-asad" id="section-hero" data-insync-section="hero">
+  <div class="hero-asad__inner">
+    <div class="hero-asad__media">
+      <img src="/perfume-asad-lattafa/hero.webp" alt="Perfume Asad Lattafa" class="hero-asad__img" loading="eager" fetchpriority="high" decoding="async" width="800" height="800">
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--asad-gold);margin:0 0 10px;">Fragancia oriental premium</p>
+      <h1 class="hero-asad__h">El perfume que te recuerdan. <em>Todo el día.</em></h1>
+      <p class="hero-asad__sub">Asad de Lattafa es una fragancia oriental amadeirada con proyección y durabilidad excepcionales. Notas de oud, cuero y especias que se quedan contigo horas después del primer spray.</p>
+      <div style="background:rgba(201,168,76,.1);border-left:4px solid var(--asad-gold);padding:14px 16px;border-radius:8px;margin:16px 0;">
+        <div style="font-size:17px;font-weight:900;color:var(--asad-gold);">No pagás nada hasta tenerlo en la mano</div>
+        <div style="font-size:13px;color:var(--asad-muted);margin-top:4px;">Lo recibís, lo revisás, y recién ahí pagás. Sin adelantos, sin tarjeta.</div>
+      </div>
+      <p class="price-savings-top">Ahorrás Gs. 50.000</p>
+      <div class="price-block hero-asad">
+        <span class="price-main">Gs. 179.000</span>
+        <span class="price-compare">Gs. 229.000</span>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">🏆 Lattafa — marca premium del Medio Oriente</div>
+        <div class="feature-item">⏱️ Duración de 8 a 12 horas en piel</div>
+        <div class="feature-item">🌿 Notas de oud, cuero, madera y especias</div>
+        <div class="feature-item">💫 Proyección intensa — te notan sin exagerar</div>
+      </div>
+      <a class="btn-cta-asad" data-scroll-form data-insync-cta="hero"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Perfume%20Asad%20Lattafa.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F"
+         onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';return false;">
+        Pedilo aquí — Pagás al recibir
+      </a>
+      <div class="delivery-badges">
+        <span class="db-badge db-green">🚚 Entrega en el día</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge db-green">✓ Envío gratis</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section class="sec-asad sec-asad--dark" id="section-beneficios" data-insync-section="beneficios">
+  <div class="sec-head">
+    <p class="sec-overline">Por qué Asad</p>
+    <h2 class="sec-h">Una fragancia que habla antes que vos</h2>
+  </div>
+  <div class="grid-3">
+    <div class="card-asad">
+      <strong>Duración real 🕐</strong>
+      <p>8 a 12 horas en piel. Sin retoques, sin recargarse. Sprazeás una vez y llegás fresco a la noche.</p>
+    </div>
+    <div class="card-asad">
+      <strong>Proyección justa 💨</strong>
+      <p>Intensa sin agobiar. Las personas que pasan cerca te notan sin sentirse invadidas.</p>
+    </div>
+    <div class="card-asad">
+      <strong>Oud de calidad 🌿</strong>
+      <p>El oud árabe es la nota más valorada en la perfumería oriental. Lattafa lo usa con maestría.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO USAR -->
+<section class="sec-asad sec-asad--card" id="section-como-usar" data-insync-section="como-usar">
+  <div class="sec-head">
+    <p class="sec-overline">Uso y cuidado</p>
+    <h2 class="sec-h">Para que dure todo el día</h2>
+  </div>
+  <div class="grid-3">
+    <div class="card-asad">
+      <strong>Aplicá en zonas de calor</strong>
+      <p>Muñecas, cuello y detrás de las orejas. El calor natural potencia la fragancia.</p>
+    </div>
+    <div class="card-asad">
+      <strong>Menos es más</strong>
+      <p>2 a 3 sprays son suficientes. Asad tiene alta concentración, no exageres.</p>
+    </div>
+    <div class="card-asad">
+      <strong>Guardalo en lugar fresco</strong>
+      <p>Lejos del sol y calor. La fragancia se conserva perfecta por años.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONFIANZA -->
+<section class="sec-asad sec-asad--dark" id="section-confianza" data-insync-section="confianza">
+  <div class="sec-head">
+    <p class="sec-overline">Pedidos activos</p>
+    <h2 class="sec-h">Pedidos activos en todo Paraguay.</h2>
+  </div>
+  <div class="grid-3">
+    <div class="card-asad">
+      <strong>Entrega en el día 🚚</strong>
+      <p>Central y Asunción reciben el mismo día del pedido.</p>
+    </div>
+    <div class="card-asad">
+      <strong>Pago al recibir 💳</strong>
+      <p>Pagás cuando el pedido llega a tu puerta, sin adelantos en Central.</p>
+    </div>
+    <div class="card-asad">
+      <strong>Clientes en todo el país 📍</strong>
+      <p>Pedidos activos en Central e Interior, coordinados por WhatsApp.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GARANTÍA -->
+<section id="section-garantia" data-insync-section="garantia" style="padding:28px 16px;text-align:center;background:#0e0b04;">
+  <div style="max-width:480px;margin:0 auto;border:2px solid var(--asad-gold);border-radius:14px;padding:24px 18px;">
+    <div style="font-size:36px;">🛡️</div>
+    <h3 style="font-size:22px;font-weight:900;margin:8px 0 6px;color:var(--asad-gold);">Garantía de 90 días</h3>
+    <p style="font-size:15px;color:var(--asad-muted);line-height:1.5;margin:0;">Si no es lo que esperabas, te lo cambiamos sin costo. Sin preguntas, sin vueltas.</p>
+  </div>
+</section>
+
+<!-- URGENCIA -->
+<section class="urgencia-asad" id="section-urgencia" data-insync-section="urgencia">
+  <div class="urgencia-asad__inner">
+    <div class="urgencia-badge"><span class="urgencia-dot"></span>Stock limitado</div>
+    <h2 class="urgencia-h">Tu fragancia. Gs. 179.000. Hoy mismo.</h2>
+    <p class="urgencia-sub">Perfume Asad Lattafa — el oriental que te distingue. Reservá el tuyo antes de que se agote.</p>
+    <a class="btn-cta-asad" data-scroll-form data-insync-cta="urgencia"
+       href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Perfume%20Asad%20Lattafa.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F"
+       onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';return false;">
+      Pedilo aquí — Pagás al recibir
+    </a>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:6px;align-items:center;">
+      <span style="font-size:13px;color:var(--asad-muted);">✓ Entrega en el día · Central</span>
+      <span style="font-size:13px;color:var(--asad-muted);">✓ Pagás cuando lo recibís · Central</span>
+      <span style="font-size:13px;color:var(--asad-muted);">✓ Envío gratis</span>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-asad">
+  <div class="modal-box">
+    <p class="modal-urgency">⏳ Stock limitado</p>
+    <button class="modal-close" aria-label="Cerrar" onclick="document.getElementById('order-modal').style.display='none';document.body.style.overflow='';">✕</button>
+    <h2 class="modal-title" id="modal-title-asad">Ya casi es tuyo</h2>
+    <p class="modal-step">Perfume Asad Lattafa · Coordinamos tu entrega</p>
+    <p class="modal-subtitle">Completá tus datos y nos comunicamos para coordinar tu entrega.</p>
+    <div id="modal-form-wrap">
+      <div class="modal-section">
+        <span class="modal-section-label">Elegí tu oferta</span>
+        <div class="offer-options">
+          <label class="offer-option selected">
+            <input type="radio" name="offer" value="1" checked>
+            <div class="offer-content">
+              <span class="offer-qty">1 unidad</span>
+              <span class="offer-price">Gs. 179.000</span>
+            </div>
+          </label>
+          <label class="offer-option">
+            <input type="radio" name="offer" value="2">
+            <div class="offer-content">
+              <span class="offer-qty">2 unidades</span>
+              <div class="offer-prices">
+                <span class="offer-compare">Gs. 358.000</span>
+                <span class="offer-price">Gs. 339.000</span>
+              </div>
+            </div>
+            <div class="offer-foot">
+              <span class="offer-saving">Ahorrás Gs. 19.000</span>
+              <div class="offer-badge">🔥 Más elegido</div>
+            </div>
+          </label>
+          <label class="offer-option">
+            <input type="radio" name="offer" value="3">
+            <div class="offer-content">
+              <span class="offer-qty">3 unidades</span>
+              <div class="offer-prices">
+                <span class="offer-compare">Gs. 537.000</span>
+                <span class="offer-price">Gs. 479.000</span>
+              </div>
+            </div>
+            <div class="offer-foot">
+              <span class="offer-saving">Ahorrás Gs. 58.000</span>
+              <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <p class="modal-price-warning">🔒 Tus datos están seguros · Solo los usamos para coordinar tu entrega</p>
+      <form class="modal-form" id="modal-form" novalidate>
+        <div class="form-group">
+          <label for="m-name">Nombre y apellido</label>
+          <input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label for="m-phone">Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span></label>
+          <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0984 832 688" autocomplete="tel" required>
+          <p id="m-phone-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
+        </div>
+        <div class="form-group">
+          <label for="m-city">Ciudad</label>
+          <input type="text" id="m-city" name="city" placeholder="Ej: Asunción, Lambaré, San Lorenzo..." autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="m-calle">Calle principal y secundaria</label>
+          <input type="text" id="m-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address">
+        </div>
+        <div class="form-group">
+          <label for="m-nota">Nota del pedido <span style="font-weight:400">(opcional)</span></label>
+          <textarea id="m-nota" name="nota" rows="2" placeholder="Referencia de entrega, color de portón, etc."></textarea>
+        </div>
+        <label class="upsell-block" style="margin-top:4px">
+          <input type="checkbox" id="m-express" name="express">
+          <div class="upsell-content">
+            <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
+            <span class="upsell-sub">Recibí antes que los demás</span>
+          </div>
+        </label>
+        <label class="upsell-block" style="margin-top:2px">
+          <input type="checkbox" id="m-invoice" name="invoice">
+          <div class="upsell-content">
+            <span class="upsell-title">🧾 Necesito factura</span>
+            <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="m-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group">
+            <label for="m-invoice-ruc">RUC *</label>
+            <input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="m-invoice-name">Razón social / Nombre *</label>
+            <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="m-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+            <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com">
+          </div>
+        </div>
+        <p id="m-total-line" style="margin-top:18px;font-size:13px;font-weight:700;color:var(--asad-gold);"></p>
+        <div class="form-submit">
+          <button type="submit" class="btn btn-primary" id="modal-submit-btn">Confirmar pedido</button>
+        </div>
+      </form>
+    </div>
+    <div class="dcanp-success" id="modal-success">
+      <div class="dcanp-success__icon">✓</div>
+      <h2>¡Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p style="font-weight:600;">📱 Quedate atento a tu número — te vamos a contactar pronto.</p>
+      <div class="dcanp-success__badges"><span>✓ Envío gratis</span><span>✓ Pagás al recibir</span></div>
+      <a href="/" class="btn-ver-coleccion">Ver más productos →</a>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section id="section-faq" data-insync-section="faq" style="padding:28px 16px 36px;max-width:520px;margin:0 auto;background:#0e0b04;">
+  <h3 style="font-size:20px;font-weight:900;margin-bottom:14px;color:var(--asad-gold);">Preguntas frecuentes</h3>
+  <details style="border-bottom:1px solid var(--asad-border);padding:12px 0;">
+    <summary style="font-weight:800;font-size:15px;cursor:pointer;color:var(--asad-text);">¿Cuándo me llega?</summary>
+    <p style="font-size:14px;color:var(--asad-muted);margin:8px 0 0;">En Gran Asunción, el mismo día si pedís antes de las 15:00. Interior del país, 24 a 48 horas.</p>
+  </details>
+  <details style="border-bottom:1px solid var(--asad-border);padding:12px 0;">
+    <summary style="font-weight:800;font-size:15px;cursor:pointer;color:var(--asad-text);">¿Tengo que pagar algo por adelantado?</summary>
+    <p style="font-size:14px;color:var(--asad-muted);margin:8px 0 0;">No. Pagás únicamente cuando el repartidor te entrega el producto en la mano.</p>
+  </details>
+  <details style="border-bottom:1px solid var(--asad-border);padding:12px 0;">
+    <summary style="font-weight:800;font-size:15px;cursor:pointer;color:var(--asad-text);">¿Es original?</summary>
+    <p style="font-size:14px;color:var(--asad-muted);margin:8px 0 0;">Sí, es perfume Lattafa original. La marca es reconocida mundialmente por su calidad en fragancias orientales.</p>
+  </details>
+  <details style="padding:12px 0;">
+    <summary style="font-weight:800;font-size:15px;cursor:pointer;color:var(--asad-text);">¿El envío tiene costo?</summary>
+    <p style="font-size:14px;color:var(--asad-muted);margin:8px 0 0;">No, el envío es gratis a todo el país.</p>
+  </details>
+</section>
+</main>
+
+<footer class="footer" style="background:#0e0b04;border-top:1px solid var(--asad-border);color:var(--asad-muted);padding:20px;text-align:center;font-size:13px;">
+  &copy; Dam Vertex
+</footer>
+
+<div class="sticky-cta-bar" id="sticky-cta-bar">
+  <button type="button" class="btn btn-primary" style="width:100%;margin:0;border:2px solid rgba(0,0,0,.15);border-radius:999px;background:#ef4444;color:#fff;font-weight:900;font-size:clamp(10px,3.2vw,15px);white-space:nowrap;padding:12px 10px" onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';">Pedilo aquí — Pagás al recibir</button>
+</div>
+
+<script src="/assets/js/tracking.js?v=74" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+<script defer>
+  const PRODUCT = {
+    name: 'Perfume Asad Lattafa',
+    slug: 'perfume-asad-lattafa',
+    price: 179000,
+    comboPricing: { 1: 179000, 2: 339000, 3: 479000 },
+  };
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => { try { DV.trackViewContent(PRODUCT); } catch (_) {} }, 800);
+    var _icFired = false;
+    (function() {
+      var _m = document.getElementById('order-modal');
+      if (_m) new MutationObserver(function() {
+        if (_m.style.display === 'flex') {
+          try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+          if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }, 1500); }
+        }
+      }).observe(_m, { attributes: true, attributeFilter: ['style'] });
+    })();
+    var form = document.getElementById('modal-form');
+    var formWrap = document.getElementById('modal-form-wrap');
+    var successBox = document.getElementById('modal-success');
+    var submitBtn = document.getElementById('modal-submit-btn');
+    if (!form) return;
+    var invoiceChk = document.getElementById('m-invoice');
+    var invoiceFields = document.getElementById('m-invoice-fields');
+    if (invoiceChk && invoiceFields) {
+      invoiceChk.addEventListener('change', function() { invoiceFields.style.display = this.checked ? 'block' : 'none'; });
+    }
+    var totalLine = document.getElementById('m-total-line');
+    function updateTotalLine() {
+      if (!totalLine) return;
+      var qty = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
+      var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      var isExp = document.getElementById('m-express') && document.getElementById('m-express').checked;
+      var total = base + (isExp ? 10000 : 0);
+      totalLine.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    }
+    document.querySelectorAll('input[name="offer"]').forEach(function(r) { r.addEventListener('change', updateTotalLine); });
+    var expChk = document.getElementById('m-express');
+    if (expChk) expChk.addEventListener('change', updateTotalLine);
+    var mPhone = document.getElementById('m-phone');
+    if (mPhone && !mPhone.value) mPhone.value = '09';
+    if (mPhone) mPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
+    if (mPhone) mPhone.addEventListener('input', function() { this.style.borderColor = ''; var e = document.getElementById('m-phone-error'); if (e) { e.textContent = ''; e.style.display = 'none'; } });
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var qty = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
+      var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      var express = document.getElementById('m-express') && document.getElementById('m-express').checked;
+      var invoice = document.getElementById('m-invoice') && document.getElementById('m-invoice').checked;
+      var value = base + (express ? 10000 : 0);
+      var data = {
+        name: (document.getElementById('m-name').value || '').trim(),
+        phone: (document.getElementById('m-phone').value || '').replace(/\s/g, ''),
+        city: (document.getElementById('m-city').value || '').trim(),
+        street: (document.getElementById('m-calle').value || '').trim(),
+        nota: (document.getElementById('m-nota').value || '').trim(),
+        quantity: qty, product_slug: PRODUCT.slug, product_name: PRODUCT.name,
+        value: value, express: express, invoice: invoice,
+        invoice_ruc: invoice ? (document.getElementById('m-invoice-ruc').value || '').trim() : '',
+        invoice_name: invoice ? (document.getElementById('m-invoice-name').value || '').trim() : '',
+        invoice_email: invoice ? (document.getElementById('m-invoice-email').value || '').trim() : '',
+      };
+      if (!data.name || !data.phone || !data.city) { alert('Completá nombre, teléfono y ciudad para continuar.'); return; }
+      var soloNum = data.phone.replace(/\D/g, '');
+      if (soloNum.length < 9) {
+        if (mPhone) { mPhone.style.borderColor = '#c0392b'; mPhone.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        var mPhoneError = document.getElementById('m-phone-error');
+        if (mPhoneError) { mPhoneError.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; mPhoneError.style.display = 'block'; }
+        return;
+      }
+      try { var client = typeof getClientData === 'function' ? getClientData() : {}; data.fbp = client.fbp || null; data.fbc = client.fbc || null; } catch (_) {}
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando...'; }
+      try {
+        var res = await fetch('/api/dcanp-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        await res.json().catch(function() { return {}; });
+      } catch (err) { console.error('DCANP_SUBMIT_ERROR', err && err.message); }
+      if (formWrap) formWrap.style.display = 'none';
+      if (successBox) successBox.classList.add('visible');
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Confirmar pedido'; }
+    });
+  });
+</script>
+<script src="/assets/js/protect.js?v=69" defer></script>
+</body>
+</html>

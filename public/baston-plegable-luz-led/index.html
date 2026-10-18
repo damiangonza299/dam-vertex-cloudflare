@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bastón Plegable con Luz LED | Dam Vertex</title>
+  <meta name="description" content="Bastón plegable con luz LED integrada. Seguridad nocturna y movilidad total. Desde Gs. 269.000. Pagás al recibir.">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(0,0,0,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .nav__cta { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; padding: 9px 20px; border-radius: var(--radius-sm); transition: opacity .2s; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+    .price-badge { font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green); border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px; }
+
+    :root {
+      --bp-silver: #b0bec5;
+      --bp-blue: #1565c0;
+      --bp-blue-lt: #42a5f5;
+      --bp-dark: #0a0e14;
+      --bp-bg: #0d1117;
+      --bp-card: rgba(176,190,197,.07);
+      --bp-border: rgba(176,190,197,.15);
+      --bp-text: #e2e8f0;
+      --bp-muted: rgba(226,232,240,.6);
+    }
+    body.theme-baston { background: var(--bp-dark); color: var(--bp-text); }
+    .nav__cta-btn { display: inline-flex; align-items: center; justify-content: center; background: #ef4444; color: #fff; font-weight: 800; font-size: clamp(8px,2.6vw,12px); padding: 8px 12px; border-radius: 999px; border: 2px solid rgba(0,0,0,.1); cursor: pointer; white-space: nowrap; max-width: 62vw; }
+
+    .hero-bp { background: linear-gradient(135deg, #0d1117 0%, #0a1628 50%, #0d1117 100%); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-bp__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+    .hero-bp__media { max-width: 400px; margin: 0 auto; width: 100%; }
+    .hero-bp__img { width: 100%; height: auto; border-radius: 16px; box-shadow: 0 8px 32px rgba(21,101,192,.25); }
+    .hero-bp__h { font-size: clamp(22px,4vw,38px); font-weight: 800; line-height: 1.14; color: #fff; margin: 0 0 12px; }
+    .hero-bp__h em { font-style: normal; color: var(--bp-blue-lt); }
+    .price-savings-top { font-size: 13px; font-weight: 700; color: var(--bp-blue-lt); margin: 0 0 6px; }
+    .feature-list { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; }
+    .feature-item { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--bp-text); background: var(--bp-card); border: 1px solid var(--bp-border); border-radius: 8px; padding: 10px 14px; }
+    .btn-cta-bp { display: block; width: 100%; max-width: 340px; margin: 0 auto; border: 2px solid rgba(0,0,0,.1); border-radius: 999px; background: #ef4444; color: #fff; padding: 13px 10px; font-size: clamp(10px,3.2vw,15px); white-space: nowrap; font-weight: 900; box-shadow: 0 4px 14px rgba(239,68,68,.3); cursor: pointer; text-align: center; }
+    .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 14px; }
+    .db-badge { font-size: clamp(8px,2.4vw,11px); color: var(--bp-text); padding: 5px 7px; border-radius: 20px; background: var(--bp-card); border: 1px solid var(--bp-border); white-space: nowrap; }
+
+    .sec-bp { padding: clamp(40px,8vw,72px) clamp(20px,5vw,64px); }
+    .sec-bp--alt { background: #090c12; border-top: 1px solid var(--bp-border); }
+    .sec-head { text-align: center; margin-bottom: 36px; }
+    .sec-overline { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--bp-blue-lt); margin: 0 0 10px; }
+    .sec-h { font-size: clamp(20px,3.5vw,30px); font-weight: 800; color: #fff; line-height: 1.2; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 900px; margin: 0 auto; }
+    .card-bp { background: var(--bp-card); border: 1.5px solid var(--bp-border); border-radius: 14px; padding: 24px 18px; text-align: center; }
+    .card-bp strong { display: block; font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .card-bp p { font-size: 12.5px; color: var(--bp-muted); line-height: 1.6; }
+
+    .urgencia-bp { background: linear-gradient(135deg, #0a1628 0%, #0d1117 100%); padding: clamp(56px,10vw,96px) clamp(20px,5vw,64px); text-align: center; border-top: 1px solid var(--bp-border); }
+    .urgencia-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--bp-blue-lt); background: rgba(66,165,245,.1); border: 1px solid rgba(66,165,245,.2); padding: 7px 16px; border-radius: 20px; margin-bottom: 24px; }
+    .urgencia-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bp-blue-lt); animation: pulse-bp 2s ease-in-out infinite; }
+    @keyframes pulse-bp { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+
+    .dcanp-success { display: none; background: var(--bp-card); border: 1.5px solid var(--bp-border); border-radius: 16px; padding: 32px 24px; text-align: center; }
+    .dcanp-success.visible { display: block; }
+    .dcanp-success__icon { width: 56px; height: 56px; background: var(--bp-blue-lt); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .dcanp-success h2 { color: var(--bp-blue-lt); font-size: 22px; margin-bottom: 12px; }
+    .dcanp-success p { color: var(--bp-text); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: var(--bp-blue-lt); font-weight: 700; }
+    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: var(--bp-blue-lt); color: #fff; font-weight: 700; font-size: 14px; border-radius: 8px; text-align: center; }
+    .sticky-cta-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900; background: rgba(10,14,20,.97); border-top: 1px solid var(--bp-border); padding: 8px 16px; padding-bottom: max(8px,env(safe-area-inset-bottom)); }
+    @media (max-width: 700px) { .sticky-cta-bar { display: block; } body:has(#order-modal[style*="flex"]) .sticky-cta-bar { display: none; } }
+    @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) { .hero-bp__inner { grid-template-columns: 1fr; gap: 18px; } .hero-bp__media { order: -1; max-width: 100%; } .hero-bp { padding: 10px 16px 20px; } }
+  </style>
+</head>
+<body class="theme-baston">
+
+<div style="background:var(--bp-blue);color:#fff;text-align:center;padding:7px 8px;font-size:12px;font-weight:700;">🦯 Movilidad segura · Luz LED integrada · Pagás al recibir</div>
+
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <button type="button" class="nav__cta-btn" onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';">Pedilo aquí — Pagás al recibir</button>
+</nav>
+
+<main>
+<section class="hero-bp" id="section-hero" data-insync-section="hero">
+  <div class="hero-bp__inner">
+    <div class="hero-bp__media">
+      <img src="/baston-plegable-luz-led/hero.webp" alt="Bastón Plegable con Luz LED" class="hero-bp__img" loading="eager" fetchpriority="high" decoding="async" width="800" height="800">
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--bp-blue-lt);margin:0 0 10px;">Movilidad + seguridad nocturna</p>
+      <h1 class="hero-bp__h">Caminá con confianza. <em>De día y de noche.</em></h1>
+      <p style="font-size:clamp(14px,2vw,16px);color:var(--bp-muted);line-height:1.65;margin:0 0 18px;">El bastón plegable con luz LED ilumina el camino en la oscuridad y se pliega en segundos para guardarlo en cualquier bolso. Aluminio liviano, altura ajustable, mango ergonómico.</p>
+      <div style="background:rgba(66,165,245,.08);border-left:4px solid var(--bp-blue-lt);padding:14px 16px;border-radius:8px;margin:0 0 16px;">
+        <div style="font-size:17px;font-weight:900;color:#fff;">No pagás nada hasta tenerlo en la mano</div>
+        <div style="font-size:13px;color:var(--bp-muted);margin-top:4px;">Lo recibís, lo revisás, y recién ahí pagás.</div>
+      </div>
+      <p class="price-savings-top">Ahorrás Gs. 60.000</p>
+      <div class="price-block">
+        <span class="price-main">Gs. 269.000</span>
+        <span class="price-compare">Gs. 329.000</span>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">💡 Luz LED en el mango — ilumina 2 metros</div>
+        <div class="feature-item">🔄 Plegable en 4 secciones — cabe en cualquier bolso</div>
+        <div class="feature-item">⚖️ Solo 450g — aluminio aeronáutico</div>
+        <div class="feature-item">📐 Altura ajustable 72–93 cm</div>
+      </div>
+      <a class="btn-cta-bp" data-scroll-form data-insync-cta="hero"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Bast%C3%B3n%20Plegable%20con%20Luz%20LED.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F"
+         onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';return false;">
+        Pedilo aquí — Pagás al recibir
+      </a>
+      <div class="delivery-badges">
+        <span class="db-badge">🚚 Entrega en el día</span>
+        <span class="db-badge">💳 Pago al recibir · Central</span>
+        <span class="db-badge">✓ Envío gratis</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-bp sec-bp--alt" id="section-beneficios" data-insync-section="beneficios">
+  <div class="sec-head"><p class="sec-overline">Características</p><h2 class="sec-h">Diseñado para la vida diaria</h2></div>
+  <div class="grid-3">
+    <div class="card-bp"><strong>LED potente 💡</strong><p>Luz integrada en el mango que ilumina el suelo al caminar de noche — sin llevar linterna aparte.</p></div>
+    <div class="card-bp"><strong>Plegable en segundos 🔄</strong><p>4 secciones que se pliegan con un clic. Cabe en cartera, bolso o equipaje de mano.</p></div>
+    <div class="card-bp"><strong>Ultra liviano ⚖️</strong><p>Solo 450 gramos en aluminio aeronáutico. No cansa el brazo en caminatas largas.</p></div>
+  </div>
+</section>
+
+<section class="sec-bp" id="section-confianza" data-insync-section="confianza">
+  <div class="sec-head"><p class="sec-overline">Pedidos activos</p><h2 class="sec-h">El regalo que más agradecen.</h2></div>
+  <div class="grid-3">
+    <div class="card-bp"><strong>Entrega en el día 🚚</strong><p>Gran Asunción recibe el mismo día.</p></div>
+    <div class="card-bp"><strong>Pago al recibir 💳</strong><p>Sin adelantos — pagás cuando llega a tu puerta.</p></div>
+    <div class="card-bp"><strong>Garantía 90 días 🛡️</strong><p>Si no es lo que esperabas, lo cambiamos sin costo.</p></div>
+  </div>
+</section>
+
+<section class="urgencia-bp" id="section-urgencia" data-insync-section="urgencia">
+  <div style="max-width:520px;margin:0 auto;">
+    <div class="urgencia-badge"><span class="urgencia-dot"></span>Stock limitado</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:800;color:#fff;margin:0 0 14px;">Seguridad para cada paso. Gs. 269.000.</h2>
+    <p style="font-size:14px;color:var(--bp-muted);margin:0 0 28px;line-height:1.6;">Bastón Plegable con Luz LED — liviano, resistente y luminoso. Un regalo que cuida de verdad.</p>
+    <a class="btn-cta-bp" data-scroll-form data-insync-cta="urgencia"
+       href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Bast%C3%B3n%20Plegable%20con%20Luz%20LED.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F"
+       onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';return false;">
+      Pedilo aquí — Pagás al recibir
+    </a>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:6px;align-items:center;">
+      <span style="font-size:13px;color:var(--bp-muted);">✓ Entrega en el día · Central</span>
+      <span style="font-size:13px;color:var(--bp-muted);">✓ Pagás cuando lo recibís</span>
+      <span style="font-size:13px;color:var(--bp-muted);">✓ Envío gratis</span>
+    </div>
+  </div>
+</section>
+
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <p class="modal-urgency">⏳ Stock limitado</p>
+    <button class="modal-close" aria-label="Cerrar" onclick="document.getElementById('order-modal').style.display='none';document.body.style.overflow='';">✕</button>
+    <h2 class="modal-title">Ya casi es tuyo</h2>
+    <p class="modal-step">Bastón Plegable con Luz LED</p>
+    <p class="modal-subtitle">Completá tus datos para coordinar la entrega.</p>
+    <div id="modal-form-wrap">
+      <div class="modal-section">
+        <span class="modal-section-label">Elegí tu oferta</span>
+        <div class="offer-options">
+          <label class="offer-option selected"><input type="radio" name="offer" value="1" checked><div class="offer-content"><span class="offer-qty">1 unidad</span><span class="offer-price">Gs. 269.000</span></div></label>
+          <label class="offer-option"><input type="radio" name="offer" value="2"><div class="offer-content"><span class="offer-qty">2 unidades</span><div class="offer-prices"><span class="offer-compare">Gs. 538.000</span><span class="offer-price">Gs. 509.000</span></div></div><div class="offer-foot"><span class="offer-saving">Ahorrás Gs. 29.000</span><div class="offer-badge">🔥 Más elegido</div></div></label>
+          <label class="offer-option"><input type="radio" name="offer" value="3"><div class="offer-content"><span class="offer-qty">3 unidades</span><div class="offer-prices"><span class="offer-compare">Gs. 807.000</span><span class="offer-price">Gs. 729.000</span></div></div><div class="offer-foot"><span class="offer-saving">Ahorrás Gs. 78.000</span><div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div></div></label>
+        </div>
+      </div>
+      <p class="modal-price-warning">🔒 Tus datos se usan solo para coordinar tu entrega</p>
+      <form class="modal-form" id="modal-form" novalidate>
+        <div class="form-group"><label for="m-name">Nombre y apellido</label><input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name" required></div>
+        <div class="form-group"><label for="m-phone">Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span></label><input type="tel" id="m-phone" name="phone" placeholder="Ej: 0984 832 688" autocomplete="tel" required><p id="m-phone-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p></div>
+        <div class="form-group"><label for="m-city">Ciudad</label><input type="text" id="m-city" name="city" placeholder="Ej: Asunción, Luque, Fernando de la Mora..." autocomplete="off" required></div>
+        <div class="form-group"><label for="m-calle">Calle principal y secundaria</label><input type="text" id="m-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200"></div>
+        <div class="form-group"><label for="m-nota">Nota <span style="font-weight:400">(opcional)</span></label><textarea id="m-nota" name="nota" rows="2" placeholder="Referencia, color de portón, etc."></textarea></div>
+        <label class="upsell-block" style="margin-top:4px"><input type="checkbox" id="m-express" name="express"><div class="upsell-content"><span class="upsell-title">🚀 Envío express +10.000 Gs</span><span class="upsell-sub">Recibí antes</span></div></label>
+        <label class="upsell-block" style="margin-top:2px"><input type="checkbox" id="m-invoice" name="invoice"><div class="upsell-content"><span class="upsell-title">🧾 Necesito factura</span><span class="upsell-sub">RUC o cédula</span></div></label>
+        <div id="m-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group"><label for="m-invoice-ruc">RUC *</label><input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8"></div>
+          <div class="form-group" style="margin-top:6px"><label for="m-invoice-name">Razón social *</label><input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre o razón social"></div>
+          <div class="form-group" style="margin-top:6px"><label for="m-invoice-email">Email (opcional)</label><input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com"></div>
+        </div>
+        <p id="m-total-line" style="margin-top:18px;font-size:13px;font-weight:700;color:var(--bp-blue-lt);"></p>
+        <div class="form-submit"><button type="submit" class="btn btn-primary" id="modal-submit-btn">Confirmar pedido</button></div>
+      </form>
+    </div>
+    <div class="dcanp-success" id="modal-success">
+      <div class="dcanp-success__icon">✓</div>
+      <h2>¡Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve te contactamos para coordinar la entrega.</p>
+      <p style="font-weight:600;">📱 Quedate atento a tu número.</p>
+      <div class="dcanp-success__badges"><span>✓ Envío gratis</span><span>✓ Pagás al recibir</span></div>
+      <a href="/" class="btn-ver-coleccion">Ver más productos →</a>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer style="background:#090c12;border-top:1px solid var(--bp-border);color:var(--bp-muted);padding:20px;text-align:center;font-size:13px;">&copy; Dam Vertex</footer>
+
+<div class="sticky-cta-bar">
+  <button type="button" class="btn btn-primary" style="width:100%;margin:0;border-radius:999px;background:#ef4444;color:#fff;font-weight:900;font-size:clamp(10px,3.2vw,15px);white-space:nowrap;padding:12px 10px;border:2px solid rgba(0,0,0,.1);" onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';">Pedilo aquí — Pagás al recibir</button>
+</div>
+
+<script src="/assets/js/tracking.js?v=74" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+<script defer>
+const PRODUCT = { name: 'Bastón Plegable con Luz LED', slug: 'baston-plegable-luz-led', price: 269000, comboPricing: { 1: 269000, 2: 509000, 3: 729000 } };
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => { try { DV.trackViewContent(PRODUCT); } catch (_) {} }, 800);
+  var _icFired = false;
+  (function() {
+    var _m = document.getElementById('order-modal');
+    if (_m) new MutationObserver(function() {
+      if (_m.style.display === 'flex') {
+        try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+        if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }, 1500); }
+      }
+    }).observe(_m, { attributes: true, attributeFilter: ['style'] });
+  })();
+  var form = document.getElementById('modal-form');
+  var formWrap = document.getElementById('modal-form-wrap');
+  var successBox = document.getElementById('modal-success');
+  var submitBtn = document.getElementById('modal-submit-btn');
+  if (!form) return;
+  var invoiceChk = document.getElementById('m-invoice');
+  if (invoiceChk) invoiceChk.addEventListener('change', function() { document.getElementById('m-invoice-fields').style.display = this.checked ? 'block' : 'none'; });
+  var mPhone = document.getElementById('m-phone');
+  if (mPhone && !mPhone.value) mPhone.value = '09';
+  if (mPhone) mPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var qty = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
+    var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    var express = document.getElementById('m-express') && document.getElementById('m-express').checked;
+    var invoice = document.getElementById('m-invoice') && document.getElementById('m-invoice').checked;
+    var value = base + (express ? 10000 : 0);
+    var data = {
+      name: (document.getElementById('m-name').value || '').trim(),
+      phone: (document.getElementById('m-phone').value || '').replace(/\s/g, ''),
+      city: (document.getElementById('m-city').value || '').trim(),
+      street: (document.getElementById('m-calle').value || '').trim(),
+      nota: (document.getElementById('m-nota').value || '').trim(),
+      quantity: qty, product_slug: PRODUCT.slug, product_name: PRODUCT.name,
+      value: value, express: express, invoice: invoice,
+      invoice_ruc: invoice ? (document.getElementById('m-invoice-ruc').value || '').trim() : '',
+      invoice_name: invoice ? (document.getElementById('m-invoice-name').value || '').trim() : '',
+      invoice_email: invoice ? (document.getElementById('m-invoice-email').value || '').trim() : '',
+    };
+    if (!data.name || !data.phone || !data.city) { alert('Completá nombre, teléfono y ciudad.'); return; }
+    if (data.phone.replace(/\D/g, '').length < 9) {
+      if (mPhone) { mPhone.style.borderColor = '#c0392b'; mPhone.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      var pe = document.getElementById('m-phone-error'); if (pe) { pe.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; pe.style.display = 'block'; } return;
+    }
+    try { var client = typeof getClientData === 'function' ? getClientData() : {}; data.fbp = client.fbp || null; data.fbc = client.fbc || null; } catch (_) {}
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando...'; }
+    try { await fetch('/api/dcanp-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch (_) {}
+    if (formWrap) formWrap.style.display = 'none';
+    if (successBox) successBox.classList.add('visible');
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Confirmar pedido'; }
+  });
+});
+</script>
+<script src="/assets/js/protect.js?v=69" defer></script>
+</body>
+</html>
