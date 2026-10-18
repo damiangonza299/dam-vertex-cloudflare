@@ -24,13 +24,13 @@
     .price-badge { font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green); border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px; }
 
     :root {
-      --dep-primary: #92400e;
-      --dep-primary-dk: #451a03;
-      --dep-accent: #f59e0b;
+      --dep-primary: #dc2626;
+      --dep-primary-dk: #991b1b;
+      --dep-accent: #ef4444;
       --dep-bg: #0a0a0a;
       --dep-card: #111111;
-      --dep-text: #fef3c7;
-      --dep-border: rgba(245,158,11,.2);
+      --dep-text: #f8fafc;
+      --dep-border: rgba(220,38,38,.2);
     }
     body { background: var(--dep-bg); color: var(--dep-text); }
 
@@ -49,9 +49,10 @@
     .hero__title em { font-style: normal; color: var(--dep-accent); }
     .hero__desc { font-size: 16px; line-height: 1.6; opacity: .8; }
     .price-savings-top { font-size: 13px; font-weight: 700; color: var(--green); margin-bottom: 2px; }
-    .price-main { color: var(--dep-accent) !important; }
+    .price-main { color: #fff !important; }
+    .price-compare { color: rgba(255,255,255,.45) !important; }
     .trust-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-    .trust-row span { font-size: 12px; font-weight: 700; background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.3); border-radius: 20px; padding: 5px 12px; color: #f59e0b; }
+    .trust-row span { font-size: 12px; font-weight: 700; background: rgba(220,38,38,.12); border: 1px solid rgba(220,38,38,.3); border-radius: 20px; padding: 5px 12px; color: #ef4444; }
 
     /* Layout specific */
     
@@ -99,7 +100,7 @@
     .combo-price { font-size: 22px; font-weight: 900; color: var(--dep-accent); }
 
     /* CTA final */
-    .cta-final { padding: clamp(64px,8vw,96px) clamp(16px,5vw,48px); text-align: center; background: linear-gradient(180deg, transparent, #451a0333); }
+    .cta-final { padding: clamp(64px,8vw,96px) clamp(16px,5vw,48px); text-align: center; background: linear-gradient(180deg, transparent, #7f1d1d33); }
     .cta-final__title { font-size: clamp(24px, 4vw, 36px); font-weight: 900; margin-bottom: 16px; }
     .cta-final__sub { font-size: 16px; opacity: .75; margin-bottom: 32px; }
 
@@ -113,17 +114,19 @@
     .modal-close-btn { position: absolute; top: 16px; right: 16px; background: #f1f5f9; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
     .modal-sub { font-size: 13px; color: #64748b; margin-bottom: 16px; }
-    .offer-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-    .offer-card { position: relative; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 14px 16px 14px 14px; cursor: pointer; transition: border-color .15s; padding-top: 22px; }
-    .offer-card:has(input:checked), .offer-card.selected { border-color: var(--dep-primary); background: #fff; box-shadow: 0 0 0 3px rgba(146,64,14,.15); }
-    .dep-pay-badge { margin-top: 14px; text-align: center; font-size: 12px; font-weight: 800; color: var(--dep-primary); background: rgba(245,158,11,.08); border-radius: 8px; padding: 8px 12px; }
-    .offer-card input[type=radio] { accent-color: var(--dep-primary); width: 18px; height: 18px; flex-shrink: 0; }
-    .offer-label { flex: 1; }
-    .offer-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #ef4444; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
-    .offer-badge.offer-badge--best { background: #22c55e; }
-    .offer-qty { font-size: 13px; color: #64748b; }
-    .offer-savings { font-size: 11px; color: #16a34a; font-weight: 700; }
-    .offer-price { font-size: 17px; font-weight: 800; color: #0f172a; }
+    .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .offer-option { position: relative; display: block; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; cursor: pointer; }
+    .offer-option input { position: absolute; opacity: 0; pointer-events: none; }
+    .offer-option.selected { border: 2px solid var(--dep-primary); background: #fff; box-shadow: 0 0 0 3px rgba(220,38,38,.12); }
+    .dep-pay-badge { margin-top: 14px; text-align: center; font-size: 12px; font-weight: 800; color: var(--dep-primary); background: rgba(220,38,38,.07); border-radius: 8px; padding: 8px 12px; }
+    .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    .offer-qty { font-weight: 700; font-size: 14px; color: #0f172a; }
+    .offer-price { font-weight: 800; font-size: 15px; color: #0f172a; }
+    .offer-compare { font-size: 12px; text-decoration: line-through; color: #94a3b8; margin-right: 6px; }
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .offer-saving { color: #16a34a; font-weight: 700; font-size: 12px; }
+    .offer-badge { background: #ef4444; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .offer-badge--best { background: #22c55e; }
     .form-group { margin-bottom: 10px; }
     .form-group input, .form-group textarea { width: 100%; padding: 11px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; }
     .form-group input:focus, .form-group textarea:focus { border-color: var(--dep-primary); }
@@ -288,30 +291,34 @@
 
     <div id="modal-form-wrap">
       <form id="modal-form" novalidate>
-        <div class="offer-cards">
-          <label class="offer-card">
+        <div class="offer-options">
+          <label class="offer-option selected">
             <input type="radio" name="offer" value="1" checked>
-            <div class="offer-label">
-              <div class="offer-qty">1 unidad</div>
-              <div class="offer-price">Gs. 99.000</div>
+            <div class="offer-content">
+              <span class="offer-qty">1 unidad</span>
+              <span class="offer-price">Gs. 99.000</span>
             </div>
           </label>
-          <label class="offer-card">
-            <span class="offer-badge">🔥 Más elegido</span>
+          <label class="offer-option">
             <input type="radio" name="offer" value="2">
-            <div class="offer-label">
-              <div class="offer-qty">2 unidades</div>
-              <div class="offer-savings">Ahorrás Gs. 9.000</div>
-              <div class="offer-price">Gs. 189.000</div>
+            <div class="offer-content">
+              <span class="offer-qty">2 unidades</span>
+              <div><span class="offer-compare">Gs. 198.000</span><span class="offer-price">Gs. 189.000</span></div>
+            </div>
+            <div class="offer-foot">
+              <span class="offer-saving">Ahorrás Gs. 9.000</span>
+              <span class="offer-badge">🔥 Más elegido</span>
             </div>
           </label>
-          <label class="offer-card">
-            <span class="offer-badge offer-badge--best">⭐ Mayor ahorro</span>
+          <label class="offer-option">
             <input type="radio" name="offer" value="3">
-            <div class="offer-label">
-              <div class="offer-qty">3 unidades</div>
-              <div class="offer-savings">Ahorrás Gs. 28.000</div>
-              <div class="offer-price">Gs. 269.000</div>
+            <div class="offer-content">
+              <span class="offer-qty">3 unidades</span>
+              <div><span class="offer-compare">Gs. 297.000</span><span class="offer-price">Gs. 269.000</span></div>
+            </div>
+            <div class="offer-foot">
+              <span class="offer-saving">Ahorrás Gs. 28.000</span>
+              <span class="offer-badge offer-badge--best">⭐ Mayor ahorro</span>
             </div>
           </label>
         </div>
@@ -378,12 +385,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // JS-driven offer card selection (cross-browser fallback)
   document.querySelectorAll('input[name="offer"]').forEach(function(r) {
     r.addEventListener('change', function() {
-      document.querySelectorAll('.offer-card').forEach(function(c) { c.classList.remove('selected'); });
-      this.closest('.offer-card').classList.add('selected');
+      document.querySelectorAll('.offer-option').forEach(function(c) { c.classList.remove('selected'); });
+      this.closest('.offer-option').classList.add('selected');
     });
   });
   var firstOffer = document.querySelector('input[name="offer"]:checked');
-  if (firstOffer) firstOffer.closest('.offer-card').classList.add('selected');
+  if (firstOffer) firstOffer.closest('.offer-option').classList.add('selected');
 
   var modal = document.getElementById('order-modal');
   var _icFired = false;
