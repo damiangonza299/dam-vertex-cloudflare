@@ -108,9 +108,9 @@
     footer { padding: 24px; text-align: center; font-size: 12px; opacity: .35; border-top: 1px solid rgba(255,255,255,.08); }
 
     /* Modal DCANP */
-    #order-modal { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,.7); align-items: flex-end; justify-content: center; }
+    #order-modal { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(17,18,20,.6); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
     #order-modal.active { display: flex; }
-    .modal-box { background: #fff; color: #111; width: 100%; max-width: 480px; max-height: 92vh; overflow-y: auto; border-radius: 20px 20px 0 0; padding: 28px 20px 32px; position: relative; }
+    .modal-box { background: #fff; color: #0f172a; width: 100%; max-width: 440px; max-height: 90vh; overflow-y: auto; border-radius: 16px; padding: 28px 24px; position: relative; accent-color: var(--dep-primary); }
     .modal-close-btn { position: absolute; top: 16px; right: 16px; background: #f1f5f9; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
     .modal-sub { font-size: 13px; color: #64748b; margin-bottom: 16px; }
@@ -127,13 +127,16 @@
     .offer-saving { color: #16a34a; font-weight: 700; font-size: 12px; }
     .offer-badge { background: #ef4444; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
     .offer-badge--best { background: #22c55e; }
-    .form-group { margin-bottom: 10px; }
-    .form-group input, .form-group textarea { width: 100%; padding: 11px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; }
-    .form-group input:focus, .form-group textarea:focus { border-color: var(--dep-primary); }
-    .toggle-row { display: flex; align-items: center; gap: 10px; padding: 12px 0; font-size: 14px; cursor: pointer; }
-    .toggle-row input[type=checkbox] { accent-color: var(--dep-primary); width: 16px; height: 16px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; color: #5B6066; margin-bottom: 6px; }
+    .form-group input, .form-group textarea { width: 100%; padding: 11px 12px; border: 1px solid #D4D7DB; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; background: #FAFAF8; color: #16181A; }
+    .form-group input:focus, .form-group textarea:focus { border: 2px solid var(--dep-primary); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: #9AA0A6; }
+    .upsell-block { display: flex; align-items: center; gap: 10px; cursor: pointer; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; }
+    .upsell-title { color: #0f172a; font-size: 13px; font-weight: 700; }
+    .upsell-sub { color: #64748b; font-size: 12px; }
     #m-invoice-fields { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
-    #modal-submit-btn { width: 100%; padding: 16px; background: var(--dep-primary); color: #fff; font-size: 16px; font-weight: 800; border: none; border-radius: 10px; cursor: pointer; margin-top: 16px; transition: opacity .2s; }
+    #modal-submit-btn { width: 100%; padding: 16px; background: var(--dep-primary); color: #fff; font-size: 16px; font-weight: 800; border: none; border-radius: 12px; cursor: pointer; margin-top: 18px; transition: opacity .2s; box-shadow: 0 6px 18px rgba(0,0,0,.15); font-family: inherit; }
     #modal-submit-btn:disabled { opacity: .6; }
     #modal-submit-btn:hover:not(:disabled) { opacity: .9; }
     .dcanp-success { text-align: center; padding: 32px 16px; }
@@ -162,20 +165,22 @@
     <p class="hero__eyebrow">Encendedor Póker Royal</p>
     <h1 class="hero__title">El encendedor que no te falla jamás.</h1>
     <p class="hero__desc">¿Harto de los encendedores de gas que se quedan sin combustible al peor momento?</p>
-    <p class="price-savings-top">Ahorrás Gs. 40.000</p>
-    <div class="price-block price-block--center">
-      <span class="price-main">Gs. 99.000</span>
-      <span class="price-compare">Gs. 139.000</span>
-      <span class="price-badge">🔥 29% OFF</span>
+    <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:4px;">
+      <p class="price-savings-top" style="margin-bottom:0;">Ahorrás Gs. 40.000</p>
+      <div class="price-block price-block--center" style="margin:0;">
+        <span class="price-main">Gs. 99.000</span>
+        <span class="price-compare">Gs. 139.000</span>
+        <span class="price-badge">🔥 29% OFF</span>
+      </div>
     </div>
+    <a class="btn btn-primary btn--wide" data-open-modal data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Encendedor%20P%C3%B3ker%20Royal%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+      LO QUIERO — PEDIR AHORA
+    </a>
     <div class="trust-row trust-row--center">
       <span>🚚 Envío a todo Paraguay</span>
       <span>💳 Pago al recibir</span>
       <span>✅ No pagás hasta tenerlo</span>
     </div>
-    <a class="btn btn-primary btn--wide" data-open-modal data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Encendedor%20P%C3%B3ker%20Royal%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-      LO QUIERO — PEDIR AHORA
-    </a>
   </div>
 </section>
 
@@ -323,30 +328,56 @@
           </label>
         </div>
 
-        <div class="form-group"><input id="m-name" type="text" name="name" placeholder="Tu nombre *" autocomplete="name" required></div>
-        <div class="form-group"><input id="m-phone" type="tel" name="phone" placeholder="Teléfono *" autocomplete="tel" required></div>
-        <div class="form-group"><input id="m-city" type="text" name="city" placeholder="Ciudad *" list="cities-list" autocomplete="address-level2" required><datalist id="cities-list"></datalist></div>
-        <div class="form-group"><input id="m-street" type="text" name="street" placeholder="Dirección de entrega" autocomplete="street-address"></div>
-        <div class="form-group"><textarea id="m-nota" name="nota" placeholder="Nota (opcional)" rows="2"></textarea></div>
-
-        <label class="toggle-row">
-          <input type="checkbox" id="m-express">
-          <span>Envío express +Gs. 10.000</span>
-        </label>
-
-        <label class="toggle-row">
-          <input type="checkbox" id="m-invoice">
-          <span>Necesito factura</span>
-        </label>
-        <div id="m-invoice-fields" style="display:none;">
-          <div class="form-group"><input id="m-ruc" type="text" name="ruc" placeholder="RUC"></div>
-          <div class="form-group"><input id="m-iname" type="text" name="iname" placeholder="Razón social"></div>
-          <div class="form-group"><input id="m-iemail" type="email" name="iemail" placeholder="Email para factura"></div>
+        <div class="form-group">
+          <label for="m-name">Nombre y apellido</label>
+          <input id="m-name" type="text" name="name" placeholder="Ej: Matías Giménez" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label for="m-phone">Teléfono <span style="color:#DC2626;font-size:11px;font-weight:600;">· Ingresá tu número completo</span></label>
+          <input id="m-phone" type="tel" name="phone" placeholder="Ej: 984 832 688" autocomplete="tel" required>
+        </div>
+        <div class="form-group">
+          <label for="m-city">Ciudad <span style="color:#DC2626;font-size:11px;font-weight:600;">· Solo el nombre de tu ciudad</span></label>
+          <input id="m-city" type="text" name="city" placeholder="Ej: Asunción, Lambaré..." list="cities-list" autocomplete="address-level2" required><datalist id="cities-list"></datalist>
+        </div>
+        <div class="form-group">
+          <label for="m-street">Calle principal y secundaria</label>
+          <input id="m-street" type="text" name="street" placeholder="Ej: Av. España y Tacuary" autocomplete="street-address">
         </div>
 
-        <div class="dep-pay-badge">💳 Pago al recibir · Envío gratis</div>
+        <label class="upsell-block">
+          <input type="checkbox" id="m-express">
+          <div>
+            <span class="upsell-title">🚀 Envío express +Gs. 10.000</span><br>
+            <span class="upsell-sub">Recibí antes que los demás</span>
+          </div>
+        </label>
 
-        <button type="submit" id="modal-submit-btn">Confirmar pedido<br><span style="font-size:11px;opacity:.8;font-weight:600;">✓ Envío gratis · Pagás al recibir</span></button>
+        <label class="upsell-block" style="margin-top:12px">
+          <input type="checkbox" id="m-invoice">
+          <div>
+            <span class="upsell-title">🧾 Necesito factura</span><br>
+            <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="m-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group">
+            <label for="m-ruc">RUC</label>
+            <input id="m-ruc" type="text" name="ruc" placeholder="Ej: 1234567-8">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="m-iname">Razón social o nombre</label>
+            <input id="m-iname" type="text" name="iname" placeholder="Nombre completo o razón social">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="m-iemail">Email <span style="font-weight:400">(opcional)</span></label>
+            <input id="m-iemail" type="email" name="iemail" placeholder="correo@ejemplo.com">
+          </div>
+        </div>
+
+        <div class="dep-pay-badge">💳 Pago al recibir</div>
+
+        <button type="submit" id="modal-submit-btn">Confirmar pedido<br><span style="font-size:11px;opacity:.85;font-weight:700;letter-spacing:.03em;">✓ Envío gratis · Pagás al recibir</span></button>
       </form>
     </div>
 
@@ -444,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
       phone: document.getElementById('m-phone').value.trim(),
       city: document.getElementById('m-city').value.trim(),
       street: document.getElementById('m-street').value.trim(),
-      nota: document.getElementById('m-nota').value.trim(),
+      nota: '',
       quantity: qty,
       product_slug: PRODUCT.slug,
       product_name: PRODUCT.name,
