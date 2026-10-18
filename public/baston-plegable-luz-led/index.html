@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -35,7 +35,6 @@
       --bp-muted: rgba(226,232,240,.6);
     }
     body.theme-baston { background: var(--bp-dark); color: var(--bp-text); }
-    .nav__cta-btn { display: inline-flex; align-items: center; justify-content: center; background: #ef4444; color: #fff; font-weight: 800; font-size: clamp(8px,2.6vw,12px); padding: 8px 12px; border-radius: 999px; border: 2px solid rgba(0,0,0,.1); cursor: pointer; white-space: nowrap; max-width: 62vw; }
 
     .hero-bp { background: linear-gradient(135deg, #0d1117 0%, #0a1628 50%, #0d1117 100%); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
     .hero-bp__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
@@ -65,15 +64,8 @@
     .urgencia-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bp-blue-lt); animation: pulse-bp 2s ease-in-out infinite; }
     @keyframes pulse-bp { 0%,100% { opacity:1; } 50% { opacity:.3; } }
 
-    .dcanp-success { display: none; background: var(--bp-card); border: 1.5px solid var(--bp-border); border-radius: 16px; padding: 32px 24px; text-align: center; }
-    .dcanp-success.visible { display: block; }
-    .dcanp-success__icon { width: 56px; height: 56px; background: var(--bp-blue-lt); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
-    .dcanp-success h2 { color: var(--bp-blue-lt); font-size: 22px; margin-bottom: 12px; }
-    .dcanp-success p { color: var(--bp-text); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
-    .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: var(--bp-blue-lt); font-weight: 700; }
-    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: var(--bp-blue-lt); color: #fff; font-weight: 700; font-size: 14px; border-radius: 8px; text-align: center; }
     .sticky-cta-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900; background: rgba(10,14,20,.97); border-top: 1px solid var(--bp-border); padding: 8px 16px; padding-bottom: max(8px,env(safe-area-inset-bottom)); }
-    @media (max-width: 700px) { .sticky-cta-bar { display: block; } body:has(#order-modal[style*="flex"]) .sticky-cta-bar { display: none; } }
+    @media (max-width: 700px) { .sticky-cta-bar { display: block; } body:has(#order-modal.active) .sticky-cta-bar { display: none; } }
     @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } }
     @media (max-width: 700px) { .hero-bp__inner { grid-template-columns: 1fr; gap: 18px; } .hero-bp__media { order: -1; max-width: 100%; } .hero-bp { padding: 10px 16px 20px; } }
   </style>
@@ -84,14 +76,14 @@
 
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <button type="button" class="nav__cta-btn" onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';">Pedilo aquí — Pagás al recibir</button>
+  <a class="nav__cta" data-open-modal href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Bast%C3%B3n%20Plegable%20con%20Luz%20LED.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">Pedilo aquí</a>
 </nav>
 
 <main>
 <section class="hero-bp" id="section-hero" data-insync-section="hero">
   <div class="hero-bp__inner">
     <div class="hero-bp__media">
-      <img src="/baston-plegable-luz-led/hero.webp" alt="Bastón Plegable con Luz LED" class="hero-bp__img" loading="eager" fetchpriority="high" decoding="async" width="800" height="800">
+      <img src="https://cdn.shopify.com/s/files/1/0658/1095/6454/files/WhatsAppImage2025-03-22at21.19.40_1.jpg?v=1742689339" alt="Bastón Plegable con Luz LED" class="hero-bp__img" loading="eager" fetchpriority="high" decoding="async" width="800" height="800">
     </div>
     <div>
       <p style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--bp-blue-lt);margin:0 0 10px;">Movilidad + seguridad nocturna</p>
@@ -112,9 +104,8 @@
         <div class="feature-item">⚖️ Solo 450g — aluminio aeronáutico</div>
         <div class="feature-item">📐 Altura ajustable 72–93 cm</div>
       </div>
-      <a class="btn-cta-bp" data-scroll-form data-insync-cta="hero"
-         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Bast%C3%B3n%20Plegable%20con%20Luz%20LED.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F"
-         onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';return false;">
+      <a class="btn-cta-bp" data-scroll-form data-open-modal data-insync-cta="hero"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Bast%C3%B3n%20Plegable%20con%20Luz%20LED.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
         Pedilo aquí — Pagás al recibir
       </a>
       <div class="delivery-badges">
@@ -149,9 +140,8 @@
     <div class="urgencia-badge"><span class="urgencia-dot"></span>Stock limitado</div>
     <h2 style="font-size:clamp(22px,4vw,34px);font-weight:800;color:#fff;margin:0 0 14px;">Seguridad para cada paso. Gs. 269.000.</h2>
     <p style="font-size:14px;color:var(--bp-muted);margin:0 0 28px;line-height:1.6;">Bastón Plegable con Luz LED — liviano, resistente y luminoso. Un regalo que cuida de verdad.</p>
-    <a class="btn-cta-bp" data-scroll-form data-insync-cta="urgencia"
-       href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Bast%C3%B3n%20Plegable%20con%20Luz%20LED.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F"
-       onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';return false;">
+    <a class="btn-cta-bp" data-scroll-form data-open-modal data-insync-cta="urgencia"
+       href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Bast%C3%B3n%20Plegable%20con%20Luz%20LED.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
       Pedilo aquí — Pagás al recibir
     </a>
     <div style="margin-top:18px;display:flex;flex-direction:column;gap:6px;align-items:center;">
@@ -162,47 +152,116 @@
   </div>
 </section>
 
-<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <p class="modal-urgency">⏳ Stock limitado</p>
-    <button class="modal-close" aria-label="Cerrar" onclick="document.getElementById('order-modal').style.display='none';document.body.style.overflow='';">✕</button>
-    <h2 class="modal-title">Ya casi es tuyo</h2>
-    <p class="modal-step">Bastón Plegable con Luz LED</p>
-    <p class="modal-subtitle">Completá tus datos para coordinar la entrega.</p>
+<!-- MODAL -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box" style="background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:16px;max-width:440px;width:100%;padding:28px 24px;max-height:90vh;overflow-y:auto;position:relative;">
+    <button class="modal-close" id="modal-close">✕</button>
+    <h2 id="modal-title" style="color:#1a1a1a;font-size:20px;font-weight:800;margin-bottom:4px;">Bastón Plegable con Luz LED</h2>
+    <p style="color:#64748b;font-size:13px;margin-bottom:18px;">Completá tus datos · Coordinamos tu entrega</p>
     <div id="modal-form-wrap">
-      <div class="modal-section">
-        <span class="modal-section-label">Elegí tu oferta</span>
-        <div class="offer-options">
-          <label class="offer-option selected"><input type="radio" name="offer" value="1" checked><div class="offer-content"><span class="offer-qty">1 unidad</span><span class="offer-price">Gs. 269.000</span></div></label>
-          <label class="offer-option"><input type="radio" name="offer" value="2"><div class="offer-content"><span class="offer-qty">2 unidades</span><div class="offer-prices"><span class="offer-compare">Gs. 538.000</span><span class="offer-price">Gs. 509.000</span></div></div><div class="offer-foot"><span class="offer-saving">Ahorrás Gs. 29.000</span><div class="offer-badge">🔥 Más elegido</div></div></label>
-          <label class="offer-option"><input type="radio" name="offer" value="3"><div class="offer-content"><span class="offer-qty">3 unidades</span><div class="offer-prices"><span class="offer-compare">Gs. 807.000</span><span class="offer-price">Gs. 729.000</span></div></div><div class="offer-foot"><span class="offer-saving">Ahorrás Gs. 78.000</span><div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div></div></label>
+      <label class="offer-option selected" style="position:relative;display:block;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:12px 14px;cursor:pointer;background:#f8f9fa;margin-bottom:8px;">
+        <input type="radio" name="offer" value="1" checked style="position:absolute;opacity:0;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span style="font-weight:700;font-size:14px;color:#1a1a1a;">1 unidad</span>
+          <span style="font-weight:800;font-size:15px;color:#1a1a1a;">Gs. 269.000</span>
         </div>
-      </div>
-      <p class="modal-price-warning">🔒 Tus datos se usan solo para coordinar tu entrega</p>
-      <form class="modal-form" id="modal-form" novalidate>
-        <div class="form-group"><label for="m-name">Nombre y apellido</label><input type="text" id="m-name" name="name" placeholder="Nombre y apellido" autocomplete="name" required></div>
-        <div class="form-group"><label for="m-phone">Teléfono <span style="color:#c0392b;font-size:11px;font-weight:600;">· Ingresá tu número completo</span></label><input type="tel" id="m-phone" name="phone" placeholder="Ej: 0984 832 688" autocomplete="tel" required><p id="m-phone-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p></div>
-        <div class="form-group"><label for="m-city">Ciudad</label><input type="text" id="m-city" name="city" placeholder="Ej: Asunción, Luque, Fernando de la Mora..." autocomplete="off" required></div>
-        <div class="form-group"><label for="m-calle">Calle principal y secundaria</label><input type="text" id="m-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200"></div>
-        <div class="form-group"><label for="m-nota">Nota <span style="font-weight:400">(opcional)</span></label><textarea id="m-nota" name="nota" rows="2" placeholder="Referencia, color de portón, etc."></textarea></div>
-        <label class="upsell-block" style="margin-top:4px"><input type="checkbox" id="m-express" name="express"><div class="upsell-content"><span class="upsell-title">🚀 Envío express +10.000 Gs</span><span class="upsell-sub">Recibí antes</span></div></label>
-        <label class="upsell-block" style="margin-top:2px"><input type="checkbox" id="m-invoice" name="invoice"><div class="upsell-content"><span class="upsell-title">🧾 Necesito factura</span><span class="upsell-sub">RUC o cédula</span></div></label>
-        <div id="m-invoice-fields" style="display:none;margin-top:6px">
-          <div class="form-group"><label for="m-invoice-ruc">RUC *</label><input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8"></div>
-          <div class="form-group" style="margin-top:6px"><label for="m-invoice-name">Razón social *</label><input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre o razón social"></div>
-          <div class="form-group" style="margin-top:6px"><label for="m-invoice-email">Email (opcional)</label><input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com"></div>
+      </label>
+      <label class="offer-option" style="position:relative;display:block;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:12px 14px;cursor:pointer;background:#f8f9fa;margin-bottom:8px;">
+        <input type="radio" name="offer" value="2" style="position:absolute;opacity:0;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span style="font-weight:700;font-size:14px;color:#1a1a1a;">2 unidades</span>
+          <div>
+            <span style="font-size:12px;text-decoration:line-through;color:#999;margin-right:6px;">Gs. 538.000</span>
+            <span style="font-weight:800;font-size:15px;color:#1a1a1a;">Gs. 509.000</span>
+          </div>
         </div>
-        <p id="m-total-line" style="margin-top:18px;font-size:13px;font-weight:700;color:var(--bp-blue-lt);"></p>
-        <div class="form-submit"><button type="submit" class="btn btn-primary" id="modal-submit-btn">Confirmar pedido</button></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+          <span style="color:#059669;font-weight:700;font-size:12px;">Ahorrás Gs. 29.000</span>
+          <div style="background:#ef4444;color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:20px;">🔥 Más elegido</div>
+        </div>
+      </label>
+      <label class="offer-option" style="position:relative;display:block;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:12px 14px;cursor:pointer;background:#f8f9fa;margin-bottom:8px;">
+        <input type="radio" name="offer" value="3" style="position:absolute;opacity:0;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span style="font-weight:700;font-size:14px;color:#1a1a1a;">3 unidades</span>
+          <div>
+            <span style="font-size:12px;text-decoration:line-through;color:#999;margin-right:6px;">Gs. 807.000</span>
+            <span style="font-weight:800;font-size:15px;color:#1a1a1a;">Gs. 729.000</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+          <span style="color:#059669;font-weight:700;font-size:12px;">Ahorrás Gs. 78.000</span>
+          <div style="background:#22c55e;color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:20px;">⭐ Mayor ahorro</div>
+        </div>
+      </label>
+
+      <form id="dcanp-form" novalidate>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-name">Nombre y apellido</label>
+          <input type="text" id="d-name" name="name" placeholder="Ej: Damián Riveros" autocomplete="name" required
+            style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-phone">Teléfono (WhatsApp) <span style="color:#ef4444;">· Ingresá tu número completo</span></label>
+          <input type="tel" id="d-phone" name="phone" placeholder="Ej: 0984 832 688" autocomplete="tel" required
+            style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+          <p id="d-phone-error" style="display:none;color:#ef4444;font-size:12px;font-weight:700;margin-top:4px;"></p>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-city">Ciudad <span style="color:#ef4444;font-size:11px;font-weight:600;">&middot; Solo el nombre de tu ciudad</span></label>
+          <input type="text" id="d-city" name="city" placeholder="Ej: Asunción, Lambaré, San Lorenzo..." autocomplete="off" required
+            style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:6px;" for="d-calle">Calle principal y secundaria</label>
+          <input type="text" id="d-calle" name="calle" placeholder="Ej: Av. España y Tacuary" maxlength="200" autocomplete="street-address"
+            style="width:100%;padding:11px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:14px;font-family:inherit;">
+        </div>
+
+        <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f8f9fa;border:1.5px solid rgba(0,0,0,.12);border-radius:10px;cursor:pointer;margin-bottom:10px;">
+          <input type="checkbox" id="d-express" name="express">
+          <div>
+            <span style="display:block;font-size:13px;font-weight:700;color:#1a1a1a;">🚀 Envío express +10.000 Gs</span>
+            <span style="font-size:12px;color:#64748b;">Recibí antes que los demás</span>
+          </div>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f8f9fa;border:1.5px solid rgba(0,0,0,.12);border-radius:10px;cursor:pointer;margin-bottom:10px;">
+          <input type="checkbox" id="d-invoice" name="invoice">
+          <div>
+            <span style="display:block;font-size:13px;font-weight:700;color:#1a1a1a;">🧾 Necesito factura</span>
+            <span style="font-size:12px;color:#64748b;">RUC o cédula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="d-invoice-fields" style="display:none;margin-top:6px;margin-bottom:14px;">
+          <input type="text" id="d-invoice-ruc" name="invoice_ruc" placeholder="RUC (ej: 1234567-8)"
+            style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:13px;font-family:inherit;margin-bottom:8px;">
+          <input type="text" id="d-invoice-name" name="invoice_name" placeholder="Razón social / Nombre"
+            style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:13px;font-family:inherit;margin-bottom:8px;">
+          <input type="email" id="d-invoice-email" name="invoice_email" placeholder="Email (opcional)"
+            style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1a1a1a;font-size:13px;font-family:inherit;">
+        </div>
+
+        <p id="d-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:#1a1a1a;"></p>
+        <div style="margin-top:12px;text-align:center;font-size:12px;font-weight:800;color:#16a34a;background:rgba(0,0,0,.05);border-radius:8px;padding:8px 12px;">💳 Pago al recibir</div>
+
+        <div style="margin-top:16px;">
+          <button type="submit" id="dcanp-submit-btn"
+            style="display:block;width:100%;padding:16px;background:#16a34a;color:#fff;font-weight:800;font-size:15px;border-radius:999px;border:none;cursor:pointer;">
+            Confirmar pedido<br><small style="font-size:12px;font-weight:700;opacity:.9;">✓ Envío gratis · Pagás al recibir</small>
+          </button>
+        </div>
       </form>
     </div>
-    <div class="dcanp-success" id="modal-success">
-      <div class="dcanp-success__icon">✓</div>
-      <h2>¡Tu pedido fue recibido!</h2>
-      <p>Gracias por confiar en nosotros. En breve te contactamos para coordinar la entrega.</p>
-      <p style="font-weight:600;">📱 Quedate atento a tu número.</p>
-      <div class="dcanp-success__badges"><span>✓ Envío gratis</span><span>✓ Pagás al recibir</span></div>
-      <a href="/" class="btn-ver-coleccion">Ver más productos →</a>
+
+    <div id="dcanp-success" style="display:none;text-align:center;padding:24px 0;">
+      <div style="width:56px;height:56px;background:#16a34a;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px;">✓</div>
+      <h2 style="color:#16a34a;font-size:22px;margin-bottom:12px;">¡Tu pedido fue recibido!</h2>
+      <p style="color:rgba(26,26,26,.7);font-size:15px;line-height:1.6;margin-bottom:8px;">Gracias por confiar en nosotros. En breve nos comunicamos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p style="font-weight:600;color:rgba(26,26,26,.7);font-size:14px;margin-bottom:16px;">📱 Quedate atento — te contactamos pronto.</p>
+      <div style="display:flex;gap:12px;justify-content:center;font-size:13px;color:#059669;font-weight:700;margin-bottom:20px;">
+        <span>✓ Envío gratis</span><span>✓ Pagás al recibir</span>
+      </div>
+      <a href="/" style="display:block;padding:12px 24px;background:#16a34a;color:#fff;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Ver más productos →</a>
     </div>
   </div>
 </div>
@@ -211,65 +270,126 @@
 <footer style="background:#090c12;border-top:1px solid var(--bp-border);color:var(--bp-muted);padding:20px;text-align:center;font-size:13px;">&copy; Dam Vertex</footer>
 
 <div class="sticky-cta-bar">
-  <button type="button" class="btn btn-primary" style="width:100%;margin:0;border-radius:999px;background:#ef4444;color:#fff;font-weight:900;font-size:clamp(10px,3.2vw,15px);white-space:nowrap;padding:12px 10px;border:2px solid rgba(0,0,0,.1);" onclick="document.getElementById('order-modal').style.display='flex';document.body.style.overflow='hidden';">Pedilo aquí — Pagás al recibir</button>
+  <a data-open-modal href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Bast%C3%B3n%20Plegable%20con%20Luz%20LED.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F" style="display:block;width:100%;text-align:center;padding:12px 10px;background:#ef4444;color:#fff;font-weight:900;font-size:clamp(10px,3.2vw,15px);white-space:nowrap;border-radius:999px;border:2px solid rgba(0,0,0,.15);text-decoration:none;">Pedilo aquí — Pagás al recibir</a>
 </div>
 
 <script src="/assets/js/tracking.js?v=74" defer></script>
+<script src="/assets/js/dcanp-cities.js?v=1" defer></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
 <script defer>
-const PRODUCT = { name: 'Bastón Plegable con Luz LED', slug: 'baston-plegable-luz-led', price: 269000, comboPricing: { 1: 269000, 2: 509000, 3: 729000 } };
+const PRODUCT = {
+  name: "Bastón Plegable con Luz LED",
+  slug: 'baston-plegable-luz-led',
+  price: 269000,
+  comboPricing: { 1: 269000, 2: 509000, 3: 729000 },
+  sheets_title: "BASTON PLEGABLE LUZ LED",
+};
 document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => { try { DV.trackViewContent(PRODUCT); } catch (_) {} }, 800);
-  var _icFired = false;
-  (function() {
-    var _m = document.getElementById('order-modal');
-    if (_m) new MutationObserver(function() {
-      if (_m.style.display === 'flex') {
-        try { DV.trackAddToCart(PRODUCT); } catch (_) {}
-        if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }, 1500); }
-      }
-    }).observe(_m, { attributes: true, attributeFilter: ['style'] });
-  })();
-  var form = document.getElementById('modal-form');
-  var formWrap = document.getElementById('modal-form-wrap');
-  var successBox = document.getElementById('modal-success');
-  var submitBtn = document.getElementById('modal-submit-btn');
-  if (!form) return;
-  var invoiceChk = document.getElementById('m-invoice');
-  if (invoiceChk) invoiceChk.addEventListener('change', function() { document.getElementById('m-invoice-fields').style.display = this.checked ? 'block' : 'none'; });
-  var mPhone = document.getElementById('m-phone');
-  if (mPhone && !mPhone.value) mPhone.value = '09';
-  if (mPhone) mPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    var qty = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
-    var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
-    var express = document.getElementById('m-express') && document.getElementById('m-express').checked;
-    var invoice = document.getElementById('m-invoice') && document.getElementById('m-invoice').checked;
-    var value = base + (express ? 10000 : 0);
-    var data = {
-      name: (document.getElementById('m-name').value || '').trim(),
-      phone: (document.getElementById('m-phone').value || '').replace(/\s/g, ''),
-      city: (document.getElementById('m-city').value || '').trim(),
-      street: (document.getElementById('m-calle').value || '').trim(),
-      nota: (document.getElementById('m-nota').value || '').trim(),
-      quantity: qty, product_slug: PRODUCT.slug, product_name: PRODUCT.name,
-      value: value, express: express, invoice: invoice,
-      invoice_ruc: invoice ? (document.getElementById('m-invoice-ruc').value || '').trim() : '',
-      invoice_name: invoice ? (document.getElementById('m-invoice-name').value || '').trim() : '',
-      invoice_email: invoice ? (document.getElementById('m-invoice-email').value || '').trim() : '',
-    };
-    if (!data.name || !data.phone || !data.city) { alert('Completá nombre, teléfono y ciudad.'); return; }
-    if (data.phone.replace(/\D/g, '').length < 9) {
-      if (mPhone) { mPhone.style.borderColor = '#c0392b'; mPhone.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-      var pe = document.getElementById('m-phone-error'); if (pe) { pe.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; pe.style.display = 'block'; } return;
+  setTimeout(() => { try { DV.trackViewContent(PRODUCT); } catch(_) {} }, 800);
+  const modal      = document.getElementById('order-modal');
+  const openBtns   = document.querySelectorAll('[data-open-modal]');
+  const closeBtn   = document.getElementById('modal-close');
+  const form       = document.getElementById('dcanp-form');
+  const formWrap   = document.getElementById('modal-form-wrap');
+  const successBox = document.getElementById('dcanp-success');
+  const submitBtn  = document.getElementById('dcanp-submit-btn');
+  const offerInps  = document.querySelectorAll('input[name="offer"]');
+  let _icFired = false;
+  function openModal() {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    try { DV.trackAddToCart(PRODUCT); } catch(_) {}
+    if (!_icFired) {
+      _icFired = true;
+      setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500);
     }
-    try { var client = typeof getClientData === 'function' ? getClientData() : {}; data.fbp = client.fbp || null; data.fbc = client.fbc || null; } catch (_) {}
-    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando...'; }
-    try { await fetch('/api/dcanp-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch (_) {}
-    if (formWrap) formWrap.style.display = 'none';
-    if (successBox) successBox.classList.add('visible');
-    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Confirmar pedido'; }
+  }
+  function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+  openBtns.forEach(btn => btn && btn.addEventListener('click', e => { e.preventDefault(); openModal(); }));
+  closeBtn && closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  offerInps.forEach(inp => {
+    inp.addEventListener('change', () => {
+      document.querySelectorAll('.offer-option').forEach(o => o.classList.remove('selected'));
+      inp.closest('.offer-option').classList.add('selected');
+      updateTotal();
+    });
+  });
+  const invoiceChk    = document.getElementById('d-invoice');
+  const invoiceFields = document.getElementById('d-invoice-fields');
+  const totalLine     = document.getElementById('d-total-line');
+  if (invoiceChk && invoiceFields) {
+    invoiceChk.addEventListener('change', function() {
+      invoiceFields.style.display = this.checked ? 'block' : 'none';
+    });
+  }
+  function updateTotal() {
+    if (!totalLine) return;
+    const qty  = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+    const base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    const isExp = document.getElementById('d-express')?.checked;
+    const tot = base + (isExp ? 10000 : 0);
+    totalLine.textContent = isExp ? 'Total: Gs. ' + tot.toLocaleString('es-PY') + ' (incluye express)' : '';
+  }
+  const expChk = document.getElementById('d-express');
+  if (expChk) expChk.addEventListener('change', updateTotal);
+  const dPhone = document.getElementById('d-phone');
+  if (dPhone) {
+    dPhone.addEventListener('focus', function() { const l=this.value.length; this.setSelectionRange(l,l); });
+    dPhone.addEventListener('input', function() {
+      this.style.borderColor='';
+      const e=document.getElementById('d-phone-error');
+      if(e){e.textContent='';e.style.display='none';}
+    });
+  }
+  form && form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const qty    = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+    const base   = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    const express = document.getElementById('d-express')?.checked || false;
+    const invoice = document.getElementById('d-invoice')?.checked || false;
+    const value   = base + (express ? 10000 : 0);
+    const data = {
+      name:          document.getElementById('d-name').value.trim(),
+      phone:         document.getElementById('d-phone').value.replace(/\s/g,''),
+      city:          document.getElementById('d-city').value.trim(),
+      street:        document.getElementById('d-calle').value.trim(),
+      quantity:      qty,
+      product_slug:  PRODUCT.slug,
+      product_name:  PRODUCT.sheets_title,
+      value,
+      express,
+      invoice,
+      invoice_ruc:   invoice ? (document.getElementById('d-invoice-ruc')?.value||'').trim() : '',
+      invoice_name:  invoice ? (document.getElementById('d-invoice-name')?.value||'').trim() : '',
+      invoice_email: invoice ? (document.getElementById('d-invoice-email')?.value||'').trim() : '',
+    };
+    if (!data.name || !data.phone || !data.city) {
+      alert('Completá nombre, teléfono y ciudad para continuar.');
+      return;
+    }
+    const soloN = data.phone.replace(/\D/g,'');
+    if (soloN.length < 9) {
+      if (dPhone) { dPhone.style.borderColor='#ef4444'; dPhone.scrollIntoView({behavior:'smooth',block:'center'}); }
+      const err = document.getElementById('d-phone-error');
+      if (err) { err.textContent='Ingresá tu número completo (ej: 0984 832 688)'; err.style.display='block'; }
+      return;
+    }
+    try {
+      const client = typeof getClientData === 'function' ? getClientData() : {};
+      data.fbp = client.fbp || null;
+      data.fbc = client.fbc || null;
+    } catch(_) {}
+    submitBtn.disabled = true; submitBtn.textContent = 'Enviando...';
+    try {
+      const res = await fetch('/api/dcanp-lead', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data),
+      });
+      await res.json().catch(()=>({}));
+    } catch(err) { console.error('DCANP_SUBMIT_ERROR', err?.message); }
+    formWrap.style.display = 'none';
+    successBox.style.display = 'block';
+    submitBtn.disabled = false; submitBtn.textContent = 'Confirmar pedido';
   });
 });
 </script>
