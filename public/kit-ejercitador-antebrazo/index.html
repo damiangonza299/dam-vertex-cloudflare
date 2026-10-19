@@ -65,7 +65,7 @@
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; border-radius: 10px; border: none; cursor: pointer; transition: opacity .2s, transform .1s; text-align: center; }
     .btn:hover { opacity: .9; transform: translateY(-1px); }
     .btn:active { transform: translateY(0); opacity: 1; }
-    .btn-primary { background: var(--dep-primary); color: #fff; font-size: 16px; padding: 16px 32px; width: 100%; max-width: 400px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+    .btn-primary { background: var(--dep-primary); color: #fff; font-size: 16px; padding: 12px 24px; width: 100%; max-width: 400px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
 
     /* Benefits section */
     .benefits { padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px); }
@@ -122,8 +122,8 @@
     .offer-compare { font-size: 12px; text-decoration: line-through; color: #94a3b8; margin-right: 6px; }
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
     .offer-saving { color: #16a34a; font-weight: 700; font-size: 12px; }
-    .offer-badge { background: #ef4444; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
-    .offer-badge--best { background: #22c55e; }
+    .offer-option .offer-badge { position: static; background: #ef4444; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .offer-option .offer-badge--best { background: #22c55e; }
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 12px; font-weight: 700; color: #5B6066; margin-bottom: 6px; }
     .form-group input, .form-group textarea { width: 100%; padding: 11px 12px; border: 1px solid #D4D7DB; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; background: #FAFAF8; color: #16181A; }
@@ -288,8 +288,8 @@
 <div id="order-modal" role="dialog" aria-modal="true">
   <div class="modal-box">
     <button class="modal-close-btn" id="modal-close" aria-label="Cerrar">✕</button>
-    <h3 class="modal-title">Completá tu pedido</h3>
-    <p class="modal-sub">Envío gratis · Pago al recibir</p>
+    <h3 class="modal-title" style="text-align:center">Kit Ejercitador de Antebrazo</h3>
+    <p class="modal-sub" style="text-align:center;font-size:11px;font-weight:700;color:#dc2626;">⚡ Quedan pocas unidades — pedidos se procesan hoy</p>
 
     <div id="modal-form-wrap">
       <form id="modal-form" novalidate>
@@ -453,7 +453,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   var mPhone = document.getElementById('m-phone');
-  if (mPhone && !mPhone.value) mPhone.value = '09';
 
   var form = document.getElementById('modal-form');
   var formWrap = document.getElementById('modal-form-wrap');

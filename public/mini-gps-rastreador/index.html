@@ -24,7 +24,7 @@
     .price-badge { font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green); border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px; }
 
     :root {
-      --dep-primary: #0c5fa0;
+      --dep-primary: #2563eb;
       --dep-primary-dk: #083d6b;
       --dep-accent: #38bdf8;
       --dep-bg: #040c18;
@@ -49,13 +49,14 @@
     .hero__title em { font-style: normal; color: var(--dep-accent); }
     .hero__desc { font-size: 16px; line-height: 1.6; opacity: .8; }
     .price-savings-top { font-size: 13px; font-weight: 700; color: var(--green); margin-bottom: 2px; }
-    .price-main { color: var(--dep-accent) !important; }
+    .price-main { color: #fff !important; }
+    .price-compare { color: rgba(255,255,255,.45) !important; }
     .trust-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
     .trust-row span { font-size: 12px; font-weight: 700; background: rgba(56,189,248,.1); border: 1px solid rgba(56,189,248,.25); border-radius: 20px; padding: 5px 12px; color: #38bdf8; }
 
     /* Layout specific */
     
-    .hero--colored { background: var(--dep-primary); }
+    .hero--colored { background: #0F172A; }
     .hero__bg-wrap { display: grid; grid-template-columns: 1fr 1fr; align-items: center; min-height: 90vh; }
     .hero__img-float { padding: 24px; }
     .hero__img-float .hero__img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.4); }
@@ -66,7 +67,7 @@
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; border-radius: 10px; border: none; cursor: pointer; transition: opacity .2s, transform .1s; text-align: center; }
     .btn:hover { opacity: .9; transform: translateY(-1px); }
     .btn:active { transform: translateY(0); opacity: 1; }
-    .btn-primary { background: var(--dep-primary); color: #fff; font-size: 16px; padding: 16px 32px; width: 100%; max-width: 400px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+    .btn-primary { background: #2563eb; color: #fff; font-size: 16px; padding: 12px 24px; width: 100%; max-width: 400px; box-shadow: 0 4px 14px rgba(37,99,235,.35); }
 
     /* Benefits section */
     .benefits { padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px); }
@@ -115,16 +116,16 @@
     .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
     .offer-option { position: relative; display: block; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; cursor: pointer; }
     .offer-option input { position: absolute; opacity: 0; pointer-events: none; }
-    .offer-option.selected { border: 2px solid var(--dep-primary); background: #fff; box-shadow: 0 0 0 3px rgba(12,95,160,.12); }
-    .dep-pay-badge { margin-top: 14px; text-align: center; font-size: 12px; font-weight: 800; color: var(--dep-primary); background: rgba(12,95,160,.07); border-radius: 8px; padding: 8px 12px; }
+    .offer-option.selected { border: 2px solid var(--dep-primary); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    .dep-pay-badge { margin-top: 14px; text-align: center; font-size: 12px; font-weight: 800; color: var(--dep-primary); background: rgba(37,99,235,.07); border-radius: 8px; padding: 8px 12px; }
     .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
     .offer-qty { font-weight: 700; font-size: 14px; color: #0f172a; }
     .offer-price { font-weight: 800; font-size: 15px; color: #0f172a; }
     .offer-compare { font-size: 12px; text-decoration: line-through; color: #94a3b8; margin-right: 6px; }
     .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
     .offer-saving { color: #16a34a; font-weight: 700; font-size: 12px; }
-    .offer-badge { background: #ef4444; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
-    .offer-badge--best { background: #22c55e; }
+    .offer-option .offer-badge { position: static; background: #ef4444; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .offer-option .offer-badge--best { background: #22c55e; }
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 12px; font-weight: 700; color: #5B6066; margin-bottom: 6px; }
     .form-group input, .form-group textarea { width: 100%; padding: 11px 12px; border: 1px solid #D4D7DB; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; background: #FAFAF8; color: #16181A; }
@@ -289,8 +290,8 @@
 <div id="order-modal" role="dialog" aria-modal="true">
   <div class="modal-box">
     <button class="modal-close-btn" id="modal-close" aria-label="Cerrar">✕</button>
-    <h3 class="modal-title">Completá tu pedido</h3>
-    <p class="modal-sub">Envío gratis · Pago al recibir</p>
+    <h3 class="modal-title" style="text-align:center">Mini GPS Rastreador</h3>
+    <p class="modal-sub" style="text-align:center;font-size:11px;font-weight:700;color:#0c5fa0;">⚡ Quedan pocas unidades — pedidos se procesan hoy</p>
 
     <div id="modal-form-wrap">
       <form id="modal-form" novalidate>
@@ -454,7 +455,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   var mPhone = document.getElementById('m-phone');
-  if (mPhone && !mPhone.value) mPhone.value = '09';
 
   var form = document.getElementById('modal-form');
   var formWrap = document.getElementById('modal-form-wrap');
