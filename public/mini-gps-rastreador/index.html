@@ -51,16 +51,16 @@
     .price-savings-top { font-size: 13px; font-weight: 700; color: var(--green); margin-bottom: 2px; }
     .price-main { color: #fff !important; }
     .price-compare { color: rgba(255,255,255,.45) !important; }
-    .trust-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .trust-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
     .trust-row span { font-size: 12px; font-weight: 700; background: rgba(56,189,248,.1); border: 1px solid rgba(56,189,248,.25); border-radius: 20px; padding: 5px 12px; color: #38bdf8; }
 
     /* Layout specific */
     
     .hero--colored { background: #0F172A; }
     .hero__bg-wrap { display: grid; grid-template-columns: 1fr 1fr; align-items: center; min-height: 90vh; }
-    .hero__img-float { padding: 24px; }
-    .hero__img-float .hero__img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.4); }
-    .hero__copy--light { padding: clamp(32px,5vw,64px); color: #fff; display: flex; flex-direction: column; gap: 16px; }
+    .hero__img-float { padding: 24px; aspect-ratio: 1/1; overflow: hidden; }
+    .hero__img-float .hero__img { width: 100%; height: 100%; object-fit: contain; border-radius: 16px; background: #0F172A; }
+    .hero__copy--light { padding: clamp(32px,5vw,64px); color: #fff; display: flex; flex-direction: column; gap: 8px; }
     @media (max-width: 768px) { .hero__bg-wrap { grid-template-columns: 1fr; } }
 
     /* Btn */
