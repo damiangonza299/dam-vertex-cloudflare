@@ -56,8 +56,8 @@
     /* Layout specific */
     
     .hero--center { text-align: center; max-width: 720px; margin: 0 auto; padding: 0 16px 60px; }
-    .hero--center .hero__img-wrap { max-width: 480px; margin: 0 auto 32px; border-radius: 16px; overflow: hidden; aspect-ratio: 1/1; background: #000; }
-    .hero--center .hero__img { width: 100%; aspect-ratio: 1/1; object-fit: contain; }
+    .ltz-img-wrap { width: min(90vw,440px); aspect-ratio: 1/1; margin: 0 auto 28px; border-radius: 16px; overflow: hidden; }
+    .ltz-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .hero__copy--center { display: flex; flex-direction: column; gap: 8px; align-items: center; }
     .price-block--center { justify-content: center; }
     .trust-row--center { justify-content: center; }
@@ -157,8 +157,8 @@
 
 
 <section id="section-hero" data-insync-section="hero" class="hero hero--center">
-  <div class="hero__img-wrap">
-    <img src="/linterna-potente-zoom/hero-linterna.webp" alt="Linterna Táctica con Zoom Potente" class="hero__img" width="1080" height="1080" loading="eager" fetchpriority="high" decoding="async">
+  <div class="ltz-img-wrap">
+    <img src="/linterna-potente-zoom/hero-linterna.webp" alt="Linterna Táctica con Zoom Potente" width="1080" height="1080" loading="eager" fetchpriority="high" decoding="async">
   </div>
   <div class="hero__copy hero__copy--center">
     <p class="hero__eyebrow">LINTERNA POTENTE CON ZOOM</p>
