@@ -18,7 +18,7 @@
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
     img { max-width: 100%; display: block; }
     a { text-decoration: none; color: inherit; }
-    :root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    :root { --accent: #16a34a; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
     .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(0,0,0,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
     .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
     .nav__logo span { opacity: .45; }
@@ -87,17 +87,18 @@
     .modal-title { font-size: clamp(14px,4vw,18px); font-weight: 700; color: #16181A; margin: 0 0 4px; }
     .modal-section-label { display: block; font-size: 11px; font-weight: 700; color: #5B6066; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
     .offer-cards { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
-    .offer-card { position: relative; display: block; border: 1.5px solid #D4D7DB; border-radius: 10px; padding: 12px 14px; padding-top: 20px; cursor: pointer; background: #FAFAF8; }
+    .offer-card { position: relative; display: block; border: 1.5px solid #D4D7DB; border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #FAFAF8; }
     .offer-card input { position: absolute; opacity: 0; }
     .offer-card.selected { border: 2px solid var(--mep-primary); background: rgba(22,163,74,.06); }
-    .offer-badge-top { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px; color: #fff; white-space: nowrap; }
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .offer-badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; color: #fff; white-space: nowrap; }
     .offer-badge-red { background: #ef4444; }
     .offer-badge-green { background: #22c55e; }
     .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
     .offer-qty { font-size: 14px; font-weight: 700; color: #16181A; }
     .offer-price { font-size: 15px; font-weight: 800; color: #16181A; }
     .offer-compare { font-size: 12px; text-decoration: line-through; color: #9AA0A6; margin-right: 6px; }
-    .offer-saving { font-size: 12px; font-weight: 700; color: #16a34a; margin-top: 4px; }
+    .offer-saving { font-size: 12px; font-weight: 700; color: #16a34a; }
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 12px; font-weight: 700; color: #5B6066; margin-bottom: 6px; }
     .form-group input { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #D4D7DB; background: #FAFAF8; color: #16181A; font-size: 14px; font-family: inherit; outline: none; }
@@ -264,16 +265,14 @@
           <div class="offer-content"><span class="offer-qty">1 unidad</span><span class="offer-price">Gs. 259.000</span></div>
         </label>
         <label class="offer-card">
-          <span class="offer-badge-top offer-badge-red">🔥 Más elegido</span>
           <input type="radio" name="offer" value="2">
           <div class="offer-content"><span class="offer-qty">2 unidades</span><div><span class="offer-compare">Gs. 518.000</span><span class="offer-price">Gs. 489.000</span></div></div>
-          <div class="offer-saving">Ahorrás Gs. 29.000</div>
+          <div class="offer-foot"><span class="offer-saving">Ahorrás Gs. 29.000</span><span class="offer-badge offer-badge-red">Más elegido</span></div>
         </label>
         <label class="offer-card">
-          <span class="offer-badge-top offer-badge-green">⭐ Mayor ahorro</span>
           <input type="radio" name="offer" value="3">
           <div class="offer-content"><span class="offer-qty">3 unidades</span><div><span class="offer-compare">Gs. 777.000</span><span class="offer-price">Gs. 699.000</span></div></div>
-          <div class="offer-saving">Ahorrás Gs. 78.000</div>
+          <div class="offer-foot"><span class="offer-saving">Ahorrás Gs. 78.000</span><span class="offer-badge offer-badge-green">Mayor ahorro</span></div>
         </label>
       </div>
       <form id="modal-form" novalidate>
@@ -282,6 +281,7 @@
         <div class="form-group"><label for="m-city">Ciudad</label><input type="text" id="m-city" name="city" placeholder="Ej: Asunción, Fernando de la Mora..." autocomplete="off" list="cities-list" required><datalist id="cities-list"></datalist></div>
         <div class="form-group"><label for="m-street">Dirección de entrega</label><input type="text" id="m-street" name="street" placeholder="Calle principal y secundaria" autocomplete="street-address"></div>
         <label class="upsell-block"><input type="checkbox" id="m-express" name="express"><div><span class="upsell-title">🚀 Envío express +Gs. 10.000</span><br><span class="upsell-sub">Recibí antes que los demás</span></div></label>
+        <p id="m-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none;margin:0 0 8px;text-align:center"></p>
         <label class="upsell-block"><input type="checkbox" id="m-invoice" name="invoice"><div><span class="upsell-title">🧾 Necesito factura</span><br><span class="upsell-sub">RUC o cédula para comprobante fiscal</span></div></label>
         <div id="m-invoice-fields" style="display:none;margin-top:6px">
           <div class="form-group"><label for="m-ruc">RUC</label><input type="text" id="m-ruc" name="ruc" placeholder="Ej: 1234567-8"></div>
@@ -337,6 +337,20 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   var invChk = document.getElementById('m-invoice'); var invFields = document.getElementById('m-invoice-fields');
   if (invChk && invFields) invChk.addEventListener('change', function() { invFields.style.display = this.checked ? 'block' : 'none'; });
+  function updateTotal() {
+    var tl = document.getElementById('m-total-line');
+    if (!tl) return;
+    var sel = document.querySelector('input[name="offer"]:checked');
+    var qty = sel ? parseInt(sel.value) : 1;
+    var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    var isExp = document.getElementById('m-express') && document.getElementById('m-express').checked;
+    var total = base + (isExp ? 10000 : 0);
+    tl.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    tl.style.display = isExp ? 'block' : 'none';
+  }
+  var expChk = document.getElementById('m-express');
+  if (expChk) expChk.addEventListener('change', updateTotal);
+  document.querySelectorAll('input[name="offer"]').forEach(function(r) { r.addEventListener('change', updateTotal); });
   if (form) form.addEventListener('submit', async function(e) {
     e.preventDefault();
     var qty = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
