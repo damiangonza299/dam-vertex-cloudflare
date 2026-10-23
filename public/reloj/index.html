@@ -57,13 +57,18 @@
       white-space: nowrap;
     }
     .riv-urgency-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--riv-esmeralda-vivo); flex-shrink: 0; display: inline-block;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #ef4444; flex-shrink: 0; display: inline-block;
+      box-shadow: 0 0 0 0 rgba(239,68,68,0.6);
     }
     @media (prefers-reduced-motion: no-preference) {
-      .riv-urgency-dot { animation: riv-pulse 1.5s ease-in-out infinite; }
+      .riv-urgency-dot { animation: riv-lote-pulse 2.2s ease-in-out infinite; }
     }
-    @keyframes riv-pulse { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+    @keyframes riv-lote-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(239,68,68,0.75); opacity: 1; }
+      50%  { box-shadow: 0 0 0 8px rgba(239,68,68,0); opacity: 0.55; }
+      100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); opacity: 1; }
+    }
     .riv .nav {
       position: relative;
       background: #FFFFFF;
@@ -287,7 +292,7 @@
 </head>
 <body class="riv">
 
-<div class="riv-urgency-bar">Lote limitado: quedan <span data-stock>20</span> de 100 &middot; Env&#xED;o gratis</div>
+<div class="riv-urgency-bar"><span class="riv-urgency-dot"></span>Lote limitado: quedan <span data-stock>10</span> de 100 &middot; Env&#xED;o gratis</div>
 
 
 <main>
@@ -329,7 +334,7 @@
 
     <div class="riv-gift-grid" style="margin-top:20px">
       <div class="riv-gift-block">
-        <span>&#x2B1B;</span><strong>100% negro mate</strong> Dise&#xF1;o sin concesiones
+        <span>&#x2B1B;</span><strong>100% negro</strong> Dise&#xF1;o sin concesiones
       </div>
       <div class="riv-gift-block">
         <span>&#x1F381;</span><strong>Cajita de cuero</strong> de regalo con tu pedido
@@ -398,7 +403,7 @@
 
     <p class="riv-value-total">Valor total: <strong style="color:#FFFFFF">Gs. 354.000</strong></p>
     <p class="riv-value-hoy">Hoy pag&#xE1;s <span>Gs. 189.000</span>, al recibir.</p>
-    <p class="riv-value-nota">Llevando 2 ahorr&#xE1;s Gs. 49.000 m&#xE1;s &mdash; uno para vos, uno para regalar.</p>
+    <p class="riv-value-nota">Llevando 2 ahorr&#xE1;s Gs. 19.000 m&#xE1;s &mdash; uno para vos, uno para regalar.</p>
 
     <div class="riv-cta-wrap">
       <a class="riv-btn" data-open-modal data-insync-cta="entrega"
@@ -507,11 +512,11 @@
             <span class="offer-qty">2 unidades</span>
             <div>
               <span class="offer-compare">Gs. 378.000</span>
-              <span class="offer-price">Gs. 329.000</span>
+              <span class="offer-price">Gs. 359.000</span>
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving" style="color:#16a34a">Ahorr&#xE1;s Gs. 49.000</span>
+            <span class="offer-saving" style="color:#16a34a">Ahorr&#xE1;s Gs. 19.000</span>
             <div class="offer-badge" style="background:#dc2626;color:#fff">M&#xE1;s elegido</div>
           </div>
         </label>
@@ -521,11 +526,11 @@
             <span class="offer-qty">3 unidades</span>
             <div>
               <span class="offer-compare">Gs. 567.000</span>
-              <span class="offer-price">Gs. 469.000</span>
+              <span class="offer-price">Gs. 510.000</span>
             </div>
           </div>
           <div class="offer-foot">
-            <span class="offer-saving" style="color:#16a34a">Ahorr&#xE1;s Gs. 98.000</span>
+            <span class="offer-saving" style="color:#16a34a">Ahorr&#xE1;s Gs. 57.000</span>
             <div class="offer-badge" style="background:#16a34a;color:#fff">Mayor ahorro</div>
           </div>
         </label>
@@ -641,7 +646,7 @@ var PRODUCT = {
   name: 'Reloj Blackout Minimal',
   slug: 'reloj',
   price: 189000,
-  comboPricing: { 1: 189000, 2: 329000, 3: 469000 },
+  comboPricing: { 1: 189000, 2: 359000, 3: 510000 },
 };
 var STOCK_RESTANTE = 20;
 
@@ -781,5 +786,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script src="/assets/js/protect.js?v=68" defer></script>
+<script src="/assets/js/city-check.js?v=1"></script>
 </body>
 </html>
