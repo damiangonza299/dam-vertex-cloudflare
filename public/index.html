@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -31,9 +31,10 @@
     .product-card { background: #111; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .product-card__img { width: 100%; height: auto; aspect-ratio: 4/5; object-fit: cover; object-position: center top; background: #1a1a1a; }
     .product-card__body { padding: 18px; }
-    .product-card__name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 7px; line-height: 1.3; }
+    .product-card__name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 7px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .product-card__price { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   </style>
-  <script>window.DAM_VERTEX_VERSION = "70";</script>
+  <script>window.DAM_VERTEX_VERSION = "71";</script>
   <script>
     (function() {
       var l = document.createElement('link');
@@ -51,7 +52,9 @@
        compartido para no afectar otras páginas/landings que usan las mismas clases). */
     :root { --accent: #1d4ed8; }
     .nav__logo span { opacity: .65; }
-    .products-section-label span,
+    .products-section-label { text-align: center; padding: 0 clamp(20px, 5vw, 48px); margin-bottom: 20px; }
+    .products-section-label .label-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+    .products-section-label .label-badge .badge-icon { font-size: 1em; opacity: .7; }
     .why-section__eyebrow,
     .how-section__eyebrow,
     .contact-section__eyebrow,
@@ -64,24 +67,30 @@
        acá se usa como color de TEXTO sobre fondo negro — necesita ser claro, no oscuro. */
     .why-col--dv .why-col__title { color: #60a5fa; }
     .product-card img { aspect-ratio: 1/1; object-fit: cover; object-position: center; border-radius: 12px 12px 0 0; }
+    /* ── Colecciones ── */
+    .collection-section { margin-bottom: clamp(28px, 5vw, 56px); }
+    .collection-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 0 clamp(20px, 5vw, 48px); margin-bottom: 12px; }
+    .collection-title { font-size: clamp(15px, 2.5vw, 19px); font-weight: 700; color: #fff; }
+    .collection-expand-btn { background: none; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.7); font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 6px; cursor: pointer; white-space: nowrap; transition: border-color .15s, color .15s; }
+    .collection-expand-btn:hover { border-color: rgba(255,255,255,.4); color: #fff; }
+    #collections-container { margin-top: clamp(28px, 5vw, 48px); }
+    @keyframes card-highlight { 0% { box-shadow: 0 0 0 3px #ef4444; background: rgba(239,68,68,.28); } 60% { box-shadow: 0 0 0 2px rgba(239,68,68,.4); background: rgba(239,68,68,.1); } 100% { box-shadow: none; background: #111; } }
+    .card-new { animation: card-highlight 2s ease forwards; }
   </style>
 </head>
 <body>
 
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" href="/productos/">Ver productos</a>
+
 </nav>
 
 <main>
 
 <!-- ── BLOQUE 1: Hero ── -->
 <section class="home-hero">
-  <p class="hero-eyebrow">Accesorios premium · Paraguay</p>
+  <p class="hero-eyebrow">Entrega en el día · Paraguay</p>
   <h1>Elegís hoy.<br>Recibís hoy.</h1>
-  <button onclick="document.getElementById('products-grid').scrollIntoView({behavior:'smooth'})" class="btn btn-primary" style="margin:0 auto;display:inline-flex;width:auto;font-size:16px;cursor:pointer;border:none">
-    Ver productos ↓
-  </button>
   <div class="trust-strip">
     <span class="trust-pill trust-pill--blue">🚚 Entrega en el día</span>
     <span class="trust-pill trust-pill--grey">💳 Pago al recibir</span>
@@ -91,43 +100,27 @@
 
 </section>
 
-<!-- ── BLOQUE 2: Productos ── -->
+<!-- ── BLOQUE 2: Top 6 ── -->
 <div class="products-section-label">
-  <span>Nuestros productos</span>
+  <span class="label-badge"><span class="badge-icon">⭐</span> Más Destacados</span>
 </div>
-
-<!-- Products grid — renderizado dinámico -->
-<div class="products-grid" id="products-grid">
+<!-- Top 6 grid — renderizado dinámico -->
+<div class="products-grid" id="top6-grid">
   <!-- Fallback estático (reemplazado por JS si el API responde) -->
   <a href="/reloj/" class="product-card" style="display:block;color:inherit">
     <img src="/assets/img/reloj-black-caracteristicas.webp" srcset="/assets/img/reloj-black-caracteristicas-400w.webp 400w, /assets/img/reloj-black-caracteristicas.webp 800w" sizes="(max-width: 600px) 185px, 360px" alt="Reloj Blackout Minimal" class="product-card__img" width="1024" height="1118" loading="lazy">
     <div class="product-card__body">
       <div class="product-card__badge">Envío gratis · entrega en el día</div>
       <div class="product-card__name">Reloj Blackout Minimal</div>
-      <div class="product-card__price">Gs. 189.000 <small>Gs. 250.000</small></div>
+      <div class="product-card__price">Gs. 159.000 <small>Gs. 250.000</small></div>
       <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:-7px;margin-bottom:9px">6 modelos disponibles</div>
       <span class="product-card__btn">Ver colección →</span>
     </div>
   </a>
-  <a href="/cadena/" class="product-card" style="display:block;color:inherit">
-    <img src="/assets/img/cadena-hero.webp" srcset="/assets/img/cadena-hero-400w.webp 400w, /assets/img/cadena-hero.webp 800w" sizes="(max-width: 600px) 185px, 360px" alt="Cadena Apex" class="product-card__img" width="700" height="875" loading="lazy">
-    <div class="product-card__body">
-      <div class="product-card__badge">Envío gratis · entrega en el día</div>
-      <div class="product-card__name">Cadena Apex</div>
-      <div class="product-card__price">Gs. 129.000 <small>Gs. 169.000</small></div>
-      <span class="product-card__btn">Ver producto →</span>
-    </div>
-  </a>
-  <a href="/lentes/" class="product-card" style="display:block;color:inherit">
-    <img src="/assets/img/lentes-card.webp" srcset="/assets/img/lentes-card-400w.webp 400w, /assets/img/lentes-card.webp 800w" sizes="(max-width: 600px) 185px, 360px" alt="Lentes Anti Luz Azul Rojos" class="product-card__img" style="object-position:right center" width="600" height="900" loading="lazy">
-    <div class="product-card__body">
-      <div class="product-card__badge">Envío gratis · entrega en el día</div>
-      <div class="product-card__name">Lentes Anti Luz Azul Rojos</div>
-      <div class="product-card__price">Gs. 165.000</div>
-      <span class="product-card__btn">Ver producto →</span>
-    </div>
-  </a>
 </div>
+
+<!-- ── BLOQUE 2b: Colecciones ── -->
+<div id="collections-container"></div>
 
 <!-- ── BLOQUE 3: ¿Por qué DAM VERTEX? ── -->
 <section class="why-section">
@@ -190,7 +183,6 @@
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     WhatsApp · 0993 471 550
   </a>
-  <button onclick="document.getElementById('products-grid').scrollIntoView({behavior:'smooth'})" class="contact-section__alt" style="background:none;border:none;cursor:pointer;font:inherit;color:inherit;padding:0">Ver productos ↓</button>
 </section>
 
 </main>
@@ -239,16 +231,55 @@ var DV_CARD_IMAGES = {
   'audifono-amplificador-sonido':  'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1788524843574-kp41ifgizz.webp',
   'plantillas-deportivas':         'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/WhatsAppImage2025-05-23at19.54.42.jpg?v=1749688944',
   /* DCANP Lote 3 */
-  'perfume-asad-lattafa':          'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1777238909586-q4wrog4sacl.jpg',
   'espatula-skinpulse-ultrasonica':'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1779644003520-zucl931t7kf.jpeg',
   'baston-plegable-luz-led':       'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/WhatsAppImage2025-03-22at21.19.40_1.jpg?v=1742689339',
-  'garrita-calentador-manos':      'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/1715270501calentador_202.jpg?v=1747958559',
   'afilador-cuchillos':            'https://jv7dta-ka.myshopify.com/cdn/shop/files/afilador1.webp?v=1753405987&width=600',
   'protector-juanete':             'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1775753783353-zbyw9cmz6r.jpeg',
   'tapas-silicona-6en1':           'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/WhatsAppImage2025-05-16at21.47.37.jpg?v=1764614852',
   'rodillera-neenca':              'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1775753825486-3yn6v19xcmi.jpg',
   'luz-led-clip-solar':            'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/spp_20250107113854_58f031c18621bb3c29df37880d33c90f_ca84271a-99e3-438d-aa33-944e2d2105ba.webp?v=1737905650',
   'royalbee-wax-madera':           'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1786023516465-ytgqidfmls.webp',
+  /* DCANP Lote 4 */
+  'cortador-verduras-9en1':        'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1778120408695-i1am2azdwvs.jpeg',
+  'wild-tornado-desatascador':     'https://d39ru7awumhhs2.cloudfront.net/paraguay/products/10890/1762005283ea86e7f8-66e9-4448-b12e-28aa7e6e6356.png',
+  'veneno-abeja-crema':            'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1787919865671-kizn49bqw7f.png',
+  'soporte-magnetico-cuello':      'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1783562099618-5rc9z4cwmmi.jpg',
+  /* DCANP Lote 6 */
+  'gel-masculino-vigor':           'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1779643583695-9zc4uftzdo8.jpeg',
+  'linterna-frontal-recargable':   'https://m.media-amazon.com/images/I/61EeLcQhLhL._AC_SL1000_.jpg',
+  'mini-camara-spy':               'https://cdn.shopify.com/s/files/1/0885/3012/5095/files/Captura_de_pantalla_2025-07-21_013411.png',
+  'drone-pro-hd':                  'https://cdn.shopify.com/s/files/1/0885/3012/5095/files/Captura_de_pantalla_2026-02-04_112827.jpg',
+  /* DCANP Lote 7 */
+  'irrigador-bucal-inalambrico':   'https://cdn.shopify.com/s/files/1/0707/1979/9484/files/Captura_de_pantalla_2025-10-13_100619.jpg?v=1760360812',
+  'encendedor-electrico-usb':      'https://oechsle.vteximg.com.br/arquivos/ids/21575089-1000-1000/imageUrl_1.jpg?v=638872943568970000',
+  'pizarra-led-luminosa':          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRosLRXCVGJ0OCSUrXmJh_iHFuiDk_24QD8SkfEJMq7Z3hzcAKM0VXrsSI&s=10',
+  'repelente-ultrasonico':         'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/WhatsAppImage2025-09-08at22.14.39.jpg?v=1757380580',
+  'huevo-dragon-antistres':        'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1791149571545-rtfvvizpc5s.webp',
+  'maquina-hacer-pororo':          'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1779248715969-1ruudokp2c7.png',
+  'aspiradora-robot-inteligente':  'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1780849262512-esveztjcuq.jpg',
+  'picador-carnes-verduras':       'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1779152271152-y2uoxrqpi4.jpeg',
+  'corrector-postura':             'https://www.skylinestoree.online/cdn/shop/files/fajacorrectora3_540x_d6e03ef1-f416-4751-aba8-e8d3bd49dd95.jpg?v=1752811848&width=600',
+  /* DCANP Lote 8 */
+  'ducha-portatil-recargable':     'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/D_NQ_NP_2X_657414-MLU77729347660_072024-F.webp?v=175759628',
+  'molino-electrico-200w':         'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1775753588996-zpqzu6nuuof.webp',
+  'dr-rashel-crema-blanqueadora':  'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1775753881172-4f3yz3hmkh9.PNG',
+  'smart-camara-wifi':             'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1780674630297-uxa0n0ro0n.jpeg',
+  'pack-medias-terapeuticas':      'https://jv7dta-ka.myshopify.com/cdn/shop/files/ChatGPTImage19ago2025_01_50_42a.m..png?v=1755579070&width=600',
+  'pinza-destapadora-tuberias':    'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/PINZA-DRENAJE.webp?v=1770158534',
+  /* DCANP Lote 9 */
+  'snake-venom-crema':               'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1776102580598-dumlsy87hrg.png',
+  'linterna-titanium-pro':           'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1776381119925-aut4jtv4w1e.png',
+  'linterna-tactica-militar':        'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/linterna-cafine.jpg?v=1774396920',
+  'prensa-francesa-cafe':            'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1777575276971-i3bh9zaeuyi.jpeg',
+  'resortera-laser-precision':       'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/1resortera.webp?v=1755100782',
+  'cortina-smart-led':               'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1791369656781-xz6cvwx62wn.jpg',
+  'cortador-verduras-multifuncional':'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1778637481672-t1gpif21ezn.jpg',
+  /* DCANP Lote 10 */
+  'mini-nebulizador-portatil':      'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1778945810066-qwgmvxb8pn8.jpg',
+  'tren-magico-navidad':            'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1791369817861-8yjcm7bamco.jpg',
+  'tabla-picar-marmol-natural':     'https://mnpbwoknqwsjtiyrrxbm.supabase.co/storage/v1/object/public/product-images/1776212854410-plk5zq7mbf.png',
+  'maquina-peladora-electrica':     'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/712H3le5sjL._AC_UF894_1000_QL80.jpg?v=1775168038',
+  'secador-zapatos-portatil':       'https://cdn.shopify.com/s/files/1/0658/1095/6454/files/dropi.jpg?v=1750190101',
 };
 var DV_CARD_IMG_STYLE = {
   'lentes': 'object-position:right center',
@@ -256,6 +287,14 @@ var DV_CARD_IMG_STYLE = {
   'depilador-electrico-guard-wing': 'object-fit:contain;max-height:80%;width:auto',
   'proyector-astronauta-sistema-solar': 'object-fit:contain;max-height:80%;width:auto',
   'gps-rastreador': 'object-fit:contain;background:#111;',
+  'tobillera-compresion': 'object-fit:contain;background:#111;',
+  'irrigador-bucal-inalambrico': 'object-fit:contain;background:#111;',
+  'maquina-hacer-pororo': 'object-fit:contain;background:#111;',
+  'smart-camara-wifi': 'object-fit:contain;background:#111;',
+  'pack-medias-terapeuticas': 'object-fit:contain;background:#111;',
+  'linterna-titanium-pro': 'object-fit:contain;background:#111;',
+  'prensa-francesa-cafe': 'object-fit:contain;background:#111;',
+  'cortina-smart-led': 'object-fit:contain;background:#111;',
 };
 /* srcset — solo para imágenes cuyo ancho real supera el ancho mostrado en la card
    (~400px). */
@@ -318,36 +357,196 @@ var DV_CARD_DIMS = {
   'audifono-amplificador-sonido': 'width="1080" height="1080"',
   'plantillas-deportivas':        'width="1080" height="1080"',
   /* DCANP Lote 3 */
-  'perfume-asad-lattafa':          'width="1080" height="1080"',
   'espatula-skinpulse-ultrasonica':'width="1080" height="1080"',
   'baston-plegable-luz-led':       'width="1080" height="1080"',
-  'garrita-calentador-manos':      'width="1080" height="1080"',
   'afilador-cuchillos':            'width="1080" height="1080"',
   'protector-juanete':             'width="1080" height="1080"',
   'tapas-silicona-6en1':           'width="1080" height="1080"',
   'rodillera-neenca':              'width="1080" height="1080"',
   'luz-led-clip-solar':            'width="1080" height="1080"',
   'royalbee-wax-madera':           'width="1080" height="1080"',
+  /* DCANP Lote 4 */
+  'cortador-verduras-9en1':        'width="1080" height="1080"',
+  'wild-tornado-desatascador':     'width="1080" height="1080"',
+  'veneno-abeja-crema':            'width="1080" height="1080"',
+  'soporte-magnetico-cuello':      'width="1080" height="1080"',
+  /* DCANP Lote 6 */
+  'gel-masculino-vigor':           'width="1080" height="1080"',
+  'linterna-frontal-recargable':   'width="1000" height="1000"',
+  'mini-camara-spy':               'width="1080" height="1080"',
+  'drone-pro-hd':                  'width="1080" height="1080"',
+  /* DCANP Lote 7 */
+  'irrigador-bucal-inalambrico':   'width="480" height="480"',
+  'encendedor-electrico-usb':      'width="480" height="480"',
+  'pizarra-led-luminosa':          'width="480" height="480"',
+  'repelente-ultrasonico':         'width="480" height="480"',
+  'huevo-dragon-antistres':        'width="480" height="480"',
+  'maquina-hacer-pororo':          'width="480" height="480"',
+  'aspiradora-robot-inteligente':  'width="480" height="480"',
+  'picador-carnes-verduras':       'width="480" height="480"',
+  'corrector-postura':             'width="480" height="480"',
+  /* DCANP Lote 8 */
+  'ducha-portatil-recargable':     'width="480" height="480"',
+  'molino-electrico-200w':         'width="480" height="480"',
+  'dr-rashel-crema-blanqueadora':  'width="480" height="480"',
+  'smart-camara-wifi':             'width="480" height="480"',
+  'pack-medias-terapeuticas':      'width="480" height="480"',
+  'pinza-destapadora-tuberias':    'width="480" height="480"',
+  /* DCANP Lote 9 */
+  'snake-venom-crema':               'width="480" height="480"',
+  'linterna-titanium-pro':           'width="480" height="480"',
+  'linterna-tactica-militar':        'width="480" height="480"',
+  'prensa-francesa-cafe':            'width="480" height="480"',
+  'resortera-laser-precision':       'width="480" height="480"',
+  'cortina-smart-led':               'width="480" height="480"',
+  'cortador-verduras-multifuncional':'width="480" height="480"',
+  /* DCANP Lote 10 */
+  'mini-nebulizador-portatil':      'width="1080" height="1080"',
+  'tren-magico-navidad':            'width="1080" height="1080"',
+  'tabla-picar-marmol-natural':     'width="1080" height="1080"',
+  'maquina-peladora-electrica':     'width="1080" height="1080"',
+  'secador-zapatos-portatil':       'width="1080" height="1080"',
 };
-var DV_CARD_BTN = {
-  'reloj': 'Ver colección →',
+var DV_CARD_BTN = {};
+/* ── Nombres abreviados para cards (1 línea) ── */
+var DV_CARD_SHORT_NAMES = {
+  'reloj':'Reloj Blackout', 'reloj-imperial-verde':'Reloj Imperial Verde', 'cadena':'Cadena Apex',
+  'cepillo':'Cepillo Sónico', 'lentes':'Lentes Sun', 'luna-mini-vibrador-bala-recargable':'Luna Mini',
+  'interruptor-control-remoto':'Interruptor Smart', 'estante-aluminio-bano':'Estante Aluminio',
+  'tabla-marmol':'Tabla Mármol', 'esquinero-aluminio':'Esquinero Aluminio',
+  'dispensador-aceite-2en1':'Dispensador Aceite', 'tabla-de-picar-inox-pro-304':'Tabla Inox Pro 304',
+  'guante-3en1-bano-perros':'Guante 3en1 Mascotas', 'huevera-electrica-gallinita':'Huevera Gallinita',
+  'retinal-shot-booster':'Retinal Sérum', 'cepillo-9en1':'Cepillo 9 en 1',
+  'avion-acrobatico-360':'Avión 360° StarFighter', 'gps-rastreador':'Rastreador GPS',
+  'audifono-amplificador-sonido':'Audífono Amplificador', 'plantillas-deportivas':'Plantillas Deportivas',
+  'mini-camara-espia':'Mini Cámara Espía', 'cable-cargador-soporte-240w':'Cable Cargador 240W',
+  'rejilla-autoadhesiva-pack10':'Rejilla Pack x10', 'tobillera-compresion':'Tobillera Compresión',
+  'cuchillo-pelador-madera':'Cuchillo Pelador', 'molino-carne-multifuncional':'Molino de Carne',
+  'guante-quitapelos-mascotas':'Guante Quitapelos', 'guante-quitapelos':'Guante Quitapelos',
+  'bases-elevadoras-ajustables':'Bases Elevadoras', 'soplador-alto-impacto':'Soplador Pro',
+  'pistola-masajeadora':'Pistola Masajeadora', 'espatula-skinpulse-ultrasonica':'Espátula SkinPulse',
+  'baston-plegable-luz-led':'Bastón LED', 'afilador-cuchillos':'Afilador Pro',
+  'protector-juanete':'Protector Juanete', 'tapas-silicona-6en1':'Tapas Silicona 6en1',
+  'rodillera-neenca':'Rodillera Neenca', 'luz-led-clip-solar':'Luz Solar LED',
+  'cortador-verduras-9en1':'Cortador 9 en 1', 'wild-tornado-desatascador':'Wild Tornado',
+  'veneno-abeja-crema':'Veneno de Abeja', 'soporte-magnetico-cuello':'Soporte Cuello',
+  'gel-masculino-vigor':'Gel Vigorizante', 'linterna-frontal-recargable':'Linterna Frontal',
+  'mini-camara-spy':'Cámara Espía Pro', 'drone-pro-hd':'Drone Pro HD',
+  'irrigador-bucal-inalambrico':'Irrigador Bucal', 'encendedor-electrico-usb':'Encendedor USB',
+  'pizarra-led-luminosa':'Pizarra LED', 'repelente-ultrasonico':'Repelente Ultrasónico',
+  'huevo-dragon-antistres':'Huevo Dragón', 'maquina-hacer-pororo':'Máquina Pororo',
+  'aspiradora-robot-inteligente':'Aspiradora Robot', 'picador-carnes-verduras':'Picador 5L',
+  'corrector-postura':'Corrector Postura', 'ducha-portatil-recargable':'Ducha Portátil',
+  'molino-electrico-200w':'Molino 200W', 'dr-rashel-crema-blanqueadora':'Dr. Rashel Crema',
+  'smart-camara-wifi':'Cámara WiFi HD', 'pack-medias-terapeuticas':'Medias Terapéuticas',
+  'pinza-destapadora-tuberias':'Pinza Destapadora', 'snake-venom-crema':'Snake Venom',
+  'linterna-titanium-pro':'Linterna Titanium Pro', 'linterna-tactica-militar':'Linterna Táctica',
+  'prensa-francesa-cafe':'Prensa Francesa', 'resortera-laser-precision':'Resortera Láser',
+  'cortina-smart-led':'Cortina Smart LED', 'cortador-verduras-multifuncional':'Cortador Verduras Pro',
+  'mini-nebulizador-portatil':'Nebulizador Mini', 'tren-magico-navidad':'Tren Mágico Navidad',
+  'tabla-picar-marmol-natural':'Tabla Mármol Natural', 'maquina-peladora-electrica':'Peladora Eléctrica',
+  'secador-zapatos-portatil':'Secador Zapatos', 'lampara-medusa-multicolor':'Lámpara Medusa',
+  'manguera-expansiva-premium':'Manguera Premium', 'oven-cleaner-grasa':'Oven Cleaner',
+  'pimer-mixer-licuadora-3en1':'Mixer 3 en 1', 'batidora-mano-400w':'Batidora 400W',
+  'mini-licuadora-portatil':'Mini Licuadora', 'molino-cafe-sokany':'Molino de Café',
+  'encendedor-poker-royal':'Encendedor Poker', 'talonera-gel':'Talonera Gel',
+  'kit-ejercitador-antebrazo':'Kit Ejercitador', 'lampara-escritorio-plegable':'Lámpara Escritorio',
+  'linterna-potente-zoom':'Linterna Zoom', 'tabla-picar-marmol-ovalado':'Tabla Mármol Ovalada',
 };
-/* ── Precios fallback para productos sin default_price en D1 ── */
+function sn(p) { var d = Object.assign({}, p); if (DV_CARD_SHORT_NAMES[d.slug]) d.name = DV_CARD_SHORT_NAMES[d.slug]; return d; }
+/* ── Precios override (tienen prioridad sobre D1) para productos con precio fijo en frontend ── */
 var DV_CARD_PRICES = {
-  'reloj':                          { price: 189000, compare: 250000 },
-  'cadena':                         { price: 129000, compare: 169000 },
-  'cepillo':                        { price: 159000, compare: 190000 },
-  'lentes':                         { price: 165000, compare: 0      },
-  'luna-mini-vibrador-bala-recargable': { price: 229000, compare: 330000 },
+  'reloj':                              { price: 159000, compare: 219000 },
+  'cadena':                             { price: 129000, compare: 169000 },
+  'cepillo':                            { price: 159000, compare: 190000 },
+  'lentes':                             { price: 165000, compare: 0      },
+  'luna-mini-vibrador-bala-recargable': { price: 119000, compare: 229000 },
   'reloj-imperial-verde':               { price: 249000, compare: 471000 },
+  'interruptor-control-remoto':         { price: 139000, compare: 188000 },
+  'huevera-electrica-gallinita':        { price: 149000, compare: 199000 },
+  'molino-carne-multifuncional':        { price: 299000, compare: 499000 },
+  'bases-elevadoras-ajustables':        { price: 139000, compare: 229000 },
+  'pistola-masajeadora':                { price: 209000, compare: 349000 },
+  'guante-quitapelos-mascotas':         { price: 129000, compare: 189000 },
+  'cable-cargador-soporte-240w':        { price: 129000, compare: 219000 },
+  'mini-camara-espia':                  { price: 149000, compare: 249000 },
+  'audifono-amplificador-sonido':       { price: 299000, compare: 419000 },
+  'gps-rastreador':                     { price: 189000, compare: 269000 },
+  'avion-acrobatico-360':               { price: 219000, compare: 299000 },
+  'cepillo-9en1':                       { price: 279000, compare: 389000 },
+  'tobillera-compresion':               { price: 139000, compare: 239000 },
+  'cortina-smart-led':                  { price: 299000, compare: 419000 },
+  'lampara-medusa-multicolor':          { price: 149000, compare: 209000 },
+  'linterna-potente-zoom':              { price: 139000, compare: 189000 },
+  'baston-plegable-luz-led':            { price: 269000, compare: 329000 },
+  'encendedor-poker-royal':             { price: 99000,  compare: 139000 },
+  'manguera-expansiva-premium':         { price: 259000, compare: 363000 },
+  'oven-cleaner-grasa':                 { price: 169000, compare: 237000 },
+  'pimer-mixer-licuadora-3en1':         { price: 149000, compare: 209000 },
+  'batidora-mano-400w':                 { price: 169000, compare: 237000 },
+  'mini-licuadora-portatil':            { price: 129000, compare: 181000 },
+  'espatula-skinpulse-ultrasonica':     { price: 169000, compare: 209000 },
+  'guante-3en1-bano-perros':            { price: 159000, compare: 219000 },
+  'molino-cafe-sokany':                 { price: 209000, compare: 289000 },
+  'prensa-francesa-cafe':               { price: 139000, compare: 195000 },
+  'kit-ejercitador-antebrazo':          { price: 159000, compare: 219000 },
+  'linterna-tactica-militar':           { price: 219000, compare: 307000 },
+  'linterna-titanium-pro':              { price: 279000, compare: 391000 },
+  /* Lotes DCANP — compare prices añadidos para mostrar precio tachado en todas las cards */
+  'estante-aluminio-bano':              { price: 149000, compare: 199000 },
+  'tabla-marmol':                       { price: 169000, compare: 214000 },
+  'talonera-gel':                       { price: 139000, compare: 189000 },
+  'esquinero-aluminio':                 { price: 159000, compare: 214000 },
+  'tabla-de-picar-inox-pro-304':        { price: 379000, compare: 529000 },
+  'retinal-shot-booster':               { price: 179000, compare: 249000 },
+  'plantillas-deportivas':              { price: 139000, compare: 189000 },
+  'rejilla-autoadhesiva-pack10':        { price: 129000, compare: 199000 },
+  'cuchillo-pelador-madera':            { price: 119000, compare: 199000 },
+  'soplador-alto-impacto':              { price: 279000, compare: 449000 },
+  'afilador-cuchillos':                 { price: 89000,  compare: 120000 },
+  'protector-juanete':                  { price: 109000, compare: 149000 },
+  'tapas-silicona-6en1':                { price: 89000,  compare: 120000 },
+  'rodillera-neenca':                   { price: 139000, compare: 190000 },
+  'luz-led-clip-solar':                 { price: 149000, compare: 200000 },
+  'royalbee-wax-madera':                { price: 149000, compare: 200000 },
+  'cortador-verduras-9en1':             { price: 189000, compare: 279000 },
+  'wild-tornado-desatascador':          { price: 179000, compare: 251000 },
+  'veneno-abeja-crema':                 { price: 169000, compare: 237000 },
+  'gel-masculino-vigor':                { price: 139000, compare: 199000 },
+  'linterna-frontal-recargable':        { price: 129000, compare: 179000 },
+  'mini-camara-spy':                    { price: 179000, compare: 249000 },
+  'drone-pro-hd':                       { price: 249000, compare: 349000 },
+  'irrigador-bucal-inalambrico':        { price: 149000, compare: 209000 },
+  'encendedor-electrico-usb':           { price: 89000,  compare: 129000 },
+  'pizarra-led-luminosa':               { price: 159000, compare: 219000 },
+  'repelente-ultrasonico':              { price: 129000, compare: 179000 },
+  'huevo-dragon-antistres':             { price: 119000, compare: 159000 },
+  'maquina-hacer-pororo':               { price: 189000, compare: 269000 },
+  'aspiradora-robot-inteligente':       { price: 299000, compare: 419000 },
+  'picador-carnes-verduras':            { price: 239000, compare: 339000 },
+  'corrector-postura':                  { price: 179000, compare: 249000 },
+  'ducha-portatil-recargable':          { price: 179000, compare: 239000 },
+  'molino-electrico-200w':              { price: 275000, compare: 379000 },
+  'dr-rashel-crema-blanqueadora':       { price: 139000, compare: 199000 },
+  'smart-camara-wifi':                  { price: 309000, compare: 429000 },
+  'pack-medias-terapeuticas':           { price: 119000, compare: 169000 },
+  'pinza-destapadora-tuberias':         { price: 99000,  compare: 139000 },
+  'snake-venom-crema':                  { price: 119000, compare: 167000 },
+  'resortera-laser-precision':          { price: 169000, compare: 237000 },
+  'cortador-verduras-multifuncional':   { price: 129000, compare: 181000 },
+  'mini-nebulizador-portatil':          { price: 159000, compare: 222000 },
+  'tren-magico-navidad':                { price: 399000, compare: 558000 },
+  'tabla-picar-marmol-natural':         { price: 189000, compare: 259000 },
+  'maquina-peladora-electrica':         { price: 209000, compare: 292000 },
+  'secador-zapatos-portatil':           { price: 199000, compare: 278000 },
 };
 /* ── Orden visual de productos ── */
-var DV_SLUG_ORDER = ['reloj', 'reloj-imperial-verde', 'interruptor-control-remoto', 'estante-aluminio-bano', 'tabla-marmol', 'talonera-gel', 'esquinero-aluminio', 'tabla-de-picar-inox-pro-304', 'guante-3en1-bano-perros', 'huevera-electrica-gallinita', 'retinal-shot-booster', 'cepillo-9en1', 'avion-acrobatico-360', 'gps-rastreador', 'audifono-amplificador-sonido', 'plantillas-deportivas', 'mini-camara-espia', 'cable-cargador-soporte-240w', 'rejilla-autoadhesiva-pack10', 'tobillera-compresion', 'cuchillo-pelador-madera', 'molino-carne-multifuncional', 'guante-quitapelos-mascotas', 'bases-elevadoras-ajustables', 'soplador-alto-impacto', 'pistola-masajeadora', 'perfume-asad-lattafa', 'espatula-skinpulse-ultrasonica', 'baston-plegable-luz-led', 'garrita-calentador-manos', 'afilador-cuchillos', 'protector-juanete', 'tapas-silicona-6en1', 'rodillera-neenca', 'luz-led-clip-solar', 'royalbee-wax-madera', 'cadena', 'cepillo', 'lentes', 'luna-mini-vibrador-bala-recargable'];
+var DV_SLUG_ORDER = ['reloj', 'reloj-imperial-verde', 'interruptor-control-remoto', 'estante-aluminio-bano', 'tabla-marmol', 'talonera-gel', 'esquinero-aluminio', 'tabla-de-picar-inox-pro-304', 'guante-3en1-bano-perros', 'huevera-electrica-gallinita', 'retinal-shot-booster', 'cepillo-9en1', 'avion-acrobatico-360', 'gps-rastreador', 'audifono-amplificador-sonido', 'plantillas-deportivas', 'mini-camara-espia', 'cable-cargador-soporte-240w', 'rejilla-autoadhesiva-pack10', 'tobillera-compresion', 'cuchillo-pelador-madera', 'molino-carne-multifuncional', 'guante-quitapelos-mascotas', 'bases-elevadoras-ajustables', 'soplador-alto-impacto', 'pistola-masajeadora', 'espatula-skinpulse-ultrasonica', 'baston-plegable-luz-led', 'afilador-cuchillos', 'protector-juanete', 'tapas-silicona-6en1', 'rodillera-neenca', 'luz-led-clip-solar', 'royalbee-wax-madera', 'cortador-verduras-9en1', 'wild-tornado-desatascador', 'veneno-abeja-crema', 'gel-masculino-vigor', 'linterna-frontal-recargable', 'mini-camara-spy', 'drone-pro-hd', 'irrigador-bucal-inalambrico', 'encendedor-electrico-usb', 'pizarra-led-luminosa', 'repelente-ultrasonico', 'huevo-dragon-antistres', 'maquina-hacer-pororo', 'aspiradora-robot-inteligente', 'picador-carnes-verduras', 'corrector-postura', 'ducha-portatil-recargable', 'molino-electrico-200w', 'dr-rashel-crema-blanqueadora', 'smart-camara-wifi', 'pack-medias-terapeuticas', 'pinza-destapadora-tuberias', 'snake-venom-crema', 'linterna-titanium-pro', 'linterna-tactica-militar', 'prensa-francesa-cafe', 'resortera-laser-precision', 'cortina-smart-led', 'cortador-verduras-multifuncional', 'mini-nebulizador-portatil', 'tren-magico-navidad', 'tabla-picar-marmol-natural', 'maquina-peladora-electrica', 'secador-zapatos-portatil', 'cadena', 'cepillo', 'lentes', 'luna-mini-vibrador-bala-recargable'];
 
 function buildCardHtml(p, idx) {
   var fb       = DV_CARD_PRICES[p.slug] || {};
-  var defPrice = p.default_price || fb.price || 0;
-  var cmpPrice = p.compare_price || fb.compare || 0;
+  var defPrice = fb.price || p.default_price || 0;
+  var cmpPrice = fb.compare || p.compare_price || 0;
   var price    = defPrice.toLocaleString('es-PY');
   var compare  = cmpPrice && cmpPrice > defPrice
     ? ' <small>Gs. ' + cmpPrice.toLocaleString('es-PY') + '</small>' : '';
@@ -394,45 +593,172 @@ var DV_EXTRA_PRODUCTS = [
   { slug: 'tobillera-compresion',          name: 'Tobillera de Compresión',           default_price: 139000, active: 1 },
   { slug: 'cuchillo-pelador-madera',       name: 'Cuchillo Pelador con Mango Madera', default_price: 119000, active: 1 },
   { slug: 'molino-carne-multifuncional',   name: 'Molino de Carne Multifuncional',    default_price: 299000, active: 1 },
-  { slug: 'guante-quitapelos-mascotas',    name: 'Guante Quitapelos para Mascotas',   default_price: 109000, active: 1 },
+  { slug: 'guante-quitapelos-mascotas',    name: 'Guante Quitapelos para Mascotas',   default_price: 129000, active: 1 },
   { slug: 'bases-elevadoras-ajustables',   name: 'Bases Elevadoras Ajustables',       default_price: 139000, active: 1 },
   { slug: 'soplador-alto-impacto',         name: 'Soplador de Alto Impacto',          default_price: 279000, active: 1 },
   { slug: 'pistola-masajeadora',           name: 'Pistola Masajeadora Muscular',      default_price: 209000, active: 1 },
   /* DCANP Lote 3 */
-  { slug: 'perfume-asad-lattafa',          name: 'Perfume Asad Lattafa Masculino',    default_price: 179000, active: 1 },
   { slug: 'espatula-skinpulse-ultrasonica',name: 'Espátula SkinPulse Ultrasónica',   default_price: 169000, active: 1 },
   { slug: 'baston-plegable-luz-led',       name: 'Bastón Plegable con Luz LED',       default_price: 269000, active: 1 },
-  { slug: 'garrita-calentador-manos',      name: 'Calentador de Manos Garrita',       default_price: 109000, active: 1 },
   { slug: 'afilador-cuchillos',            name: 'Afilador Profesional de Cuchillos', default_price: 89000,  active: 1 },
   { slug: 'protector-juanete',             name: 'Protector de Juanete Ortopédico',   default_price: 109000, active: 1 },
   { slug: 'tapas-silicona-6en1',           name: 'Set de Tapas de Silicona 6 en 1',   default_price: 89000,  active: 1 },
   { slug: 'rodillera-neenca',              name: 'Rodillera Neenca de Compresión',    default_price: 139000, active: 1 },
   { slug: 'luz-led-clip-solar',            name: 'Luz LED con Clip Solar Recargable', default_price: 149000, active: 1 },
   { slug: 'royalbee-wax-madera',           name: 'RoyalBee Wax — Cera para Madera',  default_price: 149000, active: 1 },
+  /* DCANP Lote 4 */
+  { slug: 'cortador-verduras-9en1',        name: 'Cortador de Verduras 9 en 1',       default_price: 189000, active: 1 },
+  { slug: 'wild-tornado-desatascador',     name: 'Wild Tornado Desatascador',          default_price: 179000, active: 1 },
+  { slug: 'veneno-abeja-crema',            name: 'Veneno de Abeja Crema',              default_price: 169000, active: 1 },
+  { slug: 'soporte-magnetico-cuello',      name: 'Soporte Magnético para Cuello',      default_price: 149000, active: 0 },
+  /* DCANP Lote 6 */
+  { slug: 'gel-masculino-vigor',           name: 'Gel Vigorizante Masculino',          default_price: 139000, active: 1 },
+  { slug: 'linterna-frontal-recargable',   name: 'Linterna Frontal Recargable USB',    default_price: 129000, active: 1 },
+  { slug: 'mini-camara-spy',               name: 'Mini Cámara Espía Full HD',          default_price: 179000, active: 1 },
+  { slug: 'drone-pro-hd',                  name: 'Drone Pro HD con Cámara Aérea',      default_price: 249000, active: 1 },
+  /* DCANP Lote 7 */
+  { slug: 'irrigador-bucal-inalambrico',  name: 'Irrigador Bucal Inalámbrico',         default_price: 149000, active: 1 },
+  { slug: 'encendedor-electrico-usb',     name: 'Encendedor Eléctrico USB',             default_price: 89000,  active: 1 },
+  { slug: 'pizarra-led-luminosa',         name: 'Pizarra LED Luminosa',                 default_price: 159000, active: 1 },
+  { slug: 'repelente-ultrasonico',        name: 'Repelente Ultrasónico',                default_price: 129000, active: 1 },
+  { slug: 'huevo-dragon-antistres',       name: 'Huevo Dragón Antiestrés',              default_price: 119000, active: 1 },
+  { slug: 'maquina-hacer-pororo',         name: 'Máquina para Hacer Pororo',            default_price: 189000, active: 1 },
+  { slug: 'aspiradora-robot-inteligente', name: 'Aspiradora Robot Inteligente',         default_price: 299000, active: 1 },
+  { slug: 'picador-carnes-verduras',      name: 'Picador de Carnes y Verduras',         default_price: 239000, active: 1 },
+  { slug: 'corrector-postura',            name: 'Corrector de Postura',                 default_price: 179000, active: 1 },
+  /* DCANP Lote 8 */
+  { slug: 'ducha-portatil-recargable',   name: 'Ducha Portátil Recargable',             default_price: 179000, active: 1 },
+  { slug: 'molino-electrico-200w',       name: 'Molino Eléctrico 200W',                 default_price: 275000, active: 1 },
+  { slug: 'talonera-gel',                name: 'Talonera en Gel',                       default_price: 139000,  active: 1 },
+  { slug: 'dr-rashel-crema-blanqueadora',name: 'Dr. Rashel Crema Blanqueadora',         default_price: 139000, active: 1 },
+  { slug: 'smart-camara-wifi',           name: 'Smart Cámara WiFi Full HD',             default_price: 309000, active: 1 },
+  { slug: 'pack-medias-terapeuticas',    name: 'Pack Medias Terapéuticas',              default_price: 119000, active: 1 },
+  { slug: 'pinza-destapadora-tuberias',  name: 'Pinza Destapadora de Tuberías',         default_price: 99000,  active: 1 },
+  /* DCANP Lote 9 */
+  { slug: 'snake-venom-crema',                name: 'Snake Venom Crema Efecto Tensor',        default_price: 119000, active: 1 },
+  { slug: 'linterna-titanium-pro',            name: 'Linterna Titanium Pro 50.000 Lúmenes',   default_price: 279000, active: 1 },
+  { slug: 'linterna-tactica-militar',         name: 'Linterna Táctica Militar Alta Potencia', default_price: 219000, active: 1 },
+  { slug: 'prensa-francesa-cafe',             name: 'Prensa Francesa para Café Premium',      default_price: 139000, active: 1 },
+  { slug: 'resortera-laser-precision',        name: 'Resortera de Precisión con Mira Láser',  default_price: 169000, active: 1 },
+  { slug: 'cortina-smart-led',                name: 'Cortina Smart LED Inteligente WiFi',     default_price: 299000, active: 1 },
+  { slug: 'cortador-verduras-multifuncional', name: 'Cortador Multifuncional de Verduras Pro',default_price: 129000, active: 1 },
+  /* DCANP Lote 10 */
+  { slug: 'mini-nebulizador-portatil',  name: 'Mini Nebulizador Portátil Facial',           default_price: 159000, active: 1 },
+  { slug: 'tren-magico-navidad',        name: 'Tren Mágico Express de Navidad',               default_price: 399000, active: 1 },
+  { slug: 'tabla-picar-marmol-natural', name: 'Tabla de Picar Mármol Natural Premium',       default_price: 189000, active: 1 },
+  { slug: 'maquina-peladora-electrica', name: 'Máquina Peladora Eléctrica Multifrutas',  default_price: 209000, active: 1 },
+  { slug: 'secador-zapatos-portatil',   name: 'Secador de Zapatos Portátil Eléctrico',   default_price: 199000, active: 1 },
 ];
 
-var grid = document.getElementById('products-grid');
-if (grid) { grid.style.opacity = '0'; grid.style.transition = 'opacity .18s ease'; }
+var TOP6_SLUGS = ['reloj', 'reloj-imperial-verde', 'interruptor-control-remoto', 'luna-mini-vibrador-bala-recargable'];
+var COLLECTIONS = [
+  { id: 'salud',      label: '🏥 Salud & Bienestar',
+    slugs: ['rodillera-tecnologia-termica','rodillera-neenca','tobillera-compresion','pistola-masajeadora','corrector-postura','audifono-amplificador-sonido','plantillas-deportivas','protector-juanete','pack-medias-terapeuticas','baston-plegable-luz-led','talonera-gel','irrigador-bucal-inalambrico','kit-ejercitador-antebrazo'] },
+  { id: 'cocina',     label: '🍳 Cocina',
+    slugs: ['molino-carne-multifuncional','cortador-verduras-multifuncional','huevera-electrica-gallinita','tabla-picar-marmol-ovalado','tabla-de-picar-inox-pro-304','picador-carnes-verduras','maquina-peladora-electrica','cortador-verduras-9en1','tabla-picar-marmol-natural','cuchillo-pelador-madera','cuchillo-pelador-manga-madera','dispensador-aceite-2en1','afilador-cuchillos','tapas-silicona-6en1','batidora-mano-400w','pimer-mixer-licuadora-3en1','mini-licuadora-portatil','molino-electrico-200w','molino-cafe-sokany','prensa-francesa-cafe','oven-cleaner-grasa','tabla-marmol'] },
+  { id: 'belleza',    label: '✨ Belleza & Cuidado Personal',
+    slugs: ['espatula-skinpulse-ultrasonica','cepillo-9en1','retinal-shot-booster','mascara-led-facial','snake-venom-crema','veneno-abeja-crema','dr-rashel-crema-blanqueadora','mini-nebulizador-portatil','cepillo-masajeador-capilar','gel-masculino-vigor','cadena'] },
+  { id: 'tecnologia', label: '📱 Tecnología & Gadgets',
+    slugs: ['smart-camara-wifi','aspiradora-robot-inteligente','drone-pro-hd','mini-camara-spy','mini-camara-seguridad','mini-camara-espia','gps-rastreador','mini-gps-rastreador','cable-cargador-soporte-240w','cable-cargador-soporte','pizarra-led-luminosa','soporte-magnetico-cuello','encendedor-poker-royal','encendedor-electrico-usb','lumifest-luces-navidad'] },
+  { id: 'hogar',      label: '🏠 Hogar & Organización',
+    slugs: ['wild-tornado-desatascador','estante-aluminio-bano','estante-organizador-winsen','ducha-portatil-recargable','luz-led-clip-solar','pinza-destapadora-tuberias','manguera-expansiva-premium','repelente-ultrasonico','plancha-vapor-portatil','secador-zapatos-portatil','bases-elevadoras-ajustables','esquinero-aluminio','rejilla-autoadhesiva-pack10','royalbee-wax-madera'] },
+  { id: 'mascotas',   label: '🐾 Mascotas',
+    slugs: ['furclean-guante-quitapelos','guante-quitapelos-mascotas','guante-3en1-bano-perros'] },
+  { id: 'outdoor',    label: '🔦 Outdoor & Herramientas',
+    slugs: ['linterna-titanium-pro','soplador-alto-impacto','linterna-tactica-militar','linterna-potente-zoom','linterna-frontal-recargable','resortera-laser-precision'] },
+  { id: 'entrete',    label: '🎮 Entretenimiento',
+    slugs: ['avion-acrobatico-360','tren-magico-navidad','maquina-hacer-pororo','huevo-dragon-antistres','juguete-abejita-bailarina','lampara-medusa-multicolor'] },
+];
+function expandColl(collId, btn) {
+  var first = null;
+  document.querySelectorAll('[data-ce="' + collId + '"]').forEach(function(el) {
+    el.style.display = 'block';
+    el.classList.remove('card-new');
+    void el.offsetWidth; // force reflow so animation restarts
+    el.classList.add('card-new');
+    if (!first) first = el;
+  });
+  btn.style.display = 'none';
+  if (first) setTimeout(function() { first.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 80);
+}
+var top6Grid = document.getElementById('top6-grid');
+var collCont = document.getElementById('collections-container');
+if (top6Grid) { top6Grid.style.opacity = '0'; top6Grid.style.transition = 'opacity .18s ease'; }
+if (collCont)  { collCont.style.opacity  = '0'; collCont.style.transition  = 'opacity .18s ease'; }
 fetch('/api/product-stock?active_only=1')
   .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
   .then(function(data) {
     var products = (data.products || []).filter(function(p) { return p.active; });
     var existing = products.map(function(p) { return p.slug; });
     DV_EXTRA_PRODUCTS.forEach(function(ep) { if (existing.indexOf(ep.slug) === -1) products.push(ep); });
-    if (!products.length) { if (grid) grid.style.opacity = '1'; return; }
-    products.sort(function(a, b) {
-      var ia = DV_SLUG_ORDER.indexOf(a.slug);
-      var ib = DV_SLUG_ORDER.indexOf(b.slug);
-      if (ia === -1) ia = 999;
-      if (ib === -1) ib = 999;
-      return ia - ib;
+    if (!products.length) {
+      if (top6Grid) top6Grid.style.opacity = '1';
+      if (collCont)  collCont.style.opacity  = '1';
+      return;
+    }
+    // ── Top 6 ──
+    var top6Set = {};
+    var top6 = [];
+    TOP6_SLUGS.forEach(function(s) {
+      var found = null;
+      products.forEach(function(p) {
+        if (!found && p.slug === s) found = p;
+      });
+      if (found && !top6Set[found.slug]) { top6.push(found); top6Set[found.slug] = 1; }
     });
-    if (grid) {
-      grid.innerHTML = products.map(function(p, i) { return buildCardHtml(p, i); }).join('');
-      requestAnimationFrame(function() { grid.style.opacity = '1'; });
+    if (top6Grid) {
+      top6Grid.innerHTML = top6.map(function(p, i) { return buildCardHtml(sn(p), i); }).join('');
+      requestAnimationFrame(function() { top6Grid.style.opacity = '1'; });
+    }
+    // ── Collections ──
+    var slugToColl = {};
+    COLLECTIONS.forEach(function(c, ci) {
+      if (c.id === 'otros') return;
+      c.slugs.forEach(function(s) { if (!(s in slugToColl)) slugToColl[s] = ci; });
+    });
+    var collProds = COLLECTIONS.map(function() { return []; });
+    products.forEach(function(p) {
+      if (top6Set[p.slug]) return;
+      var ci = slugToColl[p.slug];
+      if (ci === undefined) return;
+      collProds[ci].push(p);
+    });
+    COLLECTIONS.forEach(function(c, ci) {
+      if (c.id === 'otros') return;
+      var order = c.slugs;
+      collProds[ci].sort(function(a, b) {
+        var ia = order.indexOf(a.slug), ib = order.indexOf(b.slug);
+        if (ia === -1) ia = 999; if (ib === -1) ib = 999;
+        return ia - ib;
+      });
+    });
+    var html = '';
+    COLLECTIONS.forEach(function(c, ci) {
+      var prods = collProds[ci];
+      if (!prods.length) return;
+      var preview = prods.slice(0, 4);
+      var rest    = prods.slice(4);
+      var showBtn = rest.length > 0;
+      var collHtml = '<div class="collection-section">';
+      collHtml += '<div class="collection-header"><h3 class="collection-title">' + c.label + '</h3>';
+      if (showBtn) collHtml += '<button class="collection-expand-btn" onclick="expandColl(\'' + c.id + '\',this)">Ver más (' + rest.length + ') →</button>';
+      collHtml += '</div><div class="products-grid">';
+      preview.forEach(function(p, i) { collHtml += buildCardHtml(sn(p), ci * 4 + i); });
+      rest.forEach(function(p) {
+        collHtml += buildCardHtml(sn(p), 999).replace('style="display:block;color:inherit"', 'data-ce="' + c.id + '" style="display:none;color:inherit"');
+      });
+      collHtml += '</div></div>';
+      html += collHtml;
+    });
+    if (collCont) {
+      collCont.innerHTML = html;
+      requestAnimationFrame(function() { collCont.style.opacity = '1'; });
     }
   })
-  .catch(function() { if (grid) grid.style.opacity = '1'; });
+  .catch(function() {
+    if (top6Grid) top6Grid.style.opacity = '1';
+    if (collCont)  collCont.style.opacity  = '1';
+  });
 </script>
 
 <script>

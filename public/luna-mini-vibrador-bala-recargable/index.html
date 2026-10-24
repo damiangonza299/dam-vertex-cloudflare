@@ -3,1342 +3,790 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preload" as="image" href="/assets/img/lunamini-perfil.webp?v=2" imagesrcset="/assets/img/lunamini-perfil-mobile.webp?v=1 600w, /assets/img/lunamini-perfil.webp?v=2 1122w" imagesizes="(max-width: 600px) 600px, 1122px" fetchpriority="high">
+  <meta name="theme-color" content="#111214">
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
-  <meta name="description" content="Compacto. Silencioso. Recargable. Entrega hoy en Central. Pagás cuando lo recibís.">
-  <title>LUNA MINI — Bienestar Personal · Dam Vertex</title>
-  <script src="/assets/js/site-version.js?v=60" defer></script>
-  <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
-  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <link rel="preload" href="/assets/img/lunamini-perfil.webp?v=2" as="image" fetchpriority="high">
+  <meta name="description" content="Compacto. Silencioso. Recargable. Entrega hoy en Central. Pag&#xE1;s cuando lo recib&#xED;s.">
+  <title>LUNA MINI &mdash; Bienestar Personal &middot; Dam Vertex</title>
+  <link rel="preload" href="/assets/css/styles.min.css?v=56" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=56"></noscript>
   <style>
-    /* ══ CRÍTICO ABOVE-THE-FOLD — extraído de styles.min.css ══
-       Necesario para nav/hero/precio sin FOUC mientras styles.min.css carga async. */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #16181A; -webkit-font-smoothing: antialiased; }
     img { max-width: 100%; display: block; }
     a { text-decoration: none; color: inherit; }
-    :root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
-    .nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 clamp(20px, 5vw, 48px); height: 60px;
-      background: rgba(0,0,0,.88); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px,5vw,48px); height: 60px; background: #FFFFFF; border-bottom: 1px solid #D4D7DB; }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #16181A; }
     .nav__logo span { opacity: .45; }
-    .nav__cta {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--accent); color: #fff; font-size: 13px; font-weight: 700;
-      letter-spacing: .02em; padding: 9px 20px; border-radius: var(--radius-sm);
-      transition: opacity .2s;
-    }
     .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
-    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
-    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
-    .price-badge {
-      font-size: 12px; font-weight: 700; background: rgba(74,222,128,.15); color: var(--green);
-      border: 1px solid rgba(74,222,128,.25); border-radius: 4px; padding: 3px 8px;
-    }
+    .price-main { font-size: clamp(28px,5vw,38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: #9AA0A6; text-decoration: line-through; }
 
-    /* ══ LUNA MINI — rosa íntimo ══ */
+    body.riv {
+      background: #FAFAF8;
+      color: #16181A;
+      padding-top: 36px;
+    }
     :root {
-      --luna-pink:     #E91E63;
-      --luna-dark:     #c2185b;
-      --luna-light:    #f06292;
-      --luna-glow:     rgba(233,30,99,.14);
-      --bg-base:       #0d0a0b;
-      --bg-card:       #140c0e;
-      --bg-card2:      #170d10;
-      --border-subtle: rgba(233,30,99,.12);
-      --text-muted:    rgba(255,255,255,.45);
-      --text-dim:      rgba(255,255,255,.65);
+      --riv-bg:              #FAFAF8;
+      --riv-bg-2:            #F1F2F0;
+      --riv-negro:           #111214;
+      --riv-texto:           #16181A;
+      --riv-texto-2:         #5B6066;
+      --riv-blanco:          #FFFFFF;
+      --riv-blanco-2:        #B9BEC4;
+      --riv-plata:           #D4D7DB;
+      --riv-esmeralda:       #db2777;
+      --riv-esmeralda-hover: #be185d;
+      --riv-esmeralda-vivo:  #f9a8d4;
+      --riv-esmeralda-suave: #fce7f3;
+      --riv-tachado:         #9AA0A6;
     }
-    body { background: var(--bg-base); }
-
-    .nav { background: rgba(13,10,11,.96); border-bottom: 1px solid var(--border-subtle); }
-    .nav__cta {
-      background: var(--luna-pink); color: #fff;
-      font-size: clamp(9px, 2.4vw, 12px); white-space: nowrap;
-      padding: 8px 12px; gap: 4px;
-    }
-    .nav__cta:hover { background: var(--luna-light); }
-
-    .pink-line {
-      width: 40px; height: 2px;
-      background: linear-gradient(90deg, var(--luna-pink), transparent);
-      margin: 0 0 20px;
-    }
-    .pink-line--center { margin: 0 auto 20px; }
-
-    /* ══ HERO ══ */
-    .hero-luna {
-      background: var(--bg-base);
-      padding: clamp(6px,1.5vw,14px) clamp(20px,5vw,64px) clamp(8px,2vw,20px);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .hero-luna__inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 56px;
-      align-items: center;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .hero-luna__media { position: relative; max-width: 460px; margin: 0 auto; width: 100%; }
-
-    .img-ph {
-      width: 100%; aspect-ratio: 4/5;
-      border-radius: 6px;
-      background: var(--bg-card);
-      border: 1.5px dashed rgba(233,30,99,.3);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 14px; overflow: hidden; position: relative;
-    }
-    .img-ph img,
-    .img-ph video {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center;
-      display: block; position: absolute; inset: 0; border-radius: 6px;
-    }
-    /* Hero image: fuerza aspect-ratio 4/5 también en mobile — sin esto, la media
-       query .hero-luna__media .img-ph{aspect-ratio:1} recortaría el perfil en cuadrado. */
-    #hero-img { aspect-ratio: 4 / 5; }
-    .img-ph__label {
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      text-align: center; padding: 20px; pointer-events: none;
-    }
-    .img-ph__icon {
-      width: 52px; height: 52px; border-radius: 50%;
-      background: var(--luna-glow);
-      border: 1.5px solid rgba(233,30,99,.3);
-      display: flex; align-items: center; justify-content: center; font-size: 20px;
-    }
-    .img-ph__title { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--luna-pink); }
-    .img-ph__file  { font-size: 10px; color: rgba(255,255,255,.3); font-family: monospace; }
-    .img-ph__size  { font-size: 10px; color: rgba(255,255,255,.2); }
-    .img-ph--sq    { aspect-ratio: 1; }
-
-    .hero-luna__badge {
-      position: absolute; top: 16px; right: 16px; z-index: 10;
-      font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
-      background: var(--luna-pink); color: #fff;
-      padding: 5px 11px; border-radius: 3px;
-    }
-
-    .eyebrow-luna {
-      font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--luna-pink); margin: 0 0 8px;
-    }
-    .hero-luna__h {
-      font-size: clamp(28px,5vw,50px); font-weight: 800; line-height: 1.1;
-      margin: 0 0 9px; letter-spacing: -.02em; color: #fff;
-    }
-    .hero-luna__h em { font-style: normal; color: var(--luna-pink); }
-    .hero-luna__sub {
-      font-size: clamp(14px,2vw,16px); color: var(--text-dim); line-height: 1.65; margin: 0 0 10px;
-    }
-
-    .spi { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; }
-    .spi-stars { color: var(--luna-pink); font-size: 14px; }
-    .spi-text  { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-
-    .hero-luna .price-block {
-      display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
-      margin: 0 0 10px;
-    }
-    .price-main-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-    .exclusive-badge {
-      border-left: 3px solid #FF3EA5;
-      background: rgba(255,255,255,.03);
-      color: #fff;
-      font-size: clamp(9px, 3vw, 13px);
+    .riv-urgency-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 400;
+      background: var(--riv-esmeralda); color: #FFFFFF;
+      text-align: center; font-size: clamp(11px,3.4vw,14px); font-weight: 600;
+      letter-spacing: .02em; height: 36px; line-height: 36px;
+      padding: 0 16px; overflow: hidden; text-overflow: ellipsis;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding: 8px 12px;
-      margin: 0 0 14px;
-      line-height: 1.4;
     }
-    .hero-luna .price-compare { font-size: clamp(26px,5.5vw,36px); font-weight: 700; color: rgba(255,255,255,.5); }
-    .hero-luna .price-main    { font-size: clamp(18px,3vw,22px); }
-
-    /* ══ EVERGREEN TIMER — copiado exacto de /cadena/ ══ */
-    .evergreen-timer {
-      background: #111;
-      border-left: 3px solid #f59e0b;
-      color: #fff;
-      padding: 6px 14px;
-      margin: 6px 0;
-      line-height: 1.4;
-      display: inline-block;
-      width: fit-content;
-      max-width: 100%;
+    .riv-urgency-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--riv-esmeralda-vivo); flex-shrink: 0; display: inline-block;
     }
-    .evergreen-timer__line1 {
-      font-size: 14px;
-      font-weight: 600;
+    @media (prefers-reduced-motion: no-preference) {
+      .riv-urgency-dot { animation: riv-pulse 1.5s ease-in-out infinite; }
     }
-    .evergreen-timer__time {
-      color: #f59e0b;
-      font-weight: 800;
-      font-size: 16px;
-      font-variant-numeric: tabular-nums;
+    @keyframes riv-pulse { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+    .riv .nav {
+      position: relative;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--riv-plata);
     }
-    .evergreen-timer__line2 {
-      font-size: 12px;
-      color: rgba(255,255,255,.55);
-      margin-top: 2px;
+    .riv .nav__logo { color: var(--riv-texto); }
+    .riv-nav-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--riv-esmeralda); color: #FFFFFF; font-weight: 700;
+      font-size: clamp(7px,2.6vw,12px); padding: 8px 14px; border-radius: 999px;
+      border: none; cursor: pointer; white-space: nowrap; max-width: 62vw;
+      font-family: inherit;
     }
-    .evergreen-timer__expired {
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    /* ══ 3 características debajo del contador ══ */
-    .luna-features {
-      list-style: none; padding: 0; margin: 14px 0 20px;
-      display: flex; flex-direction: column; gap: 9px;
-    }
-    .luna-features li {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 13.5px; color: rgba(255,255,255,.82); line-height: 1.4;
-    }
-    .luna-features__dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--luna-pink); flex-shrink: 0; margin-top: 5px;
-    }
-
-    .btn-luna {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--luna-pink); color: #fff; font-weight: 700;
-      padding: 15px 20px; border-radius: 8px; border: none; cursor: pointer;
+    .riv-inner { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+    .riv-btn {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--riv-esmeralda); color: #FFFFFF; font-weight: 600;
+      padding: 0 14px; border-radius: 999px; border: none; cursor: pointer;
       text-decoration: none; transition: background .2s, transform .15s;
-      letter-spacing: .01em; width: 100%; max-width: 320px;
-      font-size: clamp(11px, 3.1vw, 14px); white-space: nowrap;
+      width: 100%; height: 56px; letter-spacing: .01em;
+      font-size: clamp(13px,3.8vw,16px); font-family: inherit;
+      box-shadow: 0 6px 18px rgba(219,39,119,.28); white-space: nowrap;
     }
-    .btn-luna:hover { background: var(--luna-light); transform: translateY(-1px); }
-    .btn-luna .arrow { transition: transform .2s; }
-    .btn-luna:hover .arrow { transform: translateX(4px); }
-
-    .delivery-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
-    .db-badge { font-size: 11px; color: #e2e2e2; padding: 5px 10px; border-radius: 20px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); }
-    .db-pink  { background: rgba(233,30,99,.15); border-color: rgba(233,30,99,.35); color: #f9a8c9; }
-    .delivery-badges--secondary { justify-content: flex-start; margin-top: 7px; }
-
-    /* ══ TRANSFORMACION ══ */
-    .transf {
-      background: var(--bg-base);
-      padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
-      border-top: 1px solid var(--border-subtle);
-    }
-    .transf__inner { max-width: 900px; margin: 0 auto; }
-    .transf__head  { text-align: center; margin-bottom: 60px; }
-    .transf__overline {
-      font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--luna-pink); margin: 0 0 16px;
-    }
-    .transf__title {
-      font-size: clamp(22px,4vw,34px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0;
-    }
-    .transf__bridge {
-      display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch;
-      background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; overflow: hidden;
-    }
-    .transf__col { padding: 40px 32px; }
-    .transf__col--antes  { border-right: 1px solid var(--border-subtle); }
-    .transf__col--despues { border-left: 1px solid var(--border-subtle); }
-    .transf__col-label {
-      font-size: 10px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 20px;
-    }
-    .transf__col--antes .transf__col-label   { color: rgba(255,255,255,.25); }
-    .transf__col--despues .transf__col-label { color: var(--luna-pink); }
-    .transf__col h3 {
-      font-size: clamp(15px,2.2vw,18px); font-weight: 700; color: #fff; line-height: 1.3; margin: 0 0 14px;
-    }
-    .transf__col--antes h3 { opacity: .55; }
-    .transf__list { display: flex; flex-direction: column; gap: 10px; list-style: none; padding: 0; margin: 0; }
-    .transf__list li { font-size: 13px; line-height: 1.5; display: flex; gap: 10px; }
-    .transf__col--antes .transf__list li { color: rgba(255,255,255,.35); }
-    .transf__col--antes .transf__list li::before  { content: '✕'; color: rgba(248,113,113,.4); flex-shrink: 0; }
-    .transf__col--despues .transf__list li { color: rgba(255,255,255,.75); }
-    .transf__col--despues .transf__list li::before { content: '✓'; color: #86efac; flex-shrink: 0; }
-    .transf__center {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px 16px; gap: 12px; min-width: 72px;
-      background: linear-gradient(180deg, var(--bg-card), rgba(233,30,99,.06), var(--bg-card));
-    }
-    .transf__arrow {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--luna-pink);
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 16px; font-weight: 700; flex-shrink: 0;
-    }
-    .transf__product-name {
-      font-size: 9px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase;
-      color: var(--luna-pink); text-align: center; line-height: 1.4;
-      writing-mode: vertical-lr; transform: rotate(180deg);
-    }
-
-    /* ══ PRODUCTO — specs ══ */
-    .producto {
-      background: var(--bg-card2);
-      padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
-      border-top: 1px solid var(--border-subtle);
-    }
-    .producto__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; max-width: 1060px; margin: 0 auto; }
-    .specs__grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-      background: var(--border-subtle); border-radius: 8px; overflow: hidden; margin-top: 28px;
-    }
-    .spec-item { background: var(--bg-card2); padding: 20px 18px; }
-    .spec-item__label { font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--luna-pink); margin: 0 0 6px; }
-    .spec-item__val   { font-size: 14px; font-weight: 600; color: #fff; }
-    .spec-item__sub   { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-    .sec-overline { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--luna-pink); margin: 0 0 14px; }
-    .sec-h   { font-size: clamp(20px,3.5vw,30px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0 0 16px; letter-spacing: -.01em; }
-    .sec-body { font-size: 14px; color: var(--text-dim); line-height: 1.75; margin: 0 0 24px; }
-
-    /* ══ DETALLE — imagen real (specs). El WebP ya trae el texto
-       "Silicona médica · IPX7 · 10 modos / Hecho para sentir. / 45+ min · USB · Un solo botón"
-       quemado en los píxeles — no se superpone texto en HTML/CSS encima. ══ */
-    #detalle-img { border-style: solid; border-color: transparent; background: #0a0507; aspect-ratio: 16 / 9; }
-
-    /* ══ CONFIANZA — imagen real (empaque discreto). El WebP ya trae el texto
-       "Empaque 100% discreto / Nadie sabe lo que hay adentro. / Bolsa neutra · Sin marcas · Entrega en el día"
-       quemado en los píxeles, con su propio contraste — no necesita overlay adicional. ══ */
-    #lifestyle-img { border-style: solid; border-color: transparent; background: #0a0507; }
-
-    /* ══ BENEFICIOS ══ */
-    .beneficios {
-      background: var(--bg-base);
-      padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
-      border-top: 1px solid var(--border-subtle);
-    }
-    .beneficios__inner { max-width: 1000px; margin: 0 auto; }
-    .beneficios__head  { text-align: center; margin-bottom: 48px; }
-    .bene-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border-subtle); border-radius: 10px 10px 0 0; overflow: hidden; }
-    .bene-grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border-subtle); border-radius: 0 0 10px 10px; overflow: hidden; margin-top: 1px; }
-    .bene-card { background: var(--bg-card); padding: 36px 28px; }
-    .bene-num { font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--luna-pink); opacity: .55; margin-bottom: 18px; }
-    .bene-card__icon {
-      width: 44px; height: 44px; border-radius: 8px;
-      background: var(--luna-glow); border: 1px solid rgba(233,30,99,.3);
-      display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 18px;
-    }
-    .bene-card strong { display: block; font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 10px; }
-    .bene-card p { font-size: 13px; color: var(--text-muted); line-height: 1.65; margin: 0; }
-
-    /* ══ CONFIANZA ══ */
-    .confianza {
-      background: var(--bg-card2);
-      padding: clamp(56px,10vw,90px) clamp(20px,5vw,64px);
-      border-top: 1px solid var(--border-subtle);
-    }
-    .confianza__inner  { max-width: 1060px; margin: 0 auto; }
-    .confianza__head   { text-align: center; margin-bottom: 48px; }
-    .confianza__layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
-    .confianza__cards  { display: flex; flex-direction: column; gap: 16px; }
-    .trust-card {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: 10px; padding: 22px 24px;
-    }
-    .trust-card p.t-title { font-size: 15px; font-weight: 700; color: #fff; margin: 0 0 6px; }
-    .trust-card p.t-body  { font-size: 13px; color: rgba(255,255,255,.5); margin: 0; }
-
-    /* ══ FAQ ══ */
-    .faq-section {
-      background: var(--bg-base);
-      padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px);
-      border-top: 1px solid var(--border-subtle);
-    }
-    .faq-section .faq-wrap { max-width: 640px; margin: 0 auto; }
-    .faq-section .faq-item { border-bottom: 1px solid rgba(233,30,99,.08); }
-    .faq-section .faq-q    { color: #e2e2e2; }
-    .faq-section .faq-q::after { color: var(--luna-pink); }
-    .faq-section .faq-a    { color: var(--text-dim); }
-
-    /* ══ CIERRE ══ */
-    .cierre-luna {
-      background: linear-gradient(180deg, var(--bg-base) 0%, #0a0305 100%);
-      padding: clamp(72px,12vw,110px) clamp(20px,5vw,64px);
+    .riv-btn:hover { background: var(--riv-esmeralda-hover); transform: translateY(-1px); }
+    .riv-btn-sub { font-size: 11px; font-weight: 700; margin-top: 2px; opacity: .8; }
+    .riv-hero {
+      background: var(--riv-negro);
+      padding: clamp(28px,7vw,52px) 0 clamp(32px,7vw,52px);
       text-align: center;
-      border-top: 1px solid var(--border-subtle);
     }
-    .cierre-luna__inner { max-width: 560px; margin: 0 auto; }
-    .cierre-novedad {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-      color: var(--luna-pink);
-      background: var(--luna-glow); border: 1px solid rgba(233,30,99,.2);
-      padding: 7px 16px; border-radius: 20px; margin-bottom: 28px;
+    .riv-hero__h1 {
+      font-size: clamp(24px,7vw,36px); font-weight: 800; line-height: 1.15;
+      color: var(--riv-blanco); margin: 0 0 16px;
     }
-    .cierre-novedad__dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--luna-pink);
-      animation: pulse-luna 2s ease-in-out infinite;
+    .riv-hero__sub { font-size: 15px; color: var(--riv-blanco-2); line-height: 1.55; margin: 0 0 20px; }
+    .riv-hero-img-container {
+      width: min(90vw,440px); aspect-ratio: 4/5;
+      margin: 0 auto 28px; border-radius: 16px; overflow: hidden;
+      border: 1px solid #2A2D30;
     }
-    @keyframes pulse-luna {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: .45; transform: scale(.7); }
+    .riv-hero-img-container img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
     }
-    .cierre-luna__h {
-      font-size: clamp(24px,4.5vw,38px); font-weight: 800; color: #fff;
-      line-height: 1.15; letter-spacing: -.02em; margin: 0 0 14px;
+    .riv-save-pill {
+      display: inline-block;
+      font-size: 12px; font-weight: 700; color: #FFFFFF;
+      background: var(--riv-esmeralda); border-radius: 999px;
+      padding: 3px 12px; margin-bottom: 10px;
     }
-    .cierre-luna__sub { font-size: 15px; color: var(--text-dim); line-height: 1.6; margin: 0 0 36px; }
-    .cierre-trust { display: flex; flex-direction: column; gap: 10px; margin: 32px 0 0; }
-    .ct-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-dim); justify-content: center; }
-    .ct-ok { color: #86efac; font-weight: 700; }
-
-    /* ══ STICKY CTA ══ */
-    .sticky-cta-bar {
-      display: none;
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
-      background: rgba(13,10,11,.96);
-      border-top: 1px solid rgba(233,30,99,.15);
-      padding: 8px 16px;
-      padding-bottom: max(8px, env(safe-area-inset-bottom));
-      backdrop-filter: blur(10px);
+    .riv-price-row {
+      display: flex; align-items: baseline; gap: 10px;
+      justify-content: center; flex-wrap: nowrap; margin-bottom: 6px;
     }
-    @media (max-width: 700px) {
-      .sticky-cta-bar { display: block; }
-      body:has(#order-modal.active) .sticky-cta-bar { display: none; }
+    .riv-price-main { font-size: clamp(25px,7.5vw,35px); font-weight: 800; color: var(--riv-blanco); }
+    .riv-price-compare { font-size: clamp(18px,5.5vw,22px); color: var(--riv-tachado); text-decoration: line-through; }
+    .riv-social-proof { font-size: 13px; color: var(--riv-blanco-2); font-weight: 700; margin-bottom: 4px; }
+    .riv-garantia { font-size: 13px; color: var(--riv-esmeralda-vivo); margin-bottom: 20px; }
+    .riv-risk-zero {
+      background: rgba(52,211,153,.1); border-left: 3px solid var(--riv-esmeralda-vivo);
+      padding: 14px 16px; border-radius: 8px; margin: 0 0 20px; text-align: left;
     }
-
-    /* ══ RESPONSIVE ══ */
-    @media (max-width: 900px) {
-      .transf__bridge { grid-template-columns: 1fr; }
-      .transf__col--antes { border-right: none; border-bottom: 1px solid var(--border-subtle); }
-      .transf__col--despues { border-left: none; border-top: 1px solid var(--border-subtle); }
-      .transf__center {
-        writing-mode: horizontal-tb; flex-direction: row; padding: 16px 24px;
-        border-top: 1px solid rgba(233,30,99,.08);
-        border-bottom: 1px solid rgba(233,30,99,.08);
-      }
-      .transf__product-name { writing-mode: horizontal-tb; transform: none; }
-      .bene-grid   { grid-template-columns: 1fr; border-radius: 10px 10px 0 0; }
-      .bene-grid-2 { grid-template-columns: 1fr; }
-      .confianza__layout { grid-template-columns: 1fr; }
+    .riv-risk-zero__dest { font-size: 15px; font-weight: 700; color: var(--riv-blanco); margin-bottom: 4px; }
+    .riv-risk-zero__sub { font-size: 13px; color: var(--riv-blanco-2); line-height: 1.4; }
+    .riv-gift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .riv-gift-block {
+      border: 1px solid #3A3D42; border-radius: 10px;
+      padding: 12px 10px; text-align: center; font-size: 13px; color: var(--riv-blanco-2);
     }
-    @media (max-width: 700px) {
-      .hero-luna__inner { grid-template-columns: 1fr; gap: 18px; }
-      .hero-luna__media { order: -1; max-width: 100%; }
-      .hero-luna__media .img-ph { aspect-ratio: 1; }
-      .producto__inner  { grid-template-columns: 1fr; gap: 36px; }
-      .hero-luna        { padding: 10px 16px 20px; }
-      .btn-luna         { max-width: 100%; }
+    .riv-gift-block span { display: block; font-size: 20px; margin-bottom: 4px; }
+    .riv-video-sec { background: var(--riv-bg); padding: clamp(32px,8vw,56px) 0; }
+    .riv-section-h2 {
+      font-size: 24px; font-weight: 800; line-height: 1.2;
+      color: var(--riv-texto); margin: 0 0 8px;
     }
-
-    /* ══ Modal theme ══ */
-    .theme-luna .confirm-intent.checked,
-    .theme-luna .confirm-intent:has(input:checked) {
-      border-color: var(--luna-pink);
-      background: var(--luna-glow);
+    .riv-section-sub { font-size: 14px; color: var(--riv-texto-2); line-height: 1.55; margin: 0 0 20px; }
+    .riv-video-wrap {
+      aspect-ratio: 1/1; border-radius: 16px;
+      overflow: hidden; background: #111214; max-width: 440px; margin: 0 auto 20px;
     }
-    .theme-luna .btn-primary { background: var(--luna-pink); }
-    .theme-luna .btn-primary:hover { background: var(--luna-light); }
-    .theme-luna .modal-urgency { color: var(--luna-pink); }
-    #modal-submit-btn { white-space: nowrap; font-size: clamp(13px, 3.5vw, 16px); }
-    .theme-luna .offer-option.selected,
-    .theme-luna .offer-option:has(input:checked) {
-      border-color: var(--luna-pink);
-      background: rgba(233,30,99,.07);
+    .riv-video-wrap video {
+      width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;
     }
-    .theme-luna .offer-badge { background: #FF6B35; color: #ffffff; }
-    .theme-luna .offer-badge--best { background: #00C851; color: #ffffff; }
-    /* Badge modal: fila inferior junto a offer-saving */
-    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; gap: 8px; }
-    .offer-foot .offer-saving { margin-top: 0; }
-    .offer-foot .offer-badge  { position: static; flex-shrink: 0; }
-
-    /* Autocomplete manual de ciudad — reemplaza datalist (no confiable en algunos mobile).
-       Wrapper dedicado (no #location-group entero) para que top:100% quede pegado
-       al input y no a la altura total del form-group (que incluye el botón de
-       referencia debajo). */
-    .city-input-wrap { position: relative; }
-    .city-suggestions {
-      display: none !important;
-      position: absolute !important; left: 0 !important; right: 0 !important; top: 100% !important;
-      margin-top: 4px !important;
-      background-color: #ffffff !important;
-      background-image: none !important;
-      border: 1px solid rgba(0,0,0,0.1) !important;
-      border-radius: 8px !important;
-      overflow-y: auto !important;
-      -webkit-overflow-scrolling: touch !important;
-      overscroll-behavior: contain !important;
-      touch-action: pan-y !important;
-      max-height: 240px !important;
-      z-index: 50 !important;
-      -webkit-user-select: none !important;
-      user-select: none !important;
-      -webkit-tap-highlight-color: transparent !important;
+    .riv-cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .riv-entrega { background: var(--riv-negro); padding: clamp(32px,8vw,56px) 0; }
+    .riv-entrega-img-wrap {
+      aspect-ratio: 1/1; border-radius: 12px;
+      overflow: hidden; background: #1A1A1A;
+      margin: 0 0 24px; max-width: 100%;
     }
-    .city-suggestions.open { display: block !important; }
-    .city-suggestions::selection,
-    .city-suggestions *::selection { background: transparent !important; color: inherit !important; }
-    .city-suggestions__item {
-      padding: 12px 16px !important;
-      min-height: 40px !important;
-      box-sizing: border-box !important;
-      display: flex !important;
-      align-items: center !important;
-      font-size: 14px !important;
-      color: #000000 !important;
-      background-color: #ffffff !important;
-      background-image: none !important;
-      cursor: pointer !important;
-      -webkit-user-select: none !important;
-      user-select: none !important;
-      -webkit-tap-highlight-color: transparent !important;
+    .riv-entrega-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .riv-entrega .riv-section-h2 { color: var(--riv-blanco); }
+    .riv-value-list { list-style: none; padding: 0; margin: 0 0 20px; }
+    .riv-value-item {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 10px 0; border-bottom: 1px solid #3A3D42; gap: 12px;
     }
-    .city-suggestions__item + .city-suggestions__item { border-top: 1px solid rgba(0,0,0,0.08) !important; }
-    .city-suggestions__item:hover,
-    .city-suggestions__item:focus,
-    .city-suggestions__item.touch-active { background-color: #FF3EA5 !important; color: #ffffff !important; }
-    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: #dc2626; color: #ffffff; font-weight: 700; font-size: 14px; border-radius: 8px; text-decoration: none; text-align: center; white-space: nowrap; }
+    .riv-value-item:last-child { border-bottom: none; }
+    .riv-value-item--highlight {
+      background: rgba(52,211,153,.10); padding: 10px 8px;
+      border-radius: 6px; border-bottom: none; margin-bottom: 1px;
+    }
+    .riv-value-item__label { font-size: 14px; color: var(--riv-blanco-2); line-height: 1.35; flex: 1; }
+    .riv-value-item__amount { font-size: 14px; color: var(--riv-blanco); font-weight: 700; white-space: nowrap; }
+    .riv-value-total { font-size: 13px; color: var(--riv-blanco-2); margin: 0 0 6px; }
+    .riv-value-hoy { font-size: 20px; font-weight: 700; color: var(--riv-blanco); margin: 0 0 8px; }
+    .riv-value-hoy span { color: var(--riv-esmeralda-vivo); }
+    .riv-value-nota { font-size: 12px; color: var(--riv-blanco-2); margin: 0 0 24px; }
+    .riv-oficina { background: var(--riv-bg); padding: clamp(32px,8vw,56px) 0; }
+    .riv-oficina-img-wrap {
+      aspect-ratio: 1/1; border-radius: 12px;
+      overflow: hidden; background: #E8E8E8; margin: 0 0 24px;
+    }
+    .riv-oficina-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .riv-specs { list-style: none; padding: 0; margin: 16px 0 24px; display: flex; flex-direction: column; gap: 10px; }
+    .riv-specs li { padding-left: 18px; position: relative; font-size: 15px; color: var(--riv-texto-2); line-height: 1.45; }
+    .riv-specs li::before { content: ''; position: absolute; left: 0; top: 7px; width: 7px; height: 7px; background: var(--riv-esmeralda); border-radius: 50%; }
+    .riv-objeciones { background: var(--riv-bg-2); padding: clamp(32px,8vw,56px) 0; }
+    .riv-obj-list { display: flex; flex-direction: column; gap: 14px; }
+    .riv-obj-item { padding: 16px; border-radius: 12px; border: 1px solid var(--riv-plata); background: var(--riv-blanco); }
+    .riv-obj-icon { font-size: 22px; margin-bottom: 6px; }
+    .riv-obj-item strong { font-size: 15px; font-weight: 700; color: var(--riv-texto); display: block; margin-bottom: 4px; }
+    .riv-obj-item p { font-size: 14px; color: var(--riv-texto-2); margin: 0; line-height: 1.45; }
+    .riv-cierre { background: var(--riv-negro); padding: clamp(48px,10vw,72px) 0; text-align: center; }
+    .riv-cierre__h2 { font-size: 22px; font-weight: 800; color: var(--riv-blanco); margin: 0 0 10px; }
+    .riv-cierre__stock { font-size: 13px; color: var(--riv-blanco-2); margin: 0 0 8px; }
+    .riv-cierre__price { font-size: 15px; color: var(--riv-blanco-2); margin: 0 0 22px; }
+    .riv-footer {
+      background: var(--riv-negro); padding: 20px; text-align: center;
+      font-size: 13px; color: var(--riv-blanco-2);
+      border-top: 1px solid #2A2D30;
+    }
+    .riv .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(17,18,20,.6); align-items: center; justify-content: center;
+      padding: 16px; overflow-y: auto;
+    }
+    .riv .modal-overlay.active { display: flex; }
+    .riv .modal-box {
+      position: relative; background: #FFFFFF;
+      border: 1px solid var(--riv-plata); border-radius: 16px;
+      max-width: 440px; width: 100%; padding: 28px 24px;
+      max-height: 90vh; overflow-y: auto;
+      color-scheme: light; accent-color: var(--riv-esmeralda);
+      color: var(--riv-texto);
+    }
+    .riv .modal-close {
+      position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
+      border-radius: 50%; border: none; background: var(--riv-bg-2);
+      color: var(--riv-texto); font-size: 15px; cursor: pointer; font-family: inherit;
+    }
+    .riv .modal-title {
+      font-size: clamp(14px,4vw,18px); font-weight: 700; color: var(--riv-texto);
+      margin: 0 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .riv .modal-section-label {
+      display: block; font-size: 11px; font-weight: 700; color: var(--riv-texto-2);
+      text-transform: uppercase; letter-spacing: .05em; margin: 0 0 10px;
+    }
+    .riv .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .riv .offer-option {
+      position: relative; display: block;
+      border: 1.5px solid var(--riv-plata); border-radius: 10px;
+      padding: 12px 14px; cursor: pointer; background: var(--riv-bg);
+    }
+    .riv .offer-option input { position: absolute; opacity: 0; }
+    .riv .offer-option.selected { border: 2px solid var(--riv-esmeralda); background: var(--riv-esmeralda-suave); }
+    .riv .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    .riv .offer-qty { font-weight: 700; font-size: 14px; color: var(--riv-texto); }
+    .riv .offer-price { font-weight: 800; font-size: 15px; color: var(--riv-texto); }
+    .riv .offer-compare { font-size: 12px; text-decoration: line-through; color: var(--riv-tachado); margin-right: 6px; }
+    .riv .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .riv .offer-saving { color: var(--riv-esmeralda); font-weight: 700; font-size: 12px; }
+    .riv .offer-badge {
+      position: static; background: var(--riv-esmeralda); color: #FFFFFF;
+      font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+    }
+    .riv .form-group { margin-bottom: 14px; }
+    .riv .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--riv-texto-2); margin-bottom: 6px; }
+    .riv .form-group input {
+      width: 100%; padding: 11px 12px; border-radius: 8px;
+      border: 1px solid var(--riv-plata);
+      background: var(--riv-bg); color: var(--riv-texto); font-size: 14px; font-family: inherit;
+      outline: none; transition: border-color .15s;
+    }
+    .riv .form-group input:focus { border: 2px solid var(--riv-esmeralda); }
+    .riv .form-group input::placeholder { color: var(--riv-tachado); }
+    .riv .upsell-block {
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      background: var(--riv-bg); border: 1.5px solid var(--riv-plata);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .riv .upsell-title { color: var(--riv-texto); font-size: 13px; font-weight: 700; }
+    .riv .upsell-sub { color: var(--riv-texto-2); font-size: 12px; }
+    .riv-pay-badge {
+      margin-top: 16px; text-align: center; font-size: 12px; font-weight: 800;
+      color: var(--riv-esmeralda); background: var(--riv-esmeralda-suave);
+      border-radius: 8px; padding: 8px 12px;
+    }
+    .riv .form-submit { margin-top: 18px; }
+    .riv .lm-success { display: none; text-align: center; }
+    .riv .lm-success.visible { display: block; }
+    .riv .lm-success__icon {
+      width: 56px; height: 56px; background: var(--riv-esmeralda); color: #FFFFFF;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin: 0 auto 16px;
+    }
+    .riv .lm-success h2 { color: var(--riv-esmeralda); font-size: 22px; margin-bottom: 12px; }
+    .riv .lm-success p { color: var(--riv-texto-2); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .riv .lm-success__tip { font-weight: 600; color: var(--riv-texto); }
+    .riv .lm-success__badges {
+      display: flex; gap: 12px; justify-content: center; margin-top: 16px;
+      font-size: 13px; color: var(--riv-esmeralda); font-weight: 700;
+    }
+    .btn-ver-coleccion {
+      display: block; margin-top: 20px; padding: 12px 24px;
+      background: #dc2626; color: #ffffff; font-weight: 700; font-size: 14px;
+      border-radius: 8px; text-align: center; white-space: nowrap; font-family: inherit;
+    }
+    html, body { overflow-x: hidden; }
   </style>
-  <meta property="og:title" content="LUNA MINI — Bienestar Personal · Dam Vertex" />
-  <meta property="og:description" content="Compacto. Silencioso. Recargable. Entrega hoy en Central. Pagás cuando lo recibís." />
-  <meta property="og:image" content="/assets/img/lunamini2image.webp" />
-  <meta property="og:url" content="https://damvertex.com/luna-mini-vibrador-bala-recargable/" />
-  <meta property="og:type" content="website" />
 </head>
-<body class="theme-luna">
+<body class="riv">
 
-<div style="background:#dc2626;color:#fff;text-align:center;padding:7px 8px;font-size:12px;font-weight:700;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">⚡ Quedan 4 unidades · Envío gratis · Pagás al recibir</div>
+<div class="riv-urgency-bar"><span class="riv-urgency-dot"></span> Stock limitado &middot; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</div>
 
-<!-- Sprite: icono WhatsApp real del proyecto (reusado de public/index.html .wa-btn) -->
-<svg style="position:absolute;width:0;height:0" aria-hidden="true">
-  <symbol id="ic-whatsapp" viewBox="0 0 24 24">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-  </symbol>
-</svg>
-
-<!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg></a>
+  <button type="button" class="riv-nav-btn" data-open-modal>Pedir ahora &mdash; Pag&#xE1;s al recibir</button>
 </nav>
 
 <main>
-<!-- ══ HERO ══ -->
-<section class="hero-luna" id="section-hero" data-insync-section="hero">
-  <div class="hero-luna__inner">
 
-    <div class="hero-luna__media">
-      <span class="hero-luna__badge">Novedad</span>
-      <div class="img-ph" id="hero-img">
-        <img src="/assets/img/lunamini-perfil.webp?v=2"
-             srcset="/assets/img/lunamini-perfil-mobile.webp?v=1 600w, /assets/img/lunamini-perfil.webp?v=2 1122w"
-             sizes="(max-width: 600px) 600px, 1122px"
-             alt="LUNA MINI vibrador bala personal"
-             width="1122" height="1402"
-             fetchpriority="high"
-             loading="eager">
-      </div>
+<section id="section-hero" data-insync-section="hero" class="riv-hero">
+  <div class="riv-inner">
+
+    <div class="riv-hero-img-container">
+      <img src="/assets/img/lunamini-perfil.webp?v=2"
+           srcset="/assets/img/lunamini-perfil-mobile.webp?v=1 600w, /assets/img/lunamini-perfil.webp?v=2 1122w"
+           sizes="(max-width:600px) 600px, 1122px"
+           alt="LUNA MINI vibrador bala personal recargable"
+           loading="eager" fetchpriority="high" decoding="async" width="1122" height="1402">
     </div>
+
+    <h1 class="riv-hero__h1">Todo el placer.<br>Toda la discreci&#xF3;n.</h1>
+    <p class="riv-hero__sub">LUNA MINI es el vibrador bala personal m&#xE1;s silencioso del mercado. Compacto, recargable y con 10 modos. Te llega hoy mismo.</p>
 
     <div>
-      <p class="eyebrow-luna">¿Qué es lo que todas están pidiendo? ↓</p>
-      <h1 class="hero-luna__h">Mereces sentir placer,<br><em>a tu manera y a tu tiempo.</em></h1>
-      <p class="hero-luna__sub">LUNA MINI es tu vibrador personal: compacto, silencioso y siempre listo cuando vos querés. Para esos momentos que son solo tuyos — sin apuro, sin ruido y sin que nadie más lo sepa.</p>
-      <p class="exclusive-badge">🇵🇾 No conseguís esto en ningún local de Paraguay</p>
-      <div style="background:#e8f5e9;border-left:4px solid #1a7a3e;padding:14px 16px;border-radius:8px;margin:16px 0;">
-        <div style="font-size:17px;font-weight:900;color:#1a7a3e;">No pagás nada hasta tenerlo en la mano</div>
-        <div style="font-size:13px;color:#2c3e50;margin-top:4px;">Lo recibís, lo revisás, y recién ahí pagás. Sin adelantos, sin tarjeta.</div>
+      <div class="riv-save-pill">Ahorr&#xE1;s Gs. 110.000</div>
+      <div class="riv-price-row">
+        <span class="riv-price-main">Gs. 119.000</span>
+        <span class="riv-price-compare">Gs. 229.000</span>
       </div>
-      <div class="price-block">
-        <div class="price-main-row">
-          <span class="price-main">Gs. 119.000</span>
-          <span class="price-compare">Gs. 161.000</span>
-          <span class="price-badge">Ahorrás Gs. 42.000</span>
-        </div>
+      <p class="riv-social-proof">+340 pedidos entregados en Paraguay</p>
+      <p class="riv-garantia">&#x2713; Garant&#xED;a de 90 d&#xED;as</p>
+    </div>
+
+    <div class="riv-risk-zero">
+      <p class="riv-risk-zero__dest">No pag&#xE1;s nada hasta tenerlo en la mano</p>
+      <p class="riv-risk-zero__sub">Lo recib&#xED;s, lo revis&#xE1;s, y reci&#xE9;n ah&#xED; pag&#xE1;s.<br>Sin adelantos, sin tarjeta.</p>
+    </div>
+
+    <div class="riv-gift-grid">
+      <div class="riv-gift-block">
+        <span>&#x1F4E6;</span>Empaque 100% discreto &mdash; bolsa neutra sin marcas
       </div>
-      <div style="font-size:13px;color:#666;font-style:italic;margin-top:6px;">Menos de lo que gastás en dos deliverys — y te dura años.</div>
-      <div class="evergreen-timer" id="evergreen-timer">
-        <div class="evergreen-timer__line1">Este precio cierra en <strong class="evergreen-timer__time">07:00</strong></div>
-        <div class="evergreen-timer__line2">Últimas unidades con entrega en el día</div>
+      <div class="riv-gift-block">
+        <span>&#x26A1;</span>Entrega coordinada el mismo d&#xED;a en Central
       </div>
-      <ul class="luna-features">
-        <li><span class="luna-features__dot"></span>Tan silencioso que es tu secreto, nada más</li>
-        <li><span class="luna-features__dot"></span>10 modos distintos, para encontrar el que más te guste</li>
-        <li><span class="luna-features__dot"></span>Más de 45 minutos de batería, siempre lista para vos</li>
-      </ul>
-      <div class="spi">
-        <span class="spi-stars">★★★★★</span>
-        <span class="spi-text">Pocas unidades disponibles · Llega hoy mismo</span>
-      </div>
-      <a class="btn-luna" data-scroll-form data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
+    </div>
+
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="hero"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Pedir ahora &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Garant&#xED;a de 90 d&#xED;as &middot; Empaque discreto</span>
       </a>
-      <div class="delivery-badges">
-        <span class="db-badge db-pink">🚚 Entrega en el día</span>
-        <span class="db-badge db-pink">✓ Envío gratis</span>
-        <span class="db-badge">💳 Pago al recibir · Central</span>
-        <span class="db-badge">📦 Empaque discreto</span>
-      </div>
-      <div class="delivery-badges delivery-badges--secondary">
-        <span class="db-badge">📦 Interior: pago anticipado - sin envío gratis</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;justify-content:center;margin-top:12px;font-size:13px;">
-        <span style="font-weight:900;font-size:18px;color:#1a7a3e;">+340</span>
-        <span style="color:#555;">pedidos entregados en Paraguay este mes</span>
-      </div>
     </div>
 
   </div>
 </section>
 
-<!-- ══ CONFIANZA ══ -->
-<section class="confianza" id="section-confianza" data-insync-section="confianza">
-  <div class="confianza__inner">
-    <div class="confianza__head">
-      <p class="sec-overline">Tu tranquilidad, primero</p>
-      <div class="pink-line pink-line--center"></div>
-      <h2 class="sec-h" style="margin:0">Llega a vos.<br>Tu privacidad, siempre protegida.</h2>
-    </div>
+<section id="section-video" data-insync-section="video" class="riv-video-sec">
+  <div class="riv-inner">
 
-    <div class="confianza__layout">
+    <h2 class="riv-section-h2">As&#xED; se ve. As&#xED; suena.</h2>
+    <p class="riv-section-sub">Peque&#xF1;o y silencioso. Cabe en cualquier cartera sin que nadie lo note.</p>
 
-      <div>
-        <div class="img-ph img-ph--sq" id="lifestyle-img">
-          <img src="/assets/img/empaque-discreto.webp" alt="LUNA MINI — empaque 100% discreto, bolsa neutra sin marcas, entrega en el día" width="600" height="600" loading="lazy">
-        </div>
-      </div>
-
-      <div class="confianza__cards">
-        <div class="trust-card" style="border-color:rgba(233,30,99,.25);background:rgba(233,30,99,.05)">
-          <p class="t-title">Empaque 100% discreto <span style="font-size:1em">📦</span></p>
-          <p class="t-body">Llega en una bolsa simple, sin marcas ni nada que diga qué hay adentro. Ni quien te lo entrega se entera de nada — es solo tuyo.</p>
-        </div>
-        <div class="trust-card">
-          <p class="t-title">Entrega en el día en Central <span style="font-size:1em">🚚</span></p>
-          <p class="t-body">Si estás en Central, hoy mismo lo tenés en tus manos. Coordinamos todo por WhatsApp, tranquila y sin vueltas.</p>
-        </div>
-        <div class="trust-card">
-          <p class="t-title">Pagás cuando lo tenés en mano <span style="font-size:1em">💳</span></p>
-          <p class="t-body">En Central pagás recién cuando lo tenés en tus manos — efectivo o transferencia, como prefieras. Sin adelantar nada.</p>
-        </div>
-        <div class="trust-card">
-          <p class="t-title">Soporte real por WhatsApp <span style="font-size:1em">💬</span></p>
-          <p class="t-body">Si te queda alguna duda, te respondemos directo por WhatsApp, como quien te ayuda de verdad. Con garantía y acompañamiento después de la compra.</p>
-        </div>
-      </div>
-
-    </div>
-
-    <div style="text-align:center;margin-top:40px">
-      <a class="btn-luna" data-scroll-form data-insync-cta="confianza" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ══ TRANSFORMACION ══ -->
-<section class="transf" id="section-transformacion" data-insync-section="transformacion">
-  <div class="transf__inner">
-    <div class="transf__head">
-      <p class="transf__overline">Lo que cambia cuando es tuyo</p>
-      <div class="pink-line pink-line--center"></div>
-      <h2 class="transf__title">Tu placer merece ser<br>solo tu decisión.</h2>
-    </div>
-
-    <div class="transf__bridge">
-
-      <div class="transf__col transf__col--antes">
-        <p class="transf__col-label">Antes</p>
-        <h3>Sin nada propio. Sin la certeza de sentir bien.</h3>
-        <ul class="transf__list">
-          <li>Opciones genéricas, incómodas, que se notan a simple vista</li>
-          <li>Nada que entre disimulado en tu cartera</li>
-          <li>Esa sensación de cuidar el ruido, de que alguien pregunte</li>
-          <li>Precios de importación que no cierran</li>
-          <li>Sin garantía acá, sin nadie que te acompañe</li>
-        </ul>
-      </div>
-
-      <div class="transf__center">
-        <div class="transf__arrow">→</div>
-        <span class="transf__product-name">LUNA MINI</span>
-      </div>
-
-      <div class="transf__col transf__col--despues">
-        <p class="transf__col-label">Después</p>
-        <h3>Tu momento, cuando vos decidís.</h3>
-        <ul class="transf__list">
-          <li>80 mm, del tamaño justo para llevarlo en cualquier cartera</li>
-          <li>Silencioso de verdad — tu momento, sin que nadie se entere</li>
-          <li>10 modos para encontrar el que te haga sentir mejor</li>
-          <li>Gs. 199.000, con entrega el mismo día</li>
-          <li>Acompañamiento por WhatsApp y garantía real</li>
-        </ul>
-      </div>
-
-    </div>
-
-    <div style="text-align:center;margin-top:40px">
-      <a class="btn-luna" data-scroll-form data-insync-cta="transformacion" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ══ BENEFICIOS ══ -->
-<section class="beneficios" id="section-beneficios" data-insync-section="beneficios">
-  <div class="beneficios__inner">
-    <div class="beneficios__head">
-      <p class="sec-overline">Todo lo que vas a amar</p>
-      <div class="pink-line pink-line--center"></div>
-      <h2 class="sec-h" style="margin:0">Pensado para que te sientas bien.<br>Nada más, nada menos.</h2>
-    </div>
-
-    <div class="bene-grid">
-      <div class="bene-card">
-        <strong>10 modos de vibración <span style="font-size:1em">🎛️</span></strong>
-        <p>De lo más suave a lo más intenso — vos elegís según cómo te sintás cada vez. Un solo botón, nada de instrucciones complicadas.</p>
-      </div>
-      <div class="bene-card">
-        <strong>Silencioso de verdad <span style="font-size:1em">🔇</span></strong>
-        <p>Podés disfrutarlo tranquila, sin que nadie en la otra habitación se entere. Toda la potencia, toda la discreción.</p>
-      </div>
-      <div class="bene-card">
-        <strong>Diseño para discreción <span style="font-size:1em">👜</span></strong>
-        <p>80mm, apenas 50 gramos. Entra en tu cartera o en tu cajón sin que nadie lo note. Chiquito, lindo y solo tuyo.</p>
-      </div>
-    </div>
-    <div class="bene-grid-2">
-      <div class="bene-card">
-        <strong>Recargable vía USB <span style="font-size:1em">⚡</span></strong>
-        <p>Nada de pilas que te dejan a mitad de camino. Lo cargás con el mismo cable de tu celular y lo tenés listo cuando lo necesites.</p>
-      </div>
-      <div class="bene-card">
-        <strong>Impermeable IPX7 <span style="font-size:1em">💧</span></strong>
-        <p>Lo lavás fácil y tranquila, bajo el agua. Silicona médica certificada: suave con tu piel y hecho para acompañarte tiempo.</p>
-      </div>
-    </div>
-
-    <div style="text-align:center;margin-top:40px">
-      <a class="btn-luna" data-scroll-form data-insync-cta="beneficios" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-        Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ══ PRODUCTO — especificaciones ══ -->
-<section class="producto" id="section-producto" data-insync-section="producto">
-  <div class="producto__inner">
-
-    <div>
-      <div class="img-ph img-ph--sq" id="detalle-img">
-        <video id="specs-video" muted loop playsinline preload="none" aria-hidden="true">
-          <source data-src="/assets/video/video1-lunamini.mp4" type="video/mp4">
+    <div style="max-width:420px;margin:0 auto 20px;">
+      <div style="aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:#111214;display:flex;align-items:center;justify-content:center;">
+        <video id="lm-video" muted autoplay loop playsinline webkit-playsinline preload="metadata" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <source src="/assets/video/video1-lunamini.mp4" type="video/mp4">
         </video>
       </div>
     </div>
 
-    <div>
-      <p class="sec-overline">Especificaciones</p>
-      <div class="pink-line"></div>
-      <h2 class="sec-h">Hecho para durar.<br>Pensado para vos.</h2>
-      <p class="sec-body">Silicona médica ultra suave, 10 modos de vibración, carga USB. LUNA MINI es ese vibrador bala que se siente increíble y no ocupa nada de lugar — entra en cualquier bolso y te acompaña más de 45 minutos con una sola carga.</p>
-
-      <div class="specs__grid">
-        <div class="spec-item">
-          <div class="spec-item__label">Material</div>
-          <div class="spec-item__val">Silicona médica</div>
-          <div class="spec-item__sub">Suave, sin látex</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-item__label">Impermeabilidad</div>
-          <div class="spec-item__val">IPX7</div>
-          <div class="spec-item__sub">Limpieza bajo agua</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-item__label">Modos</div>
-          <div class="spec-item__val">10 intensidades</div>
-          <div class="spec-item__sub">Un solo botón</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-item__label">Carga</div>
-          <div class="spec-item__val">USB incluido</div>
-          <div class="spec-item__sub">45+ min de autonomía</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-item__label">Dimensiones</div>
-          <div class="spec-item__val">80 × 21,5 mm</div>
-          <div class="spec-item__sub">Compacto y discreto</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-item__label">Peso</div>
-          <div class="spec-item__val">50 gramos</div>
-          <div class="spec-item__sub">Fácil de guardar</div>
-        </div>
-      </div>
-
-      <div style="margin-top:28px">
-        <a class="btn-luna" data-scroll-form data-insync-cta="producto" style="display:inline-flex;max-width:340px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-          Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-        </a>
-      </div>
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="video"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Pedir ahora &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Garant&#xED;a de 90 d&#xED;as &middot; Empaque discreto</span>
+      </a>
     </div>
 
   </div>
 </section>
-<script>
-  /* Video de Especificaciones: below-the-fold, no debe competir por ancho de
-     banda con el LCP del hero. Sin preload hasta que entra en viewport. */
-  (function() {
-    var v = document.getElementById('specs-video');
-    if (!v || typeof IntersectionObserver !== 'function') return;
-    var obs = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (!entry.isIntersecting) return;
-        var source = v.querySelector('source');
-        if (source && source.dataset.src) {
-          source.src = source.dataset.src;
-          v.load();
-        }
-        var p = v.play();
-        if (p && typeof p.catch === 'function') p.catch(function() {});
-        obs.unobserve(v);
-      });
-    }, { rootMargin: '200px' });
-    obs.observe(v);
-  })();
-</script>
 
-<section id="section-garantia" data-insync-section="garantia" style="padding:28px 16px;text-align:center;">
-  <div style="max-width:480px;margin:0 auto;border:2px solid #1a7a3e;border-radius:14px;padding:24px 18px;">
-    <div style="font-size:36px;">🛡️</div>
-    <h3 style="font-size:22px;font-weight:900;margin:8px 0 6px;color:#1a252f;">Garantía de 90 días</h3>
-    <p style="font-size:15px;color:#555;line-height:1.5;margin:0;">Si no funciona como prometemos, te lo cambiamos sin costo. Sin preguntas, sin vueltas.</p>
-  </div>
-</section>
+<section id="section-entrega" data-insync-section="entrega" class="riv-entrega">
+  <div class="riv-inner">
 
-<!-- ══ FAQ ══ -->
-<section class="faq-section" id="section-faq" data-insync-section="faq">
-  <p class="sec-overline" style="text-align:center;margin-bottom:10px">Preguntas frecuentes</p>
-  <div class="pink-line pink-line--center"></div>
-  <div class="faq-wrap">
+    <div class="riv-entrega-img-wrap">
+      <img src="/assets/img/empaque-discreto.webp"
+           alt="LUNA MINI &mdash; empaque 100% discreto, bolsa neutra sin marcas"
+           loading="lazy" decoding="async" width="600" height="600">
+    </div>
 
-    <details class="faq-item">
-      <summary class="faq-q">¿Es un buen vibrador?</summary>
-      <div class="faq-a">Sí, y de los buenos. Es de silicona médica, suave y segura para uso íntimo. Lo probamos antes de sumarlo al catálogo porque queríamos estar seguras de que valía la pena. Calidad real, sin pagar de más.</div>
-    </details>
+    <h2 class="riv-section-h2">Lo que llega a tu puerta</h2>
 
-    <details class="faq-item">
-      <summary class="faq-q">¿Hace mucho ruido?</summary>
-      <div class="faq-a">No, para nada. Está pensado para ser silencioso de verdad — nadie en la otra habitación se va a enterar. Toda la privacidad, sin perder intensidad.</div>
-    </details>
+    <ul class="riv-value-list">
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">LUNA MINI Vibrador Bala Recargable</span>
+        <span class="riv-value-item__amount">Gs. 229.000</span>
+      </li>
+      <li class="riv-value-item riv-value-item--highlight">
+        <span class="riv-value-item__label">&#x1F4E6; Empaque 100% discreto &mdash; bolsa neutra sin marcas</span>
+        <span class="riv-value-item__amount">Incluido</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">&#x26A1; Entrega coordinada el mismo d&#xED;a en Central</span>
+        <span class="riv-value-item__amount">Gs. 25.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Env&#xED;o gratis</span>
+        <span class="riv-value-item__amount">Gs. 30.000</span>
+      </li>
+      <li class="riv-value-item">
+        <span class="riv-value-item__label">Garant&#xED;a de 90 d&#xED;as</span>
+        <span class="riv-value-item__amount">Incluida</span>
+      </li>
+    </ul>
 
-    <details class="faq-item">
-      <summary class="faq-q">¿Por qué está tan barato si se ve tan bien?</summary>
-      <div class="faq-a">Porque no estás pagando una marca importada ni publicidad inflada. Trabajamos directo con proveedores de confianza y dejamos el margen justo. Calidad real, a un precio que tiene sentido.</div>
-    </details>
+    <p class="riv-value-total">Valor total: <strong style="color:#FFFFFF">Gs. 284.000</strong></p>
+    <p class="riv-value-hoy">Hoy pag&#xE1;s <span>Gs. 119.000</span>, al recibir.</p>
+    <p class="riv-value-nota">Llev&#xE1; 2 y ahorr&#xE1;s Gs. 19.000 &mdash; para vos y para regalar.</p>
 
-    <details class="faq-item">
-      <summary class="faq-q">¿Cuánto tarda en llegar?</summary>
-      <div class="faq-a">En Asunción y Central te llega el mismo día — lo pedís hoy, lo tenés hoy. Si estás en el Interior, coordinamos por WhatsApp; suele tardar uno o dos días hábiles más.</div>
-    </details>
-
-    <details class="faq-item">
-      <summary class="faq-q">¿Cómo pago?</summary>
-      <div class="faq-a">En Central pagás recién cuando lo recibís, en efectivo o por transferencia — sin adelantar nada. En el Interior el pago va antes, y coordinamos el envío apenas se confirma.</div>
-    </details>
-
-    <details class="faq-item">
-      <summary class="faq-q">¿Hay garantía?</summary>
-      <div class="faq-a">Sí. Si llega con algún defecto de fábrica, lo solucionamos directo por WhatsApp. Te acompañamos después de la compra, no desaparecemos.</div>
-    </details>
-
-    <details class="faq-item">
-      <summary class="faq-q">¿El empaque es discreto?</summary>
-      <div class="faq-a">100%. Llega en una bolsa neutra, sin logos ni nada que diga qué hay adentro. Ni la persona que te lo entrega lo sabe. Tu privacidad es lo primero para nosotras.</div>
-    </details>
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="entrega"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Pedir ahora &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Garant&#xED;a de 90 d&#xED;as &middot; Empaque discreto</span>
+      </a>
+    </div>
 
   </div>
 </section>
 
-<!-- ══ CIERRE ══ -->
-<section class="cierre-luna" id="section-cierre" data-insync-section="cierre">
-  <div class="cierre-luna__inner">
-    <div class="cierre-novedad">
-      <span class="cierre-novedad__dot"></span>
-      Novedad exclusiva · Stock limitado
+<section id="section-producto" data-insync-section="producto" class="riv-oficina">
+  <div class="riv-inner">
+
+    <div class="riv-oficina-img-wrap">
+      <img src="/assets/img/lunamini2image.webp"
+           alt="LUNA MINI especificaciones t&eacute;cnicas"
+           loading="lazy" decoding="async" width="600" height="600">
     </div>
-    <h2 class="cierre-luna__h">Date este gusto.<br>Gs. 199.000. Hoy mismo.</h2>
-    <p class="cierre-luna__sub">LUNA MINI — el vibrador silencioso, compacto y con 10 modos que sentías que te hacía falta. Entrega en el día. Empaque discreto. Precio de lanzamiento mientras haya stock.</p>
-    <a class="btn-luna" data-scroll-form data-insync-cta="cierre" style="display:inline-flex;max-width:380px;padding:17px 24px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-      Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-    </a>
-    <div class="cierre-trust">
-      <div class="ct-item"><span class="ct-ok">✓</span><span>Entrega en el día · Central</span></div>
-      <div class="ct-item"><span class="ct-ok">✓</span><span>Pagás cuando lo recibís · Central</span></div>
-      <div class="ct-item"><span class="ct-ok">✓</span><span>Empaque 100% discreto — sin marcas</span></div>
-      <div class="ct-item"><span class="ct-ok">✓</span><span>WhatsApp directo para coordinar</span></div>
+
+    <h2 class="riv-section-h2">Compacto. Silencioso. Siempre listo.</h2>
+    <p class="riv-section-sub">80 mm de largo. Silicona m&eacute;dica. IPX7. Un solo bot&oacute;n para controlar los 10 modos.</p>
+
+    <ul class="riv-specs">
+      <li>Silicona m&eacute;dica ultra suave, certificada para uso &iacute;ntimo</li>
+      <li>10 modos de vibraci&oacute;n &mdash; de lo m&aacute;s suave a lo m&aacute;s intenso</li>
+      <li>Impermeabilidad IPX7 &mdash; se lava bajo el agua</li>
+      <li>Carga USB incluida &mdash; m&aacute;s de 45 minutos de bater&iacute;a</li>
+      <li>80 &times; 21,5 mm &middot; Solo 50 gramos</li>
+      <li>&#x26A1; Entrega coordinada el mismo d&iacute;a en Central</li>
+    </ul>
+
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="producto"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Pedir ahora &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Garant&#xED;a de 90 d&#xED;as &middot; Empaque discreto</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section id="section-objeciones" data-insync-section="objeciones" class="riv-objeciones">
+  <div class="riv-inner">
+    <div class="riv-obj-list">
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F69A;</div>
+        <strong>&#xBF;Cu&aacute;ndo llega?</strong>
+        <p>En Central, entrega en el d&iacute;a y env&iacute;o gratis. En Interior coordinamos por WhatsApp; suele tardar 1 o 2 d&iacute;as.</p>
+      </div>
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F4E6;</div>
+        <strong>&#xBF;El empaque es discreto?</strong>
+        <p>100%. Llega en una bolsa neutra, sin logos ni marcas que digan qu&eacute; hay adentro. Ni quien te lo entrega lo sabe.</p>
+      </div>
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F4B5;</div>
+        <strong>&#xBF;Tengo que pagar antes?</strong>
+        <p>No. En Central pag&aacute;s reci&eacute;n cuando lo ten&eacute;s en tus manos, en efectivo o transferencia. Sin adelantar nada.</p>
+      </div>
+      <div class="riv-obj-item">
+        <div class="riv-obj-icon">&#x1F6E1;&#xFE0F;</div>
+        <strong>&#xBF;Hay garant&iacute;a?</strong>
+        <p>S&iacute;, 90 d&iacute;as. Si llega con alg&uacute;n defecto de f&aacute;brica, lo solucionamos directo por WhatsApp.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ══ MODAL PEDIDO ══ -->
-<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-luna">
-  <div class="modal-box">
-    <p class="modal-urgency">⏳ Stock limitado · Novedad</p>
-    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
-    <h2 class="modal-title" id="modal-title-luna">Ya casi es tuyo 🌙</h2>
-    <p class="modal-step">Tu vibrador LUNA MINI · Entrega en el día 🚚</p>
-    <p class="modal-subtitle">Completá tus datos y te escribimos por WhatsApp en minutos para coordinar la entrega hoy mismo.</p>
-
-    <div class="modal-section">
-      <span class="modal-section-label">Elegí tu oferta</span>
-      <div class="offer-options">
-
-        <label class="offer-option selected">
-          <input type="radio" name="offer" value="1" checked>
-          <div class="offer-content">
-            <span class="offer-qty">1 unidad</span>
-            <span class="offer-price" id="offer-price-1">—</span>
-          </div>
-        </label>
-
-        <label class="offer-option">
-          <input type="radio" name="offer" value="2">
-          <div class="offer-content">
-            <span class="offer-qty">2 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-2">—</span>
-              <span class="offer-price" id="offer-price-2">—</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 19.000</span>
-            <div class="offer-badge">🔥 Más elegido</div>
-          </div>
-        </label>
-
-        <label class="offer-option">
-          <input type="radio" name="offer" value="3">
-          <div class="offer-content">
-            <span class="offer-qty">3 unidades</span>
-            <div class="offer-prices">
-              <span class="offer-compare" id="offer-compare-3">—</span>
-              <span class="offer-price" id="offer-price-3">—</span>
-            </div>
-          </div>
-          <div class="offer-foot">
-            <span class="offer-saving">Ahorrás Gs. 38.000</span>
-            <div class="offer-badge offer-badge--best">⭐ Mayor ahorro</div>
-          </div>
-        </label>
-
-      </div>
+<section id="section-cierre" data-insync-section="cierre" class="riv-cierre">
+  <div class="riv-inner">
+    <h2 class="riv-cierre__h2">Recib&iacute;lo en tu casa. Pag&aacute; solo si lo quer&eacute;s.</h2>
+    <p class="riv-cierre__stock">Stock limitado &middot; &Uacute;ltimas unidades disponibles.</p>
+    <p class="riv-cierre__price">Gs. 119.000 &middot; Entrega en el d&iacute;a &middot; Pag&aacute;s al recibir</p>
+    <div class="riv-cta-wrap">
+      <a class="riv-btn" data-open-modal data-insync-cta="cierre"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        Pedir ahora &mdash; Pag&#xE1;s al recibir
+        <span class="riv-btn-sub">&#x2713; Garant&#xED;a de 90 d&#xED;as &middot; Empaque discreto</span>
+      </a>
     </div>
-    <p class="modal-price-warning">🔒 Tus datos están seguros · Solo los usamos para coordinar tu entrega</p>
-
-    <div class="modal-section" id="variant-section" style="display:none">
-      <span class="modal-section-label">Variante</span>
-      <div id="variant-selectors"></div>
-    </div>
-
-    <form class="modal-form" id="modal-form" novalidate>
-
-      <div class="form-group">
-        <label for="m-name">Nombre y apellido</label>
-        <input type="text" id="m-name" name="name" placeholder="Ej: Mar&iacute;a Gonz&aacute;lez" autocomplete="name">
-        <span class="form-error-msg"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="m-phone">Tel&eacute;fono (WhatsApp) <span style="color:#c0392b;font-size:11px;font-weight:600;">&middot; Ingres&aacute; tu n&uacute;mero completo</span></label>
-        <input type="tel" id="m-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel">
-        <span class="form-error-msg"></span>
-      </div>
-
-
-            <div class="form-group">
-        <label for="horario">&iquest;En qu&eacute; horario pod&eacute;s recibir? <span style="font-weight:400;font-size:11px">(opcional)</span></label>
-        <input type="text" name="horario" id="horario" placeholder="Ej: de 9:00 a 17:00hs" maxlength="100" autocomplete="off">
-      </div>
-
-      <div class="form-group">
-        <label for="m-ref">Calle principal y secundaria</label>
-        <input type="text" id="m-ref" name="referencia" placeholder="Ej: Av. Espa&ntilde;a y Tacuary" autocomplete="street-address">
-      </div>
-
-            <div class="form-group" id="city-group">
-        <label for="m-city-search">Ciudad <span style="color:#c0392b;font-size:11px;font-weight:600;">&middot; Solo el nombre de tu ciudad</span></label>
-        <input type="text" id="m-city-search" placeholder="Ej: Asunci&oacute;n, Mariano Roque Alonso" autocomplete="off" oninput="document.getElementById('m-city').value=this.value">
-        <input type="hidden" id="m-city" name="city">
-        <span class="form-error-msg"></span>
-      </div>
-
-            <input type="hidden" id="m-payment" name="payment" value="Al recibir">
-
-      <label class="upsell-block">
-        <input type="checkbox" id="m-express" name="express">
-        <div class="upsell-content">
-          <span class="upsell-title">🚀 Envío express +10.000 Gs</span>
-          <span class="upsell-sub">Recibí antes que los demás</span>
-        </div>
-      </label>
-
-      <label class="upsell-block" id="m-invoice-block">
-        <input type="checkbox" id="m-invoice" name="invoice">
-        <div class="upsell-content">
-          <span class="upsell-title">🧾 Necesito factura</span>
-          <span class="upsell-sub">RUC o cédula para comprobante fiscal</span>
-        </div>
-      </label>
-      <div id="m-invoice-fields" style="display:none;margin-top:6px">
-        <div class="form-group">
-          <label for="m-invoice-ruc">RUC *</label>
-          <input type="text" id="m-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
-          <span class="form-error-msg"></span>
-        </div>
-        <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-name">Razón social / Nombre *</label>
-          <input type="text" id="m-invoice-name" name="invoice_name" placeholder="Nombre completo o razón social">
-          <span class="form-error-msg"></span>
-        </div>
-        <div class="form-group" style="margin-top:14px">
-          <label for="m-invoice-email">Email <span style="font-weight:400;color:rgba(255,255,255,.4)">(opcional)</span></label>
-          <input type="email" id="m-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
-        </div>
-      </div>
-
-            <input type="checkbox" id="m-confirm" name="confirm" checked hidden>
-
-      <div class="form-submit">
-        <button type="submit" class="btn btn-primary" id="modal-submit-btn">
-          Confirmar pedido por WhatsApp
-        </button>
-      </div>
-
-    </form>
-
-    <div class="form-success" id="modal-success">
-      <h3>¡Listo!</h3>
-      <p>Abrimos WhatsApp para coordinar tu pedido.</p>
-      <p style="margin-top:8px">Si no abrió automáticamente, escribinos al <strong>+595 993 471 550</strong>.</p>
-      <div class="manual-wa">
-        <a href="https://wa.me/595993471550" class="btn-wa-manual">Abrir WhatsApp manualmente →</a>
-      </div>
-            <a href="/" class="btn-ver-coleccion">Ver m&aacute;s productos &#x2192;</a>
-    </div>
-
   </div>
-</div>
+</section>
 
 </main>
 
-<footer class="footer">
-  &copy; 2026 Dam Vertex
-</footer>
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="lm-modal-title">
+  <div class="modal-box">
+    <button class="modal-close" id="lm-modal-close" aria-label="Cerrar">&#x2715;</button>
 
-<!-- Scripts -->
-<!-- Sin Google Maps: el modal usa selector de ciudad simple (ver script de m-city-select
-     más abajo) — se omite el fetch de /api/maps-key para no cargar la API de Maps sin uso. -->
+    <div id="lm-modal-form-wrap">
+      <h2 class="modal-title" id="lm-modal-title">LUNA MINI</h2>
+      <p style="font-size:11px;font-weight:700;color:#db2777;margin:4px 0 14px;">&#x26A1; Stock limitado &mdash; pedidos se procesan hoy</p>
+
+      <span class="modal-section-label">Eleg&#xED; tu oferta</span>
+      <div class="offer-options">
+        <label class="offer-option selected">
+          <input type="radio" name="lm-offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price">Gs. 119.000</span>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="lm-offer" value="2">
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div>
+              <span class="offer-compare">Gs. 238.000</span>
+              <span class="offer-price">Gs. 219.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving" style="color:#db2777">Ahorr&#xE1;s Gs. 19.000</span>
+            <div class="offer-badge" style="background:#dc2626;color:#fff">M&#xE1;s elegido</div>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="lm-offer" value="3">
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div>
+              <span class="offer-compare">Gs. 357.000</span>
+              <span class="offer-price">Gs. 319.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving" style="color:#db2777">Ahorr&#xE1;s Gs. 38.000</span>
+            <div class="offer-badge" style="background:#db2777;color:#fff">Mayor ahorro</div>
+          </div>
+        </label>
+      </div>
+
+      <form id="lm-form" novalidate>
+        <div class="form-group">
+          <label for="lm-name">Nombre y apellido</label>
+          <input type="text" id="lm-name" name="name" placeholder="Ej: Mar&#xED;a Gonz&#xE1;lez" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label for="lm-phone">Tel&eacute;fono <span style="color:#DC2626;font-size:11px;font-weight:600;">&#xB7; Ingres&#xE1; tu n&#xFA;mero completo</span></label>
+          <input type="tel" id="lm-phone" name="phone" placeholder="Ej: 0981 123 456" autocomplete="tel" required>
+          <p id="lm-phone-error" style="display:none;color:#DC2626;font-size:12px;font-weight:700;margin-top:4px;"></p>
+        </div>
+        <div class="form-group">
+          <label for="lm-city">Ciudad <span style="color:#DC2626;font-size:11px;font-weight:600;">&#xB7; Solo el nombre de tu ciudad</span></label>
+          <input type="text" id="lm-city" name="city" placeholder="Ej: Asunci&#xF3;n, Lambar&#xE9;, San Lorenzo..." autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="lm-calle">Calle principal y secundaria</label>
+          <input type="text" id="lm-calle" name="referencia" placeholder="Ej: Av. Espa&#xF1;a y Tacuary" maxlength="200" autocomplete="street-address">
+        </div>
+
+        <label class="upsell-block">
+          <input type="checkbox" id="lm-express" name="express">
+          <div>
+            <span class="upsell-title">&#x1F680; Env&#xED;o express +10.000 Gs</span><br>
+            <span class="upsell-sub">Recib&#xED; antes que los dem&#xE1;s</span>
+          </div>
+        </label>
+
+        <label class="upsell-block" style="margin-top:12px">
+          <input type="checkbox" id="lm-invoice" name="invoice">
+          <div>
+            <span class="upsell-title">&#x1F9FE; Necesito factura</span><br>
+            <span class="upsell-sub">RUC o c&eacute;dula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="lm-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group">
+            <label for="lm-invoice-ruc">RUC</label>
+            <input type="text" id="lm-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="lm-invoice-name">Raz&#xF3;n social o nombre</label>
+            <input type="text" id="lm-invoice-name" name="invoice_name" placeholder="Nombre completo o raz&#xF3;n social">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="lm-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+            <input type="email" id="lm-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+          </div>
+        </div>
+
+        <p id="lm-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none;margin-top:16px"></p>
+
+        <div class="riv-pay-badge">&#x1F4B3; Pago al recibir</div>
+
+        <div class="form-submit">
+          <button type="submit" id="lm-submit-btn"
+                  style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px;background:#db2777;color:#FFFFFF;font-weight:700;font-size:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(219,39,119,.28);">
+            <div>Confirmar pedido</div>
+            <div style="font-size:11px;font-weight:700;margin-top:3px;letter-spacing:.03em;opacity:.85;">&#x2713; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="lm-success" id="lm-success">
+      <div class="lm-success__icon">&#x2713;</div>
+      <h2>&#xA1;Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp para coordinar la entrega.</p>
+      <p class="lm-success__tip">&#x1F4F1; Quedate atenta a tu n&#xFA;mero &mdash; te vamos a contactar pronto.</p>
+      <div class="lm-success__badges">
+        <span>&#x2713; Empaque discreto</span>
+        <span>&#x2713; Pag&#xE1;s al recibir</span>
+      </div>
+      <a href="/" class="btn-ver-coleccion">Ver m&aacute;s productos &#x2192;</a>
+    </div>
+  </div>
+</div>
+
+<footer class="riv-footer">&copy; 2026 Dam Vertex</footer>
+
 <script src="/assets/js/tracking.js?v=74" defer></script>
-<script src="/assets/js/products.js?v=66" defer></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
-<script>
+
+<script defer>
 (function() {
-  var lpLoaded = false;
-  function loadLP() {
-    if (lpLoaded) return;
-    lpLoaded = true;
-    var s = document.createElement('script');
-    s.src = '/assets/js/location-picker.js?v=57';
-    s.onload = function() {
-      if (typeof DV.initLocationPicker === 'function') {
-        DV.initLocationPicker('m', window.DV_MAPS_KEY || '');
-      }
-    };
-    document.head.appendChild(s);
+  var vid = document.getElementById('lm-video');
+  if (!vid) return;
+  vid.muted = true;
+  document.addEventListener('touchstart', function() {
+    if (vid.paused) vid.play().catch(function(){});
+  }, { once: true, passive: true });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { vid.muted = true; vid.play().catch(function(){}); }
+        else vid.pause();
+      });
+    }, { threshold: 0.3 }).observe(vid);
   }
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('[data-scroll-form]').forEach(function(el) {
-      el.addEventListener('click', loadLP);
-    });
-    var modal = document.getElementById('order-modal');
-    if (modal) {
-      new MutationObserver(function(mutations) {
-        mutations.forEach(function(m) {
-          if (m.target.classList.contains('active')) loadLP();
-        });
-      }).observe(modal, { attributes: true, attributeFilter: ['class'] });
-    }
-  });
 })();
 </script>
 
-<script>
-  /* Selector simple de ciudad (sin Google Maps). products.js exige que
-     #m-location tenga _dvPlaceSelected=true y que location_lat/location_city/
-     location_maps_url no estén vacíos para permitir el submit — como ya no
-     hay autocomplete que llene esos campos, se completan acá con la ciudad
-     real elegida + coordenadas aproximadas del departamento (la dirección
-     exacta se coordina por WhatsApp, como indica el propio modal). */
-  (function() {
-    var DEPT_COORDS = {
-      'Central':          [-25.3000, -57.5500],
-      'Alto Paraná':       [-25.5163, -54.6119],
-      'Itapúa':            [-27.3308, -55.8664],
-      'Cordillera':        [-25.3866, -57.1414],
-      'Paraguarí':         [-25.6294, -57.1519],
-      'Guairá':            [-25.7500, -56.4333],
-      'Caaguazú':          [-25.4500, -56.4500],
-      'Misiones':          [-26.6667, -57.1333],
-      'Ñeembucú':          [-26.8667, -58.3000],
-      'Amambay':           [-22.5500, -55.7333],
-      'Concepción':        [-23.4064, -57.4344],
-      'Canindeyú':         [-24.0667, -54.3333],
-      'San Pedro':         [-24.0833, -57.0833],
-      'Caazapá':           [-26.2000, -56.3833],
-      'Boquerón':          [-22.3500, -60.0333],
-      'Presidente Hayes':  [-25.0958, -57.5442],
-      'Alto Paraguay':     [-21.0333, -57.8667],
-    };
+<script defer>
+var LM_PRODUCT = {
+  name:  'LUNA MINI Vibrador Bala Recargable',
+  slug:  'luna-mini-vibrador-bala-recargable',
+  price: 119000,
+  comboPricing: { 1: 119000, 2: 219000, 3: 319000 },
+};
 
-    var CITIES_BY_DEPT = {
-      'Central': ['Asunción','San Lorenzo','Luque','Capiatá','Lambaré','Fernando de la Mora','Limpio','Ñemby','Villa Elisa','Mariano Roque Alonso','Itauguá','Areguá','Villeta','Nueva Italia','Guarambaré','Ypacaraí','San Antonio','Ypané','Tobatí','Emboscada','Altos','Compañía','Itá'],
-      'Alto Paraná': ['Ciudad del Este','Hernandarias','Minga Guazú','Presidente Franco','Minga Porã','Santa Rita','Los Cedrales','Naranjal','Juan León Mallorquín','Santa Rosa del Monday','Iruña','Itakyry',"Juan Emilio O'Leary",'Ñacunday','San Alberto','San Cristóbal','Santa Fe del Paraná','Tavapy','Yguazú','Doctor Raúl Peña','Domingo Martínez de Irala'],
-      'Itapúa': ['Encarnación','Cambyretá','Coronel Bogado','General Artigas','Hohenau','Bella Vista','Obligado','Capitán Miranda','Natalio','Edelira','Alto Verá','Capitán Meza','Carmen del Paraná','Fram','General Delgado','Jesús','La Paz','Mayor Otaño','Nueva Alborada','PJC Caballero Álvarez','Pirapó','San Cosme y Damián','San Juan del Paraná','San Pedro del Paraná','Tomás Romero Pereira','Trinidad','Yatytay'],
-      'Cordillera': ['Caacupé','Valenzuela','San Bernardino','Arroyos y Esteros','Caraguatay','Escobar','Isla Pucú','Juan de Mena','Loma Grande','Mbocayaty del Yhaguy','Nueva Colombia','Piribebuy','Primero de Marzo','San José Obrero','Santa Elena','Itacurubí de la Cordillera','Tacuara'],
-      'Paraguarí': ['Paraguarí','Acahay','Caapucú','Caballero','Carapeguá','General Bernardino Caballero','La Colmena','Mbuyapey','Pirayú','Quiindy','Quyquyhó','San Roque González de Santa Cruz','Sapucai','Tebicuarymí','Yaguarón','Ybycuí','Ybytymí'],
-      'Guairá': ['Villarrica','Borja','Capitán Mauricio José Troche','Colonia Independencia','Coronel Martínez','Dr. Bottrell','Félix Pérez Cardozo','General Eugenio A. Garay','Iturbe','José Fassardi','Mbocayaty','Natalicio Talavera','Ñumí','San Salvador','Tembiaporã','Tebicuary'],
-      'Caaguazú': ['Coronel Oviedo','Caaguazú','Carayaó','Dr. Juan Manuel Frutos','José Domingo Ocampo','Nueva Londres','R.I. 3 Corrales','Repatriación','San Joaquín','San José de los Arroyos','Simón Bolívar','Tres Corrales','Vaquería','Yhú','Mbutuy','Dr. Cecilio Báez','Dr. J. Eulogio Estigarribia','La Pastora','Mcal. Francisco Solano López','Nueva Toledo','Raúl Arsenio Oviedo','Santa Rosa del Mbutuy','3 de Febrero'],
-      'Misiones': ['San Juan Bautista','Ayolas','San Ignacio','San Miguel','San Patricio','Santa María','Santa Rosa','Santiago','Villa Florida','Yabebyry'],
-      'Ñeembucú': ['Pilar','Alberdi','Cerrito','Desmochados','General José Eduvigis Díaz','Guazú Cuá','Humaitá','Isla Umbú','Laureles','Mayor José J. Martínez','Paso de Patria','San Juan Bautista del Ñeembucú','Tacuaras','Villa Oliva','Villalbin'],
-      'Amambay': ['Pedro Juan Caballero','Bella Vista Norte','Capitán Bado','Cinturón','Paso Yobai','Zanja Pytá','Cerro Corá','Karapaí'],
-      'Concepción': ['Concepción','Belén','Horqueta','Loreto','San Carlos','San Lázaro','Yby Yaú',"Azote'y",'Sargento José Félix López','Paso Barreto'],
-      'Canindeyú': ['Salto del Guairá','Corpus Christi','Curuguaty','Igatimí','Itanará','Katueté','La Paloma','Maracayu','Mbaracayú','Nueva Esperanza','Villa Curuguaty','Ypejhú','Yby Pytã'],
-      'San Pedro': ['San Pedro de Ycuamandiyú','Antequera','Chore','General Elizardo Aquino','Guayaibí','Itacurubí del Rosario','Lima','Nueva Germania','San Estanislao','San Pablo','Tacuatí','Unión','Villa del Rosario','Yataity del Norte','25 de Diciembre','Capiibary','General Isidoro Resquín','Liberación','San Vicente Pancholo'],
-      'Caazapá': ['Caazapá','Abai','Buena Vista','Dr. Moisés Bertoni','Fulgencio Yegros','Gral. Higinio Morínigo','Maciel','San Juan Nepomuceno','Tavaí','Yuty','3 de Mayo'],
-      'Boquerón': ['Filadelfia','Loma Plata','Mariscal Estigarribia','Neuland','General Díaz'],
-      'Presidente Hayes': ['Villa Hayes','Benjamín Aceval','General José María Bruguez','José Falcón','Nanawa','Nueva Asunción','Pozo Colorado','Puerto Pinasco','Tte. 1ro Manuel Irala Fernández','Tte. Esteban Martínez'],
-      'Alto Paraguay': ['Fuerte Olimpo','Bahía Negra','Carmelo Peralta','La Victoria'],
-    };
-    var CITY_TO_DEPT = {};
-    Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
-      CITIES_BY_DEPT[dept].forEach(function(city) {
-        CITY_TO_DEPT[city.toLowerCase()] = dept;
-      });
-    });
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    try { DV.trackViewContent(LM_PRODUCT); } catch (_) {}
+  }, 800);
 
-    /* Orden: 1) Central + Asunción primero (alfabético entre sí),
-       2) el resto de los departamentos combinados y ordenados alfabéticamente. */
-    var centralCities = CITIES_BY_DEPT['Central'].slice().sort(function(a, b) { return a.localeCompare(b, 'es'); });
-    var restCities = [];
-    Object.keys(CITIES_BY_DEPT).forEach(function(dept) {
-      if (dept === 'Central') return;
-      CITIES_BY_DEPT[dept].forEach(function(city) { restCities.push(city); });
-    });
-    restCities.sort(function(a, b) { return a.localeCompare(b, 'es'); });
-    var CITY_LIST = centralCities.concat(restCities);
+  var modal      = document.getElementById('order-modal');
+  var openBtns   = document.querySelectorAll('[data-open-modal]');
+  var closeBtn   = document.getElementById('lm-modal-close');
+  var form       = document.getElementById('lm-form');
+  var formWrap   = document.getElementById('lm-modal-form-wrap');
+  var successBox = document.getElementById('lm-success');
+  var submitBtn  = document.getElementById('lm-submit-btn');
+  var offerInputs = document.querySelectorAll('input[name="lm-offer"]');
 
-    var cityField = document.getElementById('m-city-input');
-    var suggBox   = document.getElementById('m-city-suggestions');
-    var locInput  = document.getElementById('m-location');
-    if (!cityField || !suggBox || !locInput) return;
-
-    /* Completa los campos ocultos si el texto coincide EXACTO con una ciudad real.
-       Devuelve true si aplicó, false si no matchea nada todavía. */
-    function applyCity(city) {
-      var dept = CITY_TO_DEPT[city.toLowerCase()];
-      if (!dept) return false;
-      var coords = DEPT_COORDS[dept] || DEPT_COORDS['Central'];
-
-      var cityHidden    = document.getElementById('m-city');
-      var locCityHidden = document.getElementById('m-loc-city');
-      var latHidden     = document.getElementById('m-loc-lat');
-      var lngHidden      = document.getElementById('m-loc-lng');
-      var mapsUrlHidden = document.getElementById('m-loc-maps-url');
-
-      if (cityHidden)    cityHidden.value    = city;
-      if (locCityHidden) locCityHidden.value = city;
-      if (latHidden)     latHidden.value     = coords[0];
-      if (lngHidden)      lngHidden.value     = coords[1];
-      if (mapsUrlHidden) mapsUrlHidden.value = 'https://www.google.com/maps?q=' + coords[0] + ',' + coords[1];
-
-      locInput.value             = city;
-      locInput._dvPlaceSelected  = true;
-
-      cityField.classList.remove('error');
-      var grp = cityField.closest('.form-group');
-      if (grp) {
-        var err = grp.querySelector('.form-error-msg');
-        if (err) err.classList.remove('visible');
-      }
-      return true;
+  var _icFired = false;
+  function openModal() {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    try { DV.trackAddToCart(LM_PRODUCT); } catch (_) {}
+    if (!_icFired) {
+      _icFired = true;
+      setTimeout(function() {
+        try { DV.trackInitiateCheckout(LM_PRODUCT, null, 1); } catch (_) {}
+      }, 1500);
     }
+  }
+  function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
 
-    function hideSuggestions() {
-      suggBox.classList.remove('open');
-      suggBox.innerHTML = '';
-    }
-
-    function renderSuggestions(matches) {
-      suggBox.innerHTML = '';
-      matches.forEach(function(city) {
-        var item = document.createElement('div');
-        item.className = 'city-suggestions__item';
-        item.textContent = city;
-
-        function pick() {
-          cityField.value = city;
-          applyCity(city);
-          hideSuggestions();
-        }
-
-        /* Touch: distinguir tap de scroll. Solo selecciona en touchend, y
-           solo si el dedo no se movió (no fue un gesto de scroll). */
-        var touchStartY = null;
-        var touchMoved  = false;
-        item.addEventListener('touchstart', function(e) {
-          touchStartY = e.touches[0].clientY;
-          touchMoved  = false;
-          item.classList.add('touch-active');
-        }, { passive: true });
-        item.addEventListener('touchmove', function(e) {
-          if (touchStartY !== null && Math.abs(e.touches[0].clientY - touchStartY) > 8) {
-            touchMoved = true;
-            item.classList.remove('touch-active');
-          }
-        }, { passive: true });
-        item.addEventListener('touchend', function(e) {
-          item.classList.remove('touch-active');
-          if (!touchMoved) {
-            e.preventDefault();
-            pick();
-          }
-          touchStartY = null;
-        });
-        item.addEventListener('touchcancel', function() {
-          item.classList.remove('touch-active');
-          touchStartY = null;
-        });
-
-        /* Desktop: click normal (mousedown para ganarle al blur del input) */
-        item.addEventListener('mousedown', function(e) { e.preventDefault(); pick(); });
-
-        suggBox.appendChild(item);
-      });
-      suggBox.classList.add('open');
-    }
-
-    function onCityInput() {
-      var typed = cityField.value.trim();
-      if (!applyCity(typed)) locInput._dvPlaceSelected = false;
-
-      if (!typed) { hideSuggestions(); return; }
-      var typedLower = typed.toLowerCase();
-      var matches = CITY_LIST.filter(function(c) {
-        return c.toLowerCase().indexOf(typedLower) === 0;
-      }).slice(0, 6);
-
-      if (matches.length) renderSuggestions(matches);
-      else hideSuggestions();
-    }
-
-    cityField.addEventListener('input', onCityInput);
-    cityField.addEventListener('focus', onCityInput);
-    document.addEventListener('click', function(e) {
-      if (e.target !== cityField && !suggBox.contains(e.target)) hideSuggestions();
-    });
-  })();
-</script>
-
-<script>
-  const PRODUCT = {
-    name:  'LUNA MINI Vibrador Bala Recargable',
-    slug:  'luna-mini-vibrador-bala-recargable',
-    price: 119000,
-    comboPricing: { 1: 119000, 2: 219000, 3: 319000 },
-    /* El modal solo pide ciudad (sin mapa) — el link de Maps que se arma con
-       coordenadas aproximadas del departamento no representa una ubicación
-       real, así que se omite del mensaje de WhatsApp. Flag opt-in en
-       products.js: no afecta a otras landings que sí usan geo real. */
-    hideExactLocation: true,
-  };
-
-  document.addEventListener('DOMContentLoaded', () => {
-    /* Blindaje CTA: si tracking.js o products.js fallan en cargar (WiFi restrictivo,
-       firewall corporativo), cada try/catch aislado evita que un script roto tumbe al
-       otro. El botón igual funciona por el href de WhatsApp hardcodeado — ver
-       CLAUDE.md "CTA — BLINDADO CONTRA FALLOS DE RED". */
-    try { DV.trackViewContent(PRODUCT); } catch (_) {}
-    try { DV.initForm(PRODUCT); } catch (_) {}
-
-    /* AddToCart + InitiateCheckout — al abrir modal */
-    var _icFired = false;
-    document.querySelectorAll('[data-scroll-form]').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        try { DV.trackAddToCart(PRODUCT); } catch (_) {}
-        if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500); }
-      });
-    });
-
-    /* Evergreen timer — persiste en localStorage por visitante, nunca se reinicia.
-       Al llegar a 0 muestra mensaje de escasez fijo, sin timer. */
-    (function() {
-      var el = document.getElementById('evergreen-timer');
-      if (!el) return;
-      var START_KEY = '_lmnx_start2';
-      var DUR_KEY   = '_lmnx_dur2';
-      var DEFAULT_DUR = 420;
-
-      var start = parseInt(localStorage.getItem(START_KEY) || '0', 10);
-      var dur   = parseInt(localStorage.getItem(DUR_KEY) || '0', 10);
-      if (!start || !dur) {
-        start = Date.now();
-        dur = DEFAULT_DUR;
-        localStorage.setItem(START_KEY, String(start));
-        localStorage.setItem(DUR_KEY, String(dur));
-      }
-
-      var timerId = null;
-
-      function render() {
-        var remaining = Math.ceil(dur - (Date.now() - start) / 1000);
-        if (remaining > 0) {
-          var mm = Math.floor(remaining / 60);
-          var ss = remaining % 60;
-          var mmStr = (mm < 10 ? '0' : '') + mm;
-          var ssStr = (ss < 10 ? '0' : '') + ss;
-          el.innerHTML =
-            '<div class="evergreen-timer__line1">Este precio cierra en <strong class="evergreen-timer__time">' + mmStr + ':' + ssStr + '</strong></div>' +
-            '<div class="evergreen-timer__line2">Últimas unidades con entrega en el día</div>';
-        } else {
-          if (timerId) clearInterval(timerId);
-          el.innerHTML = '<div class="evergreen-timer__expired">⚠️ Precio especial · Últimas unidades disponibles</div>';
-        }
-      }
-
-      render();
-      timerId = setInterval(render, 1000);
-    })();
+  openBtns.forEach(function(btn) {
+    if (!btn) return;
+    btn.addEventListener('click', function(e) { e.preventDefault(); openModal(); });
   });
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (modal) modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+
+  offerInputs.forEach(function(input) {
+    input.addEventListener('change', function() {
+      document.querySelectorAll('.offer-option').forEach(function(opt) { opt.classList.remove('selected'); });
+      input.closest('.offer-option').classList.add('selected');
+      updateTotal();
+    });
+  });
+
+  var invoiceChk    = document.getElementById('lm-invoice');
+  var invoiceFields = document.getElementById('lm-invoice-fields');
+  if (invoiceChk && invoiceFields) {
+    invoiceChk.addEventListener('change', function() {
+      invoiceFields.style.display = this.checked ? 'block' : 'none';
+    });
+  }
+
+  function updateTotal() {
+    var tl = document.getElementById('lm-total-line');
+    if (!tl) return;
+    var sel = document.querySelector('input[name="lm-offer"]:checked');
+    var qty = sel ? parseInt(sel.value) : 1;
+    var base = LM_PRODUCT.comboPricing[qty] || LM_PRODUCT.price;
+    var isExp = document.getElementById('lm-express') && document.getElementById('lm-express').checked;
+    var total = base + (isExp ? 10000 : 0);
+    tl.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    tl.style.display = isExp ? 'block' : 'none';
+  }
+  var expChk = document.getElementById('lm-express');
+  if (expChk) expChk.addEventListener('change', updateTotal);
+
+  var lmPhone = document.getElementById('lm-phone');
+  if (lmPhone) {
+    lmPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
+    lmPhone.addEventListener('input', function() {
+      this.style.borderColor = '';
+      var e = document.getElementById('lm-phone-error');
+      if (e) { e.textContent = ''; e.style.display = 'none'; }
+    });
+  }
+
+  if (form) form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var sel     = document.querySelector('input[name="lm-offer"]:checked');
+    var qty     = sel ? parseInt(sel.value) : 1;
+    var base    = LM_PRODUCT.comboPricing[qty] || LM_PRODUCT.price;
+    var express = !!(document.getElementById('lm-express') && document.getElementById('lm-express').checked);
+    var invoice = !!(document.getElementById('lm-invoice') && document.getElementById('lm-invoice').checked);
+    var value   = base + (express ? 10000 : 0);
+    var name    = (document.getElementById('lm-name')  && document.getElementById('lm-name').value.trim())  || '';
+    var phone   = (document.getElementById('lm-phone') && document.getElementById('lm-phone').value.replace(/\s/g,'')) || '';
+    var city    = (document.getElementById('lm-city')  && document.getElementById('lm-city').value.trim())  || '';
+    var data = {
+      name:          name,
+      phone:         phone,
+      city:          city,
+      referencia:    (document.getElementById('lm-calle')   && document.getElementById('lm-calle').value.trim())   || '',
+      horario:       (document.getElementById('lm-horario') && document.getElementById('lm-horario').value.trim()) || '',
+      quantity:      qty,
+      product_slug:  LM_PRODUCT.slug,
+      product_name:  LM_PRODUCT.name,
+      value:         value,
+      express:       express,
+      invoice:       invoice,
+      invoice_ruc:   invoice ? ((document.getElementById('lm-invoice-ruc')   && document.getElementById('lm-invoice-ruc').value)   || '').trim() : '',
+      invoice_name:  invoice ? ((document.getElementById('lm-invoice-name')  && document.getElementById('lm-invoice-name').value)  || '').trim() : '',
+      invoice_email: invoice ? ((document.getElementById('lm-invoice-email') && document.getElementById('lm-invoice-email').value) || '').trim() : '',
+    };
+    if (!data.name || !data.phone || !data.city) {
+      alert('Completá nombre, teléfono y ciudad para continuar.');
+      return;
+    }
+    var soloNums = data.phone.replace(/\D/g,'');
+    if (soloNums.length < 9) {
+      if (lmPhone) { lmPhone.style.borderColor = '#DC2626'; lmPhone.scrollIntoView({ behavior:'smooth', block:'center' }); }
+      var pErr = document.getElementById('lm-phone-error');
+      if (pErr) { pErr.textContent = 'Ingresá tu número completo (ej: 0981 123 456)'; pErr.style.display = 'block'; }
+      return;
+    }
+    try {
+      var client = typeof getClientData === 'function' ? getClientData() : {};
+      data.fbp = client.fbp || null;
+      data.fbc = client.fbc || null;
+    } catch (_) {}
+    submitBtn.disabled = true;
+    submitBtn.firstChild.textContent = 'Enviando...';
+    try {
+      var res = await fetch('/api/leads', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(data),
+      });
+      await res.json().catch(function() { return {}; });
+      try { DV.saveLeadDataLocal(phone, name, ''); } catch (_) {}
+    } catch (err) {
+      console.error('LM_SUBMIT_ERROR', err && err.message);
+    }
+    formWrap.style.display = 'none';
+    successBox.classList.add('visible');
+    submitBtn.disabled = false;
+  });
+});
 </script>
 
-<!-- CRO: Sticky CTA bar — mobile only -->
-<div class="sticky-cta-bar" id="sticky-cta-bar">
-  <a class="btn btn-primary" data-scroll-form data-insync-cta="sticky" style="width:100%;margin:0;background:var(--luna-pink);white-space:nowrap;font-size:clamp(12px,3.6vw,15px);padding:12px 10px" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20LUNA%20MINI%20Vibrador%20Bala%20Recargable.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-    Lo quiero — Pedir por WhatsApp <svg width="1em" height="1em" fill="currentColor" style="flex-shrink:0"><use href="#ic-whatsapp"></use></svg>
-  </a>
-</div>
-
-<script src="/assets/js/protect.js?v=68"></script>
+<script src="/assets/js/protect.js?v=68" defer></script>
 </body>
 </html>
