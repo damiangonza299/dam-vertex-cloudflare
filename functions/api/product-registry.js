@@ -65,14 +65,24 @@ export async function onRequestGet({ request, env }) {
       }});
     }
 
+    /* UNION of products table + distinct slugs from leads ensures ALL landing pages
+       appear in Product Studio, even those not yet registered in products table */
     const { results } = await env.DB.prepare(
-      `SELECT p.slug AS product_slug, p.name, p.stock_total, p.active, p.platform,
+      `WITH all_slugs AS (
+         SELECT slug AS product_slug FROM products
+         UNION
+         SELECT DISTINCT product_slug FROM leads WHERE product_slug IS NOT NULL AND product_slug != ''
+       )
+       SELECT s.product_slug,
+              COALESCE(p.name, s.product_slug) AS name,
+              p.stock_total, p.active, p.platform,
               pb.id, pb.status, pb.landing_status,
               pb.dam_finanzas_id, pb.dam_finanzas_status, pb.created_at, pb.updated_at,
               pb.op_json, pb.insights_json
-       FROM products p
-       LEFT JOIN product_briefs pb ON pb.product_slug = p.slug
-       ORDER BY pb.updated_at DESC NULLS LAST, p.name ASC`
+       FROM all_slugs s
+       LEFT JOIN products p ON p.slug = s.product_slug
+       LEFT JOIN product_briefs pb ON pb.product_slug = s.product_slug
+       ORDER BY COALESCE(pb.updated_at, '0') DESC, s.product_slug ASC`
     ).all();
 
     return json({ ok: true, briefs: (results || []).map(parseBriefSummary) });
@@ -313,7 +323,7 @@ async function handleRefreshInsync(body, env) {
 
   const p = period || '30d';
   const landingFilter = `%/${slug}/%`;
-  const periodSecs = { '24h': 86400, '7d': 604800, '30d': 2592000 };
+  const periodSecs = { '24h': 86400, '7d': 604800, '14d': 1209600, '30d': 2592000, '60d': 5184000, '90d': 7776000 };
   const since = Math.floor(Date.now() / 1000) - (periodSecs[p] || 2592000);
 
   const [volumeR, scrollR, sectionR, revenueR] = await env.DB.batch([
@@ -324,7 +334,7 @@ async function handleRefreshInsync(body, env) {
       "SELECT event_type, COUNT(DISTINCT session_id) AS cnt FROM behavior_events WHERE event_type IN ('scroll_25','scroll_50','scroll_75','scroll_90') AND landing LIKE ? AND ts >= ? GROUP BY event_type"
     ).bind(landingFilter, since),
     env.DB.prepare(
-      "SELECT section, COUNT(*) FILTER (WHERE event_type='section_view') AS views, AVG(CAST(json_extract(meta,'$.duration_s') AS REAL)) FILTER (WHERE event_type='section_time') AS avg_time FROM behavior_events WHERE section IS NOT NULL AND landing LIKE ? AND ts >= ? GROUP BY section ORDER BY views DESC LIMIT 10"
+      "SELECT section, COUNT(*) FILTER (WHERE event_type='section_view') AS views, AVG(CAST(json_extract(meta,'$.duration_s') AS REAL)) FILTER (WHERE event_type='section_time') AS avg_time FROM behavior_events WHERE section IS NOT NULL AND landing LIKE ? AND ts >= ? GROUP BY section HAVING COUNT(*) FILTER (WHERE event_type='section_view') > 0 ORDER BY views DESC LIMIT 10"
     ).bind(landingFilter, since),
     env.DB.prepare(
       "SELECT COUNT(DISTINCT CASE WHEN l.status='purchased' THEN be.session_id END) AS purchased_sessions, COALESCE(SUM(CASE WHEN l.status='purchased' THEN CAST(l.value AS REAL) ELSE 0 END),0) AS revenue, COUNT(DISTINCT l.id) AS attributed_leads FROM behavior_events be JOIN leads l ON l.session_id = be.session_id WHERE be.landing LIKE ? AND be.ts >= ?"

@@ -267,6 +267,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <p>Dam Vertex</p>
     </div>
     <button id="new-product-btn" onclick="openNewProduct()" style="display:none">+ Nuevo producto</button>
+    <div style="padding:6px 10px 2px">
+      <input id="sidebar-search" type="text" placeholder="Buscar producto…"
+        oninput="renderSidebar()"
+        style="width:100%;padding:5px 8px;font-size:11px;background:var(--bg2,#1a1a1a);color:inherit;border:1px solid var(--border,#333);border-radius:4px;outline:none;box-sizing:border-box">
+    </div>
     <div id="product-list"></div>
   </div>
 
@@ -612,11 +617,20 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
             </div>
           </div>
 
-          <!-- Módulo: Análisis InSync Semanal -->
+          <!-- Módulo: Análisis InSync -->
           <div class="sync-card">
-            <h4>InSync — Última semana</h4>
-            <p style="font-size:11px;color:var(--muted);margin-bottom:10px">Comportamiento por sección (7 días) y recomendaciones automáticas.</p>
-            <button class="sync-btn" id="run-insync-weekly-btn" onclick="runInsyncWeekly()">⚡ Analizar última semana</button>
+            <h4>InSync — Análisis de comportamiento</h4>
+            <p style="font-size:11px;color:var(--muted);margin-bottom:10px">Comportamiento por sección y recomendaciones automáticas.</p>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <select id="insync-period-select" style="padding:4px 8px;font-size:11px;background:var(--bg2,#1a1a1a);color:inherit;border:1px solid var(--border2,#333);border-radius:4px;cursor:pointer">
+                <option value="7d">Últimos 7 días</option>
+                <option value="14d">Últimos 14 días</option>
+                <option value="30d" selected>Últimos 30 días</option>
+                <option value="60d">Últimos 60 días</option>
+                <option value="90d">Últimos 90 días</option>
+              </select>
+              <button class="sync-btn" id="run-insync-weekly-btn" onclick="runInsyncWeekly()">⚡ Analizar</button>
+            </div>
             <div id="insync-weekly-results" style="margin-top:12px"></div>
           </div>
 
@@ -732,7 +746,12 @@ async function loadBriefs() {
 
 function renderSidebar() {
   const list  = document.getElementById('product-list');
-  const shown = briefs;
+  const q     = (document.getElementById('sidebar-search')?.value || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const shown = q ? briefs.filter(b => {
+    const name = (b.name || b.product_slug || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    const slug = (b.product_slug || '').toLowerCase();
+    return name.includes(q) || slug.includes(q);
+  }) : briefs;
   if (!shown.length) {
     list.innerHTML = '<p style="padding:12px;font-size:11px;color:var(--muted)">Sin productos todavía.</p>';
     return;
@@ -4174,13 +4193,15 @@ async function runInsyncWeekly() {
   if (!currentSlug) return;
   const btn     = document.getElementById('run-insync-weekly-btn');
   const results = document.getElementById('insync-weekly-results');
+  const period  = document.getElementById('insync-period-select')?.value || '30d';
+  const periodLabels = { '7d':'7 días','14d':'14 días','30d':'30 días','60d':'60 días','90d':'90 días' };
   btn.disabled  = true;
   btn.textContent = '…';
   results.innerHTML = '<div style="color:var(--muted);font-size:11px">Consultando InSync…</div>';
   try {
     const res  = await fetch('/api/product-registry', {
       method: 'POST', headers: authHeaders(),
-      body: JSON.stringify({ action: 'refresh_insync', slug: currentSlug, period: '7d' }),
+      body: JSON.stringify({ action: 'refresh_insync', slug: currentSlug, period }),
     });
     const text = await res.text();
     if (!text.trim().startsWith('{') && !text.trim().startsWith('[')) {
@@ -4188,19 +4209,20 @@ async function runInsyncWeekly() {
     }
     const data = JSON.parse(text);
     if (!data.ok) throw new Error(data.error || 'Error desconocido');
-    renderInsyncWeekly(data.insync, results);
+    renderInsyncWeekly(data.insync, results, periodLabels[period] || period);
   } catch(err) {
     results.innerHTML = '<div style="color:var(--red);font-size:11px">Error: ' + esc(err.message) + '</div>';
   } finally {
     btn.disabled = false;
-    btn.textContent = '⚡ Analizar última semana';
+    btn.textContent = '⚡ Analizar';
   }
 }
 
-function renderInsyncWeekly(insync, el) {
+function renderInsyncWeekly(insync, el, periodLabel) {
+  var pl = periodLabel || insync?.period || '?';
   if (!insync || insync.low_volume) {
     el.innerHTML = '<div style="font-size:11px;color:var(--muted)">'
-      + (insync ? 'Solo ' + insync.sessions + ' sesiones en 7 días. Se necesitan 30+ para análisis confiable.' : 'Sin datos InSync para esta semana.')
+      + (insync ? 'Solo ' + insync.sessions + ' sesiones (' + pl + '). Se necesitan 30+ para análisis confiable.' : 'Sin datos InSync para este período.')
       + '</div>';
     return;
   }
@@ -4223,7 +4245,7 @@ function renderInsyncWeekly(insync, el) {
 
   var lastDate = insync.last_fetched ? new Date(insync.last_fetched).toLocaleDateString('es-PY') : '—';
   var out = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
-    + '<span style="font-size:11px;font-weight:700">' + insync.sessions + ' sesiones (7d)</span>'
+    + '<span style="font-size:11px;font-weight:700">' + insync.sessions + ' sesiones (' + (pl) + ')</span>'
     + '<span style="font-size:10px;color:var(--muted)">Act. ' + esc(lastDate) + '</span></div>';
 
   if (sections.length) {
