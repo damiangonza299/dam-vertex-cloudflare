@@ -13,8 +13,8 @@
   <title>Cadena Apex — Dam Vertex</title>
   <script src="/assets/js/site-version.js?v=60"></script>
   <!-- CSS no crítico: preload + swap a stylesheet on load (no bloquea el render) -->
-  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <link rel="preload" href="/assets/css/styles.min.css?v=56" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=56"></noscript>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
@@ -776,7 +776,7 @@
 </head>
 <body class="theme-cadena">
 
-<div style="background:#dc2626;color:#fff;text-align:center;padding:7px 8px;font-size:12px;font-weight:700;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">⚡ Quedan 6 unidades · Envío gratis · Pagás al recibir</div>
+<div style="background:#dc2626;color:#fff;padding:7px 8px;font-size:12px;font-weight:700;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">⚡ Quedan 6 unidades · Envío gratis · Pagás al recibir</div>
 
 <!-- Sticky CTA mobile -->
 <div class="sticky-cta" id="sticky-cta">
@@ -784,7 +784,7 @@
     <span class="sticky-cta__price">Gs. 99.000</span>
     <span class="sticky-cta__note">Entrega hoy · Pago al recibir</span>
   </div>
-  <button class="btn btn-primary sticky-cta__btn" data-scroll-form data-insync-cta="sticky">Pedí por WhatsApp</button>
+  <a class="btn btn-primary sticky-cta__btn" data-scroll-form data-insync-cta="sticky" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%20la%20Cadena%20Apex.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">Pedí por WhatsApp</a>
 </div>
 
 <!-- Nav -->
@@ -822,7 +822,7 @@
         <div class="evergreen-timer__line1">Este precio cierra en <strong class="evergreen-timer__time">07:00</strong></div>
         <div class="evergreen-timer__line2">Últimas unidades con entrega en el día</div>
       </div>
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">Quiero la Cadena Apex hoy →</button>
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%20la%20Cadena%20Apex.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">Quiero la Cadena Apex hoy →</a>
       <div class="delivery-badges">
         <span class="db-badge db-green">🚚 Entrega en el día</span>
         <span class="db-badge">💳 Pago al recibir · Central</span>
@@ -1039,7 +1039,7 @@
   </div>
 </section>
 
-<section id="section-garantia" data-insync-section="garantia" style="padding:28px 16px;text-align:center;">
+<section id="section-garantia" data-insync-section="garantia" style="padding:28px 16px;">
   <div style="max-width:480px;margin:0 auto;border:2px solid #1a7a3e;border-radius:14px;padding:24px 18px;">
     <div style="font-size:36px;">🛡️</div>
     <h3 style="font-size:22px;font-weight:900;margin:8px 0 6px;color:#1a252f;">Garantía de 90 días</h3>
@@ -1049,7 +1049,7 @@
 
 <!-- FAQ -->
 <section class="faq" id="section-faq" data-insync-section="faq" data-insync-funnel-step="7">
-  <p class="sec-label" style="text-align:center">Preguntas</p>
+  <p class="sec-label">Preguntas</p>
   <div class="faq-wrap">
     <details class="faq-item">
       <summary class="faq-q">¿Se oxida o se pone fea con el uso diario?</summary>
@@ -1120,9 +1120,9 @@
       <div class="ct-item"><span class="ct-ok">✓</span><span>Atención rápida por WhatsApp</span></div>
     </div>
     <p style="font-size:15px;color:rgba(255,255,255,.58);margin:0 0 24px;line-height:1.6;">Si querés una cadena negra, simple y masculina — esta es la opción. Stock limitado, sin segunda vuelta.</p>
-    <button class="btn btn-primary" data-scroll-form data-insync-cta="cierre">
+    <a class="btn btn-primary" data-scroll-form data-insync-cta="cierre" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%20la%20Cadena%20Apex.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
       Quiero la mía — pedir por WhatsApp →
-    </button>
+    </a>
   </div>
 </section>
 
@@ -1435,7 +1435,7 @@
 
 <!-- Scripts -->
 <script src="/assets/js/tracking.js?v=74" defer></script>
-<script src="/assets/js/products.js?v=66" defer></script>
+<script src="/assets/js/products.js?v=67" defer></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
 <script>
 (function() {
