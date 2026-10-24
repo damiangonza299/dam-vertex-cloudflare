@@ -38,18 +38,41 @@ export async function onRequestGet({ request, env }) {
       const brief = await env.DB.prepare(
         'SELECT * FROM product_briefs WHERE product_slug = ?'
       ).bind(slug).first();
-      if (!brief) return json({ ok: false, error: 'not_found' }, 404);
-      return json({ ok: true, brief: parseBrief(brief) });
+      if (brief) return json({ ok: true, brief: parseBrief(brief) });
+
+      /* No brief entry yet — return synthetic from products table */
+      const product = await env.DB.prepare(
+        'SELECT slug, name, stock_total, active, unit_cost, default_price, min_stock, status, product_type, compare_price, platform FROM products WHERE slug = ?'
+      ).bind(slug).first();
+      if (!product) return json({ ok: false, error: 'not_found' }, 404);
+
+      return json({ ok: true, brief: {
+        id: null,
+        product_slug:        product.slug,
+        op_json:             { name: product.name, price: product.default_price, cost: product.unit_cost, stock: product.stock_total, min_stock: product.min_stock, compare_price: product.compare_price, type: product.product_type },
+        strategic_json:      {},
+        visual_json:         {},
+        research_json:       [],
+        insights_json:       { insync: null, landing_intelligence: null },
+        landing_html:        null,
+        status:              product.active ? 'active' : 'draft',
+        landing_status:      null,
+        dam_finanzas_id:     null,
+        dam_finanzas_status: null,
+        dam_finanzas_note:   null,
+        created_at:          null,
+        updated_at:          null,
+      }});
     }
 
     const { results } = await env.DB.prepare(
-      `SELECT pb.id, pb.product_slug, pb.status, pb.landing_status,
+      `SELECT p.slug AS product_slug, p.name, p.stock_total, p.active, p.platform,
+              pb.id, pb.status, pb.landing_status,
               pb.dam_finanzas_id, pb.dam_finanzas_status, pb.created_at, pb.updated_at,
-              pb.op_json, pb.insights_json,
-              p.name, p.stock_total, p.active, p.platform
-       FROM product_briefs pb
-       LEFT JOIN products p ON p.slug = pb.product_slug
-       ORDER BY pb.updated_at DESC`
+              pb.op_json, pb.insights_json
+       FROM products p
+       LEFT JOIN product_briefs pb ON pb.product_slug = p.slug
+       ORDER BY pb.updated_at DESC NULLS LAST, p.name ASC`
     ).all();
 
     return json({ ok: true, briefs: (results || []).map(parseBriefSummary) });
@@ -100,9 +123,18 @@ export async function onRequestPatch({ request, env, waitUntil }) {
 
   try {
     const existing = await env.DB.prepare(
-      'SELECT * FROM product_briefs WHERE product_slug = ?'
+      'SELECT product_slug FROM product_briefs WHERE product_slug = ?'
     ).bind(slug).first();
-    if (!existing) return json({ ok: false, error: 'not_found' }, 404);
+
+    if (!existing) {
+      /* Auto-create brief for products loaded without one (from products table) */
+      const productExists = await env.DB.prepare('SELECT slug FROM products WHERE slug = ?').bind(slug).first();
+      if (!productExists) return json({ ok: false, error: 'not_found' }, 404);
+      await env.DB.prepare(
+        `INSERT INTO product_briefs (product_slug, op_json, strategic_json, visual_json, status, created_at, updated_at)
+         VALUES (?, ?, ?, ?, 'draft', datetime('now'), datetime('now'))`
+      ).bind(slug, JSON.stringify(body.op_json || {}), JSON.stringify(body.strategic_json || {}), JSON.stringify(body.visual_json || {})).run();
+    }
 
     const allowed = ['op_json','strategic_json','visual_json','research_json','insights_json','landing_html','landing_status'];
     const sets = [];
@@ -328,7 +360,7 @@ async function handleRefreshInsync(body, env) {
     scroll_funnel:  scrollFunnel,
     top_sections:   topSections,
     conversion: {
-      attributed_leads,
+      attributed_leads:          attributedLeads,
       purchased_sessions:        purchasedSessions,
       session_to_purchase_pct:   sessions ? Math.round(purchasedSessions/sessions*100*10)/10 : 0,
       total_revenue_gs:          Math.round(totalRevenue),
@@ -447,18 +479,18 @@ function parseBrief(row) {
 function parseBriefSummary(row) {
   const op = parseJson(row.op_json, {});
   return {
-    id:                  row.id,
+    id:                  row.id || null,
     product_slug:        row.product_slug,
     name:                row.name || op.name || row.product_slug,
-    status:              row.status,
-    landing_status:      row.landing_status,
-    dam_finanzas_status: row.dam_finanzas_status,
+    status:              row.status || 'draft',
+    landing_status:      row.landing_status || null,
+    dam_finanzas_status: row.dam_finanzas_status || null,
     dam_finanzas_id:     row.dam_finanzas_id || null,
     stock_total:         row.stock_total || 0,
     active:              row.active || 0,
     platform:            row.platform || 'DAM_VERTEX',
     price:               op.price || 0,
-    updated_at:          row.updated_at,
+    updated_at:          row.updated_at || null,
     insights_json:       parseJson(row.insights_json, { insync: null, landing_intelligence: null }),
   };
 }
