@@ -26,7 +26,18 @@
     .home-hero p { font-size: clamp(15px, 2.2vw, 18px); color: var(--muted); max-width: 500px; margin: 0 auto 32px; line-height: 1.6; }
     .trust-strip { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 12px; }
     .trust-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
-    .products-section-label { text-align: center; padding: 0 clamp(20px, 5vw, 48px); margin-bottom: 20px; }
+    .products-section-label { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 clamp(20px, 5vw, 48px); margin-bottom: 20px; flex-wrap: wrap; }
+    /* ── Buscador ── */
+    .search-box { position: relative; width: min(280px, 100%); flex-shrink: 0; }
+    .search-input { width: 100%; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); border-radius: 8px; color: #fff; font-size: 14px; padding: 9px 36px 9px 14px; outline: none; transition: border-color .15s, background .15s; }
+    .search-input::placeholder { color: rgba(255,255,255,.38); }
+    .search-input:focus { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.1); }
+    .search-clear { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: rgba(255,255,255,.5); cursor: pointer; font-size: 18px; line-height: 1; padding: 2px 4px; display: none; }
+    .search-clear:hover { color: #fff; }
+    .search-clear.visible { display: block; }
+    .search-status { padding: 0 clamp(20px, 5vw, 48px); margin-bottom: 12px; font-size: 13px; color: rgba(255,255,255,.5); display: none; }
+    #search-results-grid { display: none; }
+    @media (max-width: 500px) { .products-section-label { flex-direction: column; align-items: flex-start; } .search-box { width: 100%; } }
     .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; padding: clamp(8px, 1.2vw, 16px) clamp(20px, 5vw, 48px) clamp(48px, 8vw, 80px); }
     .product-card { background: #111; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .product-card__img { width: 100%; height: auto; aspect-ratio: 4/5; object-fit: cover; object-position: center top; background: #1a1a1a; }
@@ -52,7 +63,7 @@
        compartido para no afectar otras páginas/landings que usan las mismas clases). */
     :root { --accent: #1d4ed8; }
     .nav__logo span { opacity: .65; }
-    .products-section-label { text-align: center; padding: 0 clamp(20px, 5vw, 48px); margin-bottom: 20px; }
+    .products-section-label { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 clamp(20px, 5vw, 48px); margin-bottom: 20px; flex-wrap: wrap; }
     .products-section-label .label-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.4); }
     .products-section-label .label-badge .badge-icon { font-size: 1em; opacity: .7; }
     .why-section__eyebrow,
@@ -103,7 +114,13 @@
 <!-- ── BLOQUE 2: Top 6 ── -->
 <div class="products-section-label">
   <span class="label-badge"><span class="badge-icon">⭐</span> Más Destacados</span>
+  <div class="search-box">
+    <input class="search-input" id="dv-search" type="search" placeholder="Buscar producto..." autocomplete="off" spellcheck="false">
+    <button class="search-clear" id="dv-search-clear" aria-label="Limpiar búsqueda">×</button>
+  </div>
 </div>
+<p class="search-status" id="dv-search-status"></p>
+<div class="products-grid" id="search-results-grid"></div>
 <!-- Top 6 grid — renderizado dinámico -->
 <div class="products-grid" id="top6-grid">
   <!-- Fallback estático (reemplazado por JS si el API responde) -->
@@ -685,12 +702,60 @@ var top6Grid = document.getElementById('top6-grid');
 var collCont = document.getElementById('collections-container');
 if (top6Grid) { top6Grid.style.opacity = '0'; top6Grid.style.transition = 'opacity .18s ease'; }
 if (collCont)  { collCont.style.opacity  = '0'; collCont.style.transition  = 'opacity .18s ease'; }
+
+/* ── Buscador ── */
+var ALL_PRODUCTS_FLAT = [];
+function normSearch(s) {
+  return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+function doSearch(q) {
+  var nq = normSearch(q.trim());
+  var srGrid   = document.getElementById('search-results-grid');
+  var srStatus = document.getElementById('dv-search-status');
+  var top6     = document.getElementById('top6-grid');
+  var coll     = document.getElementById('collections-container');
+  var clearBtn = document.getElementById('dv-search-clear');
+  if (clearBtn) { if (nq) clearBtn.classList.add('visible'); else clearBtn.classList.remove('visible'); }
+  if (!nq) {
+    if (srGrid)   { srGrid.style.display = 'none'; srGrid.innerHTML = ''; }
+    if (srStatus) { srStatus.style.display = 'none'; }
+    if (top6)  top6.style.display = '';
+    if (coll)  coll.style.display = '';
+    return;
+  }
+  if (top6)  top6.style.display  = 'none';
+  if (coll)  coll.style.display  = 'none';
+  var results = ALL_PRODUCTS_FLAT.filter(function(p) {
+    var name = normSearch(DV_CARD_SHORT_NAMES[p.slug] || p.name || '');
+    var slug = normSearch((p.slug || '').replace(/-/g, ' '));
+    return name.indexOf(nq) !== -1 || slug.indexOf(nq) !== -1;
+  });
+  if (srStatus) {
+    srStatus.style.display = 'block';
+    srStatus.textContent = results.length
+      ? results.length + ' producto' + (results.length !== 1 ? 's' : '') + ' encontrado' + (results.length !== 1 ? 's' : '') + ' para "' + q.trim() + '"'
+      : 'Sin resultados para "' + q.trim() + '"';
+  }
+  if (srGrid) {
+    srGrid.style.display = results.length ? 'grid' : 'none';
+    srGrid.innerHTML = results.map(function(p, i) { return buildCardHtml(sn(p), i); }).join('');
+  }
+}
+(function() {
+  var inp = document.getElementById('dv-search');
+  var clr = document.getElementById('dv-search-clear');
+  if (!inp) return;
+  inp.addEventListener('input', function() { doSearch(inp.value); });
+  if (clr) clr.addEventListener('click', function() { inp.value = ''; doSearch(''); inp.focus(); });
+})();
+
 fetch('/api/product-stock?active_only=1')
   .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
   .then(function(data) {
     var products = (data.products || []).filter(function(p) { return p.active; });
     var existing = products.map(function(p) { return p.slug; });
     DV_EXTRA_PRODUCTS.forEach(function(ep) { if (existing.indexOf(ep.slug) === -1) products.push(ep); });
+    ALL_PRODUCTS_FLAT = products.slice();
     if (!products.length) {
       if (top6Grid) top6Grid.style.opacity = '1';
       if (collCont)  collCont.style.opacity  = '1';
