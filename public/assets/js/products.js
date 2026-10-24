@@ -29,6 +29,33 @@ const PRODUCT_SHORT_NAMES = {
   'cepillo-secador-moldeador-aguacate': 'Cepillo AguaCate',
 };
 
+const VALID_CITIES = [
+  // Alto Paraná
+  'ciudad del este','colonia iguazu','hernan darias','juan leon mallorquin',
+  'minga iguazu','presidente franco','san alberto','santa rita iguazu',
+  // Amambay
+  'pedro juan caballero',
+  // Caaguazú
+  'caaguazu','coronel oviedo','felix perez cardoso','mauricio jose troche',
+  'natalicio talavera','repatriacion','san jose de los arroyos','yataiti del norte',
+  // Central — todas
+  'asuncion','luque','san lorenzo','capiata','lambare','fernando de la mora',
+  'limpio','nemby','villa elisa','mariano roque alonso','ita','ypane','aregua',
+  'itaugua','nueva italia central','guarambare','juan de mena','ypacarai','villeta',
+  'san antonio','ñemby','nemiby',
+  // Cordillera
+  'altos','atira','caacupe','caraguatay','emboscada','eusebio ayala',
+  'itacurubi de la cordillera','loma grande','nueva italia','piribebu',
+  'san bernardino','santa elena','tobati','tupacai',
+  // Guairá
+  'borja','bocayatu','villarrica',
+  // Paraguarí
+  'carapegua','escobar','general bernardino caballero',
+  'paraguari','pirayu','sapucai','yaguaron',
+  // Presidente Hayes
+  'benjamin aceval','remansito','villa hayes',
+];
+
 /* iOS zoom prevention on focus */
 document.addEventListener('focusin', function (e) {
   if (window.innerWidth < 768) {
@@ -42,6 +69,19 @@ function fmt(n) {
 
 function shortName(product) {
   return PRODUCT_SHORT_NAMES[product.slug] || product.name;
+}
+
+function normalizeCity(str) {
+  if (!str) return '';
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .trim().replace(/\s+/g, ' ');
+}
+
+function isCityCovered(city) {
+  if (!city) return false;
+  const n = normalizeCity(city);
+  return VALID_CITIES.some(c => normalizeCity(c) === n);
 }
 
 /* Normaliza telÃ©fono Paraguay â 595XXXXXXXXX (12 dÃ­gitos).
@@ -681,10 +721,15 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
         DV.saveLeadDataLocal(validPhone || rawPhone, commonData.name, commonData.invoice_email || '');
       }
 
+      if (!isCityCovered(commonData.city)) {
+        const _ot = decodeURIComponent(buildCustomOrderWAMsg(product, commonData, customQty, customTotal, customColors));
+        window.location.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(_ot)}`;
+        return;
+      }
+
       modalForm.style.display = 'none';
       success.classList.add('visible');
       if (window.DV_INSYNC) { window.DV_INSYNC.push('whatsapp_click', null, null, null); window.DV_INSYNC.flush(); }
-      window.location.href = customWaUrl;
       return;
     }
 
@@ -782,13 +827,18 @@ if (window.DV_INSYNC) window.DV_INSYNC.push('initiate_checkout_insync', null, nu
         DV.saveLeadDataLocal(validPhone || rawPhone, data.name, data.invoice_email || '');
       }
 
+      if (!isCityCovered(data.city)) {
+        const _ot = decodeURIComponent(buildWAMsg(product, data, offerInfo));
+        window.location.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(_ot)}`;
+        return;
+      }
+
       /* 5 â Mostrar Ã©xito */
       modalForm.style.display = 'none';
       success.classList.add('visible');
 
       /* 6 â Abrir WhatsApp con delay */
       if (window.DV_INSYNC) { window.DV_INSYNC.push('whatsapp_click', null, null, null); window.DV_INSYNC.flush(); }
-      window.location.href = waUrl;
 
     } catch (err) {
       if (err?.message !== 'lead_error') console.error('LEAD_SAVE_ERROR', err?.message);

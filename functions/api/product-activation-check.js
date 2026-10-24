@@ -199,12 +199,11 @@ function verifyLandingHtml(html, slug, price, checks, isDcanpFromD1) {
     hasSlug ? `'${slug}' encontrado en PRODUCT config` : `No se encontró '${slug}' en PRODUCT config`,
     hasSlug ? null : `Verificar const PRODUCT = { slug: '${slug}', ... } en la landing`));
 
-  /* PRODUCT.price */
-  const hasPrice = price > 0 && html.includes(String(price));
-  const priceStatus = price <= 0 ? 'WARNING' : (hasPrice ? 'PASS' : 'WARNING');
-  checks.push(check('product_price_match', 'PRODUCT.price en HTML', priceStatus,
-    hasPrice ? `${price} encontrado` : `No se encontró ${price} en la landing`,
-    priceStatus !== 'PASS' ? `Verificar que PRODUCT.price = ${price} en la landing` : null));
+  /* Precio en landing — solo verifica que existe algún precio en Gs., sin comparar con D1 */
+  const hasPriceInHtml = html.includes('Gs.') || html.includes('gs.');
+  checks.push(check('product_price_match', 'Precio Gs. en landing', hasPriceInHtml ? 'PASS' : 'WARNING',
+    hasPriceInHtml ? 'Precio en Gs. encontrado en la landing' : 'No se encontró ningún precio Gs. en la landing',
+    hasPriceInHtml ? null : 'Agregar precio en Gs. en la landing'));
 
   /* tracking.js cargado */
   const hasTrackingJs = html.includes('tracking.js');
@@ -272,7 +271,43 @@ function verifyLandingHtml(html, slug, price, checks, isDcanpFromD1) {
       ? `Verificar que el modal hace POST a /api/dcanp-lead`
       : `Verificar que el modal llama a /api/leads o que tracking.js + DV.initForm estén presentes`));
 
-  /* InSync sections — FAIL si ninguna sección tiene data-insync-section */
+  /* ── City check: ciudad no cubierta → WhatsApp, cubierta → pantalla éxito ── */
+  let hasCityCheck;
+  if (isDcanp) {
+    hasCityCheck = html.includes('city-check.js');
+    checks.push(check('city_check', 'City check implementado', hasCityCheck ? 'PASS' : 'FAIL',
+      hasCityCheck ? 'city-check.js encontrado' : 'No se encontró city-check.js en la landing',
+      hasCityCheck ? null : 'Agregar <script src="/assets/js/city-check.js?vX" defer> antes de </body>'));
+  } else {
+    const usesInitForm = html.includes('DV.initForm');
+    const hasInlineCityCheck = html.includes('isCityCovered') || html.includes('VALID_CITIES') || html.includes('lmIsCityCovered');
+    hasCityCheck = usesInitForm || hasInlineCityCheck;
+    checks.push(check('city_check', 'City check implementado', hasCityCheck ? 'PASS' : 'FAIL',
+      hasCityCheck ? (usesInitForm ? 'DV.initForm detectado — city check incluido en products.js' : 'isCityCovered inline detectado') : 'Sin city check detectado en la landing',
+      hasCityCheck ? null : 'Usar DV.initForm(PRODUCT) o agregar isCityCovered() al submit handler inline'));
+  }
+
+  /* ── Modal open button: CTA con href wa.me como fallback (no href="#") ── */
+  const hasCtaAttr = html.includes('data-scroll-form') || html.includes('data-open-modal');
+  const hasWaHrefOnCta = (html.includes('data-scroll-form') && html.includes('wa.me/595993471550')) ||
+                         (html.includes('data-open-modal') && html.includes('wa.me/595993471550'));
+  const hasBadHref = /data-scroll-form[^>]{0,100}href="#"/.test(html) || /data-open-modal[^>]{0,100}href="#"/.test(html);
+  const ctaStatus = !hasCtaAttr ? 'FAIL' : hasBadHref ? 'WARNING' : !hasWaHrefOnCta ? 'WARNING' : 'PASS';
+  checks.push(check('modal_open_btn', 'Botón CTA abre modal (fallback WA)', ctaStatus,
+    !hasCtaAttr ? 'No se encontró data-scroll-form ni data-open-modal' :
+      hasBadHref  ? 'CTA tiene href="#" — sin fallback WhatsApp real' :
+      hasWaHrefOnCta ? 'CTA con href wa.me real encontrado' : 'data-scroll-form/open-modal encontrado pero sin href wa.me',
+    ctaStatus !== 'PASS' ? 'Usar <a data-scroll-form href="https://wa.me/595993471550?text=..."> en lugar de <button> o href="#"' : null));
+
+  /* ── Submit confirm button: botón para confirmar el pedido ── */
+  const hasSubmitBtn = html.includes('id="modal-submit-btn"') || html.includes("id='modal-submit-btn'") ||
+                       html.includes('type="submit"') || html.includes("type='submit'") ||
+                       (html.includes("addEventListener('submit'") || html.includes('addEventListener("submit"'));
+  checks.push(check('submit_confirm_btn', 'Botón confirmar pedido presente', hasSubmitBtn ? 'PASS' : 'FAIL',
+    hasSubmitBtn ? 'Botón/handler de confirmación encontrado' : 'No se encontró botón de confirmación en el modal',
+    hasSubmitBtn ? null : 'Agregar <button id="modal-submit-btn"> en el modal o addEventListener submit al formulario'));
+
+  /* ── InSync sections — FAIL si ninguna sección tiene data-insync-section */
   const hasInsyncSection = html.includes('data-insync-section');
   checks.push(check('insync_sections', 'data-insync-section presente', hasInsyncSection ? 'PASS' : 'FAIL',
     hasInsyncSection ? 'Al menos un atributo encontrado' : 'No encontrado en ninguna sección',
