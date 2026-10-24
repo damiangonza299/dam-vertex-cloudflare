@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="preload" as="image" href="/assets/img/cepillo%20blanco%201.png" fetchpriority="high">
-  <link rel="preload" href="/assets/css/styles.min.css?v=48" as="style">
+  <link rel="preload" href="/assets/css/styles.min.css?v=56" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=56"></noscript>
   <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
-  <link rel="preload" href="/assets/js/products.js?v=66" as="script">
+  <link rel="preload" href="/assets/js/products.js?v=67" as="script">
   <meta name="description" content="Cepillo sÃ³nico recargable con 40.000 vibraciones y 4 cabezales. Elimina hasta 100% mÃ¡s placa que un cepillo manual. SentÃ­s la diferencia desde el primer uso. Entrega en el dÃ­a â€” Dam Vertex Paraguay.">
   <title>Cepillo SÃ³nico Recargable â€” Limpieza Profunda â€” Dam Vertex</title>
-  <script>window.DAM_VERTEX_VERSION = "48";</script>
-  <link rel="stylesheet" href="/assets/css/styles.min.css?v=48">
+  <script>window.DAM_VERTEX_VERSION = "56";</script>
   <style>
     /* â”€â”€ Cepillo theme â”€â”€ */
     :root { --accent: #3b82f6; }
@@ -264,13 +264,13 @@
     <span class="sticky-cta__price">Gs. 159.000</span>
     <span class="sticky-cta__note">Entrega hoy Â· Pago al recibir</span>
   </div>
-  <button class="btn btn-primary sticky-cta__btn" data-scroll-form data-insync-cta="sticky">PedÃ­ por WhatsApp</button>
+  <a class="btn btn-primary sticky-cta__btn" data-scroll-form data-insync-cta="sticky" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Cepillo%20El%C3%A9ctrico.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">PedÃ­ por WhatsApp</a>
 </div>
 
 <!-- Nav -->
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="#">Pedir ahora con envÃ­o gratis</a>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Cepillo%20El%C3%A9ctrico.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">Pedir ahora con envÃ­o gratis</a>
 </nav>
 
 <!-- Hero -->
@@ -309,7 +309,7 @@
         </div>
       </div>
 
-      <button class="btn btn-primary" data-scroll-form data-insync-cta="hero">Hacer mi pedido ahora â†’</button>
+      <a class="btn btn-primary" data-scroll-form data-insync-cta="hero" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Cepillo%20El%C3%A9ctrico.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">Hacer mi pedido ahora â†’</a>
       <p class="stock-hint"><span class="stock-dot"></span>Stock limitado Â· Ãºltimas unidades disponibles hoy</p>
       <div class="hero__tags">
         <span class="hero__tag">SÃ³nico</span>
@@ -417,7 +417,7 @@
 <!-- Prueba Social -->
 <section class="social-proof">
   <div class="sp-inner">
-    <p class="sec-label" style="text-align:center;color:#4ade80">Lo que dicen los que ya tienen el suyo</p>
+    <p class="sec-label" style="color:#4ade80">Lo que dicen los que ya tienen el suyo</p>
     <div class="sp-grid">
       <div class="sp-card">
         <div class="sp-stars">â˜…â˜…â˜…â˜…â˜…</div>
@@ -524,10 +524,10 @@
       <div class="ct-item"><span class="ct-ok">âœ“</span><span>Central: pagÃ¡s al recibir Â· Interior: pago anticipado - sin envÃ­o gratis</span></div>
       <div class="ct-item"><span class="ct-ok">âœ“</span><span>AtenciÃ³n rÃ¡pida</span></div>
     </div>
-    <button class="cta-ref" data-scroll-form data-insync-cta="cierre">
-      <span class="cta-ref-arrow">â†‘</span>
+    <a class="cta-ref" data-scroll-form data-insync-cta="cierre" href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Cepillo%20El%C3%A9ctrico.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+      <span class="cta-ref-arrow">â†’</span>
       <span>Hacer mi pedido ahora</span>
-    </button>
+    </a>
   </div>
 </section>
 
@@ -734,7 +734,7 @@
 
 <!-- Scripts -->
 <script src="/assets/js/tracking.js?v=74"></script>
-<script src="/assets/js/products.js?v=66"></script>
+<script src="/assets/js/products.js?v=67"></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
 <script>
   const PRODUCT = {
@@ -759,8 +759,8 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    DV.trackViewContent(PRODUCT);
-    DV.initForm(PRODUCT);
+    try { DV.trackViewContent(PRODUCT); } catch (_) {}
+    try { DV.initForm(PRODUCT); } catch (_) {}
 
     /* AddToCart + InitiateCheckout — al abrir modal */
     var _icFired = false;
