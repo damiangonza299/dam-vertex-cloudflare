@@ -724,6 +724,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  var LM_VALID_CITIES = ['ciudad del este','colonia iguazu','hernan darias','juan leon mallorquin','minga iguazu','presidente franco','san alberto','santa rita iguazu','pedro juan caballero','caaguazu','coronel oviedo','felix perez cardoso','mauricio jose troche','natalicio talavera','repatriacion','san jose de los arroyos','yataiti del norte','asuncion','luque','san lorenzo','capiata','lambare','fernando de la mora','limpio','nemby','villa elisa','mariano roque alonso','ita','ypane','aregua','itaugua','nueva italia central','guarambare','juan de mena','ypacarai','villeta','san antonio','altos','atira','caacupe','caraguatay','emboscada','eusebio ayala','itacurubi de la cordillera','loma grande','nueva italia','piribebu','san bernardino','santa elena','tobati','tupacai','borja','bocayatu','villarrica','carapegua','escobar','general bernardino caballero','paraguari','pirayu','sapucai','yaguaron','benjamin aceval','remansito','villa hayes'];
+  function lmIsCityCovered(c) {
+    if (!c) return false;
+    var n = c.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim().replace(/\s+/g,' ');
+    return LM_VALID_CITIES.indexOf(n) !== -1;
+  }
+
   if (form) form.addEventListener('submit', async function(e) {
     e.preventDefault();
     var sel     = document.querySelector('input[name="lm-offer"]:checked');
@@ -779,6 +786,11 @@ document.addEventListener('DOMContentLoaded', function() {
       try { DV.saveLeadDataLocal(phone, name, ''); } catch (_) {}
     } catch (err) {
       console.error('LM_SUBMIT_ERROR', err && err.message);
+    }
+    if (!lmIsCityCovered(city)) {
+      var lmWaMsg = 'Producto: Luna Mini Vibrador Bala Recargable\nCantidad: ' + qty + '\nTotal: Gs. ' + value.toLocaleString('es-PY') + '\nNombre: ' + name + '\nTeléfono: ' + phone + '\nCiudad: ' + (city || '(no especificada)');
+      window.location.href = 'https://wa.me/595993471550?text=' + encodeURIComponent(lmWaMsg);
+      return;
     }
     formWrap.style.display = 'none';
     successBox.classList.add('visible');
