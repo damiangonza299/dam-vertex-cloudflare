@@ -267,11 +267,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <p>Dam Vertex</p>
     </div>
     <button id="new-product-btn" onclick="openNewProduct()" style="display:none">+ Nuevo producto</button>
-    <select id="platform-filter" onchange="renderSidebar()" style="width:calc(100% - 20px);margin:8px 10px 4px;padding:4px 6px;font-size:10px;background:var(--bg2,#1a1a1a);color:inherit;border:1px solid var(--border,#333);border-radius:4px">
-      <option value="">Todas las plataformas</option>
-      <option value="DAM_VERTEX">DAM_VERTEX</option>
-      <option value="DCANP_GROUP">DCANP GROUP</option>
-    </select>
     <div id="product-list"></div>
   </div>
 
@@ -596,8 +591,9 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
             <div class="sync-actions">
               <button class="sync-btn primary" id="sync-to-finanzas-btn" onclick="syncToFinanzas()">Sincronizar con Dam Finanzas</button>
               <button class="sync-btn green" id="activate-btn" onclick="activateProduct()">✓ Activar producto</button>
+              <button class="sync-btn" id="deactivate-btn" onclick="deactivateProduct()" style="background:rgba(248,113,113,.12);border-color:rgba(248,113,113,.35);color:#f87171;display:none">⏸ Desactivar</button>
             </div>
-            <div class="notice notice-info" style="margin-top:12px;font-size:11px">Al activar: el producto aparece en Venta Manual WhatsApp y queda disponible para pedidos.</div>
+            <div class="notice notice-info" style="margin-top:12px;font-size:11px">Al activar: el producto aparece en Venta Manual WhatsApp y queda disponible para pedidos. Al desactivar: deja de aparecer en ventas (se puede reactivar).</div>
             <div id="sync-log" class="sync-log" style="display:none"></div>
           </div>
 
@@ -735,9 +731,8 @@ async function loadBriefs() {
 }
 
 function renderSidebar() {
-  const list   = document.getElementById('product-list');
-  const filter = document.getElementById('platform-filter')?.value || '';
-  const shown  = filter ? briefs.filter(b => (b.platform || 'DAM_VERTEX') === filter) : briefs;
+  const list  = document.getElementById('product-list');
+  const shown = briefs;
   if (!shown.length) {
     list.innerHTML = '<p style="padding:12px;font-size:11px;color:var(--muted)">Sin productos todavía.</p>';
     return;
@@ -2986,10 +2981,15 @@ function renderSyncTab(b) {
   setEl('sync-finanzas-id',    b.dam_finanzas_id || '—');
   setEl('sync-finanzas-note',  b.dam_finanzas_note || '—');
 
-  const syncBtn     = document.getElementById('sync-to-finanzas-btn');
-  const activateBtn = document.getElementById('activate-btn');
-  if (syncBtn)     syncBtn.disabled     = !currentSlug || b.status === 'archived';
-  if (activateBtn) activateBtn.disabled = !currentSlug || b.status === 'active' || b.status === 'archived';
+  const syncBtn       = document.getElementById('sync-to-finanzas-btn');
+  const activateBtn   = document.getElementById('activate-btn');
+  const deactivateBtn = document.getElementById('deactivate-btn');
+  const isActive      = b.status === 'active';
+  if (syncBtn)       syncBtn.disabled     = !currentSlug || b.status === 'archived';
+  if (activateBtn)   activateBtn.disabled = !currentSlug || isActive || b.status === 'archived';
+  if (deactivateBtn) {
+    deactivateBtn.style.display = (currentSlug && isActive) ? '' : 'none';
+  }
 }
 
 async function syncToFinanzas() {
@@ -3138,6 +3138,23 @@ async function activateProduct() {
     await loadBrief(currentSlug);
   } else {
     logSync(`✗ Error al activar: ${data.error}\n${data.hint || ''}`);
+  }
+}
+
+async function deactivateProduct() {
+  if (!currentSlug) return;
+  if (!confirm(`¿Desactivar "${currentSlug}"?\n\nDejará de aparecer en ventas. Se puede reactivar desde este panel.`)) return;
+  const res  = await fetch('/api/product-registry', {
+    method: 'POST', headers: authHeaders(),
+    body: JSON.stringify({ action: 'deactivate', slug: currentSlug }),
+  });
+  const data = await res.json();
+  if (data.ok) {
+    logSync(`⏸ Producto desactivado: ${currentSlug}`);
+    await loadBriefs();
+    await loadBrief(currentSlug);
+  } else {
+    logSync(`✗ Error al desactivar: ${data.error}`);
   }
 }
 

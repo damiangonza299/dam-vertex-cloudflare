@@ -4,7 +4,7 @@
 
    GET  ?slug=X          → get one brief
    GET  (no slug)        → list all briefs (summary)
-   POST body.action      → create | sync_to_finanzas | activate | archive | refresh_insync | save_landing | update_landing_intelligence
+   POST body.action      → create | sync_to_finanzas | activate | deactivate | archive | refresh_insync | save_landing | update_landing_intelligence
    PATCH ?slug=X         → update brief fields (partial)
    ========================================================= */
 
@@ -72,13 +72,14 @@ export async function onRequestPost({ request, env }) {
     // NOTE: There is no create_brief action for existing products.
     // New products must go through handleCreate (Product Studio).
     // Legacy product_briefs were backfilled via migrate25.sql, not via an endpoint.
-    if (!action || action === 'create') return handleCreate(body, env);
-    if (action === 'sync_to_finanzas')  return handleSync(body, env);
-    if (action === 'activate')          return handleActivate(body, env);
-    if (action === 'archive')           return handleArchive(body, env);
-    if (action === 'refresh_insync')              return handleRefreshInsync(body, env);
-    if (action === 'save_landing')                return handleSaveLanding(body, env);
-    if (action === 'update_landing_intelligence') return handleUpdateLandingIntelligence(body, env);
+    if (!action || action === 'create') return await handleCreate(body, env);
+    if (action === 'sync_to_finanzas')  return await handleSync(body, env);
+    if (action === 'activate')          return await handleActivate(body, env);
+    if (action === 'deactivate')        return await handleDeactivate(body, env);
+    if (action === 'archive')           return await handleArchive(body, env);
+    if (action === 'refresh_insync')              return await handleRefreshInsync(body, env);
+    if (action === 'save_landing')                return await handleSaveLanding(body, env);
+    if (action === 'update_landing_intelligence') return await handleUpdateLandingIntelligence(body, env);
     return json({ ok: false, error: `accion_desconocida: ${action}` }, 400);
   } catch (err) {
     console.error('PRODUCT_REGISTRY_POST', action, err.message);
@@ -248,6 +249,18 @@ async function handleActivate(body, env) {
   ]);
 
   return json({ ok: true, action: 'activated', slug });
+}
+
+async function handleDeactivate(body, env) {
+  const { slug } = body;
+  if (!slug) return json({ ok: false, error: 'slug requerido' }, 400);
+
+  await env.DB.batch([
+    env.DB.prepare("UPDATE products       SET active=0, status='draft', updated_at=datetime('now') WHERE slug=?").bind(slug),
+    env.DB.prepare("UPDATE product_briefs SET status='draft',           updated_at=datetime('now') WHERE product_slug=?").bind(slug),
+  ]);
+
+  return json({ ok: true, action: 'deactivated', slug });
 }
 
 async function handleArchive(body, env) {
