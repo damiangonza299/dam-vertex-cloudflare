@@ -115,7 +115,7 @@
 <div class="products-section-label">
   <span class="label-badge"><span class="badge-icon">⭐</span> Más Destacados</span>
   <div class="search-box">
-    <input class="search-input" id="dv-search" type="search" placeholder="Buscar producto..." autocomplete="off" spellcheck="false">
+    <input class="search-input" id="dv-search" type="text" placeholder="Buscar producto..." autocomplete="off" spellcheck="false">
     <button class="search-clear" id="dv-search-clear" aria-label="Limpiar búsqueda">×</button>
   </div>
 </div>
@@ -727,8 +727,7 @@ function doSearch(q) {
   if (coll)  coll.style.display  = 'none';
   var results = ALL_PRODUCTS_FLAT.filter(function(p) {
     var name = normSearch(DV_CARD_SHORT_NAMES[p.slug] || p.name || '');
-    var slug = normSearch((p.slug || '').replace(/-/g, ' '));
-    return name.indexOf(nq) !== -1 || slug.indexOf(nq) !== -1;
+    return name.indexOf(nq) === 0;
   });
   if (srStatus) {
     srStatus.style.display = 'block';
