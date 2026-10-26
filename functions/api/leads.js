@@ -22,6 +22,8 @@ const PRODUCT_SHORT_NAMES = {
   'cepillo-secador-moldeador-aguacate': 'Cepillo AguaCate',
   'cadena':                             'Cadena Apex',
   'combo-reloj-cadena':                 'Cadena + Reloj',
+  'proyector-led-navideno':             'Proyector Navideño',
+  'pelador-multifuncion-3en1':          'Pelador 3 en 1',
 };
 
 export async function onRequestOptions() {
