@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
+  <link rel="preload" href="/rodillera-tecnologia-termica/hero.webp" as="image" fetchpriority="high">
+  <meta name="description" content="Rodillera térmica eléctrica con 3 niveles de temperatura. Calor localizado para relajarte después de un día largo. Pagás al recibir, envío gratis.">
+  <title>Rodillera Térmica — Dam Vertex</title>
+  <link rel="preload" href="/assets/css/styles.min.css?v=56" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=56"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #171717; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root {
+      --rt-bg:       #FFFFFF;
+      --rt-bg2:      #F5F5F5;
+      --rt-text:     #171717;
+      --rt-text2:    #555555;
+      --rt-naranja:  #E66B35;
+      --rt-naranja2: #C95A26;
+      --rt-naranja-suave: #FFF0E9;
+      --rt-border:   #E5E7EB;
+      --rt-verde:    #16A34A;
+    }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px,5vw,40px); height: 56px; background: #FFFFFF; border-bottom: 1px solid var(--rt-border); }
+    .nav__logo { font-size: 14px; font-weight: 800; letter-spacing: .04em; color: var(--rt-text); }
+    .nav__logo span { opacity: .4; }
+    .nav__cta { display: inline-flex; align-items: center; background: var(--rt-naranja); color: #fff; font-size: clamp(10px,2.8vw,13px); font-weight: 700; padding: 8px 14px; border-radius: 999px; white-space: nowrap; border: none; cursor: pointer; font-family: inherit; }
+    .rt-inner { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+    .rt-btn {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--rt-naranja); color: #fff; font-weight: 700;
+      padding: 0 14px; border-radius: 999px; border: none; cursor: pointer;
+      text-decoration: none; transition: background .2s, transform .15s;
+      width: 100%; height: 56px; font-size: clamp(13px,3.8vw,16px); font-family: inherit;
+      box-shadow: 0 6px 18px rgba(230,107,53,.3); white-space: nowrap; letter-spacing: .01em;
+    }
+    .rt-btn:hover { background: var(--rt-naranja2); transform: translateY(-1px); }
+    .rt-btn-sub { font-size: 11px; font-weight: 700; margin-top: 2px; opacity: .85; }
+    .rt-cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    /* ── HERO ── */
+    .rt-hero { background: #FFFFFF; padding: clamp(28px,7vw,52px) 0 clamp(32px,7vw,52px); }
+    .rt-hero-img-wrap { aspect-ratio: 1/1; width: min(90vw,440px); margin: 0 auto 24px; border-radius: 16px; overflow: hidden; border: 1px solid var(--rt-border); background: var(--rt-bg2); }
+    .rt-hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .rt-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--rt-naranja); background: var(--rt-naranja-suave); border-radius: 999px; padding: 3px 10px; margin-bottom: 12px; }
+    .rt-h1 { font-size: clamp(22px,7vw,32px); font-weight: 800; line-height: 1.2; color: var(--rt-text); margin: 0 0 12px; }
+    .rt-sub { font-size: 14px; color: var(--rt-text2); line-height: 1.55; margin: 0 0 18px; }
+    .rt-save-pill { display: inline-block; font-size: 12px; font-weight: 700; color: #fff; background: var(--rt-naranja); border-radius: 999px; padding: 3px 12px; margin-bottom: 8px; }
+    .rt-price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; flex-wrap: nowrap; }
+    .rt-price-main { font-size: clamp(26px,7.5vw,34px); font-weight: 800; color: var(--rt-text); }
+    .rt-price-compare { font-size: clamp(16px,4.5vw,20px); color: #9CA3AF; text-decoration: line-through; }
+    .rt-social-proof { font-size: 13px; color: var(--rt-text2); font-weight: 600; margin-bottom: 4px; }
+    .rt-garantia { font-size: 13px; color: var(--rt-verde); margin-bottom: 20px; }
+    .rt-trust-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .rt-chip { font-size: 11px; font-weight: 700; color: var(--rt-text2); background: var(--rt-bg2); border-radius: 999px; padding: 4px 10px; border: 1px solid var(--rt-border); }
+    /* ── PROBLEMA ── */
+    .rt-problema { background: #fff; padding: clamp(32px,8vw,52px) 0; }
+    .rt-h2 { font-size: clamp(18px,5vw,24px); font-weight: 800; line-height: 1.2; color: var(--rt-text); margin: 0 0 10px; }
+    .rt-h2-sub { font-size: 14px; color: var(--rt-text2); line-height: 1.55; margin: 0 0 20px; }
+    .rt-problema-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    .rt-problema-item { display: flex; align-items: flex-start; gap: 12px; background: #fff; border: 1px solid var(--rt-border); border-radius: 12px; padding: 14px; }
+    .rt-problema-icon { font-size: 22px; flex-shrink: 0; }
+    .rt-problema-item strong { display: block; font-size: 14px; font-weight: 700; color: var(--rt-text); margin-bottom: 3px; }
+    .rt-problema-item p { font-size: 13px; color: var(--rt-text2); margin: 0; line-height: 1.4; }
+    /* ── BENEFICIOS ── */
+    .rt-beneficios { background: var(--rt-bg2); padding: clamp(32px,8vw,52px) 0; }
+    .rt-benefits-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+    .rt-benefit-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px; background: var(--rt-naranja-suave); border-radius: 12px; border: 1px solid rgba(230,107,53,.15); }
+    .rt-benefit-icon { font-size: 24px; flex-shrink: 0; }
+    .rt-benefit-item strong { display: block; font-size: 14px; font-weight: 700; color: var(--rt-text); margin-bottom: 3px; }
+    .rt-benefit-item p { font-size: 13px; color: var(--rt-text2); margin: 0; line-height: 1.4; }
+    /* ── COMO USAR ── */
+    .rt-como-usar { background: #fff; padding: clamp(32px,8vw,52px) 0; }
+    .rt-steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+    .rt-step { display: flex; align-items: flex-start; gap: 14px; }
+    .rt-step-num { min-width: 32px; height: 32px; border-radius: 50%; background: var(--rt-naranja); color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .rt-step strong { display: block; font-size: 14px; font-weight: 700; color: var(--rt-text); margin-bottom: 3px; }
+    .rt-step p { font-size: 13px; color: var(--rt-text2); margin: 0; line-height: 1.4; }
+    /* ── VIDEO ── */
+    .rt-video-sec { background: var(--rt-bg2); padding: clamp(32px,8vw,52px) 0; }
+    .rt-video-wrap { aspect-ratio: 9/16; border-radius: 16px; overflow: hidden; background: #E5E7EB; max-width: 340px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
+    .rt-video-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .rt-video-placeholder { text-align: center; color: var(--rt-text2); font-size: 14px; padding: 40px 20px; }
+    /* ── OFERTA ── */
+    .rt-oferta { background: var(--rt-bg2); padding: clamp(32px,8vw,52px) 0; }
+    .rt-oferta-img-wrap { aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid var(--rt-border); margin: 0 0 20px; }
+    .rt-oferta-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .rt-value-list { list-style: none; padding: 0; margin: 0 0 20px; }
+    .rt-value-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--rt-border); gap: 12px; }
+    .rt-value-item:last-child { border-bottom: none; }
+    .rt-value-item--highlight { background: var(--rt-naranja-suave); padding: 10px 8px; border-radius: 6px; border-bottom: none; margin-bottom: 1px; }
+    .rt-value-item__label { font-size: 14px; color: var(--rt-text2); line-height: 1.35; flex: 1; }
+    .rt-value-item__amount { font-size: 14px; color: var(--rt-text); font-weight: 700; white-space: nowrap; }
+    .rt-value-total { font-size: 13px; color: var(--rt-text2); margin: 0 0 4px; }
+    .rt-value-hoy { font-size: 20px; font-weight: 700; color: var(--rt-text); margin: 0 0 6px; }
+    .rt-value-hoy span { color: var(--rt-naranja); }
+    .rt-value-nota { font-size: 12px; color: var(--rt-text2); margin: 0 0 24px; }
+    /* ── FAQ ── */
+    .rt-faq { background: #fff; padding: clamp(32px,8vw,52px) 0; }
+    .rt-faq-list { display: flex; flex-direction: column; gap: 0; }
+    details.rt-detail { border-bottom: 1px solid var(--rt-border); padding: 14px 0; }
+    details.rt-detail:last-child { border-bottom: none; }
+    details.rt-detail summary { font-size: 14px; font-weight: 700; color: var(--rt-text); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    details.rt-detail summary::after { content: '+'; font-size: 18px; font-weight: 400; color: var(--rt-naranja); flex-shrink: 0; }
+    details.rt-detail[open] summary::after { content: '−'; }
+    details.rt-detail p { font-size: 13px; color: var(--rt-text2); line-height: 1.55; margin-top: 8px; }
+    /* ── CIERRE ── */
+    .rt-cierre { background: var(--rt-naranja); padding: clamp(44px,10vw,68px) 0; text-align: center; }
+    .rt-cierre__h2 { font-size: clamp(18px,5vw,24px); font-weight: 800; color: #fff; margin: 0 0 10px; line-height: 1.2; }
+    .rt-cierre__sub { font-size: 14px; color: rgba(255,255,255,.85); margin: 0 0 24px; line-height: 1.5; }
+    .rt-btn-blanco { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; color: var(--rt-naranja); font-weight: 700; padding: 0 14px; border-radius: 999px; border: none; cursor: pointer; text-decoration: none; width: 100%; height: 56px; font-size: clamp(13px,3.8vw,16px); font-family: inherit; box-shadow: 0 6px 18px rgba(0,0,0,.15); white-space: nowrap; letter-spacing: .01em; transition: opacity .2s; }
+    .rt-btn-blanco:hover { opacity: .92; }
+    /* ── FOOTER ── */
+    .rt-footer { background: #171717; padding: 20px; text-align: center; font-size: 13px; color: rgba(255,255,255,.45); border-top: 1px solid rgba(255,255,255,.08); }
+    /* ── MODAL ── */
+    .rt-modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.5); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
+    .rt-modal-overlay.active { display: flex; }
+    .rt-modal-box { position: relative; background: #fff; border: 1px solid var(--rt-border); border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; color: var(--rt-text); }
+    .rt-modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--rt-bg2); color: var(--rt-text); font-size: 15px; cursor: pointer; font-family: inherit; }
+    .rt-modal-title { font-size: clamp(14px,4vw,18px); font-weight: 700; color: var(--rt-text); margin: 0 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rt-modal-section-label { display: block; font-size: 11px; font-weight: 700; color: var(--rt-text2); text-transform: uppercase; letter-spacing: .05em; margin: 0 0 10px; }
+    .rt-offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .rt-offer-option { position: relative; display: block; border: 1.5px solid var(--rt-border); border-radius: 10px; padding: 12px 14px; cursor: pointer; background: var(--rt-bg2); }
+    .rt-offer-option input { position: absolute; opacity: 0; }
+    .rt-offer-option.selected { border: 2px solid var(--rt-naranja); background: var(--rt-naranja-suave); }
+    .rt-offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    .rt-offer-qty { font-weight: 700; font-size: 14px; color: var(--rt-text); }
+    .rt-offer-price { font-weight: 800; font-size: 15px; color: var(--rt-text); }
+    .rt-offer-compare { font-size: 12px; text-decoration: line-through; color: #9CA3AF; margin-right: 6px; }
+    .rt-offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .rt-offer-saving { color: var(--rt-verde); font-weight: 700; font-size: 12px; }
+    .rt-offer-badge { background: var(--rt-naranja); color: #fff; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .rt-offer-badge-green { background: var(--rt-verde); color: #fff; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .rt-form-group { margin-bottom: 14px; }
+    .rt-form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--rt-text2); margin-bottom: 6px; }
+    .rt-form-group input, .rt-form-group select { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid var(--rt-border); background: var(--rt-bg2); color: var(--rt-text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .15s; }
+    .rt-form-group input:focus, .rt-form-group select:focus { border: 2px solid var(--rt-naranja); }
+    .rt-pay-badge { margin-top: 14px; text-align: center; font-size: 12px; font-weight: 800; color: var(--rt-naranja); background: var(--rt-naranja-suave); border-radius: 8px; padding: 8px 12px; }
+    .rt-upsell-block { display: flex; align-items: center; gap: 10px; cursor: pointer; background: var(--rt-bg2); border: 1.5px solid var(--rt-border); border-radius: 10px; padding: 12px 14px; width: 100%; text-align: left; }
+    .rt-upsell-title { color: var(--rt-text); font-size: 13px; font-weight: 700; }
+    .rt-upsell-sub { color: var(--rt-text2); font-size: 12px; }
+    .rt-form-submit { margin-top: 16px; }
+    .rt-dcanp-success { display: none; text-align: center; }
+    .rt-dcanp-success.visible { display: block; }
+    .rt-dcanp-success__icon { width: 56px; height: 56px; background: var(--rt-naranja); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .rt-dcanp-success h2 { color: var(--rt-naranja); font-size: 22px; margin-bottom: 12px; }
+    .rt-dcanp-success p { color: var(--rt-text2); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .rt-dcanp-success__tip { font-weight: 600; color: var(--rt-text); }
+    .rt-dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: var(--rt-verde); font-weight: 700; }
+    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: var(--rt-naranja); color: #fff; font-weight: 700; font-size: 14px; border-radius: 8px; text-align: center; font-family: inherit; }
+    /* ── STICKY BAR ── */
+    html, body { overflow-x: hidden; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <button type="button" class="nav__cta" data-open-modal>Pedir ahora &mdash; Pag&#xE1;s al recibir</button>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════
+     SECCIÓN 1 — HERO
+     ══════════════════════════════════════════════════ -->
+<section id="section-hero" data-insync-section="hero" class="rt-hero">
+  <div class="rt-inner">
+
+    <div class="rt-hero-img-wrap">
+      <img src="/rodillera-tecnologia-termica/hero.webp"
+           alt="Rodillera T&#233;rmica El&#233;ctrica colocada en rodilla"
+           loading="eager" fetchpriority="high" decoding="async" width="1080" height="1080"
+           onerror="this.style.display='none'">
+    </div>
+
+    <span class="rt-tag">&#x1F525; Calor localizado · 3 niveles</span>
+    <h1 class="rt-h1">El descanso que tus rodillas estaban esperando.</h1>
+    <p class="rt-sub">Calor ajustable en tres niveles. Una forma pr&#xE1;ctica de relajarte despu&#233;s de un d&#xED;a largo.</p>
+
+    <div class="rt-save-pill">Ahorr&#xE1;s Gs. 100.000</div>
+    <div class="rt-price-row">
+      <span class="rt-price-main">Gs. 199.000</span>
+      <span class="rt-price-compare">Gs. 265.000</span>
+    </div>
+    <p class="rt-social-proof">&#x2713; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</p>
+    <p class="rt-garantia">&#x2713; Garant&#xED;a de 30 d&#xED;as</p>
+
+    <div class="rt-cta-wrap" style="margin-bottom:24px">
+      <a class="rt-btn" data-open-modal data-insync-cta="hero"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rodillera%20T%C3%A9rmica.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        QUIERO MI RODILLERA T&#xC9;RMICA
+        <span class="rt-btn-sub">&#x2713; Garant&#xED;a de 30 d&#xED;as</span>
+      </a>
+    </div>
+
+    <div class="rt-trust-chips">
+      <span class="rt-chip">&#x26A1; Entrega el mismo d&#xED;a</span>
+      <span class="rt-chip">&#x1F4B0; Pag&#xE1;s al recibir</span>
+      <span class="rt-chip">&#x1F4E6; Env&#xED;o gratis</span>
+      <span class="rt-chip">&#x1F6E1;&#xFE0F; Garant&#xED;a 30 d&#xED;as</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECCIÓN 2 — VIDEO / DEMO
+     ══════════════════════════════════════════════════ -->
+<section id="section-video" data-insync-section="video" class="rt-video-sec">
+  <div class="rt-inner">
+
+    <h2 class="rt-h2">As&#xED; se ve en uso.</h2>
+    <p class="rt-h2-sub" style="margin-bottom:16px">El producto exacto que te llega.</p>
+
+    <div class="rt-video-wrap">
+      <video src="/rodillera-tecnologia-termica/video1.mp4" muted autoplay loop playsinline webkit-playsinline preload="metadata" aria-hidden="true" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.innerHTML='<div class=rt-video-placeholder>&#x1F3A5; Video del producto<br><span style=font-size:12px;opacity:.6>Placeholder — reemplazar con video real</span></div>'">
+        <source src="/rodillera-tecnologia-termica/video1.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="rt-cta-wrap">
+      <a class="rt-btn" data-open-modal data-insync-cta="video"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rodillera%20T%C3%A9rmica.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        QUIERO MI RODILLERA T&#xC9;RMICA
+        <span class="rt-btn-sub">&#x2713; Pag&#xE1;s al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECCIÓN 3 — PROBLEMA
+     ══════════════════════════════════════════════════ -->
+<section id="section-problema" data-insync-section="problema" class="rt-problema">
+  <div class="rt-inner">
+
+    <h2 class="rt-h2">Hay d&#xED;as en que tus rodillas sienten todo el esfuerzo.</h2>
+    <p class="rt-h2-sub">Despu&#233;s de tantas actividades, un momento de calor reconfortante puede convertirse en una parte agradable de tu rutina de descanso.</p>
+
+    <div class="rt-problema-grid">
+      <div class="rt-problema-item">
+        <div class="rt-problema-icon">&#x1F9B5;</div>
+        <div>
+          <strong>Jornadas largas de pie</strong>
+          <p>Trabajar horas paradas o caminando mucho deja las rodillas tensas y cansadas al final del d&#xED;a.</p>
+        </div>
+      </div>
+      <div class="rt-problema-item">
+        <div class="rt-problema-icon">&#x1F6B6;</div>
+        <div>
+          <strong>Actividades exigentes</strong>
+          <p>Caminatas, subir escaleras, d&#xED;as intensos. Las articulaciones acumulan esfuerzo durante el d&#xED;a.</p>
+        </div>
+      </div>
+      <div class="rt-problema-item">
+        <div class="rt-problema-icon">&#x1F30D;</div>
+        <div>
+          <strong>Rigidez al terminar el d&#xED;a</strong>
+          <p>Esa sensaci&#xF3;n de tensi&#xF3;n que aparece cuando finalmente te sent&#xE1;s a descansar.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECCIÓN 4 — BENEFICIOS
+     ══════════════════════════════════════════════════ -->
+<section id="section-beneficios" data-insync-section="beneficios" class="rt-beneficios">
+  <div class="rt-inner">
+
+    <h2 class="rt-h2">Calor, comodidad y control en un solo producto.</h2>
+    <p class="rt-h2-sub" style="margin-bottom:20px">Todo lo que necesit&#xE1;s para un momento de bienestar en casa.</p>
+
+    <div class="rt-benefits-grid">
+      <div class="rt-benefit-item">
+        <div class="rt-benefit-icon">&#x1F525;</div>
+        <div>
+          <strong>Calor localizado en la rodilla</strong>
+          <p>Se adapta directamente a la zona que m&#xE1;s lo necesita, sin compresas ni preparaci&#xF3;n.</p>
+        </div>
+      </div>
+      <div class="rt-benefit-item">
+        <div class="rt-benefit-icon">&#x1F321;&#xFE0F;</div>
+        <div>
+          <strong>3 niveles de temperatura</strong>
+          <p>Verde (suave), azul (medio) y rojo (alto). Eleg&#xED; el que te resulte m&#xE1;s agradable.</p>
+        </div>
+      </div>
+      <div class="rt-benefit-item">
+        <div class="rt-benefit-icon">&#x1FA73;</div>
+        <div>
+          <strong>Dise&#xF1;o envolvente y ajustable</strong>
+          <p>Correas ajustables que mantienen la rodillera en posici&#xF3;n para que puedas relajarte sin sostenerla.</p>
+        </div>
+      </div>
+      <div class="rt-benefit-item">
+        <div class="rt-benefit-icon">&#x1F50C;</div>
+        <div>
+          <strong>Alimentaci&#xF3;n USB incluida</strong>
+          <p>Se conecta a cualquier cargador de tel&#xE9;fono, power bank o puerto USB. Cable incluido.</p>
+        </div>
+      </div>
+      <div class="rt-benefit-item">
+        <div class="rt-benefit-icon">&#x1F4AA;</div>
+        <div>
+          <strong>Tambi&#xE9;n para muslo, brazo y pantorrilla</strong>
+          <p>El dise&#xF1;o flexible permite usarla en otras zonas que necesiten calor localizado.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rt-cta-wrap">
+      <a class="rt-btn" data-open-modal data-insync-cta="beneficios"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rodillera%20T%C3%A9rmica.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        QUIERO MI RODILLERA T&#xC9;RMICA
+        <span class="rt-btn-sub">&#x2713; Pag&#xE1;s al recibir</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECCIÓN 5 — CÓMO SE USA
+     ══════════════════════════════════════════════════ -->
+<section id="section-como-usar" data-insync-section="como-usar" class="rt-como-usar">
+  <div class="rt-inner">
+
+    <h2 class="rt-h2">F&#xE1;cil de usar en tus momentos de descanso.</h2>
+    <p class="rt-h2-sub" style="margin-bottom:20px">Cuatro pasos y ya est&#xE1;s list&#xF8; para relajarte.</p>
+
+    <div class="rt-steps">
+      <div class="rt-step">
+        <div class="rt-step-num">1</div>
+        <div>
+          <strong>Coloc&#xE1; y ajust&#xE1;</strong>
+          <p>Envolv&#xE9; la rodillera alrededor de la rodilla y ajust&#xE1; las correas para que quede c&#xF3;modo y sin apretar.</p>
+        </div>
+      </div>
+      <div class="rt-step">
+        <div class="rt-step-num">2</div>
+        <div>
+          <strong>Conect&#xE1; el cable USB</strong>
+          <p>Enchufa el cable a cualquier cargador compatible, power bank o puerto USB cercano.</p>
+        </div>
+      </div>
+      <div class="rt-step">
+        <div class="rt-step-num">3</div>
+        <div>
+          <strong>Eleg&#xED; tu nivel de calor</strong>
+          <p>Apret&#xE1; el bot&#xF3;n integrado para seleccionar el nivel que te resulte m&#xE1;s agradable: verde, azul o rojo.</p>
+        </div>
+      </div>
+      <div class="rt-step">
+        <div class="rt-step-num">4</div>
+        <div>
+          <strong>Relaj&#xE1;te</strong>
+          <p>Disfr&#xFA;ta de tu momento de calor y bienestar. Seguí las instrucciones de seguridad del fabricante para el tiempo de uso.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECCIÓN 6 — OFERTA / LO QUE LLEGA
+     ══════════════════════════════════════════════════ -->
+<section id="section-oferta" data-insync-section="oferta" class="rt-oferta">
+  <div class="rt-inner">
+
+    <div class="rt-oferta-img-wrap">
+      <img src="/rodillera-tecnologia-termica/img2.webp"
+           alt="Rodillera T&#233;rmica en su empaque"
+           loading="lazy" decoding="async" width="1080" height="1080"
+           onerror="this.style.display='none'">
+    </div>
+
+    <h2 class="rt-h2">Hac&#xE9; del descanso una parte de tu d&#xED;a.</h2>
+    <p class="rt-h2-sub" style="margin-bottom:16px">Esto es todo lo que recib&#xED;s en tu puerta:</p>
+
+    <ul class="rt-value-list">
+      <li class="rt-value-item">
+        <span class="rt-value-item__label">Rodillera T&#xE9;rmica El&#xE9;ctrica (3 niveles)</span>
+        <span class="rt-value-item__amount">Gs. 199.000</span>
+      </li>
+      <li class="rt-value-item rt-value-item--highlight">
+        <span class="rt-value-item__label">&#x26A1; Cable USB de alimentaci&#xF3;n incluido</span>
+        <span class="rt-value-item__amount">Gs. 25.000</span>
+      </li>
+      <li class="rt-value-item">
+        <span class="rt-value-item__label">Bolsa de malla para terapia fr&#xED;a (bonus)</span>
+        <span class="rt-value-item__amount">Gs. 15.000</span>
+      </li>
+      <li class="rt-value-item">
+        <span class="rt-value-item__label">Env&#xED;o gratis a tu puerta</span>
+        <span class="rt-value-item__amount">Gs. 25.000</span>
+      </li>
+      <li class="rt-value-item">
+        <span class="rt-value-item__label">Garant&#xED;a de 30 d&#xED;as</span>
+        <span class="rt-value-item__amount">Incluida</span>
+      </li>
+    </ul>
+
+    <p class="rt-value-total">Valor total: <strong style="color:var(--rt-text)">Gs. 364.000</strong></p>
+    <p class="rt-value-hoy">Hoy pag&#xE1;s <span>Gs. 199.000</span>, al recibir.</p>
+    <p class="rt-value-nota">Llevando 2 ahorr&#xE1;s Gs. 39.000: uno para vos y otro para regalar.</p>
+
+    <div class="rt-cta-wrap">
+      <a class="rt-btn" data-open-modal data-insync-cta="oferta"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rodillera%20T%C3%A9rmica.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        QUIERO MI RODILLERA T&#xC9;RMICA
+        <span class="rt-btn-sub">&#x2713; Pag&#xE1;s al recibir &middot; Env&#xED;o gratis</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECCIÓN 7 — FAQ
+     ══════════════════════════════════════════════════ -->
+<section id="section-faq" data-insync-section="faq" class="rt-faq">
+  <div class="rt-inner">
+
+    <h2 class="rt-h2" style="margin-bottom:20px">Preguntas frecuentes.</h2>
+
+    <div class="rt-faq-list">
+      <details class="rt-detail">
+        <summary>&#xBF;C&#xF3;mo funciona la rodillera?</summary>
+        <p>Tiene una resistencia t&#xE9;rmica integrada que genera calor al conectarse a USB. El bot&#xF3;n de control te permite elegir entre tres intensidades: verde (suave), azul (medio) y rojo (alto).</p>
+      </details>
+      <details class="rt-detail">
+        <summary>&#xBF;Necesita estar conectada a USB para funcionar?</summary>
+        <p>S&#xED;. Se alimenta por cable USB incluido. No tiene bater&#xED;a interna, as&#xED; que necesita estar conectada durante el uso.</p>
+      </details>
+      <details class="rt-detail">
+        <summary>&#xBF;El cable USB est&#xE1; incluido?</summary>
+        <p>S&#xED;. La rodillera viene con su cable USB de alimentaci&#xF3;n. Pod&#xE9;s conectarla a cualquier cargador de tel&#xE9;fono est&#xE1;ndar o power bank.</p>
+      </details>
+      <details class="rt-detail">
+        <summary>&#xBF;Es ajustable? &#xBF;Para qu&#xE9; talles sirve?</summary>
+        <p>S&#xED;, tiene correas ajustables que permiten adaptarla a diferentes tama&#xF1;os de rodilla y tambi&#xE9;n a otras &#xE1;reas como muslo, brazo y pantorrilla.</p>
+      </details>
+      <details class="rt-detail">
+        <summary>&#xBF;Cu&#xE1;nto tiempo se recomienda usarla?</summary>
+        <p>Segu&#xED; las instrucciones de seguridad del fabricante. Como referencia general, sesi&#xF3;n de 20 a 30 minutos. Si sent&#xED;s alguna molestia, retir&#xE1;la de inmediato.</p>
+      </details>
+      <details class="rt-detail">
+        <summary>&#xBF;Se puede usar despu&#xE9;s de una lesi&#xF3;n?</summary>
+        <p>No la uses en lesiones recientes, con hinchaz&#xF3;n aguda o heridas abiertas. Ante cualquier duda, consult&#xE1; con un profesional de la salud antes de usar.</p>
+      </details>
+      <details class="rt-detail">
+        <summary>&#xBF;Cu&#xE1;ndo llega el pedido?</summary>
+        <p>Gran Asunci&#xF3;n: entrega coordinada el mismo d&#xED;a si ped&#xED;s antes de las 15:00. Interior del pa&#xED;s: 24 a 48 horas.</p>
+      </details>
+      <details class="rt-detail">
+        <summary>&#xBF;Tengo que pagar algo por adelantado?</summary>
+        <p>No. Recib&#xED;s el producto, lo revis&#xE1;s, y reci&#xE9;n ah&#xED; pag&#xE1;s. Sin adelantos ni tarjeta.</p>
+      </details>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECCIÓN 8 — CIERRE
+     ══════════════════════════════════════════════════ -->
+<section id="section-cierre" data-insync-section="cierre" class="rt-cierre">
+  <div class="rt-inner">
+    <h2 class="rt-cierre__h2">Despu&#xE9;s de cuidar de todo,<br>tambi&#xE9;n merecés cuidarte.</h2>
+    <p class="rt-cierre__sub">Disfrut&#xE1; de un momento de calor y comodidad. Pag&#xE1;s al recibir, sin riesgo.</p>
+    <div class="rt-cta-wrap">
+      <a class="rt-btn-blanco" data-open-modal data-insync-cta="cierre"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rodillera%20T%C3%A9rmica.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+        PEDIR MI RODILLERA AHORA
+        <span style="font-size:11px;font-weight:700;margin-top:2px;opacity:.85">&#x2713; Garant&#xED;a de 30 d&#xED;as</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="rt-footer">&copy; Dam Vertex</footer>
+
+<!-- MODAL DE PEDIDO -->
+<div class="rt-modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="rt-modal-title">
+  <div class="rt-modal-box">
+    <button class="rt-modal-close" id="rt-modal-close" aria-label="Cerrar">&#x2715;</button>
+
+    <div id="rt-modal-form-wrap">
+      <h2 class="rt-modal-title" id="rt-modal-title">Rodillera T&#xE9;rmica El&#xE9;ctrica</h2>
+      <p style="font-size:11px;font-weight:700;color:var(--rt-naranja);margin:4px 0 14px">&#x26A1; Pag&#xE1;s al recibir &mdash; Env&#xED;o gratis</p>
+
+      <span class="rt-modal-section-label">Eleg&#xED; tu oferta</span>
+      <div class="rt-offer-options">
+        <label class="rt-offer-option selected">
+          <input type="radio" name="rt-offer" value="1" checked>
+          <div class="rt-offer-content">
+            <span class="rt-offer-qty">1 unidad</span>
+            <span class="rt-offer-price">Gs. 199.000</span>
+          </div>
+        </label>
+        <label class="rt-offer-option">
+          <input type="radio" name="rt-offer" value="2">
+          <div class="rt-offer-content">
+            <span class="rt-offer-qty">2 unidades</span>
+            <div>
+              <span class="rt-offer-compare">Gs. 398.000</span>
+              <span class="rt-offer-price">Gs. 359.000</span>
+            </div>
+          </div>
+          <div class="rt-offer-foot">
+            <span class="rt-offer-saving">Ahorr&#xE1;s Gs. 39.000</span>
+            <span class="rt-offer-badge">M&#xE1;s elegido</span>
+          </div>
+        </label>
+        <label class="rt-offer-option">
+          <input type="radio" name="rt-offer" value="3">
+          <div class="rt-offer-content">
+            <span class="rt-offer-qty">3 unidades</span>
+            <div>
+              <span class="rt-offer-compare">Gs. 597.000</span>
+              <span class="rt-offer-price">Gs. 499.000</span>
+            </div>
+          </div>
+          <div class="rt-offer-foot">
+            <span class="rt-offer-saving">Ahorr&#xE1;s Gs. 98.000</span>
+            <span class="rt-offer-badge-green">Mayor ahorro</span>
+          </div>
+        </label>
+      </div>
+
+      <form id="rt-dcanp-form" novalidate>
+        <div class="rt-form-group">
+          <label for="rt-name">Nombre y apellido</label>
+          <input type="text" id="rt-name" name="name" placeholder="Ej: Mar&#xED;a L&#xF3;pez" autocomplete="name" required>
+        </div>
+        <div class="rt-form-group">
+          <label for="rt-phone">Tel&#xE9;fono <span style="color:#DC2626;font-size:11px;font-weight:600;">&#xB7; Ingres&#xE1; tu n&#xFA;mero completo</span></label>
+          <input type="tel" id="rt-phone" name="phone" placeholder="Ej: 984 832 688" autocomplete="tel" required>
+          <p id="rt-phone-error" style="display:none;color:#DC2626;font-size:12px;font-weight:700;margin-top:4px;"></p>
+        </div>
+        <div class="rt-form-group">
+          <label for="rt-city">Ciudad <span style="color:#DC2626;font-size:11px;font-weight:600;">&#xB7; Solo el nombre de tu ciudad</span></label>
+          <input type="text" id="rt-city" name="city" placeholder="Ej: Asunci&#xF3;n, Lambar&#xE9;, San Lorenzo..." autocomplete="off" required>
+        </div>
+        <div class="rt-form-group">
+          <label for="rt-address">Calle principal y secundaria</label>
+          <input type="text" id="rt-address" name="address" placeholder="Ej: Av. Espa&#xF1;a y Tacuary" autocomplete="street-address">
+        </div>
+
+        <label class="rt-upsell-block" style="margin-bottom:12px">
+          <input type="checkbox" id="rt-express" name="express">
+          <div>
+            <span class="rt-upsell-title">&#x1F680; Env&#xED;o express +10.000 Gs</span><br>
+            <span class="rt-upsell-sub">Recib&#xED; antes que los dem&#xE1;s</span>
+          </div>
+        </label>
+
+        <label class="rt-upsell-block">
+          <input type="checkbox" id="rt-invoice" name="invoice">
+          <div>
+            <span class="rt-upsell-title">&#x1F9FE; Necesito factura</span><br>
+            <span class="rt-upsell-sub">RUC o c&#xE9;dula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="rt-invoice-fields" style="display:none;margin-top:6px">
+          <div class="rt-form-group">
+            <label for="rt-invoice-ruc">RUC</label>
+            <input type="text" id="rt-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          </div>
+          <div class="rt-form-group" style="margin-top:6px">
+            <label for="rt-invoice-name">Raz&#xF3;n social o nombre</label>
+            <input type="text" id="rt-invoice-name" name="invoice_name" placeholder="Nombre completo o raz&#xF3;n social">
+          </div>
+          <div class="rt-form-group" style="margin-top:6px">
+            <label for="rt-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+            <input type="email" id="rt-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+          </div>
+        </div>
+
+        <p id="rt-total-line" style="font-size:13px;font-weight:700;color:var(--rt-text);display:none;margin-top:16px"></p>
+
+        <div class="rt-pay-badge">&#x1F4B0; Pag&#xE1;s al recibir &mdash; Sin adelantos</div>
+        <div class="rt-form-submit">
+          <button type="submit" class="rt-btn" id="rt-submit-btn" style="border:none">
+            CONFIRMAR MI PEDIDO
+            <span class="rt-btn-sub">&#x2713; Env&#xED;o gratis</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="rt-dcanp-success dcanp-success" id="rt-dcanp-success">
+      <div class="rt-dcanp-success__icon">&#x2713;</div>
+      <h2>&#xA1;Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p class="rt-dcanp-success__tip">&#x1F4F1; Quedate atento a tu n&#xFA;mero &mdash; te vamos a contactar pronto.</p>
+      <div class="rt-dcanp-success__badges">
+        <span>&#x2713; Env&#xED;o gratis</span>
+        <span>&#x2713; Pag&#xE1;s al recibir</span>
+      </div>
+      <a href="/" class="btn-ver-coleccion">Ver m&#xE1;s productos &#x2192;</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- Scripts -->
+<script src="/assets/js/tracking.js?v=74" defer></script>
+<script src="/assets/js/city-check.js?v=2" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+<script src="/assets/js/protect.js?v=1" defer></script>
+
+<script defer>
+  const PRODUCT = {
+    name:  'Rodillera Térmica Eléctrica',
+    slug:  'rodillera-tecnologia-termica',
+    price: 199000,
+    comboPricing: { 1: 199000, 2: 359000, 3: 499000 },
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => { try { DV.trackViewContent(PRODUCT); } catch (_) {} }, 800);
+
+    const modal       = document.getElementById('order-modal');
+    const openBtns    = document.querySelectorAll('[data-open-modal]');
+    const closeBtn    = document.getElementById('rt-modal-close');
+    const form        = document.getElementById('rt-dcanp-form');
+    const formWrap    = document.getElementById('rt-modal-form-wrap');
+    const successBox  = document.getElementById('rt-dcanp-success');
+    const submitBtn   = document.getElementById('rt-submit-btn');
+    const offerInputs = document.querySelectorAll('input[name="rt-offer"]');
+    const expressChk  = document.getElementById('rt-express');
+    const invoiceChk  = document.getElementById('rt-invoice');
+    const invoiceFields = document.getElementById('rt-invoice-fields');
+    const totalLine   = document.getElementById('rt-total-line');
+
+    function updateTotal() {
+      const qty   = parseInt(document.querySelector('input[name="rt-offer"]:checked')?.value) || 1;
+      const base  = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const extra = expressChk && expressChk.checked ? 10000 : 0;
+      if (extra > 0) {
+        totalLine.style.display = 'block';
+        totalLine.textContent = 'Total: Gs. ' + (base + extra).toLocaleString('es-PY') + ' (incluye express)';
+      } else {
+        totalLine.style.display = 'none';
+      }
+    }
+
+    if (expressChk) expressChk.addEventListener('change', updateTotal);
+    if (invoiceChk) invoiceChk.addEventListener('change', () => {
+      invoiceFields.style.display = invoiceChk.checked ? 'block' : 'none';
+    });
+
+    let _icFired = false;
+    function openModal() {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+      if (!_icFired) {
+        _icFired = true;
+        setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }, 1500);
+      }
+    }
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    openBtns.forEach(btn => btn && btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      openModal();
+    }));
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    offerInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        document.querySelectorAll('.rt-offer-option').forEach(opt => opt.classList.remove('selected'));
+        input.closest('.rt-offer-option').classList.add('selected');
+        updateTotal();
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name    = document.getElementById('rt-name').value.trim();
+      const phone   = document.getElementById('rt-phone').value.trim();
+      const city    = document.getElementById('rt-city').value.trim();
+      const address = document.getElementById('rt-address').value.trim();
+      const qty     = parseInt(document.querySelector('input[name="rt-offer"]:checked')?.value) || 1;
+      const express = !!(expressChk && expressChk.checked);
+      const base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const price   = base + (express ? 10000 : 0);
+      const invoice = !!(invoiceChk && invoiceChk.checked);
+      const invoice_ruc   = invoice ? (document.getElementById('rt-invoice-ruc')?.value.trim() || '') : '';
+      const invoice_name  = invoice ? (document.getElementById('rt-invoice-name')?.value.trim() || '') : '';
+      const invoice_email = invoice ? (document.getElementById('rt-invoice-email')?.value.trim() || '') : '';
+
+      if (!name || !phone || !city) {
+        alert('Por favor completá nombre, teléfono y ciudad.');
+        return;
+      }
+      if (phone.replace(/\D/g, '').length < 9) {
+        const err = document.getElementById('rt-phone-error');
+        if (err) { err.textContent = 'Teléfono inválido. Mínimo 9 dígitos.'; err.style.display = 'block'; }
+        else alert('Ingresá un teléfono válido (mínimo 9 dígitos).');
+        return;
+      } else {
+        const err = document.getElementById('rt-phone-error');
+        if (err) err.style.display = 'none';
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+
+      let client = {};
+      try { client = await DV.getClientData(); } catch (_) {}
+
+      try {
+        const res = await fetch('/api/dcanp-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            product_slug: PRODUCT.slug,
+            product_name: PRODUCT.name,
+            name, phone, city,
+            street: address,
+            quantity: qty,
+            value:    price,
+            express,
+            ...(invoice ? { invoice: true, invoice_ruc, invoice_name, invoice_email } : {}),
+            fbp: client.fbp || null,
+            fbc: client.fbc || null,
+          }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          try { DV.saveLeadDataLocal(phone, name, null); } catch (_) {}
+          formWrap.style.display = 'none';
+          successBox.classList.add('visible');
+        } else {
+          alert('Hubo un error al enviar. Intentá de nuevo.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'CONFIRMAR MI PEDIDO';
+        }
+      } catch (err) {
+        alert('Error de conexión. Intentá de nuevo.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'CONFIRMAR MI PEDIDO';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

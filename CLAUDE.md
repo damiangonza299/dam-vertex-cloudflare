@@ -505,13 +505,16 @@ Se llama desde ambos puntos de ajuste manual:
 
 ---
 
-## DCANP GROUP — Flujo especial
+## DCANP GROUP — Flujo unificado
 
 Columna `products.platform` (`DAM_VERTEX` default | `DCANP_GROUP`, `migrate35.sql`) distingue el catálogo normal de los productos del sub-brand DCANP GROUP.
 
-- **Landings DCANP usan `/api/dcanp-lead` — NO `/api/leads`.** Endpoint completamente independiente, no escribe en D1 (ni `leads` ni `products`).
-- **Sin admin panel, sin WhatsApp del cliente, con pantalla de agradecimiento** — el modal DCANP no abre WhatsApp al enviar; muestra un bloque `.dcanp-success` en su lugar. Los pedidos DCANP nunca aparecen en el Admin Panel de leads.
-- Notificación equivalente a `leads.js` pero con prefijo `[DCANP GROUP]` en Telegram, más Meta CAPI Purchase (mismos campos hasheados) y una fila en Google Sheets.
+**Regla de negocio (decisión permanente, 2026-10-20):** No existe más distinción de comportamiento entre landing DAM VERTEX y landing DCANP. Toda landing funciona igual: registra el lead, aplica city check, y aparece en el Admin Panel.
+
+- **Landings DCANP usan `/api/dcanp-lead`.** Escribe en D1 `leads` con `source='dcanp'` → aparece en el Admin Panel (filtro "DCANP" disponible en la UI).
+- **Sin WhatsApp al cliente, con pantalla de agradecimiento** — el modal DCANP muestra `.dcanp-success` en lugar de redirigir a WA. Si el cliente es de ciudad no cubierta, `city-check.js` intercepta antes de mostrar esa pantalla y redirige a WA.
+- **City check obligatorio en todas las landings** — DCANP via `city-check.js`, DAM VERTEX via `products.js`. No existe landing sin city check.
+- Notificación Telegram + Meta CAPI Purchase + Google Sheets (igual que antes).
 - **Google Sheets via webhook en variable `DCANP_SHEETS_WEBHOOK_URL`** (Apps Script, no Sheets API v4 + Service Account) — si falta, loguea error y sigue sin romper el flujo; `/api/dcanp-lead` siempre responde `{ ok: true }`.
 - **Campo Horario NO aplica en landings DCANP** — el modal DCANP no lo incluye (ver AI_SYSTEM/skills/product-studio.md "Modal — Campo Horario", que sí es obligatorio para el resto del catálogo).
 - Product Studio muestra badge `[DCANP]` azul junto al nombre cuando `platform='DCANP_GROUP'`, con filtro por plataforma en el sidebar.

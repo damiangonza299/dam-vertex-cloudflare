@@ -1,0 +1,324 @@
+﻿﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0514">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
+  <link rel="preload" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRosLRXCVGJ0OCSUrXmJh_iHFuiDk_24QD8SkfEJMq7Z3hzcAKM0VXrsSI&s=10" as="image" fetchpriority="high">
+  <meta name="description" content="Pizarra LED Luminosa — escribe con marcadores de neon, colores RGB brillantes. Entrega hoy. Gs. 159.000. Pagás al recibir.">
+  <title>Pizarra LED Luminosa | DAM VERTEX</title>
+  <link rel="preload" href="/assets/css/styles.min.css?v=56" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=56"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #a855f7; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(10,5,20,.94); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(168,85,247,.12); }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .nav__cta { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; padding: 9px 20px; border-radius: var(--radius-sm); transition: opacity .2s; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 4px 0 12px; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: rgba(255,255,255,.4); text-decoration: line-through; }
+    .price-badge { font-size: 12px; font-weight: 700; background: rgba(168,85,247,.15); color: var(--accent); border: 1px solid rgba(168,85,247,.3); border-radius: 4px; padding: 3px 8px; }
+    :root { --pl-bg: #0a0514; --pl-card: #140a20; --pl-accent: #a855f7; --pl-dim: rgba(226,232,240,.6); --pl-border: rgba(168,85,247,.15); }
+    body { background: var(--pl-bg); }
+    .pl-inner { max-width: 1040px; margin: 0 auto; padding: 0 clamp(20px,5vw,48px); }
+    .hero { padding: clamp(36px,7vw,72px) 0; }
+    .hero-grid { display: grid; grid-template-columns: 1fr; gap: 36px; align-items: center; }
+    @media(min-width:720px){ .hero-grid { grid-template-columns: 1fr 1fr; } }
+    .hero-img { aspect-ratio: 1/1; border-radius: 20px; overflow: hidden; background: var(--pl-card); border: 1px solid var(--pl-border); }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-tag { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--pl-accent); margin-bottom: 14px; }
+    .hero-title { font-size: clamp(26px,4vw,40px); font-weight: 900; line-height: 1.15; margin-bottom: 16px; }
+    .hero-title em { font-style: normal; color: var(--pl-accent); }
+    .hero-desc { font-size: 15px; color: var(--pl-dim); line-height: 1.65; margin-bottom: 24px; }
+    .price-savings-top { font-size: 13px; font-weight: 700; color: var(--green); margin-bottom: 4px; }
+    .pl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--pl-accent); color: #fff; font-size: 15px; font-weight: 800; padding: 15px 28px; border-radius: 10px; width: 100%; max-width: 420px; transition: opacity .2s; }
+    .pl-btn:hover { opacity: .88; }
+    .trust-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .trust-chip { font-size: 12px; font-weight: 600; background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.2); border-radius: 20px; padding: 5px 12px; color: var(--pl-dim); }
+    .section { padding: clamp(40px,6vw,64px) 0; }
+    .section-title { font-size: clamp(20px,3vw,26px); font-weight: 800; margin-bottom: 28px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 14px; }
+    .feature { background: var(--pl-card); border: 1px solid var(--pl-border); border-radius: 14px; padding: 20px; }
+    .feature-icon { font-size: 26px; margin-bottom: 10px; }
+    .feature-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .feature-desc { font-size: 13px; color: var(--pl-dim); line-height: 1.5; }
+    .uso-list { display: flex; flex-direction: column; gap: 12px; }
+    .uso { display: flex; align-items: flex-start; gap: 14px; background: var(--pl-card); border: 1px solid var(--pl-border); border-radius: 14px; padding: 16px; }
+    .uso-icon { font-size: 22px; flex-shrink: 0; }
+    .uso-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .uso-desc { font-size: 13px; color: var(--pl-dim); line-height: 1.5; }
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.7); align-items: flex-end; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal-box { position: relative; background: #fff; border-radius: 16px 16px 0 0; max-width: 480px; width: 100%; padding: 28px 20px 32px; max-height: 92vh; overflow-y: auto; color: #16181A; }
+    @media (min-width: 540px) { .modal-overlay { align-items: center; padding: 16px; } .modal-box { border-radius: 16px; max-height: 90vh; } }
+    .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: #F1F2F0; color: #16181A; font-size: 15px; cursor: pointer; font-family: inherit; }
+    .modal-title { font-size: clamp(14px,4vw,17px); font-weight: 700; color: #16181A; margin-bottom: 4px; }
+    .modal-section-label { display: block; font-size: 11px; font-weight: 700; color: #5B6066; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+    .offer-cards { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+    .offer-card { position: relative; display: block; border: 1.5px solid #D4D7DB; border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #FAFAF8; }
+    .offer-card input { position: absolute; opacity: 0; }
+    .offer-card.selected { border: 2px solid #a855f7; background: #faf5ff; }
+    .offer-cards .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .offer-cards .offer-badge { position: static; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px; color: #fff; white-space: nowrap; }
+    .offer-cards .offer-badge-red { background: #ef4444; }
+    .offer-cards .offer-badge-green { background: #22c55e; }
+    .offer-cards .offer-content { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: nowrap; }
+    .offer-cards .offer-qty { font-size: 14px; font-weight: 700; color: #16181A; }
+    .offer-cards .offer-price { font-size: 15px; font-weight: 800; color: #16181A; }
+    .offer-cards .offer-compare { font-size: 12px; text-decoration: line-through; color: #9AA0A6; margin-right: 6px; }
+    .offer-cards .offer-saving { display: inline; font-size: 12px; font-weight: 700; color: #16a34a; margin-top: 0; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; color: #5B6066; margin-bottom: 6px; }
+    .form-group input { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #D4D7DB; background: #FAFAF8; color: #16181A; font-size: 14px; font-family: inherit; outline: none; }
+    .form-group input:focus { border: 2px solid #a855f7; }
+    .form-group input::placeholder { color: #9AA0A6; }
+    .upsell-block { display: flex; align-items: center; gap: 10px; cursor: pointer; background: #FAFAF8; border: 1.5px solid #D4D7DB; border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; }
+    .upsell-title { font-size: 13px; font-weight: 700; color: #16181A; }
+    .upsell-sub { font-size: 12px; color: #5B6066; }
+    .pay-badge { margin-top: 16px; text-align: center; font-size: 12px; font-weight: 800; color: #16a34a; background: rgba(22,163,74,.08); border-radius: 8px; padding: 8px 12px; }
+    #modal-submit-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 14px; background: #a855f7; color: #fff; font-weight: 700; font-size: 15px; border: none; border-radius: 12px; cursor: pointer; font-family: inherit; box-shadow: 0 6px 18px rgba(168,85,247,.35); margin-top: 18px; }
+    #modal-submit-btn span { font-size: 11px; font-weight: 700; margin-top: 3px; opacity: .85; }
+    .dcanp-success { display: none; text-align: center; padding: 20px 0; }
+    .dcanp-success .sicon { width: 56px; height: 56px; background: #16a34a; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .dcanp-success h2 { color: #16a34a; font-size: 22px; margin-bottom: 12px; }
+    .dcanp-success p { color: #5B6066; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .pl-footer { text-align: center; padding: 28px 20px; font-size: 12px; color: rgba(255,255,255,.25); border-top: 1px solid rgba(255,255,255,.06); }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="section-nav" data-insync-section="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <a class="nav__cta" data-scroll-form data-insync-cta="nav"
+     href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%20la%20Pizarra%20LED%20Luminosa.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+    Pedir ahora
+  </a>
+</nav>
+
+<main>
+
+<section class="hero" id="section-hero" data-insync-section="hero">
+  <div class="pl-inner">
+    <div class="hero-grid">
+      <div class="hero-img">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRosLRXCVGJ0OCSUrXmJh_iHFuiDk_24QD8SkfEJMq7Z3hzcAKM0VXrsSI&s=10"
+             alt="Pizarra LED Luminosa" width="1000" height="1000" loading="eager">
+      </div>
+      <div class="hero-copy">
+        <p class="hero-tag">&#x2728; LED &middot; Neon &middot; RGB</p>
+        <h1 class="hero-title">Escrib&iacute; en luz.<br><em>Decoraci&oacute;n</em><br>que brilla.</h1>
+        <p class="hero-desc">La pizarra LED luminosa transforma cualquier espacio. Escrib&iacute; con marcadores fluorescentes y viv&iacute; el efecto neon. Perfecta para negocios, habitaciones y eventos.</p>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:4px;">
+          <p class="price-savings-top">Ahorr&aacute;s Gs. 60.000</p>
+          <div class="price-block">
+            <span class="price-main">Gs. 159.000</span>
+            <span class="price-compare">Gs. 219.000</span>
+            <span class="price-badge">OFERTA</span>
+          </div>
+        </div>
+        <a class="pl-btn" data-scroll-form data-insync-cta="hero"
+           href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%20la%20Pizarra%20LED%20Luminosa.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
+          LO QUIERO &mdash; PEDIR AHORA
+        </a>
+        <div class="trust-row">
+          <span class="trust-chip">&#x2705; Pago al recibir</span>
+          <span class="trust-chip">&#x1F69A; Entrega en el d&iacute;a</span>
+          <span class="trust-chip">&#x2728; Incluye marcadores</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="section-features" data-insync-section="features">
+  <div class="pl-inner">
+    <h2 class="section-title">Caracter&iacute;sticas que la hacen especial</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="feature-icon">&#x1F4A1;</div>
+        <div class="feature-title">Retroiluminación LED</div>
+        <div class="feature-desc">La luz LED trasera hace que los marcadores fluorescentes brillen como neon real.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">&#x1F58A;&#xFE0F;</div>
+        <div class="feature-title">Borrável al instante</div>
+        <div class="feature-desc">Limpiá con un paño húmedo y volvé a escribir. Sin manchas, sin residuos.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">&#x1F50C;</div>
+        <div class="feature-title">Conexión USB o a la luz</div>
+        <div class="feature-desc">Funciona enchufada o con batería USB — flexible para cualquier espacio.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">&#x1F3A8;</div>
+        <div class="feature-title">Colores neon vibrantes</div>
+        <div class="feature-desc">Compatible con marcadores de colores neon: rosa, verde, amarillo, azul, naranja.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="section-usos" data-insync-section="usos">
+  <div class="pl-inner">
+    <h2 class="section-title">D&oacute;nde y c&oacute;mo usarla</h2>
+    <div class="uso-list">
+      <div class="uso"><div class="uso-icon">&#x1F3EA;</div><div><div class="uso-title">Negocios y comercios</div><div class="uso-desc">Mostrá el menú del día, precios y promociones de forma llamativa y profesional.</div></div></div>
+      <div class="uso"><div class="uso-icon">&#x1F6CF;&#xFE0F;</div><div><div class="uso-title">Decoración de habitaciones</div><div class="uso-desc">Dale personalidad a tu cuarto con frases, dibujos y mensajes que brillan en la oscuridad.</div></div></div>
+      <div class="uso"><div class="uso-icon">&#x1F382;</div><div><div class="uso-title">Eventos y cumpleaños</div><div class="uso-desc">Mensajes de bienvenida, contadores de días, decoración de mesas y fondos fotográficos.</div></div></div>
+      <div class="uso"><div class="uso-icon">&#x1F4DA;</div><div><div class="uso-title">Estudio y organización</div><div class="uso-desc">Escribí recordatorios, tareas, fórmulas y fechas importantes. Borrá cuando ya no las necesitás.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="section-oferta" data-insync-section="oferta">
+  <div class="pl-inner" style="">
+    <h2 class="section-title">Ped&iacute; la tuya hoy</h2>
+    <p style="font-size:14px;color:var(--pl-dim);margin-bottom:24px;">Stock limitado. Entrega coordinada el mismo d&iacute;a.</p>
+    <a class="pl-btn" data-scroll-form data-insync-cta="oferta"
+       href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%20la%20Pizarra%20LED%20Luminosa.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F"
+       style="max-width:360px;margin:0 auto;">
+      PEDIR AHORA &mdash; Gs. 159.000
+    </a>
+    <p style="font-size:12px;color:var(--pl-dim);margin-top:12px;">&#x2705; Pag&aacute;s al recibir &nbsp;&nbsp; &#x1F69A; Entrega el mismo d&iacute;a</p>
+  </div>
+</section>
+
+</main>
+
+<div id="order-modal" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button id="modal-close" class="modal-close" aria-label="Cerrar">&#x2715;</button>
+    <div id="modal-form-wrap">
+      <h2 class="modal-title">Pizarra LED Luminosa</h2>
+      <p style="font-size:11px;font-weight:700;color:#a855f7;margin:4px 0 14px">&#x2728; LED &middot; Neon &middot; Incluye marcadores fluorescentes</p>
+      <span class="modal-section-label">Eleg&iacute; tu oferta</span>
+      <div class="offer-cards">
+        <label class="offer-card selected">
+          <input type="radio" name="offer" value="1" checked>
+          <div class="offer-content"><span class="offer-qty">1 unidad</span><span class="offer-price">Gs. 159.000</span></div>
+        </label>
+        <label class="offer-card">
+          <input type="radio" name="offer" value="2">
+          <div class="offer-content"><span class="offer-qty">2 unidades</span><div><span class="offer-compare">Gs. 318.000</span><span class="offer-price">Gs. 269.000</span></div></div>
+          <div class="offer-foot"><span class="offer-saving">Ahorr&aacute;s Gs. 49.000</span><span class="offer-badge offer-badge-red">&#x1F525; M&aacute;s elegido</span></div>
+        </label>
+        <label class="offer-card">
+          <input type="radio" name="offer" value="3">
+          <div class="offer-content"><span class="offer-qty">3 unidades</span><div><span class="offer-compare">Gs. 477.000</span><span class="offer-price">Gs. 359.000</span></div></div>
+          <div class="offer-foot"><span class="offer-saving">Ahorr&aacute;s Gs. 118.000</span><span class="offer-badge offer-badge-green">&#x1F49A; Mayor ahorro</span></div>
+        </label>
+      </div>
+      <form id="modal-form" novalidate>
+        <div class="form-group"><label for="m-name">Nombre y apellido</label><input type="text" id="m-name" name="name" placeholder="Ej: Mar&iacute;a L&oacute;pez" autocomplete="name" required></div>
+        <div class="form-group"><label for="m-phone">Tel&eacute;fono</label><input type="tel" id="m-phone" name="phone" placeholder="Ej: 0984 832 688" autocomplete="tel" required></div>
+        <div class="form-group"><label for="m-city">Ciudad</label><input type="text" id="m-city" name="city" placeholder="Ej: Asunci&oacute;n, San Lorenzo..." autocomplete="off" list="cities-list" required><datalist id="cities-list"></datalist></div>
+        <div class="form-group"><label for="m-street">Direcci&oacute;n de entrega</label><input type="text" id="m-street" name="street" placeholder="Calle principal y secundaria" autocomplete="street-address"></div>
+        <label class="upsell-block"><input type="checkbox" id="m-express" name="express"><div><span class="upsell-title">&#x1F680; Env&iacute;o express +Gs. 10.000</span><br><span class="upsell-sub">Prioridad en la entrega del d&iacute;a</span></div></label>
+        <p id="m-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none;margin:0 0 8px"></p>
+        <label class="upsell-block"><input type="checkbox" id="m-invoice" name="invoice"><div><span class="upsell-title">&#x1F9FE; Necesito factura</span><br><span class="upsell-sub">RUC o c&eacute;dula para comprobante</span></div></label>
+        <div id="m-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group"><label for="m-ruc">RUC</label><input type="text" id="m-ruc" name="ruc" placeholder="Ej: 1234567-8"></div>
+          <div class="form-group" style="margin-top:6px"><label for="m-iname">Raz&oacute;n social o nombre</label><input type="text" id="m-iname" name="iname" placeholder="Nombre o raz&oacute;n social"></div>
+          <div class="form-group" style="margin-top:6px"><label for="m-iemail">Email <span style="font-weight:400">(opcional)</span></label><input type="email" id="m-iemail" name="iemail" placeholder="correo@ejemplo.com"></div>
+        </div>
+        <div class="pay-badge">&#x1F4B3; Pago al recibir &mdash; sin adelantos</div>
+        <button type="submit" id="modal-submit-btn"><div>Confirmar pedido</div><span>&#x2713; Entrega en el d&iacute;a &middot; Pag&aacute;s al recibir</span></button>
+      </form>
+    </div>
+    <div id="modal-success" class="dcanp-success">
+      <div class="sicon">&#x2713;</div>
+      <h2>&#xA1;Pedido recibido!</h2>
+      <p>Gracias por tu confianza. Te contactamos en breve para coordinar la entrega.</p>
+      <p style="font-weight:600;color:#16181A">&#x1F4F1; Quedate atento &mdash; te llamamos hoy.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="pl-footer">&copy; 2026 DAM VERTEX &middot; Asunci&oacute;n, Paraguay</footer>
+
+<script src="/assets/js/tracking.js?v=74" defer></script>
+<script src="/assets/js/dcanp-cities.js?v=1" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+<script defer>
+var PRODUCT = { name: 'Pizarra LED Luminosa', slug: 'pizarra-led-luminosa', price: 159000, comboPricing: { 1: 159000, 2: 269000, 3: 359000 } };
+var SHEETS_TITLE = 'Pizarra LED luminosa';
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() { try { DV.trackViewContent(PRODUCT); } catch (_) {} }, 800);
+  var modal = document.getElementById('order-modal');
+  var formWrap = document.getElementById('modal-form-wrap');
+  var successBox = document.getElementById('modal-success');
+  var submitBtn = document.getElementById('modal-submit-btn');
+  var form = document.getElementById('modal-form');
+  var _icFired = false;
+  function openModal() {
+    modal.classList.add('active'); document.body.style.overflow = 'hidden';
+    try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+    if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch (_) {} }, 1500); }
+  }
+  function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+  document.querySelectorAll('[data-scroll-form]').forEach(function(btn) { btn.addEventListener('click', function(e) { e.preventDefault(); openModal(); }); });
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+  document.querySelectorAll('input[name="offer"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+      document.querySelectorAll('.offer-card').forEach(function(c) { c.classList.remove('selected'); });
+      r.closest('.offer-card').classList.add('selected');
+      updateTotal();
+    });
+  });
+  var invChk = document.getElementById('m-invoice'); var invFields = document.getElementById('m-invoice-fields');
+  if (invChk && invFields) invChk.addEventListener('change', function() { invFields.style.display = this.checked ? 'block' : 'none'; });
+  function updateTotal() {
+    var tl = document.getElementById('m-total-line'); if (!tl) return;
+    var qty = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
+    var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    var isExp = document.getElementById('m-express') && document.getElementById('m-express').checked;
+    tl.textContent = isExp ? 'Total: Gs. ' + (base + 10000).toLocaleString('es-PY') + ' (incluye express)' : '';
+    tl.style.display = isExp ? 'block' : 'none';
+  }
+  var expChk = document.getElementById('m-express');
+  if (expChk) expChk.addEventListener('change', updateTotal);
+  if (form) form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var qty = parseInt((document.querySelector('input[name="offer"]:checked') || {}).value) || 1;
+    var base = PRODUCT.comboPricing[qty] || PRODUCT.price;
+    var express = document.getElementById('m-express').checked;
+    var invoice = document.getElementById('m-invoice').checked;
+    var data = {
+      name: (document.getElementById('m-name').value || '').trim(),
+      phone: (document.getElementById('m-phone').value || '').trim(),
+      city: (document.getElementById('m-city').value || '').trim(),
+      street: (document.getElementById('m-street').value || '').trim(),
+      quantity: qty, product_slug: PRODUCT.slug, product_name: SHEETS_TITLE,
+      value: base + (express ? 10000 : 0), express: express, invoice: invoice,
+      invoice_ruc: invoice ? (document.getElementById('m-ruc').value || '').trim() : '',
+      invoice_name: invoice ? (document.getElementById('m-iname').value || '').trim() : '',
+      invoice_email: invoice ? (document.getElementById('m-iemail').value || '').trim() : '',
+    };
+    if (!data.name || !data.phone || !data.city) { alert('Completá nombre, teléfono y ciudad para continuar.'); return; }
+    if (data.phone.replace(/\D/g,'').length < 9) { alert('Ingresá tu número completo (ej: 0984 832 688)'); return; }
+    try { var client = typeof getClientData === 'function' ? getClientData() : {}; data.fbp = client.fbp || null; data.fbc = client.fbc || null; } catch (_) {}
+    submitBtn.disabled = true; submitBtn.firstChild.textContent = 'Enviando...';
+    try {
+      var res = await fetch('/api/dcanp-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      await res.json().catch(function() { return {}; });
+    } catch (err) { console.error('DCANP_SUBMIT_ERROR', err && err.message); }
+    formWrap.style.display = 'none'; successBox.style.display = 'block';
+    submitBtn.disabled = false; submitBtn.firstChild.textContent = 'Confirmar pedido';
+  });
+});
+</script>
+<script src="/assets/js/protect.js?v=69" defer></script>
+<script src="/assets/js/city-check.js?v=1"></script>
+</body>
+</html>

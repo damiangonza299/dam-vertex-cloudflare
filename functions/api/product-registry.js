@@ -75,7 +75,7 @@ export async function onRequestGet({ request, env }) {
        )
        SELECT s.product_slug,
               COALESCE(p.name, s.product_slug) AS name,
-              p.stock_total, p.active, p.platform,
+              p.stock_total, p.active, p.platform, p.status AS p_status,
               pb.id, pb.status, pb.landing_status,
               pb.dam_finanzas_id, pb.dam_finanzas_status, pb.created_at, pb.updated_at,
               pb.op_json, pb.insights_json
@@ -492,7 +492,7 @@ function parseBriefSummary(row) {
     id:                  row.id || null,
     product_slug:        row.product_slug,
     name:                row.name || op.name || row.product_slug,
-    status:              row.status || 'draft',
+    status:              row.status || row.p_status || 'draft',
     landing_status:      row.landing_status || null,
     dam_finanzas_status: row.dam_finanzas_status || null,
     dam_finanzas_id:     row.dam_finanzas_id || null,

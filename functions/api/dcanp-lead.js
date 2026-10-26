@@ -1,13 +1,12 @@
 /* =========================================================
    /api/dcanp-lead — Pedidos de landings DCANP GROUP
-   Completamente independiente de /api/leads y del admin panel:
-   NO escribe en D1. Notifica Telegram + Meta CAPI Purchase y agrega
-   una fila a Google Sheets vía webhook (Apps Script). Ver CLAUDE.md
-   "DCANP GROUP — Flujo especial".
+   Escribe en D1 (source='dcanp') → aparece en Admin Panel.
+   También notifica Telegram + Meta CAPI Purchase + Google Sheets.
+   El cliente ve pantalla .dcanp-success (no WhatsApp).
+   City check: client-side via city-check.js (redirige a WA si ciudad no cubierta).
    ========================================================= */
 
-/* Nombres cortos por slug — deben aparecer EXACTAMENTE así en Telegram y Google Sheets.
-   Si el slug no está acá, cae al product_name del body y luego al slug. */
+/* Nombres cortos por slug — solo para Telegram. No tocar. */
 const PRODUCT_SHORT_NAMES = {
   'estante-aluminio-bano':      '🧴 Estante Organizador Winsen de Aluminio',
   'talonera-gel':               'TALONERA EN GEL',
@@ -17,7 +16,115 @@ const PRODUCT_SHORT_NAMES = {
   'dispensador-aceite-2en1':    'Dispensador Inteligente de Aceite 2 en 1',
   'reloj-imperial-verde':       'Reloj Imperial Verde',
   'reloj-blackout-minimal':     'Reloj Blackout Minimal',
-  'manguera-led-multicolor':    'Manguera LED Multicolor',
+  'manguera-led-multicolor':        'Manguera LED Multicolor',
+  'rodillera-tecnologia-termica':   'Rodillera Térmica',
+  'proyector-led-navideno':         'proyector navideño',
+};
+
+/* Nombres exactos Kangaroo (DCAMP GROUP) — solo para Google Sheets.
+   Si el slug no está acá, cae a safeProd (Telegram name o product_name). */
+const PRODUCT_DCAMP_GROUP_NAMES = {
+  // Productos legacy DAM VERTEX
+  'estante-aluminio-bano':           '🧴 Estante Organizador Winsen de Aluminio',
+  'talonera-gel':                    'TALONERA EN GEL',
+  'tabla-marmol':                    'TABLA DE PICAR DE MARMOL OVALADO 38X27CM',
+  'interruptor-control-remoto':      '💡 Interruptor Inalámbrico',
+  'esquinero-aluminio':              'Esquinero de Baño Avelino en Aluminio | AvelCorner',
+  'dispensador-aceite-2en1':         'Dispensador Inteligente de Aceite 2 en 1',
+  'manguera-led-multicolor':         'Manguera LED Multicolor',
+  // LOTE 1
+  'tabla-de-picar-inox-pro-304':     '🔵✅TABLA DE PICAR - INOX PRO 304',
+  'guante-3en1-bano-perros':         '🔵Guante 3 en 1 para baño de perros',
+  'huevera-electrica-gallinita':     'HUEVERA ELECTRCA EN FORMA DE GALLINITA',
+  'retinal-shot-booster':            'Retinal Shot Booster es un potente tratamiento facial',
+  'cepillo-9en1':                    'CEPILLO 9 EN 1',
+  'avion-acrobatico-360':            '🔵✅Avión Acrobático 360° Jet Starfighter®',
+  'estante-organizador-winsen':      '🧴 Estante Organizador Winsen de Aluminio',
+  'gps-rastreador':                  'Mini GPS INFIEL',
+  'audifono-amplificador-sonido':    '🔵Audífono Amplificador de Sonidos',
+  'plantillas-deportivas':           '🔵Plantillas Deportivas con Absorción de Impacto',
+  // LOTE 2 (slugs reales + alias)
+  'mini-camara-espia':               'MINI CAMARA',
+  'mini-camara-seguridad':           'MINI CAMARA',
+  'cable-cargador-soporte-240w':     '🔵Cable Cargador con Soporte Invisible – Carga Rápida 240W Tipo C',
+  'cable-cargador-soporte':          '🔵Cable Cargador con Soporte Invisible – Carga Rápida 240W Tipo C',
+  'tobillera-compresion':            'TOBILLERA DE COMPRESIÓN',
+  'cuchillo-pelador-madera':         '🔵Cuchillo Pelador con Manga de Madera',
+  'cuchillo-pelador-manga-madera':   '🔵Cuchillo Pelador con Manga de Madera',
+  'molino-carne-multifuncional':     '🔵Molino de Carne Multifuncional',
+  'bases-elevadoras-ajustables':     '🔵Bases Elevadoras Ajustables',
+  'guante-quitapelos-mascotas':      'FurClean™ – Guante Quitapelos para Mascotas 🐾',
+  'furclean-guante-quitapelos':      'FurClean™ – Guante Quitapelos para Mascotas 🐾',
+  'soplador-alto-impacto':           'SOPLADOR DE ALTO IMPACTO',
+  'pistola-masajeadora':             'PISTOLA MASAJEADORA',
+  'rodillera-tecnologia-termica':    '🔵 Rodillera con Tecnología Térmica',
+  // LOTE 3
+  'espatula-skinpulse-ultrasonica':  'Espátula SkinPulse Depuradora Ultrasónica – BLUMIN',
+  'baston-plegable-luz-led':         '🔵Bastón Plegable con Luz Led',
+  'protector-juanete':               'PROTECTOR DE JUANETE',
+  'rodillera-neenca':                'RODILLERA NEENCA',
+  'luz-led-clip-solar':              '🔵 Luz Led con Clip Solar y Recargable USB',
+  // LOTE 4
+  'kit-ejercitador-antebrazo':       '🔵 Kit Ejercitador_Antebrazo',
+  'linterna-potente-zoom':           'LINTERNA POTENTE CON ZOOM',
+  'plancha-vapor-portatil':          'PLANCHA A VAPOR PORTATIL',
+  'mini-gps-rastreador':             'Mini GPS INFIEL',
+  'lumifest-luces-navidad':          'LumiFest 10M™ La iluminación que transforma tu Navidad.',
+  'taza-mezcladora-magnetica':       'taza mezcladora magnetica',
+  'encendedor-poker-royal':          '🔵Encendedor Póker Royal',
+  'mascara-led-facial':              '🔵Máscara LED Facial Inalámbrica',
+  'molino-cafe-sokany':              'Molino de café sokany',
+  // LOTE 5
+  'lampara-medusa-multicolor':       '🔵Lámpara Medusa – Multicolor',
+  'juguete-abejita-bailarina':       '🔵Juguete Abejita Bailarina con Música y Luces LED',
+  'manguera-expansiva-premium':      '🔵✅Manguera Expasinva Premium',
+  'oven-cleaner-grasa':              'OVEN CLEANER• Removedor de grasa y carbonillas',
+  'pimer-mixer-licuadora-3en1':      'PIMER MIXER LICUADORA DE MANO 3 EN 1',
+  'batidora-mano-400w':              'BATIDORA DE MANO 400W 6 CUCHILLAS',
+  'mini-licuadora-portatil':         'MINI LICUADORA PORTATIL',
+  // LOTE 6
+  'cortador-verduras-9en1':          'CORTADOR DE VERDURAS 9 EN 1',
+  'wild-tornado-desatascador':       'WILD TORNADO',
+  'veneno-abeja-crema':              'VENENO DE ABEJA',
+  'soporte-magnetico-cuello':        '🔵✅SOPORTE MAGNÉTICO MULTIÁNGULO DE CUELLO',
+  'gel-masculino-vigor':             'Gel existente masculino',
+  'linterna-frontal-recargable':     'LINTERNA FRONTAL',
+  'mini-camara-spy':                 'MINI CAMARA SPY',
+  'drone-pro-hd':                    'Drone Pro Hd',
+  // LOTE 7
+  'irrigador-bucal-inalambrico':     'Irrigador Bucal Inalámbrico Portátil👨‍⚕️',
+  'encendedor-electrico-usb':        'Encendedor Eléctrico Recargable Usb',
+  'pizarra-led-luminosa':            '🔵✅PIZARRA LED LUMINOSA ✨',
+  'repelente-ultrasonico':           '🔵Repelente Ultrasónico',
+  'huevo-dragon-antistres':          '🔵Huevo de Drangon Antiestrés 3D',
+  'maquina-hacer-pororo':            '¡Máquina para hacer Pororo',
+  'aspiradora-robot-inteligente':    'Aspiradora Robot Inteligente',
+  'picador-carnes-verduras':         'PICADOR DE CARNES Y VERDURAS 5LITROS',
+  'corrector-postura':               'CORRECTOR DE POSTURA',
+  // LOTE 8
+  'ducha-portatil-recargable':       '🔵Ducha Portátil Recargable',
+  'cepillo-masajeador-capilar':      '🔵Cepillo Masajeador Capilar (Cod. 1234)',
+  'molino-electrico-200w':           'MOLINO ELECTRICO 200W',
+  'dr-rashel-crema-blanqueadora':    'DR RASHEL CREMA BLANQUEADORA',
+  'smart-camara-wifi':               'SMART CAMARA',
+  'pack-medias-terapeuticas':        '💙🦶 Pack Bienestar: 2 Pares de Medias Terapéuticas',
+  'pinza-destapadora-tuberias':      '🔵 PINZA DESTAPADORA DE TUVERIAS',
+  // LOTE 9
+  'snake-venom-crema':               'SNAKE VENOM',
+  'linterna-titanium-pro':           'LINTERNA TITANIUM PRO',
+  'linterna-tactica-militar':        '🔵Linterna Táctica Militar Recargable',
+  'prensa-francesa-cafe':            'PRENSA FRANCESA',
+  'resortera-laser-precision':       '🔵RESORTERA DE PRECISIÓN CON LÁSER + 50 BALINES',
+  'cortina-smart-led':               '🔵✅Cortina Smart LED Inteligente',
+  'cortador-verduras-multifuncional':'CORTADOR DE VERDURAS 9 EN 1 MULTIFUNCIONAL',
+  // LOTE 10
+  'mini-nebulizador-portatil':       '🔵MINI NEBULIZADOR PORTATIL',
+  'tren-magico-navidad':             '🔵Tren Mágico EXPRESS de Navidad',
+  'tabla-picar-marmol-ovalado':      'TABLA DE PICAR DE MARMOL OVALADO 38X27CM',
+  'tabla-picar-marmol-natural':      'TABLA DE PICAR DE MARMOL NATURAL',
+  'maquina-peladora-electrica':      '🔵✅Máquina Peladora Eléctrica',
+  'secador-zapatos-portatil':        '🔵SECADOR DE ZAPATOS PORTATIL',
+  'proyector-led-navideno':          '🔵✅Proyector LED Navideño con 12 Diseños Mágicos',
 };
 
 /* Normalización de ciudad — comparación sin tildes y case-insensitive.
@@ -183,6 +290,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const safeCity  = normalizeCity(sanitize(city, 100));
     const shortName = PRODUCT_SHORT_NAMES[(product_slug || '').trim()];
     const safeProd  = shortName || sanitize(product_name || product_slug, 100);
+    const sheetProd = PRODUCT_DCAMP_GROUP_NAMES[(product_slug || '').trim()] || safeProd;
 
     if (!safeName || !phone?.trim()) {
       return json({ ok: false, error: 'Campos requeridos: name, phone' }, 400);
@@ -238,7 +346,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
       try {
         const text = [
-          isDuplicate ? '⚠️ POSIBLE DUPLICADO — NUEVO PEDIDO DAM VERTEX 📦' : 'NUEVO PEDIDO DAM VERTEX 📦',
+          isDuplicate ? '⚠️ POSIBLE DUPLICADO — NUEVO PEDIDO DAM VERTEX ✅' : 'NUEVO PEDIDO DAM VERTEX ✅',
           `Total: Gs. ${fmtNum(effectiveAmount)}`,
           ...(express ? ['🚀 Envío express: +Gs. 10.000'] : []),
           `Producto: ${safeProd}`,
@@ -389,7 +497,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
             nombre:     safeName,
             telefono:   phone.trim(),
             ciudad:     safeCity,
-            producto:   safeProd,
+            producto:   sheetProd,
             cantidad:   qty,
             referencia: referencia ? sanitize(referencia, 150) : '',
             calle:      street ? sanitize(street, 150) : '',

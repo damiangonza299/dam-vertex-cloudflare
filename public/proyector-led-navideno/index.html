@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/assets/img/proy1.webp?v=1" as="image" fetchpriority="high">
+  <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
+  <meta name="description" content="Proyector LED Navide&#xF1;o con 12 Dise&#xF1;os &#x2014; ilumina tu fachada con magia navide&#xF1;a al instante. Sin adornos, sin horas de instalaci&#xF3;n. Gs. 199.000 &#xB7; Pag&#xE1;s al recibir.">
+  <title>Proyector LED Navide&#xF1;o 12 Dise&#xF1;os &#x2014; Dam Vertex</title>
+  <!-- CSS no cr&#xED;tico: preload + swap a stylesheet on load (no bloquea el render) -->
+  <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/assets/css/styles.min.css?v=55"></noscript>
+  <link rel="canonical" href="https://damvertex.com/proyector-led-navideno/">
+  <meta property="og:title" content="Proyector LED Navide&#xF1;o 12 Dise&#xF1;os &#x2014; Dam Vertex" />
+  <meta property="og:description" content="Ilumina tu fachada con 12 dise&#xF1;os navide&#xF1;os al instante. Pag&#xE1;s al recibir." />
+  <meta property="og:url" content="https://damvertex.com/proyector-led-navideno/" />
+  <meta property="og:type" content="website" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "name": "Proyector LED Navideño 12 Diseños",
+      "description": "Proyector LED con 12 diseños navideños. Transforma tu fachada en segundos sin adornos ni instalaciones.",
+      "brand": { "@type": "Brand", "name": "DAM Vertex" },
+      "url": "https://damvertex.com/proyector-led-navideno/",
+      "offers": {
+        "@type": "Offer",
+        "price": "199000",
+        "priceCurrency": "PYG",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "DAM Vertex" }
+      }
+    }
+  ]
+}
+  </script>
+  <style>
+    /* ══ CR&#xCD;TICO ABOVE-THE-FOLD &#x2014; ver CLAUDE.md "CARGA CR&#xCD;TICA &#x2014; CSS NO BLOQUEANTE" ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    :root { --accent: #3b82f6; --green: #4ade80; --muted: rgba(255,255,255,.65); --border: rgba(255,255,255,.08); --radius-sm: 6px; }
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 48px); height: 60px; background: rgba(0,0,0,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav__logo { font-size: 15px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+    .nav__logo span { opacity: .45; }
+    .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 24px 0; }
+    .price-main { font-size: clamp(28px, 5vw, 38px); font-weight: 800; color: #fff; }
+    .price-compare { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+
+    /* ══ Proyector LED Navide&#xF1;o &#x2014; theme noche m&#xE1;gica navide&#xF1;a ══ */
+    :root {
+      --pln-navy:   #0d1b2e;
+      --pln-red:    #7f1d1d;
+      --pln-gold:   #f59e0b;
+      --pln-cream:  #fffbf0;
+      --pln-green:  #15803d;
+      --pln-text:   #1a202c;
+      --pln-text2:  rgba(26,32,44,.65);
+      --pln-border: rgba(245,158,11,.28);
+      --pln-card:   #ffffff;
+      --pln-card2:  #fef9e7;
+    }
+    body.theme-pln { background: var(--pln-cream); color: var(--pln-text); }
+    .theme-pln .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; width: 100%; background: rgba(13,27,46,.97); border-bottom: 1px solid rgba(245,158,11,.2); backdrop-filter: blur(12px); }
+    body.theme-pln { padding-top: 60px; }
+    .theme-pln .nav__logo { color: #fff; }
+    .theme-pln .nav__logo span { opacity: .55; }
+    .theme-pln .footer { background: var(--pln-navy); color: rgba(255,255,255,.6); border-top: 1px solid rgba(245,158,11,.15); padding: 16px; text-align: center; font-size: 13px; }
+
+    .btn-pln {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      background: #dc2626; color: #fff; font-weight: 800;
+      padding: 15px 14px; border-radius: 999px; border: 3px solid #991b1b; cursor: pointer;
+      text-decoration: none; transition: background .2s, transform .15s;
+      letter-spacing: 0; width: 100%; max-width: 340px; white-space: nowrap;
+      font-size: clamp(10px, 3.4vw, 14px); box-shadow: 0 4px 14px rgba(220,38,38,.35);
+    }
+    .btn-pln:hover { background: #b91c1c; transform: translateY(-1px); }
+    .nav__cta-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #dc2626; color: #fff; font-weight: 800; font-size: clamp(7px,2.6vw,12px);
+      padding: 8px 10px; border-radius: 999px; border: 2px solid #991b1b; cursor: pointer;
+      white-space: nowrap; max-width: 62vw;
+    }
+
+    /* ══ HERO ══ */
+    .hero-pln { background: linear-gradient(180deg, #fffbf0 0%, #fef3c7 100%); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-pln__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
+    .hero-pln__media { max-width: 420px; margin: 0 auto; width: 100%; }
+    .pln-placeholder { width: 100%; aspect-ratio: 1/1; border-radius: 16px; background: linear-gradient(135deg, #fde68a 0%, #fbbf24 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: #92400e; text-align: center; padding: 20px; }
+    .pln-placeholder-video { width: 100%; max-width: 340px; margin: 0 auto; aspect-ratio: 9/16; border-radius: 12px; background: linear-gradient(135deg, #1e3a5f 0%, #0d1b2e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-size: 13px; font-weight: 700; color: rgba(255,255,255,.75); text-align: center; padding: 20px; }
+    .eyebrow-pln { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--pln-gold); margin: 0 0 12px; }
+    .hero-pln__h { font-size: clamp(20px,6vw,40px); font-weight: 800; line-height: 1.2; letter-spacing: -.01em; color: var(--pln-text); margin: 0 0 12px; }
+    .hero-pln__sub { font-size: clamp(14px,2vw,16px); color: var(--pln-text2); line-height: 1.65; margin: 0 0 18px; }
+    .hero-pln .price-savings-top { font-size: 13px; font-weight: 700; color: var(--pln-green); margin: 0 0 6px; }
+    .hero-pln .price-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 6px; }
+    .hero-pln .price-main { color: var(--pln-text); font-size: clamp(18px,3vw,22px); }
+    .hero-pln .price-compare { color: rgba(26,32,44,.64); font-size: clamp(26px,5.5vw,36px); font-weight: 700; }
+    .hero-pln__features { display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px; }
+    .hero-pln__feature { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--pln-text); background: rgba(245,158,11,.09); border: 1px solid var(--pln-border); border-radius: 8px; padding: 10px 14px; }
+    .hero-pln .delivery-badges { display: flex; flex-wrap: nowrap; gap: 5px; margin-top: 16px; }
+    .hero-pln .db-badge { font-size: clamp(8px, 2.4vw, 11px); color: var(--pln-text); padding: 5px 7px; border-radius: 20px; background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.3); white-space: nowrap; flex: 0 1 auto; }
+    .hero-pln .db-badge.db-green { background: rgba(21,128,61,.12); border-color: rgba(21,128,61,.35); color: var(--pln-green); }
+
+    /* ══ GANCHO + IMAGEN / VIDEO ══ */
+    .gancho-pln { padding: clamp(40px,10vw,72px) clamp(20px,5vw,48px); text-align: center; }
+    .gancho-pln__text { font-size: clamp(22px,5.5vw,38px); font-weight: 800; color: #fff; line-height: 1.25; margin: 0; max-width: 720px; margin-inline: auto; }
+    .gancho-pln--navy { background: var(--pln-navy); }
+    .gancho-pln--red  { background: var(--pln-red); }
+    .img-full-pln { background: var(--pln-cream); }
+    .img-full-pln img { width: 100%; height: auto; display: block; }
+    .img-full-pln--video { background: #000; display: flex; justify-content: center; align-items: center; padding: clamp(24px,5vw,48px) 16px; }
+    .video-wrap-9x16 { aspect-ratio: 9/16; width: 100%; max-width: 360px; border-radius: 14px; overflow: hidden; background: #111; }
+    .video-wrap-9x16 video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ══ CIERRE ══ */
+    .urgencia-pln { background: var(--pln-navy); padding: clamp(48px,9vw,80px) clamp(20px,5vw,64px); text-align: center; }
+    .urgencia-pln__inner { max-width: 480px; margin: 0 auto; }
+    .urgencia-pln__h { font-size: clamp(20px,4vw,28px); font-weight: 800; color: #fff; line-height: 1.2; margin: 0 0 12px; }
+    .urgencia-pln__sub { font-size: 14px; color: rgba(255,255,255,.9); line-height: 1.6; margin: 0 0 22px; }
+
+    /* ══ MODAL DCANP ══ */
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(13,27,46,.65); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
+    .modal-overlay.active { display: flex; }
+    .theme-pln .modal-box { position: relative; background: #fff; border: 1px solid rgba(245,158,11,.25); border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; }
+    .theme-pln .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(245,158,11,.12); color: var(--pln-text); font-size: 15px; cursor: pointer; }
+    .theme-pln .modal-title { font-size: 20px; font-weight: 800; color: var(--pln-text); margin: 0 0 4px; }
+    .theme-pln .modal-subtitle { font-size: 13px; color: #555555; margin: 0 0 18px; line-height: 1.5; }
+    .theme-pln .modal-section-label { display: block; font-size: 12px; font-weight: 700; color: #666666; text-transform: uppercase; letter-spacing: .04em; margin: 0 0 10px; }
+    .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .theme-pln .offer-option { position: relative; display: block; border: 1.5px solid rgba(245,158,11,.22); border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
+    .offer-option input { position: absolute; opacity: 0; }
+    .theme-pln .offer-option.selected { border-color: var(--pln-gold); background: rgba(245,158,11,.08); }
+    .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    .theme-pln .offer-option .offer-qty,
+    .theme-pln .offer-option .offer-price { color: var(--pln-text); font-weight: 800; }
+    .offer-qty { font-weight: 700; font-size: 14px; }
+    .offer-price { font-weight: 800; font-size: 15px; }
+    .theme-pln .offer-option .offer-compare { color: #767676; }
+    .offer-compare { font-size: 12px; text-decoration: line-through; margin-right: 6px; }
+    .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .theme-pln .offer-saving { color: var(--pln-green); font-weight: 700; font-size: 12px; }
+    .theme-pln .offer-badge { position: static; background: #dc2626; color: #fff; font-size: 13px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+    .theme-pln .offer-badge--best { background: #15803d; color: #fff; }
+    .form-group { margin-bottom: 14px; }
+    .theme-pln .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--pln-text); margin-bottom: 6px; }
+    .theme-pln .form-group input,
+    .theme-pln .form-group select,
+    .theme-pln .form-group textarea {
+      width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid rgba(245,158,11,.3);
+      background: #fff; color: var(--pln-text); font-size: 14px; font-family: inherit;
+    }
+    .theme-pln .form-group input::placeholder,
+    .theme-pln .form-group textarea::placeholder { color: #666666; }
+    .upsell-block { display: flex; align-items: center; gap: 10px; cursor: pointer; background: #f8f9fa; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; width: 100%; text-align: left; }
+    .upsell-content { flex: 1; }
+    .upsell-title { display: block; font-size: 14px; font-weight: 700; }
+    .upsell-sub { display: block; font-size: 12px; }
+    .theme-pln .upsell-block { background: #fff; border-color: rgba(245,158,11,.2); }
+    .theme-pln .upsell-block:has(input:checked) { border-color: var(--pln-gold); background: rgba(245,158,11,.08); }
+    .theme-pln .upsell-title { color: var(--pln-text); }
+    .theme-pln .upsell-sub { color: rgba(26,32,44,.55); }
+    #d-total-line:empty { display: none; }
+    .form-submit { margin-top: 18px; }
+    .form-submit .btn-pln { max-width: none; }
+    .theme-pln .dcanp-success { display: none; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 16px; padding: 32px 24px; text-align: center; }
+    .theme-pln .dcanp-success.visible { display: block; }
+    .theme-pln .dcanp-success__icon { width: 56px; height: 56px; background: #15803d; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .theme-pln .dcanp-success h2 { color: #15803d; font-size: 22px; margin-bottom: 12px; }
+    .theme-pln .dcanp-success p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .theme-pln .dcanp-success__tip { font-weight: 600; }
+    .theme-pln .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: #15803d; font-weight: 700; }
+
+    /* ══ URGENCY BAR ══ */
+    .urgency-bar { background: #dc2626; color: #fff; text-align: center; font-size: 12px; font-weight: 700; padding: 8px 16px; position: sticky; top: 0; z-index: 200; letter-spacing: .02em; white-space: nowrap; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 700px) {
+      .hero-pln__inner { grid-template-columns: 1fr; gap: 18px; }
+      .hero-pln__media { order: -1; max-width: 100%; }
+      .hero-pln { padding: 10px 16px 20px; }
+    }
+    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: #dc2626; color: #ffffff; font-weight: 700; font-size: 14px; border-radius: 8px; text-decoration: none; text-align: center; white-space: nowrap; }
+  </style>
+</head>
+<body class="theme-pln">
+
+<div class="urgency-bar">&#x1F384; Quedan 14 unidades &#xB7; Env&#xED;o gratis &#xB7; Pag&#xE1;s al recibir</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav__logo">DAM <span>VERTEX</span></div>
+  <a class="nav__cta-btn" data-open-modal href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%20el%20Proyector%20LED%20Navide%C3%B1o.%20%C2%BFPodemos%20coordinar%3F">Pedir ahora &#x2014; Pag&#xE1;s al recibir</a>
+</nav>
+
+<main>
+
+<!-- ══ HERO ══ -->
+<section class="hero-pln" id="section-hero" data-insync-section="hero">
+  <div class="hero-pln__inner">
+
+    <div class="hero-pln__media">
+      <img src="/assets/img/proy1.webp?v=1" alt="Proyector LED Navideño 12 diseños" width="900" height="900" loading="eager" fetchpriority="high" decoding="sync" style="border-radius:16px;width:100%;aspect-ratio:1/1;object-fit:cover;height:auto;display:block;">
+    </div>
+
+    <div>
+      <p class="eyebrow-pln">&#x1F384; 12 dise&#xF1;os navide&#xF1;os &#xB7; Proyecci&#xF3;n instant&#xE1;nea</p>
+      <h1 class="hero-pln__h">Tu casa m&#xE1;s m&#xE1;gica esta Navidad</h1>
+      <p class="hero-pln__sub">Esta Navidad ilumina tu casa de una forma diferente. Transforma tu fachada con incre&#xED;bles proyecciones navide&#xF1;as y disfruta la magia junto a tu familia.</p>
+      <div style="background:#f0fdf4;border-left:4px solid #15803d;padding:14px 16px;border-radius:8px;margin:16px 0;">
+        <div style="font-size:17px;font-weight:900;color:#15803d;">No pag&#xE1;s nada hasta tenerlo en la mano</div>
+        <div style="font-size:13px;color:#2c3e50;margin-top:4px;">Lo recib&#xED;s, lo revis&#xE1;s, y reci&#xE9;n ah&#xED; pag&#xE1;s. Sin adelantos, sin tarjeta.</div>
+      </div>
+      <div class="price-block" style="align-items:center;gap:8px 16px;">
+        <span class="price-main" style="font-size:clamp(26px,5vw,34px);">Gs. 199.000</span>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span class="price-savings-top" style="margin:0;">Ahorr&#xE1;s Gs. 66.000</span>
+          <span class="price-compare" style="font-size:clamp(24px,4.5vw,32px);">Gs. 265.000</span>
+        </div>
+      </div>
+
+      <div class="hero-pln__features">
+        <div class="hero-pln__feature">&#x1F384; 12 dise&#xF1;os navide&#xF1;os &#x2014; Pap&#xE1; Noel, estrellas, copos de nieve y m&#xE1;s</div>
+        <div class="hero-pln__feature">&#x1F4A1; Proyecci&#xF3;n amplia &#x2014; ideal para fachadas, jardines y paredes</div>
+        <div class="hero-pln__feature">&#x1F327;&#xFE0F; Resistente al agua &#x2014; funciona perfectamente al aire libre</div>
+        <div class="hero-pln__feature">&#x1F50C; Instalaci&#xF3;n en segundos &#x2014; solo enchuf&#xE1;s y apunt&#xE1;s</div>
+      </div>
+
+      <a class="btn-pln" id="cta-open-modal" data-open-modal data-insync-cta="hero"
+         href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%20el%20Proyector%20LED%20Navide%C3%B1o.%20%C2%BFPodemos%20coordinar%3F">
+        Pedir ahora &#x2014; Pag&#xE1;s al recibir
+        <div style="font-size:12px;font-weight:700;margin-top:4px;letter-spacing:.02em;">&#x2713; Garant&#xED;a de 30 d&#xED;as</div>
+      </a>
+      <div class="delivery-badges">
+        <span class="db-badge db-green">&#x1F69A; Entrega en el d&#xED;a</span>
+        <span class="db-badge">&#x1F4B3; Pago al recibir &#xB7; Central</span>
+        <span class="db-badge db-green">&#x2713; Env&#xED;o gratis</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;justify-content:center;margin-top:12px;font-size:13px;">
+        <span style="font-weight:900;font-size:18px;color:#dc2626;">+280</span>
+        <span style="color:#555;">pedidos entregados en Paraguay este mes</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ GANCHO 1 (noche) + VIDEO ══ -->
+<section class="gancho-pln gancho-pln--navy" id="section-gancho1" data-insync-section="gancho1">
+  <p class="gancho-pln__text">&#xBF;Segu&#xED;s pasando horas colocando luces y adornos navide&#xF1;os?</p>
+</section>
+<section class="img-full-pln img-full-pln--video" id="section-video" data-insync-section="video">
+  <div class="video-wrap-9x16">
+    <video src="/assets/video/angulo1proy.mp4" autoplay muted loop playsinline webkit-playsinline preload="none" aria-hidden="true" onerror="this.style.display='none'"></video>
+  </div>
+</section>
+
+<!-- ══ GANCHO 2 (rojo navide&#xF1;o) + IMAGEN 2 ══ -->
+<section class="gancho-pln gancho-pln--red" id="section-gancho2" data-insync-section="gancho2">
+  <p class="gancho-pln__text">Un solo proyector.<br>12 dise&#xF1;os.<br>Magia instant&#xE1;nea.</p>
+</section>
+<section class="img-full-pln" id="section-img2" data-insync-section="img2">
+  <img src="/assets/img/proy2.webp?v=1" alt="12 diseños navideños para tu fachada" width="900" height="900" loading="lazy" decoding="async">
+</section>
+
+<!-- ══ GANCHO 3 (noche) + IMAGEN 3 ══ -->
+<section class="gancho-pln gancho-pln--navy" id="section-gancho3" data-insync-section="gancho3">
+  <p class="gancho-pln__text">La Navidad se disfruta m&#xE1;s cuando la magia se comparte.</p>
+</section>
+<section class="img-full-pln" id="section-img3" data-insync-section="img3">
+  <img src="/assets/img/proy4.webp?v=1" alt="Proyector navideño iluminando una fachada" width="900" height="900" loading="lazy" decoding="async">
+</section>
+
+<!-- ══ GARANT&#xCD;A ══ -->
+<section style="padding:28px 16px;text-align:center;background:#fffbf0;" id="section-garantia" data-insync-section="garantia">
+  <div style="max-width:480px;margin:0 auto;border:2px solid #15803d;border-radius:14px;padding:24px 18px;">
+    <div style="font-size:36px;">&#x1F6E1;&#xFE0F;</div>
+    <h3 style="font-size:22px;font-weight:900;margin:8px 0 6px;color:#1a252f;">Garant&#xED;a de 30 d&#xED;as</h3>
+    <p style="font-size:15px;color:#555;line-height:1.5;margin:0;">Si no funciona como prometemos, te lo cambiamos sin costo. Sin preguntas, sin vueltas.</p>
+  </div>
+</section>
+
+<!-- ══ CIERRE ══ -->
+<section class="urgencia-pln" id="section-urgencia" data-insync-section="urgencia">
+  <div class="urgencia-pln__inner">
+    <h2 class="urgencia-pln__h">Esta Navidad nunca tu casa<br>ser&#xE1; m&#xE1;s especial</h2>
+    <p class="urgencia-pln__sub">Gs. 199.000 &#xB7; Entrega en el d&#xED;a &#xB7; Pag&#xE1;s al recibir</p>
+    <a class="btn-pln" data-insync-cta="urgencia" id="cta-open-modal-2" data-open-modal
+       href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%20el%20Proyector%20LED%20Navide%C3%B1o.%20%C2%BFPodemos%20coordinar%3F">
+      Pedir ahora &#x2014; Pag&#xE1;s al recibir
+      <div style="font-size:13px;font-weight:800;margin-top:4px;letter-spacing:.02em;">&#x2713; Garant&#xED;a de 30 d&#xED;as</div>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- ══ MODAL DCANP &#x2014; sin WhatsApp, sin horario, POST a /api/dcanp-lead ══ -->
+<div class="modal-overlay" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-pln">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">&#x2715;</button>
+
+    <div id="modal-form-wrap">
+      <h2 class="modal-title" id="modal-title-pln">Complet&#xE1; tu pedido</h2>
+      <p class="modal-stock-alert" style="text-align:center;font-size:11px;font-weight:700;color:#c53030;margin:4px 0 10px;">&#x26A1; Quedan pocas unidades &#x2014; pedidos se procesan hoy</p>
+      <p class="modal-subtitle">Complet&#xE1; tus datos y nos comunicamos para coordinar tu entrega.</p>
+
+      <span class="modal-section-label">Eleg&#xED; tu oferta</span>
+      <div class="offer-options">
+        <label class="offer-option selected">
+          <input type="radio" name="offer" value="1" checked>
+          <div class="offer-content">
+            <span class="offer-qty">1 unidad</span>
+            <span class="offer-price">Gs. 199.000</span>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="offer" value="2">
+          <div class="offer-content">
+            <span class="offer-qty">2 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare">Gs. 398.000</span>
+              <span class="offer-price">Gs. 359.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorr&#xE1;s Gs. 39.000</span>
+            <div class="offer-badge">&#x1F525; M&#xE1;s elegido</div>
+          </div>
+        </label>
+        <label class="offer-option">
+          <input type="radio" name="offer" value="3">
+          <div class="offer-content">
+            <span class="offer-qty">3 unidades</span>
+            <div class="offer-prices">
+              <span class="offer-compare">Gs. 597.000</span>
+              <span class="offer-price">Gs. 499.000</span>
+            </div>
+          </div>
+          <div class="offer-foot">
+            <span class="offer-saving">Ahorr&#xE1;s Gs. 98.000</span>
+            <div class="offer-badge offer-badge--best">&#x2B50; Mayor ahorro</div>
+          </div>
+        </label>
+      </div>
+
+      <form id="dcanp-form" novalidate>
+        <div class="form-group">
+          <label for="d-name">Nombre y apellido</label>
+          <input type="text" id="d-name" name="name" placeholder="Ej: Mar&#xED;a L&#xF3;pez" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label for="d-phone">Tel&#xE9;fono <span style="color:#c0392b;font-size:11px;font-weight:600;">&#xB7; Ingres&#xE1; tu n&#xFA;mero completo</span></label>
+          <input type="tel" id="d-phone" name="phone" placeholder="Ej: 984 832 688" autocomplete="tel" required>
+          <p id="d-phone-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;margin-top:4px;"></p>
+        </div>
+        <div class="form-group">
+          <label for="d-city">Ciudad <span style="color:#c0392b;font-size:11px;font-weight:600;">&#xB7; Solo el nombre de tu ciudad</span></label>
+          <input type="text" id="d-city" name="city" placeholder="Ej: Asunci&#xF3;n, Lambar&#xE9;, San Lorenzo..." autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="d-calle">Calle principal y secundaria</label>
+          <input type="text" id="d-calle" name="calle" placeholder="Ej: Av. Espa&#xF1;a y Tacuary" maxlength="200" autocomplete="street-address">
+        </div>
+        <label class="upsell-block">
+          <input type="checkbox" id="d-express" name="express">
+          <div class="upsell-content">
+            <span class="upsell-title">&#x1F680; Env&#xED;o express +10.000 Gs</span>
+            <span class="upsell-sub">Recib&#xED; antes que los dem&#xE1;s</span>
+          </div>
+        </label>
+
+        <label class="upsell-block" id="d-invoice-block" style="margin-top:12px">
+          <input type="checkbox" id="d-invoice" name="invoice">
+          <div class="upsell-content">
+            <span class="upsell-title">&#x1F9FE; Necesito factura</span>
+            <span class="upsell-sub">RUC o c&#xE9;dula para comprobante fiscal</span>
+          </div>
+        </label>
+        <div id="d-invoice-fields" style="display:none;margin-top:6px">
+          <div class="form-group">
+            <label for="d-invoice-ruc">RUC *</label>
+            <input type="text" id="d-invoice-ruc" name="invoice_ruc" placeholder="Ej: 1234567-8" autocomplete="off">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="d-invoice-name">Raz&#xF3;n social / Nombre *</label>
+            <input type="text" id="d-invoice-name" name="invoice_name" placeholder="Nombre completo o raz&#xF3;n social">
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <label for="d-invoice-email">Email <span style="font-weight:400">(opcional)</span></label>
+            <input type="email" id="d-invoice-email" name="invoice_email" placeholder="correo@ejemplo.com" autocomplete="email">
+          </div>
+        </div>
+
+        <p id="d-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:var(--pln-text)"></p>
+
+        <div class="form-submit">
+          <button type="submit" class="btn-pln" id="dcanp-submit-btn">
+            <div>Confirmar pedido</div>
+            <div style="font-size:12px;font-weight:800;margin-top:3px;letter-spacing:.03em;">&#x2713; Garant&#xED;a de 30 d&#xED;as</div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="dcanp-success" id="dcanp-success">
+      <div class="dcanp-success__icon">&#x2713;</div>
+      <h2>&#xA1;Tu pedido fue recibido!</h2>
+      <p>Gracias por confiar en nosotros. En breve nos comunicamos con vos por WhatsApp o llamada para coordinar la entrega.</p>
+      <p class="dcanp-success__tip">&#x1F4F1; Quedate atento a tu n&#xFA;mero &#x2014; te vamos a contactar pronto.</p>
+      <div class="dcanp-success__badges">
+        <span>&#x2713; Env&#xED;o gratis</span>
+        <span>&#x2713; Pag&#xE1;s al recibir</span>
+      </div>
+      <a href="/" class="btn-ver-coleccion">Ver m&#xE1;s productos &#x2192;</a>
+    </div>
+  </div>
+</div>
+
+<section style="padding:28px 16px 36px;max-width:520px;margin:0 auto;" id="section-faq" data-insync-section="faq">
+  <h3 style="font-size:20px;font-weight:900;margin-bottom:14px;color:#1a252f;">Preguntas frecuentes</h3>
+  <details style="border-bottom:1px solid #e3e6ea;padding:12px 0;">
+    <summary style="font-weight:800;font-size:15px;cursor:pointer;">&#xBF;Cu&#xE1;ndo me llega?</summary>
+    <p style="font-size:14px;color:#555;margin:8px 0 0;">En Gran Asunci&#xF3;n, el mismo d&#xED;a si ped&#xED;s antes de las 15:00. Interior del pa&#xED;s, 24 a 48 horas.</p>
+  </details>
+  <details style="border-bottom:1px solid #e3e6ea;padding:12px 0;">
+    <summary style="font-weight:800;font-size:15px;cursor:pointer;">&#xBF;Tengo que pagar algo por adelantado?</summary>
+    <p style="font-size:14px;color:#555;margin:8px 0 0;">No. Pag&#xE1;s &#xFA;nicamente cuando el repartidor te entrega el producto en la mano.</p>
+  </details>
+  <details style="border-bottom:1px solid #e3e6ea;padding:12px 0;">
+    <summary style="font-weight:800;font-size:15px;cursor:pointer;">&#xBF;Y si no me gusta o no funciona?</summary>
+    <p style="font-size:14px;color:#555;margin:8px 0 0;">Ten&#xE9;s 30 d&#xED;as de garant&#xED;a. Te lo cambiamos sin costo.</p>
+  </details>
+  <details style="padding:12px 0;">
+    <summary style="font-weight:800;font-size:15px;cursor:pointer;">&#xBF;El env&#xED;o tiene costo?</summary>
+    <p style="font-size:14px;color:#555;margin:8px 0 0;">No, el env&#xED;o es gratis a todo el pa&#xED;s.</p>
+  </details>
+</section>
+
+<footer class="footer">
+  &copy; Dam Vertex
+</footer>
+
+<!-- Scripts -->
+<script src="/assets/js/tracking.js?v=74" defer></script>
+<script src="/assets/js/dcanp-cities.js?v=1" defer></script>
+<script src="/assets/js/city-check.js?v=2" defer></script>
+<script defer src="/assets/js/insync.js?v=4"></script>
+
+<script defer>
+  const PRODUCT = {
+    name:  'Proyector LED Navideño 12 Diseños',
+    slug:  'proyector-led-navideno',
+    price: 199000,
+    comboPricing: { 1: 199000, 2: 359000, 3: 499000 },
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => { try { DV.trackViewContent(PRODUCT); } catch (_) {} }, 800);
+
+    const modal       = document.getElementById('order-modal');
+    const openBtns    = document.querySelectorAll('[data-open-modal]');
+    const closeBtn    = document.getElementById('modal-close');
+    const form        = document.getElementById('dcanp-form');
+    const formWrap    = document.getElementById('modal-form-wrap');
+    const successBox  = document.getElementById('dcanp-success');
+    const submitBtn   = document.getElementById('dcanp-submit-btn');
+    const offerInputs = document.querySelectorAll('input[name="offer"]');
+
+    let _icFired = false;
+    function openModal() {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      try { DV.trackAddToCart(PRODUCT); } catch (_) {}
+      if (!_icFired) { _icFired = true; setTimeout(function() { try { DV.trackInitiateCheckout(PRODUCT, null, 1); } catch(_) {} }, 1500); }
+    }
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    openBtns.forEach(btn => btn && btn.addEventListener('click', openModal));
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    offerInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        document.querySelectorAll('.offer-option').forEach(opt => opt.classList.remove('selected'));
+        input.closest('.offer-option').classList.add('selected');
+        updateTotalLine();
+      });
+    });
+
+    const invoiceChk    = document.getElementById('d-invoice');
+    const invoiceFields = document.getElementById('d-invoice-fields');
+    const totalLine     = document.getElementById('d-total-line');
+    if (invoiceChk && invoiceFields) {
+      invoiceChk.addEventListener('change', function() {
+        invoiceFields.style.display = this.checked ? 'block' : 'none';
+      });
+    }
+
+    function updateTotalLine() {
+      if (!totalLine) return;
+      const qty   = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      const base  = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const isExp = document.getElementById('d-express')?.checked;
+      const total = base + (isExp ? 10000 : 0);
+      totalLine.textContent = isExp ? 'Total: Gs. ' + total.toLocaleString('es-PY') + ' (incluye express)' : '';
+    }
+    const expChk = document.getElementById('d-express');
+    if (expChk) expChk.addEventListener('change', updateTotalLine);
+
+    const dPhone = document.getElementById('d-phone');
+    if (dPhone) dPhone.addEventListener('focus', function() { var l = this.value.length; this.setSelectionRange(l, l); });
+    if (dPhone) dPhone.addEventListener('input', function() { this.style.borderColor = ''; var e = document.getElementById('d-phone-error'); if (e) { e.textContent = ''; e.style.display = 'none'; } });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const qty     = parseInt(document.querySelector('input[name="offer"]:checked')?.value) || 1;
+      const base    = PRODUCT.comboPricing[qty] || PRODUCT.price;
+      const express = document.getElementById('d-express')?.checked || false;
+      const invoice = document.getElementById('d-invoice')?.checked || false;
+      const value   = base + (express ? 10000 : 0);
+      const data = {
+        name:          document.getElementById('d-name').value.trim(),
+        phone:         document.getElementById('d-phone').value.replace(/\s/g, ''),
+        city:          document.getElementById('d-city').value.trim(),
+        street:        document.getElementById('d-calle').value.trim(),
+        quantity:      qty,
+        product_slug:  PRODUCT.slug,
+        product_name:  PRODUCT.name,
+        value:         value,
+        express:       express,
+        invoice:       invoice,
+        invoice_ruc:   invoice ? (document.getElementById('d-invoice-ruc')?.value || '').trim() : '',
+        invoice_name:  invoice ? (document.getElementById('d-invoice-name')?.value || '').trim() : '',
+        invoice_email: invoice ? (document.getElementById('d-invoice-email')?.value || '').trim() : '',
+      };
+      if (!data.name || !data.phone || !data.city) {
+        alert('Completá nombre, teléfono y ciudad para continuar.');
+        return;
+      }
+      const dPhoneInput = document.getElementById('d-phone');
+      const dPhoneError = document.getElementById('d-phone-error');
+      const soloNumeros = data.phone.replace(/\D/g, '');
+      if (soloNumeros.length < 9) {
+        if (dPhoneInput) { dPhoneInput.style.borderColor = '#c0392b'; dPhoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        if (dPhoneError) { dPhoneError.textContent = 'Ingresá tu número completo (ej: 0984 832 688)'; dPhoneError.style.display = 'block'; }
+        return;
+      }
+      try {
+        const client = typeof getClientData === 'function' ? getClientData() : {};
+        data.fbp = client.fbp || null;
+        data.fbc = client.fbc || null;
+      } catch (_) {}
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+      try {
+        const res = await fetch('/api/dcanp-lead', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(data),
+        });
+        await res.json().catch(() => ({}));
+      } catch (err) {
+        console.error('DCANP_SUBMIT_ERROR', err?.message);
+      }
+      formWrap.style.display = 'none';
+      successBox.classList.add('visible');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Confirmar pedido';
+    });
+  });
+</script>
+
+<script src="/assets/js/protect.js?v=68" defer></script>
+</body>
+</html>

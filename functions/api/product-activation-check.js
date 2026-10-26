@@ -278,6 +278,16 @@ function verifyLandingHtml(html, slug, price, checks, isDcanpFromD1) {
     checks.push(check('city_check', 'City check implementado', hasCityCheck ? 'PASS' : 'FAIL',
       hasCityCheck ? 'city-check.js encontrado' : 'No se encontró city-check.js en la landing',
       hasCityCheck ? null : 'Agregar <script src="/assets/js/city-check.js?vX" defer> antes de </body>'));
+
+    /* city-check.js observa .dcanp-success (sin prefijo) — si la pantalla de éxito
+       usa una clase con prefijo (ej. .rt-dcanp-success) sin añadir también .dcanp-success,
+       el observer nunca detecta la transición y NO redirige a WA para ciudades no cubiertas. */
+    const hasSuccessClass = html.includes('class="dcanp-success') || html.includes("class='dcanp-success") ||
+                            /class="[^"]*\bdcanp-success\b/.test(html) || /class='[^']*\bdcanp-success\b/.test(html);
+    checks.push(check('dcanp_success_class', 'Pantalla éxito tiene clase dcanp-success', hasSuccessClass ? 'PASS' : 'FAIL',
+      hasSuccessClass ? 'Clase .dcanp-success encontrada — city-check.js puede observar la pantalla de éxito' :
+        'No se encontró clase dcanp-success en el HTML — city-check.js no puede interceptar ciudades no cubiertas',
+      hasSuccessClass ? null : 'Agregar clase "dcanp-success" al div de éxito del modal. Ejemplo: <div class="rt-dcanp-success dcanp-success" id="...">'));
   } else {
     const usesInitForm = html.includes('DV.initForm');
     const hasInlineCityCheck = html.includes('isCityCovered') || html.includes('VALID_CITIES') || html.includes('lmIsCityCovered');

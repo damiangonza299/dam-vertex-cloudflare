@@ -52,6 +52,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .product-item.active{background:var(--bg3);border-color:var(--border2)}
 .product-item .pi-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .product-item .pi-meta{font-size:10px;color:var(--muted);margin-top:2px;display:flex;gap:6px;align-items:center}
+.home-filter-bar{display:flex;gap:4px;padding:4px 10px 6px}
+.hf-btn{flex:1;padding:3px 6px;font-size:10px;font-weight:700;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;letter-spacing:.02em}
+.hf-btn.active{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+.badge-home{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.25);padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700}
+.badge-nohome{background:rgba(255,255,255,.04);color:var(--muted);padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700}
 .badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .badge-draft{background:rgba(255,255,255,.06);color:var(--muted)}
 .badge-pending{background:rgba(251,191,36,.1);color:var(--yellow)}
@@ -271,6 +276,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <input id="sidebar-search" type="text" placeholder="Buscar producto…"
         oninput="renderSidebar()"
         style="width:100%;padding:5px 8px;font-size:11px;background:var(--bg2,#1a1a1a);color:inherit;border:1px solid var(--border,#333);border-radius:4px;outline:none;box-sizing:border-box">
+    </div>
+    <div class="home-filter-bar">
+      <button class="hf-btn active" id="hf-all"    onclick="setHomeFilter('all')">Todos</button>
+      <button class="hf-btn"        id="hf-home"   onclick="setHomeFilter('home')">✓ En home</button>
+      <button class="hf-btn"        id="hf-nohome" onclick="setHomeFilter('nohome')">✗ Sin home</button>
     </div>
     <div id="product-list"></div>
   </div>
@@ -655,6 +665,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 ────────────────────────────────────────── */
 let TOKEN       = '';
 let briefs      = [];
+let sidebarHomeFilter = 'all';
 let currentSlug = null;
 let currentBrief = null;
 let isNew       = false;
@@ -744,14 +755,25 @@ async function loadBriefs() {
   if (briefs.length && !currentSlug) loadBrief(briefs[0].product_slug);
 }
 
+function setHomeFilter(f) {
+  sidebarHomeFilter = f;
+  ['all','home','nohome'].forEach(k => {
+    const el = document.getElementById('hf-' + k);
+    if (el) el.classList.toggle('active', k === f);
+  });
+  renderSidebar();
+}
+
 function renderSidebar() {
   const list  = document.getElementById('product-list');
   const q     = (document.getElementById('sidebar-search')?.value || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-  const shown = q ? briefs.filter(b => {
+  let shown = q ? briefs.filter(b => {
     const name = (b.name || b.product_slug || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
     const slug = (b.product_slug || '').toLowerCase();
     return name.includes(q) || slug.includes(q);
   }) : briefs;
+  if (sidebarHomeFilter === 'home')   shown = shown.filter(b => b.active === 1);
+  if (sidebarHomeFilter === 'nohome') shown = shown.filter(b => !b.active);
   if (!shown.length) {
     list.innerHTML = '<p style="padding:12px;font-size:11px;color:var(--muted)">Sin productos todavía.</p>';
     return;
@@ -763,7 +785,7 @@ function renderSidebar() {
       <div class="pi-meta">
         <span class="badge badge-${b.status}">${statusLabel(b.status)}</span>
         ${b.dam_finanzas_status === 'linked' ? '<span class="badge badge-linked">DF</span>' : ''}
-        <span>/${esc(b.product_slug)}</span>
+        <span class="${b.active ? 'badge-home' : 'badge-nohome'}">${b.active ? '🏠 Home' : '✗ Home'}</span>
       </div>
     </div>
   `).join('');
@@ -3155,8 +3177,32 @@ async function activateProduct() {
     logSync(`✓ Producto activado: ${currentSlug}`);
     await loadBriefs();
     await loadBrief(currentSlug);
+  } else if (data.error === 'dam_finanzas_no_linked') {
+    logSync(`✗ Error al activar: ${data.error}\n${data.hint || ''}`);
+    const force = confirm(
+      `⚠️ DAM Finanzas no está vinculado\n\n` +
+      `El producto no se sincronizó con Dam Finanzas.\n\n` +
+      `¿Querés activarlo igual sin sincronizar? (Se puede sincronizar después)\n\n` +
+      `OK = Activar igual    Cancelar = Abortar`
+    );
+    if (force) {
+      const res2 = await fetch('/api/product-registry', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ action: 'activate', slug: currentSlug, force: true }),
+      });
+      const data2 = await res2.json();
+      if (data2.ok) {
+        logSync(`✓ Producto activado (forzado): ${currentSlug}`);
+        await loadBriefs();
+        await loadBrief(currentSlug);
+      } else {
+        alert(`✗ No se pudo activar: ${data2.error}`);
+        logSync(`✗ Error forzar activación: ${data2.error}`);
+      }
+    }
   } else {
     logSync(`✗ Error al activar: ${data.error}\n${data.hint || ''}`);
+    alert(`✗ No se pudo activar el producto\n\nError: ${data.error}\n${data.hint || ''}`);
   }
 }
 

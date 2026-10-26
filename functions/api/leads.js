@@ -341,6 +341,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
           : (PRODUCT_SHORT_NAMES[product_slug] || safeProductName);
         const tgCity = effectiveCity || '';
         const text = [
+          'NUEVO PEDIDO DAM VERTEX ✅',
           `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
           `Producto: ${tgProductName}`,
           `Nombre: ${safeName}`,

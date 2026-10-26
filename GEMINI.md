@@ -629,6 +629,12 @@ Reemplaza el historial de chat como fuente de contexto entre sesiones.
 - Aplica en: estante-aluminio-bano, tabla-marmol, talonera-gel (landings DCANP)
 - IDs por landing: `d-phone`/`d-phone-error` (estante) · `m-phone`/`m-phone-error` (tabla) · `t-phone`/`t-phone-error` (talonera)
 
+## FLUJO UNIFICADO — Toda landing funciona igual (2026-10-20)
+- No existe más distinción de comportamiento entre landing DAM VERTEX y landing DCANP.
+- City check obligatorio en TODAS las landings: DCANP via `city-check.js`, DAM VERTEX via `products.js`.
+- Todos los leads van a D1 y aparecen en el Admin Panel. DCANP usa `source='dcanp'`.
+- DCANP sigue mostrando `.dcanp-success` (no WA al cliente), pero si ciudad no cubierta → city-check.js redirige a WA antes de mostrar esa pantalla.
+
 ## DCANP GROUP — Normalización de ciudades
 - El campo ciudad en landings DCANP es siempre texto libre
 - dcanp-lead.js normaliza automáticamente antes de enviar a Sheets y Telegram
@@ -871,3 +877,165 @@ SIEMPRE setear secrets sensibles directamente desde el Dashboard de Cloudflare:
 - Al reemplazar un bot de Telegram, el bot nuevo debe ser removido y re-agregado al grupo para que Telegram lo reconozca
 - Cambios de secrets vía API de Cloudflare requieren redeploy para propagarse al Worker en producción
 - Para debuggear secrets corruptos: agregar log temporal con `.length` y `.substring(0,10)` del valor — nunca loguear el secret completo
+## ELIMINAR PRODUCTO DEL HOME (public/index.html) — REGLA CRÍTICA
+
+### El problema: DV_SLUG_ORDER rompe DV_EXTRA_PRODUCTS
+
+**Incidente 2026-10:** Al eliminar productos del home con regex sobre `'slug',` en DV_SLUG_ORDER, el patrón también coincide con `{ slug: 'slug', name: ...` dentro de DV_EXTRA_PRODUCTS, dejando `{ slug: name: ...` — JS inválido que rompe el script entero. Resultado: solo se muestran los 3 cards estáticos del HTML.
+
+### Orden correcto para eliminar un producto del home
+
+1. **DV_EXTRA_PRODUCTS primero** — eliminar el objeto completo con regex específico:
+   ```python
+   re.subn(r"  \{ slug: 'MI-SLUG',[^\n]+\},?\n", '', c)
+   ```
+2. **DV_CARD_IMAGES** — eliminar línea `'MI-SLUG': 'url...',`
+3. **DV_CARD_DIMS** — ídem
+4. **DV_CARD_SRCSET** si existe — ídem
+5. **DV_SLUG_ORDER** — solo después de que el resto ya fue eliminado
+
+### Verificación obligatoria post-edición
+
+```python
+broken = [m.group() for m in re.finditer(r'\{ slug: [^\'"s]', cv)]
+assert broken == [], f"JS roto: {broken}"
+```
+
+**Señal de rotura:** home muestra solo 3 productos (los cards estáticos) → hay un `{ slug: name:` inválido en DV_EXTRA_PRODUCTS → buscar y eliminar con regex.
+
+---
+
+## VALIDACIÓN DE CIUDADES
+products.js valida la ciudad al submit. Ciudades fuera de VALID_CITIES → redirect a WA 595993471550 con mensaje "🚨 Pedido fuera de zona" + datos del pedido.
+Para agregar ciudades: editar VALID_CITIES en public/assets/js/products.js (minúsculas sin acentos).
+Aplica a todas las landings automáticamente (DAM Vertex, no DCANP) — no requiere código por landing.
+
+---
+
+## ⚠️ BUG CRÍTICO — TOTAL=0 EN TELEGRAM Y GOOGLE SHEETS (DCANP)
+
+**Incidente 2026-10 — rodillera-tecnologia-termica**
+
+### Causa exacta
+
+`/api/dcanp-lead` (en `functions/api/dcanp-lead.js`) destrucutura del body: `quantity` y `value`.
+
+```javascript
+const { product_slug, product_name, name, phone, city, street,
+        quantity, value, express, invoice, ... } = body;
+```
+
+La landing enviaba `qty` y `price` en vez de `quantity` y `value`. Resultado: ambos llegaban como `undefined` → Telegram mostraba "Total: Gs. 0" y Google Sheets registraba 0.
+
+### Regla obligatoria — POST body en toda landing DCANP
+
+El formulario SIEMPRE debe enviar los campos con estos nombres exactos:
+
+```javascript
+body: JSON.stringify({
+  product_slug: PRODUCT.slug,
+  product_name: PRODUCT.name,
+  name, phone, city,
+  street: address,       // dirección → campo "street" (NO "address")
+  quantity: qty,         // cantidad → campo "quantity" (NO "qty", NO "count")
+  value:    price,       // precio total → campo "value" (NO "price", NO "total")
+  express,
+  ...(invoice ? { invoice: true, invoice_ruc, invoice_name, invoice_email } : {}),
+  fbp: client.fbp || null,
+  fbc: client.fbc || null,
+})
+```
+
+### Checklist de verificación al crear una landing DCANP nueva
+
+Antes de deployar, confirmar en el submit handler:
+- [ ] `quantity` (no `qty`, no `count`, no `cantidad`)
+- [ ] `value` (no `price`, no `total`, no `monto`)
+- [ ] `street` (no `address`, no `direccion`)
+- [ ] Los tres campos son obligatorios — si faltan, el total llega como 0 a Telegram y Sheets
+
+**PROHIBIDO hacer deploy de una landing DCANP sin verificar estos tres nombres de campo.**
+
+---
+
+## ⚠️ BUG CRÍTICO — CITY CHECK NO REDIRIGE A WHATSAPP (DCANP)
+
+**Incidente 2026-10 — rodillera-tecnologia-termica + 58 landings DCANP sin city-check**
+
+### Causas (dos problemas compuestos)
+
+**Causa 1 — clase faltante en el div de éxito**
+
+`city-check.js` observa mediante MutationObserver los elementos con `class="dcanp-success"`. Si el div de éxito tiene una clase con prefijo (ej. `class="rt-dcanp-success"`) pero NO tiene la clase base `dcanp-success`, el observer nunca detecta la activación → ciudad no cubierta muestra la pantalla de éxito en vez de redirigir a WA.
+
+Fix obligatorio: el div de éxito SIEMPRE debe tener AMBAS clases:
+
+```html
+<!-- CORRECTO -->
+<div class="rt-dcanp-success dcanp-success" id="rt-dcanp-success">
+
+<!-- INCORRECTO — city-check.js no puede observarlo -->
+<div class="rt-dcanp-success" id="rt-dcanp-success">
+```
+
+**Causa 2 — landing sin city-check.js**
+
+Muchas landings DCANP solo tenían `dcanp-cities.js` (autocomplete de ciudad, UI only) pero no `city-check.js` (validación + redirect WA). Son dos archivos distintos con propósitos distintos:
+
+| Archivo | Propósito |
+|---|---|
+| `dcanp-cities.js` | Autocomplete mientras el usuario escribe (UI) |
+| `city-check.js` | Validar ciudad + redirigir a WA si no está cubierta |
+
+Toda landing DCANP DEBE incluir ambos en el `<head>` o antes de `</body>`:
+
+```html
+<script src="/assets/js/dcanp-cities.js?v=1" defer></script>
+<script src="/assets/js/city-check.js?v=2" defer></script>
+```
+
+### city-check.js v=2 — patrones soportados
+
+La versión 2 observa DOS patrones de activación del div de éxito:
+
+1. **`classList.add('visible')`** en elemento con `class="... dcanp-success ..."` (landings nuevas)
+2. **`style.display='block'`** en elemento con `id="dcanp-success"` sin clase (landings antiguas)
+
+### Checklist de verificación al crear una landing DCANP nueva
+
+Antes de deployar:
+- [ ] `city-check.js?v=2` incluido (después de `dcanp-cities.js`)
+- [ ] El div de éxito tiene `dcanp-success` como clase (puede tener prefijo adicional, pero DEBE tener la base)
+- [ ] Product Studio → Validar Activación → check `dcanp_success_class` muestra PASS
+
+**PROHIBIDO hacer deploy de una landing DCANP sin city-check.js y sin la clase dcanp-success en el div de éxito.**
+
+---
+
+## PRODUCT STUDIO — SOLO ANÁLISIS, NO CREACIÓN NI MODIFICACIÓN
+
+**Decisión de negocio permanente — 2026-10**
+
+Product Studio es una herramienta de análisis y activación. **No es la herramienta para crear ni modificar landings.**
+
+### Autoridad del código
+
+Toda creación y modificación de landings, modales, scripts y configuración se hace directamente en el código del repositorio, con Claude Code o manualmente. Nunca vía Product Studio.
+
+### Lo que Product Studio SÍ puede hacer
+
+- Analizar métricas InSync de la landing (tab Sync → InSync)
+- Ver y editar el brief del producto (nombre, precio, variantes, estrategia)
+- Sincronizar con DAM Finanzas
+- Correr la validación de activación (`/api/product-activation-check`)
+- Activar/desactivar productos (`active=0` ↔ `active=1` en D1)
+
+### Lo que Product Studio NO debe hacer
+
+- Modificar el HTML de la landing — esto lo hace Claude Code directamente en el repo
+- Deployar a producción — el deploy siempre es manual vía `wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=main --commit-dirty=true`
+- Tocar `public/_headers`, `public/assets/js/protect.js` ni ningún JS compartido — **causa roturas graves** (incidentes agosto y septiembre 2026)
+
+### Por qué
+
+Product Studio re-escapa operadores JS dentro de `<script>` (convierte `=>` en `&amp;gt;`, `&&` en `&amp;&amp;`) y puede vaciar archivos del working tree durante su proceso de deploy. Estos bugs han causado modales rotos y archivos de 0 bytes en producción en múltiples ocasiones. El código es la única fuente de verdad.
