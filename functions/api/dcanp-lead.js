@@ -19,6 +19,7 @@ const PRODUCT_SHORT_NAMES = {
   'manguera-led-multicolor':        'Manguera LED Multicolor',
   'rodillera-tecnologia-termica':   'Rodillera Térmica',
   'proyector-led-navideno':         'proyector navideño',
+  'pelador-multifuncion-3en1':      'Pelador Multifunción',
 };
 
 /* Nombres exactos Kangaroo (DCAMP GROUP) — solo para Google Sheets.
@@ -125,6 +126,7 @@ const PRODUCT_DCAMP_GROUP_NAMES = {
   'maquina-peladora-electrica':      '🔵✅Máquina Peladora Eléctrica',
   'secador-zapatos-portatil':        '🔵SECADOR DE ZAPATOS PORTATIL',
   'proyector-led-navideno':          '🔵✅Proyector LED Navideño con 12 Diseños Mágicos',
+  'pelador-multifuncion-3en1':       'PREPMASTER 3 EN 1',
 };
 
 /* Normalización de ciudad — comparación sin tildes y case-insensitive.
