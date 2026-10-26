@@ -58,13 +58,13 @@
       --pln-navy:   #0d1b2e;
       --pln-red:    #7f1d1d;
       --pln-gold:   #f59e0b;
-      --pln-cream:  #fffbf0;
+      --pln-cream:  #ffffff;
       --pln-green:  #15803d;
       --pln-text:   #1a202c;
       --pln-text2:  rgba(26,32,44,.65);
       --pln-border: rgba(245,158,11,.28);
       --pln-card:   #ffffff;
-      --pln-card2:  #fef9e7;
+      --pln-card2:  #f8fafc;
     }
     body.theme-pln { background: var(--pln-cream); color: var(--pln-text); }
     .theme-pln .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; width: 100%; background: rgba(13,27,46,.97); border-bottom: 1px solid rgba(245,158,11,.2); backdrop-filter: blur(12px); }
@@ -90,7 +90,7 @@
     }
 
     /* ══ HERO ══ */
-    .hero-pln { background: linear-gradient(180deg, #fffbf0 0%, #fef3c7 100%); padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
+    .hero-pln { background: #ffffff; padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
     .hero-pln__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
     .hero-pln__media { max-width: 420px; margin: 0 auto; width: 100%; }
     .pln-placeholder { width: 100%; aspect-ratio: 1/1; border-radius: 16px; background: linear-gradient(135deg, #fde68a 0%, #fbbf24 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: #92400e; text-align: center; padding: 20px; }
@@ -228,7 +228,6 @@
       <div class="hero-pln__features">
         <div class="hero-pln__feature">&#x1F384; 12 dise&#xF1;os navide&#xF1;os &#x2014; Pap&#xE1; Noel, estrellas, copos de nieve y m&#xE1;s</div>
         <div class="hero-pln__feature">&#x1F4A1; Proyecci&#xF3;n amplia &#x2014; ideal para fachadas, jardines y paredes</div>
-        <div class="hero-pln__feature">&#x1F327;&#xFE0F; Resistente al agua &#x2014; funciona perfectamente al aire libre</div>
         <div class="hero-pln__feature">&#x1F50C; Instalaci&#xF3;n en segundos &#x2014; solo enchuf&#xE1;s y apunt&#xE1;s</div>
       </div>
 
@@ -278,7 +277,7 @@
 </section>
 
 <!-- ══ GARANT&#xCD;A ══ -->
-<section style="padding:28px 16px;text-align:center;background:#fffbf0;" id="section-garantia" data-insync-section="garantia">
+<section style="padding:28px 16px;text-align:center;background:#ffffff;" id="section-garantia" data-insync-section="garantia">
   <div style="max-width:480px;margin:0 auto;border:2px solid #15803d;border-radius:14px;padding:24px 18px;">
     <div style="font-size:36px;">&#x1F6E1;&#xFE0F;</div>
     <h3 style="font-size:22px;font-weight:900;margin:8px 0 6px;color:#1a252f;">Garant&#xED;a de 30 d&#xED;as</h3>
@@ -474,7 +473,8 @@
     const offerInputs = document.querySelectorAll('input[name="offer"]');
 
     let _icFired = false;
-    function openModal() {
+    function openModal(e) {
+      if (e) e.preventDefault();
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
       try { DV.trackAddToCart(PRODUCT); } catch (_) {}
