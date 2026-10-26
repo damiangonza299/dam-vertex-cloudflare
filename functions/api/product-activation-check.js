@@ -96,7 +96,7 @@ export async function onRequestGet({ request, env }) {
           `No existe brief en product_briefs para "${slug}"`,
           `Abrir Product Studio y completar el brief del producto`));
       } else if (brief.dam_finanzas_status !== 'linked') {
-        checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'FAIL',
+        checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'WARNING',
           `dam_finanzas_status = "${brief.dam_finanzas_status || 'null'}"`,
           `Product Studio → Tab Sync → Sincronizar con DAM Finanzas`));
       } else {
