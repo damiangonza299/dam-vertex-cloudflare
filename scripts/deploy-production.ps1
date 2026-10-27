@@ -86,14 +86,18 @@ Write-Host "  [OK] git commit realizado" -ForegroundColor Green
 
 Write-Host ""
 Write-Host "PASO 3/6: Pusheando a origin main..." -ForegroundColor Cyan
-# git push escribe info en stderr — PS 5.1 con ErrorActionPreference=Stop lo trata como error.
-# Wrap en try/catch para que el NativeCommandError no corte el script; luego chequeamos $LASTEXITCODE.
-try { git push origin main } catch { }
+# git push escribe info en stderr — bajar ErrorActionPreference a Continue solo para este comando
+# para que el NativeCommandError no corte el script en PS 5.1
+$prevPref = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
+git push origin main
+$pushExit = $LASTEXITCODE
+$ErrorActionPreference = $prevPref
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "ERROR: git push fallo (codigo $LASTEXITCODE)" -ForegroundColor Red
+if ($pushExit -ne 0) {
+    Write-Host "ERROR: git push fallo (codigo $pushExit)" -ForegroundColor Red
     Write-Host "  Verificar conexion a internet y permisos del repo." -ForegroundColor Yellow
-    exit $LASTEXITCODE
+    exit $pushExit
 }
 Write-Host "  [OK] git push origin main - Git integration sincronizado" -ForegroundColor Green
 
