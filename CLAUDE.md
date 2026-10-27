@@ -334,7 +334,22 @@ No se crea una landing solo desde el brief del producto. El flujo correcto:
 
 ### Modal — reglas de coherencia visual (obligatorio por landing)
 
-Toda landing nueva debe cumplir estos 4 puntos en su modal de pedido. **No declarar landing terminada si el modal no los cumple.**
+Toda landing nueva debe cumplir estos puntos en su modal de pedido. **No declarar landing terminada si el modal no los cumple.**
+
+> **Incidente 2026-10 (pelador-multifuncion-3en1):** El modal usaba clases CSS globales (`.form-group input`, `.modal-box`, `.offer-option`, etc.) sin scope. `styles.min.css` carga async con `onload` DESPUÉS del render inicial — cuando aplica, sobreescribe esas clases con sus propios estilos (fondo oscuro, colores distintos). Resultado: inputs sin placeholder visible, combos con estilos rotos, modal visualmente diferente al reloj-imperial-verde. No fue visible en el primer render porque el CSS async tarda en aplicar.
+>
+> **Regla permanente — CSS del modal siempre bajo ID:**
+> Todo el CSS del modal DEBE estar escoped bajo `#order-modal`:
+> ```css
+> #order-modal .modal-box { ... }
+> #order-modal .form-group input { ... }
+> #order-modal .form-group input::placeholder { color: #9ca3af; }
+> #order-modal .offer-option { ... }
+> /* etc. */
+> ```
+> Nunca usar `.form-group`, `.modal-box`, `.offer-option`, `.upsell-block`, `.form-submit` etc. como selectores raíz en una landing — son nombres genéricos que viven en `styles.min.css`. La única excepción es `.modal-overlay` y `.modal-overlay.active` (posicionamiento fixed, sin conflicto). El submit button va con `style` inline puro (sin clase de la landing) igual que en `reloj-imperial-verde`. El selector `#order-modal .clase` tiene especificidad `1-1-0` que siempre gana sobre `.clase` de cualquier CSS externo.
+>
+> **Referencia canónica:** `public/reloj-imperial-verde/index.html` — usa `.riv .modal-box` etc. (scoped bajo body class `.riv`), que es el equivalente. `public/pelador-multifuncion-3en1/index.html` — usa `#order-modal .modal-box` (scoped bajo ID del modal).
 
 1. **Paleta visual coherente** — el modal usa la misma paleta principal/secundaria de la landing vía clase `.theme-{producto}`. No usar colores genéricos sin override.
 2. **3 combos por defecto** — siempre incluir:
