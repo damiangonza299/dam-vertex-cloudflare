@@ -104,7 +104,7 @@ function buildWAMsg(product, data, offerInfo) {
   const lines = [
     `NUEVO PEDIDO DAM VERTEX ✅`,
     `Total a cobrar: ${fmt(offerInfo.total)}`,
-    ...(data.express ? ['🚀 Envío express: +Gs. 10.000 (ya incluido)'] : []),
+    ...(data.express ? ['🚀 Express: +Gs. 10.000 ✓'] : []),
     `Producto: ${shortName(product)} (${qtyLabel})`,
     `Nombre: ${data.name}`,
     `Método de Pago: ${data.payment || 'No especificado'}`,

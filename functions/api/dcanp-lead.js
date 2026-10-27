@@ -350,7 +350,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
         const text = [
           isDuplicate ? '⚠️ POSIBLE DUPLICADO — NUEVO PEDIDO DAM VERTEX ✅' : 'NUEVO PEDIDO DAM VERTEX ✅',
           `Total a cobrar: Gs. ${fmtNum(effectiveAmount)}`,
-          ...(express ? ['🚀 Envío express: +Gs. 10.000 (ya incluido)'] : []),
+          ...(express ? ['🚀 Express: +Gs. 10.000 ✓'] : []),
           `Producto: ${safeProd}`,
           `Nombre: ${safeName}`,
           `Teléfono: ${phoneTrim}`,

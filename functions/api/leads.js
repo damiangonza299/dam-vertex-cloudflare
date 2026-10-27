@@ -345,7 +345,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
         const text = [
           'NUEVO PEDIDO DAM VERTEX ✅',
           `Total a cobrar: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
-          ...(express ? ['🚀 Envío express: +Gs. 10.000 (ya incluido)'] : []),
+          ...(express ? ['🚀 Express: +Gs. 10.000 ✓'] : []),
           `Producto: ${tgProductName}`,
           `Nombre: ${safeName}`,
           `Teléfono: ${phone.trim()}`,
