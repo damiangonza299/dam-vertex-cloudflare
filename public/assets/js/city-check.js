@@ -48,9 +48,8 @@
     var express = !!body.express;
     var lines = [
       'NUEVO PEDIDO DAM VERTEX ✅',
-      'Total a cobrar: Gs. ' + Number(body.value || 0).toLocaleString('es-PY'),
+      'Total a cobrar: Gs. ' + Number(body.value || 0).toLocaleString('es-PY') + (express ? ' (express incluido)' : ''),
     ];
-    if (express) lines.push('🚀 Express: +Gs. 10.000 ✓');
     lines.push('Producto: ' + (body.product_name || body.product_slug || ''));
     lines.push('Nombre: ' + (body.name || ''));
     lines.push('Teléfono: ' + (body.phone || ''));
