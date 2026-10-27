@@ -136,13 +136,13 @@
     .rt-offer-compare { font-size: 12px; text-decoration: line-through; color: #9CA3AF; margin-right: 6px; }
     .rt-offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
     .rt-offer-saving { color: var(--rt-verde); font-weight: 700; font-size: 12px; }
-    .rt-offer-badge { background: var(--rt-naranja); color: #fff; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .rt-offer-badge { background: #dc2626; color: #fff; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
     .rt-offer-badge-green { background: var(--rt-verde); color: #fff; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
     .rt-form-group { margin-bottom: 14px; }
     .rt-form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--rt-text2); margin-bottom: 6px; }
     .rt-form-group input, .rt-form-group select { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid var(--rt-border); background: var(--rt-bg2); color: var(--rt-text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .15s; }
     .rt-form-group input:focus, .rt-form-group select:focus { border: 2px solid var(--rt-naranja); }
-    .rt-pay-badge { margin-top: 14px; text-align: center; font-size: 12px; font-weight: 800; color: var(--rt-naranja); background: var(--rt-naranja-suave); border-radius: 8px; padding: 8px 12px; }
+    .rt-pay-badge { margin-top: 14px; text-align: center; font-size: 12px; font-weight: 800; color: #0B6E4F; background: #f0fdf4; border-radius: 8px; padding: 8px 12px; }
     .rt-upsell-block { display: flex; align-items: center; gap: 10px; cursor: pointer; background: var(--rt-bg2); border: 1.5px solid var(--rt-border); border-radius: 10px; padding: 12px 14px; width: 100%; text-align: left; }
     .rt-upsell-title { color: var(--rt-text); font-size: 13px; font-weight: 700; }
     .rt-upsell-sub { color: var(--rt-text2); font-size: 12px; }
@@ -163,7 +163,7 @@
 
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
-  <button type="button" class="nav__cta" data-open-modal>Pedir ahora &mdash; Pag&#xE1;s al recibir</button>
+  <a class="nav__cta" data-open-modal href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Rodillera%20T%C3%A9rmica.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">Pedir ahora &mdash; Pag&#xE1;s al recibir</a>
 </nav>
 
 <main>
@@ -596,7 +596,7 @@
 
         <div class="rt-pay-badge">&#x1F4B0; Pag&#xE1;s al recibir &mdash; Sin adelantos</div>
         <div class="rt-form-submit">
-          <button type="submit" class="rt-btn" id="rt-submit-btn" style="border:none">
+          <button type="submit" class="rt-btn" id="rt-submit-btn" style="background:#0B6E4F;border:none;box-shadow:0 6px 18px rgba(11,110,79,.28);">
             CONFIRMAR MI PEDIDO
             <span class="rt-btn-sub">&#x2713; Env&#xED;o gratis</span>
           </button>
@@ -621,6 +621,7 @@
 
 <!-- Scripts -->
 <script src="/assets/js/tracking.js?v=74" defer></script>
+<script src="/assets/js/dcanp-cities.js?v=1" defer></script>
 <script src="/assets/js/city-check.js?v=2" defer></script>
 <script defer src="/assets/js/insync.js?v=4"></script>
 <script src="/assets/js/protect.js?v=1" defer></script>
