@@ -103,8 +103,8 @@ function buildWAMsg(product, data, offerInfo) {
     : null;
   const lines = [
     `NUEVO PEDIDO DAM VERTEX ✅`,
-    `Total: ${fmt(offerInfo.total)}`,
-    ...(data.express ? ['🚀 Envío express: +Gs. 10.000'] : []),
+    `Total a cobrar: ${fmt(offerInfo.total)}`,
+    ...(data.express ? ['🚀 Envío express: +Gs. 10.000 (ya incluido)'] : []),
     `Producto: ${shortName(product)} (${qtyLabel})`,
     `Nombre: ${data.name}`,
     `Método de Pago: ${data.payment || 'No especificado'}`,
@@ -132,7 +132,7 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
 
   const lines = [
     `NUEVO PEDIDO DAM VERTEX ✅`,
-    `Total: ${fmt(total)}`,
+    `Total a cobrar: ${fmt(total)}`,
     `Producto: ${shortName(product)}`,
     `Nombre: ${data.name}`,
     `Método de Pago: ${data.payment || 'No especificado'}`,

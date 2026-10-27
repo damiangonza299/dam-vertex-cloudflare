@@ -344,8 +344,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
         const tgCity = effectiveCity || '';
         const text = [
           'NUEVO PEDIDO DAM VERTEX ✅',
-          `Total: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
-          ...(express ? ['🚀 Envío express: +Gs. 10.000'] : []),
+          `Total a cobrar: Gs. ${Number(value || 0).toLocaleString('es-PY')}`,
+          ...(express ? ['🚀 Envío express: +Gs. 10.000 (ya incluido)'] : []),
           `Producto: ${tgProductName}`,
           `Nombre: ${safeName}`,
           `Teléfono: ${phone.trim()}`,
