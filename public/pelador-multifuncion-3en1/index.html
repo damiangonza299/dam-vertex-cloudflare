@@ -155,49 +155,43 @@
     .urgencia-pm__sub { font-size: 14px; color: rgba(255,255,255,.7); margin-bottom: 22px; }
 
     /* ══ MODAL ══ */
-    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(15,39,34,.6); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
+    /* ══ MODAL — scoped bajo #order-modal para no colisionar con styles.min.css ══ */
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(17,18,20,.6); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
     .modal-overlay.active { display: flex; }
-    .modal-box { position: relative; background: #FFFFFF; border: 1px solid #e5e7eb; border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; color-scheme: light; color: #16181A; }
-    .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: #f3f4f6; color: #16181A; font-size: 15px; cursor: pointer; font-family: inherit; }
-    .modal-title { font-size: 20px; font-weight: 900; color: #16181A; margin-bottom: 4px; }
-    .modal-subtitle { font-size: 13px; color: #6b7280; margin-bottom: 14px; }
-    .modal-section-label { display: block; font-size: 11px; font-weight: 800; color: #374151; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
-    .offer-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-    .offer-option { position: relative; display: block; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
-    .offer-option.selected { border: 2px solid #16a34a; background: #f0fdf4; }
-    .offer-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
-    .offer-content { display: flex; justify-content: space-between; align-items: center; }
-    .offer-qty { font-size: 14px; font-weight: 800; color: #16181A; }
-    .offer-price { font-size: 15px; font-weight: 900; color: #16181A; }
-    .offer-prices { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
-    .offer-compare { font-size: 12px; color: #9ca3af; text-decoration: line-through; }
-    .offer-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
-    .offer-saving { font-size: 11px; font-weight: 700; color: #16a34a; }
-    .offer-badge { font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px; background: #dc2626; color: #fff; border: none; }
-    .offer-badge--best { background: #16a34a; }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; color: #374151; margin-bottom: 4px; }
-    .form-group input { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; color: #16181A; font-size: 14px; font-family: inherit; outline: none; transition: border-color .15s; }
-    .form-group input:focus { border-color: #16a34a; }
-    .upsell-block { display: flex; align-items: center; gap: 10px; cursor: pointer; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; margin-top: 8px; }
-    .upsell-block input[type="checkbox"] { width: 16px; height: 16px; flex-shrink: 0; accent-color: #16a34a; }
-    .upsell-content { display: flex; flex-direction: column; gap: 2px; }
-    .upsell-title { font-size: 13px; font-weight: 800; color: #16181A; }
-    .upsell-sub { font-size: 11px; color: #6b7280; }
-    .form-submit { margin-top: 16px; }
-    .pay-badge { margin-top: 14px; text-align: center; font-size: 12px; font-weight: 800; color: #16a34a; background: #f0fdf4; border-radius: 8px; padding: 8px 12px; }
-    .dcanp-success { display: none; text-align: center; padding: 16px 0; }
-    .dcanp-success.visible { display: block; }
-    .dcanp-success__icon { width: 60px; height: 60px; border-radius: 50%; background: #dcfce7; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px; color: #16a34a; }
-    .theme-pm .dcanp-success h2 { color: #16a34a; font-size: 22px; margin-bottom: 12px; }
-    .theme-pm .dcanp-success p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
-    .theme-pm .dcanp-success__tip { font-weight: 600; }
-    .theme-pm .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: #16a34a; font-weight: 700; }
-    .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: #16a34a; color: #ffffff; font-weight: 700; font-size: 14px; border-radius: 8px; text-decoration: none; text-align: center; }
-
-    @media (max-width: 700px) {
-      .modal-box { padding: 20px 16px; }
-    }
+    #order-modal .modal-box { position: relative; background: #FFFFFF; border: 1px solid #d1d5db; border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; color-scheme: light; accent-color: #16a34a; color: #16181A; }
+    #order-modal .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: #f3f4f6; color: #16181A; font-size: 15px; cursor: pointer; font-family: inherit; }
+    #order-modal .modal-title { font-size: clamp(14px,4vw,18px); font-weight: 700; color: #16181A; margin: 0 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #order-modal .modal-section-label { display: block; font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: .05em; margin: 0 0 10px; }
+    #order-modal .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    #order-modal .offer-option { position: relative; display: block; border: 1.5px solid #d1d5db; border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #fff; }
+    #order-modal .offer-option input { position: absolute; opacity: 0; }
+    #order-modal .offer-option.selected { border: 2px solid #16a34a; background: #f0fdf4; }
+    #order-modal .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    #order-modal .offer-qty { font-weight: 700; font-size: 14px; color: #16181A; }
+    #order-modal .offer-price { font-weight: 800; font-size: 15px; color: #16181A; }
+    #order-modal .offer-compare { font-size: 12px; text-decoration: line-through; color: #9CA3AF; margin-right: 6px; }
+    #order-modal .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    #order-modal .offer-saving { color: #16a34a; font-weight: 700; font-size: 12px; }
+    #order-modal .offer-badge { position: static; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px; color: #FFFFFF; }
+    #order-modal .form-group { margin-bottom: 14px; }
+    #order-modal .form-group label { display: block; font-size: 12px; font-weight: 700; color: #6b7280; margin-bottom: 6px; }
+    #order-modal .form-group input { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #d1d5db; background: #fff; color: #16181A; font-size: 14px; font-family: inherit; outline: none; transition: border-color .15s; }
+    #order-modal .form-group input:focus { border: 2px solid #16a34a; }
+    #order-modal .form-group input::placeholder { color: #9ca3af; }
+    #order-modal .upsell-block { display: flex; align-items: center; gap: 10px; cursor: pointer; background: #fff; border: 1.5px solid #d1d5db; border-radius: 10px; padding: 12px 14px; }
+    #order-modal .upsell-title { color: #16181A; font-size: 13px; font-weight: 700; }
+    #order-modal .upsell-sub { color: #6b7280; font-size: 12px; }
+    #order-modal .riv-pay-badge { margin-top: 16px; text-align: center; font-size: 12px; font-weight: 800; color: #0B6E4F; background: #f0fdf4; border-radius: 8px; padding: 8px 12px; }
+    #order-modal .form-submit { margin-top: 18px; }
+    #order-modal .dcanp-success { display: none; text-align: center; }
+    #order-modal .dcanp-success.visible { display: block; }
+    #order-modal .dcanp-success__icon { width: 56px; height: 56px; background: #0B6E4F; color: #FFFFFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    #order-modal .dcanp-success h2 { color: #0B6E4F; font-size: 22px; margin-bottom: 12px; }
+    #order-modal .dcanp-success p { color: #6b7280; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    #order-modal .dcanp-success__tip { font-weight: 600; color: #16181A; }
+    #order-modal .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: #0B6E4F; font-weight: 700; }
+    #order-modal .btn-ver-coleccion { display: block; margin-top: 20px; padding: 12px 24px; background: #dc2626; color: #ffffff; font-weight: 700; font-size: 14px; border-radius: 8px; text-align: center; white-space: nowrap; font-family: inherit; }
+    @media (max-width: 700px) { #order-modal .modal-box { padding: 20px 16px; } }
   </style>
 </head>
 <body class="theme-pm">
@@ -423,15 +417,17 @@
           </div>
         </div>
 
-        <p id="d-total-line" style="margin-top:14px;font-size:13px;font-weight:700;color:var(--pm-text)"></p>
+        <p id="d-total-line" style="font-size:13px;font-weight:700;color:#16181A;display:none;margin-top:16px"></p>
+
+        <div class="riv-pay-badge">&#x1F4B3; Pag&#xE1;s al recibir</div>
 
         <div class="form-submit">
-          <button type="submit" class="btn-pm" id="dcanp-submit-btn" style="background:#0B6E4F;border-color:#064e3b;box-shadow:0 6px 18px rgba(11,110,79,.28);">
+          <button type="submit" id="dcanp-submit-btn"
+                  style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px;background:#0B6E4F;color:#FFFFFF;font-weight:700;font-size:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(11,110,79,.28);">
             <div>Confirmar pedido</div>
-            <div style="font-size:12px;font-weight:800;margin-top:3px;letter-spacing:.03em;">&#x2713; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</div>
+            <div style="font-size:11px;font-weight:700;margin-top:3px;letter-spacing:.03em;opacity:.85;">&#x2713; Env&#xED;o gratis &middot; Pag&#xE1;s al recibir</div>
           </button>
         </div>
-        <div class="pay-badge">🔒 Pagás al recibir · Sin adelantos · Sin tarjeta</div>
       </form>
     </div>
 
