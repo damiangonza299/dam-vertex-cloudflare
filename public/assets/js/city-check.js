@@ -45,14 +45,17 @@
 
   function buildMsg(body) {
     var city = (body.city || '').trim();
+    var express = !!body.express;
     var lines = [
-      'Producto: ' + (body.product_name || body.product_slug || ''),
-      'Cantidad: ' + (body.quantity || 1),
+      'NUEVO PEDIDO DAM VERTEX ✅',
       'Total: Gs. ' + Number(body.value || 0).toLocaleString('es-PY'),
-      'Nombre: ' + (body.name || ''),
-      'Teléfono: ' + (body.phone || ''),
-      'Ciudad: ' + (city || '(no especificada)'),
     ];
+    if (express) lines.push('🚀 Envío express: +Gs. 10.000');
+    lines.push('Producto: ' + (body.product_name || body.product_slug || ''));
+    lines.push('Nombre: ' + (body.name || ''));
+    lines.push('Teléfono: ' + (body.phone || ''));
+    lines.push('Ciudad: ' + (city || '(no especificada)'));
+    lines.push('Cantidad: ' + (body.quantity || 1));
     if (body.street) lines.push('Dirección: ' + body.street);
     return lines.join('\n');
   }

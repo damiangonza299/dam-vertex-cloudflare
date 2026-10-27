@@ -289,7 +289,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     const sanitize = (s, maxLen) => (s || '').toString().replace(/[<>"'\\/]/g, '').trim().slice(0, maxLen);
     const safeName  = sanitize(name, 100);
-    const safeCity  = normalizeCity(sanitize(city, 100));
+    const safeCity  = normalizeCity(sanitize(city, 100)) || sanitize(city, 100).trim();
     const shortName = PRODUCT_SHORT_NAMES[(product_slug || '').trim()];
     const safeProd  = shortName || sanitize(product_name || product_slug, 100);
     const sheetProd = PRODUCT_DCAMP_GROUP_NAMES[(product_slug || '').trim()] || safeProd;

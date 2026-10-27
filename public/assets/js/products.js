@@ -98,13 +98,14 @@ function normalizeParaguayPhone(raw) {
 
 function buildWAMsg(product, data, offerInfo) {
   const qtyLabel  = `${offerInfo.qty} unidad${offerInfo.qty > 1 ? 'es' : ''}`;
-  const express   = data.express ? ' + Envío Express' : '';
   const colorLine = offerInfo.colors?.length
     ? `Colores: ${offerInfo.colors.map(c => VARIANT_DISPLAY_NAMES[c] || c).join(' + ')}`
     : null;
   const lines = [
+    `NUEVO PEDIDO DAM VERTEX ✅`,
     `Total: ${fmt(offerInfo.total)}`,
-    `Producto: ${shortName(product)} (${qtyLabel})${express}`,
+    ...(data.express ? ['🚀 Envío express: +Gs. 10.000'] : []),
+    `Producto: ${shortName(product)} (${qtyLabel})`,
     `Nombre: ${data.name}`,
     `Método de Pago: ${data.payment || 'No especificado'}`,
     ...(data.city ? [`Ciudad: ${data.city}`] : []),
@@ -130,6 +131,7 @@ function buildCustomOrderWAMsg(product, data, qty, total, colors) {
     : (!product.customNoVariants ? 'Colores/variantes: a coordinar por WhatsApp' : null);
 
   const lines = [
+    `NUEVO PEDIDO DAM VERTEX ✅`,
     `Total: ${fmt(total)}`,
     `Producto: ${shortName(product)}`,
     `Nombre: ${data.name}`,
