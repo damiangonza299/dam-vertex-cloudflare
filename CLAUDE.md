@@ -227,6 +227,25 @@ DAM VERTEX Paraguay — clasificación interna de compradores (D1 / Dam Intellig
 
 ---
 
+## REGLA ABSOLUTA DE DEPLOY — NUNCA WRANGLER DIRECTO
+
+> **Claude Code nunca debe ejecutar `wrangler pages deploy` directamente.** Toda vez que se vaya a deployar, sin excepción, se usa el script:
+
+```powershell
+.\scripts\deploy-production.ps1
+```
+
+**Por qué:** el script hace `git add public/ functions/` + `git commit` + `git push` antes del deploy. Esto garantiza que git siempre refleja lo que está en Cloudflare. El comando wrangler directo sube archivos sin commitear — si luego Product Studio, un git pull, o un git checkout sobreescribe el disco, los cambios se pierden para siempre.
+
+**Prohibido:**
+- `& "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public ...` directo
+- `npx wrangler pages deploy ...`
+- Cualquier llamada a wrangler que no sea a través del script
+
+**Única excepción permitida:** si el script falla por un error no relacionado al deploy (ej. git push bloqueado por credenciales), se puede deployar con wrangler directo pero inmediatamente después se hace `git add public/ functions/` + `git commit` + `git push` a mano.
+
+---
+
 ## REGLA CRÍTICA DE DEPLOY — DAM VERTEX
 
 > **Incidente 2026-06:** `wrangler pages deploy .` (raíz) subió estáticos bajo `/public/reloj/`, `/public/cadena/` etc. Landings en 404 en producción. `node_modules` incluido en el upload.

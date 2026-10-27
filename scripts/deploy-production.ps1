@@ -5,7 +5,8 @@
 # Protecciones:
 #   - Verifica que wrangler.toml define pages_build_output_dir = "public"
 #   - Bloquea deploy si el directorio no es public/
-#   - Usa siempre --branch=dam-vertex-cloudflare (produccion, no preview)
+#   - Commit automatico de public/ antes del deploy (evita reversion por Git integration)
+#   - git push origin main para sincronizar Cloudflare Git integration
 #   - Verifica rutas criticas post-deploy
 #   - NO deploya node_modules ni raiz del repo
 
@@ -15,7 +16,7 @@ Write-Host ""
 Write-Host "======================================================" -ForegroundColor Cyan
 Write-Host "  DAM VERTEX - Deploy Seguro a Produccion" -ForegroundColor Cyan
 Write-Host "  Proyecto: dam-vertex-cloudflare" -ForegroundColor Cyan
-Write-Host "  Branch:   dam-vertex-cloudflare (produccion)" -ForegroundColor Cyan
+Write-Host "  Branch:   main (produccion)" -ForegroundColor Cyan
 Write-Host "======================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -26,7 +27,7 @@ Write-Host "[INFO] Directorio del proyecto: $projectRoot" -ForegroundColor Yello
 
 # ---- PASO 1: Verificar wrangler.toml ----
 Write-Host ""
-Write-Host "PASO 1/4: Verificando wrangler.toml..." -ForegroundColor Cyan
+Write-Host "PASO 1/6: Verificando wrangler.toml..." -ForegroundColor Cyan
 
 $tomlPath = Join-Path $projectRoot "wrangler.toml"
 if (-not (Test-Path $tomlPath)) {
@@ -60,10 +61,44 @@ if (Test-Path (Join-Path $publicPath "node_modules")) {
     Write-Host "ADVERTENCIA: public/node_modules encontrado - esto es inusual" -ForegroundColor Yellow
 }
 
-# ---- PASO 3: Deploy ----
+# ---- PASO 3: Git commit + push (sincronizar con Git integration) ----
 Write-Host ""
-Write-Host "PASO 2/4: Ejecutando deploy a produccion..." -ForegroundColor Cyan
-Write-Host "  Comando: wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true" -ForegroundColor Yellow
+Write-Host "PASO 2/6: Commiteando public/ en git..." -ForegroundColor Cyan
+
+$gitStatus = git status --porcelain public/ functions/ 2>&1
+if ($gitStatus) {
+    Write-Host "  Cambios detectados - preparando commit..." -ForegroundColor Yellow
+    git add public/ functions/
+    Write-Host "  [OK] git add public/ functions/" -ForegroundColor Green
+} else {
+    Write-Host "  Sin cambios en public/ ni functions/ - commit vacio permitido (--allow-empty)" -ForegroundColor Yellow
+}
+
+git commit --allow-empty -m "deploy: sync public/ + functions/ antes de deploy produccion
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "ERROR: git commit fallo (codigo $LASTEXITCODE)" -ForegroundColor Red
+    exit $LASTEXITCODE
+}
+Write-Host "  [OK] git commit realizado" -ForegroundColor Green
+
+Write-Host ""
+Write-Host "PASO 3/6: Pusheando a origin main..." -ForegroundColor Cyan
+git push origin main
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "ERROR: git push fallo (codigo $LASTEXITCODE)" -ForegroundColor Red
+    Write-Host "  Verificar conexion a internet y permisos del repo." -ForegroundColor Yellow
+    exit $LASTEXITCODE
+}
+Write-Host "  [OK] git push origin main - Git integration sincronizado" -ForegroundColor Green
+
+# ---- PASO 4: Deploy ----
+Write-Host ""
+Write-Host "PASO 4/6: Ejecutando deploy a produccion..." -ForegroundColor Cyan
+Write-Host "  Comando: wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=main --commit-dirty=true" -ForegroundColor Yellow
 Write-Host ""
 
 $npx = "C:\Program Files\nodejs\npx.cmd"
@@ -71,7 +106,7 @@ if (-not (Test-Path $npx)) {
     $npx = "npx"
 }
 
-& $npx wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=dam-vertex-cloudflare --commit-dirty=true
+& $npx wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=main --commit-dirty=true
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host ""
@@ -82,13 +117,13 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host ""
 Write-Host "  [OK] Deploy ejecutado" -ForegroundColor Green
 
-# ---- PASO 4: Esperar propagacion y verificar rutas ----
+# ---- PASO 5: Esperar propagacion y verificar rutas ----
 Write-Host ""
-Write-Host "PASO 3/4: Esperando propagacion (10 segundos)..." -ForegroundColor Cyan
+Write-Host "PASO 5/6: Esperando propagacion (10 segundos)..." -ForegroundColor Cyan
 Start-Sleep -Seconds 10
 
 Write-Host ""
-Write-Host "PASO 4/4: Verificando rutas criticas..." -ForegroundColor Cyan
+Write-Host "PASO 6/6: Verificando rutas criticas..." -ForegroundColor Cyan
 Write-Host ""
 
 $routes = @(

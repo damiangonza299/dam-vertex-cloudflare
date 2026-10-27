@@ -120,6 +120,51 @@ export async function onRequestGet({ request, env }) {
     /* ── Content checks sobre el HTML real ── */
     verifyLandingHtml(landingHtml, slug, price, checks, product.platform === 'DCANP_GROUP');
 
+    /* ── 8. Producto en Home (DV_SLUG_ORDER + COLLECTIONS + active) ── */
+    try {
+      const homeRes = await fetch(`${origin}/`, {
+        headers: { 'User-Agent': 'DAM-Vertex-Activation-Check/1.0' },
+        cf: { cacheEverything: false },
+      });
+      if (homeRes.ok) {
+        const homeHtml = await homeRes.text();
+
+        /* DV_SLUG_ORDER */
+        const soMatch = homeHtml.match(/var DV_SLUG_ORDER\s*=\s*\[([^\]]+)\]/);
+        const inSlugOrder = soMatch ? soMatch[1].includes(`'${slug}'`) : false;
+
+        /* COLLECTIONS */
+        const colMatch = homeHtml.match(/var COLLECTIONS\s*=\s*\[([\s\S]*?)\];/);
+        const inCollections = colMatch ? colMatch[1].includes(`'${slug}'`) : false;
+
+        /* DV_EXTRA_PRODUCTS — detectar active:0 */
+        const epMatch = homeHtml.match(/var DV_EXTRA_PRODUCTS\s*=\s*\[([\s\S]*?)\];/);
+        let activeInExtra = true; // si no está en EXTRA, viene de la API y es activo
+        if (epMatch) {
+          const slugRe = new RegExp(`slug\\s*:\\s*['"]${slug}['"][^}]*}`);
+          const entry = slugRe.exec(epMatch[1]);
+          if (entry) activeInExtra = /active\s*:\s*1/.test(entry[0]);
+        }
+
+        if (!inSlugOrder) {
+          checks.push(check('home', 'Producto en Home', 'FAIL',
+            `'${slug}' no está en DV_SLUG_ORDER de public/index.html`,
+            `Agregar '${slug}' al array DV_SLUG_ORDER y a una colección en COLLECTIONS`));
+        } else if (!inCollections) {
+          checks.push(check('home', 'Producto en Home', 'FAIL',
+            `En DV_SLUG_ORDER ✓ — pero no está en ninguna colección de COLLECTIONS`,
+            `Agregar '${slug}' a la colección correspondiente en COLLECTIONS en public/index.html`));
+        } else if (!activeInExtra) {
+          checks.push(check('home', 'Producto en Home', 'WARNING',
+            `En DV_SLUG_ORDER ✓ · en colección ✓ — pero active: 0 en DV_EXTRA_PRODUCTS`,
+            `Cambiar active: 0 → active: 1 en DV_EXTRA_PRODUCTS (o activar desde D1)`));
+        } else {
+          checks.push(check('home', 'Producto en Home', 'PASS',
+            `En DV_SLUG_ORDER ✓ · en colección ✓ · visible`, null));
+        }
+      }
+    } catch (_) { /* home check no crítico — si falla, no bloquea */ }
+
     return json(result(slug, checks));
 
   } catch (err) {
