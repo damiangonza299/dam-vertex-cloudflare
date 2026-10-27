@@ -81,30 +81,6 @@ export async function onRequestGet({ request, env }) {
         `Gs. ${comparePrice.toLocaleString('es-PY')}`, null));
     }
 
-    /* ── 5. Dam Finanzas vinculado (N/A para DCANP — sin admin panel ni
-       sync a Dam Finanzas, ver CLAUDE.md "DCANP GROUP — Flujo especial") ── */
-    if (product.platform === 'DCANP_GROUP') {
-      checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'PASS',
-        'N/A — producto DCANP_GROUP, no usa Dam Finanzas', null));
-    } else {
-      const brief = await env.DB.prepare(
-        'SELECT dam_finanzas_status, dam_finanzas_id FROM product_briefs WHERE product_slug = ?'
-      ).bind(slug).first();
-
-      if (!brief) {
-        checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'FAIL',
-          `No existe brief en product_briefs para "${slug}"`,
-          `Abrir Product Studio y completar el brief del producto`));
-      } else if (brief.dam_finanzas_status !== 'linked') {
-        checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'WARNING',
-          `dam_finanzas_status = "${brief.dam_finanzas_status || 'null'}"`,
-          `Product Studio → Tab Sync → Sincronizar con DAM Finanzas`));
-      } else {
-        checks.push(check('dam_finanzas', 'Dam Finanzas vinculado', 'PASS',
-          `linked, id=${brief.dam_finanzas_id}`, null));
-      }
-    }
-
     /* -- 6. Slug collision -- */
         /* Con el patron %/${slug}/% no hay colision posible entre slugs distintos:
        '/reloj/' nunca es substring de '/reloj-imperial-verde/' ni viceversa. */
