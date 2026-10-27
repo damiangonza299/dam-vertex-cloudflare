@@ -86,9 +86,9 @@ Write-Host "  [OK] git commit realizado" -ForegroundColor Green
 
 Write-Host ""
 Write-Host "PASO 3/6: Pusheando a origin main..." -ForegroundColor Cyan
-# git push escribe en stderr aunque exitoso — capturar para evitar NativeCommandError en PS 5.1
-$pushOut = git push origin main 2>&1
-$pushOut | ForEach-Object { Write-Host "  $_" }
+# git push escribe info en stderr — PS 5.1 con ErrorActionPreference=Stop lo trata como error.
+# Wrap en try/catch para que el NativeCommandError no corte el script; luego chequeamos $LASTEXITCODE.
+try { git push origin main } catch { }
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "ERROR: git push fallo (codigo $LASTEXITCODE)" -ForegroundColor Red
