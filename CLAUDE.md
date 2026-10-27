@@ -662,26 +662,35 @@ Para contexto completo del proyecto, skills y routing: leer `gemini.md`.
 
 ---
 
-## PRODUCT STUDIO — REGLA CRÍTICA — NUNCA VIOLAR
+## PRODUCT STUDIO — DEPLOY VÍA GITHUB API (re-habilitado)
 
-El editor visual puede modificar textos, imágenes y colores. **El deploy desde Product Studio causó roturas graves en agosto y septiembre 2026** (HTML entities corruptos en JS, modificaciones a `_headers` y `protect.js`).
+El deploy de Product Studio va por `functions/api/deploy.js` → GitHub API → Cloudflare Pages auto-deploy.
 
-**Archivos que Product Studio NUNCA debe tocar:**
-- `public/_headers` — rompe caché y CORS de todo el sitio
-- `public/assets/js/protect.js` — JS compartido, afecta todas las landings
-- Cualquier otro JS compartido en `public/assets/js/`
+**Protecciones activas en `deploy.js`:**
+1. **Anti-corrupción JS**: rechaza el HTML si detecta `&amp;`, `&lt;` o `&gt;` dentro de `<script>`. Error 422 con mensaje claro — usuario debe revertir cambios en el editor.
+2. **Ruta fija**: solo puede tocar `public/{slug}/index.html`. Nunca `_headers`, nunca JS compartidos.
+3. **SHA conflict**: si Claude Code commiteó mientras el editor estaba abierto, GitHub devuelve 409 → el usuario recibe aviso de conflicto y debe recargar Product Studio.
+4. **Deploy automático**: después del commit a GitHub dispara `POST /pages/projects/dam-vertex-cloudflare/deployments` via Cloudflare API → listo en ~30 segundos sin correr nada manual.
 
-**El deploy de Product Studio solo puede tocar el HTML de la landing específica** (`public/{slug}/index.html`).
+**Flujo unificado (fuente de verdad = GitHub):**
+```
+Claude Code edita disco → deploy-production.ps1 → git add + commit + push + wrangler
+Product Studio edita HTML → deploy.js → GitHub commit → Cloudflare auto-deploy
+```
+Ambos flujos terminan en GitHub main. Cloudflare sirve lo que está en GitHub.
 
-**Si Product Studio rompe una landing:**
+**Si Product Studio rompe una landing** (el editor corrompe el HTML aunque `deploy.js` lo detecta):
 ```powershell
 cd "F:\Desktop\dam-vertex-cloudflare"
 git log --oneline -10 -- public/{slug}/index.html   # encontrar commit bueno
 git checkout {commit-bueno} -- public/{slug}/index.html
-& "C:\Program Files\nodejs\npx.cmd" wrangler pages deploy public --project-name=dam-vertex-cloudflare --branch=main --commit-dirty=true
+.\scripts\deploy-production.ps1
 ```
 
-**Síntoma típico:** CTA no abre el modal → buscar `&amp;gt;` en el HTML del script (`grep "amp;" public/{slug}/index.html`). Si hay hits, el editor re-escapó los operadores JS (`=>`, `&&`) como entidades HTML dentro de `<script>`. Fix: revertir con `git checkout`.
+**Archivos que Product Studio NUNCA puede tocar** (validado en `deploy.js`):
+- `public/_headers`
+- `public/assets/js/protect.js`
+- Cualquier otro archivo fuera de `public/{slug}/index.html`
 
 ---
 
