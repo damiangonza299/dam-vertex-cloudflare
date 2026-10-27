@@ -94,6 +94,7 @@
     .hero-pm { background: #ffffff; padding: clamp(16px,4vw,40px) clamp(20px,5vw,64px) clamp(28px,5vw,48px); }
     .hero-pm__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1080px; margin: 0 auto; }
     .hero-pm__media { max-width: 420px; margin: 0 auto; width: 100%; }
+    .hero-pm__img { width: 100%; height: auto; display: block; border-radius: 16px; aspect-ratio: 1/1; object-fit: cover; }
     @media (max-width: 700px) {
       .hero-pm__inner { grid-template-columns: 1fr; gap: 18px; }
       .hero-pm__media { order: -1; max-width: 100%; }
@@ -142,7 +143,7 @@
 
     /* ══ IMAGEN FULL ══ */
     .img-full-pm { background: #f8fafc; }
-    .img-full-pm img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
+    .img-full-pm img { width: 100%; height: auto; display: block; }
     .img-full-pm--video { background: var(--pm-dark); display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
     .video-wrap-9x16 { width: 100%; max-width: 360px; aspect-ratio: 9/16; background: var(--pm-dark); overflow: hidden; border-radius: 12px; }
     .video-wrap-9x16 video { width: 100%; height: 100%; object-fit: cover; }
@@ -219,7 +220,10 @@
   <div class="hero-pm__inner">
 
     <div class="hero-pm__media">
-      <img src="/assets/img/pelland1.webp?v=1" alt="Pelador Multifunción 3 en 1 — pela, ralla y corta en segundos" width="1080" height="1080" loading="eager" fetchpriority="high" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:16px;">
+      <img src="/assets/img/pelland1.webp?v=1"
+           alt="Pelador Multifunción 3 en 1 — pela, ralla y corta en segundos"
+           class="hero-pm__img"
+           loading="eager" fetchpriority="high" width="1080" height="1080">
     </div>
 
     <div>
@@ -282,7 +286,9 @@
 
 <!-- ══ IMAGEN 2 ══ -->
 <section class="img-full-pm" id="section-img2" data-insync-section="img2">
-  <img src="/assets/img/pelland2.webp?v=1" alt="Pelador 3 en 1 — mango cómodo, pela rápido y fácil" width="1080" height="1080" loading="lazy" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;">
+  <img src="/assets/img/pelland2.webp?v=1"
+       alt="Pelador 3 en 1 — mango cómodo, pela rápido y fácil"
+       loading="lazy" decoding="async" width="1080" height="1080">
 </section>
 
 <!-- ══ GANCHO 3 — NECESIDAD ══ -->
@@ -292,7 +298,9 @@
 
 <!-- ══ IMAGEN 3 ══ -->
 <section class="img-full-pm" id="section-img3" data-insync-section="img3">
-  <img src="/assets/img/pelland4.webp?v=1" alt="Pelador Multifunción — hace tu cocina más fácil" width="1080" height="1080" loading="lazy" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;">
+  <img src="/assets/img/pelland4.webp?v=1"
+       alt="Pelador Multifunción — hace tu cocina más fácil"
+       loading="lazy" decoding="async" width="1080" height="1080">
 </section>
 
 <!-- ══ GARANTÍA ══ -->
