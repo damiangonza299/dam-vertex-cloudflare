@@ -16,7 +16,7 @@ const PRODUCT_SHORT_NAMES = {
   'dispensador-aceite-2en1':    'Dispensador Inteligente de Aceite 2 en 1',
   'reloj-imperial-verde':       'Reloj Imperial Verde',
   'reloj-blackout-minimal':     'Reloj Blackout Minimal',
-  'manguera-led-multicolor':        'Manguera LED Multicolor',
+  'manguera-led-multicolor':        'Manguera Luces LED',
   'rodillera-tecnologia-termica':   'Rodillera Térmica',
   'proyector-led-navideno':         'proyector navideño',
   'pelador-multifuncion-3en1':      'Pelador Multifunción',
@@ -486,7 +486,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
        Orden exacto de columnas: Fecha | Nombre | Teléfono | Ciudad | Producto |
        Cantidad | Referencia | Calle | Monto | Nota del pedido. */
     const webhookUrl = env.DCANP_SHEETS_WEBHOOK_URL;
-    if (webhookUrl) {
+    const SHEETS_EXCLUDED = ['manguera-led-multicolor'];
+    if (webhookUrl && !SHEETS_EXCLUDED.includes(slugTrim)) {
       try {
         const sheetsRes = await fetch(webhookUrl, {
           method:  'POST',

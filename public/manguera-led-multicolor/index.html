@@ -331,7 +331,7 @@
 </head>
 <body class="riv">
 
-<div class="riv-urgency-bar"><span class="riv-urgency-dot"></span> &#x1F384; Precio pre-Navidad &middot; Solo 20 unidades disponibles &middot; Env&#xED;o gratis</div>
+<div class="riv-urgency-bar"><span class="riv-urgency-dot"></span> &#x1F384; Precio pre-Navidad &middot; Solo 20 unidades disponibles</div>
 
 <nav class="nav">
   <div class="nav__logo">DAM <span>VERTEX</span></div>
@@ -654,11 +654,13 @@
           <div class="offer-foot">
             <span class="offer-saving">Ahorr&#xE1;s Gs. 50.000</span>
           </div>
-          <div style="display:flex;align-items:center;gap:0;margin-top:8px;">
-            <button type="button" onclick="cambiarCantidad(this,-1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:8px 0 0 8px;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">&#x2212;</button>
-            <span style="width:44px;height:36px;border-top:1.5px solid #E5E7EB;border-bottom:1.5px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.95rem;" class="qty-display">1</span>
-            <button type="button" onclick="cambiarCantidad(this,1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:0 8px 8px 0;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">+</button>
-            <span style="margin-left:10px;font-size:0.8rem;color:#6B7280;" class="metros-label">= 10 metros</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+            <span style="font-size:0.8rem;color:#6B7280;" class="metros-label">= 10 metros</span>
+            <div style="display:flex;align-items:center;gap:0;">
+              <button type="button" onclick="cambiarCantidad(this,-1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:8px 0 0 8px;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">&#x2212;</button>
+              <span style="width:44px;height:36px;border-top:1.5px solid #E5E7EB;border-bottom:1.5px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.95rem;" class="qty-display">1</span>
+              <button type="button" onclick="cambiarCantidad(this,1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:0 8px 8px 0;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">+</button>
+            </div>
           </div>
         </label>
         <label class="offer-option" data-longitud="30" data-precio="259000">
@@ -674,11 +676,13 @@
             <span style="color:#6b7280;font-size:0.75rem;">Ahorr&#xE1;s Gs. 100.000</span>
             <span style="background:#C62828;color:#fff;font-size:0.65rem;font-weight:600;padding:2px 7px;border-radius:4px;white-space:nowrap;">&#x2B50; M&#xE1;s elegido</span>
           </div>
-          <div style="display:flex;align-items:center;gap:0;margin-top:8px;">
-            <button type="button" onclick="cambiarCantidad(this,-1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:8px 0 0 8px;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">&#x2212;</button>
-            <span style="width:44px;height:36px;border-top:1.5px solid #E5E7EB;border-bottom:1.5px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.95rem;" class="qty-display">1</span>
-            <button type="button" onclick="cambiarCantidad(this,1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:0 8px 8px 0;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">+</button>
-            <span style="margin-left:10px;font-size:0.8rem;color:#6B7280;" class="metros-label">= 30 metros</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+            <span style="font-size:0.8rem;color:#6B7280;" class="metros-label">= 30 metros</span>
+            <div style="display:flex;align-items:center;gap:0;">
+              <button type="button" onclick="cambiarCantidad(this,-1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:8px 0 0 8px;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">&#x2212;</button>
+              <span style="width:44px;height:36px;border-top:1.5px solid #E5E7EB;border-bottom:1.5px solid #E5E7EB;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.95rem;" class="qty-display">1</span>
+              <button type="button" onclick="cambiarCantidad(this,1)" style="width:36px;height:36px;border:1.5px solid #E5E7EB;border-radius:0 8px 8px 0;background:#F9FAFB;font-size:1.1rem;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center;">+</button>
+            </div>
           </div>
         </label>
       </div>
@@ -1006,6 +1010,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     formWrap.style.display = 'none';
     successBox.classList.add('visible');
+    try { if (typeof DV !== 'undefined' && DV.saveLeadDataLocal) DV.saveLeadDataLocal(data.phone, data.name, data.invoice_email || ''); } catch (_) {}
     submitBtn.disabled = false;
   });
 });
