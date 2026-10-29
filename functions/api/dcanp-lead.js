@@ -20,6 +20,7 @@ const PRODUCT_SHORT_NAMES = {
   'rodillera-tecnologia-termica':   'Rodillera Térmica',
   'proyector-led-navideno':         'proyector navideño',
   'pelador-multifuncion-3en1':      'Pelador Multifunción',
+  'organizador-auto-multifuncional': 'Organizador Auto 2en1',
 };
 
 /* Nombres exactos Kangaroo (DCAMP GROUP) — solo para Google Sheets.
@@ -33,6 +34,7 @@ const PRODUCT_DCAMP_GROUP_NAMES = {
   'esquinero-aluminio':              'Esquinero de Baño Avelino en Aluminio | AvelCorner',
   'dispensador-aceite-2en1':         'Dispensador Inteligente de Aceite 2 en 1',
   'manguera-led-multicolor':         'Manguera LED Multicolor',
+  'organizador-auto-multifuncional': '🚗 Organizador Multifuncional 2 en 1 para Auto',
   // LOTE 1
   'tabla-de-picar-inox-pro-304':     '🔵✅TABLA DE PICAR - INOX PRO 304',
   'guante-3en1-bano-perros':         '🔵Guante 3 en 1 para baño de perros',
