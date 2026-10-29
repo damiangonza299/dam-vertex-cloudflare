@@ -8,7 +8,7 @@
   <link rel="dns-prefetch" href="https://connect.facebook.net">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/assets/js/tracking.js?v=74" as="script">
-  <link rel="preload" href="/organizador-auto-multifuncional/hero.webp" as="image" fetchpriority="high">
+  <link rel="preload" href="/organizador-auto-multifuncional/land1or.webp" as="image" fetchpriority="high">
   <meta name="description" content="Organizador Multifuncional 2 en 1 para Auto. M&#xFA;ltiples compartimentos con mesita desplegable incluida. Instal&#xE1; f&#xE1;cil, orden&#xE1; tu auto. Pag&#xE1;s al recibir.">
   <title>Organizador para Auto 2 en 1 &mdash; Dam Vertex</title>
   <link rel="preload" href="/assets/css/styles.min.css?v=55" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -164,44 +164,43 @@
     body.modal-open .oa-sticky-bar { display: none; }
 
     /* ── MODAL ── */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.72); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
-    .modal-overlay.active { display: flex; }
-    #order-modal .modal-box { background: #fff; border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 24px 22px 28px; position: relative; scrollbar-width: none; }
-    #order-modal .modal-box::-webkit-scrollbar { display: none; }
-    #order-modal .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: #666; line-height: 1; padding: 4px; }
-    #order-modal .modal-title { font-size: 17px; font-weight: 800; color: #111; text-align: center; padding-right: 24px; }
-    #order-modal .modal-subtitle { text-align: center; font-size: 11px; font-weight: 700; color: var(--oa-green); margin: 4px 0 16px; }
-    #order-modal .modal-section-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #999; margin-bottom: 8px; }
-    #order-modal .offer-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-    #order-modal .offer-option { border: 2px solid #E5E7EB; border-radius: 10px; padding: 12px 14px; cursor: pointer; transition: border-color .15s; position: relative; }
-    #order-modal .offer-option.selected, #order-modal .offer-option:has(input:checked) { border-color: var(--oa-yellow); background: #FFFDE7; }
-    #order-modal .offer-option input { position: absolute; opacity: 0; width: 0; height: 0; }
-    #order-modal .offer-content { display: flex; justify-content: space-between; align-items: center; }
-    #order-modal .offer-qty { font-size: 14px; font-weight: 700; color: #111; }
-    #order-modal .offer-price { font-size: 15px; font-weight: 800; color: #111; }
-    #order-modal .offer-compare { font-size: 12px; color: #9CA3AF; text-decoration: line-through; margin-right: 6px; }
-    #order-modal .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
-    #order-modal .offer-saving { font-size: 12px; font-weight: 700; color: var(--oa-green); }
-    #order-modal .offer-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px; letter-spacing: .04em; }
-    #order-modal .form-group { margin-bottom: 12px; }
-    #order-modal .form-group label { display: block; font-size: 12px; font-weight: 700; color: #444; margin-bottom: 4px; }
-    #order-modal .form-group input { width: 100%; padding: 11px 12px; border: 1.5px solid #D1D5DB; border-radius: 8px; font-size: 14px; font-family: inherit; color: #111; outline: none; transition: border-color .15s; }
-    #order-modal .form-group input::placeholder { color: #9CA3AF; }
-    #order-modal .form-group input:focus { border-color: var(--oa-yellow); }
-    #order-modal .upsell-block { display: flex; align-items: flex-start; gap: 12px; background: #F9FAFB; border: 1.5px solid #E5E7EB; border-radius: 10px; padding: 12px 14px; cursor: pointer; margin-bottom: 8px; }
-    #order-modal .upsell-block input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; accent-color: var(--oa-yellow); }
-    #order-modal .upsell-title { font-size: 13px; font-weight: 700; color: #111; }
-    #order-modal .upsell-sub { font-size: 11px; color: #666; }
-    #order-modal .oa-pay-badge { background: #F0FDF4; color: var(--oa-green); font-size: 12px; font-weight: 700; padding: 8px 14px; border-radius: 8px; text-align: center; margin: 14px 0; }
-    #order-modal .dcanp-success { display: none; text-align: center; padding: 20px 10px; }
-    #order-modal .dcanp-success.visible { display: block; }
-    #order-modal .dcanp-success__icon { width: 56px; height: 56px; background: var(--oa-yellow); color: #111; border-radius: 50%; font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-    #order-modal .dcanp-success h2 { font-size: 20px; font-weight: 800; color: #111; }
-    #order-modal .dcanp-success p { font-size: 14px; color: #444; margin-top: 10px; line-height: 1.6; }
-    #order-modal .dcanp-success__tip { font-size: 12px; color: #888; margin-top: 8px; }
-    #order-modal .dcanp-success__badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
-    #order-modal .dcanp-success__badges span { background: #F0FDF4; color: var(--oa-green); font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 20px; }
-    #order-modal .btn-ver-coleccion { display: inline-block; margin-top: 20px; background: var(--oa-yellow); color: #111; font-size: 13px; font-weight: 800; padding: 12px 24px; border-radius: 8px; }
+    .oa .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(17,18,20,.6); align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
+    .oa .modal-overlay.active { display: flex; }
+    .oa .modal-box { position: relative; background: #FFFFFF; border: 1px solid #D4D7DB; border-radius: 16px; max-width: 440px; width: 100%; padding: 28px 24px; max-height: 90vh; overflow-y: auto; scrollbar-width: none; color-scheme: light; accent-color: var(--oa-yellow); color: #111111; }
+    .oa .modal-box::-webkit-scrollbar { display: none; }
+    .oa .modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--oa-gray-light); color: #111; font-size: 15px; cursor: pointer; font-family: inherit; }
+    .oa .modal-title { font-size: clamp(14px,4vw,18px); font-weight: 700; color: #111; margin: 0 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .oa .modal-subtitle { text-align: center; font-size: 11px; font-weight: 700; color: var(--oa-green); margin: 4px 0 16px; }
+    .oa .modal-section-label { display: block; font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: .05em; margin: 0 0 10px; }
+    .oa .offer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .oa .offer-option { position: relative; display: block; border: 1.5px solid #D1D5DB; border-radius: 10px; padding: 12px 14px; cursor: pointer; background: #F9FAFB; }
+    .oa .offer-option input { position: absolute; opacity: 0; }
+    .oa .offer-option.selected { border: 2px solid var(--oa-yellow); background: rgba(245,196,0,.08); }
+    .oa .offer-content { display: flex; justify-content: space-between; align-items: baseline; }
+    .oa .offer-qty { font-weight: 700; font-size: 14px; color: #111; }
+    .oa .offer-price { font-weight: 800; font-size: 15px; color: #111; }
+    .oa .offer-compare { font-size: 12px; text-decoration: line-through; color: #9CA3AF; margin-right: 6px; }
+    .oa .offer-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .oa .offer-saving { color: var(--oa-green); font-weight: 700; font-size: 12px; }
+    .oa .offer-badge { position: static; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
+    .oa .form-group { margin-bottom: 14px; }
+    .oa .form-group label { display: block; font-size: 12px; font-weight: 700; color: #444; margin-bottom: 6px; }
+    .oa .form-group input { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #D1D5DB; background: #F9FAFB; color: #111; font-size: 14px; font-family: inherit; outline: none; transition: border-color .15s; }
+    .oa .form-group input:focus { border: 2px solid var(--oa-yellow); }
+    .oa .form-group input::placeholder { color: #9ca3af; }
+    .oa .upsell-block { display: flex; align-items: center; gap: 10px; cursor: pointer; background: #F9FAFB; border: 1.5px solid #D1D5DB; border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+    .oa .upsell-block input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--oa-yellow); }
+    .oa .upsell-title { color: #111; font-size: 13px; font-weight: 700; }
+    .oa .upsell-sub { color: #666; font-size: 12px; }
+    .oa-pay-badge { margin-top: 16px; text-align: center; font-size: 12px; font-weight: 800; color: var(--oa-green); background: #F0FDF4; border-radius: 8px; padding: 8px 12px; }
+    .oa .dcanp-success { display: none; text-align: center; }
+    .oa .dcanp-success.visible { display: block; }
+    .oa .dcanp-success__icon { width: 56px; height: 56px; background: var(--oa-yellow); color: #111; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+    .oa .dcanp-success h2 { color: var(--oa-green); font-size: 22px; margin-bottom: 12px; }
+    .oa .dcanp-success p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+    .oa .dcanp-success__tip { font-weight: 600; color: #111; }
+    .oa .dcanp-success__badges { display: flex; gap: 12px; justify-content: center; margin-top: 16px; font-size: 13px; color: var(--oa-green); font-weight: 700; }
+    .oa .btn-ver-coleccion { display: inline-block; margin-top: 20px; background: var(--oa-yellow); color: #111; font-size: 13px; font-weight: 800; padding: 12px 24px; border-radius: 8px; }
 
     /* ── Footer ── */
     .oa-footer { background: #0A0A0A; color: rgba(255,255,255,.35); font-size: 12px; text-align: center; padding: 20px; }
@@ -252,10 +251,15 @@
           <span>&#x2714; Entrega seg&uacute;n cobertura</span>
         </div>
       </div>
-      <div class="oa-hero__ph oa-ph oa-ph-light" aria-hidden="true">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
-        <span>Foto producto (1:1)</span>
-      </div>
+      <img
+        src="/organizador-auto-multifuncional/land1or.webp"
+        srcset="/organizador-auto-multifuncional/land1or-400w.webp 400w, /organizador-auto-multifuncional/land1or.webp 1080w"
+        sizes="(max-width:768px) 90vw, 50vw"
+        alt="Organizador Multifuncional 2 en 1 para Auto"
+        width="1080" height="1080"
+        loading="eager"
+        style="width:100%;height:auto;border-radius:12px;object-fit:cover;aspect-ratio:1/1;"
+      >
     </div>
   </div>
 </section>
@@ -315,10 +319,15 @@
       <p class="oa-sub" style="color:#666;max-width:600px;margin:10px auto 0;">Un dise&ntilde;o multifuncional con diferentes compartimentos para mantener tus objetos organizados y m&aacute;s accesibles.</p>
     </div>
     <div class="oa-anatomy">
-      <div class="oa-anatomy__ph oa-ph oa-ph-light" aria-hidden="true">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
-        <span>Foto producto de frente</span>
-      </div>
+      <img
+        src="/organizador-auto-multifuncional/land3or.webp"
+        srcset="/organizador-auto-multifuncional/land3or-400w.webp 400w, /organizador-auto-multifuncional/land3or.webp 1080w"
+        sizes="(max-width:768px) 90vw, 45vw"
+        alt="Compartimentos del organizador para auto"
+        width="1080" height="1080"
+        loading="lazy"
+        style="width:100%;height:auto;border-radius:12px;object-fit:cover;aspect-ratio:1/1;"
+      >
       <div class="oa-anatomy__points">
         <div class="oa-point">
           <span class="oa-point__num">01</span>
@@ -411,9 +420,12 @@
   <div class="oa-inner" style="padding-top:72px;padding-bottom:72px;text-align:center;">
     <h2 class="oa-h2" style="color:#fff;">MIR&Aacute; TODO LO QUE POD&Eacute;S ORGANIZAR.</h2>
     <p class="oa-sub" style="max-width:500px;margin:10px auto 0;">Un solo accesorio. Diferentes espacios para tus objetos.</p>
-    <div class="oa-demo__video-ph oa-ph" aria-hidden="true">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      <span>Video producto (9:16 &mdash; 1080×1920)</span>
+    <div class="oa-demo__video-ph">
+      <video src="/organizador-auto-multifuncional/angulo3or.mp4" muted autoplay loop playsinline webkit-playsinline preload="metadata" aria-hidden="true"
+        style="width:100%;height:100%;border-radius:12px;object-fit:cover;display:block;"
+        onerror="this.style.display='none'">
+        <source src="/organizador-auto-multifuncional/angulo3or.mp4" type="video/mp4">
+      </video>
     </div>
     <p class="oa-demo__caption">Organizaci&oacute;n pr&aacute;ctica para el d&iacute;a a d&iacute;a y para tus viajes.</p>
     <div class="oa-demo__gallery">
@@ -565,10 +577,15 @@
 <section id="section-cierre" data-insync-section="cierre">
   <div class="oa-inner" style="padding-top:72px;padding-bottom:72px;">
     <div class="oa-cierre">
-      <div class="oa-cierre__ph oa-ph" aria-hidden="true">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
-        <span>Foto producto instalado</span>
-      </div>
+      <img
+        src="/organizador-auto-multifuncional/land4or.webp"
+        srcset="/organizador-auto-multifuncional/land4or-400w.webp 400w, /organizador-auto-multifuncional/land4or.webp 1080w"
+        sizes="(max-width:768px) 90vw, 45vw"
+        alt="Organizador instalado en auto"
+        width="1080" height="1080"
+        loading="lazy"
+        style="width:100%;height:100%;border-radius:12px;object-fit:cover;aspect-ratio:4/5;"
+      >
       <div class="oa-cierre__text">
         <h2 class="oa-h2" style="color:#fff;">TU PR&Oacute;XIMO VIAJE PUEDE EMPEZAR<br>CON M&Aacute;S ORDEN.</h2>
         <p style="color:rgba(255,255,255,.65);font-size:15px;line-height:1.65;margin-top:14px;">Eleg&iacute; tu combo y solicit&aacute; tu organizador en pocos pasos.</p>
@@ -861,7 +878,7 @@ document.addEventListener('DOMContentLoaded', function() {
       data.fbc = client.fbc || null;
     } catch (_) {}
     submitBtn.disabled = true;
-    submitBtn.firstChild.textContent = 'Enviando...';
+    submitBtn.textContent = 'Enviando...';
     try {
       var res = await fetch('/api/dcanp-lead', {
         method:  'POST',
