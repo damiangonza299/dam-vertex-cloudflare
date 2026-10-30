@@ -50,8 +50,8 @@
     .oa-ph-light { background: linear-gradient(135deg,#ddd 0%,#e8e8e8 50%,#ddd 100%); color: #aaa; }
 
     /* ── HERO ── */
-    #section-hero { background: var(--oa-gray-light); padding: 60px 0 50px; }
-    .oa-hero { display: flex; flex-direction: column; max-width: 700px; margin: 0 auto; }
+    #section-hero { background: var(--oa-gray-light); padding: clamp(24px,5vw,40px) 0 clamp(24px,5vw,40px); }
+    .oa-hero { display: flex; flex-direction: column; max-width: 520px; margin: 0 auto; padding: 0 20px; }
     .oa-hero__text { color: #111; }
     .oa-hero__title { font-size: clamp(28px,4.5vw,48px); font-weight: 800; line-height: 1.1; margin-top: 8px; }
     .oa-hero__title mark { background: none; color: var(--oa-yellow); -webkit-text-stroke: 1.5px var(--oa-yellow); filter: drop-shadow(0 0 8px rgba(245,196,0,.3)); }
@@ -110,7 +110,7 @@
     @media (max-width:480px) { .oa-benefits__grid { grid-template-columns: 1fr; } }
 
     /* ── DEMO ── */
-    #section-demo { background: var(--oa-black); color: #fff; padding: 72px 0; }
+    #section-demo { background: var(--oa-black); color: #fff; padding: 48px 0; }
     .oa-demo__video-ph { aspect-ratio: 9/16; max-width: 400px; margin: 32px auto 0; }
     .oa-demo__gallery { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 24px; }
     .oa-demo__gallery-ph { aspect-ratio: 1/1; }
@@ -246,9 +246,9 @@
         alt="Organizador Multifuncional 2 en 1 para Auto"
         width="1080" height="1080"
         loading="eager"
-        style="width:100%;height:auto;border-radius:12px;object-fit:cover;aspect-ratio:1/1;margin-top:24px;"
+        style="width:100%;height:auto;border-radius:12px;object-fit:cover;aspect-ratio:1/1;margin-top:16px;"
       >
-      <p class="oa-hero__price-label" style="margin-top:24px;">Precio</p>
+      <p class="oa-hero__price-label" style="margin-top:16px;">Precio</p>
       <div style="display:flex;align-items:baseline;gap:14px;margin-top:4px;">
         <p class="oa-hero__price" style="margin-top:0;">Gs. 169.000</p>
         <p style="font-size:17px;color:#999;text-decoration:line-through;font-weight:600;">Gs. 219.000</p>
@@ -271,8 +271,8 @@
 <!-- ████ SECCIÓN 02 — DEMO ████ -->
 <section id="section-demo" data-insync-section="demo">
   <div class="oa-inner" style="text-align:center;">
-    <h2 class="oa-h2" style="color:#fff;font-size:clamp(18px,3.2vw,30px);white-space:nowrap;">MIR&Aacute; TODO LO QUE POD&Eacute;S ORGANIZAR.</h2>
-    <p class="oa-sub" style="max-width:560px;margin:10px auto 0;font-size:14px;white-space:nowrap;">Un solo accesorio. Diferentes espacios para tus objetos.</p>
+    <h2 class="oa-h2" style="color:#fff;font-size:clamp(18px,3.2vw,30px);">MIR&Aacute; TODO LO QUE POD&Eacute;S ORGANIZAR.</h2>
+    <p class="oa-sub" style="max-width:560px;margin:10px auto 0;font-size:14px;">Un solo accesorio. Diferentes espacios para tus objetos.</p>
     <div class="oa-demo__video-ph">
       <video src="/organizador-auto-multifuncional/angulo3or.mp4" muted autoplay loop playsinline webkit-playsinline preload="metadata" aria-hidden="true"
         style="width:100%;height:100%;border-radius:12px;object-fit:cover;display:block;"
@@ -294,10 +294,12 @@
         <p style="font-size:15px;line-height:1.65;color:#666;margin-top:20px;">El problema no es tener muchas cosas. El problema es no tener un lugar donde organizarlas.</p>
         <p class="oa-problema__highlight">NO ES FALTA DE ESPACIO.<br>ES FALTA DE ORGANIZACI&Oacute;N.</p>
       </div>
-      <div class="oa-problema__ph oa-ph" aria-hidden="true">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
-        <span>Foto auto desordenado</span>
-      </div>
+      <img src="/organizador-auto-multifuncional/land3or.webp"
+        srcset="/organizador-auto-multifuncional/land3or-400w.webp 400w, /organizador-auto-multifuncional/land3or.webp 1080w"
+        sizes="(max-width:768px) 90vw, 45vw"
+        alt="Compartimentos del organizador para auto"
+        width="1080" height="1080" loading="lazy"
+        style="width:100%;height:auto;border-radius:12px;object-fit:cover;aspect-ratio:1/1;">
     </div>
   </div>
 </section>
@@ -311,10 +313,10 @@
     </div>
     <div class="oa-anatomy">
       <img
-        src="/organizador-auto-multifuncional/land3or.webp"
-        srcset="/organizador-auto-multifuncional/land3or-400w.webp 400w, /organizador-auto-multifuncional/land3or.webp 1080w"
+        src="/organizador-auto-multifuncional/land4or.webp"
+        srcset="/organizador-auto-multifuncional/land4or-400w.webp 400w, /organizador-auto-multifuncional/land4or.webp 1080w"
         sizes="(max-width:768px) 90vw, 45vw"
-        alt="Compartimentos del organizador para auto"
+        alt="Organizador instalado en auto"
         width="1080" height="1080"
         loading="lazy"
         style="width:100%;height:auto;border-radius:12px;object-fit:cover;aspect-ratio:1/1;"
@@ -490,34 +492,6 @@
   </div>
 </section>
 
-<!-- ████ SECCIÓN 10 — CIERRE ████ -->
-<section id="section-cierre" data-insync-section="cierre">
-  <div class="oa-inner">
-    <div class="oa-cierre">
-      <img
-        src="/organizador-auto-multifuncional/land4or.webp"
-        srcset="/organizador-auto-multifuncional/land4or-400w.webp 400w, /organizador-auto-multifuncional/land4or.webp 1080w"
-        sizes="(max-width:768px) 90vw, 45vw"
-        alt="Organizador instalado en auto"
-        width="1080" height="1080"
-        loading="lazy"
-        style="width:100%;height:100%;border-radius:12px;object-fit:cover;aspect-ratio:4/5;"
-      >
-      <div class="oa-cierre__text">
-        <h2 class="oa-h2" style="color:#fff;">TU PR&Oacute;XIMO VIAJE PUEDE EMPEZAR<br>CON M&Aacute;S ORDEN.</h2>
-        <p style="color:rgba(255,255,255,.65);font-size:15px;line-height:1.65;margin-top:14px;">Eleg&iacute; tu combo y solicit&aacute; tu organizador en pocos pasos.</p>
-        <div style="margin-top:28px;">
-          <a class="oa-btn" data-open-modal data-insync-cta="cierre"
-             href="https://wa.me/595993471550?text=%C2%A1Hola!%20Quiero%20pedir%3A%20Organizador%20Auto%202en1.%20%C2%BFPodemos%20coordinar%20la%20entrega%3F">
-            QUIERO MI ORGANIZADOR
-            <span class="oa-btn-sub">&#x2713; Pag&aacute;s al recibir</span>
-          </a>
-        </div>
-        <p style="color:rgba(255,255,255,.35);font-size:11px;margin-top:10px;">Revis&aacute; tus datos antes de confirmar.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 </main>
 
