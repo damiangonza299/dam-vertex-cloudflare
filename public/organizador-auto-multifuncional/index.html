@@ -50,23 +50,18 @@
     .oa-ph-light { background: linear-gradient(135deg,#ddd 0%,#e8e8e8 50%,#ddd 100%); color: #aaa; }
 
     /* ── HERO ── */
-    #section-hero { background: var(--oa-gray-light); padding: clamp(24px,5vw,40px) 0 clamp(24px,5vw,40px); }
+    #section-hero { background: var(--oa-gray-light); padding: 20px 0 24px; }
     .oa-hero { display: flex; flex-direction: column; max-width: 700px; margin: 0 auto; }
-    .oa-hero__text { color: #111; }
-    .oa-hero__title { font-size: clamp(28px,4.5vw,48px); font-weight: 800; line-height: 1.1; margin-top: 4px; }
+    .oa-hero .oa-section-tag { margin-bottom: 4px; }
+    .oa-hero__title { font-size: clamp(28px,4.5vw,48px); font-weight: 800; line-height: 1.1; margin: 0 0 6px; }
     .oa-hero__title mark { background: none; color: var(--oa-yellow); -webkit-text-stroke: 1.5px var(--oa-yellow); filter: drop-shadow(0 0 8px rgba(245,196,0,.3)); }
-    .oa-hero__sub { font-size: 16px; line-height: 1.55; color: #444; margin-top: 6px; }
-    .oa-hero__checks { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .oa-hero__sub { font-size: 15px; line-height: 1.5; color: #444; margin: 0 0 8px; }
+    .oa-hero__checks { list-style: none; margin: 0 0 8px; display: flex; flex-direction: column; gap: 5px; }
     .oa-hero__checks li { font-size: 14px; font-weight: 600; color: #333; display: flex; align-items: center; gap: 8px; }
     .oa-hero__checks li::before { content: '✓'; background: var(--oa-green); color: #fff; width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; }
-    .oa-hero__price-label { font-size: 12px; font-weight: 700; color: var(--oa-gray-text); text-transform: uppercase; letter-spacing: .08em; margin-top: 12px; }
-    .oa-hero__price { font-size: clamp(32px,5vw,44px); font-weight: 800; color: #111; margin-top: 2px; }
-    .oa-hero__offer-hint { font-size: 13px; color: var(--oa-gray-text); margin-top: 4px; margin-bottom: 10px; }
-    .oa-hero__ph { aspect-ratio: 1/1; min-height: 360px; }
-    @media (max-width:768px) {
-      .oa-hero { grid-template-columns: 1fr; gap: 32px; }
-      .oa-hero__ph { min-height: 280px; }
-    }
+    .oa-hero__price-label { font-size: 12px; font-weight: 700; color: var(--oa-gray-text); text-transform: uppercase; letter-spacing: .08em; margin: 8px 0 2px; }
+    .oa-hero__price { font-size: clamp(32px,5vw,44px); font-weight: 800; color: #111; margin: 0; }
+    .oa-hero__offer-hint { font-size: 13px; color: var(--oa-gray-text); margin: 3px 0 8px; }
 
     /* ── PROBLEM ── */
     #section-problema { background: #FFFFFF; color: #111; padding: clamp(32px,5vw,48px) 0; }
@@ -246,10 +241,10 @@
         alt="Organizador Multifuncional 2 en 1 para Auto"
         width="1080" height="1080"
         loading="eager"
-        style="width:100%;height:auto;border-radius:12px;object-fit:cover;aspect-ratio:1/1;margin-top:10px;"
+        style="width:100%;height:auto;border-radius:12px;object-fit:cover;aspect-ratio:1/1;"
       >
-      <p class="oa-hero__price-label" style="margin-top:10px;">Precio</p>
-      <div style="display:flex;align-items:baseline;gap:14px;margin-top:4px;">
+      <p class="oa-hero__price-label">Precio</p>
+      <div style="display:flex;align-items:baseline;gap:14px;margin-top:0;">
         <p class="oa-hero__price" style="margin-top:0;">Gs. 169.000</p>
         <p style="font-size:17px;color:#999;text-decoration:line-through;font-weight:600;">Gs. 219.000</p>
       </div>
