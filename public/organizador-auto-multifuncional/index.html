@@ -41,7 +41,7 @@
     .oa-btn { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; background: var(--oa-yellow); color: #111; font-size: 15px; font-weight: 800; padding: 16px 32px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; letter-spacing: .01em; line-height: 1.2; transition: opacity .2s; width: 100%; max-width: 420px; }
     .oa-btn:hover { opacity: .9; }
     .oa-btn-sub { font-size: 11px; font-weight: 600; margin-top: 3px; opacity: .75; }
-    .oa-trust { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; font-size: 12px; font-weight: 600; color: var(--oa-gray-text); }
+    .oa-trust { display: flex; flex-wrap: nowrap; gap: 4px 10px; margin-top: 8px; font-size: 12px; font-weight: 600; color: var(--oa-gray-text); align-items: center; white-space: nowrap; overflow: hidden; }
     .oa-trust span { display: flex; align-items: center; gap: 4px; }
 
     /* ── Placeholder ── */
@@ -53,15 +53,15 @@
     #section-hero { background: var(--oa-gray-light); padding: clamp(24px,5vw,40px) 0 clamp(24px,5vw,40px); }
     .oa-hero { display: flex; flex-direction: column; max-width: 700px; margin: 0 auto; }
     .oa-hero__text { color: #111; }
-    .oa-hero__title { font-size: clamp(28px,4.5vw,48px); font-weight: 800; line-height: 1.1; margin-top: 8px; }
+    .oa-hero__title { font-size: clamp(28px,4.5vw,48px); font-weight: 800; line-height: 1.1; margin-top: 4px; }
     .oa-hero__title mark { background: none; color: var(--oa-yellow); -webkit-text-stroke: 1.5px var(--oa-yellow); filter: drop-shadow(0 0 8px rgba(245,196,0,.3)); }
-    .oa-hero__sub { font-size: 16px; line-height: 1.65; color: #444; margin-top: 16px; }
-    .oa-hero__checks { list-style: none; margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+    .oa-hero__sub { font-size: 16px; line-height: 1.55; color: #444; margin-top: 6px; }
+    .oa-hero__checks { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
     .oa-hero__checks li { font-size: 14px; font-weight: 600; color: #333; display: flex; align-items: center; gap: 8px; }
     .oa-hero__checks li::before { content: '✓'; background: var(--oa-green); color: #fff; width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; }
-    .oa-hero__price-label { font-size: 12px; font-weight: 700; color: var(--oa-gray-text); text-transform: uppercase; letter-spacing: .08em; margin-top: 24px; }
-    .oa-hero__price { font-size: clamp(32px,5vw,44px); font-weight: 800; color: #111; margin-top: 4px; }
-    .oa-hero__offer-hint { font-size: 13px; color: var(--oa-gray-text); margin-top: 6px; margin-bottom: 18px; }
+    .oa-hero__price-label { font-size: 12px; font-weight: 700; color: var(--oa-gray-text); text-transform: uppercase; letter-spacing: .08em; margin-top: 12px; }
+    .oa-hero__price { font-size: clamp(32px,5vw,44px); font-weight: 800; color: #111; margin-top: 2px; }
+    .oa-hero__offer-hint { font-size: 13px; color: var(--oa-gray-text); margin-top: 4px; margin-bottom: 10px; }
     .oa-hero__ph { aspect-ratio: 1/1; min-height: 360px; }
     @media (max-width:768px) {
       .oa-hero { grid-template-columns: 1fr; gap: 32px; }
@@ -213,7 +213,7 @@
 
 <div class="oa-urgency">
   <span class="oa-urgency-dot"></span>
-  &#x1F4E6; Env&iacute;o gratis &middot; Pag&aacute;s al recibir
+  QUEDAN 10 UNIDADES &mdash; STOCK LIMITADO
 </div>
 
 <nav class="nav">
@@ -246,9 +246,9 @@
         alt="Organizador Multifuncional 2 en 1 para Auto"
         width="1080" height="1080"
         loading="eager"
-        style="width:100%;height:auto;border-radius:12px;object-fit:cover;aspect-ratio:1/1;margin-top:16px;"
+        style="width:100%;height:auto;border-radius:12px;object-fit:cover;aspect-ratio:1/1;margin-top:10px;"
       >
-      <p class="oa-hero__price-label" style="margin-top:16px;">Precio</p>
+      <p class="oa-hero__price-label" style="margin-top:10px;">Precio</p>
       <div style="display:flex;align-items:baseline;gap:14px;margin-top:4px;">
         <p class="oa-hero__price" style="margin-top:0;">Gs. 169.000</p>
         <p style="font-size:17px;color:#999;text-decoration:line-through;font-weight:600;">Gs. 219.000</p>
@@ -260,9 +260,11 @@
         <span class="oa-btn-sub">&#x2713; Pag&aacute;s al recibir</span>
       </a>
       <div class="oa-trust">
-        <span>&#x2714; Compra f&aacute;cil</span>
-        <span>&#x2714; Atenci&oacute;n personalizada</span>
-        <span>&#x2714; Entrega seg&uacute;n cobertura</span>
+        <span>Pag&aacute;s al recibir</span>
+        <span style="opacity:.35;">&middot;</span>
+        <span>Env&iacute;o gratis</span>
+        <span style="opacity:.35;">&middot;</span>
+        <span>Garant&iacute;a 30 d&iacute;as</span>
       </div>
     </div>
   </div>
@@ -271,7 +273,7 @@
 <!-- ████ SECCIÓN 02 — DEMO ████ -->
 <section id="section-demo" data-insync-section="demo">
   <div class="oa-inner" style="text-align:center;">
-    <h2 class="oa-h2" style="color:#fff;font-size:clamp(18px,3.2vw,30px);">MIR&Aacute; TODO LO QUE POD&Eacute;S ORGANIZAR.</h2>
+    <h2 class="oa-h2" style="color:#fff;font-size:clamp(14px,3.8vw,30px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">MIR&Aacute; TODO LO QUE POD&Eacute;S ORGANIZAR.</h2>
     <p class="oa-sub" style="max-width:560px;margin:10px auto 0;font-size:14px;">Un solo accesorio. Diferentes espacios para tus objetos.</p>
     <div class="oa-demo__video-ph">
       <video src="/organizador-auto-multifuncional/angulo3or.mp4" muted autoplay loop playsinline webkit-playsinline preload="metadata" aria-hidden="true"
