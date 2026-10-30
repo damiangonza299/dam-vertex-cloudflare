@@ -98,7 +98,8 @@
     #section-beneficios { background: var(--oa-white); padding: clamp(32px,5vw,48px) 0; }
     .oa-benefits__grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; margin-top: 40px; }
     .oa-benefit { background: var(--oa-gray-light); border-radius: 14px; padding: 28px 24px; }
-    .oa-benefit__icon { font-size: 28px; margin-bottom: 12px; }
+    .oa-benefit__title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+    .oa-benefit__icon { font-size: 24px; flex-shrink: 0; }
     .oa-benefit__title { font-size: 15px; font-weight: 800; color: #111; }
     .oa-benefit__desc { font-size: 13px; color: var(--oa-gray-text); margin-top: 6px; line-height: 1.55; }
     @media (max-width:480px) { .oa-benefits__grid { grid-template-columns: 1fr; } }
@@ -372,23 +373,31 @@
     </div>
     <div class="oa-benefits__grid">
       <div class="oa-benefit">
-        <div class="oa-benefit__icon">&#x1F4E6;</div>
-        <p class="oa-benefit__title">TODO EN SU LUGAR</p>
+        <div class="oa-benefit__title-row">
+          <p class="oa-benefit__title">TODO EN SU LUGAR</p>
+          <span class="oa-benefit__icon">&#x1F4E6;</span>
+        </div>
         <p class="oa-benefit__desc">Distribu&iacute; tus objetos en diferentes compartimentos y reduc&iacute; el desorden.</p>
       </div>
       <div class="oa-benefit">
-        <div class="oa-benefit__icon">&#x1F697;</div>
-        <p class="oa-benefit__title">APROVECH&Aacute; CADA ESPACIO</p>
+        <div class="oa-benefit__title-row">
+          <p class="oa-benefit__title">APROVECH&Aacute; CADA ESPACIO</p>
+          <span class="oa-benefit__icon">&#x1F697;</span>
+        </div>
         <p class="oa-benefit__desc">Utiliz&aacute; la parte trasera de tus asientos de una manera mucho m&aacute;s pr&aacute;ctica.</p>
       </div>
       <div class="oa-benefit">
-        <div class="oa-benefit__icon">&#x2728;</div>
-        <p class="oa-benefit__title">M&Aacute;S COMODIDAD</p>
+        <div class="oa-benefit__title-row">
+          <p class="oa-benefit__title">M&Aacute;S COMODIDAD</p>
+          <span class="oa-benefit__icon">&#x2728;</span>
+        </div>
         <p class="oa-benefit__desc">Ten&eacute; tus accesorios mejor distribuidos y m&aacute;s accesibles.</p>
       </div>
       <div class="oa-benefit">
-        <div class="oa-benefit__icon">&#x26A1;</div>
-        <p class="oa-benefit__title">INSTALACI&Oacute;N SENCILLA</p>
+        <div class="oa-benefit__title-row">
+          <p class="oa-benefit__title">INSTALACI&Oacute;N SENCILLA</p>
+          <span class="oa-benefit__icon">&#x26A1;</span>
+        </div>
         <p class="oa-benefit__desc">Sujet&aacute;lo mediante sus correas y aprovech&aacute; el espacio detr&aacute;s del asiento.</p>
       </div>
     </div>
